@@ -26,8 +26,11 @@ PATH=$PATH:~/work/scripts
 # Searches for brew libs/binaries before system ones
 PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
 # Enables Rust
-export PATH="$HOME/.cargo/bin:$PATH"
+if [ -d "$HOME/bin" ] ; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+fi
 
 export EDITOR=vim
 #export MAIL=etrobert@student.42.fr
