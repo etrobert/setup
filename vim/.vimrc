@@ -100,6 +100,7 @@ call vundle#begin()
   " let Vundle manage Vundle, required
   Plugin 'VundleVim/Vundle.vim'
   Plugin 'scrooloose/nerdcommenter'
+  Plugin 'elmcast/elm-vim'
 
   " All of your Plugins must be added before the following line
   call vundle#end()            " required

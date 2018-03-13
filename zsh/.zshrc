@@ -4,48 +4,20 @@ PS1="%T %n@%m:%~> "
 #promptinit
 #prompt adam2
 
-# Aliases
-alias ls="ls -F"
-alias mv="mv -i"
-alias cp="cp -i"
-alias getmake="cp ~/work/tools/ctools/Makefile ."
-alias getmain="cp ~/work/tools/ctools/main.c ."
-alias getctools="getmake ; getmain"
-alias getcpptools="cp ~/work/tools/cpptools/Makefile ~/work/tools/cpptools/main.cpp ."
-alias LS="echo try again"
-alias sl="echo try again"
-alias rm="rm -v"
-alias mkls="make 2> tmp || less tmp"
-alias make="make -j8"
-
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
 
-case `uname` in
-  Darwin)
-    # commands for OS X go here
-    alias ctags="`brew --prefix`/bin/ctags"
-  ;;
-  Linux)
-    # commands for Linux go here
-  ;;
-  FreeBSD)
-    # commands for FreeBSD go here
-  ;;
-esac
+if [ -f ~/.alias ]; then
+  source ~/.alias
+fi
 
-# 42 Aliases
-#alias 42FileChecker="sh ~/42FileChecker/42FileChecker.sh"
-#alias qno="norminette | grep -B1 Error"
-
-# git aliases
-alias gs="git status"
-alias gc="git commit"
-alias ga="git add"
-alias gp="git push"
-alias gpl="git pull"
-alias gd="git diff"
+# zsh sessions will append their history list to the history file
+setopt APPEND_HISTORY
+# Print the exit value of programs with non-zero exit status.
+setopt PRINT_EXIT_VALUE
+# Allow comments even in interactive shells.
+setopt INTERACTIVE_COMMENTS
 
 # Connection prompt
 #if [ -f ~/work/scripts/login_tips.sh ]
