@@ -9,21 +9,7 @@ alias getcpptools="cp ~/work/tools/cpptools/Makefile ~/work/tools/cpptools/main.
 alias LS="echo try again"
 alias sl="echo try again"
 alias rm="rm -v"
-alias mkls="make 2> tmp || less tmp"
 alias make="make -j8"
-
-case `uname` in
-  Darwin)
-    # commands for OS X go here
-    alias ctags="`brew --prefix`/bin/ctags"
-  ;;
-  Linux)
-    # commands for Linux go here
-  ;;
-  FreeBSD)
-    # commands for FreeBSD go here
-  ;;
-esac
 
 # git aliases
 alias gs="git status"

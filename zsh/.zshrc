@@ -12,6 +12,21 @@ if [ -f ~/.alias ]; then
   source ~/.alias
 fi
 
+alias mkls="make 2> tmp || less tmp"
+
+case `uname` in
+  Darwin)
+    # commands for OS X go here
+    alias ctags="`brew --prefix`/bin/ctags"
+  ;;
+  Linux)
+    # commands for Linux go here
+  ;;
+  FreeBSD)
+    # commands for FreeBSD go here
+  ;;
+esac
+
 # zsh sessions will append their history list to the history file
 setopt APPEND_HISTORY
 # Print the exit value of programs with non-zero exit status.
