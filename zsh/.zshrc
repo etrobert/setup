@@ -39,6 +39,9 @@ setopt INTERACTIVE_COMMENTS
 #then
 #	~/work/scripts/login_tips.sh
 #fi
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line
 
 # Load Homebrew config script
 #if [ -f $HOME/.brewconfig.zsh ]
