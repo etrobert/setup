@@ -8,22 +8,22 @@ if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
 
-if [ -f ~/.alias ]; then
-  source ~/.alias
-fi
+sourceifexists () {
+  if [ -f $1 ]; then
+    source $1
+  fi
+}
+
+sourceifexists ~/.alias
 
 alias mkls="make 2> tmp || less tmp"
 
 case `uname` in
   Darwin)
-    # commands for OS X go here
-    alias ctags="`brew --prefix`/bin/ctags"
+    sourceifexists ~/.alias.darwin
   ;;
   Linux)
-    # commands for Linux go here
-  ;;
-  FreeBSD)
-    # commands for FreeBSD go here
+    sourceifexists ~/.alias.linux
   ;;
 esac
 
