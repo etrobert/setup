@@ -1,0 +1,34 @@
+#!/bin/sh
+
+COLOR_OK="\033[32m"
+COLOR_NOT_OK="\033[31m"
+COLOR_FILE="\033[33m"
+COLOR_RESET="\033[0m"
+
+CLANG_FORMAT="clang-format"
+
+error=0
+filecount=0
+for file in "$@"
+do
+  #echo $COLOR_FILE"Checking $file..."$COLOR_RESET
+  if ! $CLANG_FORMAT -style=file $file | diff $file - ; then
+    printf $COLOR_NOT_OK
+    echo "[ERROR]: $file"
+    printf $COLOR_RESET
+    error=$((error+1))
+  #else
+    #echo "[OK   ]: $file"
+  fi
+  filecount=$((filecount+1))
+done
+
+if [ "$error" -eq "0" ]
+then
+  printf $COLOR_OK
+else
+  printf $COLOR_NOT_OK
+fi
+echo "$error/$filecount files contain errors"
+printf $COLOR_RESET
+exit 2
