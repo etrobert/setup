@@ -5,6 +5,9 @@ function sourceifexists --argument-names file --description 'sources arg if exis
   end
 end
 
+function fish_greeting
+end
+
 sourceifexists ~/.alias
 
 switch (uname)
