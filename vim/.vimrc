@@ -153,6 +153,9 @@ set expandtab
 "Deactivates expandtab for makefiles
 autocmd FileType make setlocal noexpandtab
 
+"Read scons files (SConstruct, SConscript) as python files
+autocmd BufNewFile,BufRead SCons* set filetype=python
+
 "Set colorcolumn color to grey
 highlight ColorColumn ctermbg=8
 
