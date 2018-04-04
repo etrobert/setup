@@ -18,4 +18,4 @@ switch (uname)
     case '*'
 end
 
-alias mkls="make 2> tmp; or less tmp"
+alias mkls="make 2> /tmp/mkls_tmp; or less /tmp/mkls_tmp"
