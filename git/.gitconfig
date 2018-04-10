@@ -1,0 +1,30 @@
+[user]
+  email = erobert@scortex.io
+  name  = erobert
+[core]
+  whitespace = trailing-space tab-in-indent tabwidth=2
+[color]
+  branch = auto
+  status = auto
+  diff = auto
+[alias]
+  ci = commit
+  co = checkout
+  st = status -sb
+  br = branch
+  di = diff
+  ff = merge --ff-only
+  vimdiff = difftool -y -t vimdiff
+  lg = log --graph --oneline
+[pager]
+  status = on
+[push]
+  default = upstream
+[merge]
+  defaulttoupstream = true
+  conflictstyle = diff3 
+  log = true
+[log]
+  decorate = true
+[branch]
+  autosetuprebase = always
