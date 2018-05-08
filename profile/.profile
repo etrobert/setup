@@ -16,19 +16,18 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+PATH=/usr/local/bin:$PATH
+PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-if [ -d "$HOME/bin" ] ; then
-    PATH=$PATH:~/brew/bin
-fi
-
-PATH=$PATH:~/work/scripts
 # Searches for brew libs/binaries before system ones
-PATH=/usr/local/bin:$PATH
-PATH="/usr/local/opt/python/libexec/bin:$PATH"
+if [ -d "$HOME/bin" ] ; then
+    PATH=~/.brew/bin:$PATH
+fi
 
 # Enables Rust
 if [ -d "$HOME/bin" ] ; then
