@@ -21,7 +21,10 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-#PATH=$PATH:~/brew/bin
+if [ -d "$HOME/bin" ] ; then
+    PATH=$PATH:~/brew/bin
+fi
+
 PATH=$PATH:~/work/scripts
 # Searches for brew libs/binaries before system ones
 PATH=/usr/local/bin:$PATH
