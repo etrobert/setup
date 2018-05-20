@@ -19,6 +19,12 @@ set scrolloff=3
 "Sets color theme
 colorscheme Tomorrow-Night
 
+if &term =~ '256color'
+  " Disable Background Color Erase (BCE) so that color schemes
+  " work properly when Vim is used inside tmux and GNU screen.
+  set t_ut=
+endif
+
 "Set autoplete mode to zshlike
 set wildmode=longest:full,full
 
