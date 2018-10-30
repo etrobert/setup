@@ -96,6 +96,15 @@ set rnu
 "Highlight current line
 set cursorline
 
+"Set colorcolumn color to grey
+highlight ColorColumn ctermbg=8
+
+"Highlights the column 81
+set colorcolumn=81
+
+"Read scons files (SConstruct, SConscript) as python files
+autocmd BufNewFile,BufRead SCons* set filetype=python
+
 " VUNDLE
 " " set the runtime path to include Vundle and initialize
 " set rtp+=~/.vim/bundle/Vundle.vim
@@ -144,7 +153,7 @@ let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 set completeopt=menuone,menu,longest,preview
 
-"SCORTEX settings
+"SCORTEX settings BEGIN
 
 "Set tabs width to 2
 set shiftwidth=2
@@ -160,15 +169,6 @@ set expandtab
 "Deactivates expandtab for makefiles
 autocmd FileType make setlocal noexpandtab
 
-"Read scons files (SConstruct, SConscript) as python files
-autocmd BufNewFile,BufRead SCons* set filetype=python
-
-"Set colorcolumn color to grey
-highlight ColorColumn ctermbg=8
-
-"Highlights the column 81
-set colorcolumn=81
-
 "Prints the Scortex header whenever you open a new file
 function! s:insert_header()
   execute "normal! i/**"
@@ -176,7 +176,7 @@ function! s:insert_header()
   execute "normal! o/"
   normal! o
 endfunction
-autocmd BufNewFile *.{h,c,hpp,cpp,js} call <SID>insert_header()
+"autocmd BufNewFile *.{h,c,hpp,cpp,js} call <SID>insert_header()
 
 function! s:insert_header_py()
   execute "normal! i\"\"\""
@@ -184,7 +184,7 @@ function! s:insert_header_py()
   execute "normal! o\"\"\""
   normal! o
 endfunction
-autocmd BufNewFile *.{py} call <SID>insert_header_py()
+"autocmd BufNewFile *.{py} call <SID>insert_header_py()
 
 function! s:insert_header_make()
   execute "normal! i#"
@@ -192,4 +192,6 @@ function! s:insert_header_make()
   execute "normal! o#"
   normal! o
 endfunction
-autocmd BufNewFile ?akefile* call <SID>insert_header_make()
+"autocmd BufNewFile ?akefile* call <SID>insert_header_make()
+
+"SCORTEX settings END
