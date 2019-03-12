@@ -30,7 +30,7 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 # Enables Rust
-if [ -d "$HOME/bin" ] ; then
+if [ -d "$HOME/.cargo/bin" ] ; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
