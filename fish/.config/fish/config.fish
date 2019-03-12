@@ -19,3 +19,12 @@ switch (uname)
 end
 
 alias mkls="make 2> /tmp/mkls_tmp; or less /tmp/mkls_tmp"
+
+# Workaround for fish autocomplete bug
+# https://github.com/fish-shell/fish-shell/issues/952
+function x86
+    echo '(x86)'
+end
+function X86
+    echo '(X86)'
+end
