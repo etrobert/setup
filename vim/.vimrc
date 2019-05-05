@@ -160,8 +160,8 @@ set shiftwidth=2
 set tabstop=2
 set softtabstop=2
 
-"Set tabs width to 4 for Javascript and Python files
-autocmd FileType python,javascript setlocal shiftwidth=4 tabstop=4
+"Set tabs width to 4 for Python files
+autocmd FileType python setlocal shiftwidth=4 tabstop=4
 
 "Autoexpands tabs
 set expandtab
