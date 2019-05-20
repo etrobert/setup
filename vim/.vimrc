@@ -195,3 +195,6 @@ endfunction
 "autocmd BufNewFile ?akefile* call <SID>insert_header_make()
 
 "SCORTEX settings END
+
+"Enables dash (-) in C-n autocompletion
+set iskeyword+=\-
