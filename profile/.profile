@@ -19,6 +19,12 @@ fi
 PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
+if [ "$(uname)" == "Darwin" ] ; then
+  if [ -d "$HOME/MAMP/mysql/bin" ] ; then
+    PATH="$PATH:$HOME/MAMP/mysql/bin"
+  fi
+fi
+
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
