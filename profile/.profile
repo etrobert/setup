@@ -47,4 +47,4 @@ fi
 
 export EDITOR=vim
 #export MAIL=etrobert@student.42.fr
-export MAIL=erobert@scortex.io
+export MAIL=etiennerobert33@gmail.com
