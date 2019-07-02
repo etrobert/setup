@@ -1,0 +1,20 @@
+#!/bin/sh
+bl_dev=/sys/class/backlight/intel_backlight
+step=10 # percentage
+
+brightness=$(cat $bl_dev/brightness)
+max=$(cat $bl_dev/max_brightness)
+
+case $1 in
+  -)
+    new_brightness=$(($brightness - $max * $step / 100))
+    echo $(($new_brightness < 0 ? 0 : $new_brightness)) > $bl_dev/brightness
+    ;;
+  +)
+    new_brightness=$(($brightness + $max * $step / 100))
+    echo $(($new_brightness > $max ? $max : $new_brightness)) > $bl_dev/brightness
+    ;;
+  *)
+    echo $(($max * $1 / 100)) > $bl_dev/brightness
+    ;;
+esac
