@@ -86,6 +86,10 @@ inoremap <Right> <NOP>
 "maps the jj key succession to escape because esc is too far to reach
 imap jj <Esc>
 
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+" Source: https://stackoverflow.com/questions/2600783/how-does-the-vim-write-with-sudo-trick-work
+cmap w!! w !sudo tee > /dev/null %
+
 "Allows backspacing over newlines, indents, start of insert
 "set backspace=eol,indent,start
 set backspace=eol,indent
