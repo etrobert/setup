@@ -45,6 +45,9 @@ if [ -d "$HOME/.cargo/bin" ] ; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
+# Sets the terminal emulator to be launched by i3. Non-standard.
+export TERMINAL=st
+
 export EDITOR=vim
 #export MAIL=etrobert@student.42.fr
 export MAIL=etiennerobert33@gmail.com
