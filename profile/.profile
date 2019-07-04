@@ -51,3 +51,8 @@ export TERMINAL=st
 export EDITOR=vim
 #export MAIL=etrobert@student.42.fr
 export MAIL=etiennerobert33@gmail.com
+
+# Starts i3 on login
+if [ "$(tty)" = "/dev/tty1" ]; then
+  pgrep -x i3 || exec startx
+fi

@@ -1,16 +1,30 @@
 # Aliases
-alias ls="ls -F"
+
+# Improve output
+alias ls="ls -Fh --color=auto"
+alias grep="grep --color=auto"
+
+# Ask for confirmation before overriding
 alias mv="mv -i"
 alias cp="cp -i"
+
+# Create dirs recursively and verbosely
+alias mkdir="mkdir -pv"
+
+# Prints what it removes
+alias rm="rm -v"
+
 alias getmake="cp ~/tools/ctools/Makefile ."
 alias getmain="cp ~/tools/ctools/main.c ."
 alias getctools="getmake ; getmain"
 alias getcpptools="cp ~/tools/cpptools/Makefile ~/tools/cpptools/main.cpp ."
+
 alias LS="ls"
 alias sl="ls"
 alias SL="ls"
-alias rm="rm -v"
+
 alias make="make -j8"
+alias ccat="highlight --out-format=ansi"
 
 # 42 Aliases
 #alias 42FileChecker="sh ~/42FileChecker/42FileChecker.sh"
