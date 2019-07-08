@@ -26,6 +26,7 @@
     "vim.hlsearch": true,
     "vim.handleKeys": {
       "<C-a>": false,
+      "<C-b>": false,
       "<C-f>": false,
       "<C-d>": false
     },
