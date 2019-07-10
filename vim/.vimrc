@@ -48,7 +48,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 "i-s sets the initialiser in constructors correctly
 setlocal cindent cino=j1,(0,ws,Ws
 
-let clang_format = $HOME."/bin/clang-format.py"
+let clang_format = "/usr/share/clang/clang-format.py"
 if filereadable(clang_format)
   "Launches clang-format syntax checker upon entering Control-K
   execute "map <C-K> :pyf ".clang_format."<cr>"
