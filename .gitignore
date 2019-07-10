@@ -1,0 +1,5 @@
+# The file ".netrwhist" holds history when netrw (and vim) is not active.
+vim/.vim/.netrwhist
+
+# This file contains fish universal variable definitions.
+fish/.config/fish/fish_variables
