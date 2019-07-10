@@ -1,0 +1,21 @@
+# Recommanded if remapping vi keys
+# Source: https://wiki.archlinux.org/index.php/Readline#Mode_indicator_in_prompt
+$include /etc/inputrc
+
+set editing-mode vi
+
+$if mode=vi
+set show-mode-in-prompt
+
+set keymap vi-command
+# these are for vi-command mode
+"\C-P": history-search-backward
+"\C-N": history-search-forward
+j: history-search-forward
+k: history-search-backward
+
+set keymap vi-insert
+# these are for vi-insert mode
+"\C-P": history-search-backward
+"\C-N": history-search-forward
+$endif
