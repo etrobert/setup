@@ -9,6 +9,8 @@
 	"files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
 
+    "html.autoClosingTags": false,
+
     "vim.insertModeKeyBindings": [
         {
             "before": ["j", "j"],
@@ -25,7 +27,6 @@
     "vim.useCtrlKeys": true,
     "vim.hlsearch": true,
     "vim.handleKeys": {
-      "<C-a>": false,
       "<C-b>": false,
       "<C-f>": false,
       "<C-d>": false
