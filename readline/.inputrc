@@ -18,4 +18,5 @@ set keymap vi-insert
 # these are for vi-insert mode
 "\C-P": history-search-backward
 "\C-N": history-search-forward
+"\C-A": beginning-of-line
 $endif
