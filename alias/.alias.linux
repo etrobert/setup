@@ -1,2 +1,2 @@
 # Linux aliases
-alias ls="ls -F --color"
+alias ls="ls -Fh --color"

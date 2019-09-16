@@ -6,6 +6,15 @@ if [ -f ~/.alias ]; then
   source ~/.alias
 fi
 
+case $(uname) in
+Darwin)
+  source ~/.alias.darwin
+  ;;
+Linux)
+  source ~/.alias.linux
+  ;;
+esac
+
 # Disable ctrl-s and ctrl-q
 stty -ixon
 

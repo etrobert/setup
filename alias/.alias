@@ -1,7 +1,6 @@
 # Aliases
 
 # Improve output
-alias ls="ls -Fh --color=auto"
 alias grep="grep --color=auto"
 
 # Ask for confirmation before overriding
