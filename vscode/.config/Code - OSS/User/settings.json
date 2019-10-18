@@ -29,7 +29,13 @@
     "vim.handleKeys": {
       "<C-b>": false,
       "<C-f>": false,
-      "<C-d>": false
+      "<C-d>": false,
+      "<C-k>": false
     },
-    "vim.visualstar": true
+    "vim.visualstar": true,
+    "window.zoomLevel": 0,
+
+    "terminal.integrated.commandsToSkipShell": [
+        "-workbench.action.quickOpen"
+    ]
 }
