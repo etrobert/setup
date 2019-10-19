@@ -15,6 +15,8 @@ Linux)
   ;;
 esac
 
+source ~/.git-completion.bash
+
 # Disable ctrl-s and ctrl-q
 stty -ixon
 
