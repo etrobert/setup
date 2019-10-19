@@ -57,3 +57,6 @@ export MAIL=etiennerobert33@gmail.com
 if [ "$(tty)" = "/dev/tty1" ]; then
   pgrep -x i3 || exec startx
 fi
+
+# opam configuration
+test -r /home/etienne/.opam/opam-init/init.sh && . /home/etienne/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
