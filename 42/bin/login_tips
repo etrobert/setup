@@ -1,5 +1,0 @@
-#!/bin/sh
-content=$(curl -s tbeldame.fr:4200/get)
-echo "\033[1;95m\c"
-echo $content
-echo "\033[0m\c"

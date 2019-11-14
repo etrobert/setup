@@ -1,5 +1,0 @@
-#!/bin/sh
-if [ $# -eq 0 ]; then
-	exit 1
-fi
-sed -i.tmp 's/etrobert <marvin@42.fr>          /etrobert <etrobert@student.42.fr>/g' $1
