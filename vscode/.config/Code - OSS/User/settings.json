@@ -37,5 +37,9 @@
 
     "terminal.integrated.commandsToSkipShell": [
         "-workbench.action.quickOpen"
-    ]
+    ],
+
+    "[ocaml]": {
+        "editor.formatOnSave": true
+    }
 }
