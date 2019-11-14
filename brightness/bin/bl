@@ -7,14 +7,14 @@ max=$(cat $bl_dev/max_brightness)
 
 case $1 in
   -)
-    new_brightness=$(($brightness - $max * $step / 100))
-    echo $(($new_brightness < 0 ? 0 : $new_brightness)) > $bl_dev/brightness
+    new_brightness=$((brightness - max * step / 100))
+    echo $((new_brightness < 0 ? 0 : new_brightness)) > $bl_dev/brightness
     ;;
   +)
-    new_brightness=$(($brightness + $max * $step / 100))
-    echo $(($new_brightness > $max ? $max : $new_brightness)) > $bl_dev/brightness
+    new_brightness=$((brightness + max * step / 100))
+    echo $((new_brightness > max ? max : new_brightness)) > $bl_dev/brightness
     ;;
   *)
-    echo $(($max * $1 / 100)) > $bl_dev/brightness
+    echo $((max * $1 / 100)) > $bl_dev/brightness
     ;;
 esac
