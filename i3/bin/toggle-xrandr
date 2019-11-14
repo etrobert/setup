@@ -1,0 +1,10 @@
+#!/bin/sh
+
+intern=eDP-1
+extern=DP-3
+
+if xrandr | grep "$extern disconnected"; then
+    xrandr --output "$extern" --off --output "$intern" --auto
+else
+    xrandr --dpi 283 --output "$intern" --auto --output "$extern" --auto --above "$intern"
+fi
