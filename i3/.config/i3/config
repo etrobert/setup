@@ -168,7 +168,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-bindsym $mod+Shift+x exec i3lock
+bindsym $mod+x exec i3lock
+bindsym $mod+Shift+x exec prompt "Do you want to shutdown ?" "shutdown now"
 
 bindsym $mod+Shift+n exec netflix
 
