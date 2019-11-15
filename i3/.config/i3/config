@@ -177,4 +177,4 @@ bar {
         position top
 }
 
-exec toggle-xrandr
+exec --no-startup-id toggle-xrandr
