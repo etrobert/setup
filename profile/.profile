@@ -49,9 +49,12 @@ fi
 export TERMINAL=st
 
 export EDITOR=vim
-export BROWSER=chromium
+export BROWSER=firefox
 #export MAIL=etrobert@student.42.fr
 export MAIL=etiennerobert33@gmail.com
+
+# Activate touch support in firefox
+export MOZ_USE_XINPUT2=1
 
 # Starts i3 on login
 if [ "$(tty)" = "/dev/tty1" ]; then
