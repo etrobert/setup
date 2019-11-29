@@ -1,4 +1,23 @@
+! Remap Caps_Lock key to Control or Caps_Lock when holding Shift
 clear lock
 clear control
 add control = Caps_Lock Control_L Control_R
 keycode 66 = Control_L Caps_Lock NoSymbol NoSymbol
+
+! Binds the right Alt key to Mode_switch
+keycode 108 = Mode_switch Meta_R Alt_R Meta_R
+
+! French language
+
+! Most used
+keycode 26 = e E eacute Eacute
+keycode 30 = u U ugrave Ugrave
+keycode 31 = i I idiaeresis Idiaeresis
+keycode 32 = o O ocircumflex Ocircumflex
+keycode 38 = a A agrave Agrave
+keycode 54 = c C ccedilla Ccedilla
+
+! Dead accents
+keycode  15 = 6 asciicircum 6 dead_circumflex
+keycode  48 = apostrophe quotedbl dead_acute dead_diaeresis
+keycode  49 = grave asciitilde dead_grave asciitilde
