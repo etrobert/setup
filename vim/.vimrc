@@ -148,3 +148,6 @@ set iskeyword+=\-
 
 " Refreshes GitGutter every 100ms
 set updatetime=100
+
+" NERDTree toggle
+map <leader>n :NERDTreeToggleVCS<CR>
