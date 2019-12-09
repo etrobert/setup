@@ -151,3 +151,6 @@ set updatetime=100
 
 " NERDTree toggle
 map <leader>n :NERDTreeToggleVCS<CR>
+
+" Remove trailing whitespaces on save
+autocmd BufWritePre,FileWritePre * %s/\s\+$//e
