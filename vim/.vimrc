@@ -145,3 +145,6 @@ autocmd FileType make setlocal noexpandtab
 
 "Enables dash (-) in C-n autocompletion
 set iskeyword+=\-
+
+" Refreshes GitGutter every 100ms
+set updatetime=100
