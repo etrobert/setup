@@ -37,9 +37,6 @@ set hlsearch
 "Search as characters are entered
 set incsearch
 
-"Press <leader><space> to turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
-
 "Set smart indent
 "set cindent
 
@@ -62,16 +59,6 @@ if filereadable(clang_format)
   autocmd BufWritePre *.h,*.hpp,*.c,*.cpp call Formatonsave()
 endif
 
-"Disables arrow keys
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
-inoremap <Up> <NOP>
-inoremap <Down> <NOP>
-inoremap <Left> <NOP>
-inoremap <Right> <NOP>
-
 "removes case for common save and quit ex commands
 "Sets some uppercase commands to the lowercase equivalent
 "command WQ wq
@@ -82,13 +69,6 @@ inoremap <Right> <NOP>
 "command Wa wa
 "command QA qa
 "command Qa qa
-
-"maps the jj key succession to escape because esc is too far to reach
-imap jj <Esc>
-
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-" Source: https://stackoverflow.com/questions/2600783/how-does-the-vim-write-with-sudo-trick-work
-cmap w!! w !sudo tee > /dev/null %
 
 "Allows backspacing over newlines, indents, start of insert
 "set backspace=eol,indent,start
@@ -154,3 +134,6 @@ map <leader>n :NERDTreeToggleVCS<CR>
 
 " Remove trailing whitespaces on save
 autocmd BufWritePre,FileWritePre * %s/\s\+$//e
+
+" Activate mouse for all modes
+set mouse=a
