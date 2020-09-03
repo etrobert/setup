@@ -17,13 +17,14 @@
   vimdiff = difftool -y -t vimdiff
   #lg = log --graph --oneline
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+  praise = blame
 [pager]
   status = on
 [push]
   default = upstream
 [merge]
   defaulttoupstream = true
-  conflictstyle = diff3 
+  conflictstyle = diff3
   log = true
 [log]
   decorate = true
