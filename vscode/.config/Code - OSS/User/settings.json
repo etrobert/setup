@@ -30,7 +30,8 @@
       "<C-b>": false,
       "<C-f>": false,
       "<C-d>": false,
-      "<C-k>": false
+      "<C-k>": false,
+      "<F2>": false
     },
     "vim.visualstar": true,
 
@@ -52,6 +53,14 @@
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "workbench.colorTheme": "Visual Studio Dark",
-    "workbench.iconTheme": "material-icon-theme"
+    "workbench.iconTheme": "material-icon-theme",
+    "git.autofetch": true,
+    "explorer.confirmDelete": false
 }

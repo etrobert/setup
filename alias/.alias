@@ -32,3 +32,7 @@ alias ocaml="rlwrap ocaml"
 #alias qno="norminette | grep -B1 Error"
 
 alias music-dl="youtube-dl -x -f bestaudio"
+
+alias rscp="rsync -p --progress"
+
+alias only-unique="sort | uniq"
