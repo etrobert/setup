@@ -1,66 +1,64 @@
 {
-    "window.menuBarVisibility": "toggle",
+  "window.menuBarVisibility": "toggle",
 
-    "editor.cursorStyle": "underline",
-    "editor.cursorBlinking": "solid",
-    "editor.rulers": [80],
-    "editor.tabSize": 2,
+  "editor.cursorStyle": "underline",
+  "editor.cursorBlinking": "solid",
+  "editor.rulers": [80],
+  "editor.tabSize": 2,
 
-	"files.trimTrailingWhitespace": true,
-    "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
 
-    "html.autoClosingTags": false,
+  "html.autoClosingTags": false,
 
-    "vim.insertModeKeyBindings": [
-        {
-            "before": ["j", "j"],
-            "after": ["<Esc>"]
-        }
-    ],
-    "vim.normalModeKeyBindingsNonRecursive": [
-        {
-            "before": ["<leader>", "space"],
-            "commands": [":nohl"]
-        }
-    ],
-    "vim.useSystemClipboard": true,
-    "vim.useCtrlKeys": true,
-    "vim.hlsearch": true,
-    "vim.handleKeys": {
-      "<C-b>": false,
-      "<C-f>": false,
-      "<C-d>": false,
-      "<C-k>": false,
-      "<F2>": false
-    },
-    "vim.visualstar": true,
+  "vim.insertModeKeyBindings": [
+    {
+      "before": ["j", "j"],
+      "after": ["<Esc>"]
+    }
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["<leader>", "space"],
+      "commands": [":nohl"]
+    }
+  ],
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.handleKeys": {
+    "<C-b>": false,
+    "<C-f>": false,
+    "<C-d>": false,
+    "<C-k>": false,
+    "<F2>": false
+  },
+  "vim.visualstar": true,
 
-    "terminal.integrated.commandsToSkipShell": [
-        "-workbench.action.quickOpen"
-    ],
+  "terminal.integrated.commandsToSkipShell": ["-workbench.action.quickOpen"],
 
-    "[ocaml]": {
-        "editor.formatOnSave": true
-    },
-    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
-    "editor.fontLigatures": true,
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[html]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[json]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "workbench.colorTheme": "Visual Studio Dark",
-    "workbench.iconTheme": "material-icon-theme",
-    "git.autofetch": true,
-    "explorer.confirmDelete": false
+  "[ocaml]": {
+    "editor.formatOnSave": true
+  },
+  "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.fontLigatures": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.colorTheme": "Visual Studio Dark",
+  "workbench.iconTheme": "material-icon-theme",
+  "git.autofetch": true,
+  "explorer.confirmDelete": false
 }
