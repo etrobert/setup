@@ -1,0 +1,18 @@
+#!/bin/sh
+usage="usage: $0 [install|export]"
+file="$HOME/setup/vscode/.config/vscode-extensions.txt"
+if [ "$#" -ne 1 ]
+then
+  echo "$usage"
+elif [ "$1" == "install" ]
+then
+  while read extension
+  do
+    code --install-extension "$extension"
+  done < "$file"
+elif [ "$1" == "export" ]
+then
+  code --list-extensions > "$file"
+else
+  echo "$usage"
+fi

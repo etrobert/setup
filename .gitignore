@@ -3,6 +3,3 @@ vim/.vim/.netrwhist
 
 # This file contains fish universal variable definitions.
 fish/.config/fish/fish_variables
-
-vscode/.config/Code\ -\ OSS/
-!vscode/.config/Code\ -\ OSS/User/settings.json
