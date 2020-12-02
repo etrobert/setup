@@ -1,0 +1,21 @@
+#!/bin/sh
+usage="usage: $0 [fast|auto]"
+
+if [ "$#" -ne 1 ]
+then
+  echo $usage
+elif [ "$1" == "fast" ]
+then
+  defaults write com.apple.dock autohide-delay -float 0
+  killall Dock # Restart dock
+  echo "dock appearance speed set to fast"
+elif [ "$1" == "auto" ]
+then
+  defaults delete com.apple.dock autohide-delay
+  killall Dock # Restart dock
+  echo "dock appearance speed set to auto"
+else
+  echo "unknown argument '$1'"
+  echo $usage
+fi
+
