@@ -63,3 +63,8 @@ fi
 
 # opam configuration
 test -r /home/etienne/.opam/opam-init/init.sh && . /home/etienne/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+
+# nvm configuration
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
