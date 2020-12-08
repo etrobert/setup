@@ -1,0 +1,25 @@
+{
+  "React Functional Component": {
+    // Inspired from https://github.com/dsznajder/vscode-es7-javascript-react-snippets
+    "prefix": "fc",
+    "body": [
+      "import React, { FC } from 'react';",
+      "",
+      "interface Props {",
+      "\t",
+      "}",
+      "",
+      "export const ${1:${TM_FILENAME_BASE}} : FC<Props> = (props) => {",
+      "\treturn (",
+      "\t\t<div>",
+      "\t\t\t$0",
+      "\t\t</div>",
+      "\t)",
+      "};",
+      "",
+      "export default ${1:${TM_FILENAME_BASE}};",
+      ""
+    ],
+    "description": "Creates a React Arrow Function Component with ES7 module system and TypeScript interface"
+  }
+}
