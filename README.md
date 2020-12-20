@@ -18,6 +18,12 @@ Download and install [Fira Code](https://github.com/tonsky/FiraCode).
 2. stow vscode
 3. run the script `vscode-extensions install`
 
+### Firefox
+
+1. `mkdir ~/.mozilla/firefox/s0tnglli.etienne-robert`
+2. Create a new Profile in `about:profiles` using the newly created folder
+3. stow firefox
+
 ## Ressources
 
 For more informations see:
