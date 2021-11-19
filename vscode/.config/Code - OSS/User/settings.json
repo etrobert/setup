@@ -64,5 +64,9 @@
   "workbench.iconTheme": "material-icon-theme",
   "git.autofetch": true,
   "explorer.confirmDelete": false,
-  "telemetry.enableTelemetry": false
+  "telemetry.enableTelemetry": false,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
 }
