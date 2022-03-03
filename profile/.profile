@@ -36,7 +36,7 @@ if [ -d "$HOME/bin" ] ; then
 fi
 
 # Searches for brew libs/binaries before system ones
-if [ -d "$HOME/bin" ] ; then
+if [ -d "$HOME/.brew/bin" ] ; then
     PATH=~/.brew/bin:$PATH
 fi
 
