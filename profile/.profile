@@ -56,6 +56,11 @@ if [ -d "$HOME/.cargo/bin" ] ; then
   export PATH="$HOME/.cargo/bin:$PATH"
 fi
 
+# Add Ruby to PATH
+if [ -d "/opt/homebrew/opt/ruby/bin" ] ; then
+  PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+fi
+
 # Sets the terminal emulator to be launched by i3. Non-standard.
 export TERMINAL=st
 
