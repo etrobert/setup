@@ -10,16 +10,16 @@
 [alias]
   ci = commit
   co = checkout
-  st = status -sb
+  st = status --short --branch
   br = branch
   di = diff
   ff = merge --ff-only
-  vimdiff = difftool -y -t vimdiff
+  vimdiff = difftool --no-prompt --tool=vimdiff
   #lg = log --graph --oneline
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
   praise = blame
   please = push --force-with-lease
-  publish = push -u origin HEAD
+  publish = push --set-upstream origin HEAD
   sco = "!f() { git checkout $(git branch | grep \"$1\" | head -n 1); }; f"
 [pager]
   status = on
