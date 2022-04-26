@@ -20,7 +20,7 @@
   praise = blame
   please = push --force-with-lease
   publish = push --set-upstream origin HEAD
-  sco = "!f() { git checkout $(git branch | grep \"$1\" | head -n 1); }; f"
+  sco = "!f() { git checkout $(git branch | grep \"$1\" | head --lines=1); }; f"
 [pager]
   status = on
 [push]
