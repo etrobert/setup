@@ -1,2 +1,0 @@
-#!/bin/sh
-norminette $1 | grep -B1 Error

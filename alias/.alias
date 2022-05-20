@@ -27,10 +27,6 @@ alias ccat="highlight --out-format=ansi"
 
 alias ocaml="rlwrap ocaml"
 
-# 42 Aliases
-#alias 42FileChecker="sh ~/42FileChecker/42FileChecker.sh"
-#alias qno="norminette | grep -B1 Error"
-
 alias music-dl="youtube-dl -x -f bestaudio"
 
 alias rscp="rsync -p --progress"
