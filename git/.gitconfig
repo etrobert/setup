@@ -25,6 +25,7 @@
   status = on
 [push]
   default = upstream
+  autoSetupRemote = true
 [merge]
   defaulttoupstream = true
   conflictstyle = diff3
