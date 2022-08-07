@@ -34,3 +34,5 @@
   decorate = true
 [branch]
   autosetuprebase = always
+[init]
+	defaultBranch = main
