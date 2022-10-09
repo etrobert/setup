@@ -36,3 +36,8 @@ alias only-unique="sort | uniq"
 alias ibrew='arch --x86_64 /usr/local/Homebrew/bin/brew'
 
 alias tmuxn='tmux new-session -s "$(basename "$(pwd)")"'
+
+# alias start="spring stop && docker-compose up -d && bundle && bundle exec rails db:reset && nvm install && nvm use && npm install && npm run dev"
+alias start-docker="./bin/dev docker"
+alias start-server="bundle && bundle exec rails db:reset && ./bin/dev server"
+alias start-webpack="nvm install && nvm use && npm install && ./bin/dev webpack"
