@@ -104,3 +104,5 @@ if [ -d "$HOME/.bun" ] ; then
 fi
 
 [ -f "/Users/etiennerobert/.ghcup/env" ] && . "/Users/etiennerobert/.ghcup/env" # ghcup-env
+
+# export LOADER_CHOICE="swc-hmr"
