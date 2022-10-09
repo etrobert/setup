@@ -109,3 +109,5 @@ fi
 [ -f "/Users/etiennerobert/.ghcup/env" ] && . "/Users/etiennerobert/.ghcup/env" # ghcup-env
 
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+
+# export LOADER_CHOICE="swc-hmr"
