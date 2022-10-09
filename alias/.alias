@@ -32,3 +32,8 @@ alias music-dl="youtube-dl -x -f bestaudio"
 alias rscp="rsync -p --progress"
 
 alias only-unique="sort | uniq"
+
+# alias start="spring stop && docker-compose up -d && bundle && bundle exec rails db:reset && nvm install && nvm use && npm install && npm run dev"
+alias start-docker="./bin/dev docker"
+alias start-server="bundle && bundle exec rails db:reset && ./bin/dev server"
+alias start-webpack="nvm install && nvm use && npm install && ./bin/dev webpack"
