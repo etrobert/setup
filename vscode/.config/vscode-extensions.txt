@@ -1,5 +1,6 @@
 DavidAnson.vscode-markdownlint
 eamodio.gitlens
 esbenp.prettier-vscode
+oderwat.indent-rainbow
 PKief.material-icon-theme
 vscodevim.vim
