@@ -88,3 +88,5 @@ export NVM_DIR="$HOME/.nvm"
 if command -v rbenv > /dev/null 2>&1; then
   eval "$(rbenv init -)";
 fi
+
+# export LOADER_CHOICE="swc-hmr"
