@@ -32,3 +32,5 @@ alias music-dl="youtube-dl -x -f bestaudio"
 alias rscp="rsync -p --progress"
 
 alias only-unique="sort | uniq"
+
+alias ibrew='arch --x86_64 /usr/local/Homebrew/bin/brew'
