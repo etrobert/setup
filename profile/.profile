@@ -88,3 +88,10 @@ export NVM_DIR="$HOME/.nvm"
 if command -v rbenv > /dev/null 2>&1; then
   eval "$(rbenv init -)";
 fi
+
+# pnpm
+if [ -d "$HOME/Library/pnpm" ] ; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+  export PATH="$PNPM_HOME:$PATH"
+fi
+# pnpm end
