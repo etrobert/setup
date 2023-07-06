@@ -1,4 +1,3 @@
 # Darwin aliases
 alias ls="ls -FG"
 alias ctags="`brew --prefix`/bin/ctags"
-alias code="code --user-data-dir '$HOME/.config/Code - OSS'"
