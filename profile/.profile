@@ -49,6 +49,7 @@ if [ -d "/opt/homebrew" ] ; then
   PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
   MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
   INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+  HOMEBREW_NO_ANALYTICS=1
 fi
 
 # Enables Rust
@@ -95,3 +96,4 @@ if [ -d "$HOME/Library/pnpm" ] ; then
   export PATH="$PNPM_HOME:$PATH"
 fi
 # pnpm end
+
