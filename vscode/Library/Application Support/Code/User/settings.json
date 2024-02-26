@@ -60,9 +60,6 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[ruby]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
