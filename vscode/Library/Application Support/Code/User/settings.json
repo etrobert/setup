@@ -72,7 +72,7 @@
   "telemetry.telemetryLevel": "off",
 
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   },
 
   "editor.inlineSuggest.enabled": true,
