@@ -53,8 +53,8 @@ if [ -d "/opt/homebrew" ] ; then
 fi
 
 # Enables Rust
-if [ -d "$HOME/.cargo/bin" ] ; then
-  export PATH="$HOME/.cargo/bin:$PATH"
+if [ -d "$HOME/.cargo" ] ; then
+  . "$HOME/.cargo/env"
 fi
 
 # Sets the terminal emulator to be launched by i3. Non-standard.
