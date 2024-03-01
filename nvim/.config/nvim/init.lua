@@ -19,5 +19,6 @@ require("lazy").setup({
         vim.cmd('colorscheme rose-pine')
   end},
   { 'nvim-treesitter/nvim-treesitter', run = 'TSUpdate' },
-  { 'tpope/vim-fugitive' }
+  { 'tpope/vim-fugitive' },
+  { 'lewis6991/gitsigns.nvim' }
 })
