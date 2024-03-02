@@ -21,6 +21,7 @@ require("lazy").setup({
   { 'nvim-treesitter/nvim-treesitter', run = 'TSUpdate' },
   { 'tpope/vim-fugitive' },
   { 'lewis6991/gitsigns.nvim' },
+  { 'stevearc/conform.nvim' },
   -- LSP Setup
   { 'VonHeikemen/lsp-zero.nvim' },
   { 'neovim/nvim-lspconfig' },
