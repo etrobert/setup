@@ -26,6 +26,7 @@ require("lazy").setup({
 	{ "tpope/vim-fugitive" },
 	{ "lewis6991/gitsigns.nvim" },
 	{ "stevearc/conform.nvim" },
+	{ "numToStr/Comment.nvim", lazy = false },
 	-- LSP Setup
 	{ "VonHeikemen/lsp-zero.nvim" },
 	{ "neovim/nvim-lspconfig" },
