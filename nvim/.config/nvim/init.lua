@@ -27,6 +27,7 @@ require("lazy").setup({
 	{ "lewis6991/gitsigns.nvim" },
 	{ "stevearc/conform.nvim" },
 	{ "numToStr/Comment.nvim", lazy = false },
+	{ "JoosepAlviste/nvim-ts-context-commentstring" },
 	-- LSP Setup
 	{ "VonHeikemen/lsp-zero.nvim" },
 	{ "neovim/nvim-lspconfig" },
