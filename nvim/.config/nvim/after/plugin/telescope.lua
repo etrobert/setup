@@ -2,9 +2,14 @@ local builtin = require("telescope.builtin")
 
 -- Source: https://github.com/nvim-telescope/telescope.nvim/issues/855
 require("telescope").setup({
+	defaults = {
+		file_ignore_patterns = { ".git" },
+	},
 	pickers = {
+		find_files = {
+			hidden = true,
+		},
 		live_grep = {
-			file_ignore_patterns = { ".git" },
 			additional_args = { "--hidden" },
 		},
 	},
