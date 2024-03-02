@@ -20,5 +20,18 @@ require("lazy").setup({
   end},
   { 'nvim-treesitter/nvim-treesitter', run = 'TSUpdate' },
   { 'tpope/vim-fugitive' },
-  { 'lewis6991/gitsigns.nvim' }
+  { 'lewis6991/gitsigns.nvim' },
+  -- LSP Setup
+  { 'VonHeikemen/lsp-zero.nvim' },
+  { 'neovim/nvim-lspconfig' },
+  { 'williamboman/mason.nvim' },
+  { 'williamboman/mason-lspconfig.nvim' },
+  { 'hrsh7th/nvim-cmp' },
+  { 'hrsh7th/cmp-nvim-lsp' },
+  { 'hrsh7th/cmp-buffer' },
+  { 'hrsh7th/cmp-path' },
+  { 'saadparwaiz1/cmp_luasnip' },
+  { 'hrsh7th/cmp-nvim-lua' },
+  { 'L3MON4D3/LuaSnip' },
+  { 'rafamadriz/friendly-snippets' },
 })
