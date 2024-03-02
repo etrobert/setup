@@ -1,6 +1,9 @@
 # The file ".netrwhist" holds history when netrw (and vim) is not active.
 vim/.vim/.netrwhist
 
+# Contains history of undos for nvim
+vim/.vim/undodir
+
 # This file contains fish universal variable definitions.
 fish/.config/fish/fish_variables
 
