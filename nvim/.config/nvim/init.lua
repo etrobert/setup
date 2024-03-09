@@ -16,10 +16,11 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{ "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 	{
-		"rose-pine/neovim",
-		name = "rose-pine",
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
 		init = function()
-			vim.cmd("colorscheme rose-pine")
+			vim.cmd("colorscheme catppuccin-macchiato")
 		end,
 	},
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
