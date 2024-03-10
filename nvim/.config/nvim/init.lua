@@ -29,6 +29,7 @@ require("lazy").setup({
 	{ "stevearc/conform.nvim" },
 	{ "numToStr/Comment.nvim", lazy = false },
 	{ "JoosepAlviste/nvim-ts-context-commentstring" },
+	{ "github/copilot.vim" },
 	-- LSP Setup
 	{ "VonHeikemen/lsp-zero.nvim" },
 	{ "neovim/nvim-lspconfig" },
