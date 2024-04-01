@@ -1,3 +1,0 @@
-amixer sset Master mute
-amixer sset Speaker mute
-amixer sset Headphone mute
