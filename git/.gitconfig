@@ -21,6 +21,7 @@
   please = push --force-with-lease
   publish = push --set-upstream origin HEAD
   sco = "!f() { git checkout $(git branch | grep \"$1\" | head --lines=1); }; f"
+  sbranch = "for-each-ref --sort=-committerdate refs/heads/ --format=\"%(committerdate:short) %(refname:short)\""
 [pager]
   status = on
 [push]
