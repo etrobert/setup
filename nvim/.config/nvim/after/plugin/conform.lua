@@ -8,6 +8,7 @@ require("conform").setup({
 		javascriptreact = { { "prettierd", "prettier" } },
 		typescript = { { "prettierd", "prettier" } },
 		typescriptreact = { { "prettierd", "prettier" } },
+		json = { { "prettierd", "prettier" } },
 		html = { { "prettierd", "prettier" } },
 		markdown = { { "prettierd", "prettier" } },
 	},
