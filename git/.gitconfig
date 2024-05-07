@@ -23,6 +23,8 @@
   sco = "!f() { git checkout $(git branch | grep \"$1\" | head --lines=1); }; f"
   sco2 = "!git checkout $(git branch | fzf)"
   sbranch = "for-each-ref --sort=-committerdate refs/heads/ --format=\"%(committerdate:short) %(refname:short)\""
+  dft = difftool
+  dlog = "-c diff.external=difft log -p --ext-diff"
 [pager]
   status = on
 [push]
@@ -40,3 +42,11 @@
 	defaultBranch = main
 [pull]
   rebase = true
+[diff]
+  tool = difftastic
+[difftool]
+  prompt = false
+[difftool "difftastic"]
+  cmd = difft "$LOCAL" "$REMOTE"
+[pager]
+  difftool = true
