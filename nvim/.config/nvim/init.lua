@@ -31,6 +31,7 @@ require("lazy").setup({
 	{ "JoosepAlviste/nvim-ts-context-commentstring" },
 	{ "github/copilot.vim" },
 	{ "tpope/vim-surround" },
+	{ "nvim-tree/nvim-web-devicons" },
 	-- LSP Setup
 	{ "VonHeikemen/lsp-zero.nvim" },
 	{ "neovim/nvim-lspconfig" },
