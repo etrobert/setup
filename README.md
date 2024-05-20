@@ -12,6 +12,8 @@ Each folder is the configuration for a specific tool
 
 Download and install [Fira Code](https://github.com/tonsky/FiraCode).
 
+Download and install [Fira Code Nerd Font](https://www.nerdfonts.com/font-downloads). This is used to display icons in the terminal, ex in Neovim.
+
 ### VSCode
 
 1. Launch VSCode once to create `$HOME/.config/'Code - OSS'`
