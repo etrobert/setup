@@ -25,6 +25,7 @@
   sbranch = "for-each-ref --sort=-committerdate refs/heads/ --format=\"%(committerdate:short) %(refname:short)\""
   dft = difftool
   dlog = "-c diff.external=difft log -p --ext-diff"
+  dbranch = "!git branch | grep -v '^\\*' | xargs -n 1 git branch -d"
 [pager]
   status = on
 [push]
