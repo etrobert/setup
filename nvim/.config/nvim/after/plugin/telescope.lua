@@ -2,21 +2,30 @@ local builtin = require("telescope.builtin")
 
 -- Source: https://github.com/nvim-telescope/telescope.nvim/issues/855
 require("telescope").setup({
-  defaults = {
-    file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
-  },
-  pickers = {
-    find_files = {
-      hidden = true,
-    },
-    live_grep = {
-      additional_args = { "--hidden" },
-    },
-  },
+	defaults = {
+		file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
+	},
+	pickers = {
+		find_files = {
+			hidden = true,
+		},
+		live_grep = {
+			additional_args = { "--hidden" },
+		},
+	},
 })
 
-vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
-vim.keymap.set("n", "<leader>gs", builtin.git_status, {})
-vim.keymap.set("n", "<C-p>", builtin.find_files, {})
+local wk = require("which-key")
+
+wk.register({
+	["<leader>"] = {
+		f = {
+			name = "Find",
+			f = { builtin.find_files, "Find Files" },
+			g = { builtin.live_grep, "Live Grep" },
+			b = { builtin.buffers, "Buffers" },
+		},
+		gs = { builtin.git_status, " Telescope Git Status" },
+	},
+	["<C-p>"] = { builtin.find_files, "Find Files" },
+})
