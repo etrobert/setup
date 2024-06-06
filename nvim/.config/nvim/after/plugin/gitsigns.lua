@@ -4,27 +4,20 @@ require("gitsigns").setup({
 	on_attach = function()
 		local gitsigns = require("gitsigns")
 
-		-- Actions
-		vim.keymap.set("n", "<leader>hs", gitsigns.stage_hunk)
-		vim.keymap.set("n", "<leader>hr", gitsigns.reset_hunk)
-		vim.keymap.set("v", "<leader>hs", function()
-			gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-		end)
-		vim.keymap.set("v", "<leader>hr", function()
-			gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-		end)
-		vim.keymap.set("n", "<leader>hS", gitsigns.stage_buffer)
-		vim.keymap.set("n", "<leader>hu", gitsigns.undo_stage_hunk)
-		vim.keymap.set("n", "<leader>hR", gitsigns.reset_buffer)
-		vim.keymap.set("n", "<leader>hp", gitsigns.preview_hunk)
-		vim.keymap.set("n", "<leader>hb", function()
-			gitsigns.blame_line({ full = true })
-		end)
-		vim.keymap.set("n", "<leader>tb", gitsigns.toggle_current_line_blame)
-		vim.keymap.set("n", "<leader>hd", gitsigns.diffthis)
-		vim.keymap.set("n", "<leader>hD", function()
-			gitsigns.diffthis("~")
-		end)
-		vim.keymap.set("n", "<leader>td", gitsigns.toggle_deleted)
+		local wk = require("which-key")
+
+		wk.register({
+			h = {
+				name = "Hunk",
+				s = { gitsigns.stage_hunk, "Stage hunk" },
+				r = { gitsigns.reset_hunk, "Reset hunk" },
+				S = { gitsigns.stage_buffer, "Stage buffer" },
+				u = { gitsigns.undo_stage_hunk, "Undo stage hunk" },
+				R = { gitsigns.reset_buffer, "Reset buffer" },
+				p = { gitsigns.preview_hunk, "Preview hunk" },
+				d = { gitsigns.diffthis, "Diff this" },
+			},
+			td = { gitsigns.toggle_deleted, "Toggle deleted" },
+		}, { prefix = "<leader>" })
 	end,
 })
