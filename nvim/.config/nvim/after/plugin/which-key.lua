@@ -8,5 +8,6 @@ wk.register({
 		n = { ":bnext<CR>", "Next Buffer" },
 		p = { ":bprev<CR>", "Previous Buffer" },
 		d = { ":bd<CR>", "Delete Buffer" },
+		a = { ":bufdo bd<CR>", "Delete All Buffers" },
 	},
 }, { prefix = "<leader>" })
