@@ -6,28 +6,26 @@ require("gitsigns").setup({
 
 		local wk = require("which-key")
 
-		local function map(mode, l, r, opts)
-			opts = opts or {}
-			opts.buffer = bufnr
-			vim.keymap.set(mode, l, r, opts)
-		end
-
-		-- Navigation
-		map("n", "]c", function()
-			if vim.wo.diff then
-				vim.cmd.normal({ "]c", bang = true })
-			else
-				gitsigns.nav_hunk("next")
-			end
-		end)
-
-		map("n", "[c", function()
+		local function previousHunk()
 			if vim.wo.diff then
 				vim.cmd.normal({ "[c", bang = true })
 			else
 				gitsigns.nav_hunk("prev")
 			end
-		end)
+		end
+
+		local function nextHunk()
+			if vim.wo.diff then
+				vim.cmd.normal({ "]c", bang = true })
+			else
+				gitsigns.nav_hunk("next")
+			end
+		end
+
+		wk.register({
+			["]c"] = { nextHunk, "Next hunk" },
+			["[c"] = { previousHunk, "Previous hunk" },
+		}, { buffer = bufnr })
 
 		wk.register({
 			h = {
