@@ -9,5 +9,12 @@ wk.register({
 		p = { ":bprev<CR>", "Previous Buffer" },
 		d = { ":bd<CR>", "Delete Buffer" },
 		a = { ":bufdo bd<CR>", "Delete All Buffers" },
+		o = { ":lua DeleteOtherBuffers()<CR>", "Delete Other Buffers" },
 	},
 }, { prefix = "<leader>" })
+
+function DeleteOtherBuffers()
+	local current_buf = vim.fn.bufnr("%")
+	print(current_buf)
+	vim.cmd("bufdo if bufnr() != " .. current_buf .. " | bd | endif")
+end
