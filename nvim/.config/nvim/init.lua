@@ -24,6 +24,7 @@ require("lazy").setup({
 		end,
 	},
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 	{ "tpope/vim-fugitive" },
 	{ "lewis6991/gitsigns.nvim" },
 	{ "stevearc/conform.nvim" },
