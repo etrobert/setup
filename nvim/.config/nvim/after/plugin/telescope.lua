@@ -24,6 +24,7 @@ wk.register({
 			f = { builtin.find_files, "Find Files" },
 			g = { builtin.live_grep, "Live Grep" },
 			b = { builtin.buffers, "Buffers" },
+			h = { builtin.help_tags, "Help Tags" },
 		},
 		gs = { builtin.git_status, " Telescope Git Status" },
 	},
