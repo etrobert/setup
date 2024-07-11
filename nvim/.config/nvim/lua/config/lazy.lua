@@ -26,7 +26,6 @@ require("lazy").setup({
 		{ "stevearc/conform.nvim" },
 		{ "numToStr/Comment.nvim", lazy = false },
 		{ "JoosepAlviste/nvim-ts-context-commentstring" },
-		{ "github/copilot.vim" },
 		{ "nvim-tree/nvim-web-devicons" },
 		{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
 		-- LSP Setup
