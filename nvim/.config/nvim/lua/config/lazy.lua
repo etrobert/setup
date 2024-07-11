@@ -27,7 +27,6 @@ require("lazy").setup({
 		{ "numToStr/Comment.nvim", lazy = false },
 		{ "JoosepAlviste/nvim-ts-context-commentstring" },
 		{ "github/copilot.vim" },
-		{ "tpope/vim-surround" },
 		{ "nvim-tree/nvim-web-devicons" },
 		{
 			"folke/which-key.nvim",
