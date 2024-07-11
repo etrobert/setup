@@ -19,14 +19,6 @@ require("lazy").setup({
 	spec = {
 		-- import your plugins
 		{ import = "plugins" },
-		{
-			"catppuccin/nvim",
-			name = "catppuccin",
-			priority = 1000,
-			init = function()
-				vim.cmd("colorscheme catppuccin-macchiato")
-			end,
-		},
 		{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 		{ "nvim-treesitter/nvim-treesitter-textobjects" },
 		{ "tpope/vim-fugitive" },
