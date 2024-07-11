@@ -46,7 +46,15 @@ require("mason-lspconfig").setup({
 			local lua_opts = lsp_zero.nvim_lua_ls()
 			local lspconfig = require("lspconfig")
 			lspconfig.lua_ls.setup(lua_opts)
-			lspconfig.sourcekit.setup({})
+			lspconfig.sourcekit.setup({
+				capabilities = {
+					workspace = {
+						didChangeWatchedFiles = {
+							dynamicRegistration = true,
+						},
+					},
+				},
+			})
 		end,
 	},
 })
