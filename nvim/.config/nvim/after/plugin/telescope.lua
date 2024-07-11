@@ -1,20 +1,5 @@
 local builtin = require("telescope.builtin")
 
--- Source: https://github.com/nvim-telescope/telescope.nvim/issues/855
-require("telescope").setup({
-	defaults = {
-		file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
-	},
-	pickers = {
-		find_files = {
-			hidden = true,
-		},
-		live_grep = {
-			additional_args = { "--hidden" },
-		},
-	},
-})
-
 local wk = require("which-key")
 
 wk.register({

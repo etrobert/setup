@@ -19,7 +19,6 @@ require("lazy").setup({
 	spec = {
 		-- import your plugins
 		{ import = "plugins" },
-		{ "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 		{
 			"catppuccin/nvim",
 			name = "catppuccin",
