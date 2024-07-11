@@ -20,6 +20,8 @@ require("conform").setup({
 		json = { "biome" },
 		html = { "biome" },
 		markdown = { "biome" },
+
+		swift = { "swiftformat" },
 	},
 	format_on_save = {
 		-- These options will be passed to conform.format()
