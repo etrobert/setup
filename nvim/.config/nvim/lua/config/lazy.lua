@@ -26,8 +26,6 @@ require("lazy").setup({
 	spec = {
 		-- import your plugins
 		{ import = "plugins" },
-		{ "numToStr/Comment.nvim", lazy = false },
-		{ "JoosepAlviste/nvim-ts-context-commentstring" },
 		{ "nvim-tree/nvim-web-devicons" },
 		{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
 		-- LSP Setup
