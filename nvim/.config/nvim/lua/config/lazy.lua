@@ -26,10 +26,5 @@ require("lazy").setup({
 	spec = {
 		-- import your plugins
 		{ import = "plugins" },
-		-- LSP Setup
-		{ "VonHeikemen/lsp-zero.nvim" },
-		{ "neovim/nvim-lspconfig" },
-		{ "williamboman/mason.nvim" },
-		{ "williamboman/mason-lspconfig.nvim" },
 	},
 })
