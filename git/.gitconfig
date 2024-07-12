@@ -13,6 +13,7 @@
   st = status --short --branch
   br = branch
   di = diff
+  ds = difftool --staged
   ff = merge --ff-only
   vimdiff = difftool --no-prompt --tool=vimdiff
   #lg = log --graph --oneline
