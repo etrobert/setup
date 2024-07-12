@@ -2,6 +2,7 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
 	build = ":TSUpdate",
+	main = "nvim-treesitter.configs",
 	opts = {
 		-- A list of parser names, or "all" (the five listed parsers should always be installed)
 		ensure_installed = { "javascript", "typescript", "c", "lua", "vim", "vimdoc", "query" },
