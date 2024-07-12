@@ -24,24 +24,21 @@ return {
 				end
 			end
 
-			wk.register({
-				["]c"] = { nextHunk, "Next hunk" },
-				["[c"] = { previousHunk, "Previous hunk" },
-			}, { buffer = bufnr })
+			wk.add({
+				{ "]c", nextHunk, desc = "Next hunk", buffer = bufnr },
+				{ "[c", previousHunk, desc = "Previous hunk", buffer = bufnr },
 
-			wk.register({
-				h = {
-					name = "Hunk",
-					s = { gitsigns.stage_hunk, "Stage hunk" },
-					r = { gitsigns.reset_hunk, "Reset hunk" },
-					S = { gitsigns.stage_buffer, "Stage buffer" },
-					u = { gitsigns.undo_stage_hunk, "Undo stage hunk" },
-					R = { gitsigns.reset_buffer, "Reset buffer" },
-					p = { gitsigns.preview_hunk, "Preview hunk" },
-					d = { gitsigns.diffthis, "Diff this" },
-				},
-				td = { gitsigns.toggle_deleted, "Toggle deleted" },
-			}, { prefix = "<leader>" })
+				{ "<leader>h", group = "Hunk" },
+				{ "<leader>hs", gitsigns.stage_hunk, desc = "Stage hunk" },
+				{ "<leader>hr", gitsigns.reset_hunk, desc = "Reset hunk" },
+				{ "<leader>hS", gitsigns.stage_buffer, desc = "Stage buffer" },
+				{ "<leader>hu", gitsigns.undo_stage_hunk, desc = "Undo stage hunk" },
+				{ "<leader>hR", gitsigns.reset_buffer, desc = "Reset buffer" },
+				{ "<leader>hp", gitsigns.preview_hunk, desc = "Preview hunk" },
+				{ "<leader>hd", gitsigns.diffthis, desc = "Diff this" },
+
+				{ "<leader>td", gitsigns.toggle_deleted, desc = "Toggle deleted" },
+			})
 		end,
 	},
 }
