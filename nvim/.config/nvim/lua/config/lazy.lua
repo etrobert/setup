@@ -23,7 +23,6 @@ require("lazy").setup({
 		{ "nvim-treesitter/nvim-treesitter-textobjects" },
 		{ "tpope/vim-fugitive" },
 		{ "lewis6991/gitsigns.nvim" },
-		{ "stevearc/conform.nvim" },
 		{ "numToStr/Comment.nvim", lazy = false },
 		{ "JoosepAlviste/nvim-ts-context-commentstring" },
 		{ "nvim-tree/nvim-web-devicons" },
