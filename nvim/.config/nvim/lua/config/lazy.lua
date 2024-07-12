@@ -19,7 +19,6 @@ require("lazy").setup({
 	spec = {
 		-- import your plugins
 		{ import = "plugins" },
-		{ "tpope/vim-fugitive" },
 		{ "lewis6991/gitsigns.nvim" },
 		{ "numToStr/Comment.nvim", lazy = false },
 		{ "JoosepAlviste/nvim-ts-context-commentstring" },
