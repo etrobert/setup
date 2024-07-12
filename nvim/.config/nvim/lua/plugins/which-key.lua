@@ -11,26 +11,16 @@ return {
 		vim.o.timeout = true
 		vim.o.timeoutlen = 300
 	end,
-	opts = function()
-		local wk = require("which-key")
-
-		wk.register({
-			pv = { vim.cmd.Ex, "File Explorer" },
-			n = { vim.cmd.nohlsearch, "Remove Search Highlight" },
-			b = {
-				name = "Buffer",
-				n = { ":bnext<CR>", "Next Buffer" },
-				p = { ":bprev<CR>", "Previous Buffer" },
-				d = { ":bd<CR>", "Delete Buffer" },
-				a = { ":bufdo bd<CR>", "Delete All Buffers" },
-				o = { ":lua DeleteOtherBuffers()<CR>", "Delete Other Buffers" },
-			},
-		}, { prefix = "<leader>" })
-
-		return {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
-		}
-	end,
+	opts = {
+		spec = {
+			{ "<leader>pv", vim.cmd.Ex, desc = "File Explorer" },
+			{ "<leader>n", vim.cmd.nohlsearch, desc = "Remove Search Highlight" },
+			{ "<leader>b", group = "Buffer" },
+			{ "<leader>bn", ":bnext<CR>", desc = "Next Buffer" },
+			{ "<leader>bp", ":bprev<CR>", desc = "Previous Buffer" },
+			{ "<leader>bd", ":bd<CR>", desc = "Delete Buffer" },
+			{ "<leader>ba", ":bufdo bd<CR>", desc = "Delete All Buffers" },
+			{ "<leader>bo", ":lua DeleteOtherBuffers()<CR>", desc = "Delete Other Buffers" },
+		},
+	},
 }
