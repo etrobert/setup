@@ -6,15 +6,16 @@ return {
 		local builtin = require("telescope.builtin")
 		local wk = require("which-key")
 
+		wk.add({
+			{ "<leader>f", group = "Find" },
+			{ "<leader>ff", builtin.find_files, desc = "Find Files" },
+			{ "<leader>fg", builtin.live_grep, desc = "Live Grep" },
+			{ "<leader>fb", builtin.buffers, desc = "Buffers" },
+			{ "<leader>fh", builtin.help_tags, desc = "Help Tags" },
+		})
+
 		wk.register({
 			["<leader>"] = {
-				f = {
-					name = "Find",
-					f = { builtin.find_files, "Find Files" },
-					g = { builtin.live_grep, "Live Grep" },
-					b = { builtin.buffers, "Buffers" },
-					h = { builtin.help_tags, "Help Tags" },
-				},
 				g = {
 					name = "Git",
 
