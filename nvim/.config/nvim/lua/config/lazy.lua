@@ -19,8 +19,6 @@ require("lazy").setup({
 	spec = {
 		-- import your plugins
 		{ import = "plugins" },
-		{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-		{ "nvim-treesitter/nvim-treesitter-textobjects" },
 		{ "tpope/vim-fugitive" },
 		{ "lewis6991/gitsigns.nvim" },
 		{ "numToStr/Comment.nvim", lazy = false },
