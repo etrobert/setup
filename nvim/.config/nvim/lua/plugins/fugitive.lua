@@ -1,6 +1,4 @@
 return {
 	"tpope/vim-fugitive",
-	init = function()
-		vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>")
-	end,
+	keys = { { "<leader>ds", ":Gdiffsplit<CR>", desc = "Git diff split" } },
 }
