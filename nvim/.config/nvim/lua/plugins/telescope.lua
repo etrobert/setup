@@ -12,6 +12,8 @@ return {
 			{ "<leader>fg", builtin.live_grep, desc = "Live Grep" },
 			{ "<leader>fb", builtin.buffers, desc = "Buffers" },
 			{ "<leader>fh", builtin.help_tags, desc = "Help Tags" },
+			{ "<leader>fs", builtin.lsp_workspace_symbols, desc = "LSP Workspace Symbols" },
+			{ "<leader>ft", builtin.builtin, desc = "Telescope Pickers" },
 
 			{ "<leader>g", group = "Git" },
 			-- Lists git commits with diff preview
