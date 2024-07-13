@@ -19,3 +19,5 @@ vim.opt.undodir = os.getenv("HOME") .. "/.nvim/undodir"
 vim.opt.undofile = true
 
 vim.opt.scrolloff = 3
+
+vim.opt.clipboard:append({ "unnamedplus" })
