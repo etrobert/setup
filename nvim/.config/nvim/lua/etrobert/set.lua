@@ -26,3 +26,5 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 vim.opt.clipboard:append("unnamedplus")
+
+vim.opt.backspace = "eol,indent"
