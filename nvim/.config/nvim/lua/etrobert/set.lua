@@ -20,4 +20,6 @@ vim.opt.undofile = true
 
 vim.opt.scrolloff = 3
 
+vim.opt.wrap = false
+
 vim.opt.clipboard:append({ "unnamedplus" })
