@@ -25,3 +25,5 @@ else
   echo "You are not logged in to GitHub CLI. Logging in now..."
   /opt/homebrew/bin/gh auth login --git-protocol ssh --web
 fi
+
+# tmp
