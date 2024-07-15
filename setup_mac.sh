@@ -18,12 +18,13 @@ else
   ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
 fi
 
-echo "➡ Adding SSH key to GitHub"
+echo "➡ Logging in to GitHub"
 if /opt/homebrew/bin/gh auth status > /dev/null 2>&1; then
   echo "You are already logged in to GitHub CLI."
 else
   echo "You are not logged in to GitHub CLI. Logging in now..."
-  /opt/homebrew/bin/gh auth login --git-protocol ssh --web
+  /opt/homebrew/bin/gh auth login --git-protocol ssh --web --skip-ssh-key
 fi
 
-# tmp
+echo "➡ Adding SSH key to GitHub"
+/opt/homebrew/bin/gh ssh-key add ~/.ssh/id_ed25519.pub -t $(hostname)
