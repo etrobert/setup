@@ -39,11 +39,11 @@ else
 fi
 
 echo "➡ Please Install and configure the Bitwarden browser extension"
-read -p "Press enter to continue"
+read -rp "Press enter to continue"
 echo "Opening Arc..."
 # TODO: Configure default browser then change this to just be open
 open -a Arc "https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb"
-read -p "Press enter to continue"
+read -rp "Press enter to continue"
 
 echo "➡ Logging in to GitHub"
 if /opt/homebrew/bin/gh auth status >/dev/null 2>&1; then
@@ -53,4 +53,4 @@ else
 fi
 
 echo "➡ Adding SSH key to GitHub"
-/opt/homebrew/bin/gh ssh-key add ~/.ssh/id_ed25519.pub -t $(hostname)
+/opt/homebrew/bin/gh ssh-key add ~/.ssh/id_ed25519.pub -t "$(hostname)"
