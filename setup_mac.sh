@@ -9,11 +9,19 @@ else
 fi
 
 echo "➡ Installing Packages"
-/opt/homebrew/bin/brew install stow
+/opt/homebrew/bin/brew install stow gh
 
 echo "➡ Generating SSH key"
 if [ -f ~/.ssh/id_ed25519 ]; then
   echo "SSH key already exists"
 else
   ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+fi
+
+echo "➡ Adding SSH key to GitHub"
+if gh auth status > /dev/null 2>&1; then
+  echo "You are already logged in to GitHub CLI."
+else
+  echo "You are not logged in to GitHub CLI. Logging in now..."
+  gh auth login --git-protocol ssh --web
 fi
