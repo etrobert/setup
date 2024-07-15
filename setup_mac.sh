@@ -38,6 +38,13 @@ else
   rm Arc-latest.dmg
 fi
 
+echo "➡ Please Install and configure the Bitwarden browser extension"
+read -p "Press enter to continue"
+echo "Opening Arc..."
+# TODO: Configure default browser then change this to just be open
+open -a Arc "https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb"
+read -p "Press enter to continue"
+
 echo "➡ Logging in to GitHub"
 if /opt/homebrew/bin/gh auth status > /dev/null 2>&1; then
   echo "You are already logged in to GitHub CLI."
