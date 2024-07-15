@@ -19,9 +19,9 @@ else
 fi
 
 echo "➡ Adding SSH key to GitHub"
-if gh auth status > /dev/null 2>&1; then
+if /opt/homebrew/bin/gh auth status > /dev/null 2>&1; then
   echo "You are already logged in to GitHub CLI."
 else
   echo "You are not logged in to GitHub CLI. Logging in now..."
-  gh auth login --git-protocol ssh --web
+  /opt/homebrew/bin/gh auth login --git-protocol ssh --web
 fi
