@@ -24,6 +24,8 @@ return {
 			css = { { "prettierd", "prettier" } },
 
 			swift = { "swiftformat" },
+
+			sh = { "shfmt" },
 		},
 		format_on_save = {
 			-- These options will be passed to conform.format()
