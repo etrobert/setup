@@ -46,7 +46,7 @@ open -a Arc "https://chromewebstore.google.com/detail/bitwarden-password-manage/
 read -p "Press enter to continue"
 
 echo "➡ Logging in to GitHub"
-if /opt/homebrew/bin/gh auth status > /dev/null 2>&1; then
+if /opt/homebrew/bin/gh auth status >/dev/null 2>&1; then
   echo "You are already logged in to GitHub CLI."
 else
   /opt/homebrew/bin/gh auth login --git-protocol ssh --web --skip-ssh-key
