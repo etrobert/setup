@@ -8,7 +8,7 @@ else
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# Install stow
+echo "➡ Installing Packages"
 /opt/homebrew/bin/brew install stow
 
 echo "➡ Generating SSH key"
