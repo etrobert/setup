@@ -11,3 +11,10 @@ fi
 
 # Install stow
 /opt/homebrew/bin/brew install stow
+
+if [ -f ~/.ssh/id_ed25519 ]; then
+  echo "SSH key already exists"
+else
+  echo "Generating SSH key"
+  ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+fi
