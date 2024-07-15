@@ -35,12 +35,15 @@ echo "Opening Arc..."
 open -a Arc "https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb"
 read -rp "Press enter to continue"
 
-echo "➡ Logging in to GitHub"
-if /opt/homebrew/bin/gh auth status >/dev/null 2>&1; then
-  echo "You are already logged in to GitHub CLI."
-else
-  /opt/homebrew/bin/gh auth login --git-protocol ssh --web --skip-ssh-key
-fi
-
 echo "➡ Adding SSH key to GitHub"
-/opt/homebrew/bin/gh ssh-key add ~/.ssh/id_ed25519.pub -t "$(hostname)"
+pbcopy <~/.ssh/id_ed25519.pub
+echo "SSH key copied to clipboard. Please add it to GitHub."
+read -rp "Press enter to continue"
+open "https://github.com/settings/keys"
+
+echo "➡ Cloning dotfiles"
+if [ -d ~/setup ]; then
+  echo "dotfiles already cloned"
+else
+  git clone git@github.com:etrobert/setup.git
+fi
