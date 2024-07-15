@@ -12,16 +12,16 @@ return {
 			-- typescript = { { "prettierd", "prettier" } },
 			-- typescriptreact = { { "prettierd", "prettier" } },
 			-- json = { { "prettierd", "prettier" } },
-			-- html = { { "prettierd", "prettier" } },
-			-- markdown = { { "prettierd", "prettier" } },
 
 			javascript = { "biome" },
 			javascriptreact = { "biome" },
 			typescript = { "biome" },
 			typescriptreact = { "biome" },
 			json = { "biome" },
-			html = { "biome" },
-			markdown = { "biome" },
+
+			html = { { "prettierd", "prettier" } },
+			markdown = { { "prettierd", "prettier" } },
+			css = { { "prettierd", "prettier" } },
 
 			swift = { "swiftformat" },
 		},
