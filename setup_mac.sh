@@ -22,7 +22,6 @@ echo "➡ Logging in to GitHub"
 if /opt/homebrew/bin/gh auth status > /dev/null 2>&1; then
   echo "You are already logged in to GitHub CLI."
 else
-  echo "You are not logged in to GitHub CLI. Logging in now..."
   /opt/homebrew/bin/gh auth login --git-protocol ssh --web --skip-ssh-key
 fi
 
