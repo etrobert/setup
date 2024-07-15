@@ -14,8 +14,8 @@ p=$(echo "$p" | cut -c2-)
 
 # Set separator as /
 IFS=/
-for q in $p
-  do printf "/%s" "$(echo "$q" | cut -c1-1)"
+for q in $p; do
+  printf "/%s" "$(echo "$q" | cut -c1-1)"
 done
 
 # Print the rest of the current directory
