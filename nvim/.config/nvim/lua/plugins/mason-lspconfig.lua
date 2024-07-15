@@ -18,6 +18,7 @@ return {
 				"tailwindcss",
 				"tsserver",
 				"rust_analyzer",
+				"bashls",
 			},
 			handlers = {
 				default_setup,
