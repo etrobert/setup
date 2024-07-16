@@ -1,6 +1,0 @@
-#!/bin/sh -l
-
-# See Noe Rubinstein fix here:
-# https://superuser.com/questions/446925/re-use-profile-for-fish?rq=1
-
-exec fish "$@"
