@@ -44,3 +44,7 @@ if [ -d ~/setup ]; then
 else
   git clone git@github.com:etrobert/setup.git
 fi
+
+echo "➡ Stowing dotfiles"
+cd ~/setup
+stow alias bash git alacritty macos nvim profile readline ssh tmux
