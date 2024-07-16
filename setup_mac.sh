@@ -23,23 +23,20 @@ if [ -d "/Applications/Arc.app" ]; then
   echo "Arc Browser is already installed"
 else
   echo "Please install Arc"
-  open "https://releases.arc.net/release/Arc-latest.dmg"
+  echo "https://releases.arc.net/release/Arc-latest.dmg"
 
   read -rp "Press enter to continue"
 fi
 
 echo "➡ Please Install and configure the Bitwarden browser extension"
-read -rp "Press enter to continue"
-echo "Opening Arc..."
-# TODO: Configure default browser then change this to just be open
-open -a Arc "https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb"
+echo "https://chromewebstore.google.com/detail/bitwarden-password-manage/nngceckbapebfimnlniiiahkandclblb"
 read -rp "Press enter to continue"
 
 echo "➡ Adding SSH key to GitHub"
 pbcopy <~/.ssh/id_ed25519.pub
 echo "SSH key copied to clipboard. Please add it to GitHub."
+echo "https://github.com/settings/keys"
 read -rp "Press enter to continue"
-open "https://github.com/settings/keys"
 
 echo "➡ Cloning dotfiles"
 if [ -d ~/setup ]; then
