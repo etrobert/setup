@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Emojis Source: https://raw.githubusercontent.com/milesj/emojibase/master/packages/data/en/data.raw.json
+
+emojis_file="$HOME/.config/emojis/data.raw.json"
+
+emoji=$(jq -r '.[] | select(.tags != null) | "\(.emoji) \(.label) \(.tags | join(" "))"' "$emojis_file" |
+  fzf | cut -d ' ' -f 1 | tr -d '\n')
+
+printf "%s" "$emoji" | pbcopy
+
+echo "$emoji copied to clipboard!"
