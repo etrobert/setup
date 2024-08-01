@@ -27,6 +27,8 @@ return {
 
 			sh = { "shfmt" },
 
+			python = { "isort", "black" },
+
 			rust = { "rustfmt" },
 		},
 		format_on_save = {
