@@ -1,5 +1,3 @@
-vim.opt.expandtab = true
-
 -- Prints line numbers
 vim.opt.number = true
 
