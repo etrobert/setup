@@ -111,3 +111,8 @@ fi
 [ -f "/Users/etiennerobert/.ghcup/env" ] && . "/Users/etiennerobert/.ghcup/env" # ghcup-env
 
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+
+# pipx
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$PATH:$HOME/.local/bin"
+fi
