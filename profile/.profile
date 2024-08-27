@@ -13,50 +13,50 @@
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
-    fi
+  # include .bashrc if it exists
+  if [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
+  fi
 fi
 
 PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
-if [ "$(uname)" == "Darwin" ] ; then
+if [ "$(uname)" == "Darwin" ]; then
   # MAMP mysql Path
-  if [ -d "$HOME/MAMP/mysql/bin" ] ; then
+  if [ -d "$HOME/MAMP/mysql/bin" ]; then
     PATH="$PATH:$HOME/MAMP/mysql/bin"
   fi
   # Visual Studio Code Path
-  if [ -d "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ] ; then
+  if [ -d "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]; then
     PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
   fi
 fi
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+if [ -d "$HOME/bin" ]; then
+  PATH="$HOME/bin:$PATH"
 fi
 
 # Searches for brew libs/binaries before system ones
-if [ -d "$HOME/.brew/bin" ] ; then
-    PATH="~/.brew/bin:$PATH"
+if [ -d "$HOME/.brew/bin" ]; then
+  PATH="~/.brew/bin:$PATH"
 fi
 
 # homebrew setup
 # generated with `/opt/homebrew/bin/brew shellenv`
-if [ -d "/opt/homebrew" ] ; then
-  HOMEBREW_PREFIX="/opt/homebrew";
-  HOMEBREW_CELLAR="/opt/homebrew/Cellar";
-  HOMEBREW_REPOSITORY="/opt/homebrew";
-  PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
-  MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
-  INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+if [ -d "/opt/homebrew" ]; then
+  HOMEBREW_PREFIX="/opt/homebrew"
+  HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+  HOMEBREW_REPOSITORY="/opt/homebrew"
+  PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
+  MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
+  INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
   HOMEBREW_NO_ANALYTICS=1
 fi
 
 # Enables Rust
-if [ -d "$HOME/.cargo" ] ; then
+if [ -d "$HOME/.cargo" ]; then
   . "$HOME/.cargo/env"
 fi
 
@@ -76,20 +76,20 @@ if [ "$(tty)" = "/dev/tty1" ]; then
 fi
 
 # opam configuration
-test -r /home/etienne/.opam/opam-init/init.sh && . /home/etienne/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+test -r /home/etienne/.opam/opam-init/init.sh && . /home/etienne/.opam/opam-init/init.sh >/dev/null 2>/dev/null || true
 
 # nvm configuration
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # rbenv configuration
-if command -v rbenv > /dev/null 2>&1; then
-  eval "$(rbenv init -)";
+if command -v rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init -)"
 fi
 
 # pnpm
-if [ -d "$HOME/Library/pnpm" ] ; then
+if [ -d "$HOME/Library/pnpm" ]; then
   export PNPM_HOME="$HOME/Library/pnpm"
   export PATH="$PNPM_HOME:$PATH"
 fi
@@ -103,7 +103,7 @@ if [ -d "$HOME/.pyenv" ] ; then
 fi
 
 # bun
-if [ -d "$HOME/.bun" ] ; then
+if [ -d "$HOME/.bun" ]; then
   export BUN_INSTALL="$HOME/.bun"
   export PATH=$BUN_INSTALL/bin:$PATH
 fi
