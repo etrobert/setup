@@ -16,7 +16,7 @@ return {
 				"biome",
 				"eslint",
 				"tailwindcss",
-				"tsserver",
+				"ts_ls",
 				"rust_analyzer",
 				"bashls",
 			},
