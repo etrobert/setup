@@ -29,3 +29,7 @@ vim.opt.smartcase = true
 vim.opt.clipboard:append("unnamedplus")
 
 vim.opt.backspace = "eol,indent"
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldenable = false
