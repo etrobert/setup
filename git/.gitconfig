@@ -28,6 +28,7 @@
   dft = difftool
   dlog = "-c diff.external=difft log -p --ext-diff"
   dbranch = "!git branch | grep -v '^\\*' | xargs -n 1 git branch -d"
+  puhs = push
 [pager]
   status = on
 [push]
