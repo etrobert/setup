@@ -40,7 +40,7 @@ fi
 
 # Searches for brew libs/binaries before system ones
 if [ -d "$HOME/.brew/bin" ]; then
-  PATH="~/.brew/bin:$PATH"
+  PATH="$HOME/.brew/bin:$PATH"
 fi
 
 # homebrew setup
