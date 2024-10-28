@@ -28,4 +28,5 @@ source "$HOME/.git-prompt.sh"
 stty -ixon
 
 # Infinite history
-HISTSIZE= HISTFILESIZE=
+HISTSIZE=
+HISTFILESIZE=
