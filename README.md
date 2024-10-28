@@ -30,5 +30,5 @@ Download and install [Fira Code Nerd Font](https://www.nerdfonts.com/font-downlo
 
 For more informations see:
 
-* [man stow](https://www.gnu.org/software/stow/manual/stow.html)
-* [Using GNU Stow to manage your dotfiles](http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html)
+- [man stow](https://www.gnu.org/software/stow/manual/stow.html)
+- [Using GNU Stow to manage your dotfiles](http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html)
