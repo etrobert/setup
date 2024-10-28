@@ -8,6 +8,9 @@ return {
 	opts = {
 		spec = {
 			{ "<leader>b", group = "Buffer" },
+			{ "<leader>g", group = "Telescope Git" },
+			{ "<leader>f", group = "Telescope Files" },
+			{ "<leader>x", group = "Trouble" },
 		},
 	},
 }
