@@ -8,6 +8,23 @@ end, { desc = "File Explorer in Current Working Directory" })
 
 vim.keymap.set("n", "<leader>n", vim.cmd.nohlsearch, { desc = "Remove Search Highlight" })
 
+-- Buffers
+
+local function delete_all_buffers()
+	vim.cmd.bufdo("bd")
+end
+
+local function delete_other_buffers()
+	local current_buf = vim.fn.bufnr("%")
+	vim.cmd("bufdo if bufnr() != " .. current_buf .. " | bd | endif")
+end
+
+vim.keymap.set("n", "<leader>bn", vim.cmd.bnext, { desc = "Next Buffer" })
+vim.keymap.set("n", "<leader>bp", vim.cmd.bprev, { desc = "Previous Buffer" })
+vim.keymap.set("n", "<leader>bd", vim.cmd.bd, { desc = "Delete Buffer" })
+vim.keymap.set("n", "<leader>ba", delete_all_buffers, { desc = "Delete All Buffers" })
+vim.keymap.set("n", "<leader>bo", delete_other_buffers, { desc = "Delete Other Buffers" })
+
 -- Source: https://lsp-zero.netlify.app/v3.x/blog/you-might-not-need-lsp-zero.html
 
 -- note: diagnostics are not exclusive to lsp servers
