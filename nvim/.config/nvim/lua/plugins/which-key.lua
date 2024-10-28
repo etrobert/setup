@@ -13,8 +13,6 @@ return {
 	end,
 	opts = {
 		spec = {
-			{ "<leader>pv", vim.cmd.Ex, desc = "File Explorer" },
-			{ "<leader>n", vim.cmd.nohlsearch, desc = "Remove Search Highlight" },
 			{ "<leader>b", group = "Buffer" },
 			{ "<leader>bn", ":bnext<CR>", desc = "Next Buffer" },
 			{ "<leader>bp", ":bprev<CR>", desc = "Previous Buffer" },
