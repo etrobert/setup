@@ -46,13 +46,13 @@ fi
 # homebrew setup
 # generated with `/opt/homebrew/bin/brew shellenv`
 if [ -d "/opt/homebrew" ]; then
-  HOMEBREW_PREFIX="/opt/homebrew"
-  HOMEBREW_CELLAR="/opt/homebrew/Cellar"
-  HOMEBREW_REPOSITORY="/opt/homebrew"
+  export HOMEBREW_PREFIX="/opt/homebrew"
+  export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+  export HOMEBREW_REPOSITORY="/opt/homebrew"
   PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}"
   MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:"
   INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
-  HOMEBREW_NO_ANALYTICS=1
+  export HOMEBREW_NO_ANALYTICS=1
 fi
 
 # Enables Rust
