@@ -6,23 +6,23 @@
 #PS1=' \u@\H \[\e[0;36m\]$(~/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
 PS1=' \u@\H \001\e[0;36m\002\w\001\e[m\002$(__git_ps1 " (%s)")> '
 
-if [ -f ~/.alias ]; then
-  source ~/.alias
+if [ -f "$HOME/.alias" ]; then
+  source "$HOME/.alias"
 fi
 
 case $(uname) in
 Darwin)
-  source ~/.alias.darwin
+  source "$HOME/.alias.darwin"
   ;;
 Linux)
-  source ~/.alias.linux
+  source "$HOME/.alias.linux"
   ;;
 esac
 
 # Enables git autocompletion
-source ~/.git-completion.bash
+source "$HOME/.git-completion.bash"
 # Enables to have the current git repository shown in prompt
-source ~/.git-prompt.sh
+source "$HOME/.git-prompt.sh"
 
 # Disable ctrl-s and ctrl-q
 stty -ixon
