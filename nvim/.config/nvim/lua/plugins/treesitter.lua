@@ -78,9 +78,9 @@ return {
 			},
 		},
 	},
-	config = function()
-		vim.opt.foldmethod = "expr"
-		vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-		vim.opt.foldenable = false
-	end,
+	-- config = function()
+	-- 	vim.opt.foldmethod = "expr"
+	-- 	vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+	-- 	vim.opt.foldenable = false
+	-- end,
 }
