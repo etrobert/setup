@@ -64,7 +64,7 @@ fi
 export TERMINAL=st
 
 export EDITOR=vim
-export BROWSER=firefox
+# export BROWSER=firefox
 export MAIL=etiennerobert33@gmail.com
 
 # Activate touch support in firefox
