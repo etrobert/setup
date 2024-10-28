@@ -2,6 +2,10 @@ vim.g.mapleader = " "
 vim.keymap.set("i", "jj", "<Esc>")
 
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "File Explorer" })
+vim.keymap.set("n", "<leader>wd", function()
+	vim.cmd("Ex " .. vim.fn.getcwd())
+end, { desc = "File Explorer in Current Working Directory" })
+
 vim.keymap.set("n", "<leader>n", vim.cmd.nohlsearch, { desc = "Remove Search Highlight" })
 
 -- Source: https://lsp-zero.netlify.app/v3.x/blog/you-might-not-need-lsp-zero.html
