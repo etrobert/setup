@@ -7,11 +7,17 @@ return {
 			lua = { "stylua" },
 			-- Use a sub-list to run only the first available formatter
 
-			javascript = { "biome", "prettierd", "prettier", stop_after_first = true },
-			javascriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
-			typescript = { "biome", "prettierd", "prettier", stop_after_first = true },
-			typescriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
-			json = { "biome", "prettierd", "prettier", stop_after_first = true },
+			javascript = { "prettierd", "prettier", stop_after_first = true },
+			javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+			typescript = { "prettierd", "prettier", stop_after_first = true },
+			typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+			json = { "prettierd", "prettier", stop_after_first = true },
+
+			-- javascript = { "biome", "prettierd", "prettier", stop_after_first = true },
+			-- javascriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+			-- typescript = { "biome", "prettierd", "prettier", stop_after_first = true },
+			-- typescriptreact = { "biome", "prettierd", "prettier", stop_after_first = true },
+			-- json = { "biome", "prettierd", "prettier", stop_after_first = true },
 
 			html = { "prettierd", "prettier", stop_after_first = true },
 			markdown = { "prettierd", "prettier", stop_after_first = true },
