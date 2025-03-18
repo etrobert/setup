@@ -19,6 +19,9 @@ if [ -n "$BASH_VERSION" ]; then
   fi
 fi
 
+# Load env variables from ~/.env
+[ -f ~/.env ] && export "$(grep -v '^#' ~/.env | xargs)"
+
 PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
