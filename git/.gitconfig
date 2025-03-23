@@ -4,10 +4,6 @@
 [core]
   whitespace = trailing-space tab-in-indent tabwidth=2
   editor = nvim
-[color]
-  branch = auto
-  status = auto
-  diff = auto
 [alias]
   ci = commit
   co = checkout
