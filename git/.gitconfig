@@ -31,9 +31,14 @@
   default = upstream
   autoSetupRemote = true
 [merge]
+  tool = vimdiff
   defaulttoupstream = true
   conflictstyle = diff3
   log = true
+  # Don't keep backup .orig files
+  keepBackup = false
+[mergetool "vimdiff"]
+  path = nvim
 [log]
   decorate = true
 [branch]
