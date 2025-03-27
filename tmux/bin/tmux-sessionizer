@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
+
+if [ $# -eq 1 ]; then
+  project=$1
+else
+  project=$({
+    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
+    echo "setup"
+  } | fzf)
+fi
+
+if [ -z "$project" ]; then
+  exit 0
+fi
+
+if [ "$project" = "setup" ]; then
+  project_path=$HOME/setup
+else
+  project_path=$HOME/work/$project
+fi
+
+# If we're not inside a tmux session
+if [ -z "$TMUX" ]; then
+  if tmux has-session -t="$project"; then
+    tmux attach-session -t "$project"
+  else
+    tmux new-session -s "$project" -c "$project_path"
+  fi
+  exit 0
+fi
+
+# We're inside a tmux session
+
+# If the session doesn't exist, create it
+if ! tmux has-session -t="$project" 2>/dev/null; then
+  tmux new-session -d -s "$project" -c "$project_path"
+fi
+
+tmux switch-client -t "$project"
