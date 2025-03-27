@@ -21,6 +21,8 @@ else
   project_path=$HOME/work/$project
 fi
 
+project=$(echo "$project" | sed 's/\./_/g')
+
 # If we're not inside a tmux session
 if [ -z "$TMUX" ]; then
   if tmux has-session -t="$project"; then
