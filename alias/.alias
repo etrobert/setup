@@ -22,6 +22,8 @@ alias LS="ls"
 alias sl="ls"
 alias SL="ls"
 
+alias gti="git"
+
 alias make="make -j8"
 alias ccat="highlight --out-format=ansi"
 
