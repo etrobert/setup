@@ -27,18 +27,6 @@ vim.keymap.set("n", "<leader>bo", delete_other_buffers, { desc = "Delete Other B
 
 -- Source: https://lsp-zero.netlify.app/v3.x/blog/you-might-not-need-lsp-zero.html
 
--- note: diagnostics are not exclusive to lsp servers
--- so these can be global keybindings
-vim.keymap.set("n", "gl", function()
-	vim.diagnostic.open_float()
-end)
-vim.keymap.set("n", "[d", function()
-	vim.diagnostic.jump({ count = -1, float = true })
-end)
-vim.keymap.set("n", "]d", function()
-	vim.diagnostic.jump({ count = 1, float = true })
-end)
-
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP actions",
 	callback = function(event)
