@@ -52,3 +52,20 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end, opts)
 	end,
 })
+
+function OpenPluginGithub()
+	local line = vim.fn.getline(".")
+	local repo = line:match('"([^/]+/[^"]+)"')
+
+	if repo then
+		local url = "https://github.com/" .. repo
+		vim.fn.system("open " .. url)
+		print("Opening: " .. url)
+	else
+		print("No GitHub repository found on current line")
+	end
+end
+
+-- Create command and mapping
+vim.cmd("command OpenPluginGithub lua OpenPluginGithub()")
+vim.keymap.set("n", "<leader>pg", OpenPluginGithub, { desc = "Open plugin GitHub page" })
