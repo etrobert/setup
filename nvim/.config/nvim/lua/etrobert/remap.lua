@@ -33,10 +33,10 @@ vim.keymap.set("n", "gl", function()
 	vim.diagnostic.open_float()
 end)
 vim.keymap.set("n", "[d", function()
-	vim.diagnostic.goto_prev()
+	vim.diagnostic.jump({ count = -1, float = true })
 end)
 vim.keymap.set("n", "]d", function()
-	vim.diagnostic.goto_next()
+	vim.diagnostic.jump({ count = 1, float = true })
 end)
 
 vim.api.nvim_create_autocmd("LspAttach", {
