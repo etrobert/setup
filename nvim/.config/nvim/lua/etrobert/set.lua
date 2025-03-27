@@ -29,3 +29,5 @@ vim.opt.smartcase = true
 vim.opt.clipboard:append("unnamedplus")
 
 vim.opt.backspace = "eol,indent"
+
+vim.diagnostic.config({ virtual_text = true })
