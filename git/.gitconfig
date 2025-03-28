@@ -18,7 +18,7 @@
   praise = blame
   please = push --force-with-lease
   publish = push --set-upstream origin HEAD
-  sco = "!git checkout $(git branch | fzf)"
+  sco = "!git checkout $(git branch | fzf | sed 's/^[ *]*//')"
   sbranch = "for-each-ref --sort=-committerdate refs/heads/ --format=\"%(committerdate:short) %(refname:short)\""
   dft = difftool
   dlog = "-c diff.external=difft log -p --ext-diff"
