@@ -33,6 +33,36 @@ return {
 			end,
 			desc = "Git Branch Diff with Main",
 		},
+		{
+			"<leader>gf",
+			function()
+				local opts = {
+					prompt_title = "Files Changed Since Diverged from Main",
+					cwd = vim.fn.getcwd(),
+				}
+
+				local base = vim.fn.trim(vim.fn.system("git merge-base main HEAD"))
+
+				local finder = require("telescope.finders").new_oneshot_job(
+					{ "git", "diff", "--name-only", base .. "..HEAD" },
+					opts
+				)
+
+				local previewer = require("telescope.previewers").new_termopen_previewer({
+					get_command = function(entry)
+						return { "git", "diff", base .. "..HEAD", "--", entry.value }
+					end,
+				})
+
+				require("telescope.pickers")
+					.new(opts, {
+						finder = finder,
+						previewer = previewer,
+					})
+					:find()
+			end,
+			desc = "Files Changed Since Diverged from Main",
+		},
 
 		{ "<C-p>", ":Telescope find_files<CR>", desc = "Find Files" },
 	},
