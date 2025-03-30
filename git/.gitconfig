@@ -9,8 +9,7 @@
   co = checkout
   st = status --short --branch
   br = branch
-  di = diff
-  ds = difftool --staged
+  ds = diff --staged
   ff = merge --ff-only
   vimdiff = difftool --no-prompt --tool=vimdiff
   #lg = log --graph --oneline
@@ -20,8 +19,8 @@
   publish = push --set-upstream origin HEAD
   sco = "!git checkout $(git branch | fzf | sed 's/^[ *]*//')"
   sbranch = "for-each-ref --sort=-committerdate refs/heads/ --format=\"%(committerdate:short) %(refname:short)\""
-  dft = difftool
-  dlog = "-c diff.external=difft log -p --ext-diff"
+  dlog = "log -p --ext-diff"
+  dshow = "show --ext-diff"
   dbranch = "!git branch | grep -v '^\\*' | xargs -n 1 git branch -d"
   puhs = push
 [pager]
@@ -47,10 +46,4 @@
 [pull]
   rebase = true
 [diff]
-  tool = difftastic
-[difftool]
-  prompt = false
-[difftool "difftastic"]
-  cmd = difft "$LOCAL" "$REMOTE"
-[pager]
-  difftool = true
+  external = difft
