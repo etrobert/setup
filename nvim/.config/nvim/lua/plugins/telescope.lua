@@ -8,6 +8,15 @@ return {
 		{ "<leader>fh", ":Telescope help_tags<CR>", desc = "Help Tags" },
 		{ "<leader>fs", ":Telescope lsp_workspace_symbols<CR>", desc = "LSP Workspace Symbols" },
 		{ "<leader>ft", ":Telescope builtin<CR>", desc = "Telescope Pickers" },
+		{
+			"<leader>fp",
+			function()
+				require("telescope.builtin").find_files({
+					cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"),
+				})
+			end,
+			desc = "Find File in Lazy Plugins",
+		},
 
 		{ "<leader>gc", ":Telescope git_commits<CR>", desc = "Git Commits" },
 		{ "<leader>gs", ":Telescope git_status<CR>", desc = "Git Status" },
