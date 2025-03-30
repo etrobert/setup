@@ -23,6 +23,7 @@
   dshow = "show --ext-diff"
   dbranch = "!git branch | grep -v '^\\*' | xargs -n 1 git branch -d"
   puhs = push
+  slist = stash list -p --ext-diff
 [pager]
   status = on
 [push]
