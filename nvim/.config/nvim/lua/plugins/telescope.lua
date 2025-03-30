@@ -15,6 +15,15 @@ return {
 		-- { "<leader>gB", ":Telescope git_bcommits_range<CR>", desc = "Buffer Commits in Range" },
 		{ "<leader>gb", ":Telescope git_branches<CR>", desc = "Git Branches" },
 		{ "<leader>gS", ":Telescope git_stash<CR>", desc = "Git Stash" },
+		{
+			"<leader>gd",
+			function()
+				require("telescope.builtin").git_commits({
+					git_command = { "git", "log", "--oneline", "main..HEAD" },
+				})
+			end,
+			desc = "Git Branch Diff with Main",
+		},
 
 		{ "<C-p>", ":Telescope find_files<CR>", desc = "Find Files" },
 	},
