@@ -9,7 +9,7 @@
   co = checkout
   st = status --short --branch
   br = branch
-  ds = diff --staged
+  ds = -c diff.external=difft diff --staged
   ff = merge --ff-only
   vimdiff = difftool --no-prompt --tool=vimdiff
   #lg = log --graph --oneline
@@ -19,11 +19,12 @@
   publish = push --set-upstream origin HEAD
   sco = "!git checkout $(git branch | fzf | sed 's/^[ *]*//')"
   sbranch = "for-each-ref --sort=-committerdate refs/heads/ --format=\"%(committerdate:short) %(refname:short)\""
-  dlog = "log -p --ext-diff"
-  dshow = "show --ext-diff"
+  dft = "-c diff.external=difft diff"
+  dlog = "-c diff.external=difft log -p --ext-diff"
+  dshow = "-c diff.external=difft show --ext-diff"
   dbranch = "!git branch | grep -v '^\\*' | xargs -n 1 git branch -d"
   puhs = push
-  slist = stash list -p --ext-diff
+  slist = -c diff.external=difft stash list -p --ext-diff
 [pager]
   status = on
 [push]
@@ -46,5 +47,3 @@
 	defaultBranch = main
 [pull]
   rebase = true
-[diff]
-  external = difft
