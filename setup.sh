@@ -55,7 +55,7 @@ setup_github() {
     echo "GitHub CLI is already authenticated."
   else
     echo "GitHub CLI not authenticated. Authenticating..."
-    gh auth login
+    gh auth login --git-protocol ssh --hostname github.com --web
   fi
 }
 
