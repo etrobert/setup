@@ -79,6 +79,13 @@ setup_dotfiles() {
   chmod 600 ssh/.ssh/config
 }
 
+setup_applications() {
+  echo "Setting up applications..."
+
+  ensure_installed nvim
+  ensure_installed tmux
+}
+
 setup_homebrew
 echo
 setup_stow
@@ -88,3 +95,5 @@ echo
 setup_github
 echo
 setup_dotfiles
+echo
+setup_applications
