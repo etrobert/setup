@@ -11,6 +11,9 @@ setup_homebrew() {
     echo "Homebrew not found. Installing Homebrew..."
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
+
+  echo "Adding Homebrew to PATH..."
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
 setup_stow() {
