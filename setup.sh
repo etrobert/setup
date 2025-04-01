@@ -2,6 +2,8 @@
 
 set -e
 
+# example: ensure_installed nvim
+# example: ensure_installed ghostty --cask
 ensure_installed() {
   echo "Checking if $1 is installed..."
 
@@ -9,7 +11,7 @@ ensure_installed() {
     echo "$1 is already installed."
   else
     echo "$1 not found. Installing $1..."
-    brew install "$1"
+    brew install "$2" "$1"
   fi
 }
 
@@ -80,6 +82,8 @@ setup_applications() {
 
   ensure_installed nvim
   ensure_installed tmux
+
+  ensure_installed ghostty --cask
 }
 
 setup_homebrew
