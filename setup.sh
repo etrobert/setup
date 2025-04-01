@@ -2,6 +2,17 @@
 
 set -e
 
+ensure_installed() {
+  echo "Checking if $1 is installed..."
+
+  if command -v "$1" >/dev/null; then
+    echo "$1 is already installed."
+  else
+    echo "$1 not found. Installing $1..."
+    brew install "$1"
+  fi
+}
+
 setup_homebrew() {
   echo "Setting up Homebrew..."
 
@@ -19,12 +30,7 @@ setup_homebrew() {
 setup_stow() {
   echo "Setting up GNU Stow..."
 
-  if command -v stow >/dev/null; then
-    echo "GNU Stow is already installed."
-  else
-    echo "GNU Stow not found. Installing GNU Stow..."
-    brew install stow
-  fi
+  ensure_installed stow
 }
 
 setup_ssh_key() {
@@ -42,12 +48,7 @@ setup_ssh_key() {
 setup_github() {
   echo "Setting up GitHub..."
 
-  if command -v gh >/dev/null; then
-    echo "GitHub CLI is already installed."
-  else
-    echo "GitHub CLI not found. Installing GitHub CLI..."
-    brew install gh
-  fi
+  ensure_installed gh
 
   echo 'Authenticating GitHub CLI...'
 
