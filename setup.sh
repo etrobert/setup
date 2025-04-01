@@ -39,6 +39,26 @@ setup_ssh_key() {
   ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ''
 }
 
+setup_github() {
+  echo "Setting up GitHub..."
+
+  if command -v gh >/dev/null; then
+    echo "GitHub CLI is already installed."
+  else
+    echo "GitHub CLI not found. Installing GitHub CLI..."
+    brew install gh
+  fi
+
+  echo 'Authenticating GitHub CLI...'
+
+  if gh auth status >/dev/null 2>&1; then
+    echo "GitHub CLI is already authenticated."
+  else
+    echo "GitHub CLI not authenticated. Authenticating..."
+    gh auth login
+  fi
+}
+
 setup_dotfiles() {
   echo "Setting up dotfiles..."
 
@@ -51,4 +71,5 @@ setup_dotfiles() {
 setup_homebrew
 setup_stow
 setup_ssh_key
+setup_github
 # setup_dotfiles
