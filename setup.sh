@@ -9,7 +9,7 @@ setup_homebrew() {
     echo "Homebrew is already installed."
   else
     echo "Homebrew not found. Installing Homebrew..."
-    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 }
 
