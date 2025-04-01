@@ -80,7 +80,11 @@ setup_dotfiles() {
 }
 
 setup_homebrew
+echo
 setup_stow
+echo
 setup_ssh_key
+echo
 setup_github
+echo
 setup_dotfiles
