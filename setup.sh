@@ -27,6 +27,18 @@ setup_stow() {
   fi
 }
 
+setup_ssh_key() {
+  echo "Setting up SSH key..."
+
+  if [ -f "$HOME/.ssh/id_ed25519" ]; then
+    echo "SSH key already exists."
+    return
+  fi
+
+  echo "SSH key not found. Generating SSH key..."
+  ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ''
+}
+
 setup_dotfiles() {
   echo "Setting up dotfiles..."
 
@@ -38,4 +50,5 @@ setup_dotfiles() {
 
 setup_homebrew
 setup_stow
-setup_dotfiles
+setup_ssh_key
+# setup_dotfiles
