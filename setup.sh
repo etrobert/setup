@@ -62,6 +62,15 @@ setup_github() {
 setup_dotfiles() {
   echo "Setting up dotfiles..."
 
+  if [ -d "$HOME/setup" ]; then
+    echo "Dotfiles repository already cloned."
+  else
+    echo "Dotfiles repository not found. Cloning dotfiles repository..."
+    git clone git@github.com:etrobert/setup.git "$HOME/setup"
+  fi
+
+  cd "$HOME/setup"
+
   stow alias bash ghostty git macos nvim profile readline ssh tmux
 
   echo "Setting proper permissions for SSH config..."
@@ -72,4 +81,4 @@ setup_homebrew
 setup_stow
 setup_ssh_key
 setup_github
-# setup_dotfiles
+setup_dotfiles
