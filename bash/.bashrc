@@ -6,7 +6,14 @@
 #PS1=' \u@\H \[\e[0;36m\]$(~/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
 
 PROMPT_COMMAND='EXIT_STATUS=$?;'
-PS1=' \u@\H \001\e[0;36m\002\w\001\e[m\002$(__git_ps1 " (%s)")$(if [ $EXIT_STATUS -ne 0 ]; then echo " \001\e[0;31m\002[$EXIT_STATUS]\001\e[m\002"; fi)> '
+
+CYAN_COLOR='\001\e[0;36m\002'
+RED_COLOR='\001\e[0;31m\002'
+RESET_COLOR='\001\e[m\002'
+
+PS1_ERROR_CODE='$(if [ $EXIT_STATUS -ne 0 ]; then echo " '$RED_COLOR'[$EXIT_STATUS]'$RESET_COLOR'"; fi)'
+
+PS1=' \u@\H '$CYAN_COLOR'\w'$RESET_COLOR'$(__git_ps1 " (%s)")'$PS1_ERROR_CODE'> '
 
 if [ -f "$HOME/.alias" ]; then
   source "$HOME/.alias"
