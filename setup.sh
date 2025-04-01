@@ -5,7 +5,7 @@ set -e
 setup_homebrew() {
   echo "Setting up Homebrew..."
 
-  if command -v brew >/dev/null; then
+  if [ -d "/opt/homebrew" ]; then
     echo "Homebrew is already installed."
   else
     echo "Homebrew not found. Installing Homebrew..."
