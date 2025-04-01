@@ -27,12 +27,6 @@ setup_homebrew() {
   eval "$(/opt/homebrew/bin/brew shellenv)"
 }
 
-setup_stow() {
-  echo "Setting up GNU Stow..."
-
-  ensure_installed stow
-}
-
 setup_ssh_key() {
   echo "Setting up SSH key..."
 
@@ -63,6 +57,8 @@ setup_github() {
 setup_dotfiles() {
   echo "Setting up dotfiles..."
 
+  ensure_installed stow
+
   if [ -d "$HOME/setup" ]; then
     echo "Dotfiles repository already cloned."
   else
@@ -87,8 +83,6 @@ setup_applications() {
 }
 
 setup_homebrew
-echo
-setup_stow
 echo
 setup_ssh_key
 echo
