@@ -4,7 +4,9 @@
 # be replaced by \001 and \002 respectively
 # Source: https://stackoverflow.com/questions/24839271/bash-ps1-line-wrap-issue-with-non-printing-characters-from-an-external-command
 #PS1=' \u@\H \[\e[0;36m\]$(~/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
-PS1=' \u@\H \001\e[0;36m\002\w\001\e[m\002$(__git_ps1 " (%s)")> '
+
+PROMPT_COMMAND='EXIT_STATUS=$?;'
+PS1=' \u@\H \001\e[0;36m\002\w\001\e[m\002$(__git_ps1 " (%s)")$(if [ $EXIT_STATUS -ne 0 ]; then echo " \001\e[0;31m\002[$EXIT_STATUS]\001\e[m\002"; fi)> '
 
 if [ -f "$HOME/.alias" ]; then
   source "$HOME/.alias"
