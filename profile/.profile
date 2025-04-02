@@ -123,3 +123,6 @@ fi
 if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
 fi
+
+# See https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=true
