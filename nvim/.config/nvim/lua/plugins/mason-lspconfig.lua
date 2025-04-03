@@ -3,6 +3,9 @@ return {
 	dependencies = {
 		{ "williamboman/mason.nvim", opts = {} },
 		{ "neovim/nvim-lspconfig" },
+
+		-- Useful status updates for LSP.
+		{ "j-hui/fidget.nvim", opts = {} },
 	},
 	opts = function()
 		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
