@@ -5,6 +5,7 @@ return {
 	-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 	lazy = false,
 	keys = {
+		{ "<leader>pv", "<CMD>Oil<CR>", desc = "Open Parent Directory" },
 		{ "-", "<CMD>Oil<CR>", desc = "Open Parent Directory" },
 		{
 			"<leader>wd",
