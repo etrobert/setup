@@ -105,6 +105,17 @@ setup_shell() {
   fi
 }
 
+setup_capslock() {
+  echo "Setting up Caps Lock as Control"
+
+  if [ $(hidutil property --get "UserKeyMapping") = "(null)" ]; then
+    echo "No Keymaps, setting up..."
+    hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}'
+  else
+    echo "Caps Lock is already remapped as Control."
+  fi
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -116,3 +127,5 @@ echo
 setup_applications
 echo
 setup_shell
+echo
+setup_capslock
