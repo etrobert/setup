@@ -90,6 +90,19 @@ setup_applications() {
   ensure_installed ghostty --cask
 }
 
+setup_shell() {
+  echo "Setting up default shell"
+
+  target_shell="/bin/bash"
+  current_shell="$SHELL"
+
+  if [ "$current_shell" = "$target_shell" ]; then
+    echo "Your shell is already $target_shell."
+  else
+    chsh -s "$target_shell"
+  fi
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -99,3 +112,5 @@ echo
 setup_dotfiles
 echo
 setup_applications
+echo
+setup_shell
