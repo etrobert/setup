@@ -86,6 +86,7 @@ setup_applications() {
 
   ensure_installed nvim
   ensure_installed tmux
+  ensure_installed difftastic
 
   ensure_installed ghostty --cask
 }
