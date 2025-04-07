@@ -7,7 +7,7 @@ set -e
 ensure_installed() {
   echo "Checking if $1 is installed..."
 
-  if command -v "$1" >/dev/null; then
+  if brew list "$1" >/dev/null 2>&1; then
     echo "$1 is already installed."
   else
     echo "$1 not found. Installing $1..."
@@ -84,7 +84,7 @@ setup_dotfiles() {
 setup_applications() {
   echo "Setting up applications..."
 
-  ensure_installed nvim
+  ensure_installed neovim
   ensure_installed tmux
   ensure_installed difftastic
 
