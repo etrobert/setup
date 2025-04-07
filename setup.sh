@@ -116,6 +116,17 @@ setup_capslock() {
   fi
 }
 
+setup_node() {
+  echo "Setting up Node.js..."
+
+  if nvm --version >/dev/null 2>&1; then
+    echo "NVM is already installed."
+  else
+    echo "NVM not found. Installing NVM..."
+    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
+  fi
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -129,3 +140,5 @@ echo
 setup_shell
 echo
 setup_capslock
+echo
+setup_node
