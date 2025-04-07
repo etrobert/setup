@@ -13,7 +13,10 @@ RESET_COLOR='\001\e[m\002'
 
 PS1_ERROR_CODE='$(if [ $EXIT_STATUS -ne 0 ]; then echo " '$RED_COLOR'[$EXIT_STATUS]'$RESET_COLOR'"; fi)'
 
-PS1=' \u@\H '$CYAN_COLOR'\w'$RESET_COLOR'$(__git_ps1 " (%s)")'$PS1_ERROR_CODE'> '
+# Uncomment to show user and host in prompt
+# PS1_USER_HOST='\u@\H '
+
+PS1=' '$PS1_USER_HOST$CYAN_COLOR'\w'$RESET_COLOR'$(__git_ps1 " (%s)")'$PS1_ERROR_CODE'> '
 
 if [ -f "$HOME/.alias" ]; then
   source "$HOME/.alias"
