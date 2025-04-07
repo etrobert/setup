@@ -9,13 +9,14 @@ ensure_installed() {
 
   if brew list "$1" >/dev/null 2>&1; then
     echo "$1 is already installed."
+    return
+  fi
+
+  echo "$1 not found. Installing $1..."
+  if [ -n "$2" ]; then
+    brew install "$2" "$1"
   else
-    echo "$1 not found. Installing $1..."
-    if [ -n "$2" ]; then
-      brew install "$2" "$1"
-    else
-      brew install "$1"
-    fi
+    brew install "$1"
   fi
 }
 
@@ -54,10 +55,11 @@ setup_github() {
 
   if gh auth status >/dev/null 2>&1; then
     echo "GitHub CLI is already authenticated."
-  else
-    echo "GitHub CLI not authenticated. Authenticating..."
-    gh auth login --git-protocol ssh --hostname github.com --web
+    return
   fi
+
+  echo "GitHub CLI not authenticated. Authenticating..."
+  gh auth login --git-protocol ssh --hostname github.com --web
 }
 
 setup_dotfiles() {
@@ -100,39 +102,47 @@ setup_shell() {
 
   if [ "$current_shell" = "$target_shell" ]; then
     echo "Your shell is already $target_shell."
-  else
-    chsh -s "$target_shell"
+    return
   fi
+
+  chsh -s "$target_shell"
 }
 
 setup_capslock() {
   echo "Setting up Caps Lock as Control"
 
-  if [ "$(hidutil property --get 'UserKeyMapping')" = "(null)" ]; then
-    echo "No Keymaps, setting up..."
-    hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}'
-  else
+  if [ "$(hidutil property --get 'UserKeyMapping')" != "(null)" ]; then
     echo "Caps Lock is already remapped as Control."
+    return
   fi
+
+  echo "No Keymaps, setting up..."
+  hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}'
+}
+
+setup_nvm() {
+  echo "Setting up nvm..."
+
+  if nvm --version >/dev/null 2>&1; then
+    echo "NVM is already installed."
+    return
+  fi
+
+  echo "NVM not found. Installing NVM..."
+  PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
+  . "$NVM_DIR/nvm.sh"
 }
 
 setup_node() {
   echo "Setting up Node.js..."
 
-  if nvm --version >/dev/null 2>&1; then
-    echo "NVM is already installed."
-  else
-    echo "NVM not found. Installing NVM..."
-    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
-    . "$NVM_DIR/nvm.sh"
-  fi
-
-  echo "Installing Node.js..."
   if nvm ls node >/dev/null 2>&1; then
     echo "NodeJS is already installed."
-  else
-    nvm install node
+    return
   fi
+
+  echo "NodeJS not found. Installing..."
+  nvm install node
 }
 
 setup_homebrew
@@ -148,5 +158,7 @@ echo
 setup_shell
 echo
 setup_capslock
+echo
+setup_nvm
 echo
 setup_node
