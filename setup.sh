@@ -124,6 +124,14 @@ setup_node() {
   else
     echo "NVM not found. Installing NVM..."
     PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
+    . "$NVM_DIR/nvm.sh"
+  fi
+
+  echo "Installing Node.js..."
+  if nvm ls node >/dev/null 2>&1; then
+    echo "NodeJS is already installed."
+  else
+    nvm install node
   fi
 }
 
