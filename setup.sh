@@ -11,7 +11,11 @@ ensure_installed() {
     echo "$1 is already installed."
   else
     echo "$1 not found. Installing $1..."
-    brew install "$2" "$1"
+    if [ -n "$2" ]; then
+      brew install "$2" "$1"
+    else
+      brew install "$1"
+    fi
   fi
 }
 
