@@ -92,6 +92,11 @@ setup_applications() {
   ensure_installed fzf
 
   ensure_installed ghostty --cask
+  ensure_installed arc --cask
+  ensure_installed notion --cask
+  ensure_installed spotify --cask
+  ensure_installed slack --cask
+  ensure_installed raycast --cask
 }
 
 setup_shell() {
