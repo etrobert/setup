@@ -97,6 +97,7 @@ setup_applications() {
   ensure_installed spotify --cask
   ensure_installed slack --cask
   ensure_installed raycast --cask
+  ensure_installed linear-linear --cask
 }
 
 setup_shell() {
