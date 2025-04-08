@@ -102,6 +102,7 @@ setup_applications() {
   ensure_installed slack --cask
   ensure_installed raycast --cask
   ensure_installed linear-linear --cask
+  ensure_installed betterdisplay --cask
 }
 
 setup_shell() {
