@@ -81,6 +81,9 @@ setup_dotfiles() {
 
   echo "Setting proper permissions for SSH config..."
   chmod 600 ssh/.ssh/config
+
+  echo "Setting up variables..."
+  source "$HOME/.profile"
 }
 
 setup_applications() {
@@ -134,7 +137,7 @@ setup_capslock() {
 setup_nvm() {
   echo "Setting up nvm..."
 
-  if nvm --version >/dev/null 2>&1; then
+  if [ -d "$NVM_DIR" ]; then
     echo "NVM is already installed."
     return
   fi
