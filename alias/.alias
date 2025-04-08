@@ -13,11 +13,6 @@ alias mkdir="mkdir -pv"
 # Prints what it removes
 alias rm="rm -v"
 
-alias getmake="cp ~/tools/ctools/Makefile ."
-alias getmain="cp ~/tools/ctools/main.c ."
-alias getctools="getmake ; getmain"
-alias getcpptools="cp ~/tools/cpptools/Makefile ~/tools/cpptools/main.cpp ."
-
 alias LS="ls"
 alias sl="ls"
 alias SL="ls"
