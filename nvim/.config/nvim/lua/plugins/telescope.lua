@@ -33,11 +33,11 @@ return {
 			end,
 			desc = "Git Branch Diff with Main",
 		},
-		{
-			"<leader>gf",
-			require("telescope.git-diverged-files").git_diverged_files,
-			desc = "Files Changed Since Diverged from Main",
-		},
+		-- {
+		-- 	"<leader>gf",
+		-- 	require("telescope.git-diverged-files").git_diverged_files,
+		-- 	desc = "Files Changed Since Diverged from Main",
+		-- },
 
 		{ "<C-p>", ":Telescope find_files<CR>", desc = "Find Files" },
 	},
