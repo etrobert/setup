@@ -25,7 +25,7 @@ project=$(echo "$project" | sed 's/\./_/g')
 
 # If we're not inside a tmux session
 if [ -z "$TMUX" ]; then
-  if tmux has-session -t="$project"; then
+  if tmux has-session -t="$project" 2>/dev/null; then
     tmux attach-session -t "$project"
   else
     tmux new-session -s "$project" -c "$project_path"
