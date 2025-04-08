@@ -43,7 +43,7 @@ return {
 		-- },
 	},
 	-- Source: https://github.com/nvim-telescope/telescope.nvim/issues/855
-	config = function(_, opts)
+	config = function()
 		require("telescope").setup({
 			defaults = {
 				file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
