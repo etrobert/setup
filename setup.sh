@@ -149,6 +149,8 @@ setup_node() {
 
   echo "NodeJS not found. Installing..."
   nvm install node
+
+  npm install -g corepack
 }
 
 setup_dock() {
