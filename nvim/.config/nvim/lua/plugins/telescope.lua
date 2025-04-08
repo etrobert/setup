@@ -41,8 +41,6 @@ return {
 		-- 	require("telescope.git-diverged-files").git_diverged_files,
 		-- 	desc = "Files Changed Since Diverged from Main",
 		-- },
-
-		{ "<C-p>", ":Telescope find_files<CR>", desc = "Find Files" },
 	},
 	-- Source: https://github.com/nvim-telescope/telescope.nvim/issues/855
 	config = function(_, opts)
