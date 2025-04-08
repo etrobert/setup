@@ -1,6 +1,9 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	dependencies = { "nvim-lua/plenary.nvim" },
+	dependencies = {
+		"nvim-lua/plenary.nvim",
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+	},
 	keys = {
 		{ "<leader>ff", ":Telescope find_files<CR>", desc = "Find Files" },
 		{ "<leader>fg", ":Telescope live_grep<CR>", desc = "Live Grep" },
@@ -42,17 +45,21 @@ return {
 		{ "<C-p>", ":Telescope find_files<CR>", desc = "Find Files" },
 	},
 	-- Source: https://github.com/nvim-telescope/telescope.nvim/issues/855
-	opts = {
-		defaults = {
-			file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
-		},
-		pickers = {
-			find_files = {
-				hidden = true,
+	config = function(_, opts)
+		require("telescope").setup({
+			defaults = {
+				file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
 			},
-			live_grep = {
-				additional_args = { "--hidden" },
+			pickers = {
+				find_files = {
+					hidden = true,
+				},
+				live_grep = {
+					additional_args = { "--hidden" },
+				},
 			},
-		},
-	},
+		})
+
+		require("telescope").load_extension("fzf")
+	end,
 }
