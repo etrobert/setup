@@ -95,6 +95,8 @@ setup_applications() {
   ensure_installed fzf
   # required for nvim telescope
   ensure_installed ripgrep
+  # recommended for nvim telescope
+  ensure_installed fd
   # required by nvim conform for bash formatting
   ensure_installed shfmt
   # required by nvim conform for lua formatting
