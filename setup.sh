@@ -184,6 +184,7 @@ setup_dock() {
   add_app_to_dock "/System/Applications/Notes.app"
   add_app_to_dock "/System/Applications/System Settings.app"
   add_app_to_dock "/Applications/Arc.app/"
+  add_app_to_dock "/Applications/Ghostty.app/"
   add_app_to_dock "/Applications/Slack.app/"
   add_app_to_dock "/System/Applications/Freeform.app/"
   add_app_to_dock "/Applications/Linear.app/"
