@@ -1,6 +1,9 @@
 return {
 	"stevearc/oil.nvim",
-	opts = {},
+	opts = {
+		-- Source: https://github.com/refractalize/oil-git-status.nvim
+		win_options = { signcolumn = "yes:2" },
+	},
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
 	lazy = false,
