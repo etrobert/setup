@@ -150,6 +150,47 @@ setup_node() {
   nvm install node
 }
 
+setup_dock() {
+  echo "Setting up dock..."
+
+  defaults write com.apple.dock autohide-delay -float 0
+  defaults write com.apple.dock autohide -bool true
+
+  # Clear existing items
+  defaults write com.apple.dock persistent-apps -array
+
+  add_app_to_dock() {
+    app=$1
+    if [ -e "$app" ]; then
+      defaults write com.apple.dock persistent-apps -array-add "<dict>
+      <key>tile-data</key>
+      <dict>
+        <key>file-data</key>
+        <dict>
+          <key>_CFURLString</key>
+          <string>$app</string>
+          <key>_CFURLStringType</key>
+          <integer>0</integer>
+        </dict>
+      </dict>
+    </dict>"
+    else
+      echo "Warning: $app not found. Skipping."
+    fi
+  }
+
+  # Add applications in order
+  add_app_to_dock "/System/Applications/Notes.app"
+  add_app_to_dock "/System/Applications/System Settings.app"
+  add_app_to_dock "/Applications/Arc.app/"
+  add_app_to_dock "/Applications/Slack.app/"
+  add_app_to_dock "/System/Applications/Freeform.app/"
+  add_app_to_dock "/Applications/Linear.app/"
+
+  # Restart Dock to apply changes
+  killall Dock
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -167,3 +208,5 @@ echo
 setup_nvm
 echo
 setup_node
+echo
+setup_dock
