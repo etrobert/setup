@@ -90,6 +90,8 @@ setup_applications() {
   ensure_installed tmux
   ensure_installed difftastic
   ensure_installed fzf
+  # required for nvim telescope
+  ensure_installed ripgrep
 
   ensure_installed ghostty --cask
   ensure_installed arc --cask
