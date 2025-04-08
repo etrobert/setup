@@ -92,6 +92,8 @@ setup_applications() {
   ensure_installed fzf
   # required for nvim telescope
   ensure_installed ripgrep
+  # required by nvim comment for bash formatting
+  ensure_installed shfmt
 
   ensure_installed ghostty --cask
   ensure_installed arc --cask
