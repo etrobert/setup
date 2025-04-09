@@ -110,6 +110,7 @@ setup_applications() {
   ensure_installed raycast --cask
   ensure_installed linear-linear --cask
   ensure_installed betterdisplay --cask
+  ensure_installed signal --cask
 }
 
 setup_shell() {
