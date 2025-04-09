@@ -14,7 +14,9 @@ RESET_COLOR='\001\e[m\002'
 PS1_ERROR_CODE='$(if [ $EXIT_STATUS -ne 0 ]; then echo " '$RED_COLOR'[$EXIT_STATUS]'$RESET_COLOR'"; fi)'
 
 # Uncomment to show user and host in prompt
-# PS1_USER_HOST='\u@\H '
+# Use \H for the full hostname or \h for the hostname until the first dot
+# PS1_USER_HOST='\u@\h '
+PS1_USER_HOST=
 
 PS1=' '$PS1_USER_HOST$CYAN_COLOR'\w'$RESET_COLOR'$(__git_ps1 " (%s)")'$PS1_ERROR_CODE'> '
 
