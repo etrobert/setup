@@ -102,6 +102,7 @@ setup_applications() {
   # required by nvim conform for lua formatting
   ensure_installed stylua
 
+  ensure_installed font-fira-code-nerd-font --cask
   ensure_installed ghostty --cask
   ensure_installed arc --cask
   ensure_installed notion --cask
