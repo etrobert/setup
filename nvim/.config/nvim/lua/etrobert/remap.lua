@@ -62,5 +62,5 @@ function OpenPluginGithub()
 end
 
 -- Create command and mapping
-vim.cmd("command OpenPluginGithub lua OpenPluginGithub()")
+vim.api.nvim_create_user_command("OpenPluginGithub", OpenPluginGithub, {})
 vim.keymap.set("n", "<leader>pg", OpenPluginGithub, { desc = "Open plugin GitHub page" })
