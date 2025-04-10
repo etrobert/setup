@@ -113,6 +113,7 @@ setup_applications() {
   ensure_installed linear-linear --cask
   ensure_installed betterdisplay --cask
   ensure_installed signal --cask
+  ensure_installed cursor --cask
 }
 
 setup_shell() {
