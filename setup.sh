@@ -101,6 +101,7 @@ setup_applications() {
   ensure_installed shfmt
   # required by nvim conform for lua formatting
   ensure_installed stylua
+  ensure_installed oven-sh/bun/bun
 
   ensure_installed font-fira-code-nerd-font --cask
   ensure_installed ghostty --cask
