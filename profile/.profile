@@ -105,12 +105,6 @@ if [ -d "$HOME/.pyenv" ]; then
   eval "$(pyenv init -)"
 fi
 
-# bun
-if [ -d "$HOME/.bun" ]; then
-  export BUN_INSTALL="$HOME/.bun"
-  export PATH=$BUN_INSTALL/bin:$PATH
-fi
-
 [ -f "/Users/etiennerobert/.ghcup/env" ] && . "/Users/etiennerobert/.ghcup/env" # ghcup-env
 
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
