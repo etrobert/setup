@@ -26,10 +26,6 @@ PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 if [ "$(uname)" == "Darwin" ]; then
-  # MAMP mysql Path
-  if [ -d "$HOME/MAMP/mysql/bin" ]; then
-    PATH="$PATH:$HOME/MAMP/mysql/bin"
-  fi
   # Visual Studio Code Path
   if [ -d "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]; then
     PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
