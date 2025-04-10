@@ -64,3 +64,13 @@ end
 -- Create command and mapping
 vim.api.nvim_create_user_command("OpenPluginGithub", OpenPluginGithub, {})
 vim.keymap.set("n", "<leader>pg", OpenPluginGithub, { desc = "Open plugin GitHub page" })
+
+function CopyFileLine()
+	local file_line = vim.fn.expand("%") .. ":" .. vim.fn.line(".")
+
+	vim.fn.setreg("+", file_line)
+	vim.notify("Copied: " .. file_line)
+end
+
+vim.api.nvim_create_user_command("CopyFileLine", CopyFileLine, {})
+vim.keymap.set("n", "<leader>y", CopyFileLine, { desc = "Copy file and line number" })
