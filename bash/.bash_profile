@@ -3,3 +3,11 @@ if [ "$(uname)" == "Darwin" ]; then
 fi
 
 . "$HOME/.profile"
+
+# If interactive shell
+if [ -n "$PS1" ]; then
+  # Source .bashrc if it exists
+  if [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
+  fi
+fi
