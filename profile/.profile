@@ -105,9 +105,3 @@ fi
 if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
 fi
-
-# See https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWSTASHSTATE=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWUPSTREAM="auto"

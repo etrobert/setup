@@ -35,6 +35,13 @@ esac
 
 # Enables git autocompletion
 source "$HOME/.git-completion.bash"
+
+# See https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWSTASHSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+export GIT_PS1_SHOWUPSTREAM="auto"
+
 # Enables to have the current git repository shown in prompt
 source "$HOME/.git-prompt.sh"
 
