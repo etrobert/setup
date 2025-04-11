@@ -6,6 +6,7 @@ return {
 		{ "nvim-telescope/telescope-ui-select.nvim" },
 	},
 	keys = {
+		{ "<C-p>", ":Telescope find_files<CR>", desc = "Find Files" },
 		{ "<leader>ff", ":Telescope find_files<CR>", desc = "Find Files" },
 		{ "<leader>fg", ":Telescope live_grep<CR>", desc = "Live Grep" },
 		{ "<leader>fb", ":Telescope buffers<CR>", desc = "Buffers" },
@@ -21,6 +22,7 @@ return {
 			end,
 			desc = "Find File in Lazy Plugins",
 		},
+		{ "<leader>fw", ":Telescope grep_string<CR>", desc = "Grep String" },
 
 		{ "<leader>gc", ":Telescope git_commits<CR>", desc = "Git Commits" },
 		{ "<leader>gs", ":Telescope git_status<CR>", desc = "Git Status" },
@@ -52,6 +54,9 @@ return {
 			pickers = {
 				find_files = {
 					hidden = true,
+				},
+				grep_string = {
+					additional_args = { "--hidden" },
 				},
 				live_grep = {
 					additional_args = { "--hidden" },
