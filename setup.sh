@@ -20,6 +20,17 @@ ensure_installed() {
   fi
 }
 
+ensure_gh_extension_installed() {
+  echo "Checking if GitHub CLI extension $1 is installed..."
+
+  if gh extension list | grep -q "$1"; then
+    echo "GitHub CLI extension $1 is already installed."
+  else
+    echo "Installing GitHub CLI extension $1..."
+    gh extension install "$1"
+  fi
+}
+
 setup_homebrew() {
   echo "Setting up Homebrew..."
 
@@ -55,11 +66,12 @@ setup_github() {
 
   if gh auth status >/dev/null 2>&1; then
     echo "GitHub CLI is already authenticated."
-    return
+  else
+    echo "GitHub CLI not authenticated. Authenticating..."
+    gh auth login --git-protocol ssh --hostname github.com --web
   fi
 
-  echo "GitHub CLI not authenticated. Authenticating..."
-  gh auth login --git-protocol ssh --hostname github.com --web
+  ensure_gh_extension_installed meiji163/gh-notify
 }
 
 setup_dotfiles() {
