@@ -136,10 +136,12 @@ setup_node() {
 setup_dock() {
   echo "Setting up dock..."
 
+  echo "Remove dock appearance delay"
   defaults write com.apple.dock autohide-delay -float 0
+  echo "Setting dock to auto-hide"
   defaults write com.apple.dock autohide -bool true
 
-  # Clear existing items
+  echo 'Clearing existing dock items'
   defaults write com.apple.dock persistent-apps -array
 
   add_app_to_dock() {
@@ -162,7 +164,7 @@ setup_dock() {
     fi
   }
 
-  # Add applications in order
+  echo 'Adding applications to dock'
   add_app_to_dock "/System/Applications/Notes.app"
   add_app_to_dock "/System/Applications/System Settings.app"
   add_app_to_dock "/Applications/Arc.app/"
@@ -171,7 +173,7 @@ setup_dock() {
   add_app_to_dock "/System/Applications/Freeform.app/"
   add_app_to_dock "/Applications/Linear.app/"
 
-  # Restart Dock to apply changes
+  echo 'Restarting Dock to apply changes'
   killall Dock
 }
 
@@ -192,6 +194,7 @@ echo
 setup_node
 echo
 setup_dock
+echo
 
 END_TIME=$(date +%s)
 
