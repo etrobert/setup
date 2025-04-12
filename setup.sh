@@ -4,24 +4,6 @@ set -e
 
 START_TIME=$(date +%s)
 
-# example: ensure_installed nvim
-# example: ensure_installed ghostty --cask
-ensure_installed() {
-  echo "Checking if $1 is installed..."
-
-  if brew list "$1" >/dev/null 2>&1; then
-    echo "$1 is already installed."
-    return
-  fi
-
-  echo "$1 not found. Installing $1..."
-  if [ -n "$2" ]; then
-    brew install "$2" "$1"
-  else
-    brew install "$1"
-  fi
-}
-
 ensure_gh_extension_installed() {
   echo "Checking if GitHub CLI extension $1 is installed..."
 
@@ -45,6 +27,8 @@ setup_homebrew() {
 
   echo "Adding Homebrew to PATH..."
   eval "$(/opt/homebrew/bin/brew shellenv)"
+
+  brew bundle install --file="$HOME/setup/Brewfile"
 }
 
 setup_ssh_key() {
@@ -62,8 +46,6 @@ setup_ssh_key() {
 setup_github() {
   echo "Setting up GitHub..."
 
-  ensure_installed gh
-
   echo 'Authenticating GitHub CLI...'
 
   if gh auth status >/dev/null 2>&1; then
@@ -78,8 +60,6 @@ setup_github() {
 
 setup_dotfiles() {
   echo "Setting up dotfiles..."
-
-  ensure_installed stow
 
   if [ -d "$HOME/setup" ]; then
     echo "Dotfiles repository already cloned."
@@ -98,12 +78,6 @@ setup_dotfiles() {
 
   echo "Setting up variables..."
   # TODO: This crashes sometimes, need to investigate
-}
-
-setup_applications() {
-  echo "Setting up applications..."
-
-  brew bundle install --file="$HOME/setup/Brewfile"
 }
 
 setup_shell() {
@@ -208,8 +182,6 @@ echo
 setup_github
 echo
 setup_dotfiles
-echo
-setup_applications
 echo
 setup_shell
 echo
