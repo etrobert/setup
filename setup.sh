@@ -101,32 +101,7 @@ setup_dotfiles() {
 setup_applications() {
   echo "Setting up applications..."
 
-  ensure_installed neovim
-  ensure_installed tmux
-  ensure_installed difftastic
-  ensure_installed fzf
-  # required for nvim telescope
-  ensure_installed ripgrep
-  # recommended for nvim telescope
-  ensure_installed fd
-  # required by nvim conform for bash formatting
-  ensure_installed shfmt
-  # required by nvim conform for lua formatting
-  ensure_installed stylua
-  ensure_installed oven-sh/bun/bun
-  ensure_installed bat
-
-  ensure_installed font-fira-code-nerd-font --cask
-  ensure_installed ghostty --cask
-  ensure_installed arc --cask
-  ensure_installed notion --cask
-  ensure_installed spotify --cask
-  ensure_installed slack --cask
-  ensure_installed raycast --cask
-  ensure_installed linear-linear --cask
-  ensure_installed betterdisplay --cask
-  ensure_installed signal --cask
-  ensure_installed cursor --cask
+  brew bundle install --file="$HOME/setup/Brewfile"
 }
 
 setup_shell() {
