@@ -2,6 +2,8 @@
 
 set -e
 
+START_TIME=$(date +%s)
+
 # example: ensure_installed nvim
 # example: ensure_installed ghostty --cask
 ensure_installed() {
@@ -218,3 +220,8 @@ echo
 setup_node
 echo
 setup_dock
+
+END_TIME=$(date +%s)
+
+ELAPSED_TIME=$((END_TIME - START_TIME))
+echo "Setup completed in ${ELAPSED_TIME} seconds"
