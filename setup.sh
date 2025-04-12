@@ -95,7 +95,8 @@ setup_dotfiles() {
   chmod 600 ssh/.ssh/config
 
   echo "Setting up variables..."
-  source "$HOME/.profile"
+  # TODO: This crashes sometimes, need to investigate
+  # source "$HOME/.profile"
 }
 
 setup_applications() {
