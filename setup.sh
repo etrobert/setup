@@ -96,7 +96,6 @@ setup_dotfiles() {
 
   echo "Setting up variables..."
   # TODO: This crashes sometimes, need to investigate
-  # source "$HOME/.profile"
 }
 
 setup_applications() {
@@ -161,12 +160,12 @@ setup_nvm() {
 
   if [ -d "$NVM_DIR" ]; then
     echo "NVM is already installed."
-    return
+  else
+    echo "NVM not found. Installing NVM..."
+    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
   fi
 
-  echo "NVM not found. Installing NVM..."
-  PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
-  . "$NVM_DIR/nvm.sh"
+  source "$NVM_DIR/nvm.sh"
 }
 
 setup_node() {
