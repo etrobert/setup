@@ -1,5 +1,6 @@
 tap "oven-sh/bun"
 
+brew "htop"
 brew "bat"
 brew "difftastic"
 brew "fzf"
