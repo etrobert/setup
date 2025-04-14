@@ -22,6 +22,7 @@ return {
 				"ts_ls",
 				"rust_analyzer",
 				"bashls",
+				"gopls",
 			},
 			handlers = {
 				default_setup,
