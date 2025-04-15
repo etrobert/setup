@@ -23,6 +23,7 @@ return {
 				"rust_analyzer",
 				"bashls",
 				"gopls",
+				"lua_ls",
 			},
 			handlers = {
 				default_setup,
