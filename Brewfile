@@ -26,6 +26,7 @@ cask "raycast"
 cask "signal"
 cask "slack"
 cask "spotify"
+cask "visual-studio-code"
 cask "cursor"
 
 vscode "davidanson.vscode-markdownlint"
