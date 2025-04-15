@@ -177,6 +177,31 @@ setup_dock() {
   killall Dock
 }
 
+setup_trackpad() {
+  echo "Setting up trackpad speed..."
+
+  target_speed='2.5'
+
+  set_trackpad_speed() {
+    defaults write -g com.apple.trackpad.scaling "$target_speed"
+    killall SystemUIServer
+  }
+
+  if ! current_speed=$(defaults read -g com.apple.trackpad.scaling 2>/dev/null); then
+    echo 'Trackpad speed has not been set, setting...'
+    set_trackpad_speed
+    return
+  fi
+
+  if [ "$current_speed" = "$target_speed" ]; then
+    echo 'Trackpad speed is already correctly set.'
+    return
+  fi
+
+  echo 'Trackpad speed is wrong. Setting...'
+  set_trackpad_speed
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -194,6 +219,8 @@ echo
 setup_node
 echo
 setup_dock
+echo
+setup_trackpad
 echo
 
 END_TIME=$(date +%s)
