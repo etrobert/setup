@@ -8,6 +8,7 @@ brew "gh"
 brew "stow"
 brew "tmux"
 brew "oven-sh/bun/bun"
+brew "go"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
