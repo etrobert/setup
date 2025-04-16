@@ -95,15 +95,18 @@ setup_shell() {
 }
 
 setup_capslock() {
-  echo "Setting up Caps Lock as Control"
+  echo "Setting up Caps Lock as Control via LaunchAgent..."
 
-  if [ "$(hidutil property --get 'UserKeyMapping')" != "(null)" ]; then
-    echo "Caps Lock is already remapped as Control."
-    return
+  AGENT_LABEL="com.etienne.remapkeys"
+
+  PLIST_PATH="$HOME/Library/LaunchAgents/$AGENT_LABEL.plist"
+
+  if ! launchctl list | grep -q "$AGENT_LABEL"; then
+    echo "Loading LaunchAgent..."
+    launchctl load "$PLIST_PATH"
+  else
+    echo "LaunchAgent is already loaded."
   fi
-
-  echo "No Keymaps, setting up..."
-  hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}'
 }
 
 setup_nvm() {
