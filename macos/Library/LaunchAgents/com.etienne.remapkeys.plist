@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.yourusername.remapkeys</string>
+    <string>com.etienne.remapkeys</string>
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/hidutil</string>
