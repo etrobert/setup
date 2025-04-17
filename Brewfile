@@ -9,6 +9,8 @@ brew "stow"
 brew "tmux"
 brew "oven-sh/bun/bun"
 brew "go"
+brew "plantuml"
+brew "entr"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
