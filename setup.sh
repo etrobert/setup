@@ -206,7 +206,11 @@ setup_trackpad() {
 
 setup_skhd() {
   echo "Setting up skhd..."
-  brew services start skhd
+  if [ -f "$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist" ]; then
+    echo "skhd is already installed."
+    return
+  fi
+  skhd --install-service
 }
 
 setup_homebrew
