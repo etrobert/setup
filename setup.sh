@@ -138,45 +138,94 @@ setup_node() {
 setup_dock() {
   echo "Setting up dock..."
 
-  echo "Remove dock appearance delay"
-  defaults write com.apple.dock autohide-delay -float 0
-  echo "Setting dock to auto-hide"
-  defaults write com.apple.dock autohide -bool true
+  should_restart_dock=
 
-  echo 'Clearing existing dock items'
-  defaults write com.apple.dock persistent-apps -array
+  # Check and set autohide
+  current_autohide=$(defaults read com.apple.dock autohide)
+  if [ "$current_autohide" != "1" ]; then
+    echo "Setting dock to auto-hide"
+    defaults write com.apple.dock autohide -bool true
+    should_restart_dock=true
+  else
+    echo "Dock auto-hide is already enabled"
+  fi
 
-  add_app_to_dock() {
-    app=$1
-    if [ -e "$app" ]; then
-      defaults write com.apple.dock persistent-apps -array-add "<dict>
-      <key>tile-data</key>
-      <dict>
-        <key>file-data</key>
-        <dict>
-          <key>_CFURLString</key>
-          <string>$app</string>
-          <key>_CFURLStringType</key>
-          <integer>0</integer>
-        </dict>
-      </dict>
-    </dict>"
-    else
-      echo "Warning: $app not found. Skipping."
+  # Check and set autohide delay
+  current_autohide_delay=$(defaults read com.apple.dock autohide-delay)
+  if [ "$current_autohide_delay" != "0" ]; then
+    echo "Removing dock appearance delay"
+    defaults write com.apple.dock autohide-delay -float 0
+    should_restart_dock=true
+  else
+    echo "Dock appearance delay is already set to 0"
+  fi
+
+  # Define desired apps
+  desired_apps="
+/System/Applications/Notes.app
+/System/Applications/System%20Settings.app
+/Applications/Arc.app/
+/Applications/Ghostty.app/
+/Applications/Slack.app/
+/System/Applications/Freeform.app/
+/Applications/Linear.app/
+"
+
+  # Check if we need to update apps
+  current_apps=$(defaults read com.apple.dock persistent-apps)
+  needs_app_update=
+
+  # Get current apps paths
+  current_apps_paths=$(defaults read com.apple.dock persistent-apps | grep '_CFURLString"' | sed 's/.*" = "\(.*\)"/\1/')
+
+  # Check if current apps match desired apps
+  for app in $desired_apps; do
+    if ! echo "$current_apps_paths" | grep -q "$app"; then
+      echo "Adding $app to dock"
+      needs_app_update=true
+      should_restart_dock=true
+      break
     fi
-  }
+  done
 
-  echo 'Adding applications to dock'
-  add_app_to_dock "/System/Applications/Notes.app"
-  add_app_to_dock "/System/Applications/System Settings.app"
-  add_app_to_dock "/Applications/Arc.app/"
-  add_app_to_dock "/Applications/Ghostty.app/"
-  add_app_to_dock "/Applications/Slack.app/"
-  add_app_to_dock "/System/Applications/Freeform.app/"
-  add_app_to_dock "/Applications/Linear.app/"
+  if [ "$needs_app_update" ]; then
+    echo 'Clearing existing dock items'
+    defaults write com.apple.dock persistent-apps -array
 
-  echo 'Restarting Dock to apply changes'
-  killall Dock
+    add_app_to_dock() {
+      app=$1
+      decoded_app=$(echo "$app" | sed 's/%20/ /g')
+      if [ -e "$decoded_app" ]; then
+        defaults write com.apple.dock persistent-apps -array-add "<dict>
+        <key>tile-data</key>
+        <dict>
+          <key>file-data</key>
+          <dict>
+            <key>_CFURLString</key>
+            <string>$decoded_app</string>
+            <key>_CFURLStringType</key>
+            <integer>0</integer>
+          </dict>
+        </dict>
+      </dict>"
+      else
+        echo "Warning: $decoded_app not found. Skipping."
+      fi
+    }
+
+    echo 'Adding applications to dock'
+    for app in $desired_apps; do
+      add_app_to_dock "$app"
+    done
+  else
+    echo "Dock apps are already correctly configured"
+  fi
+
+  # Only restart dock if we made changes
+  if [ "$should_restart_dock" ]; then
+    echo 'Restarting Dock to apply changes'
+    killall Dock
+  fi
 }
 
 setup_trackpad() {
