@@ -204,6 +204,11 @@ setup_trackpad() {
   set_trackpad_speed
 }
 
+setup_skhd() {
+  echo "Setting up skhd..."
+  brew services start skhd
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -223,6 +228,8 @@ echo
 setup_dock
 echo
 setup_trackpad
+echo
+setup_skhd
 echo
 
 END_TIME=$(date +%s)

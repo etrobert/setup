@@ -1,4 +1,5 @@
 tap "oven-sh/bun"
+tap "koekeishiya/formulae"
 
 brew "htop"
 brew "bat"
@@ -15,6 +16,8 @@ brew "fd" # recommended for nvim telescope
 brew "ripgrep" # required for nvim telescope
 brew "shfmt" # required by nvim conform for bash formatting
 brew "stylua" # required by nvim conform for lua formatting
+
+brew "koekeishiya/formulae/skhd"
 
 cask "arc"
 cask "betterdisplay"
