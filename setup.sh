@@ -260,6 +260,7 @@ setup_skhd() {
     return
   fi
   skhd --install-service
+  skhd --start-service
 }
 
 setup_homebrew
