@@ -102,7 +102,7 @@ setup_capslock() {
 
   if ! launchctl list | grep -q "$AGENT_LABEL"; then
     echo "Loading LaunchAgent..."
-    launchctl bootstrap gui/$UID "$PLIST_PATH"
+    launchctl bootstrap "gui/$(id -u)" "$PLIST_PATH"
   else
     echo "LaunchAgent is already loaded."
   fi
@@ -118,7 +118,8 @@ setup_nvm() {
     PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
   fi
 
-  source "$NVM_DIR/nvm.sh"
+  # shellcheck disable=SC1091
+  . "$NVM_DIR/nvm.sh"
 }
 
 setup_node() {
@@ -172,7 +173,6 @@ setup_dock() {
 "
 
   # Check if we need to update apps
-  current_apps=$(defaults read com.apple.dock persistent-apps)
   needs_app_update=
 
   # Get current apps paths
