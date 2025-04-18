@@ -253,6 +253,15 @@ setup_trackpad() {
   set_trackpad_speed
 }
 
+setup_skhd() {
+  echo "Setting up skhd..."
+  if [ -f "$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist" ]; then
+    echo "skhd is already installed."
+    return
+  fi
+  skhd --install-service
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -272,6 +281,8 @@ echo
 setup_dock
 echo
 setup_trackpad
+echo
+setup_skhd
 echo
 
 END_TIME=$(date +%s)
