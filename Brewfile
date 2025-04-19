@@ -16,6 +16,7 @@ brew "plantuml"
 brew "entr"
 brew "act"
 brew "shellcheck"
+brew "rustup"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope

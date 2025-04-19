@@ -51,6 +51,10 @@ if [ -d "$HOME/.cargo" ]; then
   . "$HOME/.cargo/env"
 fi
 
+if [ -d /opt/homebrew/opt/rustup/bin ]; then
+  PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+fi
+
 # Sets the terminal emulator to be launched by i3. Non-standard.
 export TERMINAL=st
 
