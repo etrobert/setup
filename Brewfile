@@ -39,6 +39,7 @@ cask "slack"
 cask "spotify"
 cask "visual-studio-code"
 cask "cursor"
+cask "discord"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
