@@ -15,7 +15,6 @@ brew "go"
 brew "plantuml"
 brew "entr"
 brew "act"
-brew "youtube-dl"
 brew "shellcheck"
 
 brew "neovim"
