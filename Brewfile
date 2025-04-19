@@ -40,6 +40,7 @@ cask "spotify"
 cask "visual-studio-code"
 cask "cursor"
 cask "discord"
+cask "sonos"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
