@@ -47,10 +47,6 @@ if [ -d "/opt/homebrew" ]; then
 fi
 
 # Enables Rust
-if [ -d "$HOME/.cargo" ]; then
-  . "$HOME/.cargo/env"
-fi
-
 if [ -d /opt/homebrew/opt/rustup/bin ]; then
   PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 fi
