@@ -167,8 +167,8 @@ setup_dock() {
 /System/Applications/System%20Settings.app
 /Applications/Arc.app/
 /Applications/Ghostty.app/
+/Applications/Spotify.app/
 /Applications/Slack.app/
-/System/Applications/Freeform.app/
 /Applications/Linear.app/
 "
 
