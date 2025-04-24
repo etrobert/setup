@@ -25,6 +25,7 @@
   dbranch = "!git branch | grep -v '^\\*' | xargs -n 1 git branch -d"
   puhs = push
   slist = -c diff.external=difft stash list -p --ext-diff
+  ushow = "!git ls-files --others --exclude-standard -z | xargs -0 bat"
 [pager]
   status = on
 [push]
