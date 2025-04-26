@@ -8,7 +8,7 @@ return {
 	keys = {
 		{ "<C-p>", ":Telescope find_files<CR>", desc = "Find Files" },
 		{ "<leader>ff", ":Telescope find_files<CR>", desc = "Find Files" },
-		{ "<leader>fg", ":Telescope live_grep<CR>", desc = "Live Grep" },
+		{ "<leader>fg", require("telescope.multigrep"), desc = "Live Grep" },
 		{ "<leader>fb", ":Telescope buffers<CR>", desc = "Buffers" },
 		{ "<leader>fh", ":Telescope help_tags<CR>", desc = "Help Tags" },
 		{ "<leader>fs", ":Telescope lsp_workspace_symbols<CR>", desc = "LSP Workspace Symbols" },
