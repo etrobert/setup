@@ -39,11 +39,11 @@ return {
 			end,
 			desc = "Git Branch Diff with Main",
 		},
-		-- {
-		-- 	"<leader>gf",
-		-- 	require("telescope.git-diverged-files").git_diverged_files,
-		-- 	desc = "Files Changed Since Diverged from Main",
-		-- },
+		{
+			"<leader>gf",
+			require("telescope.git-diverged-files").git_diverged_files,
+			desc = "Files Changed Since Diverged from Main",
+		},
 	},
 	-- Source: https://github.com/nvim-telescope/telescope.nvim/issues/855
 	config = function()
