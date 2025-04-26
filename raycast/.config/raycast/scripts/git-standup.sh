@@ -13,7 +13,7 @@
 # @raycast.authorURL https://github.com/etrobert
 # @raycast.description Lists your commits from the last 24 hours.
 
-cd "/Users/etienne/work/haii"
+cd "/Users/etienne/work/haii" || exit 1
 
 git log \
   --all \
