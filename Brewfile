@@ -23,6 +23,7 @@ brew "fd" # recommended for nvim telescope
 brew "ripgrep" # required for nvim telescope
 brew "shfmt" # required by nvim conform for bash formatting
 brew "stylua" # required by nvim conform for lua formatting
+brew "luarocks" # lua package manager used by nvim lazy and mason
 
 brew "koekeishiya/formulae/skhd"
 
