@@ -23,17 +23,8 @@ fi
 
 project=$(echo "$project" | sed 's/\./_/g')
 
-hydrate() {
-  if [ -f "$project_path/.tmux-sessionizer" ]; then
-    tmux send-keys -t "$project" "source $project_path/.tmux-sessionizer" c-M
-  elif [ -f "$HOME/.tmux-sessionizer" ]; then
-    tmux send-keys -t "$project" "source $HOME/.tmux-sessionizer" c-M
-  fi
-}
-
 if ! tmux has-session -t="$project" 2>/dev/null; then
   tmux new-session -d -s "$project" -c "$project_path"
-  hydrate
 fi
 
 if [ -z "$TMUX" ]; then
