@@ -42,6 +42,8 @@ cask "visual-studio-code"
 cask "cursor"
 cask "discord"
 cask "sonos"
+cask "obs"
+cask "utm"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
@@ -51,6 +53,7 @@ vscode "aaron-bond.better-comments"
 vscode "github.copilot"
 vscode "github.copilot-chat"
 vscode "usernamehw.errorlens"
+vscode "ms-vsliveshare.vsliveshare"
 
 # JavaScript/TypeScript
 vscode "esbenp.prettier-vscode"
