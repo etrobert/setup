@@ -44,6 +44,7 @@ cask "discord"
 cask "sonos"
 cask "obs"
 cask "utm"
+cask "transmission"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
