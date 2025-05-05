@@ -55,9 +55,9 @@ function OpenPluginGithub()
 	if repo then
 		local url = "https://github.com/" .. repo
 		vim.fn.system("open " .. url)
-		print("Opening: " .. url)
+		vim.notify("Opening: " .. url, vim.log.levels.INFO)
 	else
-		print("No GitHub repository found on current line")
+		vim.notify("No GitHub repository found on current line", vim.log.levels.WARN)
 	end
 end
 
