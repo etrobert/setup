@@ -134,8 +134,12 @@ function GenCommitMsg()
 		return
 	end
 
-	-- Construct prompt
-	local prompt = "Write a clear commit message for this diff:\n\n" .. diff
+	local recent_commits = vim.fn.system("git log --pretty=format:'%s' -n 5")
+
+	local prompt = "Here are some recent commits for style reference:\n\n"
+		.. recent_commits
+		.. "Write a clear commit message for this diff:\n\n"
+		.. diff
 
 	local response = curl.post("https://api.openai.com/v1/chat/completions", {
 		headers = {
