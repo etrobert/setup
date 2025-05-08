@@ -33,7 +33,7 @@ Use markdown formatting.
 				},
 				{ role = "user", content = prompt },
 			},
-			max_tokens = 750,
+			max_tokens = 1000,
 		}),
 		timeout = 20000,
 	})
