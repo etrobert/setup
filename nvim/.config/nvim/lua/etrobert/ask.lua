@@ -39,7 +39,21 @@ function M.ask(opts)
 	local filename = vim.api.nvim_buf_get_name(current_file)
 	filename = vim.fn.fnamemodify(filename, ":.")
 	local buffer_content = get_buffer_content(current_file)
-	local prompt = string.format("%s\n\nCurrent file (%s):\n\n%s", user_message, filename, buffer_content)
+	local diff = vim.fn.system("git diff")
+	local prompt = ([[
+%s
+
+Below is some context automatically added:
+
+git diff:
+
+%s
+
+Current file (%s):
+
+%s
+]]):format(user_message, diff, filename, buffer_content)
+
 	local system_message = [[
 You are a code assistant.
 Keep your response line length under 80 characters,
