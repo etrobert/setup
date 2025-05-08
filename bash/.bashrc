@@ -18,7 +18,7 @@ PS1_ERROR_CODE='$(if [ $EXIT_STATUS -ne 0 ]; then echo " '$RED_COLOR'[$EXIT_STAT
 # PS1_USER_HOST='\u@\h '
 PS1_USER_HOST=
 
-PS1=' '$PS1_USER_HOST$CYAN_COLOR'\w'$RESET_COLOR'$(__git_ps1 " (%s)")'$PS1_ERROR_CODE'$ '
+PS1=" ${PS1_USER_HOST}${CYAN_COLOR}\w$RESET_COLOR\$(__git_ps1 ' (%s)')${PS1_ERROR_CODE}$ "
 
 if [ -f "$HOME/.alias" ]; then
   source "$HOME/.alias"
