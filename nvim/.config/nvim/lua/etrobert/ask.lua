@@ -7,7 +7,6 @@ local function append(buf, text)
 	lines[1] = last_line .. lines[1]
 
 	vim.api.nvim_buf_set_lines(buf, -2, -1, false, lines)
-	vim.api.nvim_win_set_cursor(0, { vim.api.nvim_buf_line_count(0), 0 })
 end
 
 ---@param opts { args: string }
