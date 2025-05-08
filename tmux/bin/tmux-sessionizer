@@ -3,7 +3,7 @@
 # Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
 if [ $# -eq 1 ]; then
-  project=$1
+  project=$(echo "$1" | sed 's/\/$//')
 else
   project=$({
     find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
