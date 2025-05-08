@@ -5,20 +5,52 @@
 # Source: https://stackoverflow.com/questions/24839271/bash-ps1-line-wrap-issue-with-non-printing-characters-from-an-external-command
 #PS1=' \u@\H \[\e[0;36m\]$(~/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
 
-PROMPT_COMMAND='EXIT_STATUS=$?;'
+PROMPT_COMMAND='precmd'
 
 CYAN_COLOR='\001\e[0;36m\002'
 RED_COLOR='\001\e[0;31m\002'
 RESET_COLOR='\001\e[m\002'
-
-PS1_ERROR_CODE='$(if [ $EXIT_STATUS -ne 0 ]; then echo " '$RED_COLOR'[$EXIT_STATUS]'$RESET_COLOR'"; fi)'
 
 # Uncomment to show user and host in prompt
 # Use \H for the full hostname or \h for the hostname until the first dot
 # PS1_USER_HOST='\u@\h '
 PS1_USER_HOST=
 
-PS1=" ${PS1_USER_HOST}${CYAN_COLOR}\w$RESET_COLOR\$(__git_ps1 ' (%s)')${PS1_ERROR_CODE}$ "
+export CMD_TIMER_MS=
+
+preexec() {
+  if [[ -z $CMD_TIMER_MS ]]; then
+    CMD_TIMER_MS=$(gdate +%s%3N)
+  fi
+}
+
+precmd() {
+  EXIT_STATUS=$?
+  if [[ -z $CMD_TIMER_MS ]]; then
+    return
+  fi
+
+  local now
+  now=$(gdate +%s%3N)
+  export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
+  unset CMD_TIMER_MS
+}
+
+__time_ps1() {
+  if [ "$EXIT_STATUS" -ne 0 ]; then
+    printf "%b[%s]%b" "$RED_COLOR" "$EXIT_STATUS" "$RESET_COLOR"
+  elif ((LAST_CMD_TIME < 100)); then
+    printf "[%dms]" "$LAST_CMD_TIME"
+  elif ((LAST_CMD_TIME < 1000)); then
+    printf "[.%ds]" "$((LAST_CMD_TIME / 10))"
+  else
+    printf "[%d.%ds]" $((LAST_CMD_TIME / 1000)) $((LAST_CMD_TIME % 1000 / 10))
+  fi
+}
+
+trap 'preexec' DEBUG
+
+PS1=" ${PS1_USER_HOST}${CYAN_COLOR}\w$RESET_COLOR\$(__git_ps1 ' (%s)') \$(__time_ps1)$ "
 
 if [ -f "$HOME/.alias" ]; then
   source "$HOME/.alias"
