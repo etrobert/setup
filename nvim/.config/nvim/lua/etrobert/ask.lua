@@ -9,6 +9,21 @@ local function append(buf, text)
 	vim.api.nvim_buf_set_lines(buf, -2, -1, false, lines)
 end
 
+local function create_side_buffer()
+	local buf = vim.api.nvim_create_buf(false, true)
+	vim.cmd("vsplit")
+	vim.api.nvim_set_current_buf(buf)
+	vim.api.nvim_set_option_value("filetype", "markdown", { buf = buf })
+	vim.api.nvim_set_option_value("buftype", "nofile", { buf = buf })
+	vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf })
+	return buf
+end
+
+local function get_buffer_content(buf)
+	local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+	return table.concat(lines, "\n")
+end
+
 ---@param opts { args: string }
 function M.ask(opts)
 	if not os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY") == "" then
@@ -18,17 +33,12 @@ function M.ask(opts)
 
 	local current_file = vim.api.nvim_get_current_buf()
 
-	local buf = vim.api.nvim_create_buf(false, true)
-	vim.cmd("vsplit")
-	vim.api.nvim_set_current_buf(buf)
-	vim.api.nvim_set_option_value("filetype", "markdown", { buf = buf })
-	vim.api.nvim_set_option_value("buftype", "nofile", { buf = buf })
-	vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf })
+	local buf = create_side_buffer()
 
 	local user_message = opts.args ~= "" and opts.args or vim.fn.input("Prompt: ")
 	local filename = vim.api.nvim_buf_get_name(current_file)
 	filename = vim.fn.fnamemodify(filename, ":.")
-	local buffer_content = table.concat(vim.api.nvim_buf_get_lines(current_file, 0, -1, false), "\n")
+	local buffer_content = get_buffer_content(current_file)
 	local prompt = string.format("%s\n\nCurrent file (%s):\n\n%s", user_message, filename, buffer_content)
 	local system_message = [[
 You are a code assistant.
