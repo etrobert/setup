@@ -37,7 +37,7 @@ break lines with a newline if needed.
 Use markdown formatting.
 ]]
 
-	vim.system({
+	local job = vim.system({
 		"curl",
 		"https://api.openai.com/v1/chat/completions",
 		"-N",
@@ -81,6 +81,16 @@ Use markdown formatting.
 					append(buf, content)
 				end)
 				::continue::
+			end
+		end,
+	})
+
+	vim.api.nvim_create_autocmd("BufWipeout", {
+		buffer = buf,
+		once = true,
+		callback = function()
+			if job then
+				job:kill("sigterm")
 			end
 		end,
 	})
