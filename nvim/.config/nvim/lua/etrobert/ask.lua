@@ -9,8 +9,10 @@ function M.ask(opts)
 
 	local curl = require("plenary.curl")
 	local user_message = opts.args ~= "" and opts.args or vim.fn.input("Prompt: ")
+	local filename = vim.api.nvim_buf_get_name(0)
+	filename = vim.fn.fnamemodify(filename, ":.")
 	local buffer_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-	local prompt = user_message .. "\n\nCurrent file:\n\n" .. buffer_content
+	local prompt = string.format("%s\n\nCurrent file (%s):\n\n%s", user_message, filename, buffer_content)
 
 	local response = curl.post("https://api.openai.com/v1/chat/completions", {
 		headers = {
