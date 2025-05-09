@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Add brackets \[...\] around non printing characters
 # To allow bash to properly calculate prompt size
 # When calling external functions, \[ and \] should
