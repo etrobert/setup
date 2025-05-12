@@ -6,6 +6,7 @@
   editor = nvim
 [alias]
   ci = commit
+  sci = "!gen-commit-msg"
   co = checkout
   st = status --short --branch
   br = branch

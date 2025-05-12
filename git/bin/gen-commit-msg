@@ -1,0 +1,53 @@
+#!/bin/sh
+
+DIFF=$(git diff --cached)
+
+if [ -z "$DIFF" ]; then
+  echo "No staged changes to commit."
+  exit 0
+fi
+
+RECENT_COMMITS=$(git log --pretty=format:'%s' -n 5)
+
+PROMPT="Recent commit messages for style reference:
+
+$RECENT_COMMITS
+
+Write a clear commit message for this diff:
+
+$DIFF"
+
+RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.openai.com/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
+  -d "{
+     \"model\": \"gpt-4.1\",
+     \"messages\": [
+       {
+         \"role\": \"system\",
+         \"content\": \"You generate commit messages. Only respond with the commit message.\"
+       },
+       {
+         \"role\": \"user\",
+         \"content\": $(echo "$PROMPT" | jq -Rs .)
+       }
+     ]
+   }")
+
+HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)
+BODY=$(echo "$RESPONSE" | sed '$d')
+
+if [ "$HTTP_CODE" -ne 200 ]; then
+  echo "HTTP $HTTP_CODE
+$BODY"
+  exit 1
+fi
+
+MESSAGE=$(echo "$BODY" | jq -r '.choices[0].message.content')
+
+if [ -z "$MESSAGE" ]; then
+  echo "No commit message generated."
+  exit 1
+fi
+
+echo "$MESSAGE" | git commit -F - --edit
