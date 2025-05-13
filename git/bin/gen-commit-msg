@@ -7,7 +7,7 @@ if [ -z "$DIFF" ]; then
   exit 0
 fi
 
-RECENT_COMMITS=$(git log --pretty=format:'%s' -n 5)
+RECENT_COMMITS=$(git log --pretty=format:'%s' --max-count=5)
 
 PROMPT="Recent commit messages for style reference:
 
