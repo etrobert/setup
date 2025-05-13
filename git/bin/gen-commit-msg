@@ -1,6 +1,9 @@
 #!/bin/sh
 
-DIFF=$(git diff --cached)
+if ! DIFF=$(git diff --cached 2>/dev/null); then
+  echo "Error: Unable to get staged changes."
+  exit 1
+fi
 
 if [ -z "$DIFF" ]; then
   echo "No staged changes to commit."
