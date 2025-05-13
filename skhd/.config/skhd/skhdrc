@@ -2,7 +2,8 @@
 alt - 1 : open -a "Arc"
 alt - 2 : open -a "Ghostty"
 alt - 3 : open -a "Slack"
-alt - 4 : open -a "Spotify"
+alt - 4 : open -a "Notion"
+alt - 5 : open -a "Spotify"
 
 # Map alt + hjkl to arrow keys
 alt - h : skhd -k "left"
