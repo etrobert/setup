@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "$OPENAI_API_KEY" ]; then
+  echo "Error: OPENAI_API_KEY is not set."
+  exit 1
+fi
+
 if ! DIFF=$(git diff --cached 2>/dev/null); then
   echo "Error: Unable to get staged changes."
   exit 1
