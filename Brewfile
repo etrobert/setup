@@ -17,6 +17,8 @@ brew "entr"
 brew "act"
 brew "shellcheck"
 brew "rustup"
+brew "coreutils" # for gdate for PS1
+brew "prettierd"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
