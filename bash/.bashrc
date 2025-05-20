@@ -42,11 +42,19 @@ __time_ps1() {
   if [ "$EXIT_STATUS" -ne 0 ]; then
     printf "%b[%s]%b" "$RED_COLOR" "$EXIT_STATUS" "$RESET_COLOR"
   elif ((LAST_CMD_TIME < 100)); then
-    printf "[%dms]" "$LAST_CMD_TIME"
+    # ex [01ms]
+    # ex [99ms]
+    printf "[%02dms]" "$LAST_CMD_TIME"
   elif ((LAST_CMD_TIME < 1000)); then
+    # ex [.10s]
+    # ex [.99s]
     printf "[.%ds]" "$((LAST_CMD_TIME / 10))"
+  elif ((LAST_CMD_TIME < 60000)); then
+    # ex [1.0s]
+    # ex [59.9s]
+    printf "[%d.%ds]" $((LAST_CMD_TIME / 1000)) $((LAST_CMD_TIME % 1000 / 100))
   else
-    printf "[%d.%ds]" $((LAST_CMD_TIME / 1000)) $((LAST_CMD_TIME % 1000 / 10))
+    printf "[%dm%ds]" $((LAST_CMD_TIME / 60000)) $((LAST_CMD_TIME % 60000 / 1000))
   fi
 }
 
