@@ -12,7 +12,9 @@
 #umask 022
 
 # Load env variables from ~/.env
-[ -f ~/.env ] && export "$(grep -v '^#' ~/.env | xargs)"
+# We actually want the word splitting here
+# shellcheck disable=SC2046
+[ -f ~/.env ] && export $(grep -v '^#' ~/.env | xargs)
 
 PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
