@@ -48,6 +48,7 @@ cask "sonos"
 cask "obs"
 cask "utm"
 cask "transmission"
+cask "docker"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
