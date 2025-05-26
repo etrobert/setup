@@ -19,6 +19,7 @@ brew "shellcheck"
 brew "rustup"
 brew "coreutils" # for gdate for PS1
 brew "prettierd"
+brew "redis"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
@@ -49,6 +50,7 @@ cask "obs"
 cask "utm"
 cask "transmission"
 cask "docker"
+cask "notion-calendar"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
