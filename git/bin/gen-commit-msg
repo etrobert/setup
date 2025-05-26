@@ -1,5 +1,10 @@
 #!/bin/sh
 
+NO_EDIT_GIT_PARAM="--edit"
+if [ "$1" = "--no-edit" ] || [ "$1" = "-n" ]; then
+  NO_EDIT_GIT_PARAM=
+fi
+
 if [ -z "$OPENAI_API_KEY" ]; then
   echo "Error: OPENAI_API_KEY is not set."
   exit 1
@@ -58,4 +63,4 @@ if [ -z "$MESSAGE" ]; then
   exit 1
 fi
 
-echo "$MESSAGE" | git commit -F - --edit
+echo "$MESSAGE" | git commit -F - $NO_EDIT_GIT_PARAM
