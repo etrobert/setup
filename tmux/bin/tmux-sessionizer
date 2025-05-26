@@ -2,7 +2,9 @@
 
 # Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
-if [ $# -eq 1 ]; then
+if [ "$1" = "-e" ] || [ "$1" = "--existing" ]; then
+  project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf)
+elif [ $# -eq 1 ]; then
   project=$(echo "$1" | sed 's/\/$//')
 else
   project=$({
