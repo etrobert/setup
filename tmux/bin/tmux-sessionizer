@@ -2,7 +2,22 @@
 
 # Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
-if [ "$1" = "-e" ] || [ "$1" = "--existing" ]; then
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo "Usage: tmux-sessionizer [OPTIONS] [PROJECT_NAME]"
+  echo ""
+  echo "Create or switch to tmux sessions for projects."
+  echo ""
+  echo "OPTIONS:"
+  echo "  -e, --existing    Show only existing tmux sessions"
+  echo "  -h, --help        Show this help message"
+  echo ""
+  echo "If no PROJECT_NAME is provided, shows a fuzzy finder with:"
+  echo "  - Projects from ~/work/"
+  echo "  - setup (this dotfiles repository)"
+  echo ""
+  echo "If PROJECT_NAME is provided, creates/switches to that session directly."
+  exit 0
+elif [ "$1" = "-e" ] || [ "$1" = "--existing" ]; then
   project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf)
 elif [ $# -eq 1 ]; then
   project=$(echo "$1" | sed 's/\/$//')
