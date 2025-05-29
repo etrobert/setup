@@ -31,6 +31,7 @@ brew "luarocks" # lua package manager used by nvim lazy and mason
 brew "koekeishiya/formulae/skhd"
 
 cask "arc"
+cask "firefox"
 cask "betterdisplay"
 cask "font-fira-code-nerd-font"
 cask "ghostty"
