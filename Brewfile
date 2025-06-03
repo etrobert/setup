@@ -52,6 +52,7 @@ cask "utm"
 cask "transmission"
 cask "docker"
 cask "notion-calendar"
+cask "protonvpn"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
