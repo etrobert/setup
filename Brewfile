@@ -20,6 +20,7 @@ brew "rustup"
 brew "coreutils" # for gdate for PS1
 brew "prettierd"
 brew "redis"
+brew "codex"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
