@@ -170,6 +170,7 @@ setup_dock() {
 /Applications/Spotify.app/
 /Applications/Slack.app/
 /Applications/Linear.app/
+/Applications/Notion.app/
 "
 
   # Check if we need to update apps
