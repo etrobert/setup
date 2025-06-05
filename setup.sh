@@ -163,14 +163,14 @@ setup_dock() {
 
   # Define desired apps
   desired_apps="
-/System/Applications/Notes.app
-/System/Applications/System%20Settings.app
 /Applications/Arc.app/
 /Applications/Ghostty.app/
-/Applications/Spotify.app/
 /Applications/Slack.app/
-/Applications/Linear.app/
 /Applications/Notion.app/
+/Applications/Spotify.app/
+/Applications/Linear.app/
+/System/Applications/Notes.app
+/System/Applications/System%20Settings.app
 "
 
   # Check if we need to update apps
