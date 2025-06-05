@@ -34,4 +34,10 @@ vim.diagnostic.config({ virtual_text = true, jump = { float = true } })
 
 vim.opt.cursorline = true
 
+-- Decrease update time
+vim.o.updatetime = 250
+
+-- Decrease mapped sequence wait time
+vim.o.timeoutlen = 300
+
 vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
