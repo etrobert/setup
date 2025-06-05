@@ -23,6 +23,7 @@ return {
 			desc = "Find File in Lazy Plugins",
 		},
 		{ "<leader>fw", ":Telescope grep_string<CR>", desc = "Grep String" },
+		{ "<leader>fd", ":Telescope diagnostics<CR>", desc = "Diagnostics" },
 
 		{ "<leader>gc", ":Telescope git_commits<CR>", desc = "Git Commits" },
 		{ "<leader>gs", ":Telescope git_status<CR>", desc = "Git Status" },
