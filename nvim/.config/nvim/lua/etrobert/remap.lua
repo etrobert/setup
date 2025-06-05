@@ -1,5 +1,6 @@
 vim.g.mapleader = " "
 vim.keymap.set("i", "jj", "<Esc>")
+vim.keymap.set("n", "-", vim.cmd.Ex, { desc = "Open netrw file explorer" })
 
 vim.keymap.set("n", "<leader>n", vim.cmd.nohlsearch, { desc = "Remove Search Highlight" })
 
