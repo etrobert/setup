@@ -21,6 +21,7 @@ brew "coreutils" # for gdate for PS1
 brew "prettierd"
 brew "redis"
 brew "codex"
+brew "yt-dlp"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
