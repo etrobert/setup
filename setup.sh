@@ -151,6 +151,16 @@ setup_dock() {
     echo "Dock auto-hide is already enabled"
   fi
 
+  # Check and disable recents
+  current_show_recents=$(defaults read com.apple.dock show-recents)
+  if [ "$current_show_recents" != "0" ]; then
+    echo "Disabling recent apps in dock"
+    defaults write com.apple.dock show-recents -bool false
+    should_restart_dock=true
+  else
+    echo "Dock recents are already disabled"
+  fi
+
   # Check and set autohide delay
   current_autohide_delay=$(defaults read com.apple.dock autohide-delay)
   if [ "$current_autohide_delay" != "0" ]; then
@@ -264,6 +274,33 @@ setup_skhd() {
   skhd --start-service
 }
 
+setup_key_repeat() {
+  echo "Setting up key repeat rates..."
+
+  # Better key repeat rates
+  current_key_repeat=$(defaults read NSGlobalDomain KeyRepeat)
+  if [ "$current_key_repeat" != "2" ]; then
+    echo "Setting faster key repeat rate"
+    defaults write NSGlobalDomain KeyRepeat -int 2
+    should_restart_ui=true
+  else
+    echo "Key repeat rate is already optimized"
+  fi
+
+  current_initial_repeat=$(defaults read NSGlobalDomain InitialKeyRepeat)
+  if [ "$current_initial_repeat" != "15" ]; then
+    echo "Setting shorter initial key repeat delay"
+    defaults write NSGlobalDomain InitialKeyRepeat -int 15
+    should_restart_ui=true
+  else
+    echo "Initial key repeat delay is already optimized"
+  fi
+
+  if [ "$should_restart_ui" ]; then
+    echo "Note: Key repeat changes will take effect after logout/restart"
+  fi
+}
+
 setup_homebrew
 echo
 setup_ssh_key
@@ -285,6 +322,8 @@ echo
 setup_trackpad
 echo
 setup_skhd
+echo
+setup_key_repeat
 echo
 
 END_TIME=$(date +%s)
