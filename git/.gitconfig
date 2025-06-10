@@ -10,6 +10,7 @@
   co = checkout
   st = status --short --branch
   br = branch
+  w = worktree
   ds = -c diff.external=difft diff --staged
   ff = merge --ff-only
   vimdiff = difftool --no-prompt --tool=vimdiff
