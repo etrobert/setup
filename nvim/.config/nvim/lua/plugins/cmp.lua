@@ -18,6 +18,9 @@ return {
 		local luasnip = require("luasnip")
 		luasnip.config.setup({})
 
+		-- Load custom snippets
+		require("luasnip.loaders.from_lua").load({ paths = vim.fn.stdpath("config") .. "/lua/snippets" })
+
 		cmp.setup({
 			snippet = {
 				expand = function(args)
