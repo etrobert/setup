@@ -26,8 +26,10 @@
   dshow = "-c diff.external=difft show --ext-diff"
   dbranch = "!git branch | grep -v '^\\*' | xargs -n 1 git branch -d"
   puhs = push
+  pshu = push
   slist = -c diff.external=difft stash list -p --ext-diff
   ushow = "!git ls-files --others --exclude-standard -z | xargs -0 bat"
+  empty = commit --allow-empty -m 'trigger ci'
 [pager]
   status = on
 [push]
