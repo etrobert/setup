@@ -31,6 +31,8 @@
   slist = -c diff.external=difft stash list -p --ext-diff
   ushow = "!git ls-files --others --exclude-standard -z | xargs -0 bat"
   empty = commit --allow-empty -m 'trigger ci'
+  alias = "!git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1          \\2/;s/\\(^.\\{10\\}\\) */\\1 = /' | sort"
+  falias = "!git alias | fzf | cut -d' ' -f1 | xargs -I {} git {}"
 [pager]
   status = on
 [push]
