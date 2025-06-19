@@ -21,6 +21,22 @@ vim.keymap.set("n", "<leader>bd", vim.cmd.bd, { desc = "Delete Buffer" })
 vim.keymap.set("n", "<leader>ba", delete_all_buffers, { desc = "Delete All Buffers" })
 vim.keymap.set("n", "<leader>bo", delete_other_buffers, { desc = "Delete Other Buffers" })
 
+function DeleteCurrentFile()
+	local file = vim.fn.expand("%:p")
+	if file == "" then
+		vim.notify("Can't find filename to delete", vim.log.levels.WARN)
+		return
+	end
+	if vim.fn.delete(file) == -1 then
+		vim.notify("File " .. file .. " could not be deleted", vim.log.levels.ERROR)
+		return
+	end
+	vim.cmd("bd")
+	vim.notify("Deleted " .. file, vim.log.levels.INFO)
+end
+
+vim.keymap.set("n", "<leader>rm", DeleteCurrentFile, { desc = "Delete current file" })
+
 -- Source: https://lsp-zero.netlify.app/v3.x/blog/you-might-not-need-lsp-zero.html
 
 vim.api.nvim_create_autocmd("LspAttach", {
