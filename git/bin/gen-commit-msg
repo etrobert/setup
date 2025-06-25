@@ -3,6 +3,9 @@
 NO_EDIT_GIT_PARAM="--edit"
 if [ "$1" = "--no-edit" ] || [ "$1" = "-n" ]; then
   NO_EDIT_GIT_PARAM=
+elif [ -n "$1" ]; then
+  echo "Error: Unknown parameter '$1'. Use --no-edit or -n to skip editor." >&2
+  exit 1
 fi
 
 if [ -z "$OPENAI_API_KEY" ]; then
