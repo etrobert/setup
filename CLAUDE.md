@@ -13,7 +13,7 @@ This is a personal dotfiles and system configuration repository using GNU Stow f
 - `./setup.sh` - Complete system setup script that installs Homebrew, dotfiles, and configures macOS
 - `brew bundle install` - Install all Homebrew packages and applications
 - `stow <folder>` - Symlink configuration from a specific folder to home directory
-- `stow alias bash ghostty git macos nvim profile readline ssh tmux skhd raycast` - Stow all main configurations
+- `stow alias bash claude ghostty git macos nvim profile readline ssh tmux skhd raycast` - Stow all main configurations
 
 ### Custom Utilities
 
