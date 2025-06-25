@@ -107,3 +107,8 @@ fi
 if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
 fi
+
+# raycast scripts
+if [ -d "$HOME/.config/raycast/scripts" ]; then
+  export PATH="$PATH:$HOME/.config/raycast/scripts"
+fi
