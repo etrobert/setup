@@ -22,6 +22,7 @@ brew "prettierd"
 brew "redis"
 brew "codex"
 brew "yt-dlp"
+brew "openai-whisper"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
