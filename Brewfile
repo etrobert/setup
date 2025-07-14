@@ -52,7 +52,7 @@ cask "sonos"
 cask "obs"
 cask "utm"
 cask "transmission"
-cask "docker"
+cask "docker-desktop"
 cask "notion-calendar"
 cask "protonvpn"
 
