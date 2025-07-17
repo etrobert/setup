@@ -11,7 +11,7 @@ M.git_diverged_files = function()
 		cwd = vim.fn.getcwd(),
 	}
 
-	local base = vim.fn.trim(vim.fn.system("git merge-base main HEAD"))
+	local base = vim.fn.trim(vim.fn.system("git merge-base origin/main HEAD"))
 
 	local finder = finders.new_oneshot_job({ "git", "diff", "--name-only", base .. "..HEAD" }, opts)
 
