@@ -58,6 +58,7 @@ cask "protonvpn"
 
 cask "discord"
 cask "gog-galaxy"
+cask "steam"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
