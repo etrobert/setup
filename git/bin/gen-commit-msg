@@ -33,22 +33,27 @@ Write a clear commit message for this diff:
 
 $DIFF"
 
+REQUEST_BODY=$(cat <<EOF
+{
+  "model": "gpt-4.1",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You generate commit messages. Only respond with the commit message."
+    },
+    {
+      "role": "user",
+      "content": $(echo "$PROMPT" | jq -Rs .)
+    }
+  ]
+}
+EOF
+)
+
 RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.openai.com/v1/chat/completions" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OPENAI_API_KEY" \
-  -d "{
-     \"model\": \"gpt-4.1\",
-     \"messages\": [
-       {
-         \"role\": \"system\",
-         \"content\": \"You generate commit messages. Only respond with the commit message.\"
-       },
-       {
-         \"role\": \"user\",
-         \"content\": $(echo "$PROMPT" | jq -Rs .)
-       }
-     ]
-   }")
+  -d "$REQUEST_BODY")
 
 HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)
 BODY=$(echo "$RESPONSE" | sed '$d')
