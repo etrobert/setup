@@ -105,6 +105,8 @@ function M.execute_by_language(code, language)
 		output = vim.fn.system("bash", code)
 	elseif language == "javascript" or language == "js" then
 		output = vim.fn.system("node -e " .. vim.fn.shellescape(code))
+	elseif language == "typescript" or language == "ts" then
+		output = vim.fn.system("bun -e " .. vim.fn.shellescape(code))
 	elseif language == "python" then
 		output = vim.fn.system("python3 -c " .. vim.fn.shellescape(code))
 	else
