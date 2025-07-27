@@ -91,3 +91,9 @@ end
 
 vim.api.nvim_create_user_command("CopyFileLine", CopyFileLine, {})
 vim.keymap.set("n", "<leader>y", CopyFileLine, { desc = "Copy file and line number" })
+
+-- Auto-remove trailing whitespace on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	command = [[%s/\s\+$//e]],
+})
