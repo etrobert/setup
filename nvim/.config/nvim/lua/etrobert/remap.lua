@@ -152,7 +152,9 @@ function ExecuteCodeBlock()
 	end
 
 	-- Execute based on language directly (shows output automatically)
-	if block.language == "bash" or block.language == "sh" then
+	if not block.language then
+		vim.notify("No language specified for code block", vim.log.levels.WARN)
+	elseif block.language == "bash" or block.language == "sh" then
 		vim.cmd("!bash -c " .. vim.fn.shellescape(block.code))
 	elseif block.language == "javascript" or block.language == "js" then
 		vim.cmd("!node -e " .. vim.fn.shellescape(block.code))
