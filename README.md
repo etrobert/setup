@@ -1,3 +1,22 @@
+# hi
+
+```sh
+echo 'hi2'
+```
+
+```js
+console.log("biiiitch");
+
+const k = () => 2;
+
+console.log(k());
+```
+
+```
+echo 'hi'
+
+```
+
 # setup
 
 Dotfiles and other configurations using stow
@@ -5,6 +24,18 @@ Dotfiles and other configurations using stow
 Each folder is the configuration for a specific tool
 
 `usage: stow folder`
+
+```sh
+echo 'hi'
+```
+
+```python3
+print('hi')
+```
+
+```javascript
+console.log("hi");
+```
 
 ## Additional configuration steps
 

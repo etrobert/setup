@@ -17,18 +17,21 @@ function M.get_current_code_block()
 		end
 	end
 
+	-- Early return if no opening ``` found
+	if not start_line then
+		return nil
+	end
+
 	-- Look forward for closing ```
-	if start_line then
-		for i = line, #lines do
-			if lines[i]:match("^```%s*$") and i > start_line then
-				end_line = i
-				break
-			end
+	for i = line, #lines do
+		if lines[i]:match("^```%s*$") and i > start_line then
+			end_line = i
+			break
 		end
 	end
 
-	-- Return nil if no complete code block found
-	if not (start_line and end_line) then
+	-- Return nil if no closing ``` found
+	if not end_line then
 		return nil
 	end
 
@@ -81,4 +84,3 @@ function M.setup()
 end
 
 return M
-
