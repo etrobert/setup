@@ -97,3 +97,94 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	command = [[%s/\s\+$//e]],
 })
+
+-- Get information about the current markdown code block
+function GetCurrentCodeBlock()
+	local line = vim.fn.line(".")
+	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	
+	-- Find code block boundaries
+	local start_line, end_line, lang = nil, nil, nil
+	
+	-- Look backward for opening ```
+	for i = line, 1, -1 do
+		if lines[i]:match("^```(%w*)") then
+			start_line = i
+			lang = lines[i]:match("^```(%w+)")
+			break
+		end
+	end
+	
+	-- Look forward for closing ```
+	if start_line then
+		for i = line, #lines do
+			if lines[i]:match("^```%s*$") and i > start_line then
+				end_line = i
+				break
+			end
+		end
+	end
+	
+	-- Return nil if no complete code block found
+	if not (start_line and end_line and lang) then
+		return nil
+	end
+	
+	-- Extract code lines
+	local code_lines = {}
+	for i = start_line + 1, end_line - 1 do
+		table.insert(code_lines, lines[i])
+	end
+	
+	return {
+		language = lang,
+		code = table.concat(code_lines, "\n"),
+		start_line = start_line,
+		end_line = end_line,
+		lines = code_lines,
+	}
+end
+
+-- Execute markdown code blocks
+function ExecuteCodeBlock()
+	local block = GetCurrentCodeBlock()
+	
+	if not block then
+		vim.notify("No code block found at cursor", vim.log.levels.WARN)
+		return
+	end
+	
+	-- Execute based on language and show output
+	local output = ""
+	if block.language == "bash" or block.language == "sh" then
+		output = vim.fn.system("bash", block.code)
+	elseif block.language == "javascript" or block.language == "js" then
+		output = vim.fn.system("node", block.code)
+	elseif block.language == "python" then
+		output = vim.fn.system("python3", block.code)
+	else
+		vim.notify("Unsupported language: " .. block.language, vim.log.levels.WARN)
+		return
+	end
+	
+	-- Show output in a floating window
+	local buf = vim.api.nvim_create_buf(false, true)
+	vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(output, "\n"))
+	
+	local width = math.min(80, vim.o.columns - 4)
+	local height = math.min(20, vim.o.lines - 4)
+	vim.api.nvim_open_win(buf, true, {
+		relative = "editor",
+		width = width,
+		height = height,
+		col = (vim.o.columns - width) / 2,
+		row = (vim.o.lines - height) / 2,
+		style = "minimal",
+		border = "rounded",
+		title = " " .. block.language .. " output ",
+	})
+	
+	vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, desc = "Close output window" })
+end
+
+vim.keymap.set("n", "<leader>ex", ExecuteCodeBlock, { desc = "Execute markdown code block" })
