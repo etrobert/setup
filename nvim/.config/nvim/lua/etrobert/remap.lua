@@ -139,9 +139,6 @@ function GetCurrentCodeBlock()
 	return {
 		language = lang,
 		code = table.concat(code_lines, "\n"),
-		start_line = start_line,
-		end_line = end_line,
-		lines = code_lines,
 	}
 end
 
