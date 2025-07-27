@@ -130,6 +130,7 @@ return {
 			},
 		},
 	},
+	-- TODO: Fix, when enabling this breaks markdown code block formatting
 	-- config = function()
 	-- 	vim.opt.foldmethod = "expr"
 	-- 	vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
