@@ -97,12 +97,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	command = [[%s/\s\+$//e]],
 })
-
--- Force Treesitter for markdown instead of vim syntax
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "markdown",
-	callback = function()
-		vim.cmd("syntax clear")
-		vim.cmd("TSBufEnable highlight") 
-	end,
-})
