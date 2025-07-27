@@ -126,7 +126,7 @@ function GetCurrentCodeBlock()
 	end
 
 	-- Return nil if no complete code block found
-	if not (start_line and end_line and lang) then
+	if not (start_line and end_line) then
 		return nil
 	end
 
