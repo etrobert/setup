@@ -120,7 +120,7 @@ function M.setup()
 	vim.keymap.set(
 		"v",
 		"<leader>ex",
-		":lua require('etrobert.markdown-exec').execute_visual_selection()<CR>",
+		":lua require('etrobert.code-exec').execute_visual_selection()<CR>",
 		{ desc = "Execute visual selection" }
 	)
 end
