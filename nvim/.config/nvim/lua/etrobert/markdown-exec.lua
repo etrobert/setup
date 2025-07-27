@@ -1,5 +1,31 @@
 local M = {}
 
+-- Get visual selection content
+function M.get_visual_selection()
+	local start_pos = vim.fn.getpos("'<")
+	local end_pos = vim.fn.getpos("'>")
+
+	local start_line = start_pos[2]
+	local end_line = end_pos[2]
+	local start_col = start_pos[3]
+	local end_col = end_pos[3]
+
+	local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+
+	if #lines == 0 then
+		return nil
+	end
+
+	if #lines == 1 then
+		lines[1] = string.sub(lines[1], start_col, end_col)
+	else
+		lines[1] = string.sub(lines[1], start_col)
+		lines[#lines] = string.sub(lines[#lines], 1, end_col)
+	end
+
+	return table.concat(lines, "\n")
+end
+
 -- Get information about the current markdown code block
 function M.get_current_code_block()
 	local line = vim.fn.line(".")
@@ -61,15 +87,39 @@ function M.execute_code_block()
 		return
 	end
 
+	M.execute_by_language(block.code, block.language)
+end
+
+-- Execute visual selection
+function M.execute_visual_selection()
+	local code = M.get_visual_selection()
+	local language = vim.bo.filetype
+
+	if not code then
+		vim.notify("No visual selection found", vim.log.levels.WARN)
+		return
+	end
+
+	if not language then
+		vim.notify("No language specified for code execution", vim.log.levels.WARN)
+		return
+	end
+
+	M.execute_by_language(code, language)
+end
+
+-- Execute code by language
+function M.execute_by_language(code, language)
 	local output = ""
-	if block.language == "bash" or block.language == "sh" then
-		output = vim.fn.system("bash", block.code)
-	elseif block.language == "javascript" or block.language == "js" then
-		output = vim.fn.system("node -e " .. vim.fn.shellescape(block.code))
-	elseif block.language == "python" then
-		output = vim.fn.system("python3 -c " .. vim.fn.shellescape(block.code))
+
+	if language == "bash" or language == "sh" then
+		output = vim.fn.system("bash", code)
+	elseif language == "javascript" or language == "js" then
+		output = vim.fn.system("node -e " .. vim.fn.shellescape(code))
+	elseif language == "python" then
+		output = vim.fn.system("python3 -c " .. vim.fn.shellescape(code))
 	else
-		vim.notify("Unsupported language: " .. block.language, vim.log.levels.WARN)
+		vim.notify("Unsupported language: " .. language, vim.log.levels.WARN)
 		return
 	end
 
@@ -77,7 +127,8 @@ function M.execute_code_block()
 end
 
 function M.setup()
-	vim.keymap.set("n", "<leader>ex", M.execute_code_block, { desc = "Execute markdown code block" })
+	vim.keymap.set("n", "<leader>ex", M.execute_code_block, { desc = "Execute code block" })
+	vim.keymap.set("v", "<leader>ex", M.execute_visual_selection, { desc = "Execute visual selection" })
 end
 
 return M
