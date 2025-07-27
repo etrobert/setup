@@ -2,17 +2,12 @@ local M = {}
 
 -- Get visual selection content
 function M.get_visual_selection()
-	-- Get the current visual selection bounds
-	local start_pos = vim.fn.getpos("v")
-	local end_pos = vim.fn.getpos(".")
+	-- Use last visual selection marks since visual mode exits before this is called
+	local start_pos = vim.fn.getpos("'<")
+	local end_pos = vim.fn.getpos("'>")
 
 	local start_line = start_pos[2]
 	local end_line = end_pos[2]
-
-	-- Ensure start comes before end
-	if start_line > end_line then
-		start_line, end_line = end_line, start_line
-	end
 
 	-- Get full lines in selection
 	local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
@@ -122,7 +117,12 @@ end
 
 function M.setup()
 	vim.keymap.set("n", "<leader>ex", M.execute_code_block, { desc = "Execute code block" })
-	vim.keymap.set("v", "<leader>ex", M.execute_visual_selection, { desc = "Execute visual selection" })
+	vim.keymap.set(
+		"v",
+		"<leader>ex",
+		":<C-u>lua require('etrobert.markdown-exec').execute_visual_selection()<CR>",
+		{ desc = "Execute visual selection" }
+	)
 end
 
 return M
