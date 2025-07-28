@@ -112,3 +112,7 @@ fi
 if [ -d "$HOME/.config/raycast/scripts" ]; then
   export PATH="$PATH:$HOME/.config/raycast/scripts"
 fi
+
+# disable claude code auto updates
+# source: https://formulae.brew.sh/cask/claude-code
+export DISABLE_AUTOUPDATER=1

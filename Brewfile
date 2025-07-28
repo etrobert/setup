@@ -55,6 +55,7 @@ cask "transmission"
 cask "docker-desktop"
 cask "notion-calendar"
 cask "protonvpn"
+cask "claude-code"
 
 cask "discord"
 cask "gog-galaxy"
