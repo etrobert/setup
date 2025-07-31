@@ -33,9 +33,7 @@ Write a clear commit message for this diff:
 
 $DIFF"
 
-REQUEST_BODY=$(
-  cat <<EOF
-{
+REQUEST_BODY=$(jq --null-input --arg user_prompt "$PROMPT" '{
   "model": "gpt-4.1",
   "messages": [
     {
@@ -44,12 +42,10 @@ REQUEST_BODY=$(
     },
     {
       "role": "user",
-      "content": $(echo "$PROMPT" | jq -Rs .)
+      "content": $user_prompt
     }
   ]
-}
-EOF
-)
+}')
 
 RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.openai.com/v1/chat/completions" \
   -H "Content-Type: application/json" \
