@@ -10,10 +10,11 @@ This file provides context about my personal development setup, preferences, and
 - Terminal: Ghostty
 - tmux for session management with custom sessionizer script
 - Custom PS1 with git status, command timing, and exit codes
+- You can find the list of installed packages by looking at `~/setup/Brewfile`
 
 ### Editor & IDE
 
-- Primary editor: Neovim with Lua configuration and Lazy.nvim
+- Primary editor: Neovim with custom Lua config and Lazy.nvim
 
 ### Version Control Workflow
 
@@ -21,15 +22,12 @@ This file provides context about my personal development setup, preferences, and
 - Key aliases:
   - `git torelease` - Shows commits ready for release (origin/prod..origin/main)
   - `git release` - Deploys by pushing origin/main to prod
-  - `git lg` - Pretty formatted log with graph
-  - `git sco` - fzf branch checkout
   - `git sci` - Uses gen-commit-msg for commit messages
 
 ### Package Management
 
 - Homebrew for system packages and applications
 - nvm for node.js
-- Development tools: Go, Rust, Bun
 
 ### Code Style Preferences
 
