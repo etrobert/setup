@@ -35,6 +35,8 @@ brew "koekeishiya/formulae/skhd"
 
 cask "arc"
 cask "firefox"
+cask "zen"
+
 cask "betterdisplay"
 cask "font-fira-code-nerd-font"
 cask "ghostty"
