@@ -59,6 +59,8 @@ cask "notion-calendar"
 cask "protonvpn"
 cask "claude-code"
 
+cask "audacity"
+
 cask "discord"
 cask "gog-galaxy"
 cask "steam"
