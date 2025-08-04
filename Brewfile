@@ -19,10 +19,12 @@ brew "shellcheck"
 brew "rustup"
 brew "coreutils" # for gdate for PS1
 brew "prettierd"
-brew "redis"
 brew "codex"
 brew "yt-dlp"
 brew "openai-whisper"
+
+brew "redis"
+brew "postgresql"
 
 brew "neovim"
 brew "fd" # recommended for nvim telescope
