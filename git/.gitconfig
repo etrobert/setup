@@ -36,6 +36,7 @@
   torelease = log --oneline origin/prod..origin/main
   release = push origin origin/main:prod
   fw = "!git worktree list | fzf | cut -f 1 -d ' '"
+  fwr = "!worktree=$(git fw) && [ -n \"$worktree\" ] && git worktree remove \"$worktree\""
 [pager]
   status = on
 [push]
