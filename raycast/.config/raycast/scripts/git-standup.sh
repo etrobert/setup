@@ -15,8 +15,15 @@
 
 cd "/Users/etienne/work/haii" || exit 1
 
+# On Monday, show commits since Friday; otherwise since yesterday
+if [ "$(date +%u)" -eq 1 ]; then
+  SINCE="last friday"
+else
+  SINCE="yesterday.midnight"
+fi
+
 git log \
   --all \
   --author="$(git config user.name)" \
-  --since=yesterday.midnight \
+  --since="$SINCE" \
   --pretty=format:"%C(yellow)%d%Creset %s %Cblue(%ar)%Creset"
