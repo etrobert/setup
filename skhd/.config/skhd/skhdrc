@@ -1,5 +1,5 @@
 # Launch applications
-alt - 1 : open -a "Arc"
+alt - 1 : open -a "Zen"
 alt - 2 : open -a "Ghostty"
 alt - 3 : open -a "Slack"
 alt - 4 : open -a "Notion"
