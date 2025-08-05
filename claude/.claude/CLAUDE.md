@@ -31,6 +31,7 @@ This file provides context about my personal development setup, preferences, and
 
 ### Code Style Preferences
 
+- Avoid code duplication
 - JavaScript/TypeScript: ES modules, destructured imports
 
 ### Common Commands
