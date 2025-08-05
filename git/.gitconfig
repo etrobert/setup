@@ -35,6 +35,7 @@
   falias = "!git alias | fzf | cut -d' ' -f1 | xargs -I {} git {}"
   torelease = log --oneline origin/prod..origin/main
   release = push origin origin/main:prod
+  fw = "!git worktree list | fzf | cut -f 1 -d ' '"
 [pager]
   status = on
 [push]
