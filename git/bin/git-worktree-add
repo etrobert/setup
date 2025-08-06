@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+REPO_NAME=$(basename "$(git remote get-url origin)" .git)
+
+BRANCH="$1"
+
+if [ -z "$BRANCH" ]; then
+  echo "Usage: $0 <worktree-name>"
+  exit 1
+fi
+
+NAME="$REPO_NAME-$BRANCH"
+
+WORKTREE_PATH="$HOME/work/$NAME"
+
+# TODO: make it work for new branches and existing branches
+# git worktree add "$WORKTREE_PATH" -b "$BRANCH"
+git worktree add "$WORKTREE_PATH" "$BRANCH"
+
+# TODO: Use correct path
+# TODO: Don't fail if missing
+# cp .env .tmux.conf "$WORKTREE"
+
+ts "$NAME"
