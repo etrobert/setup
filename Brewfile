@@ -60,6 +60,7 @@ cask "docker-desktop"
 cask "notion-calendar"
 cask "protonvpn"
 cask "claude-code"
+cask "vlc"
 
 cask "audacity"
 
