@@ -173,7 +173,7 @@ setup_dock() {
 
   # Define desired apps
   desired_apps="
-/Applications/Arc.app/
+/Applications/Zen.app/
 /Applications/Ghostty.app/
 /Applications/Slack.app/
 /Applications/Notion.app/
