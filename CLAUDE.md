@@ -64,4 +64,3 @@ Several custom scripts are available in `*/bin/` directories:
 - SSH key generation and GitHub CLI authentication handled by setup script
 - Some configurations require manual steps (Firefox profile setup, VS Code first launch)
 - Setup script is idempotent and can be run multiple times safely
-
