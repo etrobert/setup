@@ -20,7 +20,11 @@ WORKTREE_PATH="$HOME/work/$NAME"
 git worktree add "$WORKTREE_PATH" "$BRANCH"
 
 # TODO: Use correct path
-# TODO: Don't fail if missing
-# cp .env .tmux.conf "$WORKTREE"
+# TODO .claude/settings.local.json
+for file in .env .tmux.conf; do
+  if [ -f "$file" ]; then
+    cp "$file" "$WORKTREE_PATH"
+  fi
+done
 
-ts "$NAME"
+tmux-sessionizer "$NAME"
