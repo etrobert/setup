@@ -41,3 +41,5 @@ alias hat='highlight -lO ansi'
 alias g='git'
 alias t='tmux'
 alias v='nvim'
+
+alias tree='tree -CF --dirsfirst'
