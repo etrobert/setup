@@ -14,7 +14,7 @@
   ds = -c diff.external=difft diff --staged
   ff = merge --ff-only
   vimdiff = difftool --no-prompt --tool=vimdiff
-  lg = "log --pretty=format:'%C(red)%h %C(blue)by %an %C(green)on %cd%C(yellow)%d %Creset%Creset\n%s\n' --abbrev-commit --date=format:'%Y-%m-%d %H:%M'"
+  lg = "log --pretty=format:'%C(red)%h %C(green)on %cd %C(blue)by %an%C(yellow)%d %Creset%Creset\n%s\n' --abbrev-commit --date=format:'%Y-%m-%d %H:%M'"
   praise = blame
   please = push --force-with-lease
   publish = push --set-upstream origin HEAD
