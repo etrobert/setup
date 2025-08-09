@@ -44,3 +44,5 @@ alias v='nvim'
 
 # alias tree='tree -CF --dirsfirst'
 alias tree='eza --tree --icons --group-directories-first --git-ignore'
+
+alias font="ghostty +show-face --string=Hello --style=regular"
