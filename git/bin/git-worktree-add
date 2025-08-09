@@ -15,9 +15,13 @@ NAME="$REPO_NAME-$BRANCH"
 
 WORKTREE_PATH="$HOME/work/$NAME"
 
-# TODO: make it work for new branches and existing branches
-# git worktree add "$WORKTREE_PATH" -b "$BRANCH"
-git worktree add "$WORKTREE_PATH" "$BRANCH"
+if git show-ref --verify --quiet "refs/heads/$BRANCH"; then
+  git worktree add "$WORKTREE_PATH" "$BRANCH"
+elif git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
+  git worktree add "$WORKTREE_PATH" "$BRANCH"
+else
+  git worktree add "$WORKTREE_PATH" -b "$BRANCH"
+fi
 
 # TODO: Use correct path
 # TODO .claude/settings.local.json
