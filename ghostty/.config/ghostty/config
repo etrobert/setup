@@ -4,3 +4,6 @@ theme = catppuccin-macchiato
 macos-titlebar-style = hidden
 
 command = /opt/homebrew/bin/bash
+
+window-padding-x = 10
+window-padding-y = 10
