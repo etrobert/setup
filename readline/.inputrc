@@ -5,7 +5,12 @@ $include /etc/inputrc
 set editing-mode vi
 
 $if mode=vi
-set show-mode-in-prompt
+
+# Shows (ins) or (cmd) before the prompt
+# set show-mode-in-prompt
+
+# Update vim mode display in prompt faster
+# set keyseq-timeout 100
 
 set keymap vi-command
 # these are for vi-command mode
@@ -19,4 +24,5 @@ set keymap vi-insert
 "\C-P": history-search-backward
 "\C-N": history-search-forward
 "\C-A": beginning-of-line
+
 $endif
