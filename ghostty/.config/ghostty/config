@@ -2,3 +2,5 @@
 
 theme = catppuccin-macchiato
 macos-titlebar-style = hidden
+
+command = /opt/homebrew/bin/bash
