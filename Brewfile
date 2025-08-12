@@ -23,6 +23,7 @@ brew "prettierd"
 brew "codex"
 brew "yt-dlp"
 brew "openai-whisper"
+brew "bash"
 
 brew "redis"
 brew "postgresql"
