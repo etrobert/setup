@@ -7,5 +7,6 @@ git log --oneline --color=always --format='%C(red)%h%C(reset) %s' |
   fzf --ansi \
     --preview 'echo {} | cut -d" " -f1 | xargs git show --color=always' \
     --preview-window right:60% \
+    --bind 'ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up' \
     --header 'Select Commit' |
   cut -d' ' -f1
