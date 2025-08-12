@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Find commit hash using fzf with preview
+# Shows commit hash, date, author, and message for easy selection
+
+git log --oneline --color=always --format='%C(red)%h%C(reset) %s' |
+  fzf --ansi \
+    --preview 'echo {} | cut -d" " -f1 | xargs git show --color=always' \
+    --preview-window right:60% \
+    --header 'Select Commit' |
+  cut -d' ' -f1
