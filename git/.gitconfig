@@ -37,6 +37,8 @@
   fw = "!git worktree list | fzf | cut -f 1 -d ' '"
   fwr = "!worktree=$(git fw) && [ -n \"$worktree\" ] && git worktree remove \"$worktree\""
   frev = "!commit=$(git-find-commit) && [ -n \"$commit\" ] && git revert \"$commit\""
+  drop = "!git rebase --onto \"$1\"^ \"$1\" #"
+  fdrop = "!commit=$(git-find-commit) && [ -n \"$commit\" ] && git drop \"$commit\""
   find = "!git-find-commit"
 [pager]
   status = on
