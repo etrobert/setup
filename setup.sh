@@ -152,8 +152,7 @@ setup_dock() {
   fi
 
   # Check and disable recents
-  current_show_recents=$(defaults read com.apple.dock show-recents)
-  if [ "$current_show_recents" != "0" ]; then
+  if ! defaults read com.apple.dock show-recents || [ "$(defaults read com.apple.dock show-recents)" != "0" ]; then
     echo "Disabling recent apps in dock"
     defaults write com.apple.dock show-recents -bool false
     should_restart_dock=true
