@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CONFIG_FILE="$HOME/.config/ghostty/config"
+
+# Check if config file exists
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Error: Ghostty config file not found at $CONFIG_FILE"
+  exit 1
+fi
+
+# Check current font size
+if grep -q "^font-size = 14$" "$CONFIG_FILE"; then
+  # Currently 14, change to 24
+  sed -i '' 's/^font-size = 14$/font-size = 24/' "$CONFIG_FILE"
+  echo "Font size set to 24"
+else
+  # Currently 24 (or other), change to 14
+  sed -i '' 's/^font-size = [0-9]*$/font-size = 14/' "$CONFIG_FILE"
+  echo "Font size set to 14"
+fi
+
+# Reload ghostty config and reset font size
+osascript -e 'tell application "Ghostty" to activate' \
+  -e 'tell application "System Events" to keystroke "," using {command down, shift down}' \
+  -e 'tell application "System Events" to keystroke "0" using {command down}'
