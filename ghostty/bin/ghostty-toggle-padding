@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+CONFIG_FILE="$HOME/.config/ghostty/config"
+
+# Check if config file exists
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Error: Ghostty config file not found at $CONFIG_FILE"
+  exit 1
+fi
+
+# Check current padding state
+if grep -q "^window-padding-x = 0$" "$CONFIG_FILE"; then
+  # Currently no padding, enable it
+  sed -i '' 's/^window-padding-x = 0$/window-padding-x = 20/' "$CONFIG_FILE"
+  sed -i '' 's/^window-padding-y = 0$/window-padding-y = 10/' "$CONFIG_FILE"
+  echo "Padding enabled (20x10)"
+else
+  # Currently has padding, disable it
+  sed -i '' 's/^window-padding-x = [0-9]*$/window-padding-x = 0/' \
+    "$CONFIG_FILE"
+  sed -i '' 's/^window-padding-y = [0-9]*$/window-padding-y = 0/' \
+    "$CONFIG_FILE"
+  echo "Padding disabled (0x0)"
+fi
+
+# Reload ghostty config
+osascript -e 'tell application "Ghostty" to activate' \
+  -e 'tell application "System Events" to keystroke "," using {command down, shift down}'
