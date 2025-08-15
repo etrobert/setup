@@ -99,3 +99,6 @@ stty -ixon
 # Infinite history
 HISTSIZE=
 HISTFILESIZE=
+
+# fzf key bindings and completion
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
