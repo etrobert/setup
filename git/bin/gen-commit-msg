@@ -25,7 +25,10 @@ fi
 
 RECENT_COMMITS=$(git log --pretty=format:'%s' --max-count=5)
 
-PROMPT="Recent commit messages for style reference:
+SYSTEM_PROMPT="You generate commit messages. Only respond with the commit message.
+Message has to be 50 characters or less"
+
+USER_PROMPT="Recent commit messages for style reference:
 
 $RECENT_COMMITS
 
@@ -33,12 +36,12 @@ Write a clear commit message for this diff:
 
 $DIFF"
 
-REQUEST_BODY=$(jq --null-input --arg user_prompt "$PROMPT" '{
+REQUEST_BODY=$(jq --null-input --arg user_prompt "$USER_PROMPT" --arg system_prompt "$SYSTEM_PROMPT" '{
   "model": "gpt-4.1",
   "messages": [
     {
       "role": "system",
-      "content": "You generate commit messages. Only respond with the commit message."
+      "content": $system_prompt
     },
     {
       "role": "user",
