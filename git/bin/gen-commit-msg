@@ -25,6 +25,7 @@ fi
 
 RECENT_COMMITS=$(git log --pretty=format:'%s' --max-count=5)
 
+# See https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 SYSTEM_PROMPT="You generate commit messages. Only respond with the commit message.
 Message has to be 50 characters or less"
 
