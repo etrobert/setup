@@ -10,9 +10,6 @@ alias cp="cp -i"
 # Create dirs recursively and verbosely
 alias mkdir="mkdir -pv"
 
-# Prints what it removes
-alias rm="rm -v"
-
 alias LS="ls"
 alias sl="ls"
 alias SL="ls"
@@ -46,3 +43,7 @@ alias v='nvim'
 alias tree='eza --tree --icons --group-directories-first --git-ignore'
 
 alias font="ghostty +show-face --string=Hello --style=regular"
+
+alias duf="du -sh * .* | sort -h"
+
+alias server="python3 -m http.server 8000"
