@@ -35,17 +35,18 @@ return {
 
 			vim.keymap.set("n", "<leader>td", gitsigns.toggle_deleted, { buffer = bufnr, desc = "Toggle deleted" })
 
-			-- Toggle between origin/main and index as base
+			-- Toggle between merge-base and HEAD as base
 			vim.keymap.set("n", "<leader>hb", function()
 				local current_base = require("gitsigns.config").config.base
 				if current_base == nil then
-					gitsigns.change_base("origin/main", true)
-					print("Gitsigns base: origin/main")
+					local merge_base = vim.fn.trim(vim.fn.system("git merge-base origin/main HEAD"))
+					gitsigns.change_base(merge_base, true)
+					print("Gitsigns base: " .. merge_base)
 				else
 					gitsigns.change_base(nil, true)
 					print("Gitsigns base: HEAD")
 				end
-			end, { buffer = bufnr, desc = "Toggle base (HEAD <-> origin/main)" })
+			end, { buffer = bufnr, desc = "Toggle base (HEAD <-> merge-base)" })
 		end,
 	},
 }
