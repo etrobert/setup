@@ -41,10 +41,10 @@ return {
 				if current_base == nil then
 					local merge_base = vim.fn.trim(vim.fn.system("git merge-base origin/main HEAD"))
 					gitsigns.change_base(merge_base, true)
-					print("Gitsigns base: " .. merge_base)
+					vim.notify("Gitsigns base: " .. merge_base)
 				else
 					gitsigns.change_base(nil, true)
-					print("Gitsigns base: HEAD")
+					vim.notify("Gitsigns base: HEAD")
 				end
 			end, { buffer = bufnr, desc = "Toggle base (HEAD <-> merge-base)" })
 		end,
