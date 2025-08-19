@@ -34,6 +34,18 @@ return {
 			vim.keymap.set("n", "<leader>hd", gitsigns.diffthis, { buffer = bufnr, desc = "Diff this" })
 
 			vim.keymap.set("n", "<leader>td", gitsigns.toggle_deleted, { buffer = bufnr, desc = "Toggle deleted" })
+
+			-- Toggle between origin/main and index as base
+			vim.keymap.set("n", "<leader>hb", function()
+				local current_base = require("gitsigns.config").config.base
+				if current_base == nil then
+					gitsigns.change_base("origin/main", true)
+					print("Gitsigns base: origin/main")
+				else
+					gitsigns.change_base(nil, true)
+					print("Gitsigns base: HEAD")
+				end
+			end, { buffer = bufnr, desc = "Toggle base (HEAD <-> origin/main)" })
 		end,
 	},
 }
