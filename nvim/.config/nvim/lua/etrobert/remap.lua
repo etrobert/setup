@@ -92,6 +92,15 @@ end
 vim.api.nvim_create_user_command("CopyFileLine", CopyFileLine, {})
 vim.keymap.set("n", "<leader>y", CopyFileLine, { desc = "Copy file and line number" })
 
+-- Close all floating windows
+vim.api.nvim_create_user_command("CloseFloats", function()
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		if vim.api.nvim_win_get_config(win).relative ~= '' then
+			vim.api.nvim_win_close(win, false)
+		end
+	end
+end, { desc = "Close all floating windows" })
+
 -- Auto-remove trailing whitespace on save
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
