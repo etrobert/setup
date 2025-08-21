@@ -40,6 +40,7 @@
   drop = "!git rebase --onto \"$1\"^ \"$1\" #"
   fdrop = "!commit=$(git-find-commit) && [ -n \"$commit\" ] && git drop \"$commit\""
   find = "!git-find-commit"
+  div-dft = "!git dft $(git merge-base origin/main HEAD)..HEAD"
 [pager]
   status = on
 [push]
