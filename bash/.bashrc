@@ -13,7 +13,7 @@ fi
 # Source: https://stackoverflow.com/questions/24839271/bash-ps1-line-wrap-issue-with-non-printing-characters-from-an-external-command
 #PS1=' \u@\H \[\e[0;36m\]$(~/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
 
-PROMPT_COMMAND='precmd'
+PROMPT_COMMAND='history -a; precmd'
 
 CYAN_COLOR='\001\e[0;36m\002'
 RED_COLOR='\001\e[0;31m\002'
