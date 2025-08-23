@@ -44,6 +44,10 @@ precmd() {
   unset CMD_TIMER_MS
 }
 
+ONE_SECOND=1000
+ONE_MINUTE=60000
+ONE_HOUR=3600000
+
 __time_ps1() {
   if [ "$EXIT_STATUS" -ne 0 ]; then
     printf "%b[%s]%b" "$RED_COLOR" "$EXIT_STATUS" "$RESET_COLOR"
@@ -51,16 +55,21 @@ __time_ps1() {
     # ex [01ms]
     # ex [99ms]
     printf "[%02dms]" "$LAST_CMD_TIME"
-  elif ((LAST_CMD_TIME < 1000)); then
+  elif ((LAST_CMD_TIME < ONE_SECOND)); then
     # ex [.10s]
     # ex [.99s]
     printf "[.%ds]" "$((LAST_CMD_TIME / 10))"
-  elif ((LAST_CMD_TIME < 60000)); then
+  elif ((LAST_CMD_TIME < ONE_MINUTE)); then
     # ex [1.0s]
     # ex [59.9s]
-    printf "[%d.%ds]" $((LAST_CMD_TIME / 1000)) $((LAST_CMD_TIME % 1000 / 100))
+    printf "[%d.%ds]" $((LAST_CMD_TIME / ONE_SECOND)) $((LAST_CMD_TIME % ONE_SECOND / 100))
+  elif ((LAST_CMD_TIME < ONE_HOUR)); then
+    # ex [1m0s]
+    # ex [59m59s]
+    printf "[%dm%ds]" $((LAST_CMD_TIME / ONE_MINUTE)) $((LAST_CMD_TIME % ONE_MINUTE / ONE_SECOND))
   else
-    printf "[%dm%ds]" $((LAST_CMD_TIME / 60000)) $((LAST_CMD_TIME % 60000 / 1000))
+    # ex [1h0m]
+    printf "[%dh%dm]" $((LAST_CMD_TIME / ONE_HOUR)) $((LAST_CMD_TIME % ONE_HOUR / ONE_MINUTE))
   fi
 }
 
