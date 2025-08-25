@@ -11,6 +11,17 @@ return {
 		"hrsh7th/cmp-nvim-lsp-signature-help",
 
 		"roobert/tailwindcss-colorizer-cmp.nvim",
+		{
+			"folke/lazydev.nvim",
+			ft = "lua", -- only load on lua files
+			opts = {
+				library = {
+					-- See the configuration section for more details
+					-- Load luvit types when the `vim.uv` word is found
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+				},
+			},
+		},
 	},
 	config = function()
 		-- See `:help cmp`
@@ -85,6 +96,7 @@ return {
 				{ name = "path" },
 				{ name = "nvim_lsp" },
 				{ name = "nvim_lsp_signature_help" },
+				{ name = "lazydev", group_index = 0 },
 			},
 			formatting = {
 				format = require("tailwindcss-colorizer-cmp").formatter,
