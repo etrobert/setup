@@ -10,9 +10,7 @@ return {
 	opts = function()
 		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-		local default_setup = function(server)
-			require("lspconfig")[server].setup({ capabilities = lsp_capabilities })
-		end
+		vim.lsp.config("*", { capabilities = lsp_capabilities })
 
 		return {
 			ensure_installed = {
@@ -26,7 +24,6 @@ return {
 				"lua_ls",
 			},
 			handlers = {
-				default_setup,
 				lua_ls = function()
 					require("lspconfig").lua_ls.setup({
 						capabilities = lsp_capabilities,
