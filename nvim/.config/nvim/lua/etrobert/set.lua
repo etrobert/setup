@@ -30,7 +30,14 @@ vim.opt.clipboard:append("unnamedplus")
 
 vim.opt.backspace = "eol,indent"
 
-vim.diagnostic.config({ virtual_text = true, jump = { float = true } })
+vim.diagnostic.config({
+	virtual_text = true,
+	jump = {
+		on_jump = function()
+			vim.diagnostic.open_float()
+		end,
+	},
+})
 
 vim.opt.cursorline = true
 
