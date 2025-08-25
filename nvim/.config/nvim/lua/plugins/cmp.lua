@@ -29,6 +29,10 @@ return {
 		local luasnip = require("luasnip")
 		luasnip.config.setup({})
 
+		local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+		vim.lsp.config("*", { capabilities = lsp_capabilities })
+
 		-- Load custom snippets
 		require("luasnip.loaders.from_lua").load({ paths = vim.fn.stdpath("config") .. "/lua/snippets" })
 
