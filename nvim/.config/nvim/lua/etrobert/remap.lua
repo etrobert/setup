@@ -62,6 +62,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set({ "n", "x" }, "<F3>", function()
 			vim.lsp.buf.format({ async = true })
 		end, opts)
+		vim.keymap.set("i", "<Tab>", function()
+			vim.lsp.inline_completion.get()
+		end)
 	end,
 })
 
@@ -95,7 +98,7 @@ vim.keymap.set("n", "<leader>y", CopyFileLine, { desc = "Copy file and line numb
 -- Close all floating windows
 vim.api.nvim_create_user_command("CloseFloats", function()
 	for _, win in ipairs(vim.api.nvim_list_wins()) do
-		if vim.api.nvim_win_get_config(win).relative ~= '' then
+		if vim.api.nvim_win_get_config(win).relative ~= "" then
 			vim.api.nvim_win_close(win, false)
 		end
 	end

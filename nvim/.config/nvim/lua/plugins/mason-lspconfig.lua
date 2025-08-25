@@ -19,4 +19,17 @@ return {
 			"lua_ls",
 		},
 	},
+	config = function(_, opts)
+		-- TODO: Remove all copilot stuff once its available
+		-- with ensure_installed = { "copilot" }
+		require("mason-lspconfig").setup(opts)
+
+		-- Ensure copilot-language-server is installed via Mason
+		local mason_registry = require("mason-registry")
+		if not mason_registry.is_installed("copilot-language-server") then
+			mason_registry.get_package("copilot-language-server"):install()
+		end
+
+		vim.lsp.enable("copilot")
+	end,
 }
