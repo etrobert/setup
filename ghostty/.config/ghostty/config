@@ -12,8 +12,5 @@ window-padding-x = 20
 window-padding-y = 10
 window-padding-balance = true
 
-# Streaming / Recording
-font-size = 24
-
-# Normal
-# font-size = 14
+# Streaming 24 / Recording 14
+font-size = 14
