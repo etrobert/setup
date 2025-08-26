@@ -25,10 +25,10 @@ brew "yt-dlp"
 brew "openai-whisper"
 brew "bash"
 
-brew "redis"
-brew "postgresql"
+brew "redis", restart_service: :changed
+brew "postgresql", restart_service: :changed
 
-brew "neovim"
+brew "neovim", args: ["HEAD"]
 brew "fd" # recommended for nvim telescope
 brew "ripgrep" # required for nvim telescope
 brew "shfmt" # required by nvim conform for bash formatting
