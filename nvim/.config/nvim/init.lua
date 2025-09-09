@@ -6,3 +6,6 @@ vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
 vim.pack.add({ "https://github.com/rcarriga/nvim-notify" })
 vim.notify = require("notify")
+
+vim.pack.add({ "https://github.com/NvChad/nvim-colorizer.lua" })
+require("colorizer").setup({ user_default_options = { tailwind = true } })
