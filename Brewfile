@@ -37,6 +37,7 @@ brew "luarocks" # lua package manager used by nvim lazy and mason
 brew "bash-language-server" # for nvim
 brew "tailwindcss-language-server" # for nvim
 brew "typescript-language-server" # for nvim
+brew "rust-analyzer" # for nvim
 
 brew "koekeishiya/formulae/skhd"
 
