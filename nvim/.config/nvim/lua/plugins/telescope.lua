@@ -2,6 +2,7 @@ vim.pack.add({
 	"https://github.com/nvim-lua/plenary.nvim",
 	"https://github.com/nvim-telescope/telescope.nvim",
 	"https://github.com/nvim-telescope/telescope-ui-select.nvim",
+	"https://github.com/nvim-telescope/telescope-fzf-native.nvim",
 })
 
 require("telescope").setup({
@@ -27,6 +28,23 @@ require("telescope").setup({
 })
 
 require("telescope").load_extension("ui-select")
+
+-- Try to load fzf extension, build if it fails
+local fzf_ok = pcall(require("telescope").load_extension, "fzf")
+if not fzf_ok then
+	vim.notify("fzf extension failed to load, attempting to build...", vim.log.levels.INFO)
+	local fzf_path = vim.fn.stdpath("data") .. "/site/pack/core/opt/telescope-fzf-native.nvim"
+	if vim.fn.isdirectory(fzf_path) ~= 1 then
+		vim.notify("telescope-fzf-native plugin not found", vim.log.levels.WARN)
+		return
+	end
+
+	local cwd = vim.fn.getcwd()
+	vim.fn.chdir(fzf_path)
+	vim.fn.system("make")
+	vim.fn.chdir(cwd)
+	vim.notify("Built telescope-fzf-native. Please restart Neovim to use fzf sorter.", vim.log.levels.INFO)
+end
 
 local builtin = require("telescope.builtin")
 
