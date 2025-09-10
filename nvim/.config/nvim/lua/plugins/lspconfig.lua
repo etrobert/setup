@@ -5,11 +5,13 @@ vim.pack.add({
 
 require("fidget").setup({})
 
-vim.lsp.enable("bashls")
-vim.lsp.enable("eslint")
-vim.lsp.enable("tailwindcss")
-vim.lsp.enable("ts_ls")
-vim.lsp.enable("rust_analyzer")
-vim.lsp.enable("gopls")
-vim.lsp.enable("lua_ls")
-vim.lsp.enable("copilot")
+vim.lsp.enable({
+	"bashls",
+	"eslint",
+	"tailwindcss",
+	"ts_ls",
+	"rust_analyzer",
+	"gopls",
+	"lua_ls",
+	"copilot",
+})
