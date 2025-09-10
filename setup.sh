@@ -144,6 +144,7 @@ setup_node() {
   nvm install node
 
   npm install -g corepack
+  npm install -g vscode-langservers-extracted
 }
 
 setup_dock() {
