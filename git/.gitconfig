@@ -59,6 +59,7 @@
   decorate = true
 [branch]
   autosetuprebase = always
+  sort = -committerdate
 [init]
 	defaultBranch = main
 [pull]
