@@ -7,6 +7,7 @@ vim.pack.add({
 	"https://github.com/hrsh7th/cmp-nvim-lsp-signature-help",
 	"https://github.com/roobert/tailwindcss-colorizer-cmp.nvim",
 	"https://github.com/folke/lazydev.nvim",
+	"https://github.com/rafamadriz/friendly-snippets",
 })
 
 -- Configure lazydev for lua development
@@ -26,6 +27,8 @@ luasnip.config.setup({})
 local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 vim.lsp.config("*", { capabilities = lsp_capabilities })
+
+require("luasnip.loaders.from_vscode").lazy_load()
 
 -- Load custom snippets
 require("luasnip.loaders.from_lua").load({ paths = vim.fn.stdpath("config") .. "/lua/snippets" })
@@ -100,3 +103,4 @@ cmp.setup({
 		format = require("tailwindcss-colorizer-cmp").formatter,
 	},
 })
+
