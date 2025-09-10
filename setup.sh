@@ -145,6 +145,7 @@ setup_node() {
 
   npm install -g corepack
   npm install -g vscode-langservers-extracted
+  npm install -g @github/copilot-language-server
 }
 
 setup_dock() {
