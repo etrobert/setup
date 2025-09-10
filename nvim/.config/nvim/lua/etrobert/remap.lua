@@ -63,9 +63,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		-- - CTRL-S is mapped in Insert mode to |vim.lsp.buf.signature_help()|
 		-- - "an" and "in" are mapped in Visual mode to outer and inner incremental
 		--  selections, respectively, using |vim.lsp.buf.selection_range()|
-		vim.keymap.set({ "n", "x" }, "<F3>", function()
-			vim.lsp.buf.format({ async = true })
-		end, opts)
 		vim.keymap.set("i", "<Tab>", function()
 			vim.lsp.inline_completion.get()
 		end)
