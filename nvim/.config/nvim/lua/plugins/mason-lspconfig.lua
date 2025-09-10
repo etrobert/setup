@@ -15,11 +15,12 @@ require("mason-lspconfig").setup({
 		"tailwindcss",
 		"ts_ls",
 		"rust_analyzer",
-		"bashls",
 		"gopls",
 		"lua_ls",
 	},
 })
+
+vim.lsp.enable("bashls")
 
 -- TODO: Remove all copilot stuff once its available
 -- with ensure_installed = { "copilot" }
@@ -31,4 +32,3 @@ if not mason_registry.is_installed("copilot-language-server") then
 end
 
 vim.lsp.enable("copilot")
-
