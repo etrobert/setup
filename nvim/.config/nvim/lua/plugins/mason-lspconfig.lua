@@ -10,7 +10,6 @@ require("fidget").setup({})
 
 require("mason-lspconfig").setup({
 	ensure_installed = {
-		"biome",
 		"eslint",
 		"tailwindcss",
 		"ts_ls",
