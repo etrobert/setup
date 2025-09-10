@@ -1,20 +1,21 @@
 #!/bin/bash
+
 set -e
 
-# Clean up merged branch: kill tmux session + remove worktree
-# Usage: ./cleanup-merged-branch.sh <branch-name>
+WORKTREE_PATH="$1"
 
-BRANCH_NAME="$1"
-
-if [ -z "$BRANCH_NAME" ]; then
-    echo "Usage: $0 <branch-name>"
-    exit 1
+if [ -z "$WORKTREE_PATH" ]; then
+  echo "Usage: $0 <branch-name>"
+  exit 1
 fi
 
+SESSION_NAME=$(basename "$WORKTREE_PATH")
+
 # Kill tmux session
-tmux kill-session -t "$BRANCH_NAME"
+tmux kill-session -t "$SESSION_NAME"
 
 # Remove worktree
-git worktree remove "$BRANCH_NAME"
+git worktree remove "$WORKTREE_PATH"
 
-echo "Cleaned up $BRANCH_NAME"
+echo "Cleaned up $SESSION_NAME"
+
