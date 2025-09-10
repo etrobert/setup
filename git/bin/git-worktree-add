@@ -23,12 +23,15 @@ else
   git worktree add "$WORKTREE_PATH" -b "$BRANCH"
 fi
 
-# TODO: Use correct path
-# TODO .claude/settings.local.json
 for file in .env .tmux.conf; do
   if [ -f "$file" ]; then
     cp "$file" "$WORKTREE_PATH"
   fi
 done
+
+if [ -f ".claude/settings.local.json" ]; then
+  mkdir -p "$WORKTREE_PATH/.claude"
+  cp ".claude/settings.local.json" "$WORKTREE_PATH/.claude/"
+fi
 
 tmux-sessionizer "$NAME"
