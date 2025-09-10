@@ -35,6 +35,7 @@ brew "shfmt" # required by nvim conform for bash formatting
 brew "stylua" # required by nvim conform for lua formatting
 brew "luarocks" # lua package manager used by nvim lazy and mason
 brew "bash-language-server" # for nvim
+brew "tailwindcss-language-server" # for nvim
 
 brew "koekeishiya/formulae/skhd"
 

@@ -10,7 +10,6 @@ require("fidget").setup({})
 
 require("mason-lspconfig").setup({
 	ensure_installed = {
-		"tailwindcss",
 		"ts_ls",
 		"rust_analyzer",
 		"gopls",
@@ -20,6 +19,7 @@ require("mason-lspconfig").setup({
 
 vim.lsp.enable("bashls")
 vim.lsp.enable("eslint")
+vim.lsp.enable("tailwindcss")
 
 -- TODO: Remove all copilot stuff once its available
 -- with ensure_installed = { "copilot" }
