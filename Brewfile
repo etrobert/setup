@@ -38,6 +38,7 @@ brew "bash-language-server" # for nvim
 brew "tailwindcss-language-server" # for nvim
 brew "typescript-language-server" # for nvim
 brew "rust-analyzer" # for nvim
+brew "gopls" # for nvim
 
 brew "koekeishiya/formulae/skhd"
 
