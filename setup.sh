@@ -142,6 +142,10 @@ setup_node() {
 
   echo "NodeJS not found. Installing..."
   nvm install node
+}
+
+setup_npm_packages() {
+  echo "Installing global npm packages..."
 
   npm install -g corepack
   npm install -g vscode-langservers-extracted
@@ -327,6 +331,8 @@ echo
 setup_nvm
 echo
 setup_node
+echo
+setup_npm_packages
 echo
 setup_dock
 echo
