@@ -5,6 +5,12 @@ vim.pack.add({
 
 require("fidget").setup({})
 
+vim.lsp.config["knip_lsp"] = {
+	cmd = { "node", "/Users/etiennerobert/work/knip-lsp/out/main.js", "--stdio" },
+	filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "json" },
+	root_markers = { ".git", "package.json" },
+}
+
 vim.lsp.enable({
 	"bashls",
 	"eslint",
@@ -14,4 +20,5 @@ vim.lsp.enable({
 	"gopls",
 	"lua_ls",
 	"copilot",
+	"knip_lsp",
 })
