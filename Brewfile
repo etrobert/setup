@@ -42,6 +42,8 @@ brew "lua-language-server" # for nvim
 
 brew "koekeishiya/formulae/skhd"
 
+brew "stripe"
+
 cask "arc"
 cask "firefox"
 cask "zen"
