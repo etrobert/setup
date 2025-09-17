@@ -57,7 +57,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
 
-vim.lsp.inline_completion.enable()
+-- Disable because super buggy
+-- vim.lsp.inline_completion.enable()
 
 -- don't give the intro message when starting Vim, see :intro
 -- vim.opt.shortmess:append("I")
