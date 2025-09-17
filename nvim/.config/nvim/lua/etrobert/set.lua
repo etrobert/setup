@@ -55,7 +55,8 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = "» ", extends = "›", precedes = "‹", nbsp = "·", trail = "·" }
 
 -- Disable because super buggy
 -- vim.lsp.inline_completion.enable()
