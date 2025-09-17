@@ -14,6 +14,7 @@ vim.pack.add({
 	"https://github.com/j-hui/fidget.nvim",
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/windwp/nvim-ts-autotag",
+	"https://github.com/nvim-lualine/lualine.nvim",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -38,9 +39,14 @@ require("nvim-ts-autotag").setup({
 	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
 })
 
+local relative_path = { "filename", path = 1 }
+require("lualine").setup({
+	sections = { lualine_c = { relative_path }, lualine_x = { "filetype" } },
+	inactive_sections = { lualine_c = { relative_path } },
+})
+
 require("plugins.which-key")
 require("plugins.harpoon")
-require("plugins.lualine")
 require("plugins.vim-tmux-navigator")
 require("plugins.conform")
 require("plugins.gitsigns")
