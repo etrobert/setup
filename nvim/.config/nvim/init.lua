@@ -2,8 +2,9 @@ require("etrobert")
 
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
+vim.pack.add({ "https://github.com/tpope/vim-surround" })
+
 require("plugins.catppuccin")
-require("plugins.surround")
 require("plugins.fugitive")
 require("plugins.which-key")
 require("plugins.harpoon")
