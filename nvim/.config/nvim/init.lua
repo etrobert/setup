@@ -15,7 +15,7 @@ vim.pack.add({
 	"https://github.com/neovim/nvim-lspconfig",
 })
 
--- catppuccin
+require("catppuccin").setup({ float = { transparent = true, solid = false } })
 vim.cmd("colorscheme catppuccin-macchiato")
 
 -- vim-fugitive
