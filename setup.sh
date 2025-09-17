@@ -71,7 +71,7 @@ setup_dotfiles() {
   cd "$HOME/setup"
 
   echo "Stowing dotfiles..."
-  stow alias bash ghostty git macos nvim profile readline ssh tmux skhd raycast
+  stow alias bash ghostty git macos nvim profile readline ssh tmux skhd raycast prettier
 
   echo "Setting proper permissions for SSH config..."
   chmod 600 ssh/.ssh/config
