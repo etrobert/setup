@@ -2,10 +2,12 @@ require("etrobert")
 
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
-vim.pack.add({ "https://github.com/tpope/vim-surround" })
+vim.pack.add({ "https://github.com/tpope/vim-surround", "https://github.com/tpope/vim-fugitive" })
+
+-- vim-fugitive
+vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
 
 require("plugins.catppuccin")
-require("plugins.fugitive")
 require("plugins.which-key")
 require("plugins.harpoon")
 require("plugins.lualine")
