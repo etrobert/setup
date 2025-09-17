@@ -11,6 +11,7 @@ vim.pack.add({
 	"https://github.com/NvChad/nvim-colorizer.lua",
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/akinsho/bufferline.nvim",
+	"https://github.com/j-hui/fidget.nvim",
 })
 
 -- catppuccin
@@ -30,6 +31,9 @@ require("treesj").setup({ max_join_length = 500 })
 
 -- bufferline
 require("bufferline").setup({ options = { diagnostics = "nvim_lsp" } })
+
+-- fidget
+require("fidget").setup({})
 
 require("plugins.which-key")
 require("plugins.harpoon")

@@ -1,9 +1,4 @@
-vim.pack.add({
-	"https://github.com/neovim/nvim-lspconfig",
-	"https://github.com/j-hui/fidget.nvim",
-})
-
-require("fidget").setup({})
+vim.pack.add({ "https://github.com/neovim/nvim-lspconfig" })
 
 vim.lsp.config["knip_lsp"] = {
 	cmd = { "node", "/Users/etiennerobert/work/knip-lsp/out/main.js", "--stdio" },
