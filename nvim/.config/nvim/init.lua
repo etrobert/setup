@@ -21,19 +21,14 @@ vim.cmd("colorscheme catppuccin-macchiato")
 -- vim-fugitive
 vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
 
--- notify
 vim.notify = require("notify")
 
--- colorizer
 require("colorizer").setup({ user_default_options = { tailwind = true } })
 
--- treesj
 require("treesj").setup({ max_join_length = 500 })
 
--- bufferline
 require("bufferline").setup({ options = { diagnostics = "nvim_lsp" } })
 
--- fidget
 require("fidget").setup({})
 
 require("plugins.which-key")
