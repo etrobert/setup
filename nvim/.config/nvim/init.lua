@@ -2,10 +2,17 @@ require("etrobert")
 
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
-vim.pack.add({ "https://github.com/tpope/vim-surround", "https://github.com/tpope/vim-fugitive" })
+vim.pack.add({
+	"https://github.com/tpope/vim-surround",
+	"https://github.com/tpope/vim-fugitive",
+	"https://github.com/rcarriga/nvim-notify",
+})
 
 -- vim-fugitive
 vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
+
+-- notify
+vim.notify = require("notify")
 
 require("plugins.catppuccin")
 require("plugins.which-key")
@@ -17,7 +24,6 @@ require("plugins.treesj")
 require("plugins.trouble")
 require("plugins.conform")
 require("plugins.gitsigns")
-require("plugins.notify")
 require("plugins.telescope")
 require("plugins.treesitter")
 require("plugins.colorizer")
