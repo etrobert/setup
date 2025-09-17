@@ -1,6 +1,6 @@
 # https://ghostty.org/docs/config/reference
 
-theme = catppuccin-macchiato
+theme = Catppuccin Macchiato
 macos-titlebar-style = hidden
 
 command = /opt/homebrew/bin/bash
