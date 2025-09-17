@@ -6,6 +6,7 @@ vim.pack.add({
 	"https://github.com/tpope/vim-surround",
 	"https://github.com/tpope/vim-fugitive",
 	"https://github.com/rcarriga/nvim-notify",
+	"https://github.com/NvChad/nvim-colorizer.lua",
 })
 
 -- vim-fugitive
@@ -13,6 +14,9 @@ vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" }
 
 -- notify
 vim.notify = require("notify")
+
+-- colorizer
+require("colorizer").setup({ user_default_options = { tailwind = true } })
 
 require("plugins.catppuccin")
 require("plugins.which-key")
@@ -26,7 +30,6 @@ require("plugins.conform")
 require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")
-require("plugins.colorizer")
 require("plugins.lspconfig")
 require("plugins.cmp")
 require("plugins.nvim-ts-autotag")
