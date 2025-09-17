@@ -21,6 +21,7 @@ vim.cmd("colorscheme catppuccin-macchiato")
 -- vim-fugitive
 vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
 
+require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
 vim.notify = require("notify")
 
 require("colorizer").setup({ user_default_options = { tailwind = true } })
