@@ -13,6 +13,7 @@ vim.pack.add({
 	"https://github.com/akinsho/bufferline.nvim",
 	"https://github.com/j-hui/fidget.nvim",
 	"https://github.com/neovim/nvim-lspconfig",
+	"https://github.com/windwp/nvim-ts-autotag",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -32,6 +33,11 @@ require("bufferline").setup({ options = { diagnostics = "nvim_lsp" } })
 
 require("fidget").setup({})
 
+---@diagnostic disable-next-line: missing-fields
+require("nvim-ts-autotag").setup({
+	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
+})
+
 require("plugins.which-key")
 require("plugins.harpoon")
 require("plugins.lualine")
@@ -41,4 +47,3 @@ require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")
 require("plugins.cmp")
-require("plugins.nvim-ts-autotag")
