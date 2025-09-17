@@ -80,3 +80,5 @@ vim.lsp.enable({
 	"copilot",
 	"knip_lsp",
 })
+
+vim.o.winborder = "rounded"
