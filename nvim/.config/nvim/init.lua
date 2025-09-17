@@ -3,12 +3,16 @@ require("etrobert")
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
 vim.pack.add({
+	"https://github.com/catppuccin/nvim",
 	"https://github.com/tpope/vim-surround",
 	"https://github.com/tpope/vim-fugitive",
 	"https://github.com/rcarriga/nvim-notify",
 	"https://github.com/NvChad/nvim-colorizer.lua",
 	"https://github.com/Wansmer/treesj",
 })
+
+-- catppuccin
+vim.cmd("colorscheme catppuccin-macchiato")
 
 -- vim-fugitive
 vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
@@ -22,7 +26,6 @@ require("colorizer").setup({ user_default_options = { tailwind = true } })
 -- treesj
 require("treesj").setup({ max_join_length = 500 })
 
-require("plugins.catppuccin")
 require("plugins.which-key")
 require("plugins.harpoon")
 require("plugins.lualine")
