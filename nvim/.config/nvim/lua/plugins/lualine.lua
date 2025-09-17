@@ -11,6 +11,7 @@ require("lualine").setup({
 				path = 1, -- Show relative path
 			},
 		},
+		lualine_x = { "filetype" },
 	},
 	inactive_sections = {
 		lualine_c = {
