@@ -62,3 +62,21 @@ vim.fn.matchadd("TrailingWhitespace", [[\s\+$]])
 
 -- don't give the intro message when starting Vim, see :intro
 -- vim.opt.shortmess:append("I")
+
+vim.lsp.config["knip_lsp"] = {
+	cmd = { "node", "/Users/etiennerobert/work/knip-lsp/out/main.js", "--stdio" },
+	filetypes = { "javascript", "typescript", "javascriptreact", "typescriptreact", "json" },
+	root_markers = { ".git", "package.json" },
+}
+
+vim.lsp.enable({
+	"bashls",
+	"eslint",
+	"tailwindcss",
+	"ts_ls",
+	"rust_analyzer",
+	"gopls",
+	"lua_ls",
+	"copilot",
+	"knip_lsp",
+})

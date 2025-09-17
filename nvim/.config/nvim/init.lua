@@ -12,6 +12,7 @@ vim.pack.add({
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/akinsho/bufferline.nvim",
 	"https://github.com/j-hui/fidget.nvim",
+	"https://github.com/neovim/nvim-lspconfig",
 })
 
 -- catppuccin
@@ -44,6 +45,5 @@ require("plugins.conform")
 require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")
-require("plugins.lspconfig")
 require("plugins.cmp")
 require("plugins.nvim-ts-autotag")
