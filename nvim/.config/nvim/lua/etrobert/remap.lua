@@ -41,19 +41,9 @@ vim.keymap.set("n", "<leader>rm", DeleteCurrentFile, { desc = "Delete current fi
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	desc = "LSP actions",
-	callback = function(event)
-		local opts = { buffer = event.buf }
-
-		-- these will be buffer-local keybindings
-		-- because they only work if you have an active language server
-
-		vim.keymap.set("n", "gd", function()
-			vim.lsp.buf.definition()
-		end, opts)
-		vim.keymap.set("n", "gD", function()
-			vim.lsp.buf.declaration()
-		end, opts)
+	callback = function()
 		-- These GLOBAL keymaps are created unconditionally when Nvim starts:
+		-- - "CTRL-]" is mapped in Normal mode to go to definition
 		-- - "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
 		-- - "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
 		-- - "grr" is mapped in Normal mode to |vim.lsp.buf.references()|
