@@ -37,26 +37,28 @@ end
 
 vim.keymap.set("n", "<leader>rm", DeleteCurrentFile, { desc = "Delete current file" })
 
--- Source: https://lsp-zero.netlify.app/v3.x/blog/you-might-not-need-lsp-zero.html
+-- See :help lsp-defaults
+-- These GLOBAL keymaps are created unconditionally when Nvim starts:
+-- - "CTRL-]" is mapped in Normal mode to go to definition
+-- - "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
+-- - "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
+-- - "grr" is mapped in Normal mode to |vim.lsp.buf.references()|
+-- - "gri" is mapped in Normal mode to |vim.lsp.buf.implementation()|
+-- - "grt" is mapped in Normal mode to |vim.lsp.buf.type_definition()|
+-- - "gO" is mapped in Normal mode to |vim.lsp.buf.document_symbol()|
+-- - CTRL-S is mapped in Insert mode to |vim.lsp.buf.signature_help()|
+-- - "an" and "in" are mapped in Visual mode to outer and inner incremental
+--  selections, respectively, using |vim.lsp.buf.selection_range()|
 
-vim.api.nvim_create_autocmd("LspAttach", {
-	desc = "LSP actions",
-	callback = function()
-		-- These GLOBAL keymaps are created unconditionally when Nvim starts:
-		-- - "CTRL-]" is mapped in Normal mode to go to definition
-		-- - "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
-		-- - "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
-		-- - "grr" is mapped in Normal mode to |vim.lsp.buf.references()|
-		-- - "gri" is mapped in Normal mode to |vim.lsp.buf.implementation()|
-		-- - "grt" is mapped in Normal mode to |vim.lsp.buf.type_definition()|
-		-- - "gO" is mapped in Normal mode to |vim.lsp.buf.document_symbol()|
-		-- - CTRL-S is mapped in Insert mode to |vim.lsp.buf.signature_help()|
-		-- - "an" and "in" are mapped in Visual mode to outer and inner incremental
-		--  selections, respectively, using |vim.lsp.buf.selection_range()|
-		vim.keymap.set("i", "<Tab>", function()
-			vim.lsp.inline_completion.get()
-		end)
-	end,
+-- See :help vim.lsp.inline_completion.get()
+vim.keymap.set("i", "<Tab>", function()
+	if not vim.lsp.inline_completion.get() then
+		return "<Tab>"
+	end
+end, {
+	expr = true,
+	replace_keycodes = true,
+	desc = "Get the current inline completion",
 })
 
 function CopyFileLine()
