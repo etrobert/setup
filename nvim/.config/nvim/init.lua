@@ -15,6 +15,7 @@ vim.pack.add({
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/windwp/nvim-ts-autotag",
 	"https://github.com/nvim-lualine/lualine.nvim",
+	"https://github.com/folke/which-key.nvim",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -45,7 +46,14 @@ require("lualine").setup({
 	inactive_sections = { lualine_c = { relative_path } },
 })
 
-require("plugins.which-key")
+require("which-key").setup({
+	spec = {
+		{ "<leader>b", group = "Buffer" },
+		{ "<leader>g", group = "Telescope Git" },
+		{ "<leader>f", group = "Telescope Files" },
+	},
+})
+
 require("plugins.harpoon")
 require("plugins.vim-tmux-navigator")
 require("plugins.conform")
