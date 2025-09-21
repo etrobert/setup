@@ -1,3 +1,6 @@
+-- Record startup time as early as possible
+vim.g.start_time = vim.fn.reltime()
+
 require("etrobert")
 
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
@@ -67,3 +70,13 @@ require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")
 require("plugins.cmp")
+
+-- Display startup time after everything loads
+vim.api.nvim_create_autocmd("VimEnter", {
+	callback = function()
+		-- Calculate time elapsed since we recorded start_time
+		local elapsed = vim.fn.reltimefloat(vim.fn.reltime(vim.g.start_time)) * 1000
+		local message = string.format("⚡ Neovim loaded in %.1fms", elapsed)
+		vim.notify(message, vim.log.levels.INFO, { title = "Startup Time" })
+	end,
+})
