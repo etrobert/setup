@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Read(//Users/etiennerobert/**)",
+      "Bash(rm:*)",
+      "Bash(nvim:*)",
+      "Bash(mkdir:*)",
+      "Bash(brew search:*)",
+      "Bash(brew info:*)",
+      "Bash(brew list:*)",
+      "Bash(find:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git log:*)",
+      "Bash(grep:*)",
+      "Bash(ghostty +list-keybinds:*)",
+      "Bash(awk:*)"
+    ]
+  }
+}
