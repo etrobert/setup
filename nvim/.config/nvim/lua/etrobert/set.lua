@@ -45,6 +45,7 @@ vim.opt.cursorline = true
 vim.o.updatetime = 250
 
 -- Highlight when yanking text
+---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking text",
 	callback = function()
