@@ -20,6 +20,7 @@ vim.pack.add({
 	"https://github.com/nvim-lualine/lualine.nvim",
 	"https://github.com/folke/which-key.nvim",
 	"https://github.com/chrisgrieser/nvim-spider",
+	"https://github.com/folke/lazydev.nvim",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -56,6 +57,11 @@ require("which-key").setup({
 		{ "<leader>g", group = "Telescope Git" },
 		{ "<leader>f", group = "Telescope Files" },
 	},
+})
+
+---@diagnostic disable-next-line: missing-fields
+require("lazydev").setup({
+	library = { { path = "${3rd}/luv/library", words = { "vim%.uv" } } },
 })
 
 -- nvim-spider

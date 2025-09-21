@@ -6,17 +6,7 @@ vim.pack.add({
 	"https://github.com/hrsh7th/cmp-nvim-lsp",
 	"https://github.com/hrsh7th/cmp-nvim-lsp-signature-help",
 	"https://github.com/roobert/tailwindcss-colorizer-cmp.nvim",
-	"https://github.com/folke/lazydev.nvim",
 	"https://github.com/rafamadriz/friendly-snippets",
-})
-
--- Configure lazydev for lua development
-require("lazydev").setup({
-	library = {
-		-- See the configuration section for more details
-		-- Load luvit types when the `vim.uv` word is found
-		{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-	},
 })
 
 -- See `:help cmp`
@@ -103,4 +93,3 @@ cmp.setup({
 		format = require("tailwindcss-colorizer-cmp").formatter,
 	},
 })
-
