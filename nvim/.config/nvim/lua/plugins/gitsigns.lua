@@ -47,3 +47,10 @@ require("gitsigns").setup({
 		end, { buffer = bufnr, desc = "Toggle base (HEAD <-> merge-base)" })
 	end,
 })
+
+-- -- Auto-refresh gitsigns when nvim gains focus
+-- vim.api.nvim_create_autocmd("FocusGained", {
+-- 	callback = function()
+-- 		require("gitsigns").reset_base()
+-- 	end,
+-- })
