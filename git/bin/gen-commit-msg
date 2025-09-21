@@ -13,7 +13,7 @@ if [ -z "$OPENAI_API_KEY" ]; then
   exit 1
 fi
 
-if ! DIFF=$(git diff --cached 2>/dev/null); then
+if ! DIFF=$(git diff --cached -- ':!/package-lock.json' ':!/pnpm-lock.yaml' ':!/yarn.lock' 2>/dev/null); then
   echo "Error: Unable to get staged changes."
   exit 1
 fi
