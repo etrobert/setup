@@ -16,4 +16,5 @@ window-padding-balance = true
 font-size = 14
 
 # configured by /terminal-setup inside claude
-keybind = shift+enter=text:\x1b\r
+# Manually switched from shift+enter (recommended in Claude docs) because it interferes with nvim
+keybind = alt+enter=text:\x1b\r
