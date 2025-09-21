@@ -85,6 +85,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 })
 
 -- Display startup time after everything loads
+---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
 		-- Calculate time elapsed since we recorded start_time
