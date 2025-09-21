@@ -75,7 +75,14 @@ require("plugins.conform")
 require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")
-require("plugins.cmp")
+
+-- Lazy load cmp on InsertEnter
+vim.api.nvim_create_autocmd("InsertEnter", {
+	once = true,
+	callback = function()
+		require("plugins.cmp")
+	end,
+})
 
 -- Display startup time after everything loads
 vim.api.nvim_create_autocmd("VimEnter", {
