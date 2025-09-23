@@ -34,12 +34,10 @@ local function create_banner(message)
 		if win and vim.api.nvim_win_is_valid(win) then
 			vim.api.nvim_win_close(win, true)
 		end
-		win = nil
 
 		if buf and vim.api.nvim_buf_is_valid(buf) then
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end
-		buf = nil
 	end
 
 	vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufReadPost", "BufNewFile" }, {
