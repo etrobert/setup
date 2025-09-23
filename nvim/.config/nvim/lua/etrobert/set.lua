@@ -77,7 +77,7 @@ vim.lsp.enable({
 	"gopls",
 	"lua_ls",
 	"copilot",
-	"knip_lsp",
+	-- "knip_lsp",
 })
 
 vim.o.winborder = "rounded"
