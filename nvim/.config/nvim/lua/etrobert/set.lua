@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- vim.lsp.inline_completion.enable()
 
 -- don't give the intro message when starting Vim, see :intro
--- vim.opt.shortmess:append("I")
+vim.opt.shortmess:append("I")
 
 vim.lsp.config["knip_lsp"] = {
 	cmd = { "node", "/Users/etiennerobert/work/knip-lsp/out/main.js", "--stdio" },

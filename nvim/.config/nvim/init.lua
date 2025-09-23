@@ -89,10 +89,12 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 ---@diagnostic disable-next-line: param-type-mismatch
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()
-		-- Calculate time elapsed since we recorded start_time
 		local elapsed = vim.fn.reltimefloat(vim.fn.reltime(vim.g.start_time)) * 1000
 		local message = string.format("⚡ Neovim loaded in %.1fms", elapsed)
-		vim.notify(message, vim.log.levels.INFO, { title = "Startup Time" })
+		vim.api.nvim_echo({ { message, "Title" } }, false, {})
+		vim.defer_fn(function()
+			vim.cmd('echo')
+		end, 4000)
 	end,
 })
 
