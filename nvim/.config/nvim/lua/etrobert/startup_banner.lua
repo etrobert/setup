@@ -1,6 +1,6 @@
 local M = {}
 
-local function git_summary()
+local function git_status_lines()
 	if vim.fn.executable("git") ~= 1 then
 		return nil
 	end
@@ -16,49 +16,17 @@ local function git_summary()
 		return nil
 	end
 
-	local branch = status[1]:gsub("^##%s*", "")
-	local staged, unstaged, untracked = 0, 0, 0
-	for i = 2, #status do
-		local line = status[i]
-		local code = line:sub(1, 2)
-		if code == "??" then
-			untracked = untracked + 1
-		else
-			local left = code:sub(1, 1)
-			local right = code:sub(2, 2)
-			if left ~= " " then
-				staged = staged + 1
-			end
-			if right ~= " " then
-				unstaged = unstaged + 1
-			end
-		end
-	end
-
-	local pieces = { string.format(" %s", branch) }
-	if staged == 0 and unstaged == 0 and untracked == 0 then
-		table.insert(pieces, "✓ clean")
-	else
-		if staged > 0 then
-			table.insert(pieces, string.format("● %d staged", staged))
-		end
-		if unstaged > 0 then
-			table.insert(pieces, string.format("○ %d unstaged", unstaged))
-		end
-		if untracked > 0 then
-			table.insert(pieces, string.format("✚ %d untracked", untracked))
-		end
-	end
-
-	return table.concat(pieces, "  ")
+	return status
 end
 
 local function create_banner(message)
 	local lines = { "", message }
-	local git_line = git_summary()
-	if git_line then
+	local git_lines = git_status_lines()
+	if git_lines then
 		table.insert(lines, "")
-		table.insert(lines, git_line)
+		for _, line in ipairs(git_lines) do
+			table.insert(lines, line)
+		end
 	end
 	table.insert(lines, "")
 
