@@ -30,8 +30,6 @@ local function create_banner(message)
 	})
 	vim.api.nvim_set_option_value("winhl", "Normal:Normal", { win = win })
 
-	local ns = vim.api.nvim_create_namespace("startup_banner")
-
 	local function close_banner()
 		if win and vim.api.nvim_win_is_valid(win) then
 			vim.api.nvim_win_close(win, true)
@@ -42,18 +40,12 @@ local function create_banner(message)
 			vim.api.nvim_buf_delete(buf, { force = true })
 		end
 		buf = nil
-
-		vim.on_key(nil, ns)
 	end
 
 	vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufReadPost" }, {
 		once = true,
 		callback = close_banner,
 	})
-
-	vim.on_key(function()
-		close_banner()
-	end, ns)
 end
 
 local function on_vim_enter()
