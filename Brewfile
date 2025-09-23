@@ -39,6 +39,7 @@ brew "typescript-language-server" # for nvim
 brew "rust-analyzer" # for nvim
 brew "gopls" # for nvim
 brew "lua-language-server" # for nvim
+brew "imagemagick" # for image rendering in nvim using snacks.image
 
 brew "koekeishiya/formulae/skhd"
 

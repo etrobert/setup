@@ -23,6 +23,7 @@ vim.pack.add({
 	"https://github.com/folke/lazydev.nvim",
 	"https://github.com/m4xshen/hardtime.nvim",
 	"https://github.com/unblevable/quick-scope",
+	"https://github.com/folke/snacks.nvim",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -41,6 +42,8 @@ require("treesj").setup({ max_join_length = 500 })
 require("bufferline").setup({ options = { diagnostics = "nvim_lsp" } })
 
 require("fidget").setup({})
+
+require("snacks").setup({ image = {} })
 
 ---@diagnostic disable-next-line: missing-fields
 require("nvim-ts-autotag").setup({
