@@ -68,7 +68,13 @@ local function create_banner(message)
 		end
 	end
 
-	vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufReadPost", "BufNewFile" }, {
+	vim.api.nvim_create_autocmd({
+		"CursorMoved",
+		"InsertEnter",
+		"BufReadPost",
+		"BufNewFile",
+		"VimResized",
+	}, {
 		once = true,
 		callback = close_banner,
 	})
