@@ -21,6 +21,7 @@ vim.pack.add({
 	"https://github.com/folke/which-key.nvim",
 	"https://github.com/chrisgrieser/nvim-spider",
 	"https://github.com/folke/lazydev.nvim",
+	"https://github.com/m4xshen/hardtime.nvim",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -94,3 +95,5 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		vim.notify(message, vim.log.levels.INFO, { title = "Startup Time" })
 	end,
 })
+
+require("hardtime").setup()
