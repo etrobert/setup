@@ -56,9 +56,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- vim.opt.list = true
 -- vim.opt.listchars = { tab = "» ", extends = "›", precedes = "‹", nbsp = "·", trail = "·" }
 
--- Disable because super buggy
--- See https://github.com/etrobert/setup/issues/10
--- vim.lsp.inline_completion.enable()
+vim.lsp.inline_completion.enable()
 
 -- don't give the intro message when starting Vim, see :intro
 vim.opt.shortmess:append("I")
