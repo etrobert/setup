@@ -85,17 +85,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 	end,
 })
 
--- Display startup time after everything loads
----@diagnostic disable-next-line: param-type-mismatch
-vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-		local elapsed = vim.fn.reltimefloat(vim.fn.reltime(vim.g.start_time)) * 1000
-		local message = string.format("⚡ Neovim loaded in %.1fms", elapsed)
-		vim.api.nvim_echo({ { message, "Title" } }, false, {})
-		vim.defer_fn(function()
-			vim.cmd('echo')
-		end, 4000)
-	end,
-})
-
 require("hardtime").setup()
+
+require("etrobert.startup_banner").setup()
