@@ -14,6 +14,7 @@ require("conform").setup({
 		css = { "prettierd", "prettier", stop_after_first = true },
 		swift = { "swiftformat" },
 		sh = { "shfmt" },
+		fish = { "fish_indent" },
 		rust = { "rustfmt" },
 	},
 	format_on_save = {
