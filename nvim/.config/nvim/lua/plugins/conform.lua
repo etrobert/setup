@@ -38,3 +38,43 @@ vim.api.nvim_create_user_command("Format", function(args)
 	end
 	require("conform").format({ async = true, lsp_format = "fallback", range = range })
 end, { range = true })
+
+local aug = vim.api.nvim_create_augroup("ConformFidgetProgress", { clear = true })
+local handles = {}
+
+local function format_display_name(bufnr)
+	local filename = vim.api.nvim_buf_get_name(bufnr)
+	if filename == "" then
+		return string.format("[buffer %d]", bufnr)
+	end
+	return vim.fn.fnamemodify(filename, ":t")
+end
+
+vim.api.nvim_create_autocmd("User", {
+	group = aug,
+	pattern = "ConformFormatPre",
+	callback = function(event)
+		local formatter = event.data.formatter.name
+		handles[event.buf] = require("fidget.progress").handle.create({
+			lsp_client = { name = formatter },
+			title = string.format("Formatting %s", format_display_name(event.buf)),
+		})
+	end,
+})
+
+vim.api.nvim_create_autocmd("User", {
+	group = aug,
+	pattern = "ConformFormatPost",
+	callback = function(event)
+		local handle = handles[event.buf]
+		if not handle then
+			return
+		end
+		handles[event.buf] = nil
+		local err = event.data and event.data.err
+		if err then
+			handle:report({ message = "Failed" })
+		end
+		handle:finish()
+	end,
+})
