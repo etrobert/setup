@@ -1,6 +1,9 @@
 vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 
-require("conform").setup({
+local conform = require("conform")
+local fidget = require("fidget")
+
+conform.setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
 		javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -17,14 +20,80 @@ require("conform").setup({
 		fish = { "fish_indent" },
 		rust = { "rustfmt" },
 	},
-	format_on_save = {
-		timeout_ms = 1000,
-		lsp_format = "fallback",
-	},
+	format_on_save = function(bufnr)
+		local formatters = conform.list_formatters(bufnr)
+		if #formatters == 0 then
+			return
+		end
+
+		local formatter_names = {}
+		for _, formatter in ipairs(formatters) do
+			table.insert(formatter_names, formatter.name)
+		end
+		local formatter_list = table.concat(formatter_names, ", ")
+
+		local progress = fidget.progress.handle.create({
+			title = "Auto-formatting",
+			message = "Running " .. formatter_list,
+			lsp_client = { name = "conform.nvim" },
+		})
+
+		return {
+			timeout_ms = 1000,
+			lsp_format = "fallback",
+			callback = function(err)
+				if err then
+					progress:finish()
+					fidget.notify("Auto-format failed: " .. err, vim.log.levels.ERROR)
+				else
+					progress:report({ message = "Complete" })
+					progress:finish()
+				end
+			end,
+		}
+	end,
 })
 
+-- Custom format function with fidget progress notifications
+local function format_with_progress(opts)
+	opts = opts or {}
+	local bufnr = vim.api.nvim_get_current_buf()
+	local filetype = vim.bo[bufnr].filetype
+	local formatters = conform.list_formatters(bufnr)
+
+	if #formatters == 0 then
+		fidget.notify("No formatters available for " .. filetype, vim.log.levels.WARN)
+		return
+	end
+
+	local formatter_names = {}
+	for _, formatter in ipairs(formatters) do
+		table.insert(formatter_names, formatter.name)
+	end
+	local formatter_list = table.concat(formatter_names, ", ")
+
+	local progress = fidget.progress.handle.create({
+		title = "Formatting",
+		message = "Running " .. formatter_list,
+		lsp_client = { name = "conform.nvim" },
+	})
+
+	opts.callback = function(err)
+		if err then
+			progress:finish()
+			fidget.notify("Format failed: " .. err, vim.log.levels.ERROR)
+		else
+			progress:report({ message = "Complete" })
+			progress:finish()
+			fidget.notify("Formatted with " .. formatter_list, vim.log.levels.INFO)
+		end
+	end
+
+	conform.format(opts)
+end
+
 vim.keymap.set("", "<leader>fm", function()
-	require("conform").format({ async = true })
+	format_with_progress({ async = true })
 end, { desc = "Format current buffer" })
 
 vim.api.nvim_create_user_command("Format", function(args)
@@ -36,5 +105,5 @@ vim.api.nvim_create_user_command("Format", function(args)
 			["end"] = { args.line2, end_line:len() },
 		}
 	end
-	require("conform").format({ async = true, lsp_format = "fallback", range = range })
+	format_with_progress({ async = true, lsp_format = "fallback", range = range })
 end, { range = true })
