@@ -1,5 +1,47 @@
 local M = {}
 
+local function load_samples(path)
+	local ok, lines = pcall(vim.fn.readfile, path)
+	if not ok then
+		return {}
+	end
+
+	local samples = {}
+	for _, line in ipairs(lines) do
+		local ts, value = line:match("^(%d+)%s+([%d%.]+)$")
+		if not ts or not value then
+			vim.fn.delete(path)
+			return {}
+		end
+		table.insert(samples, { timestamp = tonumber(ts), time = tonumber(value) })
+	end
+	return samples
+end
+
+local function record_startup_time(ms)
+	local path = vim.fs.joinpath(vim.fn.stdpath("state"), "startup_times.log")
+	local samples = load_samples(path)
+	local now = os.time()
+	table.insert(samples, { timestamp = now, time = ms })
+
+	local sum = 0
+	for _, sample in ipairs(samples) do
+		sum = sum + sample.time
+	end
+
+	local lines = {}
+	for _, sample in ipairs(samples) do
+		table.insert(lines, string.format("%d %.3f", sample.timestamp, sample.time))
+	end
+
+	vim.fn.writefile(lines, path)
+
+	return {
+		count = #samples,
+		average = sum / #samples,
+	}
+end
+
 local function git_status_lines()
 	if vim.fn.executable("git") ~= 1 then
 		return nil
@@ -82,7 +124,9 @@ end
 
 local function on_vim_enter()
 	local elapsed = vim.fn.reltimefloat(vim.fn.reltime(vim.g.start_time)) * 1000
-	local message = string.format("⚡ Neovim loaded in %.1fms", elapsed)
+	local stats = record_startup_time(elapsed)
+	local message =
+		string.format("⚡ Neovim loaded in %.1fms (avg %.1fms over %d)", elapsed, stats.average, stats.count)
 
 	local show_banner = vim.fn.argc() == 0
 		and vim.api.nvim_buf_get_name(0) == ""
