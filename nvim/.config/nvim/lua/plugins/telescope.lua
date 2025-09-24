@@ -39,10 +39,15 @@ if not fzf_ok then
 		return
 	end
 
-	local cwd = vim.fn.getcwd()
-	vim.fn.chdir(fzf_path)
-	vim.fn.system("make")
-	vim.fn.chdir(cwd)
+	local result = vim.system({ "make" }, { cwd = fzf_path, text = true }):wait()
+	if result.code ~= 0 then
+		vim.notify(
+			string.format("Failed to build telescope-fzf-native (exit code %d)", result.code),
+			vim.log.levels.ERROR
+		)
+		return
+	end
+
 	vim.notify("Built telescope-fzf-native. Please restart Neovim to use fzf sorter.", vim.log.levels.INFO)
 end
 
