@@ -22,7 +22,6 @@ vim.pack.add({
 	"https://github.com/chrisgrieser/nvim-spider",
 	"https://github.com/folke/lazydev.nvim",
 	"https://github.com/m4xshen/hardtime.nvim",
-	"https://github.com/unblevable/quick-scope",
 	"https://github.com/folke/snacks.nvim",
 })
 
