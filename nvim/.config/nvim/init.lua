@@ -1,6 +1,8 @@
 -- Record startup time as early as possible
 vim.g.start_time = vim.fn.reltime()
 
+vim.loader.enable()
+
 require("etrobert")
 
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
