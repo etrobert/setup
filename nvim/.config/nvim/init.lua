@@ -90,6 +90,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 	end,
 })
 
-require("hardtime").setup()
+-- require("hardtime").setup()
 
 require("etrobert.startup_banner").setup()
