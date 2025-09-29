@@ -256,14 +256,16 @@ local function buffer_matches(bufnr)
 				})
 				col = end_link + 1
 			else
-				table.insert(matches, {
-					start_row = i - 1,
-					start_col = start_auto - 1,
-					end_row = i - 1,
-					end_col = end_auto,
-					text = auto_url,
-					url = auto_url,
-				})
+				if auto_url:match("^https?://") or auto_url:match("^mailto:") then
+					table.insert(matches, {
+						start_row = i - 1,
+						start_col = start_auto - 1,
+						end_row = i - 1,
+						end_col = end_auto,
+						text = auto_url,
+						url = auto_url,
+					})
+				end
 				col = end_auto + 1
 			end
 		end
