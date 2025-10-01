@@ -6,10 +6,6 @@ vim.keymap.set("n", "<leader>n", vim.cmd.nohlsearch, { desc = "Remove Search Hig
 
 -- Buffers
 
-local function delete_all_buffers()
-	vim.cmd.bufdo("bd")
-end
-
 local function delete_other_buffers()
 	local current_buf = vim.fn.bufnr("%")
 	vim.cmd("bufdo if bufnr() != " .. current_buf .. " | bd | endif")
@@ -18,7 +14,7 @@ end
 -- ]b is mapped to bnext
 -- [b is mapped to bprev
 vim.keymap.set("n", "<leader>bd", vim.cmd.bd, { desc = "Delete Buffer" })
-vim.keymap.set("n", "<leader>ba", delete_all_buffers, { desc = "Delete All Buffers" })
+vim.keymap.set("n", "<leader>ba", ":%bd<CR>", { desc = "Delete All Buffers" })
 vim.keymap.set("n", "<leader>bo", delete_other_buffers, { desc = "Delete Other Buffers" })
 
 function DeleteCurrentFile()
