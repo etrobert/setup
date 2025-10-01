@@ -13,7 +13,7 @@
 # @raycast.authorURL https://github.com/etrobert
 # @raycast.description Lists your commits from the last 24 hours.
 
-cd "/Users/etienne/work/haii" || exit 1
+cd "/Users/etienne/work/banani-web-main" || exit 1
 
 # On Monday, show commits since Friday; otherwise since yesterday
 if [ "$(date +%u)" -eq 1 ]; then
