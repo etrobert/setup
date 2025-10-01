@@ -15,8 +15,8 @@ local function delete_other_buffers()
 	vim.cmd("bufdo if bufnr() != " .. current_buf .. " | bd | endif")
 end
 
-vim.keymap.set("n", "<leader>bn", vim.cmd.bnext, { desc = "Next Buffer" })
-vim.keymap.set("n", "<leader>bp", vim.cmd.bprev, { desc = "Previous Buffer" })
+-- ]b is mapped to bnext
+-- [b is mapped to bprev
 vim.keymap.set("n", "<leader>bd", vim.cmd.bd, { desc = "Delete Buffer" })
 vim.keymap.set("n", "<leader>ba", delete_all_buffers, { desc = "Delete All Buffers" })
 vim.keymap.set("n", "<leader>bo", delete_other_buffers, { desc = "Delete Other Buffers" })
