@@ -13,7 +13,7 @@ end
 
 -- ]b is mapped to bnext
 -- [b is mapped to bprev
-vim.keymap.set("n", "<leader>bd", vim.cmd.bd, { desc = "Delete Buffer" })
+vim.keymap.set("n", "<leader>bd", ":b#|bd#<CR>", { desc = "Delete buffer" })
 vim.keymap.set("n", "<leader>ba", ":%bd<CR>", { desc = "Delete All Buffers" })
 vim.keymap.set("n", "<leader>bo", delete_other_buffers, { desc = "Delete Other Buffers" })
 
