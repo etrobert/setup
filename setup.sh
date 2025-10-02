@@ -150,6 +150,7 @@ setup_npm_packages() {
   npm install -g corepack
   npm install -g vscode-langservers-extracted
   npm install -g @github/copilot-language-server
+  npm install -g @anthropic-ai/claude-code
 }
 
 setup_dock() {
