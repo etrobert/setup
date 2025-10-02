@@ -47,7 +47,6 @@ require("fidget").setup({})
 
 require("snacks").setup({ image = {} })
 
----@diagnostic disable-next-line: missing-fields
 require("nvim-ts-autotag").setup({
 	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
 })
@@ -66,7 +65,6 @@ require("which-key").setup({
 	},
 })
 
----@diagnostic disable-next-line: missing-fields
 require("lazydev").setup({
 	library = { { path = "${3rd}/luv/library", words = { "vim%.uv" } } },
 })
