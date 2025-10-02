@@ -25,6 +25,7 @@ vim.pack.add({
 	"https://github.com/folke/lazydev.nvim",
 	"https://github.com/m4xshen/hardtime.nvim",
 	"https://github.com/folke/snacks.nvim",
+	"https://github.com/artemave/workspace-diagnostics.nvim",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -89,6 +90,15 @@ vim.api.nvim_create_autocmd("InsertEnter", {
 	once = true,
 	callback = function()
 		require("plugins.cmp")
+	end,
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client then
+			require("workspace-diagnostics").populate_workspace_diagnostics(client, args.buf)
+		end
 	end,
 })
 

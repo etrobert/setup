@@ -46,6 +46,8 @@ vim.keymap.set("n", "<leader>rm", DeleteCurrentFile, { desc = "Delete current fi
 -- - "an" and "in" are mapped in Visual mode to outer and inner incremental
 --  selections, respectively, using |vim.lsp.buf.selection_range()|
 
+vim.keymap.set("n", "grq", vim.diagnostic.setqflist, { desc = "Diagnostics to quickfix list" })
+
 -- See :help vim.lsp.inline_completion.get()
 vim.keymap.set("i", "<Tab>", function()
 	if not vim.lsp.inline_completion.get() then
