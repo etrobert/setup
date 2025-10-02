@@ -46,7 +46,20 @@ vim.keymap.set("n", "<leader>rm", DeleteCurrentFile, { desc = "Delete current fi
 -- - "an" and "in" are mapped in Visual mode to outer and inner incremental
 --  selections, respectively, using |vim.lsp.buf.selection_range()|
 
-vim.keymap.set("n", "grq", vim.diagnostic.setqflist, { desc = "Diagnostics to quickfix list" })
+vim.keymap.set("n", "grq", function()
+	local diagnostics = vim.diagnostic.get()
+	local qf_items = vim.diagnostic.toqflist(diagnostics)
+
+	-- Add source prefix to each item
+	for i, diag in ipairs(diagnostics) do
+		if diag.source then
+			qf_items[i].text = "[" .. diag.source .. "] " .. qf_items[i].text
+		end
+	end
+
+	vim.fn.setqflist(qf_items)
+	vim.cmd("copen")
+end, { desc = "Diagnostics to quickfix list" })
 
 -- See :help vim.lsp.inline_completion.get()
 vim.keymap.set("i", "<Tab>", function()
