@@ -41,7 +41,9 @@ require("colorizer").setup({ user_default_options = { tailwind = true } })
 
 require("treesj").setup({ max_join_length = 500 })
 
-require("bufferline").setup({ options = { diagnostics = "nvim_lsp" } })
+require("bufferline").setup({
+	options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false },
+})
 
 require("fidget").setup({})
 
