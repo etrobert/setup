@@ -8,7 +8,7 @@ require("etrobert")
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
 vim.pack.add({
-	"https://github.com/catppuccin/nvim",
+	{ src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/tpope/vim-surround",
 	"https://github.com/tpope/vim-fugitive",
