@@ -1,5 +1,10 @@
 local M = {}
 
+---@class Metadata
+---@field title string
+---@field description string
+---@field image string
+
 local config = {
 	max_description = 140,
 	max_html_bytes = 200 * 1024,
@@ -14,6 +19,10 @@ local state = {
 	notified = {},
 }
 
+---@nodiscard
+---@param text string
+---@param max_len integer
+---@return string
 local function truncate(text, max_len)
 	if not text or text == "" then
 		return text
@@ -27,6 +36,9 @@ local function truncate(text, max_len)
 	return text:sub(1, max_len - 3) .. "..."
 end
 
+---@nodiscard
+---@param text string
+---@return string | nil
 local function sanitize(text)
 	if not text or text == "" then
 		return nil
@@ -34,6 +46,9 @@ local function sanitize(text)
 	return text
 end
 
+---@nodiscard
+---@param fragment string
+---@return { [string]: string }
 local function parse_meta_fragment(fragment)
 	local attrs = {}
 	for key, value in fragment:gmatch('([%w:-]+)%s*=%s*"(.-)"') do
@@ -45,6 +60,8 @@ local function parse_meta_fragment(fragment)
 	return attrs
 end
 
+---@param html string | nil
+---@return Metadata | nil
 local function extract_metadata(html)
 	if not html or html == "" then
 		return nil
@@ -87,6 +104,13 @@ local function extract_metadata(html)
 	return meta
 end
 
+---@alias Status "loading" | "error"
+
+---@alias Line [string, string][] -- [text, highlight][]
+
+---@param metadata Metadata
+---@param status Status | nil
+---@return [Line, Line]
 local function build_lines(link, metadata, status)
 	local prefix = "* "
 	local indent = "  "
@@ -118,6 +142,8 @@ local function build_lines(link, metadata, status)
 	}
 end
 
+---@param url string
+---@param callback fun(metadata: Metadata | nil): nil
 local function fetch_metadata(url, callback)
 	local cached = state.cache[url]
 	if cached ~= nil then
@@ -188,6 +214,10 @@ local function fetch_metadata(url, callback)
 	end
 end
 
+---@param bufnr integer
+---@param entry any
+---@param metadata Metadata | nil
+---@param status Status | nil
 local function render_entry(bufnr, entry, metadata, status)
 	local lines = build_lines(entry.link, metadata or {}, status)
 
@@ -198,6 +228,9 @@ local function render_entry(bufnr, entry, metadata, status)
 	})
 end
 
+---@param bufnr integer
+---@param key string
+--@param entry TODO
 local function refresh_link(bufnr, key, entry)
 	local url = entry.link.url
 	local cached = state.cache[url]
@@ -232,6 +265,17 @@ local function refresh_link(bufnr, key, entry)
 	end
 end
 
+---@class Match
+---@field start_row integer
+---@field start_col integer
+---@field end_row integer
+---@field end_col integer
+---@field text string
+---@field url string
+
+---@nodiscard
+---@param bufnr integer
+---@return Match[]
 local function buffer_matches(bufnr)
 	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 	local matches = {}
@@ -273,6 +317,7 @@ local function buffer_matches(bufnr)
 	return matches
 end
 
+---@param bufnr integer
 local function refresh_buffer(bufnr)
 	vim.api.nvim_buf_clear_namespace(bufnr, namespace, 0, -1)
 	local matches = buffer_matches(bufnr)
@@ -290,6 +335,7 @@ local function refresh_buffer(bufnr)
 	buffer_state.links = new_links
 end
 
+---@param bufnr integer
 local function attach_buffer(bufnr)
 	if state.buffers[bufnr] then
 		return
