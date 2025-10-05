@@ -1,5 +1,15 @@
+---@class StartupSample
+---@field timestamp integer
+---@field time number
+
+---@class StartupStats
+---@field count integer
+---@field average number
+
 local M = {}
 
+---@param path string
+---@return StartupSample[]
 local function load_samples(path)
 	local ok, lines = pcall(vim.fn.readfile, path)
 	if not ok then
@@ -18,6 +28,8 @@ local function load_samples(path)
 	return samples
 end
 
+---@param ms number
+---@return StartupStats
 local function record_startup_time(ms)
 	local path = vim.fs.joinpath(vim.fn.stdpath("state"), "startup_times.log")
 	local samples = load_samples(path)
@@ -42,6 +54,7 @@ local function record_startup_time(ms)
 	}
 end
 
+---@return string[]|nil
 local function git_status_lines()
 	if vim.fn.executable("git") ~= 1 then
 		return nil
@@ -61,6 +74,7 @@ local function git_status_lines()
 	return status
 end
 
+---@param message string
 local function create_banner(message)
 	local lines = { "", message }
 	local git_lines = git_status_lines()
@@ -142,9 +156,7 @@ local function on_vim_enter()
 end
 
 function M.setup()
-	vim.api.nvim_create_autocmd("VimEnter", {
-		callback = on_vim_enter,
-	})
+	vim.api.nvim_create_autocmd("VimEnter", { callback = on_vim_enter })
 end
 
 return M
