@@ -40,8 +40,11 @@ vim.api.nvim_create_user_command("Format", function(args)
 end, { range = true })
 
 local aug = vim.api.nvim_create_augroup("ConformFidgetProgress", { clear = true })
+
+---@type table<integer, ProgressHandle>
 local handles = {}
 
+---@param bufnr integer
 local function format_display_name(bufnr)
 	local filename = vim.api.nvim_buf_get_name(bufnr)
 	if filename == "" then
