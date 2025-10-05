@@ -1,24 +1,25 @@
 local M = {}
 
+---@param old_name string
+---@param new_name string
 local function do_rename(old_name, new_name)
 	vim.lsp.buf.rename(new_name)
 	vim.notify("Renamed '" .. old_name .. "' to '" .. new_name .. "'", vim.log.levels.INFO)
 end
 
-local function get_surrounding_context(lines_before, lines_after)
-	lines_before = lines_before or 5
-	lines_after = lines_after or 5
-
+local function get_surrounding_context()
 	local current_line = vim.fn.line(".")
 	local total_lines = vim.fn.line("$")
 
-	local start_line = math.max(1, current_line - lines_before)
-	local end_line = math.min(total_lines, current_line + lines_after)
+	local start_line = math.max(1, current_line - 5)
+	local end_line = math.min(total_lines, current_line + 5)
 
-	local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
-	return lines
+	return vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
 end
 
+---@alias LspInfo { hover: unknown }
+
+---@return LspInfo
 local function get_lsp_info()
 	local params = vim.lsp.util.make_position_params(0, "utf-8")
 	local hover_result = vim.lsp.buf_request_sync(0, "textDocument/hover", params, 3000)
@@ -34,11 +35,17 @@ local function get_lsp_info()
 		end
 	end
 
-	return {
-		hover = hover_info,
-	}
+	return { hover = hover_info }
 end
 
+---@class AIRenameContext
+---@field symbol string
+---@field filename string
+---@field filetype string
+---@field surrounding string[]
+---@field lsp_info LspInfo
+
+---@return AIRenameContext?
 function M.extract_context()
 	local symbol = vim.fn.expand("<cword>")
 	if symbol == "" then
@@ -60,6 +67,8 @@ function M.extract_context()
 	}
 end
 
+---@param context AIRenameContext
+---@return vim.SystemObj?
 function M.call_openai_for_rename(context)
 	if not os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY") == "" then
 		vim.notify("Missing OPENAI_API_KEY environment variable.", vim.log.levels.ERROR)
@@ -140,6 +149,8 @@ Examples: "userCount", "totalPrice", "isValid"
 	})
 end
 
+---@param response_text string
+---@return string?, string?
 function M.parse_ai_response(response_text)
 	local status, decoded = pcall(vim.json.decode, response_text)
 	if not status then
@@ -194,6 +205,8 @@ function M.ai_rename()
 	-- Confirm with user before renaming
 	local confirm =
 		vim.fn.confirm("Rename '" .. context.symbol .. "' to '" .. suggested_name .. "'?", "&Yes\n&No\n&Edit", 1)
+
+	assert(suggested_name) -- We know its not nil because error is nil
 
 	if confirm == 1 then
 		do_rename(context.symbol, suggested_name)
