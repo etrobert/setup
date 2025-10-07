@@ -317,6 +317,21 @@ setup_key_repeat() {
   fi
 }
 
+setup_yay() {
+  echo 'Setting up yay'
+
+  if which yay &>/dev/null; then
+    echo 'yay is already installed'
+    return
+  fi
+
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
+  makepkg -si
+  cd ..
+  rm -rf yay
+}
+
 setup_darwin() {
   setup_homebrew
   echo
@@ -350,6 +365,8 @@ setup_linux() {
   setup_ssh_key
   echo
   setup_github
+  echo
+  setup_yay
   echo
 }
 
