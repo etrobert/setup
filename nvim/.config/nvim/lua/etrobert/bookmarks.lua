@@ -12,6 +12,20 @@ local config = {
 
 local namespace = vim.api.nvim_create_namespace("etrobert_bookmarks")
 
+---@class Entry
+---@field link Match
+---@field metadata Metadata | nil
+---@field extmark_id integer | nil
+
+---@class BufferState
+---@field links table<string, Entry>
+
+---@class State
+---@field cache table<string, Metadata | false>
+---@field pending table<string, function[]>
+---@field buffers table<integer, BufferState>
+
+---@type State
 local state = {
 	cache = {},
 	pending = {},
@@ -107,6 +121,7 @@ end
 
 ---@alias Line [string, string][] -- [text, highlight][]
 
+---@param link Match
 ---@param metadata Metadata
 ---@param status Status | nil
 ---@return [Line, Line]
@@ -202,7 +217,7 @@ local function fetch_metadata(url, callback)
 end
 
 ---@param bufnr integer
----@param entry any
+---@param entry Entry
 ---@param metadata Metadata | nil
 ---@param status Status | nil
 local function render_entry(bufnr, entry, metadata, status)
@@ -217,7 +232,7 @@ end
 
 ---@param bufnr integer
 ---@param key string
---@param entry TODO
+---@param entry Entry
 local function refresh_link(bufnr, key, entry)
 	local url = entry.link.url
 	local cached = state.cache[url]
