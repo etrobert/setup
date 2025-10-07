@@ -16,7 +16,6 @@ local state = {
 	cache = {},
 	pending = {},
 	buffers = {},
-	notified = {},
 }
 
 ---@nodiscard
@@ -189,12 +188,6 @@ local function fetch_metadata(url, callback)
 			for _, cb in ipairs(callbacks) do
 				cb(metadata)
 			end
-			if not metadata and not state.notified[url] then
-				state.notified[url] = true
-				vim.schedule(function()
-					vim.notify(string.format("bookmarks: failed to load metadata for %s", url), vim.log.levels.WARN)
-				end)
-			end
 		end,
 	})
 
@@ -204,12 +197,6 @@ local function fetch_metadata(url, callback)
 		state.pending[url] = nil
 		for _, cb in ipairs(callbacks) do
 			cb(nil)
-		end
-		if not state.notified[url] then
-			state.notified[url] = true
-			vim.schedule(function()
-				vim.notify(string.format("bookmarks: unable to start fetch for %s", url), vim.log.levels.WARN)
-			end)
 		end
 	end
 end
