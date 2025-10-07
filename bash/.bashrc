@@ -117,5 +117,8 @@ stty -ixon
 HISTSIZE=
 HISTFILESIZE=
 
+# linux nvm setup
+[ -f /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
+
 # fzf key bindings and completion
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

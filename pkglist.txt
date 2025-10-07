@@ -13,6 +13,7 @@ man-db
 man-pages
 neovim
 networkmanager
+nvm
 openssh
 stow
 sudo
