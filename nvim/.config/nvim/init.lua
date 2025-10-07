@@ -26,6 +26,8 @@ vim.pack.add({
 	"https://github.com/m4xshen/hardtime.nvim",
 	"https://github.com/folke/snacks.nvim",
 	"https://github.com/artemave/workspace-diagnostics.nvim",
+
+	"https://github.com/alex-popov-tech/store.nvim",
 })
 
 require("catppuccin").setup({ float = { transparent = true, solid = false } })

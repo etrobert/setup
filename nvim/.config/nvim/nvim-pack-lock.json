@@ -105,6 +105,10 @@
       "rev": "bfe8c26",
       "src": "https://github.com/folke/snacks.nvim"
     },
+    "store.nvim": {
+      "rev": "8d2d8f3",
+      "src": "https://github.com/alex-popov-tech/store.nvim"
+    },
     "tailwindcss-colorizer-cmp.nvim": {
       "rev": "3d3cd95",
       "src": "https://github.com/roobert/tailwindcss-colorizer-cmp.nvim"
