@@ -19,10 +19,11 @@ CYAN_COLOR='\001\e[0;36m\002'
 RED_COLOR='\001\e[0;31m\002'
 RESET_COLOR='\001\e[m\002'
 
+# Using GNU date both on linux (date) and mac (gdate)
 if command -v gdate >/dev/null 2>&1; then
-	DATE=gdate
+  DATE='gdate'
 else
-	DATE=date
+  DATE='date'
 fi
 
 # Uncomment to show user and host in prompt
