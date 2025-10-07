@@ -317,32 +317,47 @@ setup_key_repeat() {
   fi
 }
 
-setup_homebrew
-echo
-setup_ssh_key
-echo
-setup_github
-echo
-setup_dotfiles
-echo
-setup_shell
-echo
-setup_capslock
-echo
-setup_nvm
-echo
-setup_node
-echo
-setup_npm_packages
-echo
-setup_dock
-echo
-setup_trackpad
-echo
-setup_skhd
-echo
-setup_key_repeat
-echo
+setup_darwin() {
+  setup_homebrew
+  echo
+  setup_ssh_key
+  echo
+  setup_github
+  echo
+  setup_dotfiles
+  echo
+  setup_shell
+  echo
+  setup_capslock
+  echo
+  setup_nvm
+  echo
+  setup_node
+  echo
+  setup_npm_packages
+  echo
+  setup_dock
+  echo
+  setup_trackpad
+  echo
+  setup_skhd
+  echo
+  setup_key_repeat
+  echo
+}
+
+setup_linux() {
+  echo 'todo'
+}
+
+case $(uname) in
+Darwin)
+  setup_darwin
+  ;;
+Linux)
+  setup_linux
+  ;;
+esac
 
 END_TIME=$(date +%s)
 
