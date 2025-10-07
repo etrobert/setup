@@ -347,7 +347,10 @@ setup_darwin() {
 }
 
 setup_linux() {
-  echo 'todo'
+  setup_ssh_key
+  echo
+  setup_github
+  echo
 }
 
 case $(uname) in
