@@ -1,0 +1,15 @@
+base
+base-devel
+fzf
+git
+github-cli
+less
+linux
+linux-firmware
+man-db
+man-pages
+neovim
+networkmanager
+openssh
+stow
+sudo
