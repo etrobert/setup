@@ -1,8 +1,11 @@
 base
 base-devel
+bat
+difftastic
 fzf
 git
 github-cli
+jq
 less
 linux
 linux-firmware
@@ -13,3 +16,4 @@ networkmanager
 openssh
 stow
 sudo
+tmux
