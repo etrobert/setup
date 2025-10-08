@@ -72,7 +72,7 @@ setup_dotfiles_repo() {
   chmod 600 "$HOME/setup/ssh/.ssh/config"
 }
 
-setup_macos_dotfiles() {
+setup_darwin_dotfiles() {
   cd "$HOME/setup"
 
   echo "Stowing dotfiles..."
@@ -340,7 +340,7 @@ setup_darwin() {
   echo
   setup_dotfiles_repo
   echo
-  setup_macos_dotfiles
+  setup_darwin_dotfiles
   echo
   setup_shell
   echo
