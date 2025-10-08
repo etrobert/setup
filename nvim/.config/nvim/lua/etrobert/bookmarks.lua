@@ -127,19 +127,18 @@ end
 ---@return [Line, Line]
 local function build_lines(link, metadata, status)
 	local prefix = "* "
-	local indent = "  "
 
 	if status == "loading" then
 		return {
 			{ { prefix, "Comment" }, { "Loading bookmark...", "Comment" } },
-			{ { indent, "Comment" }, { "", "Comment" } },
+			{ { prefix, "Comment" }, { "", "Comment" } },
 		}
 	end
 
 	if status == "error" then
 		return {
 			{ { prefix, "Comment" }, { "Unable to load preview", "WarningMsg" } },
-			{ { indent, "Comment" }, { "", "Directory" } },
+			{ { prefix, "Comment" }, { "", "Directory" } },
 		}
 	end
 
@@ -152,7 +151,7 @@ local function build_lines(link, metadata, status)
 
 	return {
 		{ { prefix, "Comment" }, { title or "", "Title" } },
-		{ { indent, "Comment" }, { description, "Comment" } },
+		{ { prefix, "Comment" }, { description, "Comment" } },
 	}
 end
 
