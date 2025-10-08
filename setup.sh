@@ -79,6 +79,13 @@ setup_darwin_dotfiles() {
   stow alias bash ghostty git macos nvim profile readline ssh tmux skhd raycast prettier login
 }
 
+setup_linux_dotfiles() {
+  cd "$HOME/setup"
+
+  echo "Stowing dotfiles..."
+  stow alias bash git nvim profile readline ssh tmux
+}
+
 setup_shell() {
   echo "Setting up default shell"
 
@@ -366,6 +373,10 @@ setup_linux() {
   setup_ssh_key
   echo
   setup_github
+  echo
+  setup_dotfiles_repo
+  echo
+  setup_linux_dotfiles
   echo
   setup_yay
   echo
