@@ -20,5 +20,5 @@ nvm
 openssh
 stow
 tmux
-ttf-dejavu
+ttf-firacode-nerd
 wofi
