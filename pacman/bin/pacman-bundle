@@ -15,7 +15,9 @@ install_packages() {
     exit 1
   fi
 
-  sudo pacman -S --needed "$(cat pkglist.txt)"
+  # File can be read by user
+  # shellcheck disable=SC2024
+  sudo pacman -S --needed - <pkglist.txt
 }
 
 # Require a command
