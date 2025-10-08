@@ -6,6 +6,7 @@ eza
 fzf
 git
 github-cli
+hyprland
 jq
 less
 linux
