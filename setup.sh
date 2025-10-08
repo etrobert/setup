@@ -58,26 +58,25 @@ setup_github() {
   ensure_gh_extension_installed meiji163/gh-notify
 }
 
-setup_dotfiles() {
-  echo "Setting up dotfiles..."
+setup_dotfiles_repo() {
+  echo "Setting up dotfiles repo..."
 
   if [ -d "$HOME/setup" ]; then
     echo "Dotfiles repository already cloned."
-  else
-    echo "Dotfiles repository not found. Cloning dotfiles repository..."
-    git clone git@github.com:etrobert/setup.git "$HOME/setup"
+    return
   fi
+  echo "Dotfiles repository not found. Cloning dotfiles repository..."
+  git clone git@github.com:etrobert/setup.git "$HOME/setup"
 
+  echo "Setting proper permissions for SSH config..."
+  chmod 600 "$HOME/setup/ssh/.ssh/config"
+}
+
+setup_macos_dotfiles() {
   cd "$HOME/setup"
 
   echo "Stowing dotfiles..."
   stow alias bash ghostty git macos nvim profile readline ssh tmux skhd raycast prettier login
-
-  echo "Setting proper permissions for SSH config..."
-  chmod 600 ssh/.ssh/config
-
-  echo "Setting up variables..."
-  # TODO: This crashes sometimes, need to investigate
 }
 
 setup_shell() {
@@ -339,7 +338,9 @@ setup_darwin() {
   echo
   setup_github
   echo
-  setup_dotfiles
+  setup_dotfiles_repo
+  echo
+  setup_macos_dotfiles
   echo
   setup_shell
   echo
