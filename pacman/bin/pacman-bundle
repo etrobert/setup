@@ -3,21 +3,32 @@
 set -e
 
 dump_packages() {
-  echo "Dumping packages to pkglist.txt..."
+  echo "Dumping official packages to pkglist.txt..."
   pacman -Qqen >pkglist.txt
-  echo "✅ Dumped $(wc -l <pkglist.txt) packages to pkglist.txt"
+  echo "✅ Dumped $(wc -l <pkglist.txt) official packages to pkglist.txt"
+
+  echo "Dumping AUR packages to foreignpkglist.txt..."
+  pacman -Qqem >foreignpkglist.txt
+  echo "✅ Dumped $(wc -l <foreignpkglist.txt) AUR packages to foreignpkglist.txt"
 }
 
 install_packages() {
-  # Check if pkglist.txt exists
-  if [ ! -f "pkglist.txt" ]; then
-    echo "Error: pkglist.txt not found"
-    exit 1
+  # Install official packages
+  if [ -f "pkglist.txt" ]; then
+    echo "Installing official packages..."
+    # shellcheck disable=SC2024
+    sudo pacman -S --needed - <pkglist.txt
+  else
+    echo "pkglist.txt not found, skipping official packages"
   fi
 
-  # File can be read by user
-  # shellcheck disable=SC2024
-  sudo pacman -S --needed - <pkglist.txt
+  # Install AUR packages
+  if [ -f "foreignpkglist.txt" ]; then
+    echo "Installing AUR packages..."
+    yay -S --needed - <foreignpkglist.txt
+  else
+    echo "foreignpkglist.txt not found, skipping AUR packages"
+  fi
 }
 
 # Require a command
