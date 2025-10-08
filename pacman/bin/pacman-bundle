@@ -19,15 +19,14 @@ install_official_packages() {
     return
   fi
 
-  if pacman -T - <pkglist.txt >/dev/null 2>&1; then
+  if sed 's/#.*$//' pkglist.txt | pacman -T - >/dev/null 2>&1; then
     echo "✅ All official packages already installed"
     return
   fi
 
   echo "Installing official packages..."
 
-  # shellcheck disable=SC2024
-  sudo pacman -S --needed - <pkglist.txt
+  sed 's/#.*$//' pkglist.txt | sudo pacman -S --needed -
 }
 
 install_aur_packages() {
@@ -38,7 +37,7 @@ install_aur_packages() {
   fi
 
   echo "Installing AUR packages..."
-  grep -v '^yay' foreignpkglist.txt | yay -S --needed -
+  sed 's/#.*$//' foreignpkglist.txt | grep -v '^yay' | yay -S --needed -
 }
 
 install_packages() {
@@ -49,8 +48,11 @@ install_packages() {
 cleanup_packages() {
   echo "Cleaning up packages not in pkglist.txt and foreignpkglist.txt..."
 
-  # Create combined package list
-  cat pkglist.txt foreignpkglist.txt 2>/dev/null | sort >/tmp/wanted_packages.txt
+  # Create combined package list (strip comments)
+  (
+    sed 's/#.*$//' pkglist.txt 2>/dev/null
+    sed 's/#.*$//' foreignpkglist.txt 2>/dev/null
+  ) | sort >/tmp/wanted_packages.txt
 
   # Find packages to remove (installed but not in our lists)
   pacman -Qqe | sort | comm -23 - /tmp/wanted_packages.txt >/tmp/packages_to_remove.txt
