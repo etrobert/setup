@@ -320,7 +320,7 @@ setup_key_repeat() {
 setup_yay() {
   echo 'Setting up yay'
 
-  if which yay &>/dev/null; then
+  if which yay >/dev/null 2>&1; then
     echo 'yay is already installed'
     return
   fi
