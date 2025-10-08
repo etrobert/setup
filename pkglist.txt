@@ -2,6 +2,7 @@ base
 base-devel
 bat
 difftastic
+eza
 fzf
 git
 github-cli
