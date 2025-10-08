@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+# Check if pkglist.txt exists
+if [ ! -f "pkglist.txt" ]; then
+    echo "Error: pkglist.txt not found"
+    exit 1
+fi
+
+echo "Installing packages from pkglist.txt..."
