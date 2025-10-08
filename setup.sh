@@ -83,7 +83,7 @@ setup_linux_dotfiles() {
   cd "$HOME/setup"
 
   echo "Stowing dotfiles..."
-  stow alias bash git nvim profile readline ssh tmux
+  stow alias bash git nvim pacman profile readline ssh tmux
 }
 
 setup_shell() {
@@ -338,6 +338,12 @@ setup_yay() {
   rm -rf yay
 }
 
+setup_pacman_bundle() {
+  echo 'Setting up packages with pacman-bundle'
+
+  pacman-bundle install
+}
+
 setup_darwin() {
   setup_homebrew
   echo
@@ -379,6 +385,8 @@ setup_linux() {
   setup_linux_dotfiles
   echo
   setup_yay
+  echo
+  setup_pacman_bundle
   echo
 }
 
