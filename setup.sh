@@ -157,6 +157,11 @@ setup_npm_packages() {
   npm install -g vscode-langservers-extracted
   npm install -g @github/copilot-language-server
   npm install -g @anthropic-ai/claude-code
+  npm install -g bash-language-server
+  npm install -g @tailwindcss/language-server
+  npm install -g typescript-language-server
+  npm install -g @fsouza/prettierd
+  npm install -g neonctl
 }
 
 setup_dock() {

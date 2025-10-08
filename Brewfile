@@ -19,7 +19,6 @@ brew "act"
 brew "shellcheck"
 brew "rustup"
 brew "coreutils" # for gdate for PS1
-brew "prettierd"
 brew "codex"
 brew "yt-dlp"
 brew "openai-whisper"
@@ -33,9 +32,6 @@ brew "fd" # recommended for nvim telescope
 brew "ripgrep" # required for nvim telescope
 brew "shfmt" # required by nvim conform for bash formatting
 brew "stylua" # required by nvim conform for lua formatting
-brew "bash-language-server" # for nvim
-brew "tailwindcss-language-server" # for nvim
-brew "typescript-language-server" # for nvim
 brew "rust-analyzer" # for nvim
 brew "gopls" # for nvim
 brew "lua-language-server" # for nvim
