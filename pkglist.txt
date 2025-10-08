@@ -21,3 +21,4 @@ openssh
 stow
 tmux
 ttf-dejavu
+wofi
