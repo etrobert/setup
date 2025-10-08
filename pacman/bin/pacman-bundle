@@ -15,8 +15,7 @@ install_packages() {
     exit 1
   fi
 
-  echo "Installing packages from pkglist.txt..."
-  # TODO: implement installation
+  sudo pacman -S --needed "$(cat pkglist.txt)"
 }
 
 # Require a command
