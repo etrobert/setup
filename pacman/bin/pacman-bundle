@@ -19,9 +19,18 @@ install_packages() {
   # TODO: implement installation
 }
 
-# Default action is install, but support dump
-if [ "$1" = "dump" ]; then
-  dump_packages
-else
-  install_packages
-fi
+# Require a command
+case "$1" in
+  dump)
+    dump_packages
+    ;;
+  install)
+    install_packages
+    ;;
+  *)
+    echo "Usage: pacman-bundle {dump|install}"
+    echo "  dump     - Export current packages to pkglist.txt"
+    echo "  install  - Install packages from pkglist.txt"
+    exit 1
+    ;;
+esac
