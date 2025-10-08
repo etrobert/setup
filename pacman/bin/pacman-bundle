@@ -19,14 +19,14 @@ install_official_packages() {
     return
   fi
 
-  if sed 's/#.*$//' pkglist.txt | pacman -T - >/dev/null 2>&1; then
+  if sed 's/[[:space:]]*#.*$//' pkglist.txt | pacman -T - >/dev/null 2>&1; then
     echo "✅ All official packages already installed"
     return
   fi
 
   echo "Installing official packages..."
 
-  sed 's/#.*$//' pkglist.txt | sudo pacman -S --needed -
+  sed 's/[[:space:]]*#.*$//' pkglist.txt | sudo pacman -S --needed -
 }
 
 install_aur_packages() {
@@ -37,7 +37,7 @@ install_aur_packages() {
   fi
 
   echo "Installing AUR packages..."
-  sed 's/#.*$//' foreignpkglist.txt | grep -v '^yay' | yay -S --needed -
+  sed 's/[[:space:]]*#.*$//' foreignpkglist.txt | grep -v '^yay' | yay -S --needed -
 }
 
 install_packages() {
@@ -50,8 +50,8 @@ cleanup_packages() {
 
   # Create combined package list (strip comments)
   (
-    sed 's/#.*$//' pkglist.txt 2>/dev/null
-    sed 's/#.*$//' foreignpkglist.txt 2>/dev/null
+    sed 's/[[:space:]]*#.*$//' pkglist.txt 2>/dev/null
+    sed 's/[[:space:]]*#.*$//' foreignpkglist.txt 2>/dev/null
   ) | sort >/tmp/wanted_packages.txt
 
   # Find packages to remove (installed but not in our lists)
