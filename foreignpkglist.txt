@@ -1,0 +1,3 @@
+neovim-git
+yay
+yay-debug
