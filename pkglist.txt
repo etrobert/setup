@@ -3,6 +3,7 @@ base-devel
 bat
 difftastic
 eza
+foot
 fzf
 git
 github-cli
