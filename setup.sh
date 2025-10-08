@@ -388,6 +388,10 @@ setup_linux() {
   echo
   setup_pacman_bundle
   echo
+  setup_node
+  echo
+  setup_npm_packages
+  echo
 }
 
 case $(uname) in
