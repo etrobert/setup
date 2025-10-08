@@ -22,10 +22,10 @@ install_packages() {
     echo "pkglist.txt not found, skipping official packages"
   fi
 
-  # Install AUR packages
+  # Install AUR packages (excluding yay itself)
   if [ -f "foreignpkglist.txt" ]; then
     echo "Installing AUR packages..."
-    yay -S --needed - <foreignpkglist.txt
+    grep -v '^yay' foreignpkglist.txt | yay -S --needed -
   else
     echo "foreignpkglist.txt not found, skipping AUR packages"
   fi
