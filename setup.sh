@@ -124,16 +124,19 @@ setup_capslock() {
   fi
 }
 
-setup_nvm() {
+setup_nvm_install() {
   echo "Setting up nvm..."
 
   if [ -d "$NVM_DIR" ]; then
     echo "NVM is already installed."
-  else
-    echo "NVM not found. Installing NVM..."
-    PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
+    return
   fi
 
+  echo "NVM not found. Installing NVM..."
+  PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
+}
+
+setup_nvm() {
   # shellcheck disable=SC1091
   . "$NVM_DIR/nvm.sh"
 }
@@ -364,6 +367,8 @@ setup_darwin() {
   echo
   setup_capslock
   echo
+  setup_nvm_install
+  echo
   setup_nvm
   echo
   setup_node
@@ -392,6 +397,8 @@ setup_linux() {
   setup_yay
   echo
   setup_pacman_bundle
+  echo
+  setup_nvm
   echo
   setup_node
   echo
