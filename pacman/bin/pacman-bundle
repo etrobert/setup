@@ -2,10 +2,26 @@
 
 set -e
 
-# Check if pkglist.txt exists
-if [ ! -f "pkglist.txt" ]; then
+dump_packages() {
+  echo "Dumping packages to pkglist.txt..."
+  pacman -Qqen >pkglist.txt
+  echo "✅ Dumped $(wc -l <pkglist.txt) packages to pkglist.txt"
+}
+
+install_packages() {
+  # Check if pkglist.txt exists
+  if [ ! -f "pkglist.txt" ]; then
     echo "Error: pkglist.txt not found"
     exit 1
-fi
+  fi
 
-echo "Installing packages from pkglist.txt..."
+  echo "Installing packages from pkglist.txt..."
+  # TODO: implement installation
+}
+
+# Default action is install, but support dump
+if [ "$1" = "dump" ]; then
+  dump_packages
+else
+  install_packages
+fi
