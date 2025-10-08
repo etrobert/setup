@@ -16,6 +16,7 @@ install_packages() {
   # Install official packages
   if [ -f "pkglist.txt" ]; then
     echo "Installing official packages..."
+    # File can be read by user
     # shellcheck disable=SC2024
     sudo pacman -S --needed - <pkglist.txt
   else
@@ -31,6 +32,30 @@ install_packages() {
   fi
 }
 
+cleanup_packages() {
+  echo "Cleaning up packages not in pkglist.txt and foreignpkglist.txt..."
+
+  # Create combined package list
+  cat pkglist.txt foreignpkglist.txt 2>/dev/null | sort >/tmp/wanted_packages.txt
+
+  # Find packages to remove (installed but not in our lists)
+  pacman -Qq | sort | comm -23 - /tmp/wanted_packages.txt >/tmp/packages_to_remove.txt
+
+  if [ -s /tmp/packages_to_remove.txt ]; then
+    echo "Packages to remove:"
+    cat /tmp/packages_to_remove.txt
+    echo
+    # File can be read by user
+    # shellcheck disable=SC2024
+    sudo pacman -Rsu - </tmp/packages_to_remove.txt
+  else
+    echo "✅ No packages to remove"
+  fi
+
+  # Clean up temp files
+  rm -f /tmp/wanted_packages.txt /tmp/packages_to_remove.txt
+}
+
 # Require a command
 case "$1" in
 dump)
@@ -39,10 +64,14 @@ dump)
 install)
   install_packages
   ;;
+cleanup)
+  cleanup_packages
+  ;;
 *)
-  echo "Usage: pacman-bundle {dump|install}"
-  echo "  dump     - Export current packages to pkglist.txt"
-  echo "  install  - Install packages from pkglist.txt"
+  echo "Usage: pacman-bundle {dump|install|cleanup}"
+  echo "  dump     - Export current packages to pkglist.txt and foreignpkglist.txt"
+  echo "  install  - Install packages from both lists"
+  echo "  cleanup  - Remove packages not in either list"
   exit 1
   ;;
 esac
