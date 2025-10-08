@@ -53,20 +53,12 @@ if [ -d /opt/homebrew/opt/rustup/bin ]; then
   PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 fi
 
-# Sets the terminal emulator to be launched by i3. Non-standard.
-export TERMINAL=st
-
 export EDITOR=vim
 # export BROWSER=firefox
 export MAIL=etiennerobert33@gmail.com
 
 # Activate touch support in firefox
 export MOZ_USE_XINPUT2=1
-
-# Starts i3 on login
-if [ "$(tty)" = "/dev/tty1" ]; then
-  pgrep -x i3 || exec startx
-fi
 
 # opam configuration
 test -r /home/etienne/.opam/opam-init/init.sh && . /home/etienne/.opam/opam-init/init.sh >/dev/null 2>/dev/null || true
