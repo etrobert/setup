@@ -1,4 +1,4 @@
-alsa-lib
+alsa-lib # needed for firefox/zen
 base
 base-devel
 bat
