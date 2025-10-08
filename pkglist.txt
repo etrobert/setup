@@ -16,5 +16,4 @@ networkmanager
 nvm
 openssh
 stow
-sudo
 tmux
