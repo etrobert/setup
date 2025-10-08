@@ -21,16 +21,16 @@ install_packages() {
 
 # Require a command
 case "$1" in
-  dump)
-    dump_packages
-    ;;
-  install)
-    install_packages
-    ;;
-  *)
-    echo "Usage: pacman-bundle {dump|install}"
-    echo "  dump     - Export current packages to pkglist.txt"
-    echo "  install  - Install packages from pkglist.txt"
-    exit 1
-    ;;
+dump)
+  dump_packages
+  ;;
+install)
+  install_packages
+  ;;
+*)
+  echo "Usage: pacman-bundle {dump|install}"
+  echo "  dump     - Export current packages to pkglist.txt"
+  echo "  install  - Install packages from pkglist.txt"
+  exit 1
+  ;;
 esac
