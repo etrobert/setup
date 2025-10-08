@@ -12,24 +12,38 @@ dump_packages() {
   echo "✅ Dumped $(wc -l <foreignpkglist.txt) AUR packages to foreignpkglist.txt"
 }
 
-install_packages() {
-  # Install official packages
-  if [ -f "pkglist.txt" ]; then
-    echo "Installing official packages..."
-    # File can be read by user
-    # shellcheck disable=SC2024
-    sudo pacman -S --needed - <pkglist.txt
-  else
+install_official_packages() {
+  # Check official packages before using sudo
+  if [ ! -f "pkglist.txt" ]; then
     echo "pkglist.txt not found, skipping official packages"
+    return
   fi
 
-  # Install AUR packages (excluding yay itself)
-  if [ -f "foreignpkglist.txt" ]; then
-    echo "Installing AUR packages..."
-    grep -v '^yay' foreignpkglist.txt | yay -S --needed -
-  else
-    echo "foreignpkglist.txt not found, skipping AUR packages"
+  if pacman -T - <pkglist.txt >/dev/null 2>&1; then
+    echo "✅ All official packages already installed"
+    return
   fi
+
+  echo "Installing official packages..."
+
+  # shellcheck disable=SC2024
+  sudo pacman -S --needed - <pkglist.txt
+}
+
+install_aur_packages() {
+  # Install AUR packages (excluding yay itself)
+  if [ ! -f "foreignpkglist.txt" ]; then
+    echo "foreignpkglist.txt not found, skipping AUR packages"
+    return
+  fi
+
+  echo "Installing AUR packages..."
+  grep -v '^yay' foreignpkglist.txt | yay -S --needed -
+}
+
+install_packages() {
+  install_official_packages
+  install_aur_packages
 }
 
 cleanup_packages() {
