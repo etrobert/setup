@@ -39,7 +39,7 @@ cleanup_packages() {
   cat pkglist.txt foreignpkglist.txt 2>/dev/null | sort >/tmp/wanted_packages.txt
 
   # Find packages to remove (installed but not in our lists)
-  pacman -Qq | sort | comm -23 - /tmp/wanted_packages.txt >/tmp/packages_to_remove.txt
+  pacman -Qqe | sort | comm -23 - /tmp/wanted_packages.txt >/tmp/packages_to_remove.txt
 
   if [ -s /tmp/packages_to_remove.txt ]; then
     echo "Packages to remove:"
