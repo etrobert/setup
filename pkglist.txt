@@ -18,3 +18,4 @@ nvm
 openssh
 stow
 tmux
+ttf-dejavu
