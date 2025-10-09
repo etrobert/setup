@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Upgrade HEAD packages (Homebrew doesn't support this natively)
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo "Usage: brew-head-upgrade <package>"
+    echo "Upgrades a HEAD package by uninstalling and reinstalling from HEAD"
+    exit 1
+fi
+
+package="$1"
+
+echo "Upgrading HEAD package: $package"
+brew uninstall "$package" && brew install --HEAD "$package"
