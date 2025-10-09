@@ -40,9 +40,6 @@ export EDITOR=vim
 # export BROWSER=firefox
 export MAIL=etiennerobert33@gmail.com
 
-# Activate touch support in firefox
-export MOZ_USE_XINPUT2=1
-
 # opam configuration
 test -r /home/etienne/.opam/opam-init/init.sh && . /home/etienne/.opam/opam-init/init.sh >/dev/null 2>/dev/null || true
 
