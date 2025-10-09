@@ -17,7 +17,6 @@
 [ -f ~/.env ] && export $(grep -v '^#' ~/.env | xargs)
 
 PATH=/usr/local/bin:$PATH
-PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 # homebrew setup
 # generated with `/opt/homebrew/bin/brew shellenv`
