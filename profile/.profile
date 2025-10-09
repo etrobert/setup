@@ -19,11 +19,6 @@
 PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ]; then
-  PATH="$HOME/bin:$PATH"
-fi
-
 # homebrew setup
 # generated with `/opt/homebrew/bin/brew shellenv`
 if [ -d "/opt/homebrew" ]; then
