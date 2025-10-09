@@ -22,8 +22,6 @@ alias gi="git"
 alias make="make -j8"
 alias ccat="highlight --out-format=ansi"
 
-alias ocaml="rlwrap ocaml"
-
 alias music-dl="youtube-dl -x -f bestaudio"
 
 alias rscp="rsync -p --progress"
