@@ -19,13 +19,6 @@
 PATH=/usr/local/bin:$PATH
 PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
-if [ "$(uname)" == "Darwin" ]; then
-  # Visual Studio Code Path
-  if [ -d "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]; then
-    PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-  fi
-fi
-
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ]; then
   PATH="$HOME/bin:$PATH"
