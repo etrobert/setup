@@ -11,7 +11,7 @@ fi
 # When calling external functions, \[ and \] should
 # be replaced by \001 and \002 respectively
 # Source: https://stackoverflow.com/questions/24839271/bash-ps1-line-wrap-issue-with-non-printing-characters-from-an-external-command
-#PS1=' \u@\H \[\e[0;36m\]$(~/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
+#PS1=' \u@\H \[\e[0;36m\]$(~/.local/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
 
 PROMPT_COMMAND='history -a; precmd'
 
