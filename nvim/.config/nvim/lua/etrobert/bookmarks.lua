@@ -124,41 +124,75 @@ end
 ---@param link Match
 ---@param metadata Metadata
 ---@param status Status | nil
----@param table_info TableInfo | nil
+---@param table_info TableInfo
 ---@return [Line, Line]
-local function build_lines(link, metadata, status, table_info)
-	-- Calculate spacing for table alignment
-	local prefix = ""
-	local max_width = config.max_description
-
-	if table_info and table_info.is_table then
-		-- Add spaces to align with column start plus one extra space
-		prefix = string.rep(" ", table_info.col_start + 1)
-		-- Calculate available width in column
-		local col_width = table_info.col_end - table_info.col_start
-		max_width = math.min(col_width - 3, config.max_description or 140) -- -3 for padding + extra space
-	else
-		prefix = "* "
+local function build_table_lines(link, metadata, status, table_info)
+	-- Calculate available width in column
+	local col_width = table_info.col_end - table_info.col_start
+	local max_width = math.min(col_width - 2, config.max_description or 140) -- -2 for padding
+	
+	-- Build the full table line with pipes
+	local function build_full_line(content)
+		local line = {}
+		local current_pos = 0
+		
+		for i, pipe_pos in ipairs(table_info.pipe_positions) do
+			if i == 1 and pipe_pos == 0 then
+				-- First pipe at position 0
+				table.insert(line, { "|", "Normal" })
+				current_pos = 1
+			else
+				-- Add content or spaces before this pipe
+				local segment_start = current_pos
+				local segment_end = pipe_pos
+				
+				if segment_start <= table_info.col_start and table_info.col_start < segment_end then
+					-- This segment contains our content
+					local content_start = table_info.col_start - segment_start + 1
+					local spaces_before = string.rep(" ", content_start)
+					local content_text = truncate(content, max_width)
+					local spaces_after = string.rep(" ", segment_end - table_info.col_start - #content_text - 1)
+					
+					if #spaces_before > 0 then
+						table.insert(line, { spaces_before, "Comment" })
+					end
+					table.insert(line, { content_text, content == "Loading bookmark..." and "Comment" or "Title" })
+					if #spaces_after > 0 then
+						table.insert(line, { spaces_after, "Comment" })
+					end
+				else
+					-- Empty segment
+					local spaces = string.rep(" ", segment_end - segment_start)
+					if #spaces > 0 then
+						table.insert(line, { spaces, "Comment" })
+					end
+				end
+				
+				table.insert(line, { "|", "Normal" })
+				current_pos = segment_end + 1
+			end
+		end
+		
+		return line
 	end
 
 	if status == "loading" then
 		return {
-			{ { prefix, "Comment" }, { "Loading bookmark...", "Comment" } },
-			{ { prefix, "Comment" }, { "", "Comment" } },
+			build_full_line("Loading bookmark..."),
+			build_full_line(""),
 		}
 	end
 
 	if status == "error" then
 		return {
-			{ { prefix, "Comment" }, { "Unable to load preview", "WarningMsg" } },
-			{ { prefix, "Comment" }, { "", "Directory" } },
+			build_full_line("Unable to load preview"),
+			build_full_line(""),
 		}
 	end
 
 	local title = metadata.title or link.text or link.url
 	local description = metadata.description or ""
 
-	-- Truncate based on available width
 	if max_width and max_width > 0 then
 		if title then
 			title = truncate(title, max_width)
@@ -169,15 +203,62 @@ local function build_lines(link, metadata, status, table_info)
 	end
 
 	return {
-		{ { prefix, "Comment" }, { title or "", "Title" } },
-		{ { prefix, "Comment" }, { description, "Comment" } },
+		build_full_line(title or ""),
+		build_full_line(description),
 	}
+end
+
+---@param link Match
+---@param metadata Metadata
+---@param status Status | nil
+---@param table_info TableInfo | nil
+---@return [Line, Line]
+local function build_lines(link, metadata, status, table_info)
+	if table_info and table_info.is_table then
+		return build_table_lines(link, metadata, status, table_info)
+	else
+		-- Regular non-table formatting
+		local prefix = "* "
+		local max_width = config.max_description
+
+		if status == "loading" then
+			return {
+				{ { prefix, "Comment" }, { "Loading bookmark...", "Comment" } },
+				{ { prefix, "Comment" }, { "", "Comment" } },
+			}
+		end
+
+		if status == "error" then
+			return {
+				{ { prefix, "Comment" }, { "Unable to load preview", "WarningMsg" } },
+				{ { prefix, "Comment" }, { "", "Directory" } },
+			}
+		end
+
+		local title = metadata.title or link.text or link.url
+		local description = metadata.description or ""
+
+		if max_width and max_width > 0 then
+			if title then
+				title = truncate(title, max_width)
+			end
+			if description then
+				description = truncate(description, max_width)
+			end
+		end
+
+		return {
+			{ { prefix, "Comment" }, { title or "", "Title" } },
+			{ { prefix, "Comment" }, { description, "Comment" } },
+		}
+	end
 end
 
 ---@class TableInfo
 ---@field is_table boolean
 ---@field col_start integer
 ---@field col_end integer
+---@field pipe_positions integer[]
 
 ---@nodiscard
 ---@param bufnr integer
@@ -188,12 +269,12 @@ local function get_table_info(bufnr, row, col)
 	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 	local line = lines[row + 1]
 	if not line then
-		return { is_table = false, col_start = 0, col_end = 0 }
+		return { is_table = false, col_start = 0, col_end = 0, pipe_positions = {} }
 	end
 
 	-- Check if current line contains table separators
 	if not line:match("|") then
-		return { is_table = false, col_start = 0, col_end = 0 }
+		return { is_table = false, col_start = 0, col_end = 0, pipe_positions = {} }
 	end
 
 	-- Look for table header separator (line with |:--|:--|) in a wider range
@@ -210,7 +291,7 @@ local function get_table_info(bufnr, row, col)
 	end
 
 	if not is_table then
-		return { is_table = false, col_start = 0, col_end = 0 }
+		return { is_table = false, col_start = 0, col_end = 0, pipe_positions = {} }
 	end
 
 	-- Find column boundaries
@@ -258,11 +339,11 @@ local function get_table_info(bufnr, row, col)
 			col_end = #line
 		else
 			-- Fallback: if we can't determine the column, treat as regular text
-			return { is_table = false, col_start = 0, col_end = 0 }
+			return { is_table = false, col_start = 0, col_end = 0, pipe_positions = {} }
 		end
 	end
 
-	return { is_table = true, col_start = col_start, col_end = col_end }
+	return { is_table = true, col_start = col_start, col_end = col_end, pipe_positions = pipe_positions }
 end
 
 ---@param url string
