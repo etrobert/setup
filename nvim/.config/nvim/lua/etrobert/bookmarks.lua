@@ -196,13 +196,16 @@ local function get_table_info(bufnr, row, col)
 		return { is_table = false, col_start = 0, col_end = 0 }
 	end
 
-	-- Look for table header separator (line with |:--|:--|)
+	-- Look for table header separator (line with |:--|:--|) in a wider range
 	local is_table = false
-	for i = math.max(1, row - 2), math.min(#lines, row + 3) do
+	for i = math.max(1, row - 10), math.min(#lines, row + 10) do
 		local check_line = lines[i]
-		if check_line and check_line:match("^%s*|?[%s:%-|]+|?%s*$") and check_line:match("%-") then
-			is_table = true
-			break
+		if check_line and check_line:match("^%s*|") and check_line:match("%-%-") and check_line:match("|") then
+			-- More specific pattern for table separator
+			if check_line:match("^%s*|[%s:%-|]+|%s*$") then
+				is_table = true
+				break
+			end
 		end
 	end
 
@@ -215,29 +218,48 @@ local function get_table_info(bufnr, row, col)
 	local col_end = #line
 	local pipe_positions = {}
 
-	-- Find all pipe positions
+	-- Find all pipe positions (skip escaped pipes)
 	for i = 1, #line do
 		if line:sub(i, i) == "|" then
-			table.insert(pipe_positions, i - 1) -- convert to 0-based
+			-- Check if it's escaped
+			local escaped = false
+			local backslash_count = 0
+			for j = i - 1, 1, -1 do
+				if line:sub(j, j) == "\\" then
+					backslash_count = backslash_count + 1
+				else
+					break
+				end
+			end
+			if backslash_count % 2 == 0 then -- even number of backslashes means not escaped
+				table.insert(pipe_positions, i - 1) -- convert to 0-based
+			end
 		end
 	end
 
 	-- Find which column the link is in
+	local found_column = false
 	for i = 1, #pipe_positions - 1 do
-		if col >= pipe_positions[i] and col <= pipe_positions[i + 1] then
+		if col >= pipe_positions[i] and col < pipe_positions[i + 1] then
 			col_start = pipe_positions[i] + 1 -- skip the pipe
 			col_end = pipe_positions[i + 1] - 1 -- before next pipe
+			found_column = true
 			break
 		end
 	end
 
 	-- Handle edge cases
-	if #pipe_positions > 0 and col < pipe_positions[1] then
-		col_start = 0
-		col_end = pipe_positions[1] - 1
-	elseif #pipe_positions > 0 and col > pipe_positions[#pipe_positions] then
-		col_start = pipe_positions[#pipe_positions] + 1
-		col_end = #line
+	if not found_column then
+		if #pipe_positions > 0 and col < pipe_positions[1] then
+			col_start = 0
+			col_end = pipe_positions[1] - 1
+		elseif #pipe_positions > 0 and col >= pipe_positions[#pipe_positions] then
+			col_start = pipe_positions[#pipe_positions] + 1
+			col_end = #line
+		else
+			-- Fallback: if we can't determine the column, treat as regular text
+			return { is_table = false, col_start = 0, col_end = 0 }
+		end
 	end
 
 	return { is_table = true, col_start = col_start, col_end = col_end }
@@ -309,12 +331,12 @@ end
 ---@param status Status | nil
 local function render_entry(bufnr, entry, metadata, status)
 	local table_info = get_table_info(bufnr, entry.link.end_row, entry.link.start_col)
-	local lines = build_lines(entry.link, metadata or {}, status, table_info)
+	local lines_output = build_lines(entry.link, metadata or {}, status, table_info)
 
 	-- Always use virtual lines, but with column-aware spacing
 	entry.extmark_id = vim.api.nvim_buf_set_extmark(bufnr, namespace, entry.link.end_row, 0, {
 		id = entry.extmark_id,
-		virt_lines = lines,
+		virt_lines = lines_output,
 		hl_mode = "combine",
 	})
 end
