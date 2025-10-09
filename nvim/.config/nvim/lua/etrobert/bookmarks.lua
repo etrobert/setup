@@ -129,13 +129,13 @@ end
 local function build_table_lines(link, metadata, status, table_info)
 	-- Calculate available width in column
 	local col_width = table_info.col_end - table_info.col_start
-	local max_width = math.min(col_width - 2, config.max_description or 140) -- -2 for padding
-	
+	local max_width = math.min(col_width - 2, config.max_description) -- -2 for padding
+
 	-- Build the full table line with pipes
 	local function build_full_line(content, is_title)
 		local line = {}
 		local current_pos = 0
-		
+
 		for i, pipe_pos in ipairs(table_info.pipe_positions) do
 			if i == 1 and pipe_pos == 0 then
 				-- First pipe at position 0
@@ -145,14 +145,14 @@ local function build_table_lines(link, metadata, status, table_info)
 				-- Add content or spaces before this pipe
 				local segment_start = current_pos
 				local segment_end = pipe_pos
-				
+
 				if segment_start <= table_info.col_start and table_info.col_start < segment_end then
 					-- This segment contains our content
 					local content_start = table_info.col_start - segment_start + 1
 					local spaces_before = string.rep(" ", content_start)
 					local content_text = truncate(content, max_width)
 					local spaces_after = string.rep(" ", segment_end - table_info.col_start - #content_text - 1)
-					
+
 					if #spaces_before > 0 then
 						table.insert(line, { spaces_before, "Comment" })
 					end
@@ -168,12 +168,12 @@ local function build_table_lines(link, metadata, status, table_info)
 						table.insert(line, { spaces, "Comment" })
 					end
 				end
-				
+
 				table.insert(line, { "|", "Normal" })
 				current_pos = segment_end + 1
 			end
 		end
-		
+
 		return line
 	end
 
@@ -273,25 +273,8 @@ local function get_table_info(bufnr, row, col)
 		return { is_table = false, col_start = 0, col_end = 0, pipe_positions = {} }
 	end
 
-	-- Check if current line contains table separators
+	-- Simple check: if line contains pipes, it's a table
 	if not line:match("|") then
-		return { is_table = false, col_start = 0, col_end = 0, pipe_positions = {} }
-	end
-
-	-- Look for table header separator (line with |:--|:--|) in a wider range
-	local is_table = false
-	for i = math.max(1, row - 10), math.min(#lines, row + 10) do
-		local check_line = lines[i]
-		if check_line and check_line:match("^%s*|") and check_line:match("%-%-") and check_line:match("|") then
-			-- More specific pattern for table separator
-			if check_line:match("^%s*|[%s:%-|]+|%s*$") then
-				is_table = true
-				break
-			end
-		end
-	end
-
-	if not is_table then
 		return { is_table = false, col_start = 0, col_end = 0, pipe_positions = {} }
 	end
 
