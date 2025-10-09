@@ -30,8 +30,6 @@ alias rscp="rsync -p --progress"
 
 alias only-unique="sort | uniq"
 
-alias ibrew='arch --x86_64 /usr/local/Homebrew/bin/brew'
-
 alias tmuxn='tmux new-session -A -s "$(basename "$(pwd)")"'
 alias ts='tmux-sessionizer'
 
