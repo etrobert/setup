@@ -124,9 +124,22 @@ end
 ---@param link Match
 ---@param metadata Metadata
 ---@param status Status | nil
+---@param table_info TableInfo | nil
 ---@return [Line, Line]
-local function build_lines(link, metadata, status)
-	local prefix = "* "
+local function build_lines(link, metadata, status, table_info)
+	-- Calculate spacing for table alignment
+	local prefix = ""
+	local max_width = config.max_description
+
+	if table_info and table_info.is_table then
+		-- Add spaces to align with column start plus one extra space
+		prefix = string.rep(" ", table_info.col_start + 1)
+		-- Calculate available width in column
+		local col_width = table_info.col_end - table_info.col_start
+		max_width = math.min(col_width - 3, config.max_description or 140) -- -3 for padding + extra space
+	else
+		prefix = "* "
+	end
 
 	if status == "loading" then
 		return {
@@ -145,14 +158,89 @@ local function build_lines(link, metadata, status)
 	local title = metadata.title or link.text or link.url
 	local description = metadata.description or ""
 
-	if config.max_description and config.max_description > 0 then
-		description = truncate(description, config.max_description)
+	-- Truncate based on available width
+	if max_width and max_width > 0 then
+		if title then
+			title = truncate(title, max_width)
+		end
+		if description then
+			description = truncate(description, max_width)
+		end
 	end
 
 	return {
 		{ { prefix, "Comment" }, { title or "", "Title" } },
 		{ { prefix, "Comment" }, { description, "Comment" } },
 	}
+end
+
+---@class TableInfo
+---@field is_table boolean
+---@field col_start integer
+---@field col_end integer
+
+---@nodiscard
+---@param bufnr integer
+---@param row integer
+---@param col integer
+---@return TableInfo
+local function get_table_info(bufnr, row, col)
+	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+	local line = lines[row + 1]
+	if not line then
+		return { is_table = false, col_start = 0, col_end = 0 }
+	end
+
+	-- Check if current line contains table separators
+	if not line:match("|") then
+		return { is_table = false, col_start = 0, col_end = 0 }
+	end
+
+	-- Look for table header separator (line with |:--|:--|)
+	local is_table = false
+	for i = math.max(1, row - 2), math.min(#lines, row + 3) do
+		local check_line = lines[i]
+		if check_line and check_line:match("^%s*|?[%s:%-|]+|?%s*$") and check_line:match("%-") then
+			is_table = true
+			break
+		end
+	end
+
+	if not is_table then
+		return { is_table = false, col_start = 0, col_end = 0 }
+	end
+
+	-- Find column boundaries
+	local col_start = 0
+	local col_end = #line
+	local pipe_positions = {}
+
+	-- Find all pipe positions
+	for i = 1, #line do
+		if line:sub(i, i) == "|" then
+			table.insert(pipe_positions, i - 1) -- convert to 0-based
+		end
+	end
+
+	-- Find which column the link is in
+	for i = 1, #pipe_positions - 1 do
+		if col >= pipe_positions[i] and col <= pipe_positions[i + 1] then
+			col_start = pipe_positions[i] + 1 -- skip the pipe
+			col_end = pipe_positions[i + 1] - 1 -- before next pipe
+			break
+		end
+	end
+
+	-- Handle edge cases
+	if #pipe_positions > 0 and col < pipe_positions[1] then
+		col_start = 0
+		col_end = pipe_positions[1] - 1
+	elseif #pipe_positions > 0 and col > pipe_positions[#pipe_positions] then
+		col_start = pipe_positions[#pipe_positions] + 1
+		col_end = #line
+	end
+
+	return { is_table = true, col_start = col_start, col_end = col_end }
 end
 
 ---@param url string
@@ -220,8 +308,10 @@ end
 ---@param metadata Metadata | nil
 ---@param status Status | nil
 local function render_entry(bufnr, entry, metadata, status)
-	local lines = build_lines(entry.link, metadata or {}, status)
+	local table_info = get_table_info(bufnr, entry.link.end_row, entry.link.start_col)
+	local lines = build_lines(entry.link, metadata or {}, status, table_info)
 
+	-- Always use virtual lines, but with column-aware spacing
 	entry.extmark_id = vim.api.nvim_buf_set_extmark(bufnr, namespace, entry.link.end_row, 0, {
 		id = entry.extmark_id,
 		virt_lines = lines,
