@@ -24,11 +24,6 @@ if [ -d "$HOME/bin" ]; then
   PATH="$HOME/bin:$PATH"
 fi
 
-# Searches for brew libs/binaries before system ones
-if [ -d "$HOME/.brew/bin" ]; then
-  PATH="$HOME/.brew/bin:$PATH"
-fi
-
 # homebrew setup
 # generated with `/opt/homebrew/bin/brew shellenv`
 if [ -d "/opt/homebrew" ]; then
