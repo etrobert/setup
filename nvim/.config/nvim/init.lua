@@ -30,6 +30,8 @@ vim.pack.add({
 	"https://github.com/alex-popov-tech/store.nvim",
 })
 
+vim.cmd.packadd("nvim.undotree")
+
 require("catppuccin").setup({ float = { transparent = true, solid = false } })
 vim.cmd("colorscheme catppuccin-macchiato")
 
