@@ -132,7 +132,7 @@ local function build_table_lines(link, metadata, status, table_info)
 	local max_width = math.min(col_width - 2, config.max_description or 140) -- -2 for padding
 	
 	-- Build the full table line with pipes
-	local function build_full_line(content)
+	local function build_full_line(content, is_title)
 		local line = {}
 		local current_pos = 0
 		
@@ -156,7 +156,8 @@ local function build_table_lines(link, metadata, status, table_info)
 					if #spaces_before > 0 then
 						table.insert(line, { spaces_before, "Comment" })
 					end
-					table.insert(line, { content_text, content == "Loading bookmark..." and "Comment" or "Title" })
+					local highlight = is_title and "Title" or "Comment"
+					table.insert(line, { content_text, highlight })
 					if #spaces_after > 0 then
 						table.insert(line, { spaces_after, "Comment" })
 					end
@@ -178,15 +179,15 @@ local function build_table_lines(link, metadata, status, table_info)
 
 	if status == "loading" then
 		return {
-			build_full_line("Loading bookmark..."),
-			build_full_line(""),
+			build_full_line("Loading bookmark...", false),
+			build_full_line("", false),
 		}
 	end
 
 	if status == "error" then
 		return {
-			build_full_line("Unable to load preview"),
-			build_full_line(""),
+			build_full_line("Unable to load preview", false),
+			build_full_line("", false),
 		}
 	end
 
@@ -203,8 +204,8 @@ local function build_table_lines(link, metadata, status, table_info)
 	end
 
 	return {
-		build_full_line(title or ""),
-		build_full_line(description),
+		build_full_line(title or "", true),
+		build_full_line(description, false),
 	}
 end
 
