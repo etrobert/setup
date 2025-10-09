@@ -1,2 +1,4 @@
+# vim: ft=sh
+
 # Linux aliases
 alias ls="ls -Fh --color"
