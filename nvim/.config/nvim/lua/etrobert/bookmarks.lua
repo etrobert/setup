@@ -284,6 +284,12 @@ local function buffer_matches(bufnr)
 		local col = 1
 		while true do
 			local start_link, end_link, text, url = line:find("%[(.-)%]%((.-)%)", col)
+
+			-- Skip image links (starting with !)
+			if start_link and start_link > 1 and line:sub(start_link - 1, start_link - 1) == "!" then
+				start_link = nil
+			end
+
 			local start_auto, end_auto, auto_url = line:find("<([^%s>]+)>", col)
 
 			if not start_link and not start_auto then
