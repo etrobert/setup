@@ -4,3 +4,6 @@
 [submodule "vim/.vim/pack/scrooloose/start/nerdtree"]
 	path = vim/.vim/pack/scrooloose/start/nerdtree
 	url = https://github.com/scrooloose/nerdtree
+[submodule "hammerspoon/.hammerspoon/Spoons/PaperWM.spoon"]
+	path = hammerspoon/.hammerspoon/Spoons/PaperWM.spoon
+	url = git@github.com:mogenson/PaperWM.spoon.git
