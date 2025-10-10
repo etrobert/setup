@@ -536,6 +536,7 @@ end
 
 function M.setup()
 	vim.api.nvim_create_autocmd("FileType", {
+		group = vim.api.nvim_create_augroup("bookmarks", { clear = true }),
 		pattern = "markdown",
 		callback = function(args)
 			attach_buffer(args.buf)
