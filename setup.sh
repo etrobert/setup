@@ -156,15 +156,15 @@ setup_node() {
 setup_npm_packages() {
   echo "Installing global npm packages..."
 
-  npm install -g corepack
-  npm install -g vscode-langservers-extracted
-  npm install -g @github/copilot-language-server
-  npm install -g @anthropic-ai/claude-code
-  npm install -g bash-language-server
-  npm install -g @tailwindcss/language-server
-  npm install -g typescript-language-server
-  npm install -g @fsouza/prettierd
-  npm install -g neonctl
+  npm install -g \
+    corepack \
+    vscode-langservers-extracted \
+    @github/copilot-language-server \
+    @anthropic-ai/claude-code \
+    bash-language-server \
+    @tailwindcss/language-server \
+    typescript-language-server \
+    @fsouza/prettierd neonctl
 }
 
 setup_dock() {
