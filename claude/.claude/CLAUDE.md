@@ -1,77 +1,23 @@
-# Personal Development Environment - CLAUDE.md
+# Global CLAUDE.md
 
-This file provides context about my personal development setup, preferences, and workflows.
+Global preferences and workflows across all projects.
 
-## Development Environment
+## Code Style
 
-### Shell & Terminal
-
-- Primary shell: Bash with custom configuration
-- Terminal: Ghostty
-- tmux for session management with custom sessionizer script
-- Custom PS1 with git status, command timing, and exit codes
-- You can find the list of installed packages by looking at `~/setup/Brewfile`
-
-### Editor & IDE
-
-- Primary editor: Neovim with custom Lua config and Lazy.nvim
-
-### Version Control Workflow
-
-- Git with extensive custom aliases (use `git alias` to see all)
-- Key aliases:
-  - `git torelease` - Shows commits ready for release (origin/prod..origin/main)
-  - `git release` - Deploys by pushing origin/main to prod
-  - `git sci` - Uses gen-commit-msg for commit messages
-
-### Package Management
-
-- Homebrew for system packages and applications
-- nvm for node.js
-
-### Code Style Preferences
-
+- Keep code simple
 - Avoid code duplication
-- JavaScript/TypeScript: ES modules, destructured imports
+- Always format, typecheck, and lint after making a change
 
-### Common Commands
+## Response Preferences
 
-- `./setup.sh` - Complete system setup script
-- `brew bundle install` - Install all packages
-- `stow <folder>` - Symlink configuration
-- `tmux-sessionizer` - Quick tmux session management
-- `git alias` - View all git aliases with descriptions
+- When reporting information to me, be extremely concise. Sacrifice grammar for
+  the sake of concision.
 
-### Keyboard & Navigation
+## Git Workflow
 
-- Caps Lock mapped to Control
-- skhd for hotkey management
-
-### Important Notes
-
-- Configuration uses GNU Stow for symlink management
-- All configs maintain expected paths in home directory
-- Setup script is idempotent and can be run multiple times
-
-### Preferences
-
-- Keep terminal output concise - prefer short, direct responses
-- When working with files, always check existing patterns first
-- Follow security best practices - never commit secrets
-- Prefer editing existing files over creating new ones unless necessary
-
-## Workflow Notes
-
-- Always format files after editing
-- Always typecheck and lint before committing
+- Run `git alias` to see available aliases
 
 ## YouTube Video Analysis
 
-For extracting real transcripts and creating content summaries from YouTube videos, see the detailed process guide at: `~/.claude/guides/youtube_transcript_extraction_guide.md`
-
-Key reminders:
-
-- Always extract actual transcript, don't infer from descriptions
-- Use TodoWrite to track progress
-- Handle cookie consent and ads first
-- Extract transcript in chunks to avoid token limits
+See `~/.claude/guides/youtube_transcript_extraction_guide.md` for the full
+process.
