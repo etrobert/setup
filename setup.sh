@@ -86,6 +86,12 @@ setup_linux_dotfiles() {
   stow alias bash git nvim pacman profile readline ssh tmux
 }
 
+setup_rust() {
+  echo "Installing rustup stuff components..."
+
+  rustup component add rust-analyzer
+}
+
 setup_shell() {
   echo "Setting up default shell"
 
@@ -383,6 +389,7 @@ setup_darwin() {
   echo
   setup_key_repeat
   echo
+  setup_rust
 }
 
 setup_linux() {

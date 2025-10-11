@@ -32,7 +32,6 @@ brew "fd" # recommended for nvim telescope
 brew "ripgrep" # required for nvim telescope
 brew "shfmt" # required by nvim conform for bash formatting
 brew "stylua" # required by nvim conform for lua formatting
-brew "rust-analyzer" # for nvim
 brew "gopls" # for nvim
 brew "lua-language-server" # for nvim
 brew "imagemagick" # for image rendering in nvim using snacks.image
