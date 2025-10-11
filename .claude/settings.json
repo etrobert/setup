@@ -15,7 +15,8 @@
       "Bash(git log:*)",
       "Bash(grep:*)",
       "Bash(ghostty +list-keybinds:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }
