@@ -75,7 +75,8 @@ __time_ps1() {
 
 trap 'preexec' DEBUG
 
-PS1="${PS1_USER_HOST}${CYAN_COLOR}\w$RESET_COLOR\$(__git_ps1 ' (%s)') \$(__time_ps1)$ "
+# PS1="${PS1_USER_HOST}${CYAN_COLOR}\w$RESET_COLOR\$(__git_ps1 ' (%s)') \$(__time_ps1)$ "
+PS1="\$(pronto \$?) \$(__time_ps1)$ "
 
 if [ -f "$HOME/.alias" ]; then
   source "$HOME/.alias"
