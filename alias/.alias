@@ -28,7 +28,7 @@ alias rscp="rsync -p --progress"
 
 alias only-unique="sort | uniq"
 
-alias tmuxn='tmux new-session -A -s "$(basename "$(pwd)")"'
+alias tmuxn='tmux new-session -A -s "$(basename "$(pwd)")" -e TMUX_SESSION_PATH="$(pwd)"'
 alias ts='tmux-sessionizer'
 
 alias hat='highlight -lO ansi'
