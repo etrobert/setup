@@ -6,13 +6,6 @@ if [ -n "${GHOSTTY_RESOURCES_DIR}" ]; then
   builtin source "${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"
 fi
 
-# Add brackets \[...\] around non printing characters
-# To allow bash to properly calculate prompt size
-# When calling external functions, \[ and \] should
-# be replaced by \001 and \002 respectively
-# Source: https://stackoverflow.com/questions/24839271/bash-ps1-line-wrap-issue-with-non-printing-characters-from-an-external-command
-#PS1=' \u@\H \[\e[0;36m\]$(~/.local/bin/pretty_pwd)\[\e[m\]$(__git_ps1 " (%s)")> '
-
 PROMPT_COMMAND='history -a; precmd'
 
 CYAN_COLOR='\001\e[0;36m\002'

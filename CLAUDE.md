@@ -23,7 +23,6 @@ specific tool or application.
 
 Several custom scripts are available in `*/bin/` directories:
 
-- `bash/bin/pretty_pwd` - Format current directory for PS1 prompt
 - `tmux/bin/tmux-sessionizer` - tmux session management utility
 - `git/bin/gen-commit-msg` - Generate commit messages
 - `macos/bin/*` - Various macOS utilities (dock speed, DNS flush, window resize,
