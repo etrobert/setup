@@ -8,21 +8,12 @@ fi
 
 PROMPT_COMMAND='history -a; precmd'
 
-CYAN_COLOR='\001\e[0;36m\002'
-RED_COLOR='\001\e[0;31m\002'
-RESET_COLOR='\001\e[m\002'
-
 # Using GNU date both on linux (date) and mac (gdate)
 if command -v gdate >/dev/null 2>&1; then
   DATE='gdate'
 else
   DATE='date'
 fi
-
-# Uncomment to show user and host in prompt
-# Use \H for the full hostname or \h for the hostname until the first dot
-# PS1_USER_HOST='\u@\h '
-PS1_USER_HOST=
 
 export CMD_TIMER_MS=
 
@@ -33,7 +24,6 @@ preexec() {
 }
 
 precmd() {
-  EXIT_STATUS=$?
   if [[ -z $CMD_TIMER_MS ]]; then
     return
   fi
@@ -44,39 +34,10 @@ precmd() {
   unset CMD_TIMER_MS
 }
 
-ONE_SECOND=1000
-ONE_MINUTE=60000
-ONE_HOUR=3600000
-
-__time_ps1() {
-  if [ "$EXIT_STATUS" -ne 0 ]; then
-    printf "%b[%s]%b" "$RED_COLOR" "$EXIT_STATUS" "$RESET_COLOR"
-  elif ((LAST_CMD_TIME < 100)); then
-    # ex [01ms]
-    # ex [99ms]
-    printf "[%02dms]" "$LAST_CMD_TIME"
-  elif ((LAST_CMD_TIME < ONE_SECOND)); then
-    # ex [.10s]
-    # ex [.99s]
-    printf "[.%ds]" "$((LAST_CMD_TIME / 10))"
-  elif ((LAST_CMD_TIME < ONE_MINUTE)); then
-    # ex [1.0s]
-    # ex [59.9s]
-    printf "[%d.%ds]" $((LAST_CMD_TIME / ONE_SECOND)) $((LAST_CMD_TIME % ONE_SECOND / 100))
-  elif ((LAST_CMD_TIME < ONE_HOUR)); then
-    # ex [1m0s]
-    # ex [59m59s]
-    printf "[%dm%ds]" $((LAST_CMD_TIME / ONE_MINUTE)) $((LAST_CMD_TIME % ONE_MINUTE / ONE_SECOND))
-  else
-    # ex [1h0m]
-    printf "[%dh%dm]" $((LAST_CMD_TIME / ONE_HOUR)) $((LAST_CMD_TIME % ONE_HOUR / ONE_MINUTE))
-  fi
-}
-
 trap 'preexec' DEBUG
 
 # PS1="${PS1_USER_HOST}${CYAN_COLOR}\w$RESET_COLOR\$(__git_ps1 ' (%s)') \$(__time_ps1)$ "
-PS1="\$(pronto \$?) \$(__time_ps1)$ "
+PS1="\$(pronto \$?)"
 
 if [ -f "$HOME/.alias" ]; then
   source "$HOME/.alias"
