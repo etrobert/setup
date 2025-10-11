@@ -41,7 +41,7 @@ fi
 project=$(echo "$project" | sed 's/\./_/g')
 
 if ! tmux has-session -t="$project" 2>/dev/null; then
-  tmux new-session -d -s "$project" -c "$project_path"
+  tmux new-session -d -s "$project" -c "$project_path" -e "TMUX_SESSION_PATH=$project_path"
 fi
 
 if [ -z "$TMUX" ]; then
