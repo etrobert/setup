@@ -2,9 +2,9 @@
 vim.opt.number = true
 
 -- Autowrap when typing
-vim.opt.textwidth = 80
+-- vim.opt.textwidth = 80
 -- vim.opt.wrapmargin = 10
-vim.opt.formatoptions:append("t")
+-- vim.opt.formatoptions:append("t")
 
 -- Highlights the column 81
 vim.opt.colorcolumn = "81"
