@@ -47,3 +47,19 @@ alias font="ghostty +show-face --string=Hello --style=regular"
 alias duf="du -sh * .* | sort -h"
 
 alias server="python3 -m http.server 8000"
+
+falias() {
+  local selected
+  selected=$(
+    alias |
+      sed "s/^alias //" |
+      sed "s/='/=/" |
+      sed "s/'$//" |
+      column -t -s '=' |
+      fzf |
+      awk '{print $1}'
+  )
+  if [ -n "$selected" ]; then
+    eval "$selected"
+  fi
+}
