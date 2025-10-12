@@ -7,6 +7,7 @@ vim.pack.add({
 	"https://github.com/hrsh7th/cmp-nvim-lsp-signature-help",
 	"https://github.com/roobert/tailwindcss-colorizer-cmp.nvim",
 	"https://github.com/rafamadriz/friendly-snippets",
+	"https://github.com/hrsh7th/cmp-emoji",
 })
 
 -- See `:help cmp`
@@ -84,6 +85,7 @@ cmp.setup({
 	}),
 	sources = {
 		{ name = "luasnip" },
+		{ name = "emoji" },
 		{ name = "path" },
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lsp_signature_help" },

@@ -12,6 +12,10 @@
       "rev": "e79d09f",
       "src": "https://github.com/catppuccin/nvim"
     },
+    "cmp-emoji": {
+      "rev": "e8398e2",
+      "src": "https://github.com/hrsh7th/cmp-emoji"
+    },
     "cmp-nvim-lsp": {
       "rev": "bd5a7d6",
       "src": "https://github.com/hrsh7th/cmp-nvim-lsp"
