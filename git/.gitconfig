@@ -30,7 +30,8 @@
   slist = -c diff.external=difft stash list -p --ext-diff
   ushow = "!git ls-files --others --exclude-standard -z | xargs -0 bat"
   empty = commit --allow-empty -m 'trigger ci'
-  alias = "!git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1          \\2/;s/\\(^.\\{10\\}\\) */\\1 = /' | sort"
+  # grep filters out broken lines from aliases with embedded newlines
+  alias = "!git config --get-regexp '^alias\\.' | sed 's/^alias\\.//' | sort | sed 's/ /\t/' | column -t -s $'\\t' | grep -v '^[^a-zA-Z]'"
   falias = "!git alias | fzf | cut -d' ' -f1 | xargs -I {} git {}"
   torelease = log --oneline origin/prod..origin/main
   release = push origin origin/main:prod
