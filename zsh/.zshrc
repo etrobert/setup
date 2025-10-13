@@ -56,7 +56,10 @@ setopt PRINT_EXIT_VALUE
 # Allow comments even in interactive shells.
 setopt INTERACTIVE_COMMENTS
 
-autoload -z edit-command-line
+# Enable completion system
+autoload -Uz compinit && compinit
+
+autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
 
