@@ -85,3 +85,14 @@ vim.keymap.set(
 	require("telescope.git-diverged-files").git_diverged_files,
 	{ desc = "Files Changed Since Diverged from Main" }
 )
+
+-- Override default grr to use Telescope LSP references
+-- Source: https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("lsp-telescope-references", { clear = true }),
+	callback = function(args)
+		vim.keymap.set("n", "grr", function()
+			require("telescope.builtin").lsp_references()
+		end, { buffer = args.buf, desc = "LSP References (Telescope)" })
+	end,
+})

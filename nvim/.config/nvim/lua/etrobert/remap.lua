@@ -46,17 +46,6 @@ vim.keymap.set("n", "<leader>rm", DeleteCurrentFile, { desc = "Delete current fi
 -- - "an" and "in" are mapped in Visual mode to outer and inner incremental
 --  selections, respectively, using |vim.lsp.buf.selection_range()|
 
--- Override default grr to use Telescope LSP references
--- Source: https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("lsp-telescope-references", { clear = true }),
-	callback = function(args)
-		vim.keymap.set("n", "grr", function()
-			require("telescope.builtin").lsp_references()
-		end, { buffer = args.buf, desc = "LSP References (Telescope)" })
-	end,
-})
-
 vim.keymap.set("n", "grq", function()
 	local diagnostics = vim.diagnostic.get()
 	local qf_items = vim.diagnostic.toqflist(diagnostics)
