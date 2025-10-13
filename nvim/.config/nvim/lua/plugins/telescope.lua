@@ -68,6 +68,7 @@ vim.keymap.set("n", "<leader>fp", function()
 end, { desc = "Find File in Lazy Plugins" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "Grep String" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Diagnostics" })
+vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Find Keymap" })
 
 vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "Git Commits" })
 vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "Git Status" })
