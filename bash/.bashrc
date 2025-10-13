@@ -68,6 +68,9 @@ source "$HOME/.git-prompt.sh"
 # Disable ctrl-s and ctrl-q
 stty -ixon
 
+# Bind Ctrl-F to edit command in editor
+bind '"\C-f": edit-and-execute-command'
+
 # Infinite history
 HISTSIZE=
 HISTFILESIZE=
