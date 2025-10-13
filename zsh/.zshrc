@@ -26,8 +26,8 @@ if [ -f ~/.zshrc.local ]; then
 fi
 
 sourceifexists () {
-  if [ -f $1 ]; then
-    source $1
+  if [ -f "$1" ]; then
+    source "$1"
   fi
 }
 
