@@ -61,7 +61,7 @@ autoload -Uz compinit && compinit
 
 autoload -Uz edit-command-line
 zle -N edit-command-line
-bindkey "^X^E" edit-command-line
+bindkey "^F" edit-command-line
 
 # Sets normal backspace behavior
 bindkey '^?' backward-delete-char
