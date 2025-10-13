@@ -61,11 +61,6 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help Tags" })
 vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "Commands" })
 vim.keymap.set("n", "<leader>fs", builtin.lsp_workspace_symbols, { desc = "LSP Workspace Symbols" })
 vim.keymap.set("n", "<leader>ft", builtin.builtin, { desc = "Telescope Pickers" })
-vim.keymap.set("n", "<leader>fp", function()
-	builtin.find_files({
-		cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"),
-	})
-end, { desc = "Find File in Lazy Plugins" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "Grep String" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "Diagnostics" })
 vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "Find Keymap" })
