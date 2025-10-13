@@ -51,20 +51,9 @@ setopt PRINT_EXIT_VALUE
 # Allow comments even in interactive shells.
 setopt INTERACTIVE_COMMENTS
 
-# Connection prompt
-#if [ -f ~/work/scripts/login_tips.sh ]
-#then
-#	~/work/scripts/login_tips.sh
-#fi
 autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^X^E" edit-command-line
-
-# Load Homebrew config script
-#if [ -f $HOME/.brewconfig.zsh ]
-#then
-#	source $HOME/.brewconfig.zsh
-#fi
 
 # Sets normal backspace behavior
 bindkey '^?' backward-delete-char
