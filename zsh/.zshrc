@@ -44,6 +44,11 @@ Linux)
   ;;
 esac
 
+# Infinite history
+HISTSIZE=999999999
+SAVEHIST=$HISTSIZE
+HISTFILE=~/.zsh_history
+
 # zsh sessions will append their history list to the history file
 setopt APPEND_HISTORY
 # Print the exit value of programs with non-zero exit status.
