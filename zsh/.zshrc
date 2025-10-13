@@ -25,7 +25,7 @@ if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
 
-sourceifexists () {
+sourceifexists() {
   if [ -f "$1" ]; then
     source "$1"
   fi
@@ -35,12 +35,12 @@ sourceifexists ~/.alias
 
 alias mkls="make 2> /tmp/mkls_tmp || less /tmp/mkls_tmp"
 
-case `uname` in
-  Darwin)
-    sourceifexists ~/.alias.darwin
+case $(uname) in
+Darwin)
+  sourceifexists ~/.alias.darwin
   ;;
-  Linux)
-    sourceifexists ~/.alias.linux
+Linux)
+  sourceifexists ~/.alias.linux
   ;;
 esac
 
