@@ -1,8 +1,15 @@
+# Using GNU date both on linux (date) and mac (gdate)
+if command -v gdate >/dev/null 2>&1; then
+  DATE='gdate'
+else
+  DATE='date'
+fi
+
 export CMD_TIMER_MS=
 
 preexec() {
   if [[ -z $CMD_TIMER_MS ]]; then
-    CMD_TIMER_MS=$(gdate +%s%3N)
+    CMD_TIMER_MS=$($DATE +%s%3N)
   fi
 }
 
@@ -12,7 +19,7 @@ precmd() {
   fi
 
   local now
-  now=$(gdate +%s%3N)
+  now=$($DATE +%s%3N)
   export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
   unset CMD_TIMER_MS
 }
