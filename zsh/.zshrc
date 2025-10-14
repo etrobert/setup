@@ -26,7 +26,8 @@ precmd() {
 
 # Setting up prompt with pronto
 setopt PROMPT_SUBST
-PS1='$(pronto $?)'
+PS1='$(pronto $? --zsh)'
+RPROMPT='$(pronto $? --rprompt --zsh)'
 
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
