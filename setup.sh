@@ -390,6 +390,7 @@ setup_darwin() {
   setup_key_repeat
   echo
   setup_rust
+  echo
 }
 
 setup_linux() {
@@ -410,6 +411,8 @@ setup_linux() {
   setup_node
   echo
   setup_npm_packages
+  echo
+  setup_rust
   echo
 }
 
