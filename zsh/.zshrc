@@ -59,8 +59,6 @@ HISTFILE=~/.zsh_history
 
 # zsh sessions will append their history list to the history file
 setopt APPEND_HISTORY
-# Print the exit value of programs with non-zero exit status.
-setopt PRINT_EXIT_VALUE
 # Allow comments even in interactive shells.
 setopt INTERACTIVE_COMMENTS
 
