@@ -137,6 +137,10 @@
       "rev": "61b51c0",
       "src": "https://github.com/tpope/vim-fugitive"
     },
+    "vim-repeat": {
+      "rev": "6584602",
+      "src": "https://github.com/tpope/vim-repeat"
+    },
     "vim-surround": {
       "rev": "3d188ed",
       "src": "https://github.com/tpope/vim-surround"

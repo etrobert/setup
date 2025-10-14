@@ -10,7 +10,10 @@ vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 vim.pack.add({
 	{ src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
 	"https://github.com/nvim-tree/nvim-web-devicons",
+
+	"https://github.com/tpope/vim-repeat", -- to allow . repeat of vim-surround
 	"https://github.com/tpope/vim-surround",
+
 	"https://github.com/tpope/vim-fugitive",
 	"https://github.com/rcarriga/nvim-notify",
 	"https://github.com/NvChad/nvim-colorizer.lua",
