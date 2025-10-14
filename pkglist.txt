@@ -24,5 +24,6 @@ rustup
 stow
 tmux
 ttf-firacode-nerd
+vim
 wofi
 zsh
