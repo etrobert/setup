@@ -18,7 +18,9 @@ man-pages
 networkmanager
 nvm
 openssh
+rustup
 stow
 tmux
 ttf-firacode-nerd
 wofi
+zsh
