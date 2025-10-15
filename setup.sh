@@ -89,7 +89,15 @@ setup_linux_dotfiles() {
 setup_rust() {
   echo "Installing rustup stuff components..."
 
+  rustup default stable
   rustup component add rust-analyzer
+}
+
+setup_pronto() {
+  mkdir -p $HOME/work
+  git clone git@github.com:etrobert/pronto.git $HOME/work/pronto
+  cd $HOME/work/pronto
+  cargo install --path .
 }
 
 setup_shell() {
@@ -355,7 +363,8 @@ setup_yay() {
 setup_pacman_bundle() {
   echo 'Setting up packages with pacman-bundle'
 
-  pacman-bundle install
+  # Need full path because this needs to run before we stow to install stow
+  $HOME/setup/pacman/.local/bin/pacman-bundle install
 }
 
 setup_darwin() {
@@ -400,11 +409,13 @@ setup_linux() {
   echo
   setup_dotfiles_repo
   echo
-  setup_linux_dotfiles
-  echo
   setup_yay
   echo
   setup_pacman_bundle
+  echo
+  setup_linux_dotfiles
+  echo
+  setup_nvm_install
   echo
   setup_nvm
   echo
@@ -413,6 +424,8 @@ setup_linux() {
   setup_npm_packages
   echo
   setup_rust
+  echo
+  setup_pronto
   echo
 }
 
