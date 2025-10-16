@@ -3,7 +3,8 @@
 theme = Catppuccin Macchiato
 macos-titlebar-style = hidden
 
-command = /opt/homebrew/bin/bash
+# Does not exist on linux
+# command = /opt/homebrew/bin/bash
 
 window-width = 80
 window-height = 24
