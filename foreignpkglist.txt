@@ -1,3 +1,4 @@
+apfs-fuse-git # Read Apple File System formatted drives
 neovim-git
 yay
 yay-debug
