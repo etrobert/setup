@@ -138,6 +138,31 @@ setup_capslock() {
   fi
 }
 
+setup_capslock_linux() {
+  echo "Setting up Caps Lock as Control via udev hwdb..."
+
+  HWDB_FILE="/etc/udev/hwdb.d/90-custom-keyboard.hwdb"
+  HWDB_CONTENT="evdev:input:b*v*p*
+ KEYBOARD_KEY_3a=leftctrl"
+
+  # Check if file exists and has correct content
+  if [ -f "$HWDB_FILE" ]; then
+    if grep -q "KEYBOARD_KEY_3a=leftctrl" "$HWDB_FILE"; then
+      echo "Caps Lock remapping is already configured."
+      return
+    fi
+  fi
+
+  echo "Creating udev hwdb configuration..."
+  echo "$HWDB_CONTENT" | sudo tee "$HWDB_FILE" > /dev/null
+
+  echo "Updating hwdb database..."
+  sudo systemd-hwdb update
+
+  echo "Triggering udev reload..."
+  sudo udevadm trigger
+}
+
 setup_nvm_install() {
   echo "Setting up nvm..."
 
@@ -414,6 +439,8 @@ setup_linux() {
   setup_pacman_bundle
   echo
   setup_linux_dotfiles
+  echo
+  setup_capslock_linux
   echo
   setup_nvm_install
   echo
