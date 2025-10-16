@@ -6,8 +6,9 @@ macos-titlebar-style = hidden
 # Does not exist on linux
 # command = /opt/homebrew/bin/bash
 
-window-width = 80
-window-height = 24
+# Problematic on niri
+# window-width = 80
+# window-height = 24
 
 window-padding-x = 0
 window-padding-y = 0
