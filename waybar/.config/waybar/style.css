@@ -1,0 +1,61 @@
+* {
+  /* TODO: Change font */
+  font-family: "FiraCode Nerd Font", monospace;
+  font-size: 14px;
+  min-height: 0;
+}
+
+window#waybar {
+  background: transparent;
+  color: #cdd6f4;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  background: transparent;
+  color: #cdd6f4;
+}
+
+#workspaces button.active {
+  background: rgba(137, 180, 250, 0.3);
+  color: #89b4fa;
+}
+
+/* Hover looks hideous atm */
+#workspaces button:hover {
+  background: rgba(137, 180, 250, 0.2);
+}
+
+/* System monitoring group - CPU, Memory, Temperature */
+#cpu,
+#memory,
+#temperature {
+  background-color: rgba(137, 180, 250, 0.15);
+  color: #89b4fa;
+  margin: 0;
+  padding: 0 10px;
+}
+
+#cpu {
+  border-radius: 10px 0 0 10px;
+  padding-left: 12px;
+}
+
+#temperature {
+  border-radius: 0 10px 10px 0;
+  padding-right: 12px;
+}
+
+/* Other modules */
+#pulseaudio,
+#network,
+#power-profiles-daemon,
+#backlight,
+#keyboard-state,
+#battery,
+#clock,
+#tray,
+#custom-power {
+  padding: 0 10px;
+  margin: 0 2px;
+}
