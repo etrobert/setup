@@ -154,7 +154,7 @@ setup_capslock_linux() {
   fi
 
   echo "Creating udev hwdb configuration..."
-  echo "$HWDB_CONTENT" | sudo tee "$HWDB_FILE" > /dev/null
+  echo "$HWDB_CONTENT" | sudo tee "$HWDB_FILE" >/dev/null
 
   echo "Updating hwdb database..."
   sudo systemd-hwdb update
@@ -195,15 +195,23 @@ setup_node() {
 setup_npm_packages() {
   echo "Installing global npm packages..."
 
-  npm install -g \
-    corepack \
-    vscode-langservers-extracted \
-    @github/copilot-language-server \
-    @anthropic-ai/claude-code \
-    bash-language-server \
-    @tailwindcss/language-server \
-    typescript-language-server \
-    @fsouza/prettierd neonctl
+  packages="corepack vscode-langservers-extracted @github/copilot-language-server @anthropic-ai/claude-code bash-language-server @tailwindcss/language-server typescript-language-server @fsouza/prettierd neonctl"
+
+  to_install=""
+
+  for pkg in $packages; do
+    if ! npm list -g "$pkg" >/dev/null 2>&1; then
+      to_install="$to_install $pkg"
+    else
+      echo "$pkg already installed"
+    fi
+  done
+
+  if [ -n "$to_install" ]; then
+    npm install -g $to_install
+  else
+    echo "All packages already installed"
+  fi
 }
 
 setup_dock() {
