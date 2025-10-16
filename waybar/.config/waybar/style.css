@@ -17,8 +17,7 @@ window#waybar {
 }
 
 #workspaces button.active {
-  background: rgba(137, 180, 250, 0.3);
-  color: #89b4fa;
+  background: rgba(180, 180, 180, 0.3);
 }
 
 /* Other modules */
