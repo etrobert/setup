@@ -25,8 +25,13 @@ networkmanager
 nvm
 openssh
 os-prober # used to configure grub to detect Windows
+pipewire # Modern audio/video server
+pipewire-alsa # ALSA compatibility for PipeWire
+pipewire-pulse # PulseAudio compatibility for PipeWire (needed for browsers)
+wireplumber # Session manager for PipeWire (provides wpctl)
 ripgrep
 rustup
+sof-firmware # Intel Sound Open Firmware (required for laptop audio)
 stow
 texinfo # GNU documentation system for on-line information and printed output
 tmux
