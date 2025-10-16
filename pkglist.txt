@@ -4,6 +4,7 @@ base-devel
 bat
 brightnessctl # control laptop/internal display brightness
 difftastic
+efibootmgr # modify uefi boot entries
 eza
 fd
 foot
@@ -11,7 +12,9 @@ fzf
 ghostty
 git
 github-cli
+grub # GNU GRand Unified Bootloader
 hyprland
+intel-ucode # Microcode update files for Intel CPUs
 jq
 less
 linux
@@ -21,11 +24,14 @@ man-pages
 networkmanager
 nvm
 openssh
+os-prober # used to configure grub to detect Windows
 ripgrep
 rustup
 stow
+texinfo # GNU documentation system for on-line information and printed output
 tmux
 ttf-firacode-nerd
 vim
+wev # A tool for debugging wayland events on a Wayland window, analogous to the X11 tool xev
 wofi
 zsh
