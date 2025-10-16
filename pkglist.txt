@@ -27,6 +27,7 @@ nvm
 openssh
 os-prober # used to configure grub to detect Windows
 otf-font-awesome # Used by waybar to display icons
+pavucontrol # GUI Audio manager
 pipewire # Modern audio/video server
 pipewire-alsa # ALSA compatibility for PipeWire
 pipewire-pulse # PulseAudio compatibility for PipeWire (needed for browsers)
