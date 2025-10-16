@@ -11,7 +11,7 @@ window#waybar {
 }
 
 #workspaces button {
-  padding: 0 8px;
+  padding: 0 0;
   background: transparent;
   color: #cdd6f4;
 }
@@ -28,6 +28,11 @@ window#waybar {
 #battery,
 #clock,
 #custom-power {
-  padding: 0 10px;
-  margin: 0 2px;
+  padding: 3px 4px;
+  /* margin: 0 0px; */
+}
+
+#clock {
+  /* No idea why this is necessay */
+  margin-left: 4px;
 }

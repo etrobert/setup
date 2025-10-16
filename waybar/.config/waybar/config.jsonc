@@ -1,7 +1,7 @@
 // -*- mode: jsonc -*-
 {
   // "layer": "top", // Waybar at top layer
-  // "position": "bottom", // Waybar position (top|bottom|left|right)
+  "position": "left", // Waybar position (top|bottom|left|right)
   // "height": 30, // Waybar height (to be removed for auto height)
   // "width": 1280, // Waybar width
   // "spacing": 4, // Gaps between modules (4px)
@@ -19,6 +19,7 @@
   // Modules configuration
   "clock": {
     // "timezone": "America/New_York",
+    "format": "{:%H\n%M}",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
     "format-alt": "{:%Y-%m-%d}",
   },
@@ -28,10 +29,10 @@
       "warning": 30,
       "critical": 15,
     },
-    "format": "{capacity}% {icon}",
-    "format-full": "{capacity}% {icon}",
-    "format-charging": "{capacity}% {icon} ",
-    "format-plugged": "{capacity}% {icon} ",
+    "format": "{icon}",
+    "format-full": "{icon}",
+    "format-charging": "{icon} ",
+    "format-plugged": "{icon} ",
     "format-alt": "{time} {icon}",
     // "format-good": "", // An empty format will hide the module
     // "format-full": "",
@@ -59,8 +60,8 @@
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
-    "format": "{volume}% {icon}",
-    "format-bluetooth": "{volume}% {icon}",
+    "format": "{icon}",
+    "format-bluetooth": "{icon}",
     "format-bluetooth-muted": " {icon}",
     "format-muted": "",
     "format-icons": {
@@ -87,7 +88,7 @@
     // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
   },
   "custom/power": {
-    "format": "⏻ ",
+    "format": "⏻",
     "tooltip": false,
     "menu": "on-click",
     "menu-file": "$HOME/.config/waybar/power_menu.xml", // Menu file in resources folder
