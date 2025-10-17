@@ -51,11 +51,10 @@
   },
   "network": {
     "format-wifi": "{icon}",
-    "format-ethernet": "{ipaddr}/{cidr} ",
-    "tooltip-format": "{essid} {signalStrength}%\n{ifname} via {gwaddr} ",
+    "format-ethernet": "",
+    "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "Disconnected ⚠",
-    "format-alt": "{ifname}: {ipaddr}/{cidr}",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
   },
   "pulseaudio": {
