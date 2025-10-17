@@ -39,4 +39,5 @@ window#waybar {
 #clock {
   /* No idea why this is necessay */
   margin-left: 4px;
+  margin-top: 8px;
 }
