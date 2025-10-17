@@ -10,25 +10,30 @@ window#waybar {
   color: #cdd6f4;
 }
 
+#workspaces button:hover {
+  box-shadow: inherit;
+  text-shadow: inherit;
+}
+
+.module {
+  /* gap: 8px; */
+}
+
+#battery.warning {
+  background: orange;
+}
+
+#battery.critical {
+  background: red;
+}
+
 #workspaces button {
-  padding: 0 0;
   background: transparent;
   color: #cdd6f4;
 }
 
 #workspaces button.active {
   background: rgba(180, 180, 180, 0.3);
-}
-
-/* Other modules */
-#pulseaudio,
-#network,
-#power-profiles-daemon,
-#battery,
-#clock,
-#custom-power {
-  padding: 3px 4px;
-  /* margin: 0 0px; */
 }
 
 #clock {
