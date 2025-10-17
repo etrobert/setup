@@ -15,10 +15,6 @@ window#waybar {
   text-shadow: inherit;
 }
 
-.module {
-  /* gap: 8px; */
-}
-
 #battery.warning {
   background: orange;
 }
