@@ -12,8 +12,8 @@
     "custom/date",
     "clock#date",
     "network",
-    "pulseaudio",
     "battery",
+    "pulseaudio", // at bottom because muted icon is bigger and shifts layout
     "power-profiles-daemon",
   ],
   // "temperature", "cpu", "memory",
@@ -23,6 +23,7 @@
   // Modules configuration
   "hyprland/window": {
     "rotate": 90,
+    "max-length": 30,
   },
   "temperature": {
     "rotate": 90,
@@ -49,7 +50,7 @@
     "interval": 1,
   },
   "clock#date": {
-    "format": "{:%d\n%m}",
+    "format": "{:%d\n%m\n%y}",
   },
   "custom/date": {
     "exec": "date +'%a' | cut -c1-2",
