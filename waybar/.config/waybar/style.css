@@ -36,8 +36,12 @@ window#waybar {
   background: rgba(180, 180, 180, 0.3);
 }
 
-#clock {
+#clock.time {
+  margin-top: 8px;
+}
+
+#clock,
+#custom-date {
   /* No idea why this is necessay */
   margin-left: 4px;
-  margin-top: 8px;
 }
