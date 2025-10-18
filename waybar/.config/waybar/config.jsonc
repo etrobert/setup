@@ -13,6 +13,7 @@
     "clock#date",
     "network",
     "battery",
+    "bluetooth",
     "pulseaudio", // at bottom because muted icon is bigger and shifts layout
     "power-profiles-daemon",
   ],
@@ -88,11 +89,20 @@
     "format-disconnected": "Disconnected ⚠",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
   },
+  "bluetooth": {
+    "format-on": "󰂯",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
+    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+    "tooltip-format": "{controller_address} {controller_alias}",
+    "tooltip-format-connected": "{controller_address} {controller_alias}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_address} {device_alias}",
+  },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
     "format": "{icon}",
-    "format-bluetooth": "{icon}",
-    "format-bluetooth-muted": " {icon}",
+    // "format-bluetooth": "{icon} ",
+    // "format-bluetooth-muted": " {icon}",
     "format-muted": "",
     "format-icons": {
       "headphone": "",
