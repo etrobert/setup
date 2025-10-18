@@ -8,7 +8,6 @@ efibootmgr # modify uefi boot entries
 eza
 fd
 firefox
-foot
 fzf
 ghostty
 git
