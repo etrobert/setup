@@ -46,11 +46,12 @@
   },
   "clock#time": {
     "format": "{:%H\n%M\n%S}",
-    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "tooltip-format": "Time to do cool shit!",
     "interval": 1,
   },
   "clock#date": {
     "format": "{:%d\n%m\n%y}",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>",
   },
   "custom/weekday": {
     "return-type": "json",
