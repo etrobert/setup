@@ -9,7 +9,7 @@
   // Choose the order of the modules
   "modules-left": [
     "clock#time",
-    "custom/date",
+    "custom/weekday",
     "clock#date",
     "network",
     "battery",
@@ -52,8 +52,9 @@
   "clock#date": {
     "format": "{:%d\n%m\n%y}",
   },
-  "custom/date": {
-    "exec": "date +'%a' | cut -c1-2",
+  "custom/weekday": {
+    "return-type": "json",
+    "exec": "jq --null-input --compact-output --arg text \"$(date +'%a' | cut -c1-2)\" --arg tooltip \"$(date +'%A')\" '{ text: $text, tooltip: $tooltip }'",
     "interval": 60,
   },
   "battery": {

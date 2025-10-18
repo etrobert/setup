@@ -37,7 +37,7 @@ window#waybar {
 }
 
 #clock,
-#custom-date,
+#custom-weekday,
 #window {
   /* Need to offset some stuff to account for the hyprland outer gap */
   margin-left: 4px;
