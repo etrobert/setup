@@ -2,6 +2,8 @@ alsa-lib # needed for firefox/zen
 base
 base-devel
 bat
+bluez # Bluetooth protocol stack
+bluez-utils # Bluetooth utilities (bluetoothctl, etc.)
 brightnessctl # control laptop/internal display brightness
 difftastic
 efibootmgr # modify uefi boot entries
