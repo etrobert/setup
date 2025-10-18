@@ -16,8 +16,8 @@
     "pulseaudio", // at bottom because muted icon is bigger and shifts layout
     "power-profiles-daemon",
   ],
-  // "temperature", "cpu", "memory",
-  "modules-center": ["hyprland/window"],
+  "modules-center": ["temperature", "cpu", "memory"],
+  // "modules-center": ["hyprland/window"],
   "modules-right": ["hyprland/workspaces"],
   "reload_style_on_change": true,
   // Modules configuration
