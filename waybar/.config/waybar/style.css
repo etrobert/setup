@@ -38,7 +38,10 @@ window#waybar {
 
 #clock,
 #custom-weekday,
-#window {
+#window,
+#cpu,
+#memory,
+#temperature {
   /* Need to offset some stuff to account for the hyprland outer gap */
   margin-left: 4px;
 }
