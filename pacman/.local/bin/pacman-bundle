@@ -72,6 +72,14 @@ cleanup_packages() {
   rm -f /tmp/wanted_packages.txt /tmp/packages_to_remove.txt
 }
 
+add_package() {
+  echo "Adding package to pkglist.txt"
+
+  echo "$1" >>pkglist.txt
+
+  sort pkglist.txt -o pkglist.txt
+}
+
 # Require a command
 case "$1" in
 dump)
@@ -83,11 +91,15 @@ install)
 cleanup)
   cleanup_packages
   ;;
+add)
+  add_package "$2"
+  ;;
 *)
-  echo "Usage: pacman-bundle {dump|install|cleanup}"
+  echo "Usage: pacman-bundle {dump|install|cleanup|add}"
   echo "  dump     - Export current packages to pkglist.txt and foreignpkglist.txt"
   echo "  install  - Install packages from both lists"
   echo "  cleanup  - Remove packages not in either list"
+  echo "  add      - Add a package to pkglist.txt"
   exit 1
   ;;
 esac
