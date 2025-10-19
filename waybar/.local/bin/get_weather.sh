@@ -4,7 +4,8 @@
 # See https://github.com/chubin/wttr.in
 
 if ! text=$(curl -s "https://wttr.in/$1?format=%t"); then
-  jq --null-input --compact-output '{text: "Error"}'
+  # Do not display anything if there's an error
+  jq --null-input --compact-output '{text: ""}'
   exit
 fi
 
