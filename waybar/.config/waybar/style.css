@@ -6,6 +6,24 @@
 }
 
 window#waybar {
+  /* Vertical line at 3px right of center of the bar */
+  /* background: linear-gradient( */
+  /*   to right, */
+  /*   transparent calc(50% + 2.5px), */
+  /*   rgba(255, 255, 255, 0.2) calc(50% + 2.5px), */
+  /*   rgba(255, 255, 255, 0.2) calc(50% + 3.5px), */
+  /*   transparent calc(50% + 3.5px) */
+  /* ); */
+
+  /* Vertical line at center of the bar */
+  /* background: linear-gradient( */
+  /*   to right, */
+  /*   transparent calc(50% - 0.5px), */
+  /*   rgba(255, 255, 255, 0.2) calc(50% - 0.5px), */
+  /*   rgba(255, 255, 255, 0.2) calc(50% + 0.5px), */
+  /*   transparent calc(50% + 0.5px) */
+  /* ); */
+
   background: transparent;
   color: #cdd6f4;
 }
