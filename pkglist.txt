@@ -38,6 +38,7 @@ rustup
 shellcheck
 shfmt
 sof-firmware # Intel Sound Open Firmware (required for laptop audio)
+spotify-launcher
 stow
 texinfo # GNU documentation system for on-line information and printed output
 tmux
