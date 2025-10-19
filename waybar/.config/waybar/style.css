@@ -41,7 +41,8 @@ window#waybar {
 #window,
 #cpu,
 #memory,
-#temperature {
+#temperature,
+#bluetooth {
   /* Need to offset some stuff to account for the hyprland outer gap */
   margin-left: 4px;
 }
