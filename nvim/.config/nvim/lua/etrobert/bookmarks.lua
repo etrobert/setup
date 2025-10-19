@@ -231,7 +231,7 @@ local function build_lines(link, metadata, status, table_info)
 
 		if status == "error" then
 			return {
-				{ { prefix, "Comment" }, { "Unable to load preview", "WarningMsg" } },
+				{ { prefix, "Comment" }, { "Unable to load preview", "Comment" } },
 				{ { prefix, "Comment" }, { "", "Directory" } },
 			}
 		end
