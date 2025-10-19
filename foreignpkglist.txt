@@ -1,5 +1,6 @@
 apfs-fuse-git # Read Apple File System formatted drives
 neovim-git
+nixfmt
 slack-desktop
 yay
 yay-debug

@@ -16,6 +16,7 @@ require("conform").setup({
 		sh = { "shfmt" },
 		fish = { "fish_indent" },
 		rust = { "rustfmt" },
+		nix = { "nixfmt" },
 	},
 	format_on_save = {
 		timeout_ms = 1000,
