@@ -11,6 +11,7 @@
     "clock#time",
     "custom/weekday",
     "clock#date",
+    "custom/weather",
     "network",
     "battery",
     "bluetooth",
@@ -58,6 +59,11 @@
     "return-type": "json",
     "exec": "jq --null-input --compact-output --arg text \"$(date +'%a' | cut -c1-2)\" --arg tooltip \"$(date +'%A')\" '{ text: $text, tooltip: $tooltip }'",
     "interval": 60,
+  },
+  "custom/weather": {
+    "return-type": "json",
+    "exec": "get_weather.sh",
+    "interval": 3600,
   },
   "battery": {
     "states": {

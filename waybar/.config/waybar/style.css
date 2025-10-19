@@ -54,15 +54,22 @@ window#waybar {
   margin-top: 8px;
 }
 
-#clock,
-#custom-weekday,
-#window,
-#cpu,
-#memory,
-#temperature,
-#bluetooth {
-  /* Need to offset some stuff to account for the hyprland outer gap */
-  margin-left: 4px;
+.module {
+  /* Need to offset to account for the hyprland outer gap */
+  margin-left: 6px;
+}
+
+#custom-weather {
+  /* Offsetting weather because the number is most important */
+  margin-left: 10px;
+}
+
+#workspaces,
+#pulseaudio,
+#network,
+#battery {
+  /* Individual icon alignment fixes */
+  margin-left: 0;
 }
 
 /* Icon alignment */
