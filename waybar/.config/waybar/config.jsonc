@@ -11,7 +11,7 @@
     "clock#time",
     "custom/weekday",
     "clock#date",
-    "custom/weather",
+    // "custom/weather",
     "network",
     "battery",
     "bluetooth",
