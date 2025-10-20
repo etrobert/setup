@@ -1,34 +1,6 @@
 # setup
 
-Dotfiles and other configurations using stow
+Dotfiles and other configurations using
+[stow](https://linux.die.net/man/8/stow).
 
-Each folder is the configuration for a specific tool
-
-`usage: stow folder`
-
-## Additional configuration steps
-
-### Font
-
-Download and install [Fira Code](https://github.com/tonsky/FiraCode).
-
-Download and install [Fira Code Nerd Font](https://www.nerdfonts.com/font-downloads). This is used to display icons in the terminal, ex in Neovim.
-
-### VSCode
-
-1. Launch VSCode once to create `$HOME/.config/'Code - OSS'`
-2. stow vscode
-3. run the script `vscode-extensions install`
-
-### Firefox
-
-1. `mkdir ~/.mozilla/firefox/s0tnglli.etienne-robert`
-2. Create a new Profile in `about:profiles` using the newly created folder
-3. stow firefox
-
-## Ressources
-
-For more informations see:
-
-- [man stow](https://www.gnu.org/software/stow/manual/stow.html)
-- [Using GNU Stow to manage your dotfiles](http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html)
+See `./setup.sh`.
