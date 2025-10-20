@@ -16,7 +16,6 @@
     "battery",
     "bluetooth",
     "pulseaudio", // at bottom because muted icon is bigger and shifts layout
-    "power-profiles-daemon",
   ],
   "modules-center": ["temperature", "cpu", "memory"],
   // "modules-center": ["hyprland/window"],
@@ -75,17 +74,6 @@
     "format-charging": "{icon} ",
     "format-icons": ["", "", "", "", ""],
     "tooltip-format": "{capacity}%\n{timeTo}",
-  },
-  "power-profiles-daemon": {
-    "format": "{icon}",
-    "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
-    "tooltip": true,
-    "format-icons": {
-      "default": "",
-      "performance": "",
-      "balanced": "",
-      "power-saver": "",
-    },
   },
   "network": {
     "format-wifi": "{icon}",
