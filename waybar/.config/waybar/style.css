@@ -59,6 +59,10 @@ window#waybar {
   margin-left: 6px;
 }
 
+#network.ethernet {
+  margin-left: 6px;
+}
+
 #custom-weather {
   /* Offsetting weather because the number is most important */
   margin-left: 10px;
