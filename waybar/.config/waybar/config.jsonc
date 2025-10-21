@@ -15,7 +15,8 @@
     "network",
     "battery",
     "bluetooth",
-    "pulseaudio", // at bottom because muted icon is bigger and shifts layout
+    // at bottom because muted icon is bigger and shifts layout
+    "pulseaudio",
   ],
   "modules-center": ["temperature", "cpu", "memory"],
   // "modules-center": ["hyprland/window"],
@@ -102,7 +103,7 @@
     // "format-bluetooth-muted": " {icon}",
     "format-muted": "",
     "format-icons": {
-      "headphone": "",
+      "headphone": [" ", " ", " "],
       "hands-free": "",
       "headset": "",
       "phone": "",
