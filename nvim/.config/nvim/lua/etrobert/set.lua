@@ -80,6 +80,7 @@ vim.lsp.enable({
 	"rust_analyzer",
 	"gopls",
 	"lua_ls",
+	"nixd",
 	-- "copilot",
 	-- "knip_lsp",
 })
