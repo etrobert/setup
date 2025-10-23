@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Check Bluetooth audio profile for AirPods
+MAC="EC:46:54:52:36:F8"
+
+# Get active profile
+profile=$(pactl list cards | grep -A20 "bluez_card.${MAC//:/_}" | grep "Active Profile:" | awk '{print $3}')
+
+if [ -z "$profile" ]; then
+    echo "Device not connected or not found"
+    exit 1
+fi
+
+case "$profile" in
+    a2dp-sink*)
+        echo "A2DP (High quality stereo)"
+        ;;
+    headset-head-unit*|hsp-hs*)
+        echo "HSP/HFP (Lower quality, mic enabled)"
+        ;;
+    *)
+        echo "Unknown profile: $profile"
+        ;;
+esac
