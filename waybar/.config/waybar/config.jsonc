@@ -78,7 +78,7 @@
   },
   "network": {
     "format-wifi": "{icon}",
-    "format-ethernet": "",
+    "format-ethernet": "",
     "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
     "format-linked": "{ifname} (No IP) ",
     "format-disconnected": "󰤫",
