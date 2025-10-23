@@ -2,3 +2,5 @@
 
 # Linux aliases
 alias ls="ls -Fh --color"
+
+alias airpods="bluetoothctl connect EC:46:54:52:36:F8"
