@@ -1,0 +1,4 @@
+# Disable external source analysis to prevent shellcheck from recursively
+# analyzing large vendor files like git-completion.bash (3268 lines) and
+# git-prompt.sh (672 lines) which cause multi-GB memory usage
+external-sources=false
