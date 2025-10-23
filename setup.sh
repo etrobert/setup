@@ -100,6 +100,47 @@ setup_pronto() {
   cargo install --path .
 }
 
+setup_swap() {
+  echo "Setting up swap..."
+
+  SWAP_FILE="/swapfile"
+  SWAP_SIZE="8G"
+
+  # Create swapfile if it doesn't exist
+  if [ ! -f "$SWAP_FILE" ]; then
+    echo "Creating ${SWAP_SIZE} swapfile at $SWAP_FILE..."
+    sudo dd if=/dev/zero of="$SWAP_FILE" bs=1G count=8 status=progress
+
+    echo "Setting swapfile permissions..."
+    sudo chmod 600 "$SWAP_FILE"
+
+    echo "Formatting swapfile..."
+    sudo mkswap "$SWAP_FILE"
+  else
+    echo "Swapfile already exists."
+  fi
+
+  # Activate swap if not already active
+  if ! swapon --show | grep -q "$SWAP_FILE"; then
+    echo "Activating swap..."
+    sudo swapon "$SWAP_FILE"
+  else
+    echo "Swap is already active."
+  fi
+
+  # Add to /etc/fstab if not already there
+  if ! grep -q "$SWAP_FILE" /etc/fstab; then
+    echo "Adding swapfile to /etc/fstab for persistence..."
+    echo "$SWAP_FILE none swap defaults 0 0" | sudo tee -a /etc/fstab >/dev/null
+  else
+    echo "Swapfile already in /etc/fstab."
+  fi
+
+  echo "Swap setup complete. Current swap status:"
+  swapon --show
+  free -h
+}
+
 setup_shell() {
   echo "Setting up default shell"
 
@@ -449,6 +490,8 @@ setup_linux() {
   setup_linux_dotfiles
   echo
   setup_capslock_linux
+  echo
+  setup_swap
   echo
   setup_nvm_install
   echo
