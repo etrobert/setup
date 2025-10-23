@@ -11,3 +11,7 @@ if [ -n "$PS1" ]; then
     . "$HOME/.bashrc"
   fi
 fi
+
+if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ] && command -v Hyprland &>/dev/null; then
+  exec Hyprland
+fi
