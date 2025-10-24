@@ -5,6 +5,7 @@
   whitespace = trailing-space tab-in-indent tabwidth=2
   editor = nvim
 [alias]
+  sync = "!git pull && git push"
   ci = commit
   sci = "!gen-commit-msg"
   co = checkout
