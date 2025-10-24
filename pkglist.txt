@@ -48,6 +48,7 @@ texinfo # GNU documentation system for on-line information and printed output
 tmux
 ttf-firacode-nerd
 vim
+vulkan-intel
 waybar
 wev # A tool for debugging wayland events on a Wayland window, analogous to the X11 tool xev
 wireplumber # Session manager for PipeWire (provides wpctl)
