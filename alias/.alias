@@ -48,6 +48,8 @@ alias duf="du -sh * .* | sort -h"
 
 alias server="python3 -m http.server 8000"
 
+alias fhistory="history | sed -E 's/^ +[0-9]+ +//' | fzf"
+
 falias() {
   local selected
   selected=$(
