@@ -236,7 +236,16 @@ setup_node() {
 setup_npm_packages() {
   echo "Installing global npm packages..."
 
-  packages="corepack vscode-langservers-extracted @github/copilot-language-server @anthropic-ai/claude-code bash-language-server @tailwindcss/language-server typescript-language-server @fsouza/prettierd neonctl bun"
+  packages="corepack \
+    vscode-langservers-extracted \
+    @github/copilot-language-server \
+    @anthropic-ai/claude-code \
+    bash-language-server \
+    @tailwindcss/language-server \
+    typescript-language-server \
+    @fsouza/prettierd \
+    neonctl \
+    bun"
 
   to_install=""
 
