@@ -18,7 +18,7 @@
     // at bottom because muted icon is bigger and shifts layout
     "pulseaudio",
   ],
-  "modules-center": ["temperature", "cpu", "memory"],
+  "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory"],
   // "modules-center": ["hyprland/window"],
   "modules-right": ["hyprland/workspaces"],
   "reload_style_on_change": true,
@@ -39,6 +39,13 @@
     "rotate": 90,
     "format": "󰍛 {usage}%",
     "interval": 2,
+  },
+  "custom/cpu-freq": {
+    "rotate": 90,
+    "exec": "awk '{sum+=$1; count++} END {printf \"󰻠 %.1fGHz\", sum/count/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq",
+    "format": "{}",
+    "interval": 2,
+    "tooltip-format": "CPU Frequency",
   },
   "memory": {
     "rotate": 90,
