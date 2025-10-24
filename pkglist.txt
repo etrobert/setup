@@ -19,6 +19,7 @@ github-cli
 grub # GNU GRand Unified Bootloader
 hyprland
 hyprpaper
+intel-media-driver # VA-API driver for Intel graphics (hardware video decode)
 intel-ucode # Microcode update files for Intel CPUs
 jq
 less
