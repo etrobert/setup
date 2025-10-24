@@ -54,6 +54,8 @@
   log = true
   # Don't keep backup .orig files
   keepBackup = false
+[mergetool]
+  keepBackup = false
 [mergetool "vimdiff"]
   path = nvim
 [log]
