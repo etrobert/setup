@@ -98,12 +98,16 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	command = [[%s/\s\+$//e]],
 })
 
----@param args vim.api.keyset.create_user_command.command_args
-function RenameFile(args)
-	local filename = args.args
+function RenameFile()
 	local old_filename = vim.api.nvim_buf_get_name(0)
-	vim.cmd.saveas(filename)
+	local new_filename = vim.fn.input("New filename: ", old_filename)
+
+	if new_filename == "" or new_filename == old_filename then
+		return
+	end
+
+	vim.cmd.saveas(new_filename)
 	vim.fn.delete(old_filename)
 end
 
-vim.api.nvim_create_user_command("RenameFile", RenameFile, { nargs = 1 })
+vim.api.nvim_create_user_command("RenameFile", RenameFile, {})
