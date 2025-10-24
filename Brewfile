@@ -1,4 +1,3 @@
-tap "oven-sh/bun"
 tap "koekeishiya/formulae"
 
 brew "watch"
