@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+# Toggle laptop display on/off
+
+if hyprctl monitors | grep -q "Monitor eDP-1"; then
+  # eDP-1 is currently enabled, disable it
+  hyprctl keyword monitor eDP-1,disable
+  echo "Laptop display disabled"
+else
+  # eDP-1 is currently disabled, enable it
+  hyprctl keyword monitor eDP-1,preferred,auto,1.6
+  echo "Laptop display enabled"
+fi
