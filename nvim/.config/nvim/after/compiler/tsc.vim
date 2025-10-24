@@ -5,4 +5,4 @@
 
 let current_compiler = "tsc"
 
-CompilerSet makeprg=npx\ tsc
+CompilerSet makeprg=bun\ tsc
