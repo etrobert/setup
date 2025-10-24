@@ -6,6 +6,7 @@ bat
 bluez # Bluetooth protocol stack
 bluez-utils # Bluetooth utilities (bluetoothctl, etc.)
 brightnessctl # control laptop/internal display brightness
+cpupower # get and set power profiles
 difftastic
 efibootmgr # modify uefi boot entries
 eza
