@@ -65,15 +65,6 @@
     "format-icons": ["", "", "", "", ""],
     "tooltip-format": "{capacity}%\n{timeTo}",
   },
-  "network": {
-    "format-wifi": "{icon}",
-    "format-ethernet": "",
-    "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": "󰤫",
-    "format-disabled": "󰤮",
-    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-  },
   "bluetooth": {
     "format-on": "󰂯",
     "format-off": "󰂲",

@@ -31,6 +31,21 @@
     "interval": 2,
     "rotate": 90
   },
+  "network": {
+    "format-wifi": "{icon} ",
+    "format-ethernet": "",
+    "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "󰤫",
+    "format-disabled": "󰤮",
+    "format-icons": [
+      "󰤯",
+      "󰤟",
+      "󰤢",
+      "󰤥",
+      "󰤨"
+    ]
+  },
   "name": "left",
   "position": "left",
   "modules-left": [
@@ -91,21 +106,6 @@
       ""
     ],
     "tooltip-format": "{capacity}%\n{timeTo}"
-  },
-  "network": {
-    "format-wifi": "{icon}",
-    "format-ethernet": "",
-    "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": "󰤫",
-    "format-disabled": "󰤮",
-    "format-icons": [
-      "󰤯",
-      "󰤟",
-      "󰤢",
-      "󰤥",
-      "󰤨"
-    ]
   },
   "bluetooth": {
     "format-on": "󰂯",

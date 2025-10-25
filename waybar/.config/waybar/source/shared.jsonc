@@ -29,4 +29,13 @@
     "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
     "interval": 2,
   },
+  "network": {
+    "format-wifi": "{icon} ",
+    "format-ethernet": "",
+    "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "󰤫",
+    "format-disabled": "󰤮",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+  },
 }
