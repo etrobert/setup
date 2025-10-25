@@ -50,30 +50,30 @@ window#waybar {
   background: rgba(180, 180, 180, 0.3);
 }
 
-#clock.time {
+window#waybar.left #clock.time {
   margin-top: 8px;
 }
 
-.module {
+window#waybar.left .module {
   /* Need to offset to account for the hyprland outer gap */
   margin-left: 6px;
 }
 
-#custom-weather {
+window#waybar.left #custom-weather {
   /* Offsetting weather because the number is most important */
   margin-left: 10px;
 }
 
-#workspaces,
-#pulseaudio,
-#network,
-#battery {
+window#waybar.left #workspaces,
+window#waybar.left #pulseaudio,
+window#waybar.left #network,
+window#waybar.left #battery {
   /* Individual icon alignment fixes */
   margin-left: 0;
 }
 
 /* Icon alignment */
-#pulseaudio.muted {
+window#waybar.left #pulseaudio.muted {
   margin-top: 2px;
   margin-left: 8px;
 }

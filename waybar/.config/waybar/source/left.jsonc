@@ -1,5 +1,6 @@
 // -*- mode: jsonc -*-
 {
+  "name": "left",
   "position": "left",
   // Choose the order of the modules
   "modules-left": [

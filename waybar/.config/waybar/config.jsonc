@@ -5,6 +5,7 @@
   "spacing": 8,
   "margin": 4,
   "reload_style_on_change": true,
+  "name": "left",
   "position": "left",
   "modules-left": [
     "clock#time",
