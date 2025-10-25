@@ -38,10 +38,6 @@
   },
   "custom/cpu-freq": {
     "rotate": 90,
-    "exec": "awk '{sum+=$1; count++} END {printf \"󰻠 %.1fGHz\", sum/count/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq",
-    "format": "{}",
-    "interval": 2,
-    "tooltip-format": "CPU Frequency",
   },
   "memory": {
     "rotate": 90,

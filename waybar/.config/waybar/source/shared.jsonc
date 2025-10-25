@@ -7,4 +7,10 @@
   "spacing": 8, // Gaps between modules in px (default is 4px)
   "margin": 4,
   "reload_style_on_change": true,
+  "custom/cpu-freq": {
+    "exec": "awk '{sum+=$1; count++} END {printf \"󰻠 %.1fGHz\", sum/count/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq",
+    "format": "{}",
+    "interval": 2,
+    "tooltip-format": "CPU Frequency",
+  },
 }

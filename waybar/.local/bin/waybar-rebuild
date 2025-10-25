@@ -21,7 +21,7 @@ fi
   echo "// AUTO-GENERATED - DO NOT EDIT"
   echo "// Generated from: source/shared.jsonc + source/$1.jsonc"
   echo ""
-  jq --slurp '.[0] + .[1]' \
+  jq --slurp '.[0] * .[1]' \
     <(strip-json-comments "$SOURCE_DIR/shared.jsonc") \
     <(strip-json-comments "$SOURCE_DIR/$1.jsonc")
 } >"$CONFIG_DIR/config.jsonc"

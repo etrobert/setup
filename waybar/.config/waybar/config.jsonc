@@ -5,6 +5,13 @@
   "spacing": 8,
   "margin": 4,
   "reload_style_on_change": true,
+  "custom/cpu-freq": {
+    "exec": "awk '{sum+=$1; count++} END {printf \"󰻠 %.1fGHz\", sum/count/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq",
+    "format": "{}",
+    "interval": 2,
+    "tooltip-format": "CPU Frequency",
+    "rotate": 90
+  },
   "name": "left",
   "position": "left",
   "modules-left": [
@@ -42,13 +49,6 @@
     "rotate": 90,
     "format": "󰍛 {usage}%",
     "interval": 2
-  },
-  "custom/cpu-freq": {
-    "rotate": 90,
-    "exec": "awk '{sum+=$1; count++} END {printf \"󰻠 %.1fGHz\", sum/count/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq",
-    "format": "{}",
-    "interval": 2,
-    "tooltip-format": "CPU Frequency"
   },
   "memory": {
     "rotate": 90,

@@ -50,6 +50,10 @@ window#waybar {
   background: rgba(180, 180, 180, 0.3);
 }
 
+window#waybar.top #clock {
+  margin-right: 8px;
+}
+
 window#waybar.left #clock.time {
   margin-top: 8px;
 }

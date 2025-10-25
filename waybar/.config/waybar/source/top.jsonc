@@ -3,4 +3,10 @@
   "name": "top",
   "position": "top",
   "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["custom/cpu-freq"],
+  "modules-right": ["clock"],
+  "clock": {
+    "format": "{:%a %b %d %H:%M:%S}",
+    "interval": 1,
+  },
 }
