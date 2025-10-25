@@ -5,11 +5,30 @@
   "spacing": 8,
   "margin": 4,
   "reload_style_on_change": true,
+  "temperature": {
+    "thermal-zone": 7,
+    "format": " {temperatureC}°",
+    "critical-threshold": 80,
+    "format-critical": "<span color='#c2410c'> {temperatureC}°</span>",
+    "interval": 2,
+    "rotate": 90
+  },
+  "cpu": {
+    "format": "󰍛 {usage}%",
+    "interval": 2,
+    "rotate": 90
+  },
   "custom/cpu-freq": {
     "exec": "awk '{sum+=$1; count++} END {printf \"󰻠 %.1fGHz\", sum/count/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq",
     "format": "{}",
     "interval": 2,
     "tooltip-format": "CPU Frequency",
+    "rotate": 90
+  },
+  "memory": {
+    "format": " {percentage}%",
+    "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
+    "interval": 2,
     "rotate": 90
   },
   "name": "left",
@@ -36,25 +55,6 @@
   "hyprland/window": {
     "rotate": 90,
     "max-length": 30
-  },
-  "temperature": {
-    "rotate": 90,
-    "thermal-zone": 7,
-    "format": " {temperatureC}°",
-    "critical-threshold": 80,
-    "format-critical": "<span color='#c2410c'> {temperatureC}°</span>",
-    "interval": 2
-  },
-  "cpu": {
-    "rotate": 90,
-    "format": "󰍛 {usage}%",
-    "interval": 2
-  },
-  "memory": {
-    "rotate": 90,
-    "format": " {percentage}%",
-    "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
-    "interval": 2
   },
   "clock#time": {
     "format": "{:%H\n%M\n%S}",

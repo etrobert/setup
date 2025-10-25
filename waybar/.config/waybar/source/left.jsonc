@@ -25,25 +25,15 @@
   },
   "temperature": {
     "rotate": 90,
-    "thermal-zone": 7,
-    "format": " {temperatureC}°",
-    "critical-threshold": 80,
-    "format-critical": "<span color='#c2410c'> {temperatureC}°</span>",
-    "interval": 2,
   },
   "cpu": {
     "rotate": 90,
-    "format": "󰍛 {usage}%",
-    "interval": 2,
   },
   "custom/cpu-freq": {
     "rotate": 90,
   },
   "memory": {
     "rotate": 90,
-    "format": " {percentage}%",
-    "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
-    "interval": 2,
   },
   "clock#time": {
     "format": "{:%H\n%M\n%S}",
