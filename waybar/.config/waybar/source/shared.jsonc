@@ -30,7 +30,7 @@
     "interval": 2,
   },
   "network": {
-    "format-wifi": "{icon} ",
+    "format-wifi": "{icon}",
     "format-ethernet": "",
     "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
     "format-linked": "{ifname} (No IP) ",
