@@ -395,31 +395,24 @@ install_skhd() {
   skhd --start-service
 }
 
-setup_key_repeat() {
-  echo "Setting up key repeat rates..."
-
-  # Better key repeat rates
+check_darwin_key_repeat() {
   current_key_repeat=$(defaults read NSGlobalDomain KeyRepeat)
-  if [ "$current_key_repeat" != "2" ]; then
-    echo "Setting faster key repeat rate"
-    defaults write NSGlobalDomain KeyRepeat -int 2
-    should_restart_ui=true
-  else
-    echo "Key repeat rate is already optimized"
-  fi
+  [ "$current_key_repeat" = "2" ]
+}
 
+install_darwin_key_repeat() {
+  defaults write NSGlobalDomain KeyRepeat -int 2
+  echo "Note: Key repeat changes will take effect after logout/restart"
+}
+
+check_darwin_initial_key_repeat() {
   current_initial_repeat=$(defaults read NSGlobalDomain InitialKeyRepeat)
-  if [ "$current_initial_repeat" != "15" ]; then
-    echo "Setting shorter initial key repeat delay"
-    defaults write NSGlobalDomain InitialKeyRepeat -int 15
-    should_restart_ui=true
-  else
-    echo "Initial key repeat delay is already optimized"
-  fi
+  [ "$current_initial_repeat" = "15" ]
+}
 
-  if [ "$should_restart_ui" ]; then
-    echo "Note: Key repeat changes will take effect after logout/restart"
-  fi
+install_darwin_initial_key_repeat() {
+  defaults write NSGlobalDomain InitialKeyRepeat -int 15
+  echo "Note: Key repeat changes will take effect after logout/restart"
 }
 
 check_yay() {
@@ -460,8 +453,8 @@ setup_darwin() {
   echo
   setup_step trackpad
   setup_step skhd
-  setup_key_repeat
-  echo
+  setup_step darwin_key_repeat
+  setup_step darwin_initial_key_repeat
   setup_step rust
   setup_step pronto
 }
