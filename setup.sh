@@ -306,17 +306,7 @@ setup_dock_autohide_delay() {
   should_restart_dock=true
 }
 
-setup_dock() {
-  echo "Setting up dock..."
-
-  should_restart_dock=
-
-  setup_dock_autohide
-
-  setup_dock_show_recents
-
-  setup_dock_autohide_delay
-
+setup_dock_persistent_apps() {
   # Define desired apps
   desired_apps="
 /Applications/Zen.app/
@@ -345,15 +335,19 @@ setup_dock() {
     fi
   done
 
-  if [ "$needs_app_update" ]; then
-    echo 'Clearing existing dock items'
-    defaults write com.apple.dock persistent-apps -array
+  if [ -z "$needs_app_update" ]; then
+    echo "Dock apps are already correctly configured"
+    return
+  fi
 
-    add_app_to_dock() {
-      app=$1
-      decoded_app=$(echo "$app" | sed 's/%20/ /g')
-      if [ -e "$decoded_app" ]; then
-        defaults write com.apple.dock persistent-apps -array-add "<dict>
+  echo 'Clearing existing dock items'
+  defaults write com.apple.dock persistent-apps -array
+
+  add_app_to_dock() {
+    app=$1
+    decoded_app=$(echo "$app" | sed 's/%20/ /g')
+    if [ -e "$decoded_app" ]; then
+      defaults write com.apple.dock persistent-apps -array-add "<dict>
         <key>tile-data</key>
         <dict>
           <key>file-data</key>
@@ -365,18 +359,29 @@ setup_dock() {
           </dict>
         </dict>
       </dict>"
-      else
-        echo "Warning: $decoded_app not found. Skipping."
-      fi
-    }
+    else
+      echo "Warning: $decoded_app not found. Skipping."
+    fi
+  }
 
-    echo 'Adding applications to dock'
-    for app in $desired_apps; do
-      add_app_to_dock "$app"
-    done
-  else
-    echo "Dock apps are already correctly configured"
-  fi
+  echo 'Adding applications to dock'
+  for app in $desired_apps; do
+    add_app_to_dock "$app"
+  done
+}
+
+setup_dock() {
+  echo "Setting up dock..."
+
+  should_restart_dock=
+
+  setup_dock_autohide
+
+  setup_dock_show_recents
+
+  setup_dock_autohide_delay
+
+  setup_dock_persistent_apps
 
   # Only restart dock if we made changes
   if [ "$should_restart_dock" ]; then
