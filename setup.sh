@@ -443,14 +443,11 @@ setup_key_repeat() {
   fi
 }
 
-setup_yay() {
-  echo 'Setting up yay'
+check_yay() {
+  which yay >/dev/null 2>&1
+}
 
-  if which yay >/dev/null 2>&1; then
-    echo 'yay is already installed'
-    return
-  fi
-
+install_yay() {
   git clone https://aur.archlinux.org/yay.git
   cd yay
   makepkg -si
@@ -506,8 +503,7 @@ setup_linux() {
   setup_step github
   setup_step gh_extensions
   setup_step dotfiles_repo
-  setup_yay
-  echo
+  setup_step yay
   setup_pacman_bundle
   echo
   setup_linux_dotfiles
