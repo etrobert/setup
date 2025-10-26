@@ -212,7 +212,11 @@ install_nvm_install() {
   PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
 }
 
-setup_nvm() {
+check_nvm() {
+  false
+}
+
+install_nvm() {
   # shellcheck disable=SC1091
   . "$NVM_DIR/nvm.sh"
 }
@@ -449,8 +453,7 @@ setup_darwin() {
   setup_step shell
   setup_step capslock
   setup_step nvm_install
-  setup_nvm
-  echo
+  setup_step nvm
   setup_step node
   setup_step npm_packages
   setup_dock
@@ -477,8 +480,7 @@ setup_linux() {
   setup_swap
   echo
   setup_step nvm_install
-  setup_nvm
-  echo
+  setup_step nvm
   setup_step node
   setup_step npm_packages
   setup_step rust
