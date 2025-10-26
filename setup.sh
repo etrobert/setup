@@ -406,7 +406,7 @@ install_darwin_initial_key_repeat() {
 }
 
 check_cpupower_sudoers() {
-  [ -f "/etc/sudoers.d/cpupower" ]
+  sudo test -f "/etc/sudoers.d/cpupower"
 }
 
 install_cpupower_sudoers() {
