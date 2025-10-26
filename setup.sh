@@ -498,6 +498,7 @@ setup_darwin() {
   echo
   setup_rust
   echo
+  setup_step pronto
 }
 
 setup_linux() {
@@ -526,7 +527,6 @@ setup_linux() {
   setup_rust
   echo
   setup_step pronto
-  echo
 }
 
 full_setup() {
