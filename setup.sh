@@ -48,8 +48,12 @@ check_ssh_key() {
   [ -f "$HOME/.ssh/id_ed25519" ]
 }
 
-setup_ssh_key() {
+install_ssh_key() {
   ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ''
+}
+
+setup_ssh_key() {
+  setup_step check_ssh_key install_ssh_key
 }
 
 setup_github() {
@@ -488,7 +492,7 @@ setup_pacman_bundle() {
 setup_darwin() {
   setup_homebrew
   echo
-  setup_step check_ssh_key setup_ssh_key
+  setup_ssh_key
   echo
   setup_github
   echo
@@ -523,7 +527,7 @@ setup_darwin() {
 }
 
 setup_linux() {
-  setup_step check_ssh_key setup_ssh_key
+  setup_ssh_key
   echo
   setup_github
   echo
