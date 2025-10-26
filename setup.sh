@@ -76,17 +76,21 @@ install_dotfiles_repo() {
   chmod 600 "$HOME/setup/ssh/.ssh/config"
 }
 
-setup_darwin_dotfiles() {
-  cd "$HOME/setup"
+check_darwin_dotfiles() {
+  false
+}
 
-  echo "Stowing dotfiles..."
+install_darwin_dotfiles() {
+  cd "$HOME/setup"
   stow alias bash ghostty git macos nvim profile readline ssh tmux skhd raycast prettier login claude
 }
 
-setup_linux_dotfiles() {
-  cd "$HOME/setup"
+check_linux_dotfiles() {
+  false
+}
 
-  echo "Stowing dotfiles..."
+install_linux_dotfiles() {
+  cd "$HOME/setup"
   stow alias bash git nvim pacman profile readline ssh tmux claude
 }
 
@@ -447,8 +451,7 @@ setup_darwin() {
   setup_step gh_extensions
   setup_step dotfiles_repo
   echo
-  setup_darwin_dotfiles
-  echo
+  setup_step darwin_dotfiles
   setup_step shell
   echo
   setup_step capslock
@@ -476,8 +479,7 @@ setup_linux() {
   setup_step yay
   setup_pacman_bundle
   echo
-  setup_linux_dotfiles
-  echo
+  setup_step linux_dotfiles
   setup_capslock_linux
   echo
   setup_swap
