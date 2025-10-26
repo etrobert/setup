@@ -5,15 +5,16 @@ set -e
 START_TIME=$(date +%s)
 
 setup_step() {
-  check_func=$1
-  setup_func=$2
+  name=$1
+  check_func="check_$name"
+  install_func="install_$name"
 
   echo "$check_func"
   if $check_func; then
     echo "skipped"
     return
   fi
-  $setup_func
+  $install_func
   echo "done"
 }
 
@@ -52,20 +53,12 @@ install_ssh_key() {
   ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ''
 }
 
-setup_ssh_key() {
-  setup_step check_ssh_key install_ssh_key
-}
-
 check_github() {
   gh auth status >/dev/null 2>&1
 }
 
 install_github() {
   gh auth login --git-protocol ssh --hostname github.com --web
-}
-
-setup_github() {
-  setup_step check_github install_github
 }
 
 setup_github_extensions() {
@@ -79,10 +72,6 @@ check_dotfiles_repo() {
 install_dotfiles_repo() {
   git clone git@github.com:etrobert/setup.git "$HOME/setup"
   chmod 600 "$HOME/setup/ssh/.ssh/config"
-}
-
-setup_dotfiles_repo() {
-  setup_step check_dotfiles_repo install_dotfiles_repo
 }
 
 setup_darwin_dotfiles() {
@@ -490,13 +479,13 @@ setup_pacman_bundle() {
 setup_darwin() {
   setup_homebrew
   echo
-  setup_ssh_key
+  setup_step ssh_key
   echo
-  setup_github
+  setup_step github
   echo
   setup_github_extensions
   echo
-  setup_dotfiles_repo
+  setup_step dotfiles_repo
   echo
   setup_darwin_dotfiles
   echo
@@ -525,13 +514,13 @@ setup_darwin() {
 }
 
 setup_linux() {
-  setup_ssh_key
+  setup_step ssh_key
   echo
-  setup_github
+  setup_step github
   echo
   setup_github_extensions
   echo
-  setup_dotfiles_repo
+  setup_step dotfiles_repo
   echo
   setup_yay
   echo
