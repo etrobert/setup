@@ -9,11 +9,12 @@ setup_step() {
   check_func="check_$name"
   install_func="install_$name"
 
-  echo "$check_func"
+  printf "%s... " "$check_func"
   if $check_func; then
     echo "skipped"
     return
   fi
+  printf "\n%s\n" "$install_func"
   $install_func
   echo "done"
 }
@@ -35,7 +36,7 @@ install_brew_path() {
 }
 
 check_brew_bundle() {
-  brew bundle check --file="$HOME/setup/Brewfile"
+  brew bundle check --file="$HOME/setup/Brewfile" >/dev/null
 }
 
 install_brew_bundle() {
@@ -466,17 +467,11 @@ setup_pacman_bundle() {
 
 setup_darwin() {
   setup_step homebrew
-  echo
   setup_step brew_path
-  echo
   setup_step brew_bundle
-  echo
   setup_step ssh_key
-  echo
   setup_step github
-  echo
   setup_step gh_extensions
-  echo
   setup_step dotfiles_repo
   echo
   setup_darwin_dotfiles
@@ -507,13 +502,9 @@ setup_darwin() {
 
 setup_linux() {
   setup_step ssh_key
-  echo
   setup_step github
-  echo
   setup_step gh_extensions
-  echo
   setup_step dotfiles_repo
-  echo
   setup_yay
   echo
   setup_pacman_bundle
