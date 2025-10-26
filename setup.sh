@@ -4,6 +4,19 @@ set -e
 
 START_TIME=$(date +%s)
 
+setup_step() {
+  check_func=$1
+  setup_func=$2
+
+  echo "$check_func"
+  if $check_func; then
+    echo "skipped"
+    return
+  fi
+  $setup_func
+  echo "done"
+}
+
 ensure_gh_extension_installed() {
   echo "Checking if GitHub CLI extension $1 is installed..."
 
@@ -31,15 +44,11 @@ setup_homebrew() {
   brew bundle install --file="$HOME/setup/Brewfile"
 }
 
+check_ssh_key() {
+  [ -f "$HOME/.ssh/id_ed25519" ]
+}
+
 setup_ssh_key() {
-  echo "Setting up SSH key..."
-
-  if [ -f "$HOME/.ssh/id_ed25519" ]; then
-    echo "SSH key already exists."
-    return
-  fi
-
-  echo "SSH key not found. Generating SSH key..."
   ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ''
 }
 
@@ -477,7 +486,7 @@ setup_pacman_bundle() {
 setup_darwin() {
   setup_homebrew
   echo
-  setup_ssh_key
+  setup_step check_ssh_key setup_ssh_key
   echo
   setup_github
   echo
@@ -510,7 +519,7 @@ setup_darwin() {
 }
 
 setup_linux() {
-  setup_ssh_key
+  setup_step check_ssh_key setup_ssh_key
   echo
   setup_github
   echo
