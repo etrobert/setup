@@ -90,9 +90,11 @@ setup_linux_dotfiles() {
   stow alias bash git nvim pacman profile readline ssh tmux claude
 }
 
-setup_rust() {
-  echo "Installing rustup stuff components..."
+check_rust() {
+  rustup component list --installed | grep -q rust-analyzer
+}
 
+install_rust() {
   rustup default stable
   rustup component add rust-analyzer
 }
@@ -472,8 +474,7 @@ setup_darwin() {
   setup_step skhd
   setup_key_repeat
   echo
-  setup_rust
-  echo
+  setup_step rust
   setup_step pronto
 }
 
@@ -499,8 +500,7 @@ setup_linux() {
   echo
   setup_npm_packages
   echo
-  setup_rust
-  echo
+  setup_step rust
   setup_step pronto
 }
 
