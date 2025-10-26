@@ -18,17 +18,6 @@ setup_step() {
   echo "done"
 }
 
-ensure_gh_extension_installed() {
-  echo "Checking if GitHub CLI extension $1 is installed..."
-
-  if gh extension list | grep -q "$1"; then
-    echo "GitHub CLI extension $1 is already installed."
-  else
-    echo "Installing GitHub CLI extension $1..."
-    gh extension install "$1"
-  fi
-}
-
 setup_homebrew() {
   echo "Setting up Homebrew..."
 
@@ -61,8 +50,12 @@ install_github() {
   gh auth login --git-protocol ssh --hostname github.com --web
 }
 
-setup_github_extensions() {
-  ensure_gh_extension_installed meiji163/gh-notify
+check_gh_extensions() {
+  gh extension list | grep -q "meiji163/gh-notify"
+}
+
+install_gh_extensions() {
+  gh extension install meiji163/gh-notify
 }
 
 check_dotfiles_repo() {
@@ -483,7 +476,7 @@ setup_darwin() {
   echo
   setup_step github
   echo
-  setup_github_extensions
+  setup_step gh_extensions
   echo
   setup_step dotfiles_repo
   echo
@@ -518,7 +511,7 @@ setup_linux() {
   echo
   setup_step github
   echo
-  setup_github_extensions
+  setup_step gh_extensions
   echo
   setup_step dotfiles_repo
   echo
