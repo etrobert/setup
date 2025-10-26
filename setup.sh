@@ -200,15 +200,11 @@ setup_capslock_linux() {
   sudo udevadm trigger
 }
 
-setup_nvm_install() {
-  echo "Setting up nvm..."
+check_nvm_install() {
+  [ -d "$NVM_DIR" ]
+}
 
-  if [ -d "$NVM_DIR" ]; then
-    echo "NVM is already installed."
-    return
-  fi
-
-  echo "NVM not found. Installing NVM..."
+install_nvm_install() {
   PROFILE=/dev/null bash -c 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash'
 }
 
@@ -460,8 +456,7 @@ setup_darwin() {
   setup_step shell
   echo
   setup_step capslock
-  setup_nvm_install
-  echo
+  setup_step nvm_install
   setup_nvm
   echo
   setup_node
@@ -492,8 +487,7 @@ setup_linux() {
   echo
   setup_swap
   echo
-  setup_nvm_install
-  echo
+  setup_step nvm_install
   setup_nvm
   echo
   setup_node
