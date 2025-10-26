@@ -18,19 +18,27 @@ setup_step() {
   echo "done"
 }
 
-setup_homebrew() {
-  echo "Setting up Homebrew..."
+check_homebrew() {
+  [ -d "/opt/homebrew" ]
+}
 
-  if [ -d "/opt/homebrew" ]; then
-    echo "Homebrew is already installed."
-  else
-    echo "Homebrew not found. Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  fi
+install_homebrew() {
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
 
-  echo "Adding Homebrew to PATH..."
+check_brew_path() {
+  which brew >/dev/null 2>&1
+}
+
+install_brew_path() {
   eval "$(/opt/homebrew/bin/brew shellenv)"
+}
 
+check_brew_bundle() {
+  brew bundle check --file="$HOME/setup/Brewfile"
+}
+
+install_brew_bundle() {
   brew bundle install --file="$HOME/setup/Brewfile"
 }
 
@@ -470,7 +478,11 @@ setup_pacman_bundle() {
 }
 
 setup_darwin() {
-  setup_homebrew
+  setup_step homebrew
+  echo
+  setup_step brew_path
+  echo
+  setup_step brew_bundle
   echo
   setup_step ssh_key
   echo
