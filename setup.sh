@@ -427,9 +427,11 @@ install_yay() {
   rm -rf yay
 }
 
-setup_pacman_bundle() {
-  echo 'Setting up packages with pacman-bundle'
+check_pacman_bundle() {
+  false
+}
 
+install_pacman_bundle() {
   # Need full path because this needs to run before we stow to install stow
   "$HOME/setup/pacman/.local/bin/pacman-bundle" install
 }
@@ -465,8 +467,7 @@ setup_linux() {
   setup_step gh_extensions
   setup_step dotfiles_repo
   setup_step yay
-  setup_pacman_bundle
-  echo
+  setup_step pacman_bundle
   setup_step linux_dotfiles
   setup_capslock_linux
   echo
