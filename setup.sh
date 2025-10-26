@@ -271,20 +271,24 @@ setup_npm_packages() {
   fi
 }
 
+setup_dock_autohide() {
+  # Check and set autohide
+  current_autohide=$(defaults read com.apple.dock autohide)
+  if [ "$current_autohide" = "1" ]; then
+    echo "Dock auto-hide is already enabled"
+    return
+  fi
+  echo "Setting dock to auto-hide"
+  defaults write com.apple.dock autohide -bool true
+  should_restart_dock=true
+}
+
 setup_dock() {
   echo "Setting up dock..."
 
   should_restart_dock=
 
-  # Check and set autohide
-  current_autohide=$(defaults read com.apple.dock autohide)
-  if [ "$current_autohide" != "1" ]; then
-    echo "Setting dock to auto-hide"
-    defaults write com.apple.dock autohide -bool true
-    should_restart_dock=true
-  else
-    echo "Dock auto-hide is already enabled"
-  fi
+  setup_dock_autohide
 
   # Check and disable recents
   if ! defaults read com.apple.dock show-recents || [ "$(defaults read com.apple.dock show-recents)" != "0" ]; then
