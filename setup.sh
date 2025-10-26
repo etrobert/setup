@@ -546,14 +546,22 @@ setup_linux() {
   echo
 }
 
-case $(uname) in
-Darwin)
-  setup_darwin
-  ;;
-Linux)
-  setup_linux
-  ;;
-esac
+full_setup() {
+  case $(uname) in
+  Darwin)
+    setup_darwin
+    ;;
+  Linux)
+    setup_linux
+    ;;
+  esac
+}
+
+if [ -n "$1" ]; then
+  setup_step "$1"
+else
+  full_setup
+fi
 
 END_TIME=$(date +%s)
 
