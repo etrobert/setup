@@ -96,14 +96,11 @@ setup_rust() {
   rustup component add rust-analyzer
 }
 
-setup_pronto() {
-  echo "Installing pronto..."
+check_pronto() {
+  [ -f "$HOME/.cargo/bin/pronto" ]
+}
 
-  if [ -f "$HOME/.cargo/bin/pronto" ]; then
-    echo "Pronto is already installed"
-    return
-  fi
-
+install_pronto() {
   mkdir -p "$HOME/work"
   git clone git@github.com:etrobert/pronto.git "$HOME/work/pronto"
   cd "$HOME/work/pronto"
@@ -537,7 +534,7 @@ setup_linux() {
   echo
   setup_rust
   echo
-  setup_pronto
+  setup_step pronto
   echo
 }
 
