@@ -72,18 +72,17 @@ setup_github_extensions() {
   ensure_gh_extension_installed meiji163/gh-notify
 }
 
-setup_dotfiles_repo() {
-  echo "Setting up dotfiles repo..."
+check_dotfiles_repo() {
+  [ -d "$HOME/setup" ]
+}
 
-  if [ -d "$HOME/setup" ]; then
-    echo "Dotfiles repository already cloned."
-    return
-  fi
-  echo "Dotfiles repository not found. Cloning dotfiles repository..."
+install_dotfiles_repo() {
   git clone git@github.com:etrobert/setup.git "$HOME/setup"
-
-  echo "Setting proper permissions for SSH config..."
   chmod 600 "$HOME/setup/ssh/.ssh/config"
+}
+
+setup_dotfiles_repo() {
+  setup_step check_dotfiles_repo install_dotfiles_repo
 }
 
 setup_darwin_dotfiles() {
