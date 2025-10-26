@@ -213,15 +213,11 @@ setup_nvm() {
   . "$NVM_DIR/nvm.sh"
 }
 
-setup_node() {
-  echo "Setting up Node.js..."
+check_node() {
+  nvm ls node >/dev/null 2>&1
+}
 
-  if nvm ls node >/dev/null 2>&1; then
-    echo "NodeJS is already installed."
-    return
-  fi
-
-  echo "NodeJS not found. Installing..."
+install_node() {
   nvm install node
 }
 
@@ -459,8 +455,7 @@ setup_darwin() {
   setup_step nvm_install
   setup_nvm
   echo
-  setup_node
-  echo
+  setup_step node
   setup_npm_packages
   echo
   setup_dock
@@ -490,8 +485,7 @@ setup_linux() {
   setup_step nvm_install
   setup_nvm
   echo
-  setup_node
-  echo
+  setup_step node
   setup_npm_packages
   echo
   setup_step rust
