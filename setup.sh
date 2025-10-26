@@ -63,7 +63,9 @@ setup_github() {
     echo "GitHub CLI not authenticated. Authenticating..."
     gh auth login --git-protocol ssh --hostname github.com --web
   fi
+}
 
+setup_github_extensions() {
   ensure_gh_extension_installed meiji163/gh-notify
 }
 
@@ -490,6 +492,8 @@ setup_darwin() {
   echo
   setup_github
   echo
+  setup_github_extensions
+  echo
   setup_dotfiles_repo
   echo
   setup_darwin_dotfiles
@@ -522,6 +526,8 @@ setup_linux() {
   setup_step check_ssh_key setup_ssh_key
   echo
   setup_github
+  echo
+  setup_github_extensions
   echo
   setup_dotfiles_repo
   echo
