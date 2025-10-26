@@ -283,6 +283,17 @@ setup_dock_autohide() {
   should_restart_dock=true
 }
 
+setup_dock_show_recents() {
+  # Check and disable recents
+  if defaults read com.apple.dock show-recents && [ "$(defaults read com.apple.dock show-recents)" = "0" ]; then
+    echo "Dock recents are already disabled"
+    return
+  fi
+  echo "Disabling recent apps in dock"
+  defaults write com.apple.dock show-recents -bool false
+  should_restart_dock=true
+}
+
 setup_dock() {
   echo "Setting up dock..."
 
@@ -290,14 +301,7 @@ setup_dock() {
 
   setup_dock_autohide
 
-  # Check and disable recents
-  if ! defaults read com.apple.dock show-recents || [ "$(defaults read com.apple.dock show-recents)" != "0" ]; then
-    echo "Disabling recent apps in dock"
-    defaults write com.apple.dock show-recents -bool false
-    should_restart_dock=true
-  else
-    echo "Dock recents are already disabled"
-  fi
+  setup_dock_show_recents
 
   # Check and set autohide delay
   current_autohide_delay=$(defaults read com.apple.dock autohide-delay)
