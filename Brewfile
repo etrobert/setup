@@ -10,7 +10,6 @@ brew "fzf"
 brew "gh"
 brew "stow"
 brew "tmux"
-brew "oven-sh/bun/bun"
 brew "go"
 brew "plantuml"
 brew "entr"
@@ -22,6 +21,7 @@ brew "codex"
 brew "yt-dlp"
 brew "openai-whisper"
 brew "bash"
+brew "hyperfine" # cli benchmarking tool
 
 brew "redis", restart_service: :changed
 brew "postgresql@17", restart_service: :changed
@@ -42,6 +42,7 @@ brew "stripe"
 cask "arc"
 cask "firefox"
 cask "zen"
+cask "helium-browser"
 
 cask "betterdisplay"
 cask "font-fira-code-nerd-font"
