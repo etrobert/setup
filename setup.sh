@@ -151,28 +151,18 @@ setup_swap() {
   free -h
 }
 
-setup_shell() {
-  echo "Setting up default shell"
+TARGET_SHELL="/opt/homebrew/bin/bash"
 
-  target_shell="/opt/homebrew/bin/bash"
-  current_shell="$SHELL"
+check_shell() {
+  [ "$SHELL" = "$TARGET_SHELL" ]
+}
 
-  if [ "$current_shell" = "$target_shell" ]; then
-    echo "Your shell is already $target_shell."
-    return
+install_shell() {
+  if ! grep -q "$TARGET_SHELL" /etc/shells; then
+    echo "$TARGET_SHELL" | sudo tee -a /etc/shells >/dev/null
   fi
 
-  # Add Homebrew shell to /etc/shells if not already there
-  if ! grep -q "$target_shell" /etc/shells; then
-    echo "Adding $target_shell to /etc/shells..."
-    # Use tee with sudo because redirection doesn't work with sudo
-    echo "$target_shell" | sudo tee -a /etc/shells >/dev/null
-  else
-    echo "$target_shell is already in /etc/shells"
-  fi
-
-  echo "Changing shell to $target_shell..."
-  chsh -s "$target_shell"
+  chsh -s "$TARGET_SHELL"
 }
 
 setup_capslock() {
@@ -494,7 +484,7 @@ setup_darwin() {
   echo
   setup_darwin_dotfiles
   echo
-  setup_shell
+  setup_step shell
   echo
   setup_capslock
   echo
