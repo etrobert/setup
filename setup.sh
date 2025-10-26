@@ -450,10 +450,8 @@ setup_darwin() {
   setup_step github
   setup_step gh_extensions
   setup_step dotfiles_repo
-  echo
   setup_step darwin_dotfiles
   setup_step shell
-  echo
   setup_step capslock
   setup_step nvm_install
   setup_nvm
