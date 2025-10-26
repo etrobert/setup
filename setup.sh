@@ -381,29 +381,16 @@ setup_dock() {
   fi
 }
 
-setup_trackpad() {
-  echo "Setting up trackpad speed..."
+TARGET_TRACKPAD_SPEED='2.5'
 
-  target_speed='2.5'
+check_trackpad() {
+  current_speed=$(defaults read -g com.apple.trackpad.scaling 2>/dev/null) || return 1
+  [ "$current_speed" = "$TARGET_TRACKPAD_SPEED" ]
+}
 
-  set_trackpad_speed() {
-    defaults write -g com.apple.trackpad.scaling "$target_speed"
-    killall SystemUIServer
-  }
-
-  if ! current_speed=$(defaults read -g com.apple.trackpad.scaling 2>/dev/null); then
-    echo 'Trackpad speed has not been set, setting...'
-    set_trackpad_speed
-    return
-  fi
-
-  if [ "$current_speed" = "$target_speed" ]; then
-    echo 'Trackpad speed is already correctly set.'
-    return
-  fi
-
-  echo 'Trackpad speed is wrong. Setting...'
-  set_trackpad_speed
+install_trackpad() {
+  defaults write -g com.apple.trackpad.scaling "$TARGET_TRACKPAD_SPEED"
+  killall SystemUIServer
 }
 
 check_skhd() {
@@ -486,8 +473,7 @@ setup_darwin() {
   echo
   setup_dock
   echo
-  setup_trackpad
-  echo
+  setup_step trackpad
   setup_step skhd
   setup_key_repeat
   echo
