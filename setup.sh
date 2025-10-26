@@ -406,12 +406,11 @@ setup_trackpad() {
   set_trackpad_speed
 }
 
-setup_skhd() {
-  echo "Setting up skhd..."
-  if [ -f "$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist" ]; then
-    echo "skhd is already installed."
-    return
-  fi
+check_skhd() {
+  [ -f "$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist" ]
+}
+
+install_skhd() {
   skhd --install-service
   skhd --start-service
 }
@@ -489,8 +488,7 @@ setup_darwin() {
   echo
   setup_trackpad
   echo
-  setup_skhd
-  echo
+  setup_step skhd
   setup_key_repeat
   echo
   setup_rust
