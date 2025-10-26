@@ -163,18 +163,14 @@ install_shell() {
   chsh -s "$TARGET_SHELL"
 }
 
-setup_capslock() {
-  echo "Setting up Caps Lock as Control via LaunchAgent..."
+CAPSLOCK_AGENT_LABEL="com.etienne.remapkeys"
 
-  AGENT_LABEL="com.etienne.remapkeys"
-  PLIST_PATH="$HOME/Library/LaunchAgents/$AGENT_LABEL.plist"
+check_capslock() {
+  launchctl list | grep -q "$CAPSLOCK_AGENT_LABEL"
+}
 
-  if ! launchctl list | grep -q "$AGENT_LABEL"; then
-    echo "Loading LaunchAgent..."
-    launchctl bootstrap "gui/$(id -u)" "$PLIST_PATH"
-  else
-    echo "LaunchAgent is already loaded."
-  fi
+install_capslock() {
+  launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/$CAPSLOCK_AGENT_LABEL.plist"
 }
 
 setup_capslock_linux() {
@@ -461,8 +457,7 @@ setup_darwin() {
   echo
   setup_step shell
   echo
-  setup_capslock
-  echo
+  setup_step capslock
   setup_nvm_install
   echo
   setup_nvm
