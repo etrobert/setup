@@ -265,7 +265,7 @@ setup_npm_packages() {
   done
 
   if [ -n "$to_install" ]; then
-    npm install -g $to_install
+    npm install -g "$to_install"
   else
     echo "All packages already installed"
   fi
@@ -454,7 +454,7 @@ setup_pacman_bundle() {
   echo 'Setting up packages with pacman-bundle'
 
   # Need full path because this needs to run before we stow to install stow
-  $HOME/setup/pacman/.local/bin/pacman-bundle install
+  "$HOME/setup/pacman/.local/bin/pacman-bundle" install
 }
 
 setup_darwin() {
