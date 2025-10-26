@@ -294,6 +294,18 @@ setup_dock_show_recents() {
   should_restart_dock=true
 }
 
+setup_dock_autohide_delay() {
+  # Check and set autohide delay
+  current_autohide_delay=$(defaults read com.apple.dock autohide-delay)
+  if [ "$current_autohide_delay" = "0" ]; then
+    echo "Dock appearance delay is already set to 0"
+    return
+  fi
+  echo "Removing dock appearance delay"
+  defaults write com.apple.dock autohide-delay -float 0
+  should_restart_dock=true
+}
+
 setup_dock() {
   echo "Setting up dock..."
 
@@ -303,15 +315,7 @@ setup_dock() {
 
   setup_dock_show_recents
 
-  # Check and set autohide delay
-  current_autohide_delay=$(defaults read com.apple.dock autohide-delay)
-  if [ "$current_autohide_delay" != "0" ]; then
-    echo "Removing dock appearance delay"
-    defaults write com.apple.dock autohide-delay -float 0
-    should_restart_dock=true
-  else
-    echo "Dock appearance delay is already set to 0"
-  fi
+  setup_dock_autohide_delay
 
   # Define desired apps
   desired_apps="
