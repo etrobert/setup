@@ -43,6 +43,7 @@
   fdrop = "!commit=$(git-find-commit) && [ -n \"$commit\" ] && git drop \"$commit\""
   find = "!git-find-commit"
   div-dft = "!git dft $(git merge-base origin/main HEAD)..HEAD"
+  amend = commit --amend --no-edit
 [pager]
   status = on
 [push]
