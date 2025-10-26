@@ -94,9 +94,16 @@ setup_rust() {
 }
 
 setup_pronto() {
-  mkdir -p $HOME/work
-  git clone git@github.com:etrobert/pronto.git $HOME/work/pronto
-  cd $HOME/work/pronto
+  echo "Installing pronto..."
+
+  if [ -f "$HOME/.cargo/bin/pronto" ]; then
+    echo "Pronto is already installed"
+    return
+  fi
+
+  mkdir -p "$HOME/work"
+  git clone git@github.com:etrobert/pronto.git "$HOME/work/pronto"
+  cd "$HOME/work/pronto"
   cargo install --path .
 }
 
