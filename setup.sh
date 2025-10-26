@@ -56,17 +56,16 @@ setup_ssh_key() {
   setup_step check_ssh_key install_ssh_key
 }
 
+check_github() {
+  gh auth status >/dev/null 2>&1
+}
+
+install_github() {
+  gh auth login --git-protocol ssh --hostname github.com --web
+}
+
 setup_github() {
-  echo "Setting up GitHub..."
-
-  echo 'Authenticating GitHub CLI...'
-
-  if gh auth status >/dev/null 2>&1; then
-    echo "GitHub CLI is already authenticated."
-  else
-    echo "GitHub CLI not authenticated. Authenticating..."
-    gh auth login --git-protocol ssh --hostname github.com --web
-  fi
+  setup_step check_github install_github
 }
 
 setup_github_extensions() {
