@@ -427,6 +427,16 @@ $USER ALL=(ALL) NOPASSWD: /usr/bin/cpupower frequency-set *"
   sudo chmod 0440 /etc/sudoers.d/cpupower
 }
 
+check_cpupower_default() {
+  [ -f "/etc/default/cpupower" ] && grep -q "governor='performance'" /etc/default/cpupower && systemctl is-enabled cpupower >/dev/null 2>&1
+}
+
+install_cpupower_default() {
+  echo "governor='performance'" | sudo tee /etc/default/cpupower >/dev/null
+  sudo systemctl enable cpupower
+  sudo systemctl start cpupower
+}
+
 check_yay() {
   which yay >/dev/null 2>&1
 }
@@ -486,6 +496,7 @@ setup_linux() {
   setup_swap
   echo
   setup_step cpupower_sudoers
+  setup_step cpupower_default
   setup_step nvm_install
   setup_step nvm
   setup_step node
