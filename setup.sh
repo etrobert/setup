@@ -415,6 +415,18 @@ install_darwin_initial_key_repeat() {
   echo "Note: Key repeat changes will take effect after logout/restart"
 }
 
+check_cpupower_sudoers() {
+  [ -f "/etc/sudoers.d/cpupower" ]
+}
+
+install_cpupower_sudoers() {
+  SUDOERS_CONTENT="# Allow cpupower frequency-set without password
+$USER ALL=(ALL) NOPASSWD: /usr/bin/cpupower frequency-set *"
+
+  echo "$SUDOERS_CONTENT" | sudo tee /etc/sudoers.d/cpupower >/dev/null
+  sudo chmod 0440 /etc/sudoers.d/cpupower
+}
+
 check_yay() {
   which yay >/dev/null 2>&1
 }
@@ -473,6 +485,7 @@ setup_linux() {
   echo
   setup_swap
   echo
+  setup_step cpupower_sudoers
   setup_step nvm_install
   setup_step nvm
   setup_step node
