@@ -179,28 +179,18 @@ install_capslock() {
   launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/$CAPSLOCK_AGENT_LABEL.plist"
 }
 
-setup_capslock_linux() {
-  echo "Setting up Caps Lock as Control via udev hwdb..."
+HWDB_FILE="/etc/udev/hwdb.d/90-custom-keyboard.hwdb"
 
-  HWDB_FILE="/etc/udev/hwdb.d/90-custom-keyboard.hwdb"
+check_capslock_linux() {
+  [ -f "$HWDB_FILE" ] && grep -q "KEYBOARD_KEY_3a=leftctrl" "$HWDB_FILE"
+}
+
+install_capslock_linux() {
   HWDB_CONTENT="evdev:input:b*v*p*
  KEYBOARD_KEY_3a=leftctrl"
 
-  # Check if file exists and has correct content
-  if [ -f "$HWDB_FILE" ]; then
-    if grep -q "KEYBOARD_KEY_3a=leftctrl" "$HWDB_FILE"; then
-      echo "Caps Lock remapping is already configured."
-      return
-    fi
-  fi
-
-  echo "Creating udev hwdb configuration..."
   echo "$HWDB_CONTENT" | sudo tee "$HWDB_FILE" >/dev/null
-
-  echo "Updating hwdb database..."
   sudo systemd-hwdb update
-
-  echo "Triggering udev reload..."
   sudo udevadm trigger
 }
 
@@ -491,8 +481,7 @@ setup_linux() {
   setup_step yay
   setup_step pacman_bundle
   setup_step linux_dotfiles
-  setup_capslock_linux
-  echo
+  setup_step capslock_linux
   setup_swap
   echo
   setup_step cpupower_sudoers
