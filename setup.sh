@@ -225,35 +225,30 @@ install_node() {
   nvm install node
 }
 
-setup_npm_packages() {
-  echo "Installing global npm packages..."
+NPM_PACKAGES="corepack \
+  vscode-langservers-extracted \
+  @github/copilot-language-server \
+  @anthropic-ai/claude-code \
+  bash-language-server \
+  @tailwindcss/language-server \
+  typescript-language-server \
+  @fsouza/prettierd \
+  neonctl \
+  bun"
 
-  packages="corepack \
-    vscode-langservers-extracted \
-    @github/copilot-language-server \
-    @anthropic-ai/claude-code \
-    bash-language-server \
-    @tailwindcss/language-server \
-    typescript-language-server \
-    @fsouza/prettierd \
-    neonctl \
-    bun"
-
-  to_install=""
-
-  for pkg in $packages; do
-    if ! npm list -g "$pkg" >/dev/null 2>&1; then
-      to_install="$to_install $pkg"
-    else
-      echo "$pkg already installed"
+check_npm_packages() {
+  installed=$(npm list -g --depth=0 2>/dev/null)
+  for pkg in $NPM_PACKAGES; do
+    if ! echo "$installed" | grep -q "$pkg@"; then
+      return 1
     fi
   done
+  return 0
+}
 
-  if [ -n "$to_install" ]; then
-    npm install -g "$to_install"
-  else
-    echo "All packages already installed"
-  fi
+install_npm_packages() {
+  # shellcheck disable=SC2086
+  npm install -g $NPM_PACKAGES
 }
 
 setup_dock_autohide() {
@@ -457,8 +452,7 @@ setup_darwin() {
   setup_nvm
   echo
   setup_step node
-  setup_npm_packages
-  echo
+  setup_step npm_packages
   setup_dock
   echo
   setup_step trackpad
@@ -486,8 +480,7 @@ setup_linux() {
   setup_nvm
   echo
   setup_step node
-  setup_npm_packages
-  echo
+  setup_step npm_packages
   setup_step rust
   setup_step pronto
 }
