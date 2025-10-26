@@ -9,12 +9,12 @@ setup_step() {
   check_func="check_$name"
   install_func="install_$name"
 
-  printf "%s... " "$check_func"
+  printf "%s... " "$name"
   if $check_func; then
     echo "skipped"
     return
   fi
-  printf "\n%s\n" "$install_func"
+  echo "installing"
   $install_func
   echo "done"
 }
