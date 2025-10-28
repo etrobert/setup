@@ -41,6 +41,11 @@ window#waybar {
   color: red;
 }
 
+#battery.warning.charging,
+#battery.critical.charging {
+  color: inherit;
+}
+
 #workspaces button {
   background: transparent;
   color: #cdd6f4;
