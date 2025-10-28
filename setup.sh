@@ -405,6 +405,14 @@ install_darwin_initial_key_repeat() {
   echo "Note: Key repeat changes will take effect after logout/restart"
 }
 
+check_timesyncd() {
+  systemctl is-enabled systemd-timesyncd >/dev/null 2>&1
+}
+
+install_timesyncd() {
+  sudo systemctl enable --now systemd-timesyncd.service
+}
+
 check_cpupower_sudoers() {
   sudo test -f "/etc/sudoers.d/cpupower"
 }
@@ -484,6 +492,7 @@ setup_linux() {
   setup_step capslock_linux
   setup_swap
   echo
+  setup_step timesyncd
   setup_step cpupower_sudoers
   setup_step cpupower_default
   setup_step nvm_install
