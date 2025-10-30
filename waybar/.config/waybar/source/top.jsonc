@@ -3,8 +3,9 @@
   "name": "top",
   "position": "top",
   "modules-left": ["hyprland/workspaces"],
-  "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory"],
-  "modules-right": ["network", "clock"],
+  "modules-center": ["mpd"],
+  // "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory"],
+  "modules-right": ["bluetooth", "network", "clock"],
   "clock": {
     "format": "{:%a %b %d %H:%M:%S}",
     "interval": 1,

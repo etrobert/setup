@@ -42,18 +42,32 @@
       "󰤨"
     ]
   },
+  "mpd": {
+    "format": "{artist} - {title}",
+    "format-stopped": "",
+    "on-click": "mpc toggle"
+  },
+  "bluetooth": {
+    "format-on": "󰂯",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-connected": "󰂱",
+    "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+    "format-no-controller": "󰂳",
+    "tooltip-format": "{controller_address} {controller_alias}",
+    "tooltip-format-connected": "{controller_address} {controller_alias}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_address} {device_alias}"
+  },
   "name": "top",
   "position": "top",
   "modules-left": [
     "hyprland/workspaces"
   ],
   "modules-center": [
-    "temperature",
-    "cpu",
-    "custom/cpu-freq",
-    "memory"
+    "mpd"
   ],
   "modules-right": [
+    "bluetooth",
     "network",
     "clock"
   ],
