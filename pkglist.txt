@@ -31,6 +31,9 @@ linux-firmware
 lua-language-server
 man-db
 man-pages
+mpc # Minimalist command line interface to MPD
+mpd # Music Player Daemon
+ncmpcpp # mpc client
 networkmanager
 nvm
 openssh
@@ -58,4 +61,5 @@ waybar
 wev # A tool for debugging wayland events on a Wayland window, analogous to the X11 tool xev
 wireplumber # Session manager for PipeWire (provides wpctl)
 wofi
+xdg-user-dirs # Manage user directories like ~/Music. (used by mpd)
 zsh
