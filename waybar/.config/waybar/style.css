@@ -46,6 +46,7 @@ window#waybar {
 }
 
 #workspaces button {
+  padding: 3px 6px;
   background: transparent;
   color: #cdd6f4;
 }
