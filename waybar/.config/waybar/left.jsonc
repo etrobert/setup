@@ -47,9 +47,12 @@
     ]
   },
   "mpd": {
-    "format": "{artist} - {title}",
+    "format": "{stateIcon}{artist} - {title}",
     "format-stopped": "",
     "on-click": "mpc toggle",
+    "state-icons": {
+      "paused": " "
+    },
     "rotate": 90
   },
   "bluetooth": {
