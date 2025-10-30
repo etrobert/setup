@@ -17,6 +17,7 @@ fzf
 ghostty
 git
 github-cli
+grim # Screenshot utility for Wayland
 grub # GNU GRand Unified Bootloader
 hyprland
 hyprpaper
