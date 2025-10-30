@@ -59,14 +59,16 @@
     "pulseaudio"
   ],
   "modules-center": [
-    "temperature",
-    "cpu",
-    "custom/cpu-freq",
-    "memory"
+    "mpd"
   ],
   "modules-right": [
     "hyprland/workspaces"
   ],
+  "mpd": {
+    "rotate": 90,
+    "format": "{artist} - {title}",
+    "format-stopped": ""
+  },
   "hyprland/window": {
     "rotate": 90,
     "max-length": 30

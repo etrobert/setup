@@ -15,10 +15,16 @@
     // at bottom because muted icon is bigger and shifts layout
     "pulseaudio",
   ],
-  "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory"],
+  // "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory", "mpd"],
+  "modules-center": ["mpd"],
   // "modules-center": ["hyprland/window"],
   "modules-right": ["hyprland/workspaces"],
   // Modules configuration
+  "mpd": {
+    "rotate": 90,
+    "format": "{artist} - {title}",
+    "format-stopped": "",
+  },
   "hyprland/window": {
     "rotate": 90,
     "max-length": 30,

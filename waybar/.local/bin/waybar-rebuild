@@ -24,6 +24,6 @@ fi
   jq --slurp '.[0] * .[1]' \
     <(strip-json-comments "$SOURCE_DIR/shared.jsonc") \
     <(strip-json-comments "$SOURCE_DIR/$1.jsonc")
-} >"$CONFIG_DIR/config.jsonc"
+} >"$CONFIG_DIR/$1.jsonc"
 
 echo "done"
