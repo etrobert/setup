@@ -71,17 +71,17 @@
   "modules-left": [
     "clock#time",
     "custom/weekday",
-    "clock#date",
-    "network",
-    "battery",
-    "custom/cpu-governor",
-    "bluetooth",
-    "pulseaudio"
+    "clock#date"
   ],
   "modules-center": [
     "mpd"
   ],
   "modules-right": [
+    "pulseaudio",
+    "network",
+    "battery",
+    "custom/cpu-governor",
+    "bluetooth",
     "hyprland/workspaces"
   ],
   "hyprland/window": {
@@ -128,16 +128,6 @@
     "format": "{icon}",
     "format-muted": "",
     "format-icons": {
-      "headphone": [
-        " ",
-        " ",
-        " "
-      ],
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
       "default": [
         "",
         "",

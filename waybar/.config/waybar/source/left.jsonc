@@ -8,17 +8,19 @@
     "custom/weekday",
     "clock#date",
     // "custom/weather",
-    "network",
-    "battery",
-    "custom/cpu-governor",
-    "bluetooth",
-    // at bottom because muted icon is bigger and shifts layout
-    "pulseaudio",
   ],
   // "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory", "mpd"],
   "modules-center": ["mpd"],
   // "modules-center": ["hyprland/window"],
-  "modules-right": ["hyprland/workspaces"],
+  "modules-right": [
+    // at edge because muted icon is bigger and shifts layout
+    "pulseaudio",
+    "network",
+    "battery",
+    "custom/cpu-governor",
+    "bluetooth",
+    "hyprland/workspaces",
+  ],
   // Modules configuration
   "mpd": {
     "rotate": 90,
@@ -76,12 +78,6 @@
     // "format-bluetooth-muted": " {icon}",
     "format-muted": "",
     "format-icons": {
-      "headphone": [" ", " ", " "],
-      "hands-free": "",
-      "headset": "",
-      "phone": "",
-      "portable": "",
-      "car": "",
       "default": ["", "", ""],
     },
     "on-click": "pavucontrol",

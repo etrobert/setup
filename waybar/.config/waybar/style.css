@@ -6,13 +6,12 @@
 }
 
 window#waybar {
-  /* Vertical line at 3px right of center of the bar */
   /* background: linear-gradient( */
   /*   to right, */
-  /*   transparent calc(50% + 2.5px), */
+  /*   transparent calc(50% + 1.5px), */
+  /*   rgba(255, 255, 255, 0.2) calc(50% + 1.5px), */
   /*   rgba(255, 255, 255, 0.2) calc(50% + 2.5px), */
-  /*   rgba(255, 255, 255, 0.2) calc(50% + 3.5px), */
-  /*   transparent calc(50% + 3.5px) */
+  /*   transparent calc(50% + 2.5px) */
   /* ); */
 
   /* Vertical line at center of the bar */
@@ -63,9 +62,13 @@ window#waybar.left #clock.time {
   margin-top: 8px;
 }
 
+window#waybar.left #workspaces {
+  margin-bottom: 3px;
+}
+
 window#waybar.left .module {
   /* Need to offset to account for the hyprland outer gap */
-  margin-left: 6px;
+  margin-left: 3px;
 }
 
 window#waybar.left #custom-weather {
@@ -73,7 +76,10 @@ window#waybar.left #custom-weather {
   margin-left: 10px;
 }
 
-window#waybar.left #workspaces,
+window#waybar.left #workspaces {
+  margin-left: 3px;
+}
+
 window#waybar.left #pulseaudio,
 window#waybar.left #network,
 window#waybar.left #battery {
