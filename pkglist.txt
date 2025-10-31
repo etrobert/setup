@@ -61,5 +61,6 @@ waybar
 wev # A tool for debugging wayland events on a Wayland window, analogous to the X11 tool xev
 wireplumber # Session manager for PipeWire (provides wpctl)
 wofi
+xdg-desktop-portal-hyprland
 xdg-user-dirs # Manage user directories like ~/Music. (used by mpd)
 zsh
