@@ -10,6 +10,7 @@ application/xhtml+xml=zen.desktop
 application/x-extension-xhtml=zen.desktop
 application/x-extension-xht=zen.desktop
 image/png=zen.desktop
+image/jpeg=zen.desktop
 
 [Added Associations]
 x-scheme-handler/http=zen.desktop;firefox.desktop;
