@@ -74,6 +74,10 @@
     "clock#date"
   ],
   "modules-center": [
+    "temperature",
+    "cpu",
+    "custom/cpu-freq",
+    "memory",
     "mpd"
   ],
   "modules-right": [
@@ -114,14 +118,27 @@
     },
     "format": "{icon}",
     "format-full": "{icon}",
-    "format-charging": "{icon} ",
-    "format-icons": [
-      "",
-      "",
-      "",
-      "",
-      ""
-    ],
+    "format-icons": {
+      "charging": [
+        "󰢜",
+        "󰂆",
+        "󰂇",
+        "󰂈",
+        "󰢝",
+        "󰂉",
+        "󰢞",
+        "󰂊",
+        "󰂋",
+        "󰂅"
+      ],
+      "default": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
     "tooltip-format": "{capacity}%\n{timeTo}"
   },
   "pulseaudio": {

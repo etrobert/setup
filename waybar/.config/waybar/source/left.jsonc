@@ -9,8 +9,8 @@
     "clock#date",
     // "custom/weather",
   ],
-  // "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory", "mpd"],
-  "modules-center": ["mpd"],
+  "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory", "mpd"],
+  // "modules-center": ["mpd"],
   // "modules-center": ["hyprland/window"],
   "modules-right": [
     // at edge because muted icon is bigger and shifts layout
@@ -67,8 +67,10 @@
     },
     "format": "{icon}",
     "format-full": "{icon}",
-    "format-charging": "{icon} ",
-    "format-icons": ["", "", "", "", ""],
+    "format-icons": {
+      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+      "default": ["", "", "", "", ""],
+    },
     "tooltip-format": "{capacity}%\n{timeTo}",
   },
   "pulseaudio": {
