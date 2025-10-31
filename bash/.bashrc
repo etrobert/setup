@@ -68,6 +68,12 @@ source "$HOME/.git-prompt.sh"
 # Disable ctrl-s and ctrl-q
 stty -ixon
 
+# Enable recursive globbing with **
+shopt -s globstar
+
+# Match hidden files in glob patterns
+shopt -s dotglob
+
 # Bind Ctrl-F to edit command in editor
 bind '"\C-f": edit-and-execute-command'
 
