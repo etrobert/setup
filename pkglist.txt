@@ -46,6 +46,7 @@ pavucontrol # GUI Audio manager
 pipewire-alsa # ALSA compatibility for PipeWire
 pipewire # Modern audio/video server
 pipewire-pulse # PulseAudio compatibility for PipeWire (needed for browsers)
+python-mutagen # audio metadata tag reader used by mpDris2 to show cover art in notifications
 ripgrep
 rustup
 shellcheck
