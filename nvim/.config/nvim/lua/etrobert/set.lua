@@ -86,3 +86,6 @@ vim.lsp.enable({
 })
 
 vim.o.winborder = "rounded"
+
+-- Hide . and .. in netrw
+vim.g.netrw_list_hide = '^\\.\\.\\?/$'
