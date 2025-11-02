@@ -29,6 +29,7 @@ less
 linux
 linux-firmware
 lua-language-server
+mako
 man-db
 man-pages
 mpc # Minimalist command line interface to MPD
