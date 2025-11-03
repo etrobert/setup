@@ -20,6 +20,7 @@ git
 github-cli
 grim # Screenshot utility for Wayland
 grub # GNU GRand Unified Bootloader
+hyperfine # cli benchmarking
 hyprland
 hyprpaper
 imagemagick # Used by snacks.image
