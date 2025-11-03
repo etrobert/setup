@@ -51,6 +51,15 @@ install_ssh_key() {
   ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -N ''
 }
 
+check_ssh_controls() {
+  [ -d "$HOME/.ssh/controls" ]
+}
+
+install_ssh_controls() {
+  mkdir -p "$HOME/.ssh/controls"
+  chmod 700 "$HOME/.ssh/controls"
+}
+
 check_github() {
   gh auth status >/dev/null 2>&1
 }
@@ -470,6 +479,7 @@ setup_darwin() {
   setup_step brew_path
   setup_step brew_bundle
   setup_step ssh_key
+  setup_step ssh_controls
   setup_step github
   setup_step gh_extensions
   setup_step dotfiles_repo
@@ -492,6 +502,7 @@ setup_darwin() {
 
 setup_linux() {
   setup_step ssh_key
+  setup_step ssh_controls
   setup_step github
   setup_step gh_extensions
   setup_step dotfiles_repo
