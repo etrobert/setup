@@ -435,6 +435,15 @@ install_cpupower_default() {
   sudo systemctl start cpupower
 }
 
+check_i2c_dev_module() {
+  lsmod | grep -q i2c_dev && [ -f "/etc/modules-load.d/i2c.conf" ]
+}
+
+install_i2c_dev_module() {
+  sudo modprobe i2c-dev
+  echo "i2c-dev" | sudo tee /etc/modules-load.d/i2c.conf >/dev/null
+}
+
 check_yay() {
   which yay >/dev/null 2>&1
 }
@@ -495,6 +504,7 @@ setup_linux() {
   setup_step timesyncd
   setup_step cpupower_sudoers
   setup_step cpupower_default
+  setup_step i2c_dev_module
   setup_step nvm_install
   setup_step nvm
   setup_step node

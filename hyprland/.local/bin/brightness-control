@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+DIRECTION=$1
+
+if [ -z "$DIRECTION" ]; then
+  echo "Usage: brightness-control [up|down]"
+  exit 1
+fi
+
+# Get focused monitor name
+FOCUSED_MONITOR=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name')
+
+case "$FOCUSED_MONITOR" in
+  eDP-1)
+    # Laptop display - use brightnessctl
+    if [ "$DIRECTION" = "up" ]; then
+      brightnessctl -e4 -n2 set 5%+
+    elif [ "$DIRECTION" = "down" ]; then
+      brightnessctl -e4 -n2 set 5%-
+    fi
+    ;;
+  DP-1)
+    # External monitor - use ddcutil
+    if [ "$DIRECTION" = "up" ]; then
+      ddcutil setvcp 10 + 10 --display 1
+    elif [ "$DIRECTION" = "down" ]; then
+      ddcutil setvcp 10 - 10 --display 1
+    fi
+    ;;
+  *)
+    echo "Unknown monitor: $FOCUSED_MONITOR"
+    exit 1
+    ;;
+esac

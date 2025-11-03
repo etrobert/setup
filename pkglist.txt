@@ -8,6 +8,7 @@ bluez-utils # Bluetooth utilities (bluetoothctl, etc.)
 brightnessctl # control laptop/internal display brightness
 btop
 cpupower # get and set power profiles
+ddcutil # change external monitor brightness
 difftastic
 efibootmgr # modify uefi boot entries
 eza
