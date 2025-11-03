@@ -8,6 +8,7 @@ bluez-utils # Bluetooth utilities (bluetoothctl, etc.)
 brightnessctl # control laptop/internal display brightness
 btop
 cpupower # get and set power profiles
+darkman # switch dark/light mode based on time of day
 ddcutil # change external monitor brightness
 difftastic
 efibootmgr # modify uefi boot entries
@@ -66,6 +67,7 @@ waybar
 wev # A tool for debugging wayland events on a Wayland window, analogous to the X11 tool xev
 wireplumber # Session manager for PipeWire (provides wpctl)
 wofi
+xdg-desktop-portal-gtk # GTK portal for darkman theme integration
 xdg-desktop-portal-hyprland
 xdg-user-dirs # Manage user directories like ~/Music. (used by mpd)
 zsh
