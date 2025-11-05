@@ -91,7 +91,7 @@ check_darwin_dotfiles() {
 
 install_darwin_dotfiles() {
   cd "$HOME/setup"
-  stow alias bash brew claude ghostty git login macos nvim prettier profile raycast readline skhd ssh tmux
+  stow alias bash brew claude ghostty git login macos nvim prettier profile raycast readline skhd ssh tmux zsh
 }
 
 check_linux_dotfiles() {
