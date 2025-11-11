@@ -25,6 +25,7 @@ hyperfine # cli benchmarking
 hyprland
 hyprpaper
 imagemagick # Used by snacks.image
+innoextract # A tool to extract installers created by Inno Setup. (used for king's quest vii)
 intel-media-driver # VA-API driver for Intel graphics (hardware video decode)
 intel-ucode # Microcode update files for Intel CPUs
 jq
@@ -52,6 +53,7 @@ pipewire-pulse # PulseAudio compatibility for PipeWire (needed for browsers)
 python-mutagen # audio metadata tag reader used by mpDris2 to show cover art in notifications
 ripgrep
 rustup
+scummvm # Virtual machine for classic graphical point-and-click adventure games
 shellcheck
 shfmt
 sof-firmware # Intel Sound Open Firmware (required for laptop audio)
