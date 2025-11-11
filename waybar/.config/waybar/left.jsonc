@@ -74,6 +74,10 @@
     "clock#date"
   ],
   "modules-center": [
+    "temperature",
+    "cpu",
+    "custom/cpu-freq",
+    "memory",
     "mpd"
   ],
   "modules-right": [
