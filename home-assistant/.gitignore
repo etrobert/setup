@@ -1,0 +1,30 @@
+# Home Assistant runtime files - exclude from version control
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+*.log.*
+*.log.fault
+
+# Storage and state
+.storage/
+.cloud/
+
+# Runtime/lock files
+*.lock
+.ha_run.lock
+
+# Dependencies and generated files
+deps/
+tts/
+blueprints/
+
+# Secrets - use secrets.yaml.example as template
+secrets.yaml
+
+# Version tracking (generated)
+.HA_VERSION
