@@ -73,3 +73,4 @@ xdg-desktop-portal-gtk # GTK portal for darkman theme integration
 xdg-desktop-portal-hyprland
 xdg-user-dirs # Manage user directories like ~/Music. (used by mpd)
 zsh
+docker

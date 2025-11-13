@@ -453,6 +453,15 @@ install_i2c_dev_module() {
   echo "i2c-dev" | sudo tee /etc/modules-load.d/i2c.conf >/dev/null
 }
 
+check_docker_group() {
+  groups | grep -q docker
+}
+
+install_docker_group() {
+  sudo usermod -aG docker "$USER"
+  echo "Note: You need to log out and back in for docker group changes to take effect"
+}
+
 check_yay() {
   which yay >/dev/null 2>&1
 }
@@ -516,6 +525,7 @@ setup_linux() {
   setup_step cpupower_sudoers
   setup_step cpupower_default
   setup_step i2c_dev_module
+  setup_step docker_group
   setup_step nvm_install
   setup_step nvm
   setup_step node
