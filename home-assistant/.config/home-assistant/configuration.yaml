@@ -4,6 +4,7 @@
 
 # The default config broken down to omit certain fields:
 # Source: https://community.home-assistant.io/t/how-can-i-hide-the-energy-media-map-tabs-from-the-sidebar/433297/3
+# Doc: https://www.home-assistant.io/integrations/default_config
 assist_pipeline:
 backup:
 bluetooth:
