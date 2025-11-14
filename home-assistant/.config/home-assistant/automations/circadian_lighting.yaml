@@ -1,6 +1,6 @@
 id: circadian_lighting
 alias: "Circadian Lighting - Adjust lights throughout day"
-description: "Gradually adjusts all lights based on sun elevation for circadian rhythm"
+description: "Gradually adjusts all lights based on time of day for circadian rhythm"
 trigger:
   - platform: time_pattern
     minutes: "/15"  # Every 15 minutes
@@ -12,8 +12,8 @@ condition:
     state: "on"
 action:
   - variables:
-      min_elevation: -12
-      max_elevation: 30
+      min_time: 16
+      max_time: 23
       min_brightness: 64
       max_brightness: 255
       min_color_temp: 250
@@ -23,14 +23,14 @@ action:
       entity_id: light.home
     data:
       brightness: >
-        {% set elevation = state_attr('sun.sun', 'elevation') | float %}
-        {% set clamped = [min_elevation, [elevation, max_elevation] | min] | max %}
-        {% set normalized = (clamped - min_elevation) / (max_elevation - min_elevation) %}
-        {{ (min_brightness + (normalized * (max_brightness - min_brightness))) | int }}
+        {% set time = now().hour + (now().minute / 60.0) %}
+        {% set clamped = [min_time, [time, max_time] | min] | max %}
+        {% set normalized = (clamped - min_time) / (max_time - min_time) %}
+        {{ (min_brightness + ((1 - normalized) * (max_brightness - min_brightness))) | int }}
       color_temp: >
-        {% set elevation = state_attr('sun.sun', 'elevation') | float %}
-        {% set clamped = [min_elevation, [elevation, max_elevation] | min] | max %}
-        {% set normalized = (clamped - min_elevation) / (max_elevation - min_elevation) %}
-        {{ (max_color_temp - (normalized * (max_color_temp - min_color_temp))) | int }}
+        {% set time = now().hour + (now().minute / 60.0) %}
+        {% set clamped = [min_time, [time, max_time] | min] | max %}
+        {% set normalized = (clamped - min_time) / (max_time - min_time) %}
+        {{ (max_color_temp - ((1 - normalized) * (max_color_temp - min_color_temp))) | int }}
       transition: 5  # 5 second smooth transition
 mode: restart
