@@ -1,6 +1,33 @@
 
 # Loads default set of integrations. Do not remove.
-default_config:
+# default_config:
+
+# The default config broken down to omit certain fields:
+# Source: https://community.home-assistant.io/t/how-can-i-hide-the-energy-media-map-tabs-from-the-sidebar/433297/3
+assist_pipeline:
+backup:
+bluetooth:
+cloud:
+config:
+conversation:
+dhcp:
+# energy:
+go2rtc:
+history:
+homeassistant_alerts:
+cloud:
+image_upload:
+logbook:
+media_source:
+mobile_app:
+my:
+ssdp:
+stream:
+sun:
+usage_prediction:
+usb:
+webhook:
+zeroconf:
 
 # Load frontend themes from the themes folder
 frontend:
