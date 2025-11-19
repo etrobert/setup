@@ -2,6 +2,7 @@ tap "koekeishiya/formulae"
 
 brew "watch"
 brew "htop"
+brew "btop"
 brew "bat"
 brew "tree"
 brew "eza"
@@ -22,6 +23,7 @@ brew "yt-dlp"
 brew "openai-whisper"
 brew "bash"
 brew "hyperfine" # cli benchmarking tool
+brew "ollama"
 
 brew "redis", restart_service: :changed
 brew "postgresql@17", restart_service: :changed
@@ -39,10 +41,13 @@ brew "koekeishiya/formulae/skhd"
 
 brew "stripe"
 
+brew "python-matplotlib"
+
 cask "arc"
 cask "firefox"
 cask "zen"
 cask "helium-browser"
+cask "google-chrome"
 
 cask "betterdisplay"
 cask "font-fira-code-nerd-font"
@@ -71,6 +76,7 @@ cask "audacity"
 cask "discord"
 cask "gog-galaxy"
 cask "steam"
+cask "minecraft"
 
 vscode "eamodio.gitlens"
 vscode "oderwat.indent-rainbow"
