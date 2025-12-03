@@ -94,12 +94,9 @@ setup_dock_autohide_delay() {
 setup_dock_persistent_apps() {
   # Define desired apps
   desired_apps="
-/Applications/Zen.app/
+/Applications/Helium.app/
 /Applications/Ghostty.app/
-/Applications/Slack.app/
-/Applications/Notion.app/
 /Applications/Spotify.app/
-/Applications/Linear.app/
 /System/Applications/Notes.app
 /System/Applications/System%20Settings.app
 "
