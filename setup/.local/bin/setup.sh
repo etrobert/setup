@@ -267,7 +267,7 @@ install_pacman_bundle() {
 }
 
 setup_darwin() {
-  . "$HOME/setup/setup/bin/darwin-setup.sh"
+  . "$HOME/setup/setup/.local/bin/darwin-setup.sh"
 
   setup_step homebrew
   setup_step brew_path
