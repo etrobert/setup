@@ -6,3 +6,5 @@ alias ls="ls -Fh --color"
 alias airpods="bluetoothctl connect EC:46:54:52:36:F8"
 
 alias switch="sudo nixos-rebuild switch --flake ~/work/nixos/"
+
+alias home-assistant="docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable"
