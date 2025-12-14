@@ -180,6 +180,7 @@ NPM_PACKAGES="corepack \
   typescript-language-server \
   @fsouza/prettierd \
   neonctl \
+  opencode-ai \
   bun"
 
 check_npm_packages() {
