@@ -67,7 +67,7 @@ check_linux_dotfiles() {
 
 install_linux_dotfiles() {
   cd "$HOME/setup"
-  stow alias bash git nvim pacman profile readline ssh tmux claude
+  stow alias bash git nvim pacman profile readline ssh tmux claude setup hyprland waybar
 }
 
 check_rust() {
