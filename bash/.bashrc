@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Source: https://ghostty.org/docs/features/shell-integration
 # Ghostty shell integration for Bash. This should be at the top of your bashrc!

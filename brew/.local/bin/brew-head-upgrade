@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Upgrade HEAD packages (Homebrew doesn't support this natively)
 

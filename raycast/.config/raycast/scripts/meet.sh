@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # @raycast.schemaVersion 1
 # @raycast.title New Google Meet

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 # Generate waybar config by merging shared + specific config
 # Usage: generate-waybar-configs.sh <name>
 # Example: generate-waybar-configs.sh top
