@@ -75,6 +75,7 @@
      difftastic
      fzf
      gcc
+     gh
      git
      gnumake
      neovim
