@@ -97,6 +97,7 @@
     git
     gnumake
     heroic
+    hyprpaper
     jq
     neovim
     nixd
