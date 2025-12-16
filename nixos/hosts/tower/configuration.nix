@@ -101,6 +101,7 @@
     nixfmt
     opencode
     ripgrep
+    spotify
     stow
     tmux
     vim
