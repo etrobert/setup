@@ -46,7 +46,10 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
+    options = "ctrl:nocaps";
   };
+
+  console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.soft = {
@@ -62,10 +65,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+     fzf
      vim
      neovim
      wget
      git
+     stow
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
