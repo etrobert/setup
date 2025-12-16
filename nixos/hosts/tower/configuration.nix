@@ -42,6 +42,8 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
+  nix.settings.experimental-features = ["nix-command" "flakes" ];
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -78,7 +80,9 @@
      gh
      git
      gnumake
+     jq
      neovim
+     opencode
      stow
      tmux
      vim
