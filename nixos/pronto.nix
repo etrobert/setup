@@ -1,4 +1,8 @@
-{ lib, rustPlatform, fetchFromGitHub }:
+{
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+}:
 
 let
   src = fetchFromGitHub {
@@ -24,3 +28,4 @@ rustPlatform.buildRustPackage {
     platforms = platforms.linux;
   };
 }
+
