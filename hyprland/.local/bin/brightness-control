@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -13,7 +13,7 @@ fi
 FOCUSED_MONITOR=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name')
 
 case "$FOCUSED_MONITOR" in
-eDP-1)
+eDP-*)
   # Laptop display - use brightnessctl
   if [ "$DIRECTION" = "up" ]; then
     brightnessctl -e4 -n2 set 5%+
@@ -21,16 +21,12 @@ eDP-1)
     brightnessctl -e4 -n2 set 5%-
   fi
   ;;
-DP-1)
+*)
   # External monitor - use ddcutil with bus number for speed
   if [ "$DIRECTION" = "up" ]; then
-    ddcutil setvcp 10 + 10 --bus 5 --noverify
+    ddcutil setvcp 10 + 10 --noverify
   elif [ "$DIRECTION" = "down" ]; then
-    ddcutil setvcp 10 - 10 --bus 5 --noverify
+    ddcutil setvcp 10 - 10 --noverify
   fi
-  ;;
-*)
-  echo "Unknown monitor: $FOCUSED_MONITOR"
-  exit 1
   ;;
 esac
