@@ -93,7 +93,6 @@
     git
     gnumake
     jq
-    nerd-fonts.fira-code
     neovim
     nixfmt
     opencode
@@ -104,6 +103,10 @@
     waybar
     wget
     zsh
+  ];
+
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
