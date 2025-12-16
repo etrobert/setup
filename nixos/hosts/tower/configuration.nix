@@ -83,7 +83,9 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ../../pronto.nix { })
+    btop
     difftastic
+    firefox
     fzf
     gcc
     gh
@@ -91,12 +93,15 @@
     git
     gnumake
     jq
+    nerd-fonts.fira-code
     neovim
     nixfmt
     opencode
+    ripgrep
     stow
     tmux
     vim
+    waybar
     wget
     zsh
   ];
