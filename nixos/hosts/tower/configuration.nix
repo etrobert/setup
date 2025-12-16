@@ -87,6 +87,7 @@
     fzf
     gcc
     gh
+    ghostty
     git
     gnumake
     jq
@@ -107,6 +108,8 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  programs.hyprland.enable = true;
 
   # List services that you want to enable:
 
