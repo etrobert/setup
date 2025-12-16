@@ -65,12 +65,14 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+     difftastic
      fzf
-     vim
-     neovim
-     wget
      git
+     neovim
      stow
+     tmux
+     vim
+     wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
