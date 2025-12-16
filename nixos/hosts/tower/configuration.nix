@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -42,7 +42,10 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -55,17 +58,22 @@
 
   # Use neovim nightly
   nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-    }))
+    (import (
+      builtins.fetchTarball {
+        url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
+      }
+    ))
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.soft = {
     isNormalUser = true;
     description = "Etienne";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
@@ -74,20 +82,22 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     (pkgs.callPackage ../../pronto.nix {})
-     difftastic
-     fzf
-     gcc
-     gh
-     git
-     gnumake
-     jq
-     neovim
-     opencode
-     stow
-     tmux
-     vim
-     wget
+    (pkgs.callPackage ../../pronto.nix { })
+    difftastic
+    fzf
+    gcc
+    gh
+    git
+    gnumake
+    jq
+    neovim
+    nixfmt
+    opencode
+    stow
+    tmux
+    vim
+    wget
+    zsh
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
