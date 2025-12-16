@@ -88,6 +88,7 @@
     (pkgs.callPackage ../../pronto.nix { })
     bash-language-server
     btop
+    ddcutil
     difftastic
     fd
     firefox
