@@ -92,6 +92,7 @@
     neovim
     nixd
     nixfmt
+    nodejs_latest
     opencode
     prettierd
     ripgrep
