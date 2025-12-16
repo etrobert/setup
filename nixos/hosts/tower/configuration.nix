@@ -92,6 +92,7 @@
     ghostty
     git
     gnumake
+    heroic
     jq
     neovim
     nixfmt
@@ -102,6 +103,7 @@
     vim
     waybar
     wget
+    wofi
     zsh
   ];
 
