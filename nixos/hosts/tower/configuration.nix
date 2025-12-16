@@ -89,6 +89,7 @@
     bash-language-server
     btop
     difftastic
+    fd
     firefox
     fzf
     gcc
