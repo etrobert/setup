@@ -51,6 +51,13 @@
 
   console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
+  # Use neovim nightly
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
+    }))
+  ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.soft = {
     isNormalUser = true;
@@ -67,7 +74,9 @@
   environment.systemPackages = with pkgs; [
      difftastic
      fzf
+     gcc
      git
+     gnumake
      neovim
      stow
      tmux
