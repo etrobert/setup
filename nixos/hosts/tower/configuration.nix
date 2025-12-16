@@ -74,6 +74,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+     (pkgs.callPackage ../../pronto.nix {})
      difftastic
      fzf
      gcc
