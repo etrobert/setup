@@ -98,6 +98,7 @@
     heroic
     jq
     neovim
+    nixd
     nixfmt
     opencode
     ripgrep
