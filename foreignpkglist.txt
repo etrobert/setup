@@ -1,4 +1,5 @@
 apfs-fuse-git # Read Apple File System formatted drives
+helium-browser-bin
 mpdris2 # MPRIS support for mpd (media keys + notifications)
 neovim-git
 nixfmt
