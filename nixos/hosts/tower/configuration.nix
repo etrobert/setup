@@ -86,6 +86,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ../../pronto.nix { })
+    bash-language-server
     btop
     difftastic
     firefox
@@ -101,10 +102,12 @@
     nixd
     nixfmt
     opencode
+    prettierd
     ripgrep
     spotify
     stow
     tmux
+    typescript-language-server
     vim
     waybar
     wget
