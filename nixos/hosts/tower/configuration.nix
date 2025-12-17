@@ -82,6 +82,8 @@
     heroic
     hyprpaper
     jq
+    libnotify # exposes notify-send
+    mako # notifications daemon
     neovim
     nixd
     nixfmt
