@@ -69,6 +69,7 @@
     (pkgs.callPackage ../../pronto.nix { })
     bash-language-server
     btop
+    claude-code
     ddcutil
     difftastic
     fd
