@@ -16,6 +16,9 @@
       "Bash(grep:*)",
       "Bash(ghostty +list-keybinds:*)",
       "Bash(awk:*)",
+      "Bash(tree:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)",
       "WebFetch(domain:github.com)"
     ]
   }
