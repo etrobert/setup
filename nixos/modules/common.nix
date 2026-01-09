@@ -88,6 +88,7 @@
     vim
     waybar
     wget
+    wl-clipboard
     wofi
     zsh
   ];
