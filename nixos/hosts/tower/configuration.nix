@@ -43,15 +43,6 @@
 
   console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
-  # Use neovim nightly
-  nixpkgs.overlays = [
-    (import (
-      builtins.fetchTarball {
-        url = "https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz";
-      }
-    ))
-  ];
-
   programs.zsh.enable = true;
 
   users.users.soft = {
