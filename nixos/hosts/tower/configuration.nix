@@ -88,6 +88,7 @@
     nixfmt
     nodejs_latest
     opencode
+    pavucontrol
     prettierd
     ripgrep
     shfmt
