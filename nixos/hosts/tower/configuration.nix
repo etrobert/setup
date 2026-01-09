@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -13,79 +13,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "tower";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    (pkgs.callPackage ../../pronto.nix { })
-    adwaita-icon-theme # includes cursor theme
-    bash-language-server
-    bat
-    btop
-    claude-code
-    ddcutil
-    difftastic
-    eza
-    fd
-    firefox
-    fzf
-    gcc
-    gh
-    ghostty
-    git
-    gnumake
-    heroic
-    hyprpaper
-    jq
-    libnotify # exposes notify-send
-    lua-language-server
-    mako # notifications daemon
-    neovim
-    nixd
-    nixfmt
-    nodejs_latest
-    opencode
-    pavucontrol
-    playerctl
-    prettierd
-    ripgrep
-    shfmt
-    spotify
-    stow
-    stylua
-    tmux
-    typescript-language-server
-    vim
-    waybar
-    wget
-    wofi
-    zsh
-  ];
-
-  fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  programs.hyprland.enable = true;
-
-  services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

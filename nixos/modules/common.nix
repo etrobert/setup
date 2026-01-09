@@ -41,4 +41,58 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    (pkgs.callPackage ../pronto.nix { })
+    adwaita-icon-theme # includes cursor theme
+    bash-language-server
+    bat
+    btop
+    claude-code
+    ddcutil
+    difftastic
+    eza
+    fd
+    firefox
+    fzf
+    gcc
+    gh
+    ghostty
+    git
+    gnumake
+    heroic
+    hyprpaper
+    jq
+    libnotify # exposes notify-send
+    lua-language-server
+    mako # notifications daemon
+    neovim
+    nixd
+    nixfmt
+    nodejs_latest
+    opencode
+    pavucontrol
+    playerctl
+    prettierd
+    ripgrep
+    shfmt
+    spotify
+    stow
+    stylua
+    tmux
+    typescript-language-server
+    vim
+    waybar
+    wget
+    wofi
+    zsh
+  ];
+
+  fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
+
+  programs.hyprland.enable = true;
+
+  services.openssh.enable = true;
 }
