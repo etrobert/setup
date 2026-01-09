@@ -97,6 +97,7 @@
     opencode
     prettierd
     ripgrep
+    shfmt
     spotify
     stow
     tmux
