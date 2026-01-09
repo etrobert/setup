@@ -71,6 +71,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     (pkgs.callPackage ../../pronto.nix { })
+    adwaita-icon-theme # includes cursor theme
     bash-language-server
     btop
     claude-code
