@@ -78,7 +78,10 @@ bindkey "^P" up-line-or-search
 bindkey "^N" down-line-or-search
 
 # Binds the zsh stuff to emacs like
-bindkey -e
+# bindkey -e
+
+# Binds the zsh stuff to vi like
+bindkey -v
 
 # Auto-start Hyprland on TTY1
 if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
