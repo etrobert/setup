@@ -139,8 +139,13 @@ end
 local function on_vim_enter()
 	local elapsed = vim.fn.reltimefloat(vim.fn.reltime(vim.g.start_time)) * 1000
 	local stats = record_startup_time(elapsed)
-	local message =
-		string.format("⚡ Neovim loaded in %.1fms (avg %.1fms over %d)", elapsed, stats.average, stats.count)
+	local message = string.format(
+		"⚡ Neovim %s loaded in %.1fms (avg %.1fms over %d)",
+		tostring(vim.version()),
+		elapsed,
+		stats.average,
+		stats.count
+	)
 
 	local show_banner = vim.fn.argc() == 0
 		and vim.api.nvim_buf_get_name(0) == ""
