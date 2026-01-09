@@ -64,6 +64,7 @@
     (pkgs.callPackage ../../pronto.nix { })
     adwaita-icon-theme # includes cursor theme
     bash-language-server
+    bat
     btop
     claude-code
     ddcutil
