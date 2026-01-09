@@ -81,6 +81,7 @@
     hyprpaper
     jq
     libnotify # exposes notify-send
+    lua-language-server
     mako # notifications daemon
     neovim
     nixd
