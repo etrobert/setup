@@ -89,6 +89,7 @@
     nodejs_latest
     opencode
     pavucontrol
+    playerctl
     prettierd
     ripgrep
     shfmt
