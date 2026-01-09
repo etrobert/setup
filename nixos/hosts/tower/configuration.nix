@@ -93,6 +93,7 @@
     shfmt
     spotify
     stow
+    stylua
     tmux
     typescript-language-server
     vim
