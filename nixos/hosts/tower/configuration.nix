@@ -12,6 +12,10 @@
   # Enable I2C for ddcutil (external monitor brightness)
   hardware.i2c.enable = true;
 
+  # Enable bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
   networking.hostName = "tower";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
