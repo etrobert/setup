@@ -69,6 +69,7 @@
     claude-code
     ddcutil
     difftastic
+    eza
     fd
     firefox
     fzf
