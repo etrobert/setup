@@ -2,20 +2,21 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports =
-    [
-      ../../modules/common.nix
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ../../modules/common.nix
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "leod"; # Define your hostname.
+
+  hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

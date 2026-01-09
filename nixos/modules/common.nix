@@ -12,6 +12,8 @@
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
+  hardware.graphics.enable = true;
+
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Berlin";
