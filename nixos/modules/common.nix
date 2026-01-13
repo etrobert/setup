@@ -35,6 +35,9 @@
     enable = true;
     policies = {
       PasswordManagerEnabled = false;
+      SearchEngines = {
+        Default = "DuckDuckGo";
+      };
       ExtensionSettings = {
         "uBlock0@raymondhill.net" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
