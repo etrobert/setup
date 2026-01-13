@@ -31,6 +31,13 @@
 
   programs.zsh.enable = true;
 
+  programs.firefox = {
+    enable = true;
+    policies = {
+      PasswordManagerEnabled = false;
+    };
+  };
+
   users.users.soft = {
     isNormalUser = true;
     description = "Etienne";
@@ -57,7 +64,6 @@
     difftastic
     eza
     fd
-    firefox
     fzf
     gcc
     gh
