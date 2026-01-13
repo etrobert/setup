@@ -4,19 +4,16 @@
   fetchFromGitHub,
 }:
 
-let
+rustPlatform.buildRustPackage rec {
+  pname = "pronto";
+  version = "unstable-2025-01-01";
+
   src = fetchFromGitHub {
     owner = "etrobert";
     repo = "pronto";
     rev = "main";
     sha256 = "0194mjr907jbvpc87m4j7wkyzanjvi2v9fp2znhzdd65v6nk29dq";
   };
-in
-rustPlatform.buildRustPackage {
-  pname = "pronto";
-  version = "unstable-2025-01-01";
-
-  inherit src;
 
   cargoLock = {
     lockFile = src + "/Cargo.lock";
@@ -28,4 +25,3 @@ rustPlatform.buildRustPackage {
     platforms = platforms.linux;
   };
 }
-
