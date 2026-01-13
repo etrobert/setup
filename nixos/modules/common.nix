@@ -75,6 +75,7 @@
     adwaita-icon-theme # includes cursor theme
     bash-language-server
     bat
+    brightnessctl
     btop
     claude-code
     ddcutil
