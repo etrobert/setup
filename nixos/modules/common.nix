@@ -64,6 +64,7 @@
     ghostty
     git
     gnumake
+    grim
     heroic
     hyprpaper
     jq
