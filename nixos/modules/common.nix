@@ -66,6 +66,7 @@
     gnumake
     grim
     heroic
+    slurp
     hyprpaper
     jq
     libnotify # exposes notify-send
