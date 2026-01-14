@@ -18,7 +18,6 @@
     {
       nixosConfigurations = {
         tower = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           specialArgs = { inherit pronto; };
           modules = [
             ./hosts/tower/configuration.nix
@@ -29,7 +28,6 @@
         };
 
         leod = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           specialArgs = { inherit pronto; };
           modules = [
             ./hosts/leod/configuration.nix
