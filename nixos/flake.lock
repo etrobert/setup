@@ -89,10 +89,31 @@
         "type": "github"
       }
     },
+    "pronto": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1768401066,
+        "narHash": "sha256-z2soZPHDl4mSFgRnj6qbN82zom/WbBw5qVh2K/nsJ4U=",
+        "owner": "etrobert",
+        "repo": "pronto",
+        "rev": "45055b3e452dbba04b11493db65a751c04284e6b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etrobert",
+        "repo": "pronto",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "neovim-nightly-overlay": "neovim-nightly-overlay",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "pronto": "pronto"
       }
     }
   },

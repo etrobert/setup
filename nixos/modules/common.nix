@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pronto, ... }:
 {
   nix.settings.experimental-features = [
     "nix-command"
@@ -77,7 +77,7 @@
     (pkgs.writeShellScriptBin "nixos-option" ''
       exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nixos#$(${pkgs.nettools}/bin/hostname)" "$@"
     '')
-    (pkgs.callPackage ../packages/pronto.nix { })
+    pronto.packages.${pkgs.system}.default
     adwaita-icon-theme # includes cursor theme
     bash-language-server
     bat
