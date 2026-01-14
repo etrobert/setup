@@ -101,6 +101,7 @@
     jq
     libnotify # exposes notify-send
     lua-language-server
+    magic-wormhole
     mako # notifications daemon
     neovim
     nixd
