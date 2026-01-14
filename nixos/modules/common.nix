@@ -77,7 +77,7 @@
     (pkgs.writeShellScriptBin "nixos-option" ''
       exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nixos#$(${pkgs.nettools}/bin/hostname)" "$@"
     '')
-    pronto.packages.${pkgs.system}.default
+    pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
     adwaita-icon-theme # includes cursor theme
     bash-language-server
     bat
