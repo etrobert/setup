@@ -74,6 +74,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    (pkgs.writeShellScriptBin "nixos-option" ''
+      exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nixos#$(${pkgs.nettools}/bin/hostname)" "$@"
+    '')
     (pkgs.callPackage ../packages/pronto.nix { })
     adwaita-icon-theme # includes cursor theme
     bash-language-server
