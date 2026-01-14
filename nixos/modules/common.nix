@@ -66,7 +66,7 @@
       "wheel"
     ];
     shell = pkgs.zsh;
-    packages = with pkgs; [ ];
+    packages = [ ];
   };
 
   nixpkgs.config.allowUnfree = true;
