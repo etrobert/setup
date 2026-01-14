@@ -80,7 +80,7 @@
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
     adwaita-icon-theme # includes cursor theme
     bash-language-server
-    bat
+    bat # Cat(1) clone with syntax highlighting and Git integration
     brightnessctl
     btop
     claude-code
@@ -101,8 +101,8 @@
     jq
     libnotify # exposes notify-send
     lua-language-server
-    magic-wormhole
-    mako # notifications daemon
+    magic-wormhole # Securely transfer data between computers
+    mako # Lightweight Wayland notification daemon
     neovim
     nixd
     nixfmt
