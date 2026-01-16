@@ -1,6 +1,5 @@
 tap "koekeishiya/formulae"
 
-brew "watch"
 brew "htop"
 brew "tree"
 brew "go"

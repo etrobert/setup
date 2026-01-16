@@ -16,8 +16,7 @@
 
   environment.shells = [ pkgs.zsh ];
 
-  # Darwin-specific packages (if needed)
-  # environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [ watch ];
 
   # macOS-specific settings
   system.defaults = {
