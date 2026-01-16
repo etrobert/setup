@@ -10,7 +10,6 @@ brew "coreutils" # for gdate for PS1
 brew "codex"
 brew "openai-whisper"
 brew "bash"
-brew "ollama"
 
 brew "redis", restart_service: :changed
 brew "postgresql@17", restart_service: :changed

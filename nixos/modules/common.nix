@@ -36,6 +36,7 @@
     nixd
     nixfmt
     nodejs_latest
+    ollama
     opencode
     prettierd
     ripgrep
