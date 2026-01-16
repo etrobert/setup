@@ -293,6 +293,7 @@ setup_darwin() {
   setup_step darwin_initial_key_repeat
   setup_step rust
   setup_step pronto
+  setup_step block_league
 }
 
 setup_linux() {

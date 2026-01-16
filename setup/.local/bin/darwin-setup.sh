@@ -212,3 +212,19 @@ install_darwin_initial_key_repeat() {
   defaults write NSGlobalDomain InitialKeyRepeat -int 15
   echo "Note: Key repeat changes will take effect after logout/restart"
 }
+
+check_block_league() {
+  grep -q "leagueoflegends.com" /etc/hosts 2>/dev/null
+}
+
+install_block_league() {
+  sudo sh -c 'cat >> /etc/hosts <<EOF
+# Block League of Legends and Riot Games
+127.0.0.1 leagueoflegends.com
+127.0.0.1 www.leagueoflegends.com
+127.0.0.1 riotgames.com
+127.0.0.1 www.riotgames.com
+127.0.0.1 download.leagueoflegends.com
+127.0.0.1 riotcdn.net
+EOF'
+}
