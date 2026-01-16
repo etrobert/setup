@@ -46,6 +46,7 @@
     typescript-language-server
     vim
     wget
+    yt-dlp
   ];
 
   programs.zsh.enable = true;

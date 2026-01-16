@@ -8,7 +8,6 @@ brew "act"
 brew "rustup"
 brew "coreutils" # for gdate for PS1
 brew "codex"
-brew "yt-dlp"
 brew "openai-whisper"
 brew "bash"
 brew "ollama"
