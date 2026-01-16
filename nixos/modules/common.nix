@@ -16,6 +16,7 @@
     claude-code
     difftastic
     discord
+    entr
     eza
     fd
     firefox
