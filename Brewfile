@@ -23,7 +23,6 @@ cask "helium-browser"
 cask "google-chrome"
 
 cask "betterdisplay"
-cask "font-fira-code-nerd-font"
 cask "ghostty"
 cask "ngrok"
 cask "notion"
