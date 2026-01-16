@@ -175,7 +175,6 @@ NPM_PACKAGES="corepack \
   vscode-langservers-extracted \
   @github/copilot-language-server \
   @anthropic-ai/claude-code \
-  bash-language-server \
   @tailwindcss/language-server \
   typescript-language-server \
   @fsouza/prettierd \
