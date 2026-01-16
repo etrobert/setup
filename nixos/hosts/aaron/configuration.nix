@@ -14,6 +14,7 @@
     dock = {
       autohide = true;
       show-recents = false;
+      tilesize = 80;
     };
     #   finder.AppleShowAllExtensions = true;
     #   NSGlobalDomain.AppleShowAllExtensions = true;
