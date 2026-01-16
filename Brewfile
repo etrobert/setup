@@ -24,6 +24,7 @@ brew "openai-whisper"
 brew "bash"
 brew "hyperfine" # cli benchmarking tool
 brew "ollama"
+brew "magic-wormhole"
 
 brew "redis", restart_service: :changed
 brew "postgresql@17", restart_service: :changed
