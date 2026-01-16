@@ -26,8 +26,6 @@
       show-recents = false;
       tilesize = 80;
     };
-    #   finder.AppleShowAllExtensions = true;
-    #   NSGlobalDomain.AppleShowAllExtensions = true;
     NSGlobalDomain.InitialKeyRepeat = 15;
     NSGlobalDomain.KeyRepeat = 2;
   };
