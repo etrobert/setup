@@ -39,8 +39,6 @@ cask "notion-calendar"
 cask "protonvpn"
 cask "vlc"
 
-cask "audacity"
-
 cask "gog-galaxy"
 cask "steam"
 cask "minecraft"

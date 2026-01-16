@@ -10,6 +10,7 @@
   environment.systemPackages = with pkgs; [
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
     adwaita-icon-theme
+    audacity
     bash-language-server
     bat
     btop
