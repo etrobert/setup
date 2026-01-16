@@ -2,15 +2,7 @@ tap "koekeishiya/formulae"
 
 brew "watch"
 brew "htop"
-brew "btop"
-brew "bat"
 brew "tree"
-brew "eza"
-brew "difftastic"
-brew "fzf"
-brew "gh"
-brew "stow"
-brew "tmux"
 brew "go"
 brew "plantuml"
 brew "entr"
@@ -24,18 +16,11 @@ brew "openai-whisper"
 brew "bash"
 brew "hyperfine" # cli benchmarking tool
 brew "ollama"
-brew "magic-wormhole"
 
 brew "redis", restart_service: :changed
 brew "postgresql@17", restart_service: :changed
 
-brew "neovim", args: ["HEAD"]
-brew "fd" # recommended for nvim telescope
-brew "ripgrep" # required for nvim telescope
-brew "shfmt" # required by nvim conform for bash formatting
-brew "stylua" # required by nvim conform for lua formatting
 brew "gopls" # for nvim
-brew "lua-language-server" # for nvim
 brew "imagemagick" # for image rendering in nvim using snacks.image
 
 brew "koekeishiya/formulae/skhd"
