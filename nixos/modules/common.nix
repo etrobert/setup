@@ -25,6 +25,7 @@
     # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
     git
     gnumake
+    gopls
     htop
     hyperfine # Command-line benchmarking tool
     jq
