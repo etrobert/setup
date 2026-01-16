@@ -20,6 +20,7 @@
     fzf
     gcc
     gh
+    # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
     git
     gnumake
     jq
