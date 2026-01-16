@@ -176,7 +176,6 @@ NPM_PACKAGES="corepack \
   @github/copilot-language-server \
   @tailwindcss/language-server \
   typescript-language-server \
-  @fsouza/prettierd \
   neonctl \
   opencode-ai \
   bun"
