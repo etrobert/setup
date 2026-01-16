@@ -24,6 +24,7 @@
     git
     gnumake
     htop
+    hyperfine # Command-line benchmarking tool
     jq
     libnotify
     lua-language-server

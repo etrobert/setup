@@ -12,7 +12,6 @@ brew "codex"
 brew "yt-dlp"
 brew "openai-whisper"
 brew "bash"
-brew "hyperfine" # cli benchmarking tool
 brew "ollama"
 
 brew "redis", restart_service: :changed
