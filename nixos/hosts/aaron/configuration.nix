@@ -4,17 +4,19 @@
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 
+  system.primaryUser = "etiennerobert";
+
   # Darwin-specific packages (if needed)
   # environment.systemPackages = with pkgs; [ ];
 
   # macOS-specific settings
-  # system.defaults = {
-  #   dock.autohide = true;
-  #   finder.AppleShowAllExtensions = true;
-  #   NSGlobalDomain.AppleShowAllExtensions = true;
-  #   NSGlobalDomain.InitialKeyRepeat = 15;
-  #   NSGlobalDomain.KeyRepeat = 2;
-  # };
+  system.defaults = {
+    dock.autohide = true;
+    #   finder.AppleShowAllExtensions = true;
+    #   NSGlobalDomain.AppleShowAllExtensions = true;
+    #   NSGlobalDomain.InitialKeyRepeat = 15;
+    #   NSGlobalDomain.KeyRepeat = 2;
+  };
 
   # Enable Touch ID for sudo
   # security.pam.enableSudoTouchIdAuth = true;
