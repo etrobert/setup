@@ -6,6 +6,16 @@
 
   system.primaryUser = "etiennerobert";
 
+  # Note: doc says not to include the admin user
+  users.knownUsers = [ "etiennerobert" ];
+
+  users.users.etiennerobert = {
+    uid = 501;
+    shell = pkgs.zsh;
+  };
+
+  environment.shells = [ pkgs.zsh ];
+
   # Darwin-specific packages (if needed)
   # environment.systemPackages = with pkgs; [ ];
 

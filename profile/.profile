@@ -39,11 +39,6 @@ export EDITOR=vim
 # export BROWSER=firefox
 export MAIL=etiennerobert33@gmail.com
 
-# nvm configuration
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
 # pnpm
 if [ -d "$HOME/Library/pnpm" ]; then
   export PNPM_HOME="$HOME/Library/pnpm"
@@ -66,9 +61,6 @@ if [ -d "$HOME/.local/bin" ]; then
   export PATH="$PATH:$HOME/.local/bin"
 fi
 
-if command -v ngrok &>/dev/null; then
-  eval "$(ngrok completion)"
-fi
 
 # raycast scripts
 if [ -d "$HOME/.config/raycast/scripts" ]; then
