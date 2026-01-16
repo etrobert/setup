@@ -1,6 +1,5 @@
 tap "koekeishiya/formulae"
 
-brew "tree"
 brew "go"
 brew "plantuml"
 brew "act"
@@ -8,7 +7,6 @@ brew "rustup"
 brew "coreutils" # for gdate for PS1
 brew "codex"
 brew "openai-whisper"
-brew "bash"
 
 brew "redis", restart_service: :changed
 brew "postgresql@17", restart_service: :changed
