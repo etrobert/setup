@@ -52,7 +52,6 @@ cask "vlc"
 
 cask "audacity"
 
-cask "discord"
 cask "gog-galaxy"
 cask "steam"
 cask "minecraft"

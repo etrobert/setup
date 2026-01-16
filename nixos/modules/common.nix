@@ -15,6 +15,7 @@
     btop
     claude-code
     difftastic
+    discord
     eza
     fd
     fzf
