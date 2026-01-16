@@ -42,8 +42,9 @@
     typescript-language-server
     vim
     wget
-    zsh
   ];
+
+  programs.zsh.enable = true;
 
   fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
 }

@@ -26,8 +26,6 @@
 
   console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
-  programs.zsh.enable = true;
-
   programs.firefox = {
     enable = true;
     policies = {
