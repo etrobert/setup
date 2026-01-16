@@ -36,6 +36,7 @@
     opencode
     prettierd
     ripgrep
+    shellcheck
     shfmt
     spotify
     stow
