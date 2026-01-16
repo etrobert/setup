@@ -25,9 +25,6 @@
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  # Auto upgrade nix package and the daemon service.
-  # services.nix-daemon.enable = true;
-
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
