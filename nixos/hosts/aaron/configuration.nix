@@ -16,7 +16,10 @@
 
   environment.shells = [ pkgs.zsh ];
 
-  environment.systemPackages = with pkgs; [ watch ];
+  environment.systemPackages = with pkgs; [
+    watch
+    raycast
+  ];
 
   # macOS-specific settings
   system.defaults = {
