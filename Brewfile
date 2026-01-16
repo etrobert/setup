@@ -1,6 +1,5 @@
 tap "koekeishiya/formulae"
 
-brew "go"
 brew "plantuml"
 brew "rustup"
 brew "coreutils" # for gdate for PS1
