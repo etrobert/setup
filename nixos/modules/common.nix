@@ -17,6 +17,7 @@
     btop
     bun
     claude-code
+    codex
     difftastic
     discord
     entr
