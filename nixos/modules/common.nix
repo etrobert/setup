@@ -9,6 +9,7 @@
 
   environment.systemPackages = with pkgs; [
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
+    act
     adwaita-icon-theme
     audacity
     bash-language-server
