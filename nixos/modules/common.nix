@@ -15,6 +15,7 @@
     bash-language-server
     bat
     btop
+    bun
     claude-code
     difftastic
     discord

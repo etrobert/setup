@@ -176,8 +176,7 @@ NPM_PACKAGES="corepack \
   @github/copilot-language-server \
   @tailwindcss/language-server \
   typescript-language-server \
-  neonctl \
-  bun"
+  neonctl"
 
 check_npm_packages() {
   installed=$(npm list -g --depth=0 2>/dev/null)
