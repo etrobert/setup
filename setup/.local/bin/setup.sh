@@ -174,7 +174,6 @@ install_node() {
 NPM_PACKAGES="corepack \
   vscode-langservers-extracted \
   @github/copilot-language-server \
-  @anthropic-ai/claude-code \
   @tailwindcss/language-server \
   typescript-language-server \
   @fsouza/prettierd \
