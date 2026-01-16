@@ -34,7 +34,7 @@
     prettierd
     ripgrep
     shfmt
-    spotify #?
+    spotify
     stow
     stylua
     tmux
