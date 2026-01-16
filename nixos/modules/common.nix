@@ -29,6 +29,7 @@
     gopls
     htop
     hyperfine # Command-line benchmarking tool
+    imagemagick # for image rendering in nvim using snacks.image
     jq
     libnotify
     lua-language-server

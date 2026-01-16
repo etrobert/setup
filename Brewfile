@@ -11,8 +11,6 @@ brew "openai-whisper"
 brew "redis", restart_service: :changed
 brew "postgresql@17", restart_service: :changed
 
-brew "imagemagick" # for image rendering in nvim using snacks.image
-
 brew "koekeishiya/formulae/skhd"
 
 brew "stripe"
