@@ -11,7 +11,10 @@
 
   # macOS-specific settings
   system.defaults = {
-    dock.autohide = true;
+    dock = {
+      autohide = true;
+      show-recents = false;
+    };
     #   finder.AppleShowAllExtensions = true;
     #   NSGlobalDomain.AppleShowAllExtensions = true;
     NSGlobalDomain.InitialKeyRepeat = 15;
