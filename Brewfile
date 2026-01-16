@@ -4,7 +4,6 @@ brew "go"
 brew "plantuml"
 brew "rustup"
 brew "coreutils" # for gdate for PS1
-brew "codex"
 brew "openai-whisper"
 
 brew "redis", restart_service: :changed
