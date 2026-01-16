@@ -25,7 +25,6 @@ brew "stripe"
 brew "python-matplotlib"
 
 cask "arc"
-cask "firefox"
 cask "zen"
 cask "helium-browser"
 cask "google-chrome"

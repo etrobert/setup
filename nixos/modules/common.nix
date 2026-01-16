@@ -18,6 +18,7 @@
     discord
     eza
     fd
+    firefox
     fzf
     gcc
     gh
