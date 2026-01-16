@@ -73,15 +73,15 @@ bindkey "^F" edit-command-line
 bindkey '^?' backward-delete-char
 bindkey '^H' backward-delete-char
 
-# Binds Ctrl-P/Ctrl-N to history search
-bindkey "^P" up-line-or-search
-bindkey "^N" down-line-or-search
-
 # Binds the zsh stuff to emacs like
 # bindkey -e
 
 # Binds the zsh stuff to vi like
 bindkey -v
+
+# Binds Ctrl-P/Ctrl-N to history search (after vi mode to override)
+bindkey "^P" up-line-or-search
+bindkey "^N" down-line-or-search
 
 # Auto-start Hyprland on TTY1
 if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
