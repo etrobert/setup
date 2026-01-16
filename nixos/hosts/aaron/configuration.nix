@@ -1,12 +1,8 @@
 { pkgs, pronto, ... }:
 {
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  imports = [ ../../modules/common.nix ];
 
   nixpkgs.hostPlatform = "aarch64-darwin";
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [

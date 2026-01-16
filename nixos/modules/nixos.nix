@@ -1,9 +1,6 @@
 { pkgs, pronto, ... }:
 {
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  imports = [ ./common.nix ];
 
   # Enable I2C for ddcutil (external monitor brightness)
   hardware.i2c.enable = true;
@@ -68,8 +65,6 @@
     shell = pkgs.zsh;
     packages = [ ];
   };
-
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
