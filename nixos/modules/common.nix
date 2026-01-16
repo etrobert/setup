@@ -23,6 +23,7 @@
     # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
     git
     gnumake
+    htop
     jq
     libnotify
     lua-language-server

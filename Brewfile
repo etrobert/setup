@@ -1,6 +1,5 @@
 tap "koekeishiya/formulae"
 
-brew "htop"
 brew "tree"
 brew "go"
 brew "plantuml"
