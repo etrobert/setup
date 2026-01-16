@@ -14,8 +14,8 @@
     dock.autohide = true;
     #   finder.AppleShowAllExtensions = true;
     #   NSGlobalDomain.AppleShowAllExtensions = true;
-    #   NSGlobalDomain.InitialKeyRepeat = 15;
-    #   NSGlobalDomain.KeyRepeat = 2;
+    NSGlobalDomain.InitialKeyRepeat = 15;
+    NSGlobalDomain.KeyRepeat = 2;
   };
 
   # Enable Touch ID for sudo
