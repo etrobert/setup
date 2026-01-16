@@ -66,62 +66,25 @@
     packages = [ ];
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # NixOS-specific packages
   environment.systemPackages = with pkgs; [
     (pkgs.writeShellScriptBin "nixos-option" ''
       exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nixos#$(${pkgs.nettools}/bin/hostname)" "$@"
     '')
-    pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
-    adwaita-icon-theme # includes cursor theme
-    bash-language-server
-    bat # Cat(1) clone with syntax highlighting and Git integration
     brightnessctl
-    btop
-    claude-code
     ddcutil
-    difftastic
-    eza
-    fd
-    fzf
-    gcc
-    gh
     ghostty
-    git
-    gnumake
     grim
     heroic
-    slurp
     hyprpaper
-    jq
-    libnotify # exposes notify-send
-    lua-language-server
-    magic-wormhole # Securely transfer data between computers
-    mako # Lightweight Wayland notification daemon
-    neovim
-    nixd
-    nixfmt
-    nodejs_latest
-    opencode
+    mako
     pavucontrol
     playerctl
-    prettierd
-    ripgrep
-    shfmt
-    spotify
-    stow
-    stylua
-    tmux
-    typescript-language-server
-    vim
+    slurp
     waybar
-    wget
     wl-clipboard
     wofi
-    zsh
   ];
-
-  fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
 
   programs.hyprland.enable = true;
 

@@ -4,40 +4,8 @@
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  # List packages installed in system profile
-  environment.systemPackages = with pkgs; [
-    pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
-    bash-language-server
-    bat # Cat(1) clone with syntax highlighting and Git integration
-    btop
-    claude-code
-    difftastic
-    eza
-    fd
-    fzf
-    gcc
-    gh
-    git
-    gnumake
-    jq
-    lua-language-server
-    magic-wormhole # Securely transfer data between computers
-    neovim
-    nixd
-    nodejs_latest
-    prettierd
-    ripgrep
-    shfmt
-    stow
-    stylua
-    tmux
-    typescript-language-server
-    vim
-    wget
-    zsh
-  ];
-
-  # fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
+  # Darwin-specific packages (if needed)
+  # environment.systemPackages = with pkgs; [ ];
 
   # macOS-specific settings
   # system.defaults = {
