@@ -177,7 +177,6 @@ NPM_PACKAGES="corepack \
   @tailwindcss/language-server \
   typescript-language-server \
   neonctl \
-  opencode-ai \
   bun"
 
 check_npm_packages() {
