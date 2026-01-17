@@ -3,6 +3,10 @@
     "allow": [
       "WebSearch",
       "Read(//Users/etiennerobert/**)",
+      "Bash(systemctl status:*)",
+      "Bash(nix why-depends:*)",
+      "Bash(nix search:*)",
+      "Bash(nixos-option:*)",
       "Bash(rm:*)",
       "Bash(nvim:*)",
       "Bash(mkdir:*)",
@@ -13,6 +17,7 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git log:*)",
+      "Bash(git ls-tree:*)",
       "Bash(grep:*)",
       "Bash(ghostty +list-keybinds:*)",
       "Bash(awk:*)",
