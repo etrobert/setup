@@ -4,6 +4,7 @@
       "WebSearch",
       "Read(//Users/etiennerobert/**)",
       "Bash(systemctl status:*)",
+      "Bash(journalctl:*)",
       "Bash(nix why-depends:*)",
       "Bash(nix search:*)",
       "Bash(nixos-option:*)",
@@ -24,7 +25,11 @@
       "Bash(tree:*)",
       "Bash(cat:*)",
       "Bash(wc:*)",
-      "WebFetch(domain:github.com)"
+      "Bash(ls:*)",
+      "Bash(echo:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:nixos.wiki)",
+      "WebFetch(domain:nixos-and-flakes.thiscute.world)"
     ]
   }
 }
