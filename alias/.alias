@@ -65,3 +65,7 @@ falias() {
     eval "$selected"
   fi
 }
+
+nixplatforms() {
+  nix eval nixpkgs#"$1".meta.platforms --json
+}
