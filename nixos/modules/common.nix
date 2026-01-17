@@ -36,6 +36,7 @@
     hyperfine # Command-line benchmarking tool
     imagemagick # for image rendering in nvim using snacks.image
     jq
+    jqp # TUI playground to experiment with jq
     libnotify
     lua-language-server
     magic-wormhole
