@@ -66,6 +66,9 @@
 
   # NixOS-specific packages
   environment.systemPackages = with pkgs; [
+    # See https://github.com/NixOS/nixpkgs/issues/436214
+    # TL;DR The flake should probably be at the root of the repo
+    # Until I fix it we have this wrapper
     (pkgs.writeShellScriptBin "nixos-option" ''
       exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
     '')
