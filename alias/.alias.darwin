@@ -3,4 +3,4 @@
 # Darwin aliases
 alias ls="ls -FG"
 alias bg="open /Volumes/T7/Applications/Baldur\'s\ Gate\ 3.app/Contents/MacOS/Baldur\'s\ Gate\ 3\ GOG"
-alias switch="sudo darwin-rebuild switch --flake ~/setup/nixos#\$(hostname -s)"
+alias switch="sudo darwin-rebuild switch --flake ~/setup/nix#\$(hostname -s)"

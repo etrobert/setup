@@ -67,7 +67,7 @@
   # NixOS-specific packages
   environment.systemPackages = with pkgs; [
     (pkgs.writeShellScriptBin "nixos-option" ''
-      exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nixos#$(${pkgs.nettools}/bin/hostname)" "$@"
+      exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
     '')
     brightnessctl
     ddcutil
