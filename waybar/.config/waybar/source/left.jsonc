@@ -78,7 +78,7 @@
     "format": "{icon}",
     // "format-bluetooth": "{icon} ",
     // "format-bluetooth-muted": " {icon}",
-    "format-muted": "",
+    "format-muted": "",
     "format-icons": {
       "default": ["", "", ""],
     },
