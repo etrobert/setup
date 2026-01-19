@@ -2,6 +2,8 @@
 {
   imports = [ ../../modules/common.nix ];
 
+  allowedUnfreePackages = [ "raycast" ];
+
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   system.primaryUser = "etiennerobert";
