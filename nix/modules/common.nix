@@ -1,11 +1,22 @@
-{ pkgs, pronto, ... }:
+{
+  pkgs,
+  pronto,
+  lib,
+  ...
+}:
 {
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "claude-code"
+      "discord"
+      "spotify"
+    ];
 
   environment.systemPackages = with pkgs; [
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
