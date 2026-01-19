@@ -74,6 +74,7 @@
 
   # NixOS-specific packages
   environment.systemPackages = with pkgs; [
+    (import ./strip-json-comments-cli { inherit pkgs; })
     # See https://github.com/NixOS/nixpkgs/issues/436214
     # TL;DR The flake should probably be at the root of the repo
     # Until I fix it we have this wrapper
