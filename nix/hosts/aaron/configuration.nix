@@ -22,7 +22,12 @@
   environment.systemPackages = with pkgs; [
     watch
     raycast
+    defaultbrowser
   ];
+
+  system.activationScripts.postActivation.text = ''
+    ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
+  '';
 
   # macOS-specific settings
   system.defaults = {
