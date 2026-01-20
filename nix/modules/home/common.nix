@@ -8,6 +8,8 @@
     ".zshrc".source = ../../../zsh/.zshrc;
     ".zprofile".source = ../../../zsh/.zprofile;
     ".profile".source = ../../../profile/.profile;
+
+    ".gitconfig".source = ../../../git/.gitconfig;
   };
 
   # This value determines the Home Manager release that your
