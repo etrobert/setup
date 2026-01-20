@@ -12,7 +12,7 @@
   users.knownUsers = [ "soft" ];
 
   users.users.soft = {
-    uid = 501;
+    uid = 505;
     shell = pkgs.zsh;
     home = "/Users/soft";
   };
@@ -28,6 +28,7 @@
   system.defaults = {
     dock = {
       autohide = true;
+      autohide-delay = 0.0;
       show-recents = false;
       tilesize = 80;
     };
