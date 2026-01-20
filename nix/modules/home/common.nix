@@ -6,13 +6,8 @@
 }:
 {
   home.username = "soft";
-  home.homeDirectory = "/Users/soft";
 
-  home.file.".prettierrc".source = ../../prettier/.prettierrc;
-
-  # Dotfiles managed outside the store (editable without rebuild)
-  # home.file.".config/nvim".source =
-  #   config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/nvim/.config/nvim";
+  home.file.".prettierrc".source = ../../../prettier/.prettierrc;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -26,5 +21,4 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
 }
