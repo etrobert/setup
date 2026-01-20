@@ -72,7 +72,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.soft = import ./modules/home.nix;
+              home-manager.users.soft = import ./modules/home-darwin.nix;
             }
           ];
         };
