@@ -9,6 +9,9 @@
 
   home.file.".prettierrc".source = ../../../prettier/.prettierrc;
 
+  home.file.".zshrc".source = ../../../zsh/.zshrc;
+  home.file.".zprofile".source = ../../../zsh/.zprofile;
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
