@@ -10,6 +10,10 @@
       url = "github:etrobert/pronto";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -19,6 +23,7 @@
       neovim-nightly-overlay,
       nix-darwin,
       pronto,
+      home-manager,
     }:
     {
       nixosConfigurations = {
@@ -29,6 +34,12 @@
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
             }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.soft = import ./modules/home.nix;
+            }
           ];
         };
 
@@ -38,6 +49,12 @@
             ./hosts/leod/configuration.nix
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
+            }
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.soft = import ./modules/home.nix;
             }
           ];
         };
