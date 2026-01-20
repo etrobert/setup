@@ -14,6 +14,7 @@
   users.users.soft = {
     uid = 501;
     shell = pkgs.zsh;
+    home = "/Users/soft";
   };
 
   environment.shells = [ pkgs.zsh ];
