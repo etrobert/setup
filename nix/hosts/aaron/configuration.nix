@@ -6,12 +6,12 @@
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 
-  system.primaryUser = "etiennerobert";
+  system.primaryUser = "soft";
 
   # Note: doc says not to include the admin user
-  users.knownUsers = [ "etiennerobert" ];
+  users.knownUsers = [ "soft" ];
 
-  users.users.etiennerobert = {
+  users.users.soft = {
     uid = 501;
     shell = pkgs.zsh;
   };
