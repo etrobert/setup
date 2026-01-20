@@ -6,7 +6,7 @@
 }:
 {
   home.username = "soft";
-  home.homeDirectory = /Users/soft;
+  home.homeDirectory = "/Users/soft";
 
   home.file.".prettierrc".source = ../../prettier/.prettierrc;
 
