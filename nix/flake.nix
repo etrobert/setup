@@ -68,6 +68,12 @@
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
             }
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.soft = import ./modules/home.nix;
+            }
           ];
         };
       };

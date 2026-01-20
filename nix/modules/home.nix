@@ -1,7 +1,10 @@
 { config, pkgs, ... }:
 {
   home.username = "soft";
-  home.homeDirectory = "/home/soft";
+  home.homeDirectory =
+    if pkgs.stdenv.isDarwin
+    then "/Users/soft"
+    else "/home/soft";
 
   home.file.".prettierrc".source = ../../prettier/.prettierrc;
 
