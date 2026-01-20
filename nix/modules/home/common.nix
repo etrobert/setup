@@ -1,16 +1,13 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, ... }:
 {
   home.username = "soft";
 
-  home.file.".prettierrc".source = ../../../prettier/.prettierrc;
+  home.file = {
+    ".prettierrc".source = ../../../prettier/.prettierrc;
 
-  home.file.".zshrc".source = ../../../zsh/.zshrc;
-  home.file.".zprofile".source = ../../../zsh/.zprofile;
+    ".zshrc".source = ../../../zsh/.zshrc;
+    ".zprofile".source = ../../../zsh/.zprofile;
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
