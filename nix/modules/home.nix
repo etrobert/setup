@@ -1,10 +1,15 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  homeDir = if pkgs.stdenv.isDarwin then "/Users/soft" else "/home/soft";
+in
 {
   home.username = "soft";
-  home.homeDirectory =
-    if pkgs.stdenv.isDarwin
-    then "/Users/soft"
-    else "/home/soft";
+  home.homeDirectory = homeDir;
 
   home.file.".prettierrc".source = ../../prettier/.prettierrc;
 
