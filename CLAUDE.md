@@ -9,31 +9,9 @@ This is a personal dotfiles and system configuration repository using GNU Stow
 for managing symlinked configurations. Each folder contains configuration for a
 specific tool or application.
 
-## Key Commands
-
-### Setup and Installation
-
-- `./setup.sh` - Complete system setup script that installs Homebrew, dotfiles,
-  and configures macOS
-- `brew bundle install` - Install all Homebrew packages and applications
-- `stow <folder>` - Symlink configuration from a specific folder to home
-  directory
-
-### Custom Utilities
-
-Several custom scripts are available in `*/bin/` directories:
-
-- `tmux/bin/tmux-sessionizer` - tmux session management utility
-- `git/bin/gen-commit-msg` - Generate commit messages
-- `macos/bin/*` - Various macOS utilities (dock speed, DNS flush, window resize,
-  etc.)
-
-### Development Tools
-
-- Neovim configuration is in `nvim/.config/nvim/` with Lazy.nvim package manager
-- VS Code extensions and settings are managed via Brewfile and `vscode/`
-  directory
-- Bash configuration includes custom PS1 with git status and command timing
+This repository used to be used to configure Mac and Arch Linux machines through
+the `setup.sh` script found in `setup/`. Today, it is used to configure Mac and
+NixOS through Nix (in `nix/`).
 
 ## Architecture
 
@@ -48,11 +26,12 @@ Several custom scripts are available in `*/bin/` directories:
 ### Shell Environment
 
 - Uses Bash as default shell with extensive customization in `bash/.bashrc`
-- Custom PS1 with git status, command timing, and exit codes
+- Custom Rust based prompt (`git@github.com:etrobert/pronto`) 1 with git status,
+  command timing, and exit codes
 - Aliases are split across platform-specific files (`.alias.darwin`,
   `.alias.linux`)
 
-### System Integration
+### MacOS System Integration
 
 - macOS-specific setup including dock configuration, trackpad settings, and
   keyboard remapping
@@ -63,7 +42,6 @@ Several custom scripts are available in `*/bin/` directories:
 ### Development Environment
 
 - Neovim with Lua configuration and Lazy.nvim
-- Node.js via nvm with automatic latest version installation
 - Git configuration with custom completion and prompt integration
 - Development tools: Go, Rust, Bun, various CLI utilities
 
