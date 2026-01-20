@@ -1,6 +1,5 @@
 { config, pkgs, ... }:
 {
-  home.username = "soft";
 
   home.file = {
     ".prettierrc".source = ../../../prettier/.prettierrc;

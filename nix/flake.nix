@@ -73,6 +73,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.soft = import ./modules/home/darwin.nix;
+              home-manager.users.etiennerobert = import ./modules/home/darwin.nix;
             }
           ];
         };

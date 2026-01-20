@@ -7,5 +7,5 @@
 {
   imports = [ ./common.nix ];
 
-  home.homeDirectory = "/home/soft";
+  home.homeDirectory = "/home/${config.home.username}";
 }
