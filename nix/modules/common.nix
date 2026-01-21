@@ -29,7 +29,6 @@
     entr
     eza
     fd
-    firefox
     fzf
     gcc
     gh
