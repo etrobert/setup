@@ -63,6 +63,7 @@
     mako
     pavucontrol
     playerctl
+    signal-desktop
     slurp
     waybar
     wl-clipboard
