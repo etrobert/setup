@@ -31,6 +31,8 @@ vim.pack.add({
 	"https://github.com/artemave/workspace-diagnostics.nvim",
 
 	"https://github.com/alex-popov-tech/store.nvim",
+
+	"https://github.com/pwntester/octo.nvim",
 })
 
 vim.cmd.packadd("nvim.undotree")
@@ -109,5 +111,7 @@ require("plugins.cmp")
 -- })
 
 -- require("hardtime").setup()
+
+require("octo").setup({ enable_builtin = true })
 
 require("etrobert.startup_banner").setup()
