@@ -14,6 +14,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -24,16 +28,18 @@
       nix-darwin,
       pronto,
       home-manager,
+      agenix,
     }:
     {
       nixosConfigurations = {
         tower = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit pronto; };
+          specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/tower/configuration.nix
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
             }
+            agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -44,12 +50,13 @@
         };
 
         leod = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit pronto; };
+          specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/leod/configuration.nix
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
             }
+            agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -62,12 +69,13 @@
 
       darwinConfigurations = {
         aaron = nix-darwin.lib.darwinSystem {
-          specialArgs = { inherit pronto; };
+          specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/aaron/configuration.nix
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
             }
+            agenix.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

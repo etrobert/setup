@@ -61,7 +61,6 @@ if [ -d "$HOME/.local/bin" ]; then
   export PATH="$PATH:$HOME/.local/bin"
 fi
 
-
 # raycast scripts
 if [ -d "$HOME/.config/raycast/scripts" ]; then
   export PATH="$PATH:$HOME/.config/raycast/scripts"
@@ -74,3 +73,9 @@ fi
 # disable claude code auto updates
 # source: https://formulae.brew.sh/cask/claude-code
 export DISABLE_AUTOUPDATER=1
+
+# Source Home Manager session variables
+# Necessary to add here because we overwrite the .profile with this file
+if [ -f "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh" ]; then
+  . "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh"
+fi

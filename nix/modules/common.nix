@@ -1,4 +1,4 @@
-{ pkgs, pronto, ... }:
+{ agenix, pkgs, pronto, ... }:
 {
   imports = [ ./unfree.nix ];
 
@@ -15,6 +15,7 @@
 
   environment.systemPackages = with pkgs; [
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
+    agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     act
     adwaita-icon-theme
     audacity
@@ -64,6 +65,11 @@
     wget
     yt-dlp
   ];
+
+  age.secrets.openai-api-key = {
+    file = ../secrets/openai-api-key.age;
+    owner = "soft";
+  };
 
   programs.zsh.enable = true;
 
