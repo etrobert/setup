@@ -54,7 +54,7 @@
     # TL;DR The flake should probably be at the root of the repo
     # Until I fix it we have this wrapper
     (pkgs.writeShellScriptBin "nixos-option" ''
-      exec ${pkgs.nixos-option}/bin/nixos-option --flake "/home/soft/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
+      exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
     '')
     brightnessctl
     ddcutil
