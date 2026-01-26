@@ -36,6 +36,8 @@
 
   nix.settings.auto-optimise-store = true;
 
+  zramSwap.enable = true;
+
   users.users.soft = {
     isNormalUser = true;
     description = "Etienne";
