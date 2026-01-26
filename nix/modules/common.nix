@@ -1,4 +1,10 @@
-{ agenix, pkgs, pronto, ... }:
+{
+  agenix,
+  lib,
+  pkgs,
+  pronto,
+  ...
+}:
 {
   imports = [ ./unfree.nix ];
 
@@ -68,7 +74,8 @@
 
   age.secrets.openai-api-key = {
     file = ../secrets/openai-api-key.age;
-    owner = "soft";
+    # TODO: Remove lib.mkDefault once the mac uses the same username
+    owner = lib.mkDefault "soft";
   };
 
   programs.zsh.enable = true;

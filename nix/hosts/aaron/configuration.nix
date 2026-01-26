@@ -60,6 +60,9 @@
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
+  # TODO: Remove once mac uses the same username
+  age.secrets.openai-api-key.owner = "etiennerobert";
+
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
