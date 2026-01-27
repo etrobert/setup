@@ -49,8 +49,6 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-            }
-            {
               home-manager.users.soft = import ./modules/home/${if darwin then "darwin.nix" else "linux.nix"};
             }
           ]
