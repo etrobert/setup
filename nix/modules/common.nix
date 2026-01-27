@@ -75,7 +75,6 @@
         fzf
         findutils
       ];
-      inheritPath = false;
       text = builtins.readFile ../../tmux/.local/bin/tmux-sessionizer;
     })
     typescript-language-server
