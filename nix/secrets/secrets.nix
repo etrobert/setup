@@ -12,4 +12,5 @@ let
 in
 {
   "openai-api-key.age".publicKeys = allMachines;
+  "wifi-soft.age".publicKeys = allLinux;
 }

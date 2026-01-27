@@ -11,7 +11,26 @@
 
   hardware.graphics.enable = true;
 
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    ensureProfiles = {
+      environmentFiles = [ "/run/agenix/wifi-soft" ];
+      profiles.soft = {
+        connection = {
+          id = "soft";
+          type = "wifi";
+        };
+        wifi = {
+          ssid = "soft";
+          mode = "infrastructure";
+        };
+        wifi-security = {
+          key-mgmt = "wpa-psk";
+          psk = "$WIFI_PASSWORD";
+        };
+      };
+    };
+  };
 
   time.timeZone = "Europe/Berlin";
 
@@ -75,6 +94,10 @@
   ];
 
   programs.hyprland.enable = true;
+
+  age.secrets.wifi-soft = {
+    file = ../secrets/wifi-soft.age;
+  };
 
   services.openssh.enable = true;
 }
