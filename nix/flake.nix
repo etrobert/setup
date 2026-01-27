@@ -31,24 +31,40 @@
       agenix,
     }:
     let
-      mkNixosHost =
+      mkHost =
+        { darwin }:
         host:
-        nixpkgs.lib.nixosSystem {
+        let
+          builder = if darwin then nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
+        in
+        builder {
           specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/${host}/configuration.nix
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
             }
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
+            agenix.${if darwin then "darwinModules" else "nixosModules"}.default
+            home-manager.${if darwin then "darwinModules" else "nixosModules"}.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.soft = import ./modules/home/linux.nix;
             }
+            (
+              if darwin then
+                {
+                  home-manager.users.soft = import ./modules/home/darwin.nix;
+                  home-manager.users.etiennerobert = import ./modules/home/darwin.nix;
+                }
+              else
+                {
+                  home-manager.users.soft = import ./modules/home/linux.nix;
+                }
+            )
           ];
         };
+      mkNixosHost = mkHost { darwin = false; };
+      mkDarwinHost = mkHost { darwin = true; };
     in
     {
       nixosConfigurations = {
@@ -57,23 +73,7 @@
       };
 
       darwinConfigurations = {
-        aaron = nix-darwin.lib.darwinSystem {
-          specialArgs = { inherit pronto agenix; };
-          modules = [
-            ./hosts/aaron/configuration.nix
-            {
-              nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
-            }
-            agenix.darwinModules.default
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.soft = import ./modules/home/darwin.nix;
-              home-manager.users.etiennerobert = import ./modules/home/darwin.nix;
-            }
-          ];
-        };
+        aaron = mkDarwinHost "aaron";
       };
     };
 }
