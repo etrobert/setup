@@ -62,6 +62,7 @@
 
   # TODO: Remove once mac uses the same username
   age.secrets.openai-api-key.owner = "etiennerobert";
+  age.secrets.gemini-api-key.owner = "etiennerobert";
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

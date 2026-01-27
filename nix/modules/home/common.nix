@@ -42,6 +42,7 @@
 
   home.sessionVariablesExtra = ''
     export OPENAI_API_KEY="$(cat /run/agenix/openai-api-key)"
+    export GEMINI_API_KEY="$(cat /run/agenix/gemini-api-key)"
   '';
 
   # This value determines the Home Manager release that your

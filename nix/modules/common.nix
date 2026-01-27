@@ -89,6 +89,12 @@
     owner = lib.mkDefault "soft";
   };
 
+  age.secrets.gemini-api-key = {
+    file = ../secrets/gemini-api-key.age;
+    # TODO: Remove lib.mkDefault once the mac uses the same username
+    owner = lib.mkDefault "soft";
+  };
+
   programs.zsh.enable = true;
 
   fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
