@@ -1,4 +1,4 @@
-{ pkgs, pronto, ... }:
+{ pkgs, ... }:
 {
   imports = [ ./common.nix ];
 
