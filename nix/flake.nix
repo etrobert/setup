@@ -30,41 +30,30 @@
       home-manager,
       agenix,
     }:
+    let
+      mkNixosHost =
+        host:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit pronto agenix; };
+          modules = [
+            ./hosts/${host}/configuration.nix
+            {
+              nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
+            }
+            agenix.nixosModules.default
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.soft = import ./modules/home/linux.nix;
+            }
+          ];
+        };
+    in
     {
       nixosConfigurations = {
-        tower = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit pronto agenix; };
-          modules = [
-            ./hosts/tower/configuration.nix
-            {
-              nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
-            }
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.soft = import ./modules/home/linux.nix;
-            }
-          ];
-        };
-
-        leod = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit pronto agenix; };
-          modules = [
-            ./hosts/leod/configuration.nix
-            {
-              nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
-            }
-            agenix.nixosModules.default
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.soft = import ./modules/home/linux.nix;
-            }
-          ];
-        };
+        tower = mkNixosHost "tower";
+        leod = mkNixosHost "leod";
       };
 
       darwinConfigurations = {
