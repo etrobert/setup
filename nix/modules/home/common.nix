@@ -9,6 +9,8 @@
     ".profile".source = ../../../profile/.profile;
 
     ".gitconfig".source = ../../../git/.gitconfig;
+
+    ".config/tmux/tmux.conf".source = ../../../tmux/.config/tmux/tmux.conf;
   };
 
   programs.firefox = {
