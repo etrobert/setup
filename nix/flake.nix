@@ -50,18 +50,14 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
             }
-            (
-              if darwin then
-                {
-                  home-manager.users.soft = import ./modules/home/darwin.nix;
-                  home-manager.users.etiennerobert = import ./modules/home/darwin.nix;
-                }
-              else
-                {
-                  home-manager.users.soft = import ./modules/home/linux.nix;
-                }
-            )
-          ];
+            {
+              home-manager.users.soft = import ./modules/home/${if darwin then "darwin.nix" else "linux.nix"};
+            }
+          ]
+          # TODO: Remove once we make usernames uniform
+          ++ (
+            if darwin then [ { home-manager.users.etiennerobert = import ./modules/home/darwin.nix; } ] else [ ]
+          );
         };
       mkNixosHost = mkHost { darwin = false; };
       mkDarwinHost = mkHost { darwin = true; };
