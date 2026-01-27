@@ -66,6 +66,15 @@
     stow
     stylua
     tmux
+    (writeShellApplication {
+      name = "tmux-sessionizer";
+      runtimeInputs = [
+        tmux
+        fzf
+        findutils
+      ];
+      text = builtins.readFile ../../tmux/.local/bin/tmux-sessionizer;
+    })
     typescript-language-server
     vim
     wget
