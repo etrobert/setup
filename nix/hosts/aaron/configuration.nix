@@ -61,8 +61,10 @@
   security.pam.services.sudo_local.touchIdAuth = true;
 
   # TODO: Remove once mac uses the same username
-  age.secrets.openai-api-key.owner = "etiennerobert";
-  age.secrets.gemini-api-key.owner = "etiennerobert";
+  age.secrets.openai-api-key.group = "admin";
+  age.secrets.openai-api-key.mode = "0440";
+  age.secrets.gemini-api-key.group = "admin";
+  age.secrets.gemini-api-key.mode = "0440";
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

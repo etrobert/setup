@@ -1,6 +1,5 @@
 {
   agenix,
-  lib,
   pkgs,
   pronto,
   ...
@@ -85,14 +84,11 @@
 
   age.secrets.openai-api-key = {
     file = ../secrets/openai-api-key.age;
-    # TODO: Remove lib.mkDefault once the mac uses the same username
-    owner = lib.mkDefault "soft";
+    owner = "soft";
   };
-
   age.secrets.gemini-api-key = {
     file = ../secrets/gemini-api-key.age;
-    # TODO: Remove lib.mkDefault once the mac uses the same username
-    owner = lib.mkDefault "soft";
+    owner = "soft";
   };
 
   programs.zsh.enable = true;
