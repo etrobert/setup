@@ -11,6 +11,8 @@
     ".gitconfig".source = ../../../git/.gitconfig;
 
     ".config/tmux/tmux.conf".source = ../../../tmux/.config/tmux/tmux.conf;
+
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/nvim/.config/nvim";
   };
 
   programs.firefox = {
