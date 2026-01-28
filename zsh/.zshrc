@@ -29,10 +29,6 @@ setopt PROMPT_SUBST
 PS1='$(pronto $? --zsh)'
 RPROMPT='$(pronto $? --rprompt --zsh)'
 
-if [ -f ~/.zshrc.local ]; then
-  source ~/.zshrc.local
-fi
-
 sourceifexists() {
   if [ -f "$1" ]; then
     source "$1"
