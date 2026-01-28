@@ -79,6 +79,7 @@
     })
     typescript-language-server
     vim
+    vscode-langservers-extracted
     wget
     yt-dlp
     zsh-autosuggestions # Fish shell autosuggestions for Zsh
