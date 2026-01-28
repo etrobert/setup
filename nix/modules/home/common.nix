@@ -43,6 +43,13 @@
         };
       };
     };
+    profiles.default = {
+      settings = {
+        # Enable the new sidebar + vertical tabs via user prefs (policies block these).
+        "sidebar.revamp" = true;
+        "sidebar.verticalTabs" = true;
+      };
+    };
   };
 
   home.sessionVariablesExtra = ''
