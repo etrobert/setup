@@ -81,6 +81,7 @@
     vim
     wget
     yt-dlp
+    zsh-autosuggestions # Fish shell autosuggestions for Zsh
   ];
 
   age.secrets.openai-api-key = {

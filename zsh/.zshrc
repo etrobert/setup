@@ -61,6 +61,9 @@ setopt INTERACTIVE_COMMENTS
 # Enable completion system
 autoload -Uz compinit && compinit
 
+# Fish-like inline suggestions from history (zsh-autosuggestions)
+sourceifexists /run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^F" edit-command-line
