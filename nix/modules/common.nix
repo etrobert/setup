@@ -29,7 +29,7 @@
     btop
     bun
     claude-code
-    codex
+    codex # Lightweight coding agent that runs in your terminal
     difftastic
     discord
     entr
@@ -37,6 +37,7 @@
     fd
     fzf
     gcc
+    gemini-cli # AI agent that brings the power of Gemini directly into your terminal
     gh
     # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
     git
