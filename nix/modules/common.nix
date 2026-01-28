@@ -82,6 +82,7 @@
     wget
     yt-dlp
     zsh-autosuggestions # Fish shell autosuggestions for Zsh
+    zsh-syntax-highlighting
   ];
 
   age.secrets.openai-api-key = {
@@ -94,6 +95,9 @@
   };
 
   programs.zsh.enable = true;
+
+  # Symlink zsh-syntax-highlighting to /run/current-system/sw/share/ (not included by default)
+  environment.pathsToLink = [ "/share/zsh-syntax-highlighting" ];
 
   fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
 }
