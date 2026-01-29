@@ -89,6 +89,16 @@
       inheritPath = false;
       text = builtins.readFile ../../git/.local/bin/gen-commit-msg;
     })
+    (writeShellApplication {
+      name = "git-find-commit";
+      runtimeInputs = [
+        coreutils
+        git
+        fzf
+      ];
+      inheritPath = false;
+      text = builtins.readFile ../../git/.local/bin/git-find-commit;
+    })
     typescript-language-server
     vim
     vscode-langservers-extracted
