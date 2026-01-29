@@ -32,6 +32,7 @@
       "Bash(compaudit:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:nixos.wiki)",
+      "WebFetch(domain:mynixos.com)",
       "WebFetch(domain:nixos-and-flakes.thiscute.world)"
     ]
   }
