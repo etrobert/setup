@@ -27,6 +27,9 @@
       "Bash(wc:*)",
       "Bash(ls:*)",
       "Bash(echo:*)",
+      "Bash(defaults read:*)",
+      "Bash(defaults find:*)",
+      "Bash(compaudit:*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:nixos.wiki)",
       "WebFetch(domain:nixos-and-flakes.thiscute.world)"
