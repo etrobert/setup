@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
+let
+  dockApps = import ../../dock-apps.nix;
+
+  skhdAppBindings = lib.concatStringsSep "\n" (
+    lib.imap1 (i: app: ''alt - ${toString i} : open -a "${app.name}"'') dockApps
+  );
+in
 {
   imports = [ ../../modules/common.nix ];
 
@@ -20,13 +27,7 @@
         autohide-delay = 0.0;
         show-recents = false;
         tilesize = 80;
-        persistent-apps = [
-          "/Users/soft/Applications/Home Manager Apps/Firefox.app"
-          "/Applications/Ghostty.app"
-          "/Applications/Nix Apps/Spotify.app"
-          "/System/Applications/Notes.app"
-          "/System/Applications/System Settings.app"
-        ];
+        persistent-apps = map (a: a.path) dockApps;
       };
 
       finder = {
@@ -91,6 +92,25 @@
       ];
       RunAtLoad = true;
     };
+  };
+
+  services.skhd = {
+    enable = true;
+    skhdConfig = ''
+      # Launch applications
+      ${skhdAppBindings}
+
+      # Map alt + hjkl to arrow keys
+      alt - h : skhd -k "left"
+      alt - j : skhd -k "down"
+      alt - k : skhd -k "up"
+      alt - l : skhd -k "right"
+
+      alt + shift - h : skhd -k "shift-left"
+      alt + shift - j : skhd -k "shift-down"
+      alt + shift - k : skhd -k "shift-up"
+      alt + shift - l : skhd -k "shift-right"
+    '';
   };
 
   # Enable Touch ID for sudo
