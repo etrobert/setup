@@ -20,6 +20,13 @@
         autohide-delay = 0.0;
         show-recents = false;
         tilesize = 80;
+        persistent-apps = [
+          "/Users/soft/Applications/Home Manager Apps/Firefox.app"
+          "/Applications/Ghostty.app"
+          "/Applications/Nix Apps/Spotify.app"
+          "/System/Applications/Notes.app"
+          "/System/Applications/System Settings.app"
+        ];
       };
 
       finder = {
