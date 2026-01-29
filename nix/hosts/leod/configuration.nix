@@ -10,11 +10,12 @@
     ./hardware-configuration.nix
   ];
 
-  boot.loader.systemd-boot.configurationLimit = 2;
+  boot.loader = {
+    systemd-boot.configurationLimit = 2;
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 
   networking.hostName = "leod"; # Define your hostname.
 

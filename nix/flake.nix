@@ -47,9 +47,11 @@
             agenix.${if darwin then "darwinModules" else "nixosModules"}.default
             home-manager.${if darwin then "darwinModules" else "nixosModules"}.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.soft = import ./modules/home/${if darwin then "darwin.nix" else "linux.nix"};
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.soft = import ./modules/home/${if darwin then "darwin.nix" else "linux.nix"};
+              };
             }
           ]
           # TODO: Remove once we make usernames uniform
@@ -73,5 +75,16 @@
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
         system: nixpkgs.legacyPackages.${system}.nixfmt
       );
+
+      checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
+        statix =
+          nixpkgs.legacyPackages.${system}.runCommand "statix-check"
+            {
+              nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.statix ];
+            }
+            ''
+              statix check ${self} && touch $out
+            '';
+      });
     };
 }

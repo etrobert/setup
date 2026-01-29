@@ -3,13 +3,15 @@
   imports = [ ./common.nix ];
 
   # Enable I2C for ddcutil (external monitor brightness)
-  hardware.i2c.enable = true;
+  hardware = {
+    i2c.enable = true;
 
-  # Enable bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
+    # Enable bluetooth
+    bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
 
-  hardware.graphics.enable = true;
+    graphics.enable = true;
+  };
 
   networking.networkmanager = {
     enable = true;
