@@ -59,7 +59,7 @@ setopt APPEND_HISTORY
 setopt INTERACTIVE_COMMENTS
 
 # Enable completion system
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -u
 
 # Fish-like inline suggestions from history (zsh-autosuggestions)
 sourceifexists /run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh

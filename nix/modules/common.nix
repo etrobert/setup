@@ -96,6 +96,9 @@
   };
 
   programs.zsh.enable = true;
+  # Disable system compinit; we call compinit -u in .zshrc to skip
+  # insecure directory warnings caused by Nix store paths.
+  programs.zsh.enableGlobalCompInit = false;
 
   # Symlink zsh-syntax-highlighting to /run/current-system/sw/share/ (not included by default)
   environment.pathsToLink = [ "/share/zsh-syntax-highlighting" ];
