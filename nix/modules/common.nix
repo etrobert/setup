@@ -18,6 +18,11 @@
     "flakes"
   ];
 
+  nix.gc = {
+    automatic = true;
+    options = "--delete-older-than 10d";
+  };
+
   environment.systemPackages = with pkgs; [
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
     agenix.packages.${pkgs.stdenv.hostPlatform.system}.default

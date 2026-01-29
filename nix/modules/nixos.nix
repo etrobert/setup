@@ -49,11 +49,7 @@
 
   console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 10d";
-  };
+  nix.gc.dates = "daily";
 
   nix.settings.auto-optimise-store = true;
 

@@ -11,6 +11,12 @@ in
 
   allowedUnfreePackages = [ "raycast" ];
 
+  nix.gc.interval = {
+    Weekday = 0;
+    Hour = 0;
+    Minute = 0;
+  };
+
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   system = {
