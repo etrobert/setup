@@ -71,6 +71,19 @@
     };
   };
 
+  launchd.daemons.caps-lock-to-control = {
+    serviceConfig = {
+      Label = "com.local.caps-lock-to-control";
+      ProgramArguments = [
+        "/usr/bin/hidutil"
+        "property"
+        "--set"
+        ''{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}''
+      ];
+      RunAtLoad = true;
+    };
+  };
+
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
