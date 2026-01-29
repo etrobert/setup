@@ -55,6 +55,20 @@
 
     NSGlobalDomain.InitialKeyRepeat = 15;
     NSGlobalDomain.KeyRepeat = 2;
+
+    CustomUserPreferences."com.raycast.macos" = {
+      # Cmd + Space
+      raycastGlobalHotkey = "Command-49";
+    };
+
+    CustomUserPreferences."com.apple.symbolichotkeys" = {
+      AppleSymbolicHotKeys = {
+        # Disable Spotlight search shortcut (Cmd + Space)
+        "64" = {
+          enabled = false;
+        };
+      };
+    };
   };
 
   # Enable Touch ID for sudo
