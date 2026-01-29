@@ -3,7 +3,7 @@ let
   dockApps = import ../../dock-apps.nix;
 
   skhdAppBindings = lib.concatStringsSep "\n" (
-    lib.imap1 (i: app: ''alt - ${toString i} : open -a "${app.name}"'') dockApps
+    lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
   );
 in
 {
