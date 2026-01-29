@@ -63,7 +63,6 @@ autoload -Uz compinit && compinit -u
 
 # Fish-like inline suggestions from history (zsh-autosuggestions)
 sourceifexists /run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-bindkey "^Y" autosuggest-accept
 
 autoload -Uz edit-command-line
 zle -N edit-command-line
@@ -85,6 +84,8 @@ bindkey "^N" down-line-or-search
 
 bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
+
+bindkey "^Y" autosuggest-accept
 
 source <(fzf --zsh)
 
