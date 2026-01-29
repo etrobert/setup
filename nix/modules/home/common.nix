@@ -48,6 +48,7 @@
         # Enable the new sidebar + vertical tabs via user prefs (policies block these).
         "sidebar.revamp" = true;
         "sidebar.verticalTabs" = true;
+        "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
       };
     };
   };
