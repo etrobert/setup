@@ -80,8 +80,10 @@
     (writeShellApplication {
       name = "gen-commit-msg";
       runtimeInputs = [
+        coreutils
         curl
         git
+        gnused
         jq
       ];
       inheritPath = false;
