@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -euo pipefail
 
 NO_EDIT_GIT_PARAM="--edit"
-if [ "$1" = "--no-edit" ] || [ "$1" = "-n" ]; then
-  NO_EDIT_GIT_PARAM=
-elif [ -n "$1" ]; then
-  echo "Error: Unknown parameter '$1'. Use --no-edit or -n to skip editor." >&2
-  exit 1
-fi
+case "${1:-}" in
+  --no-edit|-n) NO_EDIT_GIT_PARAM= ;;
+  "") ;;
+  *) echo "Error: Unknown parameter '$1'. Use --no-edit or -n to skip editor." >&2; exit 1 ;;
+esac
 
 if [ -z "$OPENAI_API_KEY" ]; then
   echo "Error: OPENAI_API_KEY is not set."

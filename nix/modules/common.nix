@@ -77,6 +77,16 @@
       ];
       text = builtins.readFile ../../tmux/.local/bin/tmux-sessionizer;
     })
+    (writeShellApplication {
+      name = "gen-commit-msg";
+      runtimeInputs = [
+        curl
+        git
+        jq
+      ];
+      inheritPath = false;
+      text = builtins.readFile ../../git/.local/bin/gen-commit-msg;
+    })
     typescript-language-server
     vim
     vscode-langservers-extracted
