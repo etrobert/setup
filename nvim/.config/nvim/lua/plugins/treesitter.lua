@@ -142,45 +142,6 @@ vim.keymap.set({ "n", "x", "o" }, "[d", function()
 	move.goto_previous("@conditional.outer", "textobjects")
 end)
 
--- require("nvim-treesitter.configs").setup({
--- 	modules = {},
--- 	ignore_install = {},
--- 	ensure_installed = {},
--- 	sync_install = false,
--- 	auto_install = true,
--- 	highlight = {
--- 		enable = true,
--- 		additional_vim_regex_highlighting = false,
--- 	},
--- 	textobjects = {
--- 		select = { }, -- DONE
--- 		swap = { }, -- DONE
--- 		move = {
--- 			enable = true,
--- 			set_jumps = true,
--- 			goto_next_start = {
--- 				["]m"] = "@function.outer",
--- 				["]]"] = { query = "@class.outer", desc = "Next class start" },
--- 				["]o"] = "@loop.*",
--- 				["]s"] = { query = "@local.scope", query_group = "locals", desc = "Next scope" },
--- 				["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
--- 			},
--- 			goto_next_end = {
--- 				["]M"] = "@function.outer",
--- 				["]["] = "@class.outer",
--- 			},
--- 			goto_previous_start = {
--- 				["[m"] = "@function.outer",
--- 				["[["] = "@class.outer",
--- 			},
--- 			goto_previous_end = {
--- 				["[M"] = "@function.outer",
--- 				["[]"] = "@class.outer",
--- 			},
--- 		},
--- 	},
--- })
---
--- vim.opt.foldmethod = "expr"
--- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
--- vim.opt.foldlevelstart = 99
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevelstart = 99
