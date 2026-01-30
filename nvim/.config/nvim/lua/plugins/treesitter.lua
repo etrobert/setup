@@ -69,7 +69,17 @@ vim.keymap.set({ "x", "o" }, "ic", function()
 end)
 -- You can also use captures from other query groups like `locals.scm`
 vim.keymap.set({ "x", "o" }, "as", function()
-	require("nvim-treesitter-textobjects.select").select_textobject("@local.scope", "locals")
+	select.select_textobject("@local.scope", "locals")
+end)
+
+local swap = require("nvim-treesitter-textobjects.swap")
+
+-- keymaps
+vim.keymap.set("n", "<leader>a", function()
+	swap.swap_next("@parameter.inner")
+end)
+vim.keymap.set("n", "<leader>A", function()
+	swap.swap_previous("@parameter.outer")
 end)
 
 -- require("nvim-treesitter.configs").setup({
@@ -83,32 +93,8 @@ end)
 -- 		additional_vim_regex_highlighting = false,
 -- 	},
 -- 	textobjects = {
--- 		select = {
--- 			enable = true,
--- 			lookahead = true,
--- 			keymaps = {
--- 				["af"] = "@function.outer",
--- 				["if"] = "@function.inner",
--- 				["ac"] = "@comment.outer",
--- 				["ic"] = "@comment.inner",
--- 				["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
--- 			},
--- 			selection_modes = {
--- 				["@parameter.outer"] = "v",
--- 				["@function.outer"] = "V",
--- 				["@class.outer"] = "<c-v>",
--- 			},
--- 			include_surrounding_whitespace = true,
--- 		},
--- 		swap = {
--- 			enable = true,
--- 			swap_next = {
--- 				["<leader>a"] = "@parameter.inner",
--- 			},
--- 			swap_previous = {
--- 				["<leader>A"] = "@parameter.inner",
--- 			},
--- 		},
+-- 		select = { }, -- DONE
+-- 		swap = { }, -- DONE
 -- 		move = {
 -- 			enable = true,
 -- 			set_jumps = true,
