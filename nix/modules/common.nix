@@ -71,6 +71,7 @@
     stow
     stylua
     tmux
+    tree-sitter
     (writeShellApplication {
       name = "tmux-sessionizer";
       runtimeInputs = [
