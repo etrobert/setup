@@ -1,4 +1,8 @@
-require("octo").setup({ enable_builtin = true })
+require("octo").setup({
+	enable_builtin = true,
+	default_merge_method = "squash",
+	default_delete_branch = true,
+})
 
 vim.keymap.set("n", "<leader>oi", "<CMD>Octo issue list<CR>", { desc = "List GitHub Issues" })
 vim.keymap.set("n", "<leader>op", "<CMD>Octo pr list<CR>", { desc = "List GitHub PullRequests" })
