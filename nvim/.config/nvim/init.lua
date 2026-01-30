@@ -77,6 +77,7 @@ require("which-key").setup({
 		{ "<leader>b", group = "Buffer" },
 		{ "<leader>g", group = "Telescope Git" },
 		{ "<leader>f", group = "Telescope Files" },
+		{ "<leader>o", group = "Octo" },
 	},
 })
 
