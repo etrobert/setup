@@ -98,6 +98,7 @@ require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")
 require("plugins.cmp")
+require("plugins.octo")
 
 -- Disabled because this takes a monstrous amount of ressources
 -- vim.api.nvim_create_autocmd("LspAttach", {
@@ -111,7 +112,5 @@ require("plugins.cmp")
 -- })
 
 -- require("hardtime").setup()
-
-require("octo").setup({ enable_builtin = true })
 
 require("etrobert.startup_banner").setup()
