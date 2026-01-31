@@ -47,6 +47,36 @@
     options = "ctrl:nocaps";
   };
 
+  services.syncthing = {
+    enable = true;
+    user = "soft";
+    dataDir = "/home/soft";
+    openDefaultPorts = true;
+    settings = {
+      devices = {
+        "phone" = {
+          id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
+        };
+        "leod" = {
+          id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
+        };
+      };
+      folders = {
+        "sync" = {
+          path = "/home/soft/sync";
+          devices = [
+            "phone"
+            "leod"
+          ];
+          versioning = {
+            type = "staggered";
+            params.maxAge = "2592000"; # 30 days
+          };
+        };
+      };
+    };
+  };
+
   console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
   nix.gc.dates = "daily";
