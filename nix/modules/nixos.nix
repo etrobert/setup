@@ -85,6 +85,18 @@
 
   zramSwap.enable = true;
 
+  security.sudo.extraRules = [
+    {
+      groups = [ "wheel" ];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/toggle-cpu-governor";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
   users.users.soft = {
     isNormalUser = true;
     description = "Etienne";
