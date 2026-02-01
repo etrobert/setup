@@ -61,16 +61,20 @@
         };
       mkNixosHost = mkHost { darwin = false; };
       mkDarwinHost = mkHost { darwin = true; };
+
+      inherit (nixpkgs.lib) genAttrs;
+
+      nixosHosts = [
+        "tower"
+        "leod"
+      ];
+
+      darwinHosts = [ "aaron" ];
     in
     {
-      nixosConfigurations = {
-        tower = mkNixosHost "tower";
-        leod = mkNixosHost "leod";
-      };
+      nixosConfigurations = genAttrs nixosHosts mkNixosHost;
 
-      darwinConfigurations = {
-        aaron = mkDarwinHost "aaron";
-      };
+      darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
 
       homeConfigurations =
         let
