@@ -115,6 +115,7 @@
       inheritPath = false;
       text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
     })
+    linuxPackages.cpupower
     brightnessctl
     ddcutil
     ghostty
