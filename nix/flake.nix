@@ -72,6 +72,41 @@
         aaron = mkDarwinHost "aaron";
       };
 
+      homeConfigurations =
+        let
+          mkHome =
+            {
+              system,
+              module,
+              username,
+            }:
+            home-manager.lib.homeManagerConfiguration {
+              pkgs = nixpkgs.legacyPackages.${system};
+              modules = [
+                { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
+                { home.username = username; }
+                module
+              ];
+            };
+        in
+        {
+          "soft@tower" = mkHome {
+            system = "x86_64-linux";
+            module = ./modules/home/linux.nix;
+            username = "soft";
+          };
+          "soft@leod" = mkHome {
+            system = "x86_64-linux";
+            module = ./modules/home/linux.nix;
+            username = "soft";
+          };
+          "soft@aaron" = mkHome {
+            system = "aarch64-darwin";
+            module = ./modules/home/darwin.nix;
+            username = "soft";
+          };
+        };
+
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
         system: nixpkgs.legacyPackages.${system}.nixfmt
       );
