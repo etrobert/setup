@@ -105,6 +105,16 @@
     (pkgs.writeShellScriptBin "nixos-option" ''
       exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
     '')
+    (writeShellApplication {
+      name = "toggle-cpu-governor";
+      runtimeInputs = [
+        coreutils
+        linuxPackages.cpupower
+        kmod # for modprobe called by cpupower
+      ];
+      inheritPath = false;
+      text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
+    })
     brightnessctl
     ddcutil
     ghostty
