@@ -3,6 +3,9 @@
 
   home = {
     file = {
+      ".config/home-manager".source =
+        config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/nix";
+
       ".prettierrc".source = ../../../prettier/.prettierrc;
 
       ".zshrc".source = ../../../zsh/.zshrc;
