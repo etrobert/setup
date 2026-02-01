@@ -103,23 +103,21 @@
                 module
               ];
             };
-        in
-        {
-          "soft@tower" = mkHome {
+          mkLinuxHome = mkHome {
             system = "x86_64-linux";
             module = ./modules/home/linux.nix;
             username = "soft";
           };
-          "soft@leod" = mkHome {
-            system = "x86_64-linux";
-            module = ./modules/home/linux.nix;
-            username = "soft";
-          };
-          "soft@aaron" = mkHome {
+          mkDarwinHome = mkHome {
             system = "aarch64-darwin";
             module = ./modules/home/darwin.nix;
             username = "soft";
           };
+        in
+        {
+          "soft@tower" = mkLinuxHome;
+          "soft@leod" = mkLinuxHome;
+          "soft@aaron" = mkDarwinHome;
         };
 
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
