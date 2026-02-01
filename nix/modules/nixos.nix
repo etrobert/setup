@@ -43,40 +43,44 @@
   security.rtkit.enable = true;
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-    options = "ctrl:nocaps";
-  };
+  services = {
+    xserver.xkb = {
+      layout = "us";
+      variant = "";
+      options = "ctrl:nocaps";
+    };
 
-  services.syncthing = {
-    enable = true;
-    user = "soft";
-    dataDir = "/home/soft";
-    openDefaultPorts = true;
-    settings = {
-      devices = {
-        "phone" = {
-          id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
+    syncthing = {
+      enable = true;
+      user = "soft";
+      dataDir = "/home/soft";
+      openDefaultPorts = true;
+      settings = {
+        devices = {
+          "phone" = {
+            id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
+          };
+          "leod" = {
+            id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
+          };
         };
-        "leod" = {
-          id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
-        };
-      };
-      folders = {
-        "sync" = {
-          path = "/home/soft/sync";
-          devices = [
-            "phone"
-            "leod"
-          ];
-          versioning = {
-            type = "staggered";
-            params.maxAge = "2592000"; # 30 days
+        folders = {
+          "sync" = {
+            path = "/home/soft/sync";
+            devices = [
+              "phone"
+              "leod"
+            ];
+            versioning = {
+              type = "staggered";
+              params.maxAge = "2592000"; # 30 days
+            };
           };
         };
       };
     };
+
+    openssh.enable = true;
   };
 
   console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
@@ -151,6 +155,4 @@
   age.secrets.wifi-soft = {
     file = ../secrets/wifi-soft.age;
   };
-
-  services.openssh.enable = true;
 }
