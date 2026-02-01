@@ -11,3 +11,4 @@ fish/.config/fish/fish_variables
 # See https://en.wikipedia.org/wiki/.DS_Store
 .DS_Store
 .aider.*
+result
