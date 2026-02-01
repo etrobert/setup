@@ -13,8 +13,6 @@
     # Enable bluetooth
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
-
-    graphics.enable = true;
   };
 
   networking.networkmanager = {
