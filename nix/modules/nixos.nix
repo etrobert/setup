@@ -2,6 +2,10 @@
 {
   imports = [ ./common.nix ];
 
+  system.activationScripts.nixos-symlink.text = ''
+    ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
+  '';
+
   # Enable I2C for ddcutil (external monitor brightness)
   hardware = {
     i2c.enable = true;
