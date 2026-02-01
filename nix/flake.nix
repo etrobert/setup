@@ -44,9 +44,7 @@
           specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/${host}/configuration.nix
-            {
-              nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
-            }
+            { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
             agenixModule
             homeManagerModule
             {
