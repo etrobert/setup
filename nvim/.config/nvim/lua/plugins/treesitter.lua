@@ -137,15 +137,6 @@ vim.keymap.set({ "n", "x", "o" }, "[]", function()
 	move.goto_previous_end("@class.outer", "textobjects")
 end)
 
--- Go to either the start or the end, whichever is closer.
--- Use if you want more granular movements
-vim.keymap.set({ "n", "x", "o" }, "]d", function()
-	move.goto_next("@conditional.outer", "textobjects")
-end)
-vim.keymap.set({ "n", "x", "o" }, "[d", function()
-	move.goto_previous("@conditional.outer", "textobjects")
-end)
-
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevelstart = 99
