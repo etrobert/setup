@@ -31,81 +31,85 @@
       agenix,
     }:
     let
+      overlayModule = {
+        nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
+      };
+
+      nixosHosts = [
+        "tower"
+        "leod"
+      ];
+      darwinHosts = [ "aaron" ];
+
+      platformConfig = {
+        nixos = {
+          builder = nixpkgs.lib.nixosSystem;
+          system = "x86_64-linux";
+          homeModule = ./modules/home/linux.nix;
+          agenixModule = agenix.nixosModules.default;
+          homeManagerModule = home-manager.nixosModules.home-manager;
+          extraModules = [ ];
+        };
+        darwin = {
+          builder = nix-darwin.lib.darwinSystem;
+          system = "aarch64-darwin";
+          homeModule = ./modules/home/darwin.nix;
+          agenixModule = agenix.darwinModules.default;
+          homeManagerModule = home-manager.darwinModules.home-manager;
+          # TODO: Remove once we make usernames uniform
+          extraModules = [
+            { home-manager.users.etiennerobert = import ./modules/home/darwin.nix; }
+          ];
+        };
+      };
+
       mkHost =
-        { darwin }:
-        host:
+        platform: host:
         let
-          builder = if darwin then nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
+          cfg = platformConfig.${platform};
         in
-        builder {
+        cfg.builder {
           specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/${host}/configuration.nix
-            {
-              nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
-            }
-            agenix.${if darwin then "darwinModules" else "nixosModules"}.default
-            home-manager.${if darwin then "darwinModules" else "nixosModules"}.home-manager
+            overlayModule
+            cfg.agenixModule
+            cfg.homeManagerModule
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.soft = import ./modules/home/${if darwin then "darwin.nix" else "linux.nix"};
+                users.soft = import cfg.homeModule;
               };
             }
           ]
-          # TODO: Remove once we make usernames uniform
-          ++ (
-            if darwin then [ { home-manager.users.etiennerobert = import ./modules/home/darwin.nix; } ] else [ ]
-          );
+          ++ cfg.extraModules;
         };
-      mkNixosHost = mkHost { darwin = false; };
-      mkDarwinHost = mkHost { darwin = true; };
+
+      mkHome =
+        platform:
+        let
+          cfg = platformConfig.${platform};
+        in
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${cfg.system};
+          modules = [
+            overlayModule
+            { home.username = "soft"; }
+            cfg.homeModule
+          ];
+        };
+
+      inherit (nixpkgs.lib) genAttrs;
     in
     {
-      nixosConfigurations = {
-        tower = mkNixosHost "tower";
-        leod = mkNixosHost "leod";
-      };
+      nixosConfigurations = genAttrs nixosHosts (mkHost "nixos");
 
-      darwinConfigurations = {
-        aaron = mkDarwinHost "aaron";
-      };
+      darwinConfigurations = genAttrs darwinHosts (mkHost "darwin");
 
       homeConfigurations =
-        let
-          mkHome =
-            {
-              system,
-              module,
-              username,
-            }:
-            home-manager.lib.homeManagerConfiguration {
-              pkgs = nixpkgs.legacyPackages.${system};
-              modules = [
-                { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
-                { home.username = username; }
-                module
-              ];
-            };
-        in
-        {
-          "soft@tower" = mkHome {
-            system = "x86_64-linux";
-            module = ./modules/home/linux.nix;
-            username = "soft";
-          };
-          "soft@leod" = mkHome {
-            system = "x86_64-linux";
-            module = ./modules/home/linux.nix;
-            username = "soft";
-          };
-          "soft@aaron" = mkHome {
-            system = "aarch64-darwin";
-            module = ./modules/home/darwin.nix;
-            username = "soft";
-          };
-        };
+        genAttrs (map (h: "soft@${h}") nixosHosts) (_: mkHome "nixos")
+        // genAttrs (map (h: "soft@${h}") darwinHosts) (_: mkHome "darwin");
 
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
         system: nixpkgs.legacyPackages.${system}.nixfmt
