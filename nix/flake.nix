@@ -32,11 +32,14 @@
     }:
     let
       mkHost =
-        { darwin }:
+        {
+          builder,
+          agenixModule,
+          homeManagerModule,
+          homeModule,
+          extraModules,
+        }:
         host:
-        let
-          builder = if darwin then nix-darwin.lib.darwinSystem else nixpkgs.lib.nixosSystem;
-        in
         builder {
           specialArgs = { inherit pronto agenix; };
           modules = [
@@ -44,23 +47,33 @@
             {
               nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
             }
-            agenix.${if darwin then "darwinModules" else "nixosModules"}.default
-            home-manager.${if darwin then "darwinModules" else "nixosModules"}.home-manager
+            agenixModule
+            homeManagerModule
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.soft = import ./modules/home/${if darwin then "darwin.nix" else "linux.nix"};
+                users.soft = import homeModule;
               };
             }
           ]
           # TODO: Remove once we make usernames uniform
-          ++ (
-            if darwin then [ { home-manager.users.etiennerobert = import ./modules/home/darwin.nix; } ] else [ ]
-          );
+          ++ extraModules;
         };
-      mkNixosHost = mkHost { darwin = false; };
-      mkDarwinHost = mkHost { darwin = true; };
+      mkNixosHost = mkHost {
+        builder = nixpkgs.lib.nixosSystem;
+        agenixModule = agenix.nixosModules.default;
+        homeManagerModule = home-manager.nixosModules.home-manager;
+        homeModule = ./modules/home/linux.nix;
+        extraModules = [ ];
+      };
+      mkDarwinHost = mkHost {
+        builder = nix-darwin.lib.darwinSystem;
+        agenixModule = agenix.darwinModules.default;
+        homeManagerModule = home-manager.darwinModules.home-manager;
+        homeModule = ./modules/home/darwin.nix;
+        extraModules = [ { home-manager.users.etiennerobert = import ./modules/home/darwin.nix; } ];
+      };
 
       inherit (nixpkgs.lib) genAttrs;
 
