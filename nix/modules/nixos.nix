@@ -6,8 +6,8 @@
     ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
   '';
 
-  # Enable I2C for ddcutil (external monitor brightness)
   hardware = {
+    # Enable I2C for ddcutil (external monitor brightness)
     i2c.enable = true;
 
     # Enable bluetooth
