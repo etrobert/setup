@@ -137,17 +137,13 @@
       checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
         statix =
           nixpkgs.legacyPackages.${system}.runCommand "statix-check"
-            {
-              nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.statix ];
-            }
+            { nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.statix ]; }
             ''
               statix check ${self} && touch $out
             '';
         deadnix =
           nixpkgs.legacyPackages.${system}.runCommand "deadnix-check"
-            {
-              nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.deadnix ];
-            }
+            { nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.deadnix ]; }
             ''
               deadnix --fail ${self} && touch $out
             '';
