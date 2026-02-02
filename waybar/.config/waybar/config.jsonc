@@ -9,8 +9,8 @@
   "modules-left": [
     "clock#time",
     "custom/weekday",
+    // "custom/weather",
     "clock#date",
-    "custom/weather",
   ],
   "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory", "mpd"],
   // "modules-center": ["mpd"],
