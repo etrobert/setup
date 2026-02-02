@@ -16,7 +16,6 @@
   // "modules-center": ["mpd"],
   // "modules-center": ["hyprland/window"],
   "modules-right": [
-    // at edge because muted icon is bigger and shifts layout
     "pulseaudio",
     "network",
     "battery",
