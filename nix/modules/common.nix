@@ -106,6 +106,17 @@
       inheritPath = false;
       text = builtins.readFile ../../git/.local/bin/git-find-commit;
     })
+    (writeShellApplication {
+      name = "pm";
+      runtimeInputs = [
+        coreutils
+        nodejs_latest
+        pnpm
+        yarn
+      ];
+      inheritPath = false;
+      text = builtins.readFile ../../bash/.local/bin/pm;
+    })
     typescript-language-server
     vim
     vscode-langservers-extracted
