@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
+  symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
 in
 {
   imports = [ ./common.nix ];
@@ -10,10 +10,8 @@ in
   home.file = {
     ".alias.linux".source = ../../../alias/.alias.linux;
 
-    ".config/waybar/config.jsonc".source =
-      mkOutOfStoreSymlink "/home/soft/setup/waybar/.config/waybar/config.jsonc";
-    ".config/waybar/style.css".source =
-      mkOutOfStoreSymlink "/home/soft/setup/waybar/.config/waybar/style.css";
+    ".config/waybar/config.jsonc".source = symlink "waybar/.config/waybar/config.jsonc";
+    ".config/waybar/style.css".source = symlink "waybar/.config/waybar/style.css";
 
     ".config/mako/config".source = ../../../mako/.config/mako/config;
   };

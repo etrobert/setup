@@ -1,12 +1,12 @@
 { config, ... }:
 let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
+  symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
 in
 {
 
   home = {
     file = {
-      ".config/home-manager".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/nix";
+      ".config/home-manager".source = symlink "nix";
 
       ".prettierrc".source = ../../../prettier/.prettierrc;
 
@@ -18,7 +18,7 @@ in
 
       ".config/tmux/tmux.conf".source = ../../../tmux/.config/tmux/tmux.conf;
 
-      ".config/nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/nvim/.config/nvim";
+      ".config/nvim".source = symlink "nvim/.config/nvim";
 
       ".alias".source = ../../../alias/.alias;
     };
