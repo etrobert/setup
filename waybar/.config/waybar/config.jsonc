@@ -2,12 +2,15 @@
 {
   "name": "left",
   "position": "left",
+  "spacing": 8, // Gaps between modules in px (default is 4px)
+  "mtrgin": 4,
+  "reload_style_on_change": true,
   // Choose the order of the modules
   "modules-left": [
     "clock#time",
     "custom/weekday",
-    "clock#date",
     // "custom/weather",
+    "clock#date",
   ],
   "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory", "mpd"],
   // "modules-center": ["mpd"],
@@ -22,24 +25,9 @@
     "hyprland/workspaces",
   ],
   // Modules configuration
-  "mpd": {
-    "rotate": 90,
-  },
   "hyprland/window": {
     "rotate": 90,
     "max-length": 30,
-  },
-  "temperature": {
-    "rotate": 90,
-  },
-  "cpu": {
-    "rotate": 90,
-  },
-  "custom/cpu-freq": {
-    "rotate": 90,
-  },
-  "memory": {
-    "rotate": 90,
   },
   "clock#time": {
     "format": "{:%H\n%M\n%S}",
@@ -94,5 +82,61 @@
       "powersave": "󰳗", // 󰳗 󰾆
       "performance": "󰤇", // 󰤇 󰓅
     },
+  },
+  "temperature": {
+    "rotate": 90,
+    "thermal-zone": 7,
+    "format": " {temperatureC}°",
+    "critical-threshold": 80,
+    "format-critical": "<span color='#c2410c'> {temperatureC}°</span>",
+    "interval": 2,
+  },
+  "cpu": {
+    "rotate": 90,
+    "format": "󰍛 {usage}%",
+    "interval": 2,
+  },
+  "custom/cpu-freq": {
+    "rotate": 90,
+    "exec": "awk '{sum+=$1; count++} END {printf \"󰻠 %.1fGHz\", sum/count/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq",
+    "format": "{}",
+    "interval": 2,
+    "tooltip-format": "CPU Frequency",
+  },
+  "memory": {
+    "rotate": 90,
+    "format": " {percentage}%",
+    "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
+    "interval": 2,
+  },
+  "network": {
+    "format-wifi": "{icon}",
+    "format-ethernet": "",
+    "tooltip-format": "{essid} {signalStrength}%\n{ipaddr}/{cidr}\n{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "󰤫",
+    "format-disabled": "󰤮",
+    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+  },
+  "mpd": {
+    "rotate": 90,
+    "format": "{stateIcon}{artist} - {title}",
+    "format-stopped": "",
+    "on-click": "mpc toggle",
+    "state-icons": {
+      "paused": " ",
+    },
+  },
+  "bluetooth": {
+    "format-on": "󰂯",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-connected": "󰂱",
+    // "format-connected-battery": " {device_alias} {device_battery_percentage}%",
+    "format-no-controller": "󰂳",
+    "tooltip-format": "{controller_address} {controller_alias}",
+    "tooltip-format-connected": "{controller_address} {controller_alias}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected-battery": "{device_address} {device_alias} {device_battery_percentage}%",
+    "tooltip-format-enumerate-connected": "{device_address} {device_alias}",
   },
 }
