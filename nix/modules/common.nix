@@ -49,6 +49,7 @@
     gnumake
     go
     gopls
+    home-manager
     htop
     hyperfine # Command-line benchmarking tool
     imagemagick # for image rendering in nvim using snacks.image
