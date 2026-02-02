@@ -133,6 +133,16 @@
       inheritPath = false;
       text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
     })
+    (writeShellApplication {
+      name = "get_weather.sh";
+      runtimeInputs = [
+        coreutils
+        curl
+        jq
+      ];
+      inheritPath = false;
+      text = builtins.readFile ../../waybar/.local/bin/get_weather.sh;
+    })
     linuxPackages.cpupower
     brightnessctl
     ddcutil
