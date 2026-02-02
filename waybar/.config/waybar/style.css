@@ -55,41 +55,31 @@ window#waybar {
   background: rgba(180, 180, 180, 0.3);
 }
 
-window#waybar.top #clock {
-  margin-right: 8px;
-}
-
-window#waybar.left #clock.time {
+#clock.time {
   margin-top: 8px;
 }
 
-window#waybar.left #workspaces {
+#workspaces {
   margin-bottom: 3px;
 }
 
-window#waybar.left .module {
+.module {
   /* Need to offset to account for the hyprland outer gap */
   margin-left: 3px;
 }
 
-window#waybar.left #custom-weather {
+#custom-weather {
   /* Offsetting weather because the number is most important */
   margin-left: 10px;
 }
 
-window#waybar.left #workspaces {
+#workspaces {
   margin-left: 3px;
 }
 
-window#waybar.left #pulseaudio,
-window#waybar.left #network,
-window#waybar.left #battery {
+#pulseaudio,
+#network,
+#battery {
   /* Individual icon alignment fixes */
   margin-left: 0;
-}
-
-/* Icon alignment */
-window#waybar.left {
-  margin-top: 2px;
-  margin-left: 8px;
 }
