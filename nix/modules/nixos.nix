@@ -56,6 +56,7 @@
       dataDir = "/home/soft";
       openDefaultPorts = true;
       settings = {
+        options.urAccepted = -1; # Disable usage reporting/telemetry
         devices = {
           "phone" = {
             id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
