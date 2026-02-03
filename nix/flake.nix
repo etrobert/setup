@@ -118,6 +118,11 @@
           "soft@tower" = mkLinuxHome;
           "soft@leod" = mkLinuxHome;
           "soft@aaron" = mkDarwinHome;
+          "etiennerobert@aaron" = mkHome {
+            system = "aarch64-darwin";
+            module = ./modules/home/darwin.nix;
+            username = "etiennerobert";
+          };
         };
 
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
