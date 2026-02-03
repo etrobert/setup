@@ -115,7 +115,7 @@
       "src": "https://github.com/folke/snacks.nvim"
     },
     "store.nvim": {
-      "rev": "a32c8972c4f4b52de12393df904a477f182c467a",
+      "rev": "e7bfba36893647ec05c50f0d43e51e746bf9500d",
       "src": "https://github.com/alex-popov-tech/store.nvim"
     },
     "tailwindcss-colorizer-cmp.nvim": {
