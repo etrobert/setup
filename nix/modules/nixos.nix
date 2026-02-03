@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [ ./common.nix ];
 
@@ -86,6 +86,17 @@
     };
 
     openssh.enable = true;
+
+    mpd = {
+      enable = true;
+      musicDirectory = "/home/soft/sync/music/";
+      user = "soft";
+    };
+  };
+
+  systemd.services.mpd.environment = {
+    XDG_RUNTIME_DIR = "/run/user/1001";
+    # XDG_RUNTIME_DIR = "/run/user/${toString config.users.users.userRunningPipeWire.uid}"; # User-id must match above user. MPD will look inside this directory for the PipeWire socket.
   };
 
   console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
@@ -156,6 +167,7 @@
     heroic
     hyprpaper
     mako
+    mpc # Minimalist command line interface to MPD
     pavucontrol
     playerctl
     signal-desktop
