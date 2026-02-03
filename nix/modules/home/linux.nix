@@ -26,6 +26,11 @@ in
     extraConfig = ''
       restore_paused "yes"
       auto_update "yes"
+
+      audio_output {
+        type "pipewire"
+        name "PipeWire"
+      }
     '';
   };
 
