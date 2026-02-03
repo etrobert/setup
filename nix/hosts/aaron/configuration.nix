@@ -9,7 +9,10 @@ in
 {
   imports = [ ../../modules/common.nix ];
 
-  allowedUnfreePackages = [ "raycast" ];
+  allowedUnfreePackages = [
+    "betterdisplay"
+    "raycast"
+  ];
 
   nix.gc.interval = {
     Hour = 0;
@@ -81,6 +84,7 @@ in
   environment.shells = [ pkgs.zsh ];
 
   environment.systemPackages = with pkgs; [
+    betterdisplay
     watch
     raycast
     defaultbrowser
