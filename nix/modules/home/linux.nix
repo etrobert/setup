@@ -23,6 +23,10 @@ in
   services.mpd = {
     enable = true;
     musicDirectory = "${config.home.homeDirectory}/sync/music";
+    extraConfig = ''
+      restore_paused "yes"
+      auto_update "yes"
+    '';
   };
 
   services.mpdris2 = {
