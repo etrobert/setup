@@ -118,6 +118,7 @@
       text = builtins.readFile ../../bash/.local/bin/pm;
     })
     typescript-language-server
+    unzip
     vim
     vscode-langservers-extracted
     wget
