@@ -64,6 +64,9 @@
           "leod" = {
             id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
           };
+          "tower" = {
+            id = "3IIJQ3X-2BY72RR-YVNBZBQ-OAB6PM5-SPS3WPG-MCPTFVD-YSQ33SS-X4Q5DA3";
+          };
         };
         folders = {
           "sync" = {
@@ -71,6 +74,7 @@
             devices = [
               "phone"
               "leod"
+              "tower"
             ];
             versioning = {
               type = "staggered";
