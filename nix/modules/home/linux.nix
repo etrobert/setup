@@ -24,4 +24,9 @@ in
     enable = true;
     musicDirectory = "${config.home.homeDirectory}/sync/music";
   };
+
+  services.mpdris2 = {
+    enable = true;
+    notifications = true;
+  };
 }
