@@ -33,6 +33,10 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:nixos.wiki)",
       "WebFetch(domain:mynixos.com)",
+      "WebFetch(domain:ghostty.org)",
+      "WebFetch(domain:mpd.readthedocs.io)",
+      "WebFetch(domain:man.archlinux.org)",
+      "WebFetch(domain:docs.gtk.org)",
       "WebFetch(domain:nixos-and-flakes.thiscute.world)"
     ]
   }
