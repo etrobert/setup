@@ -50,10 +50,10 @@
       options = "ctrl:nocaps";
     };
 
-    logind.extraConfig = ''
-      IdleAction=suspend
-      IdleActionSec=15min
-    '';
+    logind.settings.Login = {
+      IdleAction = "suspend";
+      IdleActionSec = "15min";
+    };
 
     syncthing = {
       enable = true;
