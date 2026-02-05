@@ -152,7 +152,6 @@
       name = "brightness-control";
       runtimeInputs = [
         brightnessctl
-        coreutils
         ddcutil
         hyprland
         libnotify
