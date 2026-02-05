@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
 
-DIRECTION=$1
-
-if [ -z "$DIRECTION" ]; then
+if [ $# -eq 0 ]; then
   echo "Usage: brightness-control [up|down]"
   exit 1
 fi
+
+DIRECTION=$1
 
 notify_brightness() {
   local percent=$1
@@ -31,7 +33,7 @@ eDP-*)
   notify_brightness "$PERCENT"
   ;;
 *)
-  # External monitor - use ddcutil with bus number for speed
+  # External monitor - use ddcutil
   if [ "$DIRECTION" = "up" ]; then
     ddcutil setvcp 10 + 10 --noverify
   elif [ "$DIRECTION" = "down" ]; then

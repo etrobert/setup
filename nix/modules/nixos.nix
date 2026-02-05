@@ -148,6 +148,19 @@
       inheritPath = false;
       text = builtins.readFile ../../waybar/.local/bin/get_weather.sh;
     })
+    (writeShellApplication {
+      name = "brightness-control";
+      runtimeInputs = [
+        brightnessctl
+        coreutils
+        ddcutil
+        hyprland
+        libnotify
+        jq
+      ];
+      inheritPath = false;
+      text = builtins.readFile ../../hyprland/.local/bin/brightness-control;
+    })
     linuxPackages.cpupower
     brightnessctl
     ddcutil

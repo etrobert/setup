@@ -14,6 +14,9 @@ in
     ".config/waybar/style.css".source = symlink "waybar/.config/waybar/style.css";
 
     ".config/mako/config".source = ../../../mako/.config/mako/config;
+
+    ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
+    ".config/hypr/hyprpaper.conf".source = symlink "hyprland/.config/hypr/hyprpaper.conf";
   };
 
   # Ensures XDG_DATA_DIRS includes the profile share directory
