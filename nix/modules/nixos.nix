@@ -164,7 +164,6 @@
     (writeShellApplication {
       name = "volume-control";
       runtimeInputs = [
-        coreutils
         gawk
         gnugrep
         libnotify
