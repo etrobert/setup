@@ -13,9 +13,9 @@ DIRECTION=$1
 
 # Laptop display - use brightnessctl
 if [ "$DIRECTION" = "up" ]; then
-  brightnessctl set 10%+
+  brightnessctl set --min-value=1 10%+
 elif [ "$DIRECTION" = "down" ]; then
-  brightnessctl set 10%-
+  brightnessctl set --min-value=1 10%-
 fi
 PERCENT=$(brightnessctl -m | cut -d, -f4 | tr -d %)
 
