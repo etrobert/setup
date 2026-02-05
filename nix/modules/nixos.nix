@@ -167,6 +167,7 @@
     (writeShellApplication {
       name = "brightness-control";
       runtimeInputs = [
+        coreutils # cut & tr
         brightnessctl
         ddcutil
         hyprland
