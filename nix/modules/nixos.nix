@@ -6,6 +6,16 @@
     ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
   '';
 
+  boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
+  boot.kernelModules = [ "ddcci-backlight" ];
+
+  # Register DDC/CI devices on I2C buses for backlight control
+  # (auto-probing is unavailable on kernel 6.8+)
+  # See https://wiki.nixos.org/wiki/Backlight#DDC/CI
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="i2c", ATTR{name}=="AMDGPU DM i2c hw bus *", RUN+="${pkgs.bash}/bin/bash -c 'sleep 5; echo ddcci 0x37 > /sys/bus/i2c/devices/%k/new_device'"
+  '';
+
   hardware = {
     # Enable I2C for ddcutil (external monitor brightness)
     i2c.enable = true;
