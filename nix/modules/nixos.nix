@@ -161,6 +161,18 @@
       inheritPath = false;
       text = builtins.readFile ../../hyprland/.local/bin/brightness-control;
     })
+    (writeShellApplication {
+      name = "volume-control";
+      runtimeInputs = [
+        coreutils
+        gawk
+        gnugrep
+        libnotify
+        wireplumber
+      ];
+      inheritPath = false;
+      text = builtins.readFile ../../hyprland/.local/bin/volume-control;
+    })
     linuxPackages.cpupower
     brightnessctl
     ddcutil

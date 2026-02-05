@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [ $# -eq 0 ]; then
+  echo "Usage: volume-control [up|down|mute]"
+  exit 1
+fi
+
+ACTION=$1
+
+case "$ACTION" in
+  up)   wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+ ;;
+  down) wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- ;;
+  mute) wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle ;;
+esac
+
+VOLUME=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+# Output is "Volume: 0.55" or "Volume: 0.55 [MUTED]"
+PERCENT=$(echo "$VOLUME" | awk '{printf "%d", $2 * 100}')
+MUTED=$(echo "$VOLUME" | grep -c MUTED || true)
+
+if [ "$MUTED" -eq 1 ]; then
+  BODY="Muted"
+else
+  BODY="$PERCENT%"
+fi
+
+notify-send -h int:value:"$PERCENT" \
+  -h string:x-canonical-private-synchronous:volume \
+  "Volume" "$BODY"
