@@ -15,11 +15,11 @@
   services.udev.extraRules =
     let
       bash = "${pkgs.bash}/bin/bash";
+      # TODO: Make it work on non AMD GPUs
       ddcciDev = "AMDGPU DM i2c hw bus*";
-      ddcciNode = "/sys/%p/new_device";
     in
     ''
-      SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${ddcciDev}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > ${ddcciNode}'"
+      SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${ddcciDev}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > /sys/%p/new_device'"
     '';
 
   hardware = {
