@@ -11,13 +11,6 @@ fi
 
 DIRECTION=$1
 
-notify_brightness() {
-  local percent=$1
-  notify-send -h int:value:"$percent" \
-    -h string:x-canonical-private-synchronous:brightness \
-    "Brightness" "$percent%"
-}
-
 # Laptop display - use brightnessctl
 if [ "$DIRECTION" = "up" ]; then
   brightnessctl set 10%+
@@ -25,4 +18,7 @@ elif [ "$DIRECTION" = "down" ]; then
   brightnessctl set 10%-
 fi
 PERCENT=$(brightnessctl -m | cut -d, -f4 | tr -d %)
-notify_brightness "$PERCENT"
+
+notify-send -h int:value:"$PERCENT" \
+  -h string:x-canonical-private-synchronous:brightness \
+  "Brightness" "$PERCENT%"
