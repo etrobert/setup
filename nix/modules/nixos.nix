@@ -15,8 +15,8 @@
   services.udev.extraRules =
     let
       bash = "${pkgs.bash}/bin/bash";
-      ddcciDev = "AMDGPU DM i2c hw bus 0";
-      ddcciNode = "/sys/bus/i2c/devices/i2c-4/new_device";
+      ddcciDev = "AMDGPU DM i2c hw bus*";
+      ddcciNode = "/sys/%p/new_device";
     in
     ''
       SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${ddcciDev}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > ${ddcciNode}'"
