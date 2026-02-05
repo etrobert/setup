@@ -38,4 +38,16 @@ in
     enable = true;
     notifications = true;
   };
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+      listener = [
+        {
+          timeout = 900; # 15 minutes
+          on-timeout = "systemctl suspend";
+        }
+      ];
+    };
+  };
 }

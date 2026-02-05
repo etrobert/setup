@@ -50,11 +50,6 @@
       options = "ctrl:nocaps";
     };
 
-    logind.settings.Login = {
-      IdleAction = "suspend";
-      IdleActionSec = "15min";
-    };
-
     syncthing = {
       enable = true;
       user = "soft";
