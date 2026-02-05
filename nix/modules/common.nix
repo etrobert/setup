@@ -102,6 +102,7 @@
         coreutils
         git
         fzf
+        findutils # xargs
       ];
       inheritPath = false;
       text = builtins.readFile ../../git/.local/bin/git-find-commit;
