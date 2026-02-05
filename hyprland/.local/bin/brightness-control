@@ -34,15 +34,19 @@ eDP-*)
   ;;
 *)
   # External monitor - use ddcutil
-  if [ "$DIRECTION" = "up" ]; then
-    ddcutil setvcp 10 + 10 --noverify
-  elif [ "$DIRECTION" = "down" ]; then
-    ddcutil setvcp 10 - 10 --noverify
-  fi
-  # Read back and notify in background so the script returns immediately
+  # Use flock to serialize I2C access so rapid keypresses queue up.
+  # The background subshell holds the lock until getvcp finishes,
+  # preventing I2C bus conflicts between concurrent invocations.
+  LOCKFILE="/tmp/brightness-control.lock"
   (
+    flock 9
+    if [ "$DIRECTION" = "up" ]; then
+      ddcutil setvcp 10 + 10 --noverify
+    elif [ "$DIRECTION" = "down" ]; then
+      ddcutil setvcp 10 - 10 --noverify
+    fi
     read -r _ _ _ val max < <(ddcutil getvcp 10 --brief 2>/dev/null)
     [ -n "$val" ] && notify_brightness "$((val * 100 / max))"
-  ) &
+  ) 9>"$LOCKFILE" &
   ;;
 esac

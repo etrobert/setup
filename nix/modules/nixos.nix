@@ -156,6 +156,7 @@
         hyprland
         libnotify
         jq
+        util-linux # flock
       ];
       inheritPath = false;
       text = builtins.readFile ../../hyprland/.local/bin/brightness-control;
