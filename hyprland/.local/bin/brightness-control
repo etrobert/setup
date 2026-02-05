@@ -20,9 +20,9 @@ notify_brightness() {
 
 # Laptop display - use brightnessctl
 if [ "$DIRECTION" = "up" ]; then
-  brightnessctl -e4 -n2 set 5%+
+  brightnessctl set 10%+
 elif [ "$DIRECTION" = "down" ]; then
-  brightnessctl -e4 -n2 set 5%-
+  brightnessctl set 10%-
 fi
 PERCENT=$(brightnessctl -m | cut -d, -f4 | tr -d %)
 notify_brightness "$PERCENT"
