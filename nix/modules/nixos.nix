@@ -11,10 +11,16 @@
 
   # Register DDC/CI devices on I2C buses for backlight control
   # (auto-probing is unavailable on kernel 6.8+)
-  # See https://wiki.nixos.org/wiki/Backlight#DDC/CI
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="i2c", ATTR{name}=="AMDGPU DM i2c hw bus *", RUN+="${pkgs.bash}/bin/bash -c 'sleep 5; echo ddcci 0x37 > /sys/bus/i2c/devices/%k/new_device'"
-  '';
+  # Source https://wiki.nixos.org/wiki/Backlight#DDC/CI
+  services.udev.extraRules =
+    let
+      bash = "${pkgs.bash}/bin/bash";
+      ddcciDev = "AMDGPU DM i2c hw bus 0";
+      ddcciNode = "/sys/bus/i2c/devices/i2c-4/new_device";
+    in
+    ''
+      SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${ddcciDev}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > ${ddcciNode}'"
+    '';
 
   hardware = {
     # Enable I2C for ddcutil (external monitor brightness)
