@@ -39,7 +39,10 @@ eDP-*)
   elif [ "$DIRECTION" = "down" ]; then
     ddcutil setvcp 10 - 10 --noverify
   fi
-  read -r _ _ _ val max < <(ddcutil getvcp 10 --brief 2>/dev/null)
-  [ -n "$val" ] && notify_brightness "$((val * 100 / max))"
+  # Read back and notify in background so the script returns immediately
+  (
+    read -r _ _ _ val max < <(ddcutil getvcp 10 --brief 2>/dev/null)
+    [ -n "$val" ] && notify_brightness "$((val * 100 / max))"
+  ) &
   ;;
 esac
