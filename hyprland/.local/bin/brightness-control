@@ -18,46 +18,11 @@ notify_brightness() {
     "Brightness" "$percent%"
 }
 
-# Get focused monitor name
-FOCUSED_MONITOR=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name')
-
-case "$FOCUSED_MONITOR" in
-eDP-*)
-  # Laptop display - use brightnessctl
-  if [ "$DIRECTION" = "up" ]; then
-    brightnessctl -e4 -n2 set 5%+
-  elif [ "$DIRECTION" = "down" ]; then
-    brightnessctl -e4 -n2 set 5%-
-  fi
-  PERCENT=$(brightnessctl -m | cut -d, -f4 | tr -d %)
-  notify_brightness "$PERCENT"
-  ;;
-*)
-  # External monitor - use ddcutil
-  # Use flock to serialize I2C access so rapid keypresses queue up.
-  # The background subshell holds the lock until getvcp finishes,
-  # preventing I2C bus conflicts between concurrent invocations.
-  LOCKFILE="/tmp/brightness-control.lock"
-  CACHE="/tmp/brightness-control.cache"
-  (
-    flock 9
-
-    # Read current value from cache, or from monitor on first call
-    if [ -f "$CACHE" ]; then
-      read -r val max < "$CACHE"
-    else
-      read -r _ _ _ val max < <(ddcutil getvcp 10 --brief 2>/dev/null)
-    fi
-
-    if [ "$DIRECTION" = "up" ]; then
-      val=$(( val + 10 > max ? max : val + 10 ))
-    elif [ "$DIRECTION" = "down" ]; then
-      val=$(( val - 10 < 0 ? 0 : val - 10 ))
-    fi
-
-    ddcutil setvcp 10 "$val" --noverify
-    echo "$val $max" > "$CACHE"
-    notify_brightness "$((val * 100 / max))"
-  ) 9>"$LOCKFILE" &
-  ;;
-esac
+# Laptop display - use brightnessctl
+if [ "$DIRECTION" = "up" ]; then
+  brightnessctl -e4 -n2 set 5%+
+elif [ "$DIRECTION" = "down" ]; then
+  brightnessctl -e4 -n2 set 5%-
+fi
+PERCENT=$(brightnessctl -m | cut -d, -f4 | tr -d %)
+notify_brightness "$PERCENT"
