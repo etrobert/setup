@@ -10,7 +10,7 @@ in
 
       ".prettierrc".source = ../../../prettier/.prettierrc;
 
-      ".zshrc".source = ../../../zsh/.zshrc;
+      ".zshrc".source = symlink "zsh/.zshrc";
       ".zprofile".source = ../../../zsh/.zprofile;
       ".profile".source = ../../../profile/.profile;
 
