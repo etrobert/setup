@@ -32,6 +32,22 @@
       "Bash(infocmp:*)",
       "Bash(readlink:*)",
       "Bash(hyperfine:*)",
+      "Bash(pactl list:*)",
+      "Bash(pw-cli enum-params:*)",
+      "Bash(pw-dump)",
+      "Bash(busctl tree:*)",
+      "Bash(busctl introspect:*)",
+      "Bash(bluetoothctl info:*)",
+      "Bash(dmesg:*)",
+      "Bash(lsusb:*)",
+      "Bash(lspci:*)",
+      "Bash(lsmod:*)",
+      "Bash(iwconfig:*)",
+      "Bash(mpc status:*)",
+      "Bash(mpc outputs:*)",
+      "Bash(mpc stats:*)",
+      "Bash(shellcheck:*)",
+      "Bash(pgrep:*)",
       "Bash(awk:*)",
       "Bash(tree:*)",
       "Bash(cat:*)",
@@ -50,7 +66,10 @@
       "WebFetch(domain:mpd.readthedocs.io)",
       "WebFetch(domain:man.archlinux.org)",
       "WebFetch(domain:docs.gtk.org)",
-      "WebFetch(domain:nixos-and-flakes.thiscute.world)"
+      "WebFetch(domain:nixos-and-flakes.thiscute.world)",
+      "WebFetch(domain:wiki.archlinux.org)",
+      "WebFetch(domain:wiki.hyprland.org)",
+      "WebFetch(domain:wiki.hypr.land)"
     ]
   }
 }
