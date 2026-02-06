@@ -11,13 +11,29 @@ fi
 
 DIRECTION=$1
 
-# Laptop display - use brightnessctl
-if [ "$DIRECTION" = "up" ]; then
-  brightnessctl set --min-value=1 10%+
-elif [ "$DIRECTION" = "down" ]; then
-  brightnessctl set --min-value=1 10%-
+# Get the focused monitor from Hyprland
+MONITOR=$(hyprctl activeworkspace -j | jq -r '.monitor')
+
+# Find the backlight device for this monitor by checking device paths
+DEVICE=""
+for bl in /sys/class/backlight/*; do
+  if readlink -f "$bl" | grep -q "card[0-9]*-${MONITOR}"; then
+    DEVICE=$(basename "$bl")
+    break
+  fi
+done
+
+if [ -z "$DEVICE" ]; then
+  echo "No backlight device found for monitor $MONITOR"
+  exit 1
 fi
-PERCENT=$(brightnessctl -m | cut -d, -f4 | tr -d %)
+
+if [ "$DIRECTION" = "up" ]; then
+  brightnessctl -d "$DEVICE" set --min-value=1 10%+
+elif [ "$DIRECTION" = "down" ]; then
+  brightnessctl -d "$DEVICE" set --min-value=1 10%-
+fi
+PERCENT=$(brightnessctl -d "$DEVICE" -m | cut -d, -f4 | tr -d %)
 
 notify-send -h int:value:"$PERCENT" \
   -h string:x-canonical-private-synchronous:brightness \
