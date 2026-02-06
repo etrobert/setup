@@ -17,6 +17,7 @@ in
 
     ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
     ".config/hypr/hyprpaper.conf".source = symlink "hyprland/.config/hypr/hyprpaper.conf";
+    ".config/hypr/saint-levant.jpg".source = ../../../hyprland/.config/hypr/saint-levant.jpg;
   };
 
   # Ensures XDG_DATA_DIRS includes the profile share directory
