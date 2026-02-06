@@ -89,10 +89,5 @@ bindkey "^Y" autosuggest-accept
 
 source <(fzf --zsh)
 
-# Auto-start Hyprland on TTY1
-if [ -z "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ] && [ "$XDG_VTNR" = 1 ]; then
-  start-hyprland
-fi
-
 # Fish-like syntax highlighting (must be sourced at the end)
 sourceifexists /run/current-system/sw/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

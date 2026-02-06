@@ -228,6 +228,8 @@
 
   programs.hyprland.enable = true;
 
+  services.xserver.displayManager.gdm.enable = true;
+
   age.secrets = {
     wifi-soft.file = ../secrets/wifi-soft.age;
     wifi-iphone-de-zeus.file = ../secrets/wifi-iphone-de-zeus.age;
