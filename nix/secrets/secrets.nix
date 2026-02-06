@@ -14,4 +14,5 @@ in
   "openai-api-key.age".publicKeys = allMachines;
   "gemini-api-key.age".publicKeys = allMachines;
   "wifi-soft.age".publicKeys = allLinux;
+  "wifi-iphone-de-zeus.age".publicKeys = allLinux;
 }
