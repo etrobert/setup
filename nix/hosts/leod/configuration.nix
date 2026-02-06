@@ -11,7 +11,7 @@
   ];
 
   boot.loader = {
-    systemd-boot.configurationLimit = 2;
+    systemd-boot.configurationLimit = 5;
 
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
