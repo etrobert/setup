@@ -24,34 +24,36 @@ in
   # so app launchers (wofi, rofi) can find .desktop files
   xdg.mime.enable = true;
 
-  services.mpd = {
-    enable = true;
-    musicDirectory = "${config.home.homeDirectory}/sync/music";
-    extraConfig = ''
-      restore_paused "yes"
-      auto_update "yes"
+  services = {
+    mpd = {
+      enable = true;
+      musicDirectory = "${config.home.homeDirectory}/sync/music";
+      extraConfig = ''
+        restore_paused "yes"
+        auto_update "yes"
 
-      audio_output {
-        type "pipewire"
-        name "PipeWire"
-      }
-    '';
-  };
-
-  services.mpdris2 = {
-    enable = true;
-    notifications = true;
-  };
-
-  services.hypridle = {
-    enable = true;
-    settings = {
-      listener = [
-        {
-          timeout = 900; # 15 minutes
-          on-timeout = "systemctl suspend";
+        audio_output {
+          type "pipewire"
+          name "PipeWire"
         }
-      ];
+      '';
+    };
+
+    mpdris2 = {
+      enable = true;
+      notifications = true;
+    };
+
+    hypridle = {
+      enable = true;
+      settings = {
+        listener = [
+          {
+            timeout = 900; # 15 minutes
+            on-timeout = "systemctl suspend";
+          }
+        ];
+      };
     };
   };
 }
