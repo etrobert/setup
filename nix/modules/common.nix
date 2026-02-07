@@ -33,6 +33,7 @@
     bat
     btop
     bun
+    chromium
     claude-code
     codex # Lightweight coding agent that runs in your terminal
     difftastic
