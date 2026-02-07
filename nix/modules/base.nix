@@ -1,6 +1,5 @@
 {
   pkgs,
-  pronto,
   ...
 }:
 {
@@ -15,7 +14,6 @@
   };
 
   environment.systemPackages = with pkgs; [
-    pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
     bat
     btop
     difftastic

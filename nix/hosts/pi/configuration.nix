@@ -1,7 +1,10 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/base.nix
+  ];
 
   system.activationScripts.nixos-symlink.text = ''
     ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
@@ -11,11 +14,6 @@
   boot.loader.grub.enable = false;
   # Enables the generation of /boot/extlinux/extlinux.conf
   boot.loader.generic-extlinux-compatible.enable = true;
-
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
 
   networking.hostName = "pi";
 
@@ -37,13 +35,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
-
-  environment.systemPackages = with pkgs; [
-    git
-    neovim
-    vim
-    wget
-  ];
 
   services.openssh.enable = true;
 
