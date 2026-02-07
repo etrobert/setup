@@ -91,6 +91,7 @@
     {
       nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
         pi = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
           modules = [ ./hosts/pi/configuration.nix ];
         };
       };
