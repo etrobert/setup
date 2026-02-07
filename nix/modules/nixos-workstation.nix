@@ -1,10 +1,9 @@
 { pkgs, ... }:
 {
-  imports = [ ./workstation.nix ];
-
-  system.activationScripts.nixos-symlink.text = ''
-    ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
-  '';
+  imports = [
+    ./nixos-base.nix
+    ./workstation.nix
+  ];
 
   boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
   boot.kernelModules = [ "ddcci-backlight" ];
@@ -71,65 +70,42 @@
     };
   };
 
-  time.timeZone = "Europe/Berlin";
-
-  i18n.defaultLocale = "en_US.UTF-8";
-
   security.rtkit.enable = true;
 
-  # Configure keymap in X11
-  services = {
-    xserver.xkb = {
-      layout = "us";
-      variant = "";
-      options = "ctrl:nocaps";
-    };
-
-    syncthing = {
-      enable = true;
-      user = "soft";
-      dataDir = "/home/soft";
-      openDefaultPorts = true;
-      settings = {
-        options.urAccepted = -1; # Disable usage reporting/telemetry
-        devices = {
-          "phone" = {
-            id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
-          };
-          "leod" = {
-            id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
-          };
-          "tower" = {
-            id = "3IIJQ3X-2BY72RR-YVNBZBQ-OAB6PM5-SPS3WPG-MCPTFVD-YSQ33SS-X4Q5DA3";
-          };
+  services.syncthing = {
+    enable = true;
+    user = "soft";
+    dataDir = "/home/soft";
+    openDefaultPorts = true;
+    settings = {
+      options.urAccepted = -1; # Disable usage reporting/telemetry
+      devices = {
+        "phone" = {
+          id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
         };
-        folders = {
-          "sync" = {
-            path = "/home/soft/sync";
-            devices = [
-              "phone"
-              "leod"
-              "tower"
-            ];
-            versioning = {
-              type = "staggered";
-              params.maxAge = "2592000"; # 30 days
-            };
+        "leod" = {
+          id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
+        };
+        "tower" = {
+          id = "3IIJQ3X-2BY72RR-YVNBZBQ-OAB6PM5-SPS3WPG-MCPTFVD-YSQ33SS-X4Q5DA3";
+        };
+      };
+      folders = {
+        "sync" = {
+          path = "/home/soft/sync";
+          devices = [
+            "phone"
+            "leod"
+            "tower"
+          ];
+          versioning = {
+            type = "staggered";
+            params.maxAge = "2592000"; # 30 days
           };
         };
       };
     };
-
-    openssh.enable = true;
   };
-
-  console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
-
-  nix.gc.dates = "daily";
-
-  nix.settings.auto-optimise-store = true;
-
-  zramSwap.enable = true;
 
   security.sudo.extraRules = [
     {
@@ -143,18 +119,7 @@
     }
   ];
 
-  users.users.soft = {
-    isNormalUser = true;
-    description = "Etienne";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
-    shell = pkgs.zsh;
-    packages = [ ];
-  };
-
-  # NixOS-specific packages
+  # NixOS workstation packages
   environment.systemPackages = with pkgs; [
     (import ./strip-json-comments-cli { inherit pkgs; })
     # See https://github.com/NixOS/nixpkgs/issues/436214
@@ -228,7 +193,7 @@
 
   programs.hyprland.enable = true;
 
-  services.xserver.displayManager.gdm.enable = true;
+  services.displayManager.gdm.enable = true;
 
   age.secrets = {
     wifi-soft.file = ../secrets/wifi-soft.age;

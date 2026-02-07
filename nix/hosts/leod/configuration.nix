@@ -6,7 +6,7 @@
 
 {
   imports = [
-    ../../modules/nixos.nix
+    ../../modules/nixos-workstation.nix
     ./hardware-configuration.nix
   ];
 
