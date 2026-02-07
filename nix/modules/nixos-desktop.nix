@@ -181,6 +181,4 @@
     wifi-soft.file = ../secrets/wifi-soft.age;
     wifi-iphone-de-zeus.file = ../secrets/wifi-iphone-de-zeus.age;
   };
-
-  home-manager.users.soft = import ./home/nixos-desktop.nix;
 }
