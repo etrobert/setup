@@ -78,7 +78,6 @@
       nixosHosts = [
         "tower"
         "leod"
-        "pi"
       ];
 
       darwinHosts = [ "aaron" ];
@@ -90,7 +89,11 @@
       ];
     in
     {
-      nixosConfigurations = genAttrs nixosHosts mkNixosHost;
+      nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
+        pi = nixpkgs.lib.nixosSystem {
+          modules = [ ./hosts/pi/configuration.nix ];
+        };
+      };
 
       darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
 
@@ -124,11 +127,6 @@
         {
           "soft@tower" = mkLinuxHome;
           "soft@leod" = mkLinuxHome;
-          "soft@pi" = mkHome {
-            system = "aarch64-linux";
-            module = ./modules/home/linux.nix;
-            username = "soft";
-          };
           "soft@aaron" = mkDarwinHome;
           "etiennerobert@aaron" = mkHome {
             system = "aarch64-darwin";
