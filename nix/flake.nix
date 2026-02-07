@@ -78,17 +78,19 @@
       nixosHosts = [
         "tower"
         "leod"
+        "pi"
       ];
 
       darwinHosts = [ "aaron" ];
+
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
     in
     {
-      nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
-        pi = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          modules = [ ./hosts/pi/configuration.nix ];
-        };
-      };
+      nixosConfigurations = genAttrs nixosHosts mkNixosHost;
 
       darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
 
@@ -122,6 +124,11 @@
         {
           "soft@tower" = mkLinuxHome;
           "soft@leod" = mkLinuxHome;
+          "soft@pi" = mkHome {
+            system = "aarch64-linux";
+            module = ./modules/home/linux.nix;
+            username = "soft";
+          };
           "soft@aaron" = mkDarwinHome;
           "etiennerobert@aaron" = mkHome {
             system = "aarch64-darwin";
@@ -130,11 +137,11 @@
           };
         };
 
-      formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
+      formatter = genAttrs systems (
         system: nixpkgs.legacyPackages.${system}.nixfmt
       );
 
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
+      devShells = genAttrs systems (system: {
         default = nixpkgs.legacyPackages.${system}.mkShell {
           packages = with nixpkgs.legacyPackages.${system}; [
             statix
@@ -144,7 +151,7 @@
         };
       });
 
-      checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
+      checks = genAttrs systems (system: {
         statix =
           nixpkgs.legacyPackages.${system}.runCommand "statix-check"
             { nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.statix ]; }
