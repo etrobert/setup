@@ -39,8 +39,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    vim
+    git
     neovim
+    vim
     wget
   ];
 
