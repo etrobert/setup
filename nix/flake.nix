@@ -83,7 +83,12 @@
       darwinHosts = [ "aaron" ];
     in
     {
-      nixosConfigurations = genAttrs nixosHosts mkNixosHost;
+      nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
+        pi = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          modules = [ ./hosts/pi/configuration.nix ];
+        };
+      };
 
       darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
 
