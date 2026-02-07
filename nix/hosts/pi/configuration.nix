@@ -19,23 +19,17 @@
 
   networking.hostName = "pi";
 
-  # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  console.useXkbConfig = true; # use xkb.options in tty.
+  console.useXkbConfig = true;
 
   services.xserver.xkb.options = "eurosign:e,ctrl:nocaps";
 
   users.users.soft = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ];
   };
 
   environment.systemPackages = with pkgs; [
@@ -48,5 +42,4 @@
   services.openssh.enable = true;
 
   system.stateVersion = "25.11";
-
 }
