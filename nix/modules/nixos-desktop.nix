@@ -182,5 +182,5 @@
     wifi-iphone-de-zeus.file = ../secrets/wifi-iphone-de-zeus.age;
   };
 
-  home-manager.users.soft = import ./home/desktop.nix;
+  home-manager.users.soft = import ./home/nixos-desktop.nix;
 }
