@@ -3,6 +3,10 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
+  system.activationScripts.nixos-symlink.text = ''
+    ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
+  '';
+
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
   boot.loader.grub.enable = false;
   # Enables the generation of /boot/extlinux/extlinux.conf
