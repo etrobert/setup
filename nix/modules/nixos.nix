@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  imports = [ ./common.nix ];
+  imports = [ ./workstation.nix ];
 
   system.activationScripts.nixos-symlink.text = ''
     ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos

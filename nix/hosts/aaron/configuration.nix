@@ -7,7 +7,7 @@ let
   );
 in
 {
-  imports = [ ../../modules/common.nix ];
+  imports = [ ../../modules/workstation.nix ];
 
   allowedUnfreePackages = [
     "betterdisplay"
