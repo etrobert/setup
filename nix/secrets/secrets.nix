@@ -3,10 +3,13 @@ let
   tower = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
   leod = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgObi3D4k+OGPizrmEnHVKRcl6tuMsrAyP54LL6SVRi";
   aaron = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/Y38NV8a/9rfDq+7W1UFfAFDo8SkwQ5JAl/U24u0ne";
+  # TODO: Replace mock key
+  pi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPlaceholderKeyReplaceWithRealPiHostKey000";
 
   allLinux = [
     tower
     leod
+    pi
   ];
   allMachines = allLinux ++ [ aaron ];
 in
