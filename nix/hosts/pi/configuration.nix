@@ -15,7 +15,14 @@
 
   networking.networkmanager.enable = true;
 
-  services.home-assistant.enable = true;
+  services.home-assistant = {
+    enable = true;
+    config = {
+      # Includes dependencies for a basic setup
+      # https://www.home-assistant.io/integrations/default_config/
+      default_config = { };
+    };
+  };
 
   system.stateVersion = "25.11";
 }
