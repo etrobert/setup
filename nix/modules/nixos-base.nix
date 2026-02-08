@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   imports = [ ./base.nix ];
 
@@ -26,6 +26,13 @@
   zramSwap.enable = true;
 
   services.openssh.enable = true;
+
+  age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
+
+  services.tailscale = {
+    enable = true;
+    authKeyFile = config.age.secrets.tailscale-authkey.path;
+  };
 
   users.users.soft = {
     isNormalUser = true;
