@@ -70,3 +70,5 @@ falias() {
 nixplatforms() {
   nix eval nixpkgs#"$1".meta.platforms --json
 }
+
+alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
