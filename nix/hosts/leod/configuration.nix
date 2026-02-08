@@ -7,6 +7,7 @@
 {
   imports = [
     ../../modules/nixos-workstation.nix
+    ../../modules/home-assistant.nix
     ./hardware-configuration.nix
   ];
 
@@ -20,20 +21,6 @@
   networking.hostName = "leod"; # Define your hostname.
 
   hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
-
-  services.home-assistant = {
-    enable = true;
-    extraComponents = [
-      "hue_ble"
-      "led_ble"
-      "ibeacon"
-    ];
-    config = {
-      # Includes dependencies for a basic setup
-      # https://www.home-assistant.io/integrations/default_config/
-      default_config = { };
-    };
-  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

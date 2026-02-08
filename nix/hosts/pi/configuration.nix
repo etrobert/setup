@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos-base.nix
+    ../../modules/home-assistant.nix
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -14,20 +15,6 @@
   networking.hostName = "pi";
 
   networking.networkmanager.enable = true;
-
-  services.home-assistant = {
-    enable = true;
-    extraComponents = [
-      "hue_ble"
-      "led_ble"
-      "ibeacon"
-    ];
-    config = {
-      # Includes dependencies for a basic setup
-      # https://www.home-assistant.io/integrations/default_config/
-      default_config = { };
-    };
-  };
 
   system.stateVersion = "25.11";
 }
