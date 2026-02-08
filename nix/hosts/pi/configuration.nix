@@ -15,5 +15,7 @@
 
   networking.networkmanager.enable = true;
 
+  services.home-assistant.enable = true;
+
   system.stateVersion = "25.11";
 }
