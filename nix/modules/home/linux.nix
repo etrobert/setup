@@ -1,6 +1,15 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
+
+  albumArtWallpaperScript = pkgs.writeShellScript "album-art-wallpaper" ''
+    ${pkgs.playerctl}/bin/playerctl --follow metadata --format '{{mpris:artUrl}}' | while read -r url; do
+      [ -z "$url" ] && continue
+      ${pkgs.curl}/bin/curl -sL "$url" -o /tmp/albumart.jpg
+      ${pkgs.hyprland}/bin/hyprctl hyprpaper preload /tmp/albumart.jpg
+      ${pkgs.hyprland}/bin/hyprctl hyprpaper wallpaper ",/tmp/albumart.jpg"
+    done
+  '';
 in
 {
   imports = [ ./common.nix ];
@@ -55,5 +64,11 @@ in
         ];
       };
     };
+  };
+
+  systemd.user.services.album-art-wallpaper = {
+    Unit.PartOf = [ "graphical-session.target" ];
+    Service.ExecStart = "${albumArtWallpaperScript}";
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 }
