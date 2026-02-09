@@ -23,6 +23,8 @@ in
 
   home.homeDirectory = "/home/${config.home.username}";
 
+  home.sessionVariables.BROWSER = "firefox";
+
   home.file = {
     ".alias.linux".source = ../../../alias/.alias.linux;
 
