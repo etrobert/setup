@@ -7,7 +7,6 @@
 {
   imports = [
     ../../modules/nixos-workstation.nix
-    ../../modules/home-assistant.nix
     ./hardware-configuration.nix
   ];
 
