@@ -44,6 +44,7 @@ in
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
+      # TODO: Check if this is necessary and if it doesn't default to browser anyway
       "video/mp4" = [ "firefox.desktop" ];
       "x-scheme-handler/sgnl" = [ "signal.desktop" ];
       "x-scheme-handler/signalcaptcha" = [ "signal.desktop" ];
