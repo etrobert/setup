@@ -1,6 +1,8 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
+  environment.systemPackages = [ pkgs.ghostty.terminfo ];
+
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos-base.nix
