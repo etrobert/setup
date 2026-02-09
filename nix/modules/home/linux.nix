@@ -35,6 +35,14 @@ in
   # Ensures XDG_DATA_DIRS includes the profile share directory
   # so app launchers (wofi, rofi) can find .desktop files
   xdg.mime.enable = true;
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "video/mp4" = [ "firefox.desktop" ];
+      "x-scheme-handler/sgnl" = [ "signal.desktop" ];
+      "x-scheme-handler/signalcaptcha" = [ "signal.desktop" ];
+    };
+  };
 
   services = {
     mpd = {
