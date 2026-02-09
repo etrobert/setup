@@ -4,7 +4,11 @@ let
 
   albumArtWallpaper = pkgs.writeShellApplication {
     name = "album-art-wallpaper";
-    runtimeInputs = with pkgs; [ playerctl curl hyprland ];
+    runtimeInputs = with pkgs; [
+      playerctl
+      curl
+      hyprland
+    ];
     text = ''
       playerctl --follow metadata --format '{{mpris:artUrl}}' | while read -r url; do
         [ -z "$url" ] && continue
