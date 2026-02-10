@@ -74,6 +74,7 @@
     (writeShellApplication {
       name = "pm";
       runtimeInputs = [
+        bashInteractive # provides sh for npm to spawn scripts
         coreutils
         nodejs_latest
         pnpm
