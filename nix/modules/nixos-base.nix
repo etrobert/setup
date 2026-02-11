@@ -6,7 +6,8 @@
     ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
   '';
 
-  time.timeZone = "Europe/Berlin";
+  # Automatic timezone based on geolocation
+  services.automatic-timezoned.enable = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
 
