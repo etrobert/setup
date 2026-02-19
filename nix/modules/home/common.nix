@@ -20,7 +20,7 @@ in
 
       ".config/nvim".source = symlink "nvim/.config/nvim";
 
-      ".alias".source = ../../../alias/.alias;
+      ".alias".source = symlink "alias/.alias";
     };
 
     sessionVariablesExtra = ''
