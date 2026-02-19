@@ -26,7 +26,7 @@ in
   home.sessionVariables.BROWSER = "firefox";
 
   home.file = {
-    ".alias.linux".source = ../../../alias/.alias.linux;
+    ".alias.linux".source = symlink "alias/.alias.linux";
 
     ".config/waybar/config.jsonc".source = symlink "waybar/.config/waybar/config.jsonc";
     ".config/waybar/style.css".source = symlink "waybar/.config/waybar/style.css";
