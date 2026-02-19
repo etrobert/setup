@@ -19,6 +19,8 @@
 
   networking.hostName = "leod"; # Define your hostname.
 
+  services.fprintd.enable = true;
+
   hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
   # This value determines the NixOS release from which the default

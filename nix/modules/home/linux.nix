@@ -59,6 +59,9 @@ in
         hide_cursor = true;
         grace = 5;
       };
+      auth = {
+        "fingerprint:enabled" = true;
+      };
       background = [
         {
           path = "screenshot";
