@@ -46,6 +46,11 @@ else
   project_path=$HOME/work/$project
 fi
 
+if [ ! -d "$project_path" ]; then
+  echo "Error: $project_path does not exist" >&2
+  exit 1
+fi
+
 project=${project/./_}
 
 if ! tmux has-session -t="$project" 2>/dev/null; then
