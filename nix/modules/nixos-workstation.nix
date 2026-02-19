@@ -192,6 +192,7 @@
   ];
 
   programs.hyprland.enable = true;
+  programs.hyprlock.enable = true;
 
   services.displayManager.gdm.enable = true;
 
