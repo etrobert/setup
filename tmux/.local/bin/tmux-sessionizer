@@ -33,6 +33,7 @@ else
   project=$({
     find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
     echo "setup"
+    echo "doc"
   } | fzf)
 fi
 
@@ -42,6 +43,8 @@ fi
 
 if [ "$project" = "setup" ]; then
   project_path=$HOME/setup
+elif [ "$project" = "doc" ]; then
+  project_path=$HOME/sync/doc
 else
   project_path=$HOME/work/$project
 fi
