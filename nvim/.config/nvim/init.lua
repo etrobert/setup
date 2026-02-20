@@ -33,6 +33,8 @@ vim.pack.add({
 	"https://github.com/alex-popov-tech/store.nvim",
 
 	"https://github.com/pwntester/octo.nvim",
+
+	"https://github.com/github/copilot.vim",
 })
 
 vim.cmd.packadd("nvim.undotree")
