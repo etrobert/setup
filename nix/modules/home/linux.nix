@@ -57,7 +57,6 @@ in
     settings = {
       general = {
         hide_cursor = true;
-        grace = 5;
       };
       auth = {
         "fingerprint:enabled" = true;
