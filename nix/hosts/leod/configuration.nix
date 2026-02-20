@@ -10,6 +10,8 @@
     ./hardware-configuration.nix
   ];
 
+  boot.kernelParams = [ "mem_sleep_default=deep" ];
+
   boot.loader = {
     systemd-boot.configurationLimit = 3;
 
