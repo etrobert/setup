@@ -76,15 +76,15 @@ in
           font_color = "rgb(cdd6f4)";
 
           placeholder_text = "";
-          position = "0, -20";
+          position = "0, -40";
         }
       ];
       label = [
         {
           text = "$TIME";
-          font_family = "FiraCode Nerd Font";
+          font_family = "FiraCode Nerd Font SemBd";
           color = "rgb(cdd6f4)";
-          font_size = 64;
+          font_size = 124;
           position = "0, 80"; # offset from center
         }
       ];
