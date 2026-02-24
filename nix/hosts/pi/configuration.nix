@@ -26,5 +26,9 @@
 
   services.tailscale.extraUpFlags = [ "--advertise-exit-node" ];
 
+  users.users.soft.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHXiLGjBlPoqRSzJ7KfEyMzJ3JRBqelOepsiL4ri9OqW soft@leod"
+  ];
+
   system.stateVersion = "25.11";
 }
