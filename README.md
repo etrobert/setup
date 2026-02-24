@@ -14,7 +14,7 @@ Set `zen.theme.content-element-separation` from 8 to 4. Set
 
 ### NixOS
 
-setup: `ln /home/soft/setup/nix /etc/nixos`
+setup: `sudo nixos-rebuild switch --flake /home/soft/setup/nix`
 
 then can do `sudo nixos-rebuild switch`
 
