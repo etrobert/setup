@@ -155,6 +155,7 @@
         ddcutil
         hyprland
         libnotify
+        gnugrep
         jq
         util-linux # flock
       ];
