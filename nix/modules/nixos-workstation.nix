@@ -152,12 +152,10 @@
       runtimeInputs = [
         coreutils # cut & tr
         brightnessctl
-        ddcutil
         hyprland
         libnotify
         gnugrep
         jq
-        util-linux # flock
       ];
       inheritPath = false;
       text = builtins.readFile ../../hyprland/.local/bin/brightness-control;
