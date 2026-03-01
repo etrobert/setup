@@ -184,6 +184,7 @@
     playerctl
     signal-desktop
     slurp
+    usbutils # provides lsusb
     waybar
     wl-clipboard
     wofi
