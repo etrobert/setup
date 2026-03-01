@@ -181,6 +181,7 @@
     mako
     mpc # Minimalist command line interface to MPD
     pavucontrol
+    pimsync
     playerctl
     signal-desktop
     slurp
@@ -198,5 +199,9 @@
   age.secrets = {
     wifi-soft.file = ../secrets/wifi-soft.age;
     wifi-iphone-de-zeus.file = ../secrets/wifi-iphone-de-zeus.age;
+    apple-pimsync-password = {
+      owner = "soft";
+      file = ../secrets/apple-pimsync-password.age;
+    };
   };
 }

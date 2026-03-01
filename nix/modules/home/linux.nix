@@ -33,6 +33,8 @@ in
 
     ".config/mako/config".source = ../../../mako/.config/mako/config;
 
+    ".config/pimsync/pimsync.conf".source = symlink "pimsync/.config/pimsync/pimsync.conf";
+
     ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
     ".config/hypr/hyprpaper.conf".source = symlink "hyprland/.config/hypr/hyprpaper.conf";
     ".config/hypr/saint-levant.jpg".source = ../../../hyprland/.config/hypr/saint-levant.jpg;

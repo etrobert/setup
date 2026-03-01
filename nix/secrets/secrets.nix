@@ -19,4 +19,5 @@ in
   "wifi-soft.age".publicKeys = allLinux;
   "wifi-iphone-de-zeus.age".publicKeys = allLinux;
   "tailscale-authkey.age".publicKeys = allMachines;
+  "apple-pimsync-password.age".publicKeys = allLinux; # TODO: Restrict to linux workstations
 }
