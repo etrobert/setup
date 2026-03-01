@@ -87,6 +87,13 @@ in
           font_size = 124;
           position = "0, 80"; # offset from center
         }
+        {
+          text = "cmd[update:60000] date \"+%a %d/%m\"";
+          font_family = "FiraCode Nerd Font SemBd";
+          color = "rgb(cdd6f4)";
+          font_size = 24;
+          position = "0, 180"; # offset from center
+        }
       ];
     };
   };
