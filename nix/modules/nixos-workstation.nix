@@ -189,6 +189,7 @@
     hyprpaper
     mako
     mpc # Minimalist command line interface to MPD
+    nix-index
     pavucontrol
     pimsync
     playerctl
@@ -202,6 +203,10 @@
 
   programs.hyprland.enable = true;
   programs.hyprlock.enable = true;
+
+  programs.zsh.interactiveShellInit = ''
+    source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+  '';
 
   services.displayManager.gdm.enable = true;
 
