@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+for f in ~/.local/share/contacts/card/*.vcf; do
+  name=$(grep "^FN:" "$f" | head -1 | cut -d: -f2 | tr -d '\r' || true)
+  bday=$(grep "^BDAY" "$f" | head -1 | cut -d: -f2 | cut -d- -f2- | tr -d '\r' || true)
+  [ -n "$bday" ] && echo "$bday  $name"
+done
