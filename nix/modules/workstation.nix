@@ -53,6 +53,7 @@
       runtimeInputs = [
         coreutils
         curl
+        neovim # for editing the commit
         git
         gnused
         jq
