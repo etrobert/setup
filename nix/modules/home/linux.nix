@@ -21,23 +21,25 @@ in
 {
   imports = [ ./common.nix ];
 
-  home.homeDirectory = "/home/${config.home.username}";
+  home = {
+    homeDirectory = "/home/${config.home.username}";
 
-  home.sessionVariables.BROWSER = "firefox";
+    sessionVariables.BROWSER = "firefox";
 
-  home.file = {
-    ".alias.linux".source = symlink "alias/.alias.linux";
+    file = {
+      ".alias.linux".source = symlink "alias/.alias.linux";
 
-    ".config/waybar/config.jsonc".source = symlink "waybar/.config/waybar/config.jsonc";
-    ".config/waybar/style.css".source = symlink "waybar/.config/waybar/style.css";
+      ".config/waybar/config.jsonc".source = symlink "waybar/.config/waybar/config.jsonc";
+      ".config/waybar/style.css".source = symlink "waybar/.config/waybar/style.css";
 
-    ".config/mako/config".source = ../../../mako/.config/mako/config;
+      ".config/mako/config".source = ../../../mako/.config/mako/config;
 
-    ".config/pimsync/pimsync.conf".source = symlink "pimsync/.config/pimsync/pimsync.conf";
+      ".config/pimsync/pimsync.conf".source = symlink "pimsync/.config/pimsync/pimsync.conf";
 
-    ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
-    ".config/hypr/hyprpaper.conf".source = symlink "hyprland/.config/hypr/hyprpaper.conf";
-    ".config/hypr/saint-levant.jpg".source = ../../../hyprland/.config/hypr/saint-levant.jpg;
+      ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
+      ".config/hypr/hyprpaper.conf".source = symlink "hyprland/.config/hypr/hyprpaper.conf";
+      ".config/hypr/saint-levant.jpg".source = ../../../hyprland/.config/hypr/saint-levant.jpg;
+    };
   };
 
   # Ensures XDG_DATA_DIRS includes the profile share directory

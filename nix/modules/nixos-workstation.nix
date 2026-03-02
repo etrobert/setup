@@ -8,20 +8,59 @@
   boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
   boot.kernelModules = [ "ddcci-backlight" ];
 
-  # Register DDC/CI devices on I2C buses for backlight control
-  # (auto-probing is unavailable on kernel 6.8+)
-  # Source https://wiki.nixos.org/wiki/Backlight#DDC/CI
-  services.udev.extraRules =
-    let
-      bash = "${pkgs.bash}/bin/bash";
-      registerDdcci = ddcciDev: ''
-        SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${ddcciDev}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > /sys/%p/new_device'"
-      '';
-    in
-    builtins.concatStringsSep "\n" [
-      (registerDdcci "AMDGPU DM i2c hw bus*") # AMD GPUs
-      (registerDdcci "AUX *") # Intel GPUs (DisplayPort)
-    ];
+  services = {
+    # Register DDC/CI devices on I2C buses for backlight control
+    # (auto-probing is unavailable on kernel 6.8+)
+    # Source https://wiki.nixos.org/wiki/Backlight#DDC/CI
+    udev.extraRules =
+      let
+        bash = "${pkgs.bash}/bin/bash";
+        registerDdcci = ddcciDev: ''
+          SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${ddcciDev}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > /sys/%p/new_device'"
+        '';
+      in
+      builtins.concatStringsSep "\n" [
+        (registerDdcci "AMDGPU DM i2c hw bus*") # AMD GPUs
+        (registerDdcci "AUX *") # Intel GPUs (DisplayPort)
+      ];
+
+    syncthing = {
+      enable = true;
+      user = "soft";
+      dataDir = "/home/soft";
+      openDefaultPorts = true;
+      settings = {
+        options.urAccepted = -1; # Disable usage reporting/telemetry
+        devices = {
+          "phone" = {
+            id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
+          };
+          "leod" = {
+            id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
+          };
+          "tower" = {
+            id = "3IIJQ3X-2BY72RR-YVNBZBQ-OAB6PM5-SPS3WPG-MCPTFVD-YSQ33SS-X4Q5DA3";
+          };
+        };
+        folders = {
+          "sync" = {
+            path = "/home/soft/sync";
+            devices = [
+              "phone"
+              "leod"
+              "tower"
+            ];
+            versioning = {
+              type = "staggered";
+              params.maxAge = "2592000"; # 30 days
+            };
+          };
+        };
+      };
+    };
+
+    displayManager.gdm.enable = true;
+  };
 
   hardware = {
     # Enable I2C for ddcutil (external monitor brightness)
@@ -71,41 +110,6 @@
   };
 
   security.rtkit.enable = true;
-
-  services.syncthing = {
-    enable = true;
-    user = "soft";
-    dataDir = "/home/soft";
-    openDefaultPorts = true;
-    settings = {
-      options.urAccepted = -1; # Disable usage reporting/telemetry
-      devices = {
-        "phone" = {
-          id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
-        };
-        "leod" = {
-          id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
-        };
-        "tower" = {
-          id = "3IIJQ3X-2BY72RR-YVNBZBQ-OAB6PM5-SPS3WPG-MCPTFVD-YSQ33SS-X4Q5DA3";
-        };
-      };
-      folders = {
-        "sync" = {
-          path = "/home/soft/sync";
-          devices = [
-            "phone"
-            "leod"
-            "tower"
-          ];
-          versioning = {
-            type = "staggered";
-            params.maxAge = "2592000"; # 30 days
-          };
-        };
-      };
-    };
-  };
 
   security.sudo.extraRules = [
     {
@@ -201,14 +205,14 @@
     wofi
   ];
 
-  programs.hyprland.enable = true;
-  programs.hyprlock.enable = true;
+  programs = {
+    hyprland.enable = true;
+    hyprlock.enable = true;
 
-  programs.zsh.interactiveShellInit = ''
-    source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-  '';
-
-  services.displayManager.gdm.enable = true;
+    zsh.interactiveShellInit = ''
+      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+    '';
+  };
 
   age.secrets = {
     wifi-soft.file = ../secrets/wifi-soft.age;
