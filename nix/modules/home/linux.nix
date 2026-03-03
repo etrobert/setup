@@ -98,6 +98,13 @@ in
           font_size = 24;
           position = "0, 180"; # offset from center
         }
+        {
+          text = "cmd[update:60000] birthdays";
+          font_family = "FiraCode Nerd Font SemBd";
+          color = "rgb(cdd6f4)";
+          font_size = 24;
+          position = "0, -200";
+        }
       ];
     };
   };
