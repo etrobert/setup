@@ -47,6 +47,7 @@
     ollama
     opencode
     prettierd
+    python3
     spotify
     stylua
     tree-sitter
