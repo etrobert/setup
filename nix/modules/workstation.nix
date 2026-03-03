@@ -23,6 +23,7 @@
     adwaita-icon-theme
     audacity
     bash-language-server
+    black # python formatter
     bun
     chromium
     claude-code
@@ -37,6 +38,7 @@
     home-manager
     hyperfine # Command-line benchmarking tool
     imagemagick # for image rendering in nvim using snacks.image
+    isort # python import sorter
     jqp # TUI playground to experiment with jq
     libnotify
     lua-language-server
