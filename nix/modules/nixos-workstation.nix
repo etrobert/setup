@@ -175,15 +175,9 @@
       inheritPath = false;
       text = builtins.readFile ../../hyprland/.local/bin/volume-control;
     })
-    (writeShellApplication {
-      name = "birthdays";
-      runtimeInputs = [
-        coreutils
-        gnugrep
-      ];
-      inheritPath = false;
-      text = builtins.readFile ../../pimsync/.local/bin/birthdays;
-    })
+    (writers.writePython3Bin "birthdays" {
+      libraries = [ python3Packages.vobject ];
+    } (builtins.readFile ../../pimsync/.local/bin/birthdays.py))
     linuxPackages.cpupower
     brightnessctl
     ddcutil
