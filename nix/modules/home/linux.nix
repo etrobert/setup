@@ -99,7 +99,7 @@ in
           position = "0, 180"; # offset from center
         }
         {
-          text = "cmd[update:60000] birthdays";
+          text = "cmd[update:60000] /run/current-system/sw/bin/birthdays";
           font_family = "FiraCode Nerd Font SemBd";
           color = "rgb(cdd6f4)";
           font_size = 24;
