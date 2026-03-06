@@ -151,6 +151,7 @@
     })
     linuxPackages.cpupower
     brightnessctl
+    chromium
     ddcutil
     ghostty
     grim

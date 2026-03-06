@@ -25,7 +25,6 @@
     bash-language-server
     black # python formatter
     bun
-    chromium
     claude-code
     codex # Lightweight coding agent that runs in your terminal
     discord
