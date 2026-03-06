@@ -12,6 +12,7 @@ require("conform").setup({
 		html = { "prettierd", "prettier", stop_after_first = true },
 		markdown = { "prettierd", "prettier", stop_after_first = true },
 		css = { "prettierd", "prettier", stop_after_first = true },
+		yaml = { "prettierd", "prettier", stop_after_first = true },
 		swift = { "swiftformat" },
 		sh = { "shfmt" },
 		fish = { "fish_indent" },
