@@ -19,7 +19,7 @@ jobs:
       - uses: DeterminateSystems/determinate-nix-action@v3
 
       - name: Update flake inputs
-        run: nix flake update --flake ./nix
+        run: nix flake update --flake ./nix --accept-flake-config
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
