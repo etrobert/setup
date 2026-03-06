@@ -20,7 +20,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Flake Check
-        run: nix flake check
+        run: nix flake check ./nix
 
   build:
     name: Build ${{ matrix.host }}
@@ -48,6 +48,6 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         run: |
-          nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
+          nix build ./nix#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
             --no-link \
             --print-build-logs
