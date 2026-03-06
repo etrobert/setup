@@ -178,6 +178,12 @@
     (writers.writePython3Bin "birthdays" {
       libraries = [ python3Packages.vobject ];
     } (builtins.readFile ../../pimsync/.local/bin/birthdays.py))
+    (writeShellApplication {
+      name = "creme";
+      runtimeInputs = [ mpc ];
+      inheritPath = false;
+      text = builtins.readFile ../../mpd/.local/bin/creme.sh;
+    })
     linuxPackages.cpupower
     brightnessctl
     ddcutil
