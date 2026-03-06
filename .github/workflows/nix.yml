@@ -51,4 +51,6 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         run: |
-          nix build ./nix#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+          nix build ./nix#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
+            --accept-flake-config \
+            --print-build-logs
