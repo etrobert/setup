@@ -26,17 +26,20 @@ jobs:
 
   build:
     name: Build ${{ matrix.host }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     needs: check
     permissions:
       id-token: write
       contents: read
     strategy:
       matrix:
-        host:
-          - tower
-          - leod
-          # - pi # TODO: Fix
+        include:
+          - host: tower
+            runner: ubuntu-latest
+          - host: leod
+            runner: ubuntu-latest
+          - host: pi
+            runner: ubuntu-24.04-arm
           # - aaron # TODO: Fix
       fail-fast: false
 
