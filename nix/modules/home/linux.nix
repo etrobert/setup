@@ -113,6 +113,7 @@ in
     mpd = {
       enable = true;
       musicDirectory = "${config.home.homeDirectory}/sync/music";
+      playlistDirectory = "${config.home.homeDirectory}/sync/playlists";
       extraConfig = ''
         restore_paused "yes"
         auto_update "yes"
