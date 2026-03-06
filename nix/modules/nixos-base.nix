@@ -53,6 +53,9 @@
           "tower" = {
             id = "3IIJQ3X-2BY72RR-YVNBZBQ-OAB6PM5-SPS3WPG-MCPTFVD-YSQ33SS-X4Q5DA3";
           };
+          "pi" = {
+            id = "EOXLGRM-GCJUBN3-6HD656O-KYXFYEX-N425OIL-SLBL7XJ-VN2RSXW-F7VJMAI";
+          };
         };
         folders = {
           "sync" = {
@@ -61,6 +64,7 @@
               "phone"
               "leod"
               "tower"
+              "pi"
             ];
             versioning = {
               type = "staggered";
