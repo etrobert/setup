@@ -24,6 +24,7 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.PATH }}
           commit-message: "chore: update flake inputs"
           title: "chore: update flake inputs"
           body: |
