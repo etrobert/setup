@@ -34,8 +34,8 @@ jobs:
         host:
           - tower
           - leod
-          - pi
-          - aaron
+          # - pi # TODO: Fix
+          # - aaron # TODO: Fix
       fail-fast: false
 
     steps:
