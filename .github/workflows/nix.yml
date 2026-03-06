@@ -22,7 +22,7 @@ jobs:
           use-flakehub: false
 
       - name: Flake Check
-        run: nix flake check ./nix --accept-flake-config
+        run: nix flake check ./nix
 
   build:
     name: Build ${{ matrix.host }}
@@ -52,8 +52,5 @@ jobs:
       - name: Build ${{ matrix.host }}
         run: |
           nix build ./nix#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
-            --accept-flake-config \
             --extra-substituters "https://nix-community.cachix.org" \
-            --extra-trusted-public-keys "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" \
-            --no-link \
-            --print-build-logs
+            --extra-trusted-public-keys "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
