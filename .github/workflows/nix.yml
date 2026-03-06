@@ -1,0 +1,46 @@
+name: Nix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v14
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: Flake Check
+        run: nix flake check
+
+  build:
+    name: Build ${{ matrix.host }}
+    runs-on: ubuntu-latest
+    needs: check
+    strategy:
+      matrix:
+        host:
+          - tower
+          - leod
+          - pi
+          - aaron
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@v14
+
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: Build ${{ matrix.host }}
+        run: |
+          nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
+            --no-link \
+            --print-build-logs
