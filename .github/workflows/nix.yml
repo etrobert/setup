@@ -22,7 +22,7 @@ jobs:
           use-flakehub: false
 
       - name: Flake Check
-        run: nix flake check ./nix
+        run: nix flake check ./nix --accept-flake-config
 
   build:
     name: Build ${{ matrix.host }}
