@@ -36,11 +36,16 @@ jobs:
         include:
           - host: tower
             runner: ubuntu-latest
+            platform: nixos
           - host: leod
             runner: ubuntu-latest
+            platform: nixos
           - host: pi
             runner: ubuntu-24.04-arm
-          # - aaron # TODO: Fix
+            platform: nixos
+          - host: aaron
+            runner: macos-latest
+            platform: darwin
       fail-fast: false
 
     steps:
@@ -54,6 +59,6 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         run: |
-          nix build ./nix#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel \
+          nix build ./nix#${{platform}}Configurations.${{ matrix.host }}.config.system.build.toplevel \
             --accept-flake-config \
             --print-build-logs
