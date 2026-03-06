@@ -1,4 +1,14 @@
 {
+  # Substituters used when building this flake on a machine that has not yet
+  # activated this config (e.g. CI, fresh installs, new machines). On machines
+  # that have already activated this config, nix.settings takes over instead.
+  nixConfig = {
+    extra-substituters = [ "https://nix-community.cachix.org" ];
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
