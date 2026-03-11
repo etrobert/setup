@@ -109,6 +109,8 @@ in
     };
   };
 
+  services.pimsync.enable = true;
+
   services = {
     mpd = {
       enable = true;
