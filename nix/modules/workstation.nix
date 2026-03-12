@@ -42,7 +42,7 @@
     libnotify
     lua-language-server
     nixd
-    nodejs_latest
+    nodejs_24 # nodejs_latest does not always have cache ready
     ollama
     opencode
     prettierd
@@ -79,7 +79,7 @@
       runtimeInputs = [
         bashInteractive # provides sh for npm to spawn scripts
         coreutils
-        nodejs_latest
+        nodejs_24 # nodejs_latest does not always have cache ready
         pnpm
         yarn
       ];
