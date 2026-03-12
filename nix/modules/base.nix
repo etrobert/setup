@@ -57,6 +57,8 @@
     zsh-syntax-highlighting
   ];
 
+  age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
+
   programs.zsh.enable = true;
   # Disable system compinit; we call compinit -u in .zshrc to skip
   # insecure directory warnings caused by Nix store paths.

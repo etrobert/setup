@@ -88,6 +88,13 @@ in
     watch
     raycast
     defaultbrowser
+
+    (writeShellApplication {
+      # This is necessary because the darwin tailscale module does not include authkey option
+      # We use sudo cat because we can't give ownership of the file to both users
+      name = "tailscale-up";
+      text = "tailscale up --authkey \"$(sudo cat /run/agenix/tailscale-authkey)\"";
+    })
   ];
 
   launchd.daemons.caps-lock-to-control = {
@@ -121,6 +128,8 @@ in
       alt + shift - l : skhd -k "shift-right"
     '';
   };
+
+  services.tailscale.enable = true;
 
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;

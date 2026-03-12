@@ -19,8 +19,6 @@
 
   zramSwap.enable = true;
 
-  age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
-
   services = {
     # Configure keymap in X11
     xserver.xkb = {
