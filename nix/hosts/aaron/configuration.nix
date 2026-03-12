@@ -91,9 +91,8 @@ in
 
     (writeShellApplication {
       # This is necessary because the darwin tailscale module does not include authkey option
-      # We use sudo cat because we can't give ownership of the file to both users
       name = "tailscale-up";
-      text = "tailscale up --authkey \"$(sudo cat /run/agenix/tailscale-authkey)\"";
+      text = "tailscale up --authkey \"$(cat /run/agenix/tailscale-authkey)\"";
     })
   ];
 
@@ -140,6 +139,8 @@ in
     openai-api-key.mode = "0440";
     gemini-api-key.group = "admin";
     gemini-api-key.mode = "0440";
+    tailscale-authkey.group = "admin";
+    tailscale-authkey.mode = "0440";
   };
 
   # Used for backwards compatibility, please read the changelog before changing.
