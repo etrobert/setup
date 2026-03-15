@@ -147,20 +147,26 @@
         system: nixpkgs.legacyPackages.${system}.nixfmt
       );
 
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
-        default = nixpkgs.legacyPackages.${system}.mkShell {
-          packages = with nixpkgs.legacyPackages.${system}; [
-            statix
-            deadnix
-            nixfmt
-          ];
-        };
-        pimsync = nixpkgs.legacyPackages.${system}.mkShell {
-          packages = with nixpkgs.legacyPackages.${system}; [
-            (python3.withPackages (ps: [ ps.vobject ]))
-          ];
-        };
-      });
+      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              statix
+              deadnix
+              nixfmt
+            ];
+          };
+          pimsync = pkgs.mkShell {
+            packages = [
+              (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
+            ];
+          };
+        }
+      );
 
       checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
         statix =
