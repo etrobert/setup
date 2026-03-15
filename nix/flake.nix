@@ -168,19 +168,19 @@
         }
       );
 
-      checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
-        statix =
-          nixpkgs.legacyPackages.${system}.runCommand "statix-check"
-            { nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.statix ]; }
-            ''
-              statix check ${self} && touch $out
-            '';
-        deadnix =
-          nixpkgs.legacyPackages.${system}.runCommand "deadnix-check"
-            { nativeBuildInputs = [ nixpkgs.legacyPackages.${system}.deadnix ]; }
-            ''
-              deadnix --fail ${self} && touch $out
-            '';
-      });
+      checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        {
+          statix = pkgs.runCommand "statix-check" { nativeBuildInputs = [ pkgs.statix ]; } ''
+            statix check ${self} && touch $out
+          '';
+          deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
+            deadnix --fail ${self} && touch $out
+          '';
+        }
+      );
     };
 }
