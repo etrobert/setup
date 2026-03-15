@@ -155,6 +155,11 @@
             nixfmt
           ];
         };
+        pimsync = nixpkgs.legacyPackages.${system}.mkShell {
+          packages = with nixpkgs.legacyPackages.${system}; [
+            (python3.withPackages (ps: [ ps.vobject ]))
+          ];
+        };
       });
 
       checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (system: {
