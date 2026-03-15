@@ -16,6 +16,7 @@
       "root"
       "@wheel"
     ];
+    auto-optimise-store = true;
   };
 
   nix.gc = {

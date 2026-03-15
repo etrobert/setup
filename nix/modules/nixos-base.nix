@@ -15,8 +15,6 @@
 
   nix.gc.dates = "daily";
 
-  nix.settings.auto-optimise-store = true;
-
   zramSwap.enable = true;
 
   services = {
