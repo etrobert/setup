@@ -1,7 +1,7 @@
 # vim: ft=sh
 
 # Linux aliases
-alias ls="ls -Fh --color"
+alias ls="ls --classify --human-readable --color"
 alias open="xdg-open"
 
 alias bt="bluetoothctl devices | fzf --with-nth=3.. | cut -d' ' -f2 | xargs bluetoothctl connect"
