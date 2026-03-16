@@ -25,7 +25,10 @@
   system.autoUpgrade = {
     enable = true;
     flake = "github:etrobert/setup/main?dir=nix#pi";
-    flags = [ "--accept-flake-config" ];
+    flags = [
+      "--accept-flake-config"
+      "--print-build-logs"
+    ];
     # dates = "4:40"; # default value
     randomizedDelaySec = "5min";
   };
