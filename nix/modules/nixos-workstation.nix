@@ -149,6 +149,19 @@
       inheritPath = false;
       text = builtins.readFile ../../mpd/.local/bin/creme.sh;
     })
+    (writeShellApplication {
+      name = "lock-suspend";
+      runtimeInputs = [
+        coreutils # sleep
+        systemd
+      ];
+      inheritPath = false;
+      text = ''
+        loginctl lock-session
+        sleep 1
+        systemctl suspend
+      '';
+    })
     linuxPackages.cpupower
     brightnessctl
     chromium
