@@ -27,7 +27,9 @@
     serviceConfig = {
       Type = "oneshot";
       ExecStart = pkgs.writeShellScript "auto-update" ''
-        nixos-rebuild switch --flake github:etrobert/setup/main#pi --accept-flake-config
+        ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch \
+          --flake github:etrobert/setup/main#pi \
+          --accept-flake-config
       '';
     };
   };
