@@ -25,6 +25,11 @@
 
   hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
+  # Disable fingerprint as part of PAM in hyprlock
+  # As this has weird behaviors when unlocking
+  # It can access it directly via fprintd
+  security.pam.services.hyprlock.fprintAuth = false;
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

@@ -99,6 +99,13 @@ in
           position = "0, 180"; # offset from center
         }
         {
+          text = "$FPRINTPROMPT";
+          font_family = "FiraCode Nerd Font SemBd";
+          color = "rgb(cdd6f4)";
+          font_size = 14;
+          position = "0, -100";
+        }
+        {
           text = "cmd[update:60000] /run/current-system/sw/bin/birthdays";
           font_family = "FiraCode Nerd Font SemBd";
           color = "rgb(cdd6f4)";
