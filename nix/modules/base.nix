@@ -64,6 +64,13 @@
 
   age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
 
+  programs.ssh.knownHosts = {
+    pi = {
+      hostNames = [ "pi" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
+    };
+  };
+
   programs.zsh.enable = true;
   # Disable system compinit; we call compinit -u in .zshrc to skip
   # insecure directory warnings caused by Nix store paths.
