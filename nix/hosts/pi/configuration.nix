@@ -28,7 +28,7 @@
       Type = "oneshot";
       ExecStart = pkgs.writeShellScript "auto-update" ''
         ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch \
-          --flake github:etrobert/setup/main#pi \
+          --flake github:etrobert/setup/main?dir=nix#pi \
           --accept-flake-config
       '';
     };
