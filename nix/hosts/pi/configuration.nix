@@ -22,6 +22,24 @@
     };
   };
 
+  systemd.services.auto-update = {
+    description = "Auto-update system from flake";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "auto-update" ''
+        nixos-rebuild switch --flake github:etrobert/setup/main#pi --accept-flake-config
+      '';
+    };
+  };
+
+  systemd.timers.auto-update = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "minutely";
+      Persistent = true;
+    };
+  };
+
   networking.hostName = "pi";
 
   networking.networkmanager.enable = true;
