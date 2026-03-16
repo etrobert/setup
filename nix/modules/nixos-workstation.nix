@@ -168,7 +168,6 @@
     ddcutil
     ghostty
     grim
-    heroic
     hyprpaper
     mako
     mpc # Minimalist command line interface to MPD
