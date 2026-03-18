@@ -45,6 +45,7 @@
     nodejs_24 # nodejs_latest does not always have cache ready
     ollama
     opencode
+    pnpm
     prettierd
     python3
     spotify
