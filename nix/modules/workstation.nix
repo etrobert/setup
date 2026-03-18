@@ -83,7 +83,7 @@
         pnpm
         yarn
       ];
-      inheritPath = false;
+      inheritPath = true; # It may run anything through a npm script or vite thingy
       text = builtins.readFile ../../bash/.local/bin/pm;
     })
     (writeShellApplication {
