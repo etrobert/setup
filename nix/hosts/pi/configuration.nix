@@ -44,7 +44,7 @@
     settings = {
       Address = "0.0.0.0";
       MusicFolder = "/home/soft/sync/music";
-      PlaylistsPath = "/home/soft/sync/playlists";
+      PlaylistsPath = "../playlists";
       DataFolder = "/home/soft/.local/share/navidrome";
     };
     user = "soft";
