@@ -37,10 +37,11 @@
       user = "soft";
       dataDir = "/home/soft";
       openDefaultPorts = true;
+      guiAddress = "0.0.0.0";
       settings = {
         options.urAccepted = -1; # Disable usage reporting/telemetry
         devices = {
-          "phone".id = "TLA3FU2-APJUQAC-EBS2B2Q-FAQ664L-KKEHB4A-L7QRUGA-R6UH3RN-ELAAQQB";
+          "phone".id = "HXCEJSO-YRJ7XSQ-B2MTHEW-6WXVLAF-IOMVQK6-SE7CITW-346VKQA-D2PSNAO";
           "leod".id = "5DCR24L-XI2U2AF-7AMMGXE-S4R7TQK-PDOYLGT-5UZLZNV-SERXLIT-BJ6QEAY";
           "tower".id = "3IIJQ3X-2BY72RR-YVNBZBQ-OAB6PM5-SPS3WPG-MCPTFVD-YSQ33SS-X4Q5DA3";
           "pi".id = "EOXLGRM-GCJUBN3-6HD656O-KYXFYEX-N425OIL-SLBL7XJ-VN2RSXW-F7VJMAI";
