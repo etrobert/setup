@@ -8,6 +8,7 @@
     "pi".id = "EOXLGRM-GCJUBN3-6HD656O-KYXFYEX-N425OIL-SLBL7XJ-VN2RSXW-F7VJMAI";
     "etiennerobert@aaron".id = "JSQOTCO-D4X3GSX-ECPK33M-22LUG5V-AGG6ARY-EQAP7PB-JGOMRQK-ZRVJDAL";
   };
+  gui.insecureAdminAccess = true; # We only access through tailscale anyway
   folders = {
     "sync" = {
       path = "${dataDir}/sync";
