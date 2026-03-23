@@ -5,6 +5,8 @@ let
   skhdAppBindings = lib.concatStringsSep "\n" (
     lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
   );
+
+  wallpaper = ../../../hyprland/.config/hypr/saint-levant.jpg;
 in
 {
   imports = [ ../../modules/workstation.nix ];
@@ -27,6 +29,9 @@ in
     activationScripts.postActivation.text = ''
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
 
+      # Set wallpaper
+      launchctl asuser "$(id -u soft)" /usr/bin/osascript -e \
+        'tell application "Finder" to set desktop picture to POSIX file "${wallpaper}"'
       # Restrict input sources to ABC only, clearing the history too so the
       # menu bar toggle disappears. Runs as soft since postActivation is root.
       sudo -u soft /usr/bin/defaults write com.apple.HIToolbox AppleEnabledInputSources -array \
