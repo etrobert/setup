@@ -10,8 +10,8 @@ for managing symlinked configurations. Each folder contains configuration for a
 specific tool or application.
 
 This repository used to be used to configure Mac and Arch Linux machines through
-the `setup.sh` script found in `setup/`. Today, it is used to configure Mac and
-NixOS through Nix (in `nix/`).
+the `setup.sh` script found in `setup/`. Today, it is used to configure both
+nix-darwin (macOS) and NixOS machines through Nix (in `nix/`).
 
 ## Architecture
 
@@ -25,8 +25,8 @@ NixOS through Nix (in `nix/`).
 
 ### Shell Environment
 
-- Uses Bash as default shell with extensive customization in `bash/.bashrc`
-- Custom Rust based prompt (`git@github.com:etrobert/pronto`) 1 with git status,
+- Uses Zsh as default shell with extensive customization in `zsh/.zshrc`
+- Custom Rust based prompt (`git@github.com:etrobert/pronto`) with git status,
   command timing, and exit codes
 - Aliases are split across platform-specific files (`.alias.darwin`,
   `.alias.linux`)
@@ -37,7 +37,15 @@ NixOS through Nix (in `nix/`).
   keyboard remapping
 - LaunchAgent for Caps Lock → Control remapping
 - skhd for hotkey management
+- Raycast for launcher with custom utility scripts
 - Homebrew for package management including development tools and applications
+
+### NixOS/Linux System Integration
+
+- Wayland compositors: Niri and Hyprland for window management
+- Waybar for the Wayland status bar
+- Darkman for automatic dark/light mode switching based on location
+- Ghostty and Alacritty as terminal emulator options
 
 ### Development Environment
 
