@@ -78,7 +78,6 @@ in
     enable = true;
     casks = [
       "ghostty"
-      "league-of-legends"
     ];
 
     onActivation.cleanup = "zap";
