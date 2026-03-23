@@ -53,8 +53,6 @@ if [ -d "$HOME/.pyenv" ]; then
   eval "$(pyenv init -)"
 fi
 
-[ -f "/Users/etiennerobert/.ghcup/env" ] && . "/Users/etiennerobert/.ghcup/env" # ghcup-env
-
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
 if [ -d "$HOME/.local/bin" ]; then

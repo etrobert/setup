@@ -62,22 +62,13 @@ in
   };
 
   # Note: doc says not to include the admin user
-  users.knownUsers = [
-    "soft"
-    "etiennerobert"
-  ];
+  users.knownUsers = [ "soft" ];
 
   users.users = {
     soft = {
       uid = 505;
       shell = pkgs.zsh;
       home = "/Users/soft";
-    };
-
-    etiennerobert = {
-      uid = 501;
-      shell = pkgs.zsh;
-      home = "/Users/etiennerobert";
     };
   };
 

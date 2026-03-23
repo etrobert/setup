@@ -2,7 +2,6 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Read(//Users/etiennerobert/**)",
       "Bash(systemctl:*)",
       "Bash(systemd-analyze:*)",
       "Bash(journalctl:*)",

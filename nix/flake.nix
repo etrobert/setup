@@ -50,7 +50,6 @@
           agenixModule,
           homeManagerModule,
           homeModule,
-          extraModules,
         }:
         host:
         builder {
@@ -67,23 +66,19 @@
                 users.soft = import homeModule;
               };
             }
-          ]
-          # TODO: Remove once we make usernames uniform
-          ++ extraModules;
+          ];
         };
       mkNixosHost = mkHost {
         builder = nixpkgs.lib.nixosSystem;
         agenixModule = agenix.nixosModules.default;
         homeManagerModule = home-manager.nixosModules.home-manager;
         homeModule = ./modules/home/linux.nix;
-        extraModules = [ ];
       };
       mkDarwinHost = mkHost {
         builder = nix-darwin.lib.darwinSystem;
         agenixModule = agenix.darwinModules.default;
         homeManagerModule = home-manager.darwinModules.home-manager;
         homeModule = ./modules/home/darwin.nix;
-        extraModules = [ { home-manager.users.etiennerobert = import ./modules/home/darwin.nix; } ];
       };
 
       inherit (nixpkgs.lib) genAttrs;
@@ -139,11 +134,6 @@
           "soft@tower" = mkLinuxHome;
           "soft@leod" = mkLinuxHome;
           "soft@aaron" = mkDarwinHome;
-          "etiennerobert@aaron" = mkHome {
-            system = "aarch64-darwin";
-            module = ./modules/home/darwin.nix;
-            username = "etiennerobert";
-          };
         };
 
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
