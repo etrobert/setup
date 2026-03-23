@@ -42,6 +42,8 @@ in
         ShowPathbar = true;
       };
 
+      controlcenter.Sound = true;
+
       NSGlobalDomain.InitialKeyRepeat = 15;
       NSGlobalDomain.KeyRepeat = 2;
 
