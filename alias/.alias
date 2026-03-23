@@ -80,3 +80,5 @@ batr() {
 }
 
 alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
+
+alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
