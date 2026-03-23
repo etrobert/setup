@@ -72,6 +72,16 @@ in
     };
   };
 
+  homebrew = {
+    enable = true;
+    casks = [
+      "ghostty"
+      "league-of-legends"
+    ];
+
+    onActivation.cleanup = "zap";
+  };
+
   environment.shells = [ pkgs.zsh ];
 
   environment.systemPackages = with pkgs; [

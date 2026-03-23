@@ -27,6 +27,7 @@
   environment.systemPackages = with pkgs; [
     bat
     btop
+    coreutils
     difftastic
     entr
     eza
