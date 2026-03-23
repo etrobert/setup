@@ -134,16 +134,6 @@ in
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  # TODO: Remove once mac uses the same username
-  age.secrets = {
-    openai-api-key.group = "admin";
-    openai-api-key.mode = "0440";
-    gemini-api-key.group = "admin";
-    gemini-api-key.mode = "0440";
-    tailscale-authkey.group = "admin";
-    tailscale-authkey.mode = "0440";
-  };
-
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
