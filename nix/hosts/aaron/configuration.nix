@@ -26,6 +26,13 @@ in
 
     activationScripts.postActivation.text = ''
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
+
+      # Restrict input sources to ABC only, clearing the history too so the
+      # menu bar toggle disappears. Runs as soft since postActivation is root.
+      sudo -u soft /usr/bin/defaults write com.apple.HIToolbox AppleEnabledInputSources -array \
+        '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>252</integer><key>KeyboardLayout Name</key><string>ABC</string></dict>'
+      sudo -u soft /usr/bin/defaults write com.apple.HIToolbox AppleInputSourceHistory -array \
+        '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>252</integer><key>KeyboardLayout Name</key><string>ABC</string></dict>'
     '';
 
     # macOS-specific settings
