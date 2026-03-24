@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 let
-  homeDirectory = config.home.homeDirectory;
+  inherit (config.home) homeDirectory;
 
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${homeDirectory}/setup/${path}";
 
