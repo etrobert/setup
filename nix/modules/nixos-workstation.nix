@@ -109,16 +109,28 @@
         text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
       };
 
-      get_weather = pkgs.writeShellApplication {
-        name = "get_weather.sh";
-        runtimeInputs = with pkgs; [
-          coreutils
-          curl
-          jq
-        ];
-        inheritPath = false;
-        text = builtins.readFile ../../waybar/.local/bin/get_weather.sh;
-      };
+      waybar-wrapped =
+        let
+          get_weather = pkgs.writeShellApplication {
+            name = "get_weather.sh";
+            runtimeInputs = with pkgs; [
+              coreutils
+              curl
+              jq
+            ];
+            inheritPath = false;
+            text = builtins.readFile ../../waybar/.local/bin/get_weather.sh;
+          };
+        in
+        pkgs.symlinkJoin {
+          name = "waybar-wrapped";
+          buildInputs = [ pkgs.makeWrapper ];
+          paths = [ pkgs.waybar ];
+          postBuild = ''
+            wrapProgram $out/bin/waybar \
+              --prefix PATH : ${pkgs.lib.makeBinPath [ get_weather ]}
+          '';
+        };
 
       brightness-control = pkgs.writeShellApplication {
         name = "brightness-control";
@@ -174,7 +186,7 @@
     [
       nixos-option
       toggle-cpu-governor
-      get_weather
+      waybar-wrapped
       brightness-control
       volume-control
       birthdays
@@ -198,7 +210,6 @@
       signal-desktop
       slurp
       usbutils # provides lsusb
-      waybar
       wl-clipboard
       wofi
     ]);
