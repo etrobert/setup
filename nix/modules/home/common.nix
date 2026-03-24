@@ -17,8 +17,6 @@ in
       ".config/tmux/tmux.conf".source = ../../../tmux/.config/tmux/tmux.conf;
 
       ".config/nvim".source = symlink "nvim/.config/nvim";
-
-      ".alias".source = symlink "alias/.alias";
     };
 
     sessionVariablesExtra = ''
@@ -173,14 +171,6 @@ in
 
       PS1='$(pronto $? --zsh)'
       RPROMPT='$(pronto $? --rprompt --zsh)'
-
-      sourceifexists() {
-        if [ -f "$1" ]; then
-          source "$1"
-        fi
-      }
-
-      sourceifexists ~/.alias
 
       autoload -Uz edit-command-line
       zle -N edit-command-line

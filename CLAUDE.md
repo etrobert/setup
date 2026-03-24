@@ -28,8 +28,6 @@ NixOS through Nix (in `nix/`).
 - Uses Bash as default shell with extensive customization in `bash/.bashrc`
 - Custom Rust based prompt (`git@github.com:etrobert/pronto`) 1 with git status,
   command timing, and exit codes
-- Aliases are split across platform-specific files (`.alias.darwin`,
-  `.alias.linux`)
 
 ### MacOS System Integration
 
