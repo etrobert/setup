@@ -38,11 +38,18 @@
     htop
     jq
     magic-wormhole
-    neovim
+    (symlinkJoin {
+      name = "neovim-wrapped";
+      buildInputs = [ makeWrapper ];
+      paths = [ neovim ];
+      postBuild = ''
+        wrapProgram $out/bin/nvim \
+          --prefix PATH : ${lib.makeBinPath [ shfmt ]}
+      '';
+    })
     nixfmt
     ripgrep
     shellcheck
-    shfmt
     stow
     tmux
     (writeShellApplication {
