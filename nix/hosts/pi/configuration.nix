@@ -1,7 +1,10 @@
 { pkgs, lib, ... }:
 
 {
-  environment.systemPackages = [ pkgs.ghostty.terminfo ];
+  environment.systemPackages = with pkgs; [
+    ghostty.terminfo
+    neovim
+  ];
 
   imports = [
     ./hardware-configuration.nix

@@ -20,6 +20,20 @@
   environment.systemPackages = with pkgs; [
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
     agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    (symlinkJoin {
+      name = "neovim-wrapped";
+      buildInputs = [ makeWrapper ];
+      paths = [ neovim ];
+      postBuild = ''
+        wrapProgram $out/bin/nvim \
+          --prefix PATH : ${
+            lib.makeBinPath [
+              shfmt
+              nixfmt
+            ]
+          }
+      '';
+    })
     act
     adwaita-icon-theme
     audacity

@@ -38,20 +38,6 @@
     htop
     jq
     magic-wormhole
-    (symlinkJoin {
-      name = "neovim-wrapped";
-      buildInputs = [ makeWrapper ];
-      paths = [ neovim ];
-      postBuild = ''
-        wrapProgram $out/bin/nvim \
-          --prefix PATH : ${
-            lib.makeBinPath [
-              shfmt
-              nixfmt
-            ]
-          }
-      '';
-    })
     ripgrep
     shellcheck
     stow
