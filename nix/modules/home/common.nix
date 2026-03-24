@@ -8,7 +8,7 @@ in
     file = {
       ".config/home-manager".source = symlink "nix";
 
-      ".prettierrc".source = ../../../prettier/.prettierrc;
+      ".prettierrc".text = builtins.toJSON { proseWrap = "always"; };
 
       ".profile".source = ../../../profile/.profile;
 
