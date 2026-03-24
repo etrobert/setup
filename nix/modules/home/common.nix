@@ -35,40 +35,110 @@ in
     stateVersion = "25.11";
   };
 
-  programs.firefox = {
-    enable = true;
-    policies = {
-      PasswordManagerEnabled = false;
-      SearchEngines = {
-        Default = "DuckDuckGo";
+  programs = {
+    firefox = {
+      enable = true;
+      policies = {
+        PasswordManagerEnabled = false;
+        SearchEngines = {
+          Default = "DuckDuckGo";
+        };
+        ExtensionSettings = {
+          "uBlock0@raymondhill.net" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+            installation_mode = "force_installed";
+            default_area = "menupanel";
+          };
+          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
+            installation_mode = "force_installed";
+            default_area = "navbar";
+          };
+          "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi";
+            installation_mode = "force_installed";
+            default_area = "menupanel";
+          };
+        };
       };
-      ExtensionSettings = {
-        "uBlock0@raymondhill.net" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-          installation_mode = "force_installed";
-          default_area = "menupanel";
-        };
-        "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
-          installation_mode = "force_installed";
-          default_area = "navbar";
-        };
-        "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi";
-          installation_mode = "force_installed";
-          default_area = "menupanel";
+      profiles.default = {
+        settings = {
+          # Enable the new sidebar + vertical tabs via user prefs (policies block these).
+          "sidebar.revamp" = true;
+          "sidebar.verticalTabs" = true;
+          "browser.ctrlTab.sortByRecentlyUsed" = true;
+          "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
         };
       };
     };
-    profiles.default = {
-      settings = {
-        # Enable the new sidebar + vertical tabs via user prefs (policies block these).
-        "sidebar.revamp" = true;
-        "sidebar.verticalTabs" = true;
-        "browser.ctrlTab.sortByRecentlyUsed" = true;
-        "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
+
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      defaultKeymap = "viins";
+
+      history = {
+        size = 999999999;
+        save = 999999999;
+        path = "$HOME/.zsh_history";
+        append = true;
       };
+
+      setOptions = [
+        "INTERACTIVE_COMMENTS"
+        "PROMPT_SUBST"
+      ];
+
+      profileExtra = ''
+        emulate sh
+        . ~/.profile
+        emulate zsh
+      '';
+
+      initContent = ''
+        export CMD_TIMER_MS=
+
+        preexec() {
+          if [[ -z $CMD_TIMER_MS ]]; then
+            CMD_TIMER_MS=$(date +%s%3N)
+          fi
+        }
+
+        precmd() {
+          if [[ -z $CMD_TIMER_MS ]]; then
+            return
+          fi
+
+          local now
+          now=$(date +%s%3N)
+          export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
+          unset CMD_TIMER_MS
+        }
+
+        PS1='$(pronto $? --zsh)'
+        RPROMPT='$(pronto $? --rprompt --zsh)'
+
+        autoload -Uz edit-command-line
+        zle -N edit-command-line
+        bindkey "^F" edit-command-line
+
+        bindkey '^?' backward-delete-char
+        bindkey '^H' backward-delete-char
+
+        # Override vi mode defaults: Ctrl-P/N for history search
+        bindkey "^P" up-line-or-search
+        bindkey "^N" down-line-or-search
+
+        bindkey "^A" beginning-of-line
+        bindkey "^E" end-of-line
+
+        bindkey "^Y" autosuggest-accept
+      '';
     };
+
+    fzf.enable = true;
   };
 
   home.shellAliases = {
@@ -123,74 +193,6 @@ in
 
     music-dl = "yt-dlp --embed-thumbnail --extract-audio"; # --embed-metadata
   };
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    defaultKeymap = "viins";
-
-    history = {
-      size = 999999999;
-      save = 999999999;
-      path = "$HOME/.zsh_history";
-      append = true;
-    };
-
-    setOptions = [
-      "INTERACTIVE_COMMENTS"
-      "PROMPT_SUBST"
-    ];
-
-    profileExtra = ''
-      emulate sh
-      . ~/.profile
-      emulate zsh
-    '';
-
-    initContent = ''
-      export CMD_TIMER_MS=
-
-      preexec() {
-        if [[ -z $CMD_TIMER_MS ]]; then
-          CMD_TIMER_MS=$(date +%s%3N)
-        fi
-      }
-
-      precmd() {
-        if [[ -z $CMD_TIMER_MS ]]; then
-          return
-        fi
-
-        local now
-        now=$(date +%s%3N)
-        export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
-        unset CMD_TIMER_MS
-      }
-
-      PS1='$(pronto $? --zsh)'
-      RPROMPT='$(pronto $? --rprompt --zsh)'
-
-      autoload -Uz edit-command-line
-      zle -N edit-command-line
-      bindkey "^F" edit-command-line
-
-      bindkey '^?' backward-delete-char
-      bindkey '^H' backward-delete-char
-
-      # Override vi mode defaults: Ctrl-P/N for history search
-      bindkey "^P" up-line-or-search
-      bindkey "^N" down-line-or-search
-
-      bindkey "^A" beginning-of-line
-      bindkey "^E" end-of-line
-
-      bindkey "^Y" autosuggest-accept
-    '';
-  };
-
-  programs.fzf.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
