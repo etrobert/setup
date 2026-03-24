@@ -17,7 +17,3 @@ falias() {
     eval "$selected"
   fi
 }
-
-batr() {
-  find "$1" -type f -exec bat {} +
-}

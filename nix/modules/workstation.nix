@@ -102,6 +102,16 @@
           nix eval nixpkgs#"$1".meta.platforms --json
         '';
       };
+
+      batr = pkgs.writeShellApplication {
+        name = "batr";
+        runtimeInputs = with pkgs; [
+          findutils
+          bat
+        ];
+        inheritPath = false;
+        text = ''find "$1" -type f -exec bat {} +'';
+      };
     in
     [
       pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -112,6 +122,7 @@
       pm
       pdfshrink
       nixplatforms
+      batr
     ]
     ++ (with pkgs; [
       act
