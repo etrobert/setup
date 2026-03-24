@@ -2,9 +2,11 @@
 {
   imports = [ ./common.nix ];
 
-  home.file.".alias.darwin".source = ../../../alias/.alias.darwin;
-
   home.homeDirectory = "/Users/${config.home.username}";
+
+  home.shellAliases = {
+    bg = "open /Volumes/T7/Applications/Baldur\'s\ Gate\ 3.app/Contents/MacOS/Baldur\'s\ Gate\ 3\ GOG";
+  };
 
   services.syncthing = {
     enable = true;

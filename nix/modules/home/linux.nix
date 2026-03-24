@@ -29,8 +29,6 @@ in
     sessionVariables.BROWSER = "firefox";
 
     file = {
-      ".alias.linux".source = symlink "alias/.alias.linux";
-
       ".config/waybar/config.jsonc".source = symlink "waybar/.config/waybar/config.jsonc";
       ".config/waybar/style.css".source = symlink "waybar/.config/waybar/style.css";
 
@@ -41,6 +39,14 @@ in
       ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
       ".config/hypr/hyprpaper.conf".source = symlink "hyprland/.config/hypr/hyprpaper.conf";
       ".config/hypr/saint-levant.jpg".source = ../../../hyprland/.config/hypr/saint-levant.jpg;
+    };
+
+    shellAliases = {
+      open = "xdg-open";
+
+      bt = "bluetoothctl devices | fzf --with-nth=3.. | cut -d' ' -f2 | xargs bluetoothctl connect";
+
+      home-assistant = "docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable";
     };
   };
 

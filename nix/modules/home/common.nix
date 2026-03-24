@@ -150,15 +150,6 @@ in
 
       sourceifexists ~/.alias
 
-      case $(uname) in
-      Darwin)
-        sourceifexists ~/.alias.darwin
-        ;;
-      Linux)
-        sourceifexists ~/.alias.linux
-        ;;
-      esac
-
       autoload -Uz edit-command-line
       zle -N edit-command-line
       bindkey "^F" edit-command-line
