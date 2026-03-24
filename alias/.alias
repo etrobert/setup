@@ -2,39 +2,6 @@
 
 # Aliases
 
-alias make="make -j8"
-alias watch="watch --interval=1"
-alias ccat="highlight --out-format=ansi"
-
-alias music-dl="youtube-dl -x -f bestaudio"
-
-alias rscp="rsync -p --progress"
-
-alias only-unique="sort | uniq"
-
-alias tmuxn='tmux new-session -A -s "$(basename "$(pwd)")" -e TMUX_SESSION_PATH="$(pwd)"'
-alias ts='tmux-sessionizer'
-alias tcd='cd "$TMUX_SESSION_PATH"'
-
-alias hat='highlight -lO ansi'
-
-# One-letter aliases for most used commands
-alias g='git'
-alias t='tmux'
-alias v='nvim'
-
-# alias tree='tree -CF --dirsfirst'
-alias tree='eza --tree --icons --group-directories-first --git-ignore'
-alias ltree='tree --icons=always --color=always | less --raw-control-chars'
-
-alias font="ghostty +show-face --string=Hello --style=regular"
-
-alias duf="du -sh * .* | sort -h"
-
-alias server="python3 -m http.server 8000"
-
-alias fhistory="history | sed -E 's/^ +[0-9]+ +//' | fzf --tac --no-sort"
-
 falias() {
   local selected
   selected=$(
@@ -58,7 +25,3 @@ nixplatforms() {
 batr() {
   find "$1" -type f -exec bat {} +
 }
-
-alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
-
-alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
