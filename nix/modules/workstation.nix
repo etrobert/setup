@@ -54,6 +54,48 @@
       pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
       agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
       neovim-wrapped
+      (pkgs.writeShellApplication {
+        name = "gen-commit-msg";
+        runtimeInputs = with pkgs; [
+          coreutils
+          curl
+          neovim # for editing the commit
+          git
+          gnused
+          jq
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../git/.local/bin/gen-commit-msg;
+      })
+      (pkgs.writeShellApplication {
+        name = "git-find-commit";
+        runtimeInputs = with pkgs; [
+          coreutils
+          git
+          fzf
+          findutils # xargs
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../git/.local/bin/git-find-commit;
+      })
+      (pkgs.writeShellApplication {
+        name = "pm";
+        runtimeInputs = with pkgs; [
+          bashInteractive # provides sh for npm to spawn scripts
+          coreutils
+          nodejs_24 # nodejs_latest does not always have cache ready
+          pnpm
+          yarn
+        ];
+        inheritPath = true; # It may run anything through a npm script or vite thingy
+        text = builtins.readFile ../../bash/.local/bin/pm;
+      })
+      (pkgs.writeShellApplication {
+        name = "pdfshrink";
+        runtimeInputs = with pkgs; [ ghostscript ];
+        inheritPath = false;
+        text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
+      })
     ]
     ++ (with pkgs; [
       act
@@ -80,48 +122,6 @@
       prettierd
       python3
       spotify
-      (writeShellApplication {
-        name = "gen-commit-msg";
-        runtimeInputs = [
-          coreutils
-          curl
-          neovim # for editing the commit
-          git
-          gnused
-          jq
-        ];
-        inheritPath = false;
-        text = builtins.readFile ../../git/.local/bin/gen-commit-msg;
-      })
-      (writeShellApplication {
-        name = "git-find-commit";
-        runtimeInputs = [
-          coreutils
-          git
-          fzf
-          findutils # xargs
-        ];
-        inheritPath = false;
-        text = builtins.readFile ../../git/.local/bin/git-find-commit;
-      })
-      (writeShellApplication {
-        name = "pm";
-        runtimeInputs = [
-          bashInteractive # provides sh for npm to spawn scripts
-          coreutils
-          nodejs_24 # nodejs_latest does not always have cache ready
-          pnpm
-          yarn
-        ];
-        inheritPath = true; # It may run anything through a npm script or vite thingy
-        text = builtins.readFile ../../bash/.local/bin/pm;
-      })
-      (writeShellApplication {
-        name = "pdfshrink";
-        runtimeInputs = [ ghostscript ];
-        inheritPath = false;
-        text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
-      })
       yt-dlp
     ]);
 
