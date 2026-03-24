@@ -28,8 +28,19 @@
         wrapProgram $out/bin/nvim \
           --prefix PATH : ${
             lib.makeBinPath [
-              shfmt
+              bash-language-server
+              black # python formatter
+              gopls
+              imagemagick # for image rendering in nvim using snacks.image
+              isort # python import sorter
+              lua-language-server
+              nixd
               nixfmt
+              shfmt
+              stylua
+              tree-sitter
+              typescript-language-server
+              vscode-langservers-extracted
             ]
           }
       '';
@@ -37,8 +48,6 @@
     act
     adwaita-icon-theme
     audacity
-    bash-language-server
-    black # python formatter
     bun
     claude-code
     codex # Lightweight coding agent that runs in your terminal
@@ -49,15 +58,10 @@
     # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
     gnumake
     go
-    gopls
     home-manager
     hyperfine # Command-line benchmarking tool
-    imagemagick # for image rendering in nvim using snacks.image
-    isort # python import sorter
     jqp # TUI playground to experiment with jq
     libnotify
-    lua-language-server
-    nixd
     nodejs_24 # nodejs_latest does not always have cache ready
     ollama
     opencode
@@ -65,8 +69,6 @@
     prettierd
     python3
     spotify
-    stylua
-    tree-sitter
     (writeShellApplication {
       name = "gen-commit-msg";
       runtimeInputs = [
@@ -109,8 +111,6 @@
       inheritPath = false;
       text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
     })
-    typescript-language-server
-    vscode-langservers-extracted
     yt-dlp
   ];
 
