@@ -15,6 +15,7 @@ require("conform").setup({
 		yaml = { "prettierd", "prettier", stop_after_first = true },
 		swift = { "swiftformat" },
 		sh = { "shfmt" },
+		zsh = { "shfmt" },
 		fish = { "fish_indent" },
 		rust = { "rustfmt" },
 		python = { "isort", "black" },
