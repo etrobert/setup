@@ -112,6 +112,17 @@
         inheritPath = false;
         text = ''find "$1" -type f -exec bat {} +'';
       };
+
+      printline = pkgs.writeShellApplication {
+        name = "printline";
+        runtimeInputs = with pkgs; [ bat ];
+        inheritPath = false;
+        text = ''
+          for _ in {1..80}; do echo -n '-'; done
+
+          echo
+        '';
+      };
     in
     [
       pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -123,6 +134,7 @@
       pdfshrink
       nixplatforms
       batr
+      printline
     ]
     ++ (with pkgs; [
       act
