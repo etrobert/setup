@@ -30,8 +30,6 @@ sourceifexists() {
 
 sourceifexists ~/.alias
 
-alias mkls="make 2> /tmp/mkls_tmp || less /tmp/mkls_tmp"
-
 case $(uname) in
 Darwin)
   sourceifexists ~/.alias.darwin
