@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 let
-  symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
+  homeDirectory = config.home.homeDirectory;
+
+  symlink = path: config.lib.file.mkOutOfStoreSymlink "${homeDirectory}/setup/${path}";
 
   albumArtWallpaper = pkgs.writeShellApplication {
     name = "album-art-wallpaper";
@@ -122,8 +124,8 @@ in
   services = {
     mpd = {
       enable = true;
-      musicDirectory = "${config.home.homeDirectory}/sync/music";
-      playlistDirectory = "${config.home.homeDirectory}/sync/playlists";
+      musicDirectory = "${homeDirectory}/sync/music";
+      playlistDirectory = "${homeDirectory}/sync/playlists";
       extraConfig = ''
         restore_paused "yes"
         auto_update "yes"
