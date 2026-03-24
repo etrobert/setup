@@ -89,99 +89,119 @@
   ];
 
   # NixOS workstation packages
-  environment.systemPackages = with pkgs; [
-    # See https://github.com/NixOS/nixpkgs/issues/436214
-    # TL;DR The flake should probably be at the root of the repo
-    # Until I fix it we have this wrapper
-    (pkgs.writeShellScriptBin "nixos-option" ''
-      exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
-    '')
-    (writeShellApplication {
-      name = "toggle-cpu-governor";
-      runtimeInputs = [
-        coreutils
-        linuxPackages.cpupower
-        kmod # for modprobe called by cpupower
-      ];
-      inheritPath = false;
-      text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
-    })
-    (writeShellApplication {
-      name = "get_weather.sh";
-      runtimeInputs = [
-        coreutils
-        curl
-        jq
-      ];
-      inheritPath = false;
-      text = builtins.readFile ../../waybar/.local/bin/get_weather.sh;
-    })
-    (writeShellApplication {
-      name = "brightness-control";
-      runtimeInputs = [
-        coreutils # cut & tr
-        brightnessctl
-        hyprland
-        libnotify
-        gnugrep
-        jq
-      ];
-      inheritPath = false;
-      text = builtins.readFile ../../hyprland/.local/bin/brightness-control;
-    })
-    (writeShellApplication {
-      name = "volume-control";
-      runtimeInputs = [
-        gawk
-        gnugrep
-        libnotify
-        wireplumber
-      ];
-      inheritPath = false;
-      text = builtins.readFile ../../hyprland/.local/bin/volume-control;
-    })
-    (writers.writePython3Bin "birthdays" {
-      libraries = [ python3Packages.vobject ];
-    } (builtins.readFile ../../pimsync/.local/bin/birthdays.py))
-    (writeShellApplication {
-      name = "creme";
-      runtimeInputs = [ mpc ];
-      inheritPath = false;
-      text = builtins.readFile ../../mpd/.local/bin/creme.sh;
-    })
-    (writeShellApplication {
-      name = "lock-suspend";
-      runtimeInputs = [
-        coreutils # sleep
-        systemd
-      ];
-      inheritPath = false;
-      text = ''
-        loginctl lock-session
-        sleep 1
-        systemctl suspend
+  environment.systemPackages =
+    let
+      # See https://github.com/NixOS/nixpkgs/issues/436214
+      # TL;DR The flake should probably be at the root of the repo
+      # Until I fix it we have this wrapper
+      nixos-option = pkgs.writeShellScriptBin "nixos-option" ''
+        exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
       '';
-    })
-    linuxPackages.cpupower
-    brightnessctl
-    chromium
-    ddcutil
-    ghostty
-    grim
-    hyprpaper
-    mako
-    mpc # Minimalist command line interface to MPD
-    nix-index
-    pavucontrol
-    pimsync
-    playerctl
-    signal-desktop
-    slurp
-    usbutils # provides lsusb
-    waybar
-    wl-clipboard
-    wofi
-  ];
+
+      toggle-cpu-governor = pkgs.writeShellApplication {
+        name = "toggle-cpu-governor";
+        runtimeInputs = with pkgs; [
+          coreutils
+          linuxPackages.cpupower
+          kmod # for modprobe called by cpupower
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
+      };
+
+      get_weather = pkgs.writeShellApplication {
+        name = "get_weather.sh";
+        runtimeInputs = with pkgs; [
+          coreutils
+          curl
+          jq
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../waybar/.local/bin/get_weather.sh;
+      };
+
+      brightness-control = pkgs.writeShellApplication {
+        name = "brightness-control";
+        runtimeInputs = with pkgs; [
+          coreutils # cut & tr
+          brightnessctl
+          hyprland
+          libnotify
+          gnugrep
+          jq
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../hyprland/.local/bin/brightness-control;
+      };
+
+      volume-control = pkgs.writeShellApplication {
+        name = "volume-control";
+        runtimeInputs = with pkgs; [
+          gawk
+          gnugrep
+          libnotify
+          wireplumber
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../hyprland/.local/bin/volume-control;
+      };
+
+      birthdays = pkgs.writers.writePython3Bin "birthdays" {
+        libraries = [ pkgs.python3Packages.vobject ];
+      } (builtins.readFile ../../pimsync/.local/bin/birthdays.py);
+
+      creme = pkgs.writeShellApplication {
+        name = "creme";
+        runtimeInputs = with pkgs; [ mpc ];
+        inheritPath = false;
+        text = builtins.readFile ../../mpd/.local/bin/creme.sh;
+      };
+
+      lock-suspend = pkgs.writeShellApplication {
+        name = "lock-suspend";
+        runtimeInputs = with pkgs; [
+          coreutils # sleep
+          systemd
+        ];
+        inheritPath = false;
+        text = ''
+          loginctl lock-session
+          sleep 1
+          systemctl suspend
+        '';
+      };
+    in
+    [
+      nixos-option
+      toggle-cpu-governor
+      get_weather
+      brightness-control
+      volume-control
+      birthdays
+      creme
+      lock-suspend
+    ]
+    ++ (with pkgs; [
+      linuxPackages.cpupower
+      brightnessctl
+      chromium
+      ddcutil
+      ghostty
+      grim
+      hyprpaper
+      mako
+      mpc # Minimalist command line interface to MPD
+      nix-index
+      pavucontrol
+      pimsync
+      playerctl
+      signal-desktop
+      slurp
+      usbutils # provides lsusb
+      waybar
+      wl-clipboard
+      wofi
+    ]);
 
   programs = {
     hyprland.enable = true;
