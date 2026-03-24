@@ -10,8 +10,6 @@ in
 
       ".prettierrc".source = ../../../prettier/.prettierrc;
 
-      ".zshrc".source = symlink "zsh/.zshrc";
-      ".zprofile".source = ../../../zsh/.zprofile;
       ".profile".source = ../../../profile/.profile;
 
       ".gitconfig".source = ../../../git/.gitconfig;
@@ -74,6 +72,89 @@ in
       };
     };
   };
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    defaultKeymap = "viins";
+
+    history = {
+      size = 999999999;
+      save = 999999999;
+      path = "$HOME/.zsh_history";
+      append = true;
+    };
+
+    setOptions = [ "INTERACTIVE_COMMENTS" ];
+
+    profileExtra = ''
+      emulate sh
+      . ~/.profile
+      emulate zsh
+    '';
+
+    initContent = ''
+      export CMD_TIMER_MS=
+
+      preexec() {
+        if [[ -z $CMD_TIMER_MS ]]; then
+          CMD_TIMER_MS=$(date +%s%3N)
+        fi
+      }
+
+      precmd() {
+        if [[ -z $CMD_TIMER_MS ]]; then
+          return
+        fi
+
+        local now
+        now=$(date +%s%3N)
+        export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
+        unset CMD_TIMER_MS
+      }
+
+      setopt PROMPT_SUBST
+      PS1='$(pronto $? --zsh)'
+      RPROMPT='$(pronto $? --rprompt --zsh)'
+
+      sourceifexists() {
+        if [ -f "$1" ]; then
+          source "$1"
+        fi
+      }
+
+      sourceifexists ~/.alias
+
+      case $(uname) in
+      Darwin)
+        sourceifexists ~/.alias.darwin
+        ;;
+      Linux)
+        sourceifexists ~/.alias.linux
+        ;;
+      esac
+
+      autoload -Uz edit-command-line
+      zle -N edit-command-line
+      bindkey "^F" edit-command-line
+
+      bindkey '^?' backward-delete-char
+      bindkey '^H' backward-delete-char
+
+      # Override vi mode defaults: Ctrl-P/N for history search
+      bindkey "^P" up-line-or-search
+      bindkey "^N" down-line-or-search
+
+      bindkey "^A" beginning-of-line
+      bindkey "^E" end-of-line
+
+      bindkey "^Y" autosuggest-accept
+    '';
+  };
+
+  programs.fzf.enable = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
