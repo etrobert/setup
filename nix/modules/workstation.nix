@@ -93,6 +93,15 @@
         inheritPath = false;
         text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
       };
+
+      nixplatforms = pkgs.writeShellApplication {
+        name = "nixplatforms";
+        runtimeInputs = with pkgs; [ nix ];
+        inheritPath = false;
+        text = ''
+          nix eval nixpkgs#"$1".meta.platforms --json
+        '';
+      };
     in
     [
       pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -102,6 +111,7 @@
       git-find-commit
       pm
       pdfshrink
+      nixplatforms
     ]
     ++ (with pkgs; [
       act

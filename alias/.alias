@@ -18,10 +18,6 @@ falias() {
   fi
 }
 
-nixplatforms() {
-  nix eval nixpkgs#"$1".meta.platforms --json
-}
-
 batr() {
   find "$1" -type f -exec bat {} +
 }
