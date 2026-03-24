@@ -44,10 +44,14 @@
       paths = [ neovim ];
       postBuild = ''
         wrapProgram $out/bin/nvim \
-          --prefix PATH : ${lib.makeBinPath [ shfmt ]}
+          --prefix PATH : ${
+            lib.makeBinPath [
+              shfmt
+              nixfmt
+            ]
+          }
       '';
     })
-    nixfmt
     ripgrep
     shellcheck
     stow
