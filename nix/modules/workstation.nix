@@ -19,90 +19,80 @@
 
   environment.systemPackages =
     let
-      neovim-wrapped = (
-        pkgs.symlinkJoin {
-          name = "neovim-wrapped";
-          buildInputs = [ pkgs.makeWrapper ];
-          paths = [ pkgs.neovim ];
-          postBuild = ''
-            wrapProgram $out/bin/nvim \
-              --prefix PATH : ${
-                pkgs.lib.makeBinPath (
-                  with pkgs;
-                  [
-                    bash-language-server
-                    black # python formatter
-                    gopls
-                    imagemagick # for image rendering in nvim using snacks.image
-                    isort # python import sorter
-                    lua-language-server
-                    nixd
-                    nixfmt
-                    shfmt
-                    stylua
-                    tree-sitter
-                    typescript-language-server
-                    vscode-langservers-extracted
-                  ]
-                )
-              }
-          '';
-        }
-      );
+      neovim-wrapped = pkgs.symlinkJoin {
+        name = "neovim-wrapped";
+        buildInputs = [ pkgs.makeWrapper ];
+        paths = [ pkgs.neovim ];
+        postBuild = ''
+          wrapProgram $out/bin/nvim \
+            --prefix PATH : ${
+              pkgs.lib.makeBinPath (
+                with pkgs;
+                [
+                  bash-language-server
+                  black # python formatter
+                  gopls
+                  imagemagick # for image rendering in nvim using snacks.image
+                  isort # python import sorter
+                  lua-language-server
+                  nixd
+                  nixfmt
+                  shfmt
+                  stylua
+                  tree-sitter
+                  typescript-language-server
+                  vscode-langservers-extracted
+                ]
+              )
+            }
+        '';
+      };
 
-      gen-commit-msg = (
-        pkgs.writeShellApplication {
-          name = "gen-commit-msg";
-          runtimeInputs = with pkgs; [
-            coreutils
-            curl
-            neovim # for editing the commit
-            git
-            gnused
-            jq
-          ];
-          inheritPath = false;
-          text = builtins.readFile ../../git/.local/bin/gen-commit-msg;
-        }
-      );
+      gen-commit-msg = pkgs.writeShellApplication {
+        name = "gen-commit-msg";
+        runtimeInputs = with pkgs; [
+          coreutils
+          curl
+          neovim # for editing the commit
+          git
+          gnused
+          jq
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../git/.local/bin/gen-commit-msg;
+      };
 
-      git-find-commit = (
-        pkgs.writeShellApplication {
-          name = "git-find-commit";
-          runtimeInputs = with pkgs; [
-            coreutils
-            git
-            fzf
-            findutils # xargs
-          ];
-          inheritPath = false;
-          text = builtins.readFile ../../git/.local/bin/git-find-commit;
-        }
-      );
+      git-find-commit = pkgs.writeShellApplication {
+        name = "git-find-commit";
+        runtimeInputs = with pkgs; [
+          coreutils
+          git
+          fzf
+          findutils # xargs
+        ];
+        inheritPath = false;
+        text = builtins.readFile ../../git/.local/bin/git-find-commit;
+      };
 
-      pm = (
-        pkgs.writeShellApplication {
-          name = "pm";
-          runtimeInputs = with pkgs; [
-            bashInteractive # provides sh for npm to spawn scripts
-            coreutils
-            nodejs_24 # nodejs_latest does not always have cache ready
-            pnpm
-            yarn
-          ];
-          inheritPath = true; # It may run anything through a npm script or vite thingy
-          text = builtins.readFile ../../bash/.local/bin/pm;
-        }
-      );
+      pm = pkgs.writeShellApplication {
+        name = "pm";
+        runtimeInputs = with pkgs; [
+          bashInteractive # provides sh for npm to spawn scripts
+          coreutils
+          nodejs_24 # nodejs_latest does not always have cache ready
+          pnpm
+          yarn
+        ];
+        inheritPath = true; # It may run anything through a npm script or vite thingy
+        text = builtins.readFile ../../bash/.local/bin/pm;
+      };
 
-      pdfshrink = (
-        pkgs.writeShellApplication {
-          name = "pdfshrink";
-          runtimeInputs = with pkgs; [ ghostscript ];
-          inheritPath = false;
-          text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
-        }
-      );
+      pdfshrink = pkgs.writeShellApplication {
+        name = "pdfshrink";
+        runtimeInputs = with pkgs; [ ghostscript ];
+        inheritPath = false;
+        text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
+      };
     in
     [
       pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
