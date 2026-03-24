@@ -44,7 +44,7 @@
       agenix,
     }:
     let
-      mkHost =
+      mkWorkstationHost =
         {
           builder,
           agenixModule,
@@ -68,13 +68,13 @@
             }
           ];
         };
-      mkNixosHost = mkHost {
+      mkNixosWorkstationHost = mkWorkstationHost {
         builder = nixpkgs.lib.nixosSystem;
         agenixModule = agenix.nixosModules.default;
         homeManagerModule = home-manager.nixosModules.home-manager;
         homeModule = ./modules/home/linux.nix;
       };
-      mkDarwinHost = mkHost {
+      mkDarwinWorkstationHost = mkWorkstationHost {
         builder = nix-darwin.lib.darwinSystem;
         agenixModule = agenix.darwinModules.default;
         homeManagerModule = home-manager.darwinModules.home-manager;
@@ -83,15 +83,15 @@
 
       inherit (nixpkgs.lib) genAttrs;
 
-      nixosHosts = [
+      nixosWorkstationHosts = [
         "tower"
         "leod"
       ];
 
-      darwinHosts = [ "aaron" ];
+      darwinWorkstationHosts = [ "aaron" ];
     in
     {
-      nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
+      nixosConfigurations = genAttrs nixosWorkstationHosts mkNixosWorkstationHost // {
         pi = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           modules = [
@@ -101,7 +101,7 @@
         };
       };
 
-      darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
+      darwinConfigurations = genAttrs darwinWorkstationHosts mkDarwinWorkstationHost;
 
       homeConfigurations =
         let
