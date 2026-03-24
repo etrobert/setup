@@ -50,11 +50,12 @@
         }
       );
     in
-    with pkgs;
     [
       pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
       agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
       neovim-wrapped
+    ]
+    ++ (with pkgs; [
       act
       adwaita-icon-theme
       audacity
@@ -122,7 +123,7 @@
         text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
       })
       yt-dlp
-    ];
+    ]);
 
   age.secrets.openai-api-key = {
     file = ../secrets/openai-api-key.age;
