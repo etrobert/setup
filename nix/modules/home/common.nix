@@ -87,7 +87,10 @@ in
       append = true;
     };
 
-    setOptions = [ "INTERACTIVE_COMMENTS" ];
+    setOptions = [
+      "INTERACTIVE_COMMENTS"
+      "PROMPT_SUBST"
+    ];
 
     profileExtra = ''
       emulate sh
@@ -115,7 +118,6 @@ in
         unset CMD_TIMER_MS
       }
 
-      setopt PROMPT_SUBST
       PS1='$(pronto $? --zsh)'
       RPROMPT='$(pronto $? --rprompt --zsh)'
 
