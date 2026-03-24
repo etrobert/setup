@@ -75,7 +75,4 @@
     # insecure directory warnings caused by Nix store paths.
     enableGlobalCompInit = false;
   };
-
-  # Symlink zsh-syntax-highlighting to /run/current-system/sw/share/ (not included by default)
-  environment.pathsToLink = [ "/share/zsh-syntax-highlighting" ];
 }
