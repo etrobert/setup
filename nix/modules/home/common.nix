@@ -73,6 +73,27 @@ in
     };
   };
 
+  home.shellAliases = {
+    grep = "grep --color=auto";
+
+    # Ask for confirmation before overriding
+    mv = "mv --interactive";
+    cp = "cp --interactive";
+
+    # Create dirs recursively and verbosely
+    mkdir = "mkdir --parents --verbose";
+
+    LS = "ls";
+    sl = "ls";
+    SL = "ls";
+
+    # Using GNU ls from coreutils on both Linux and Darwin
+    ls = "ls --classify --human-readable --color";
+
+    gti = "git";
+    gi = "git";
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;

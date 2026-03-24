@@ -2,26 +2,6 @@
 
 # Aliases
 
-# Improve output
-alias grep="grep --color=auto"
-
-# Ask for confirmation before overriding
-alias mv="mv -i"
-alias cp="cp -i"
-
-# Create dirs recursively and verbosely
-alias mkdir="mkdir -pv"
-
-alias LS="ls"
-alias sl="ls"
-alias SL="ls"
-
-# Using GNU ls from coreutils on both Linux and Darwin
-alias ls="ls --classify --human-readable --color"
-
-alias gti="git"
-alias gi="git"
-
 alias make="make -j8"
 alias watch="watch --interval=1"
 alias ccat="highlight --out-format=ansi"
