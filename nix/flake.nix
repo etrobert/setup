@@ -44,10 +44,11 @@
       agenix,
     }:
     let
+      localPackagesOverlay = final: _prev: import ./pkgs { pkgs = final; };
+
       mkHost =
         {
           builder,
-          system,
           agenixModule,
           homeManagerModule,
           homeModule,
@@ -57,7 +58,12 @@
           specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/${host}/configuration.nix
-            { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
+            {
+              nixpkgs.overlays = [
+                neovim-nightly-overlay.overlays.default
+                localPackagesOverlay
+              ];
+            }
             agenixModule
             homeManagerModule
             {
@@ -71,14 +77,12 @@
         };
       mkNixosHost = mkHost {
         builder = nixpkgs.lib.nixosSystem;
-        system = "x86_64-linux";
         agenixModule = agenix.nixosModules.default;
         homeManagerModule = home-manager.nixosModules.home-manager;
         homeModule = ./modules/home/linux.nix;
       };
       mkDarwinHost = mkHost {
         builder = nix-darwin.lib.darwinSystem;
-        system = "aarch64-darwin";
         agenixModule = agenix.darwinModules.default;
         homeManagerModule = home-manager.darwinModules.home-manager;
         homeModule = ./modules/home/darwin.nix;
@@ -115,9 +119,14 @@
               username,
             }:
             home-manager.lib.homeManagerConfiguration {
-              pkgs = nixpkgs.legacyPackages.${system};
+              pkgs = import nixpkgs {
+                inherit system;
+                overlays = [
+                  neovim-nightly-overlay.overlays.default
+                  localPackagesOverlay
+                ];
+              };
               modules = [
-                { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
                 { home.username = username; }
                 module
               ];

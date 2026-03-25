@@ -1,7 +1,4 @@
 { pkgs, ... }:
-let
-  customPkgs = import ../pkgs { inherit pkgs; };
-in
 {
   imports = [
     ./nixos-base.nix
@@ -101,7 +98,7 @@ in
         exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
       '';
     in
-    (with customPkgs; [
+    (with pkgs; [
       nixos-option
       toggle-cpu-governor
       waybar-wrapped

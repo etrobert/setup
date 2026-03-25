@@ -4,9 +4,6 @@
   pronto,
   ...
 }:
-let
-  customPkgs = import ../pkgs { inherit pkgs; };
-in
 {
   imports = [
     ./base.nix
@@ -24,7 +21,7 @@ in
     pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
     agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
   ]
-  ++ (with customPkgs; [
+  ++ (with pkgs; [
     neovim-wrapped
     gen-commit-msg
     git-find-commit
