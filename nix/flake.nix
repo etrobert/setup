@@ -44,6 +44,11 @@
       agenix,
     }:
     let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+
       localPackagesOverlay = final: _prev: import ./pkgs { pkgs = final; };
 
       mkPkgs =
@@ -152,15 +157,11 @@
           "soft@aaron" = mkDarwinHome;
         };
 
-      formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
-        system: nixpkgs.legacyPackages.${system}.nixfmt
-      );
+      formatter = nixpkgs.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 
-      packages = genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
-        system: import ./pkgs { pkgs = mkPkgs system; }
-      );
+      packages = genAttrs supportedSystems (system: import ./pkgs { pkgs = mkPkgs system; });
 
-      devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
+      devShells = nixpkgs.lib.genAttrs supportedSystems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
@@ -181,7 +182,7 @@
         }
       );
 
-      checks = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
+      checks = nixpkgs.lib.genAttrs supportedSystems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
