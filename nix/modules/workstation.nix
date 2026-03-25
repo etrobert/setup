@@ -22,7 +22,7 @@
       neovim-wrapped = import ../pkgs/neovim-wrapped.nix { inherit pkgs; };
       gen-commit-msg = import ../pkgs/gen-commit-msg.nix { inherit pkgs; };
       git-find-commit = import ../pkgs/git-find-commit.nix { inherit pkgs; };
-      pm = import ../pkgs/pm.nix { inherit pkgs; };
+      pm = import ../pkgs/pm { inherit pkgs; };
       pdfshrink = import ../pkgs/pdfshrink.nix { inherit pkgs; };
       batr = import ../pkgs/batr.nix { inherit pkgs; };
       nixplatforms = import ../pkgs/nixplatforms.nix { inherit pkgs; };

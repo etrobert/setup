@@ -9,5 +9,5 @@ pkgs.writeShellApplication {
     yarn
   ];
   inheritPath = true; # It may run anything through a npm script or vite thingy
-  text = builtins.readFile ../../bash/.local/bin/pm;
+  text = builtins.readFile ./pm.sh;
 }
