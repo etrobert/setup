@@ -47,7 +47,7 @@
     }:
     # https://flake.parts/module-arguments.html
     flake-parts.lib.mkFlake { inherit inputs; } (
-      top@{ ... }:
+      { self, ... }:
       {
         imports = [
           # Optional: use external flake logic, e.g.
@@ -180,10 +180,10 @@
 
             checks = {
               statix = pkgs.runCommand "statix-check" { nativeBuildInputs = [ pkgs.statix ]; } ''
-                statix check ${top.self} && touch $out
+                statix check ${self} && touch $out
               '';
               deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
-                deadnix --fail ${top.self} && touch $out
+                deadnix --fail ${self} && touch $out
               '';
             };
 
