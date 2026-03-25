@@ -40,12 +40,14 @@ let
         }
       ];
     };
+
   mkNixosHost = mkHost {
     builder = nixpkgs.lib.nixosSystem;
     agenixModule = agenix.nixosModules.default;
     homeManagerModule = home-manager.nixosModules.home-manager;
     homeModule = ../modules/home/linux.nix;
   };
+
   mkDarwinHost = mkHost {
     builder = nix-darwin.lib.darwinSystem;
     agenixModule = agenix.darwinModules.default;
@@ -64,7 +66,6 @@ let
 in
 {
   flake = {
-
     nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
       pi = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
