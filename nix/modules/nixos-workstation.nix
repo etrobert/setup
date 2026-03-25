@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, customPkgs, ... }:
 {
   imports = [
     ./nixos-base.nix
@@ -97,16 +97,8 @@
       nixos-option = pkgs.writeShellScriptBin "nixos-option" ''
         exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
       '';
-
-      toggle-cpu-governor = import ../pkgs/toggle-cpu-governor.nix { inherit pkgs; };
-      waybar-wrapped = import ../pkgs/waybar-wrapped.nix { inherit pkgs; };
-      brightness-control = import ../pkgs/brightness-control { inherit pkgs; };
-      volume-control = import ../pkgs/volume-control { inherit pkgs; };
-      birthdays = import ../pkgs/birthdays { inherit pkgs; };
-      creme = import ../pkgs/creme { inherit pkgs; };
-      lock-suspend = import ../pkgs/lock-suspend.nix { inherit pkgs; };
     in
-    [
+    (with customPkgs; [
       nixos-option
       toggle-cpu-governor
       waybar-wrapped
@@ -115,7 +107,7 @@
       birthdays
       creme
       lock-suspend
-    ]
+    ])
     ++ (with pkgs; [
       linuxPackages.cpupower
       brightnessctl
