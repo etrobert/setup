@@ -8,10 +8,7 @@ let
       ...
     }:
     {
-      imports = [
-        ./base.nix
-        ./unfree.nix
-      ];
+      imports = [ ./unfree.nix ];
 
       allowedUnfreePackages = [
         "claude-code"

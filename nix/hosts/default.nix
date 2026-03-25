@@ -52,6 +52,7 @@ let
       self.nixosModules.nixosWorkstation
       self.nixosModules.workstation
       self.nixosModules.nixosBase
+      self.nixosModules.base
     ];
   };
 
@@ -60,7 +61,10 @@ let
     agenixModule = agenix.darwinModules.default;
     homeManagerModule = home-manager.darwinModules.home-manager;
     homeModule = ../modules/home/darwin.nix;
-    extraModules = [ self.darwinModules.workstation ];
+    extraModules = [
+      self.darwinModules.workstation
+      self.darwinModules.base
+    ];
   };
 
   inherit (nixpkgs.lib) genAttrs;

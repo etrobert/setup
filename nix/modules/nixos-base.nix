@@ -3,8 +3,6 @@
   flake.nixosModules.nixosBase =
     { pkgs, config, ... }:
     {
-      imports = [ ./base.nix ];
-
       system.activationScripts.nixos-symlink.text = ''
         ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
       '';
