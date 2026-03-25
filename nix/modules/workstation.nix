@@ -1,6 +1,6 @@
 { ... }:
-{
-  flake.nixosModules.workstation =
+let
+  workstation =
     {
       pkgs,
       pronto,
@@ -73,4 +73,8 @@
 
       fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
     };
+in
+{
+  flake.nixosModules.workstation = workstation;
+  flake.darwinModules.workstation = workstation;
 }
