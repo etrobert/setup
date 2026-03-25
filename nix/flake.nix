@@ -44,6 +44,7 @@
           ./modules/home
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
+          ./modules/nixos-base.nix
         ];
 
         systems = [

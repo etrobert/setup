@@ -51,6 +51,7 @@ let
     extraModules = [
       self.nixosModules.nixosWorkstation
       self.nixosModules.workstation
+      self.nixosModules.nixosBase
     ];
   };
 
@@ -78,6 +79,7 @@ in
         system = "aarch64-linux";
         modules = [
           ./pi/configuration.nix
+          self.nixosModules.nixosBase
           agenix.nixosModules.default
         ];
       };
