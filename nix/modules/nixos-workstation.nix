@@ -107,6 +107,7 @@
       birthdays
       creme
       lock-suspend
+      check-bt-profile
     ])
     ++ (with pkgs; [
       linuxPackages.cpupower
