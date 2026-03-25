@@ -3,8 +3,9 @@ let
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
 in
 {
-
   home = {
+    username = "soft";
+
     file = {
       ".config/home-manager".source = symlink "nix";
 
