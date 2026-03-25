@@ -74,18 +74,7 @@
         text = builtins.readFile ../../git/.local/bin/git-find-commit;
       };
 
-      pm = pkgs.writeShellApplication {
-        name = "pm";
-        runtimeInputs = with pkgs; [
-          bashInteractive # provides sh for npm to spawn scripts
-          coreutils
-          nodejs_24 # nodejs_latest does not always have cache ready
-          pnpm
-          yarn
-        ];
-        inheritPath = true; # It may run anything through a npm script or vite thingy
-        text = builtins.readFile ../../bash/.local/bin/pm;
-      };
+      pm = import ../pkgs/pm.nix { inherit pkgs; };
 
       pdfshrink = pkgs.writeShellApplication {
         name = "pdfshrink";
