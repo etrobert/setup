@@ -125,17 +125,7 @@
 
       brightness-control = import ../pkgs/brightness-control { inherit pkgs; };
 
-      volume-control = pkgs.writeShellApplication {
-        name = "volume-control";
-        runtimeInputs = with pkgs; [
-          gawk
-          gnugrep
-          libnotify
-          wireplumber
-        ];
-        inheritPath = false;
-        text = builtins.readFile ../../hyprland/.local/bin/volume-control;
-      };
+      volume-control = import ../pkgs/volume-control { inherit pkgs; };
 
       birthdays = pkgs.writers.writePython3Bin "birthdays" {
         libraries = [ pkgs.python3Packages.vobject ];
