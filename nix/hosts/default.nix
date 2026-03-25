@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 let
   inherit (inputs)
     nixpkgs
@@ -23,6 +23,7 @@ let
       specialArgs = { inherit pronto agenix; };
       modules = [
         ./${host}/configuration.nix
+        self.nixosModules.nixosWorkstation
         {
           nixpkgs.overlays = [
             neovim-nightly-overlay.overlays.default

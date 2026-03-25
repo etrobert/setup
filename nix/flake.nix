@@ -42,6 +42,7 @@
         imports = [
           ./hosts
           ./modules/home
+          ./modules/nixos-workstation.nix
         ];
 
         systems = [
