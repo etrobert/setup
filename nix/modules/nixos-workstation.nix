@@ -103,14 +103,7 @@
       brightness-control = import ../pkgs/brightness-control { inherit pkgs; };
       volume-control = import ../pkgs/volume-control { inherit pkgs; };
       birthdays = import ../pkgs/birthdays { inherit pkgs; };
-
-      creme = pkgs.writeShellApplication {
-        name = "creme";
-        runtimeInputs = with pkgs; [ mpc ];
-        inheritPath = false;
-        text = builtins.readFile ../../mpd/.local/bin/creme.sh;
-      };
-
+      creme = import ../pkgs/creme { inherit pkgs; };
       lock-suspend = import ../pkgs/lock-suspend.nix { inherit pkgs; };
     in
     [
