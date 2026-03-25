@@ -102,10 +102,7 @@
       waybar-wrapped = import ../pkgs/waybar-wrapped.nix { inherit pkgs; };
       brightness-control = import ../pkgs/brightness-control { inherit pkgs; };
       volume-control = import ../pkgs/volume-control { inherit pkgs; };
-
-      birthdays = pkgs.writers.writePython3Bin "birthdays" {
-        libraries = [ pkgs.python3Packages.vobject ];
-      } (builtins.readFile ../../pimsync/.local/bin/birthdays.py);
+      birthdays = import ../pkgs/birthdays { inherit pkgs; };
 
       creme = pkgs.writeShellApplication {
         name = "creme";
