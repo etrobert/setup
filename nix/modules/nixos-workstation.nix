@@ -1,4 +1,7 @@
-{ pkgs, customPkgs, ... }:
+{ pkgs, ... }:
+let
+  customPkgs = import ../pkgs { inherit pkgs; };
+in
 {
   imports = [
     ./nixos-base.nix

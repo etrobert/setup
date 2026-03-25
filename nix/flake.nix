@@ -53,12 +53,8 @@
           homeModule,
         }:
         host:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          customPkgs = import ./pkgs { inherit pkgs; };
-        in
         builder {
-          specialArgs = { inherit pronto agenix customPkgs; };
+          specialArgs = { inherit pronto agenix; };
           modules = [
             ./hosts/${host}/configuration.nix
             { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }

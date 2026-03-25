@@ -1,10 +1,12 @@
 {
   agenix,
   pkgs,
-  customPkgs,
   pronto,
   ...
 }:
+let
+  customPkgs = import ../pkgs { inherit pkgs; };
+in
 {
   imports = [
     ./base.nix
