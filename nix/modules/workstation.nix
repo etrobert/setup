@@ -19,35 +19,7 @@
 
   environment.systemPackages =
     let
-      neovim-wrapped = pkgs.symlinkJoin {
-        name = "neovim-wrapped";
-        buildInputs = [ pkgs.makeWrapper ];
-        paths = [ pkgs.neovim ];
-        postBuild = ''
-          wrapProgram $out/bin/nvim \
-            --prefix PATH : ${
-              pkgs.lib.makeBinPath (
-                with pkgs;
-                [
-                  bash-language-server
-                  black # python formatter
-                  gopls
-                  imagemagick # for image rendering in nvim using snacks.image
-                  isort # python import sorter
-                  lua-language-server
-                  nixd
-                  nixfmt
-                  shfmt
-                  stylua
-                  tree-sitter
-                  typescript-language-server
-                  vscode-langservers-extracted
-                ]
-              )
-            }
-        '';
-      };
-
+      neovim-wrapped = import ../pkgs/neovim-wrapped.nix { inherit pkgs; };
       gen-commit-msg = import ../pkgs/gen-commit-msg.nix { inherit pkgs; };
       git-find-commit = import ../pkgs/git-find-commit.nix { inherit pkgs; };
       pm = import ../pkgs/pm.nix { inherit pkgs; };
