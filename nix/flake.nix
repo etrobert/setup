@@ -47,12 +47,7 @@
     }:
     # https://flake.parts/module-arguments.html
     flake-parts.lib.mkFlake { inherit inputs; } (
-      top@{
-        config,
-        withSystem,
-        moduleWithSystem,
-        ...
-      }:
+      top@{ ... }:
       {
         imports = [
           # Optional: use external flake logic, e.g.
@@ -166,11 +161,7 @@
           "aarch64-darwin"
         ];
         perSystem =
-          {
-            config,
-            pkgs,
-            ...
-          }:
+          { pkgs, ... }:
           {
             devShells = {
               default = pkgs.mkShell {
