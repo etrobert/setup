@@ -6,7 +6,7 @@
   gen-commit-msg = pkgs.callPackage ./gen-commit-msg.nix { };
   git-find-commit = pkgs.callPackage ./git-find-commit.nix { };
   pm = pkgs.callPackage ./pm { };
-  pdfshrink = pkgs.callPackage ./pdfshrink.nix { };
+  pdfshrink = pkgs.callPackage ./pdfshrink { };
   nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
   printline = pkgs.callPackage ./printline.nix { };
   toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
