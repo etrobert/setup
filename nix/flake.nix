@@ -51,6 +51,38 @@
         ];
         flake = {
           # Put your original flake attributes here.
+          homeConfigurations =
+            let
+              mkHome =
+                {
+                  system,
+                  module,
+                  username,
+                }:
+                inputs.home-manager.lib.homeManagerConfiguration {
+                  pkgs = inputs.nixpkgs.legacyPackages.${system};
+                  modules = [
+                    { home.username = username; }
+                    module
+                  ];
+                };
+              mkLinuxHome = mkHome {
+                system = "x86_64-linux";
+                module = ./modules/home/linux.nix;
+                username = "soft";
+              };
+              mkDarwinHome = mkHome {
+                system = "aarch64-darwin";
+                module = ./modules/home/darwin.nix;
+                username = "soft";
+              };
+            in
+            {
+              "soft@tower" = mkLinuxHome;
+              "soft@leod" = mkLinuxHome;
+              "soft@aaron" = mkDarwinHome;
+            };
+
         };
         systems = [
           # systems for which you want to build the `perSystem` attributes
@@ -98,6 +130,7 @@
             # packages.bar = pkgs.callPackage ./bar/package.nix {
             #   foo = config.packages.foo;
             # };
+
           };
       }
     );
@@ -193,38 +226,6 @@
   #     };
 
   #     darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
-
-  #     homeConfigurations =
-  #       let
-  #         mkHome =
-  #           {
-  #             system,
-  #             module,
-  #             username,
-  #           }:
-  #           home-manager.lib.homeManagerConfiguration {
-  #             pkgs = mkPkgs system;
-  #             modules = [
-  #               { home.username = username; }
-  #               module
-  #             ];
-  #           };
-  #         mkLinuxHome = mkHome {
-  #           system = "x86_64-linux";
-  #           module = ./modules/home/linux.nix;
-  #           username = "soft";
-  #         };
-  #         mkDarwinHome = mkHome {
-  #           system = "aarch64-darwin";
-  #           module = ./modules/home/darwin.nix;
-  #           username = "soft";
-  #         };
-  #       in
-  #       {
-  #         "soft@tower" = mkLinuxHome;
-  #         "soft@leod" = mkLinuxHome;
-  #         "soft@aaron" = mkDarwinHome;
-  #       };
 
   #   };
 }
