@@ -12,5 +12,5 @@ writeShellApplication {
     kmod # for modprobe called by cpupower
   ];
   inheritPath = false;
-  text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
+  text = builtins.readFile ./toggle-cpu-governor;
 }

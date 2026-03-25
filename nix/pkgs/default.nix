@@ -9,7 +9,7 @@
   pdfshrink = pkgs.callPackage ./pdfshrink.nix { };
   nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
   printline = pkgs.callPackage ./printline.nix { };
-  toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor.nix { };
+  toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
   waybar-wrapped = pkgs.callPackage ./waybar-wrapped.nix { };
   brightness-control = pkgs.callPackage ./brightness-control { };
   volume-control = pkgs.callPackage ./volume-control { };
