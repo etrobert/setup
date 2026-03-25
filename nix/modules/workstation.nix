@@ -73,5 +73,4 @@ let
 in
 {
   flake.nixosModules.workstation = workstation;
-  flake.darwinModules.workstation = workstation;
 }

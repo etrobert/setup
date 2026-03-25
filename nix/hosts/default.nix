@@ -62,7 +62,7 @@ let
     homeManagerModule = home-manager.darwinModules.home-manager;
     homeModule = ../modules/home/darwin.nix;
     extraModules = [
-      self.darwinModules.workstation
+      self.nixosModules.workstation
       self.darwinModules.base
     ];
   };
