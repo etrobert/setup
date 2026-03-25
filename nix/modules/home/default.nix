@@ -10,12 +10,11 @@ in
           {
             system,
             module,
-            username,
           }:
           home-manager.lib.homeManagerConfiguration {
             pkgs = inputs.nixpkgs.legacyPackages.${system};
             modules = [
-              { home.username = username; }
+              { home.username = "soft"; }
               module
             ];
           };
@@ -23,13 +22,11 @@ in
         mkLinuxHome = mkHome {
           system = "x86_64-linux";
           module = ./linux.nix;
-          username = "soft";
         };
 
         mkDarwinHome = mkHome {
           system = "aarch64-darwin";
           module = ./darwin.nix;
-          username = "soft";
         };
       in
       {
