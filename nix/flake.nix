@@ -36,13 +36,13 @@
 
   outputs =
     inputs@{
-      flake-parts,
-      pronto,
-      agenix,
-      neovim-nightly-overlay,
       nixpkgs,
-      home-manager,
+      neovim-nightly-overlay,
       nix-darwin,
+      pronto,
+      home-manager,
+      agenix,
+      flake-parts,
       ...
     }:
     # https://flake.parts/module-arguments.html
