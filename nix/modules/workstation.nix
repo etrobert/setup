@@ -26,17 +26,7 @@
       pdfshrink = import ../pkgs/pdfshrink.nix { inherit pkgs; };
       batr = import ../pkgs/batr.nix { inherit pkgs; };
       nixplatforms = import ../pkgs/nixplatforms.nix { inherit pkgs; };
-
-      printline = pkgs.writeShellApplication {
-        name = "printline";
-        runtimeInputs = with pkgs; [ bat ];
-        inheritPath = false;
-        text = ''
-          for _ in {1..80}; do echo -n '-'; done
-
-          echo
-        '';
-      };
+      printline = import ../pkgs/printline.nix { inherit pkgs; };
     in
     [
 
