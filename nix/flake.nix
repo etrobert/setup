@@ -157,11 +157,11 @@
           "soft@aaron" = mkDarwinHome;
         };
 
-      formatter = nixpkgs.lib.genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
+      formatter = genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 
       packages = genAttrs supportedSystems (system: import ./pkgs { pkgs = mkPkgs system; });
 
-      devShells = nixpkgs.lib.genAttrs supportedSystems (
+      devShells = genAttrs supportedSystems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
@@ -182,7 +182,7 @@
         }
       );
 
-      checks = nixpkgs.lib.genAttrs supportedSystems (
+      checks = genAttrs supportedSystems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
