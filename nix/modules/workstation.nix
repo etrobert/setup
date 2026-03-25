@@ -63,14 +63,7 @@
       };
 
       pm = import ../pkgs/pm.nix { inherit pkgs; };
-
-      pdfshrink = pkgs.writeShellApplication {
-        name = "pdfshrink";
-        runtimeInputs = with pkgs; [ ghostscript ];
-        inheritPath = false;
-        text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
-      };
-
+      pdfshrink = import ../pkgs/pdfshrink.nix { inherit pkgs; };
       batr = import ../pkgs/batr.nix { inherit pkgs; };
       nixplatforms = import ../pkgs/nixplatforms.nix { inherit pkgs; };
 
