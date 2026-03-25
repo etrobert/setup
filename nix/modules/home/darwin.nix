@@ -2,12 +2,14 @@
 {
   imports = [ ./common.nix ];
 
-  home.homeDirectory = "/Users/${config.home.username}";
+  home = {
+    homeDirectory = "/Users/${config.home.username}";
 
-  home.file.".hushlogin".text = "";
+    file.".hushlogin".text = "";
 
-  home.shellAliases = {
-    bg = "open /Volumes/T7/Applications/Baldur\'s\ Gate\ 3.app/Contents/MacOS/Baldur\'s\ Gate\ 3\ GOG";
+    shellAliases = {
+      bg = "open /Volumes/T7/Applications/Baldur\'s\ Gate\ 3.app/Contents/MacOS/Baldur\'s\ Gate\ 3\ GOG";
+    };
   };
 
   services.syncthing = {
