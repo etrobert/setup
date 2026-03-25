@@ -74,7 +74,7 @@ in
 
     zsh = {
       enable = true;
-      enableCompletion = true;
+      enableCompletion = false;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       defaultKeymap = "viins";
@@ -116,6 +116,9 @@ in
           export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
           unset CMD_TIMER_MS
         }
+
+        # needed over enableCompletion = true; to avoid errors on mac
+        autoload -Uz compinit && compinit -i
 
         PS1='$(pronto $? --zsh)'
         RPROMPT='$(pronto $? --rprompt --zsh)'
