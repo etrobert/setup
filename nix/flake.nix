@@ -34,167 +34,196 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      neovim-nightly-overlay,
-      nix-darwin,
-      pronto,
-      home-manager,
-      agenix,
-    }:
-    let
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-darwin"
-      ];
-
-      localPackagesOverlay = final: _prev: import ./pkgs { pkgs = final; };
-
-      mkPkgs =
-        system:
-        import nixpkgs {
-          inherit system;
-          overlays = [
-            neovim-nightly-overlay.overlays.default
-            localPackagesOverlay
-          ];
+    inputs@{ flake-parts, ... }:
+    # https://flake.parts/module-arguments.html
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      top@{
+        config,
+        withSystem,
+        moduleWithSystem,
+        ...
+      }:
+      {
+        imports = [
+          # Optional: use external flake logic, e.g.
+          # inputs.foo.flakeModules.default
+        ];
+        flake = {
+          # Put your original flake attributes here.
         };
-
-      mkHost =
-        {
-          builder,
-          agenixModule,
-          homeManagerModule,
-          homeModule,
-        }:
-        host:
-        builder {
-          specialArgs = { inherit pronto agenix; };
-          modules = [
-            ./hosts/${host}/configuration.nix
-            {
-              nixpkgs.overlays = [
-                neovim-nightly-overlay.overlays.default
-                localPackagesOverlay
-              ];
-            }
-            agenixModule
-            homeManagerModule
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.soft = import homeModule;
+        systems = [
+          # systems for which you want to build the `perSystem` attributes
+          "x86_64-linux"
+          # ...
+        ];
+        perSystem =
+          {
+            config,
+            pkgs,
+            ...
+          }:
+          {
+            devShells = {
+              default = pkgs.mkShell {
+                packages = with pkgs; [
+                  statix
+                  deadnix
+                  nixfmt
+                ];
               };
-            }
-          ];
-        };
-      mkNixosHost = mkHost {
-        builder = nixpkgs.lib.nixosSystem;
-        agenixModule = agenix.nixosModules.default;
-        homeManagerModule = home-manager.nixosModules.home-manager;
-        homeModule = ./modules/home/linux.nix;
-      };
-      mkDarwinHost = mkHost {
-        builder = nix-darwin.lib.darwinSystem;
-        agenixModule = agenix.darwinModules.default;
-        homeManagerModule = home-manager.darwinModules.home-manager;
-        homeModule = ./modules/home/darwin.nix;
-      };
-
-      inherit (nixpkgs.lib) genAttrs;
-
-      nixosHosts = [
-        "tower"
-        "leod"
-      ];
-
-      darwinHosts = [ "aaron" ];
-    in
-    {
-      nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
-        pi = nixpkgs.lib.nixosSystem {
-          system = "aarch64-linux";
-          modules = [
-            ./hosts/pi/configuration.nix
-            agenix.nixosModules.default
-          ];
-        };
-      };
-
-      darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
-
-      homeConfigurations =
-        let
-          mkHome =
-            {
-              system,
-              module,
-              username,
-            }:
-            home-manager.lib.homeManagerConfiguration {
-              pkgs = mkPkgs system;
-              modules = [
-                { home.username = username; }
-                module
-              ];
+              pimsync = pkgs.mkShell {
+                packages = [
+                  (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
+                ];
+              };
             };
-          mkLinuxHome = mkHome {
-            system = "x86_64-linux";
-            module = ./modules/home/linux.nix;
-            username = "soft";
-          };
-          mkDarwinHome = mkHome {
-            system = "aarch64-darwin";
-            module = ./modules/home/darwin.nix;
-            username = "soft";
-          };
-        in
-        {
-          "soft@tower" = mkLinuxHome;
-          "soft@leod" = mkLinuxHome;
-          "soft@aaron" = mkDarwinHome;
-        };
 
-      formatter = genAttrs supportedSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
+            checks = {
+              statix = pkgs.runCommand "statix-check" { nativeBuildInputs = [ pkgs.statix ]; } ''
+                statix check ${top.self} && touch $out
+              '';
+              deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
+                deadnix --fail ${top.self} && touch $out
+              '';
+            };
 
-      packages = genAttrs supportedSystems (system: import ./pkgs { pkgs = mkPkgs system; });
+            formatter = pkgs.nixfmt;
 
-      devShells = genAttrs supportedSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              statix
-              deadnix
-              nixfmt
-            ];
+            packages = import ./pkgs { inherit pkgs; };
+
+            # Recommended: move all package definitions here.
+            # e.g. (assuming you have a nixpkgs input)
+            # packages.foo = pkgs.callPackage ./foo/package.nix { };
+            # packages.bar = pkgs.callPackage ./bar/package.nix {
+            #   foo = config.packages.foo;
+            # };
           };
-          pimsync = pkgs.mkShell {
-            packages = [
-              (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
-            ];
-          };
-        }
-      );
+      }
+    );
 
-      checks = genAttrs supportedSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        {
-          statix = pkgs.runCommand "statix-check" { nativeBuildInputs = [ pkgs.statix ]; } ''
-            statix check ${self} && touch $out
-          '';
-          deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
-            deadnix --fail ${self} && touch $out
-          '';
-        }
-      );
-    };
+  # outputs2 =
+  #   {
+  #     self,
+  #     nixpkgs,
+  #     neovim-nightly-overlay,
+  #     nix-darwin,
+  #     pronto,
+  #     home-manager,
+  #     agenix,
+  #   }:
+  #   let
+  #     supportedSystems = [
+  #       "x86_64-linux"
+  #       "aarch64-darwin"
+  #     ];
+
+  #     localPackagesOverlay = final: _prev: import ./pkgs { pkgs = final; };
+
+  #     mkPkgs =
+  #       system:
+  #       import nixpkgs {
+  #         inherit system;
+  #         overlays = [
+  #           neovim-nightly-overlay.overlays.default
+  #           localPackagesOverlay
+  #         ];
+  #       };
+
+  #     mkHost =
+  #       {
+  #         builder,
+  #         agenixModule,
+  #         homeManagerModule,
+  #         homeModule,
+  #       }:
+  #       host:
+  #       builder {
+  #         specialArgs = { inherit pronto agenix; };
+  #         modules = [
+  #           ./hosts/${host}/configuration.nix
+  #           {
+  #             nixpkgs.overlays = [
+  #               neovim-nightly-overlay.overlays.default
+  #               localPackagesOverlay
+  #             ];
+  #           }
+  #           agenixModule
+  #           homeManagerModule
+  #           {
+  #             home-manager = {
+  #               useGlobalPkgs = true;
+  #               useUserPackages = true;
+  #               users.soft = import homeModule;
+  #             };
+  #           }
+  #         ];
+  #       };
+  #     mkNixosHost = mkHost {
+  #       builder = nixpkgs.lib.nixosSystem;
+  #       agenixModule = agenix.nixosModules.default;
+  #       homeManagerModule = home-manager.nixosModules.home-manager;
+  #       homeModule = ./modules/home/linux.nix;
+  #     };
+  #     mkDarwinHost = mkHost {
+  #       builder = nix-darwin.lib.darwinSystem;
+  #       agenixModule = agenix.darwinModules.default;
+  #       homeManagerModule = home-manager.darwinModules.home-manager;
+  #       homeModule = ./modules/home/darwin.nix;
+  #     };
+
+  #     inherit (nixpkgs.lib) genAttrs;
+
+  #     nixosHosts = [
+  #       "tower"
+  #       "leod"
+  #     ];
+
+  #     darwinHosts = [ "aaron" ];
+  #   in
+  #   {
+  #     nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
+  #       pi = nixpkgs.lib.nixosSystem {
+  #         system = "aarch64-linux";
+  #         modules = [
+  #           ./hosts/pi/configuration.nix
+  #           agenix.nixosModules.default
+  #         ];
+  #       };
+  #     };
+
+  #     darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
+
+  #     homeConfigurations =
+  #       let
+  #         mkHome =
+  #           {
+  #             system,
+  #             module,
+  #             username,
+  #           }:
+  #           home-manager.lib.homeManagerConfiguration {
+  #             pkgs = mkPkgs system;
+  #             modules = [
+  #               { home.username = username; }
+  #               module
+  #             ];
+  #           };
+  #         mkLinuxHome = mkHome {
+  #           system = "x86_64-linux";
+  #           module = ./modules/home/linux.nix;
+  #           username = "soft";
+  #         };
+  #         mkDarwinHome = mkHome {
+  #           system = "aarch64-darwin";
+  #           module = ./modules/home/darwin.nix;
+  #           username = "soft";
+  #         };
+  #       in
+  #       {
+  #         "soft@tower" = mkLinuxHome;
+  #         "soft@leod" = mkLinuxHome;
+  #         "soft@aaron" = mkDarwinHome;
+  #       };
+
+  #   };
 }
