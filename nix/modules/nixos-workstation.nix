@@ -169,19 +169,7 @@
         text = builtins.readFile ../../mpd/.local/bin/creme.sh;
       };
 
-      lock-suspend = pkgs.writeShellApplication {
-        name = "lock-suspend";
-        runtimeInputs = with pkgs; [
-          coreutils # sleep
-          systemd
-        ];
-        inheritPath = false;
-        text = ''
-          loginctl lock-session
-          sleep 1
-          systemctl suspend
-        '';
-      };
+      lock-suspend = import ../pkgs/lock-suspend.nix { inherit pkgs; };
     in
     [
       nixos-option
