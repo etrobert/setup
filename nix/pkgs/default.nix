@@ -1,7 +1,7 @@
 { pkgs }:
 {
   neovim-wrapped = import ./neovim-wrapped.nix { inherit pkgs; };
-  batr = import ./batr.nix { inherit pkgs; };
+  batr = pkgs.callPackage ./batr.nix { };
   birthdays = import ./birthdays { inherit pkgs; };
   gen-commit-msg = import ./gen-commit-msg.nix { inherit pkgs; };
   git-find-commit = import ./git-find-commit.nix { inherit pkgs; };

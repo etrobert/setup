@@ -1,7 +1,11 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  findutils,
+  bat,
+}:
+writeShellApplication {
   name = "batr";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     findutils
     bat
   ];
