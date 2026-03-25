@@ -94,17 +94,8 @@
         text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
       };
 
+      batr = import ../pkgs/batr.nix { inherit pkgs; };
       nixplatforms = import ../pkgs/nixplatforms.nix { inherit pkgs; };
-
-      batr = pkgs.writeShellApplication {
-        name = "batr";
-        runtimeInputs = with pkgs; [
-          findutils
-          bat
-        ];
-        inheritPath = false;
-        text = ''find "$1" -type f -exec bat {} +'';
-      };
 
       printline = pkgs.writeShellApplication {
         name = "printline";
@@ -118,6 +109,7 @@
       };
     in
     [
+
       pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
       agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
       neovim-wrapped
