@@ -3,6 +3,13 @@ vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
 })
 
+-- See https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#highlighting
+vim.api.nvim_create_autocmd("FileType", {
+	callback = function(ev)
+		pcall(vim.treesitter.start, ev.buf)
+	end,
+})
+
 require("nvim-treesitter").install({
 	"bash",
 	"c",
