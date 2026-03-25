@@ -15,4 +15,5 @@
   volume-control = pkgs.callPackage ./volume-control { };
   creme = pkgs.callPackage ./creme { };
   lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
+  check-bt-profile = pkgs.callPackage ./check-bt-profile { };
 }
