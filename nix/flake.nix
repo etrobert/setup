@@ -46,6 +46,16 @@
     let
       localPackagesOverlay = final: _prev: import ./pkgs { pkgs = final; };
 
+      mkPkgs =
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [
+            neovim-nightly-overlay.overlays.default
+            localPackagesOverlay
+          ];
+        };
+
       mkHost =
         {
           builder,
@@ -119,13 +129,7 @@
               username,
             }:
             home-manager.lib.homeManagerConfiguration {
-              pkgs = import nixpkgs {
-                inherit system;
-                overlays = [
-                  neovim-nightly-overlay.overlays.default
-                  localPackagesOverlay
-                ];
-              };
+              pkgs = mkPkgs system;
               modules = [
                 { home.username = username; }
                 module
@@ -150,6 +154,10 @@
 
       formatter = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
         system: nixpkgs.legacyPackages.${system}.nixfmt
+      );
+
+      packages = genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
+        system: import ./pkgs { pkgs = mkPkgs system; }
       );
 
       devShells = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] (
