@@ -49,19 +49,7 @@
       };
 
       gen-commit-msg = import ../pkgs/gen-commit-msg.nix { inherit pkgs; };
-
-      git-find-commit = pkgs.writeShellApplication {
-        name = "git-find-commit";
-        runtimeInputs = with pkgs; [
-          coreutils
-          git
-          fzf
-          findutils # xargs
-        ];
-        inheritPath = false;
-        text = builtins.readFile ../../git/.local/bin/git-find-commit;
-      };
-
+      git-find-commit = import ../pkgs/git-find-commit.nix { inherit pkgs; };
       pm = import ../pkgs/pm.nix { inherit pkgs; };
       pdfshrink = import ../pkgs/pdfshrink.nix { inherit pkgs; };
       batr = import ../pkgs/batr.nix { inherit pkgs; };
