@@ -17,13 +17,13 @@ let
       agenixModule,
       homeManagerModule,
       homeModule,
+      extraModules,
     }:
     host:
     builder {
       specialArgs = { inherit pronto agenix; };
       modules = [
         ./${host}/configuration.nix
-        self.nixosModules.nixosWorkstation
         {
           nixpkgs.overlays = [
             neovim-nightly-overlay.overlays.default
@@ -39,7 +39,8 @@ let
             users.soft = import homeModule;
           };
         }
-      ];
+      ]
+      ++ extraModules;
     };
 
   mkNixosHost = mkHost {
@@ -47,6 +48,10 @@ let
     agenixModule = agenix.nixosModules.default;
     homeManagerModule = home-manager.nixosModules.home-manager;
     homeModule = ../modules/home/linux.nix;
+    extraModules = [
+      self.nixosModules.nixosWorkstation
+      self.nixosModules.workstation
+    ];
   };
 
   mkDarwinHost = mkHost {
@@ -54,6 +59,7 @@ let
     agenixModule = agenix.darwinModules.default;
     homeManagerModule = home-manager.darwinModules.home-manager;
     homeModule = ../modules/home/darwin.nix;
+    extraModules = [ self.nixosModules.workstation ];
   };
 
   inherit (nixpkgs.lib) genAttrs;

@@ -43,6 +43,7 @@
           ./hosts
           ./modules/home
           ./modules/nixos-workstation.nix
+          ./modules/workstation.nix
         ];
 
         systems = [

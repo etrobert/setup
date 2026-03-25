@@ -3,10 +3,7 @@
   flake.nixosModules.nixosWorkstation =
     { pkgs, ... }:
     {
-      imports = [
-        ./nixos-base.nix
-        ./workstation.nix
-      ];
+      imports = [ ./nixos-base.nix ];
 
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
