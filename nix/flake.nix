@@ -47,13 +47,18 @@
       mkHost =
         {
           builder,
+          system,
           agenixModule,
           homeManagerModule,
           homeModule,
         }:
         host:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          customPkgs = import ./pkgs { inherit pkgs; };
+        in
         builder {
-          specialArgs = { inherit pronto agenix; };
+          specialArgs = { inherit pronto agenix customPkgs; };
           modules = [
             ./hosts/${host}/configuration.nix
             { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
@@ -70,12 +75,14 @@
         };
       mkNixosHost = mkHost {
         builder = nixpkgs.lib.nixosSystem;
+        system = "x86_64-linux";
         agenixModule = agenix.nixosModules.default;
         homeManagerModule = home-manager.nixosModules.home-manager;
         homeModule = ./modules/home/linux.nix;
       };
       mkDarwinHost = mkHost {
         builder = nix-darwin.lib.darwinSystem;
+        system = "aarch64-darwin";
         agenixModule = agenix.darwinModules.default;
         homeManagerModule = home-manager.darwinModules.home-manager;
         homeModule = ./modules/home/darwin.nix;
