@@ -123,19 +123,7 @@
           '';
         };
 
-      brightness-control = pkgs.writeShellApplication {
-        name = "brightness-control";
-        runtimeInputs = with pkgs; [
-          coreutils # cut & tr
-          brightnessctl
-          hyprland
-          libnotify
-          gnugrep
-          jq
-        ];
-        inheritPath = false;
-        text = builtins.readFile ../../hyprland/.local/bin/brightness-control;
-      };
+      brightness-control = import ../pkgs/brightness-control { inherit pkgs; };
 
       volume-control = pkgs.writeShellApplication {
         name = "volume-control";
