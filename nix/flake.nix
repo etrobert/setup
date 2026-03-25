@@ -35,50 +35,14 @@
   };
 
   outputs =
-    inputs@{ home-manager, flake-parts, ... }:
+    inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
       { self, ... }:
       {
         imports = [
           ./hosts
+          ./modules/home
         ];
-
-        flake = {
-          homeConfigurations =
-            let
-              mkHome =
-                {
-                  system,
-                  module,
-                  username,
-                }:
-                home-manager.lib.homeManagerConfiguration {
-                  pkgs = inputs.nixpkgs.legacyPackages.${system};
-                  modules = [
-                    { home.username = username; }
-                    module
-                  ];
-                };
-
-              mkLinuxHome = mkHome {
-                system = "x86_64-linux";
-                module = ./modules/home/linux.nix;
-                username = "soft";
-              };
-
-              mkDarwinHome = mkHome {
-                system = "aarch64-darwin";
-                module = ./modules/home/darwin.nix;
-                username = "soft";
-              };
-            in
-            {
-              "soft@tower" = mkLinuxHome;
-              "soft@leod" = mkLinuxHome;
-              "soft@aaron" = mkDarwinHome;
-            };
-
-        };
 
         systems = [
           "x86_64-linux"
