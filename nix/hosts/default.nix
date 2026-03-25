@@ -84,6 +84,7 @@ in
         modules = [
           ./pi/configuration.nix
           self.nixosModules.nixosBase
+          self.nixosModules.base
           agenix.nixosModules.default
         ];
       };
