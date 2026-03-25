@@ -1,9 +1,6 @@
 vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
-	{
-		src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
-		version = "main", -- TODO: Remove version = "main" when it becomes the default branch
-	},
+	"https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
 })
 
 require("nvim-treesitter").install({
