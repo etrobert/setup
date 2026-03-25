@@ -42,6 +42,7 @@
         imports = [
           ./hosts
         ];
+
         flake = {
           homeConfigurations =
             let
@@ -76,10 +77,12 @@
             };
 
         };
+
         systems = [
           "x86_64-linux"
           "aarch64-darwin"
         ];
+
         perSystem =
           { pkgs, ... }:
           {
@@ -91,6 +94,7 @@
                   nixfmt
                 ];
               };
+
               pimsync = pkgs.mkShell {
                 packages = [
                   (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
@@ -102,6 +106,7 @@
               statix = pkgs.runCommand "statix-check" { nativeBuildInputs = [ pkgs.statix ]; } ''
                 statix check ${self} && touch $out
               '';
+
               deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
                 deadnix --fail ${self} && touch $out
               '';
