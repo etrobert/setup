@@ -9,6 +9,7 @@
     ];
   };
 
+  # TODO: Check if need to add flake-parts
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     neovim-nightly-overlay = {
