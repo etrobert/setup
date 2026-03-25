@@ -1,7 +1,12 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  coreutils,
+  linuxPackages,
+  kmod,
+}:
+writeShellApplication {
   name = "toggle-cpu-governor";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     coreutils
     linuxPackages.cpupower
     kmod # for modprobe called by cpupower

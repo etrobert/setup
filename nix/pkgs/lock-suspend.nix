@@ -1,7 +1,11 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  coreutils,
+  systemd,
+}:
+writeShellApplication {
   name = "lock-suspend";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     coreutils # sleep
     systemd
   ];

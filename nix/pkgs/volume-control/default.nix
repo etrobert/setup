@@ -1,7 +1,13 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  gawk,
+  gnugrep,
+  libnotify,
+  wireplumber,
+}:
+writeShellApplication {
   name = "volume-control";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     gawk
     gnugrep
     libnotify

@@ -1,8 +1,17 @@
-{ pkgs }:
+{
+  writeShellApplication,
+  symlinkJoin,
+  makeWrapper,
+  lib,
+  waybar,
+  coreutils,
+  curl,
+  jq,
+}:
 let
-  get_weather = pkgs.writeShellApplication {
+  get_weather = writeShellApplication {
     name = "get_weather.sh";
-    runtimeInputs = with pkgs; [
+    runtimeInputs = [
       coreutils
       curl
       jq
@@ -11,12 +20,12 @@ let
     text = builtins.readFile ../../waybar/.local/bin/get_weather.sh;
   };
 in
-pkgs.symlinkJoin {
+symlinkJoin {
   name = "waybar-wrapped";
-  buildInputs = [ pkgs.makeWrapper ];
-  paths = [ pkgs.waybar ];
+  buildInputs = [ makeWrapper ];
+  paths = [ waybar ];
   postBuild = ''
     wrapProgram $out/bin/waybar \
-      --prefix PATH : ${pkgs.lib.makeBinPath [ get_weather ]}
+      --prefix PATH : ${lib.makeBinPath [ get_weather ]}
   '';
 }

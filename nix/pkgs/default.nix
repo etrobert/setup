@@ -2,17 +2,17 @@
 {
   neovim-wrapped = pkgs.callPackage ./neovim-wrapped.nix { };
   batr = pkgs.callPackage ./batr.nix { };
-  birthdays = import ./birthdays { inherit pkgs; };
-  gen-commit-msg = import ./gen-commit-msg.nix { inherit pkgs; };
-  git-find-commit = import ./git-find-commit.nix { inherit pkgs; };
-  pm = import ./pm { inherit pkgs; };
-  pdfshrink = import ./pdfshrink.nix { inherit pkgs; };
-  nixplatforms = import ./nixplatforms.nix { inherit pkgs; };
-  printline = import ./printline.nix { inherit pkgs; };
-  toggle-cpu-governor = import ./toggle-cpu-governor.nix { inherit pkgs; };
-  waybar-wrapped = import ./waybar-wrapped.nix { inherit pkgs; };
-  brightness-control = import ./brightness-control { inherit pkgs; };
-  volume-control = import ./volume-control { inherit pkgs; };
-  creme = import ./creme { inherit pkgs; };
-  lock-suspend = import ./lock-suspend.nix { inherit pkgs; };
+  birthdays = pkgs.callPackage ./birthdays { };
+  gen-commit-msg = pkgs.callPackage ./gen-commit-msg.nix { };
+  git-find-commit = pkgs.callPackage ./git-find-commit.nix { };
+  pm = pkgs.callPackage ./pm { };
+  pdfshrink = pkgs.callPackage ./pdfshrink.nix { };
+  nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
+  printline = pkgs.callPackage ./printline.nix { };
+  toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor.nix { };
+  waybar-wrapped = pkgs.callPackage ./waybar-wrapped.nix { };
+  brightness-control = pkgs.callPackage ./brightness-control { };
+  volume-control = pkgs.callPackage ./volume-control { };
+  creme = pkgs.callPackage ./creme { };
+  lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
 }

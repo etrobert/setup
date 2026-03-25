@@ -1,7 +1,7 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{ writeShellApplication, ghostscript }:
+writeShellApplication {
   name = "pdfshrink";
-  runtimeInputs = with pkgs; [ ghostscript ];
+  runtimeInputs = [ ghostscript ];
   inheritPath = false;
   text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
 }

@@ -1,7 +1,15 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  coreutils,
+  curl,
+  neovim,
+  git,
+  gnused,
+  jq,
+}:
+writeShellApplication {
   name = "gen-commit-msg";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     coreutils
     curl
     neovim # for editing the commit

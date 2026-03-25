@@ -1,7 +1,13 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  coreutils,
+  git,
+  fzf,
+  findutils,
+}:
+writeShellApplication {
   name = "git-find-commit";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     coreutils
     git
     fzf

@@ -1,7 +1,7 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{ writeShellApplication, mpc }:
+writeShellApplication {
   name = "creme";
-  runtimeInputs = with pkgs; [ mpc ];
+  runtimeInputs = [ mpc ];
   inheritPath = false;
   text = builtins.readFile ./creme.sh;
 }

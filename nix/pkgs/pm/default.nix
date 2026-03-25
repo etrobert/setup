@@ -1,7 +1,14 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  bashInteractive,
+  coreutils,
+  nodejs_24,
+  pnpm,
+  yarn,
+}:
+writeShellApplication {
   name = "pm";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     bashInteractive # provides sh for npm to spawn scripts
     coreutils
     nodejs_24 # nodejs_latest does not always have cache ready

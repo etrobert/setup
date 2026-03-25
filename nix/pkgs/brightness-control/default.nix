@@ -1,7 +1,15 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{
+  writeShellApplication,
+  coreutils,
+  brightnessctl,
+  hyprland,
+  libnotify,
+  gnugrep,
+  jq,
+}:
+writeShellApplication {
   name = "brightness-control";
-  runtimeInputs = with pkgs; [
+  runtimeInputs = [
     coreutils # cut & tr
     brightnessctl
     hyprland

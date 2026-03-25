@@ -1,7 +1,7 @@
-{ pkgs }:
-pkgs.writeShellApplication {
+{ writeShellApplication, nix }:
+writeShellApplication {
   name = "nixplatforms";
-  runtimeInputs = with pkgs; [ nix ];
+  runtimeInputs = [ nix ];
   inheritPath = false;
   text = ''
     nix eval nixpkgs#"$1".meta.platforms --json
