@@ -42,17 +42,7 @@
     shellcheck
     stow
     tmux
-    (writeShellApplication {
-      name = "tmux-sessionizer";
-      runtimeInputs = [
-        coreutils
-        gnused
-        tmux
-        fzf
-        findutils
-      ];
-      text = builtins.readFile ../../tmux/.local/bin/tmux-sessionizer;
-    })
+    tmux-sessionizer # Note: custom shadowing
     unzip
     vim
     wget
