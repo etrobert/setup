@@ -59,11 +59,13 @@
                     module
                   ];
                 };
+
               mkLinuxHome = mkHome {
                 system = "x86_64-linux";
                 module = ./modules/home/linux.nix;
                 username = "soft";
               };
+
               mkDarwinHome = mkHome {
                 system = "aarch64-darwin";
                 module = ./modules/home/darwin.nix;
