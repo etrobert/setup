@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, withSystem, ... }:
 let
   inherit (inputs) home-manager;
 in
@@ -7,14 +7,14 @@ in
     homeConfigurations =
       let
         mkHome =
-          {
-            system,
-            module,
-          }:
-          home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.${system};
-            modules = [ module ];
-          };
+          { system, module }:
+          withSystem system (
+            { pkgs, ... }:
+            home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              modules = [ module ];
+            }
+          );
 
         mkLinuxHome = mkHome {
           system = "x86_64-linux";
