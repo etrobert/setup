@@ -1,6 +1,6 @@
 { ... }:
-let
-  base =
+{
+  flake.sharedModules.base =
     { pkgs, ... }:
     {
       nix.settings = {
@@ -66,8 +66,4 @@ let
         enableGlobalCompInit = false;
       };
     };
-in
-{
-  flake.nixosModules.base = base;
-  flake.darwinModules.base = base;
 }

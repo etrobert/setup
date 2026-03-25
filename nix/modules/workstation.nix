@@ -1,6 +1,6 @@
 { ... }:
-let
-  workstation =
+{
+  flake.sharedModules.workstation =
     {
       pkgs,
       pronto,
@@ -70,7 +70,4 @@ let
 
       fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
     };
-in
-{
-  flake.nixosModules.workstation = workstation;
 }

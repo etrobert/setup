@@ -50,9 +50,9 @@ let
     homeModule = ../modules/home/linux.nix;
     extraModules = [
       self.nixosModules.nixosWorkstation
-      self.nixosModules.workstation
+      self.sharedModules.workstation
       self.nixosModules.nixosBase
-      self.nixosModules.base
+      self.sharedModules.base
     ];
   };
 
@@ -62,8 +62,8 @@ let
     homeManagerModule = home-manager.darwinModules.home-manager;
     homeModule = ../modules/home/darwin.nix;
     extraModules = [
-      self.nixosModules.workstation
-      self.darwinModules.base
+      self.sharedModules.workstation
+      self.sharedModules.base
     ];
   };
 
@@ -84,7 +84,7 @@ in
         modules = [
           ./pi/configuration.nix
           self.nixosModules.nixosBase
-          self.nixosModules.base
+          self.sharedModules.base
           agenix.nixosModules.default
         ];
       };
