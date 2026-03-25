@@ -98,16 +98,7 @@
         exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
       '';
 
-      toggle-cpu-governor = pkgs.writeShellApplication {
-        name = "toggle-cpu-governor";
-        runtimeInputs = with pkgs; [
-          coreutils
-          linuxPackages.cpupower
-          kmod # for modprobe called by cpupower
-        ];
-        inheritPath = false;
-        text = builtins.readFile ../../cpupower/.local/bin/toggle-cpu-governor;
-      };
+      toggle-cpu-governor = import ../pkgs/toggle-cpu-governor.nix { inherit pkgs; };
 
       waybar-wrapped =
         let
