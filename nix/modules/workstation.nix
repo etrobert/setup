@@ -94,12 +94,7 @@
         text = builtins.readFile ../../pdfshrink/.local/bin/pdfshrink.sh;
       };
 
-      nixplatforms = pkgs.writeShellApplication {
-        name = "nixplatforms";
-        runtimeInputs = with pkgs; [ nix ];
-        inheritPath = false;
-        text = ''nix eval nixpkgs#"$1".meta.platforms --json'';
-      };
+      nixplatforms = import ../pkgs/nixplatforms.nix { inherit pkgs; };
 
       batr = pkgs.writeShellApplication {
         name = "batr";
