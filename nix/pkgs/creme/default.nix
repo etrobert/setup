@@ -9,7 +9,7 @@ writeShellApplication {
       echo "Nothing is currently playing"
       exit 1
     fi
-    echo "$song" >>~/sync/playlists/creme.m3u
+    echo "$song" >>~/sync/music/playlists/creme.m3u
     echo "Added: $song"
   '';
 }
