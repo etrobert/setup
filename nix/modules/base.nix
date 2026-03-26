@@ -1,7 +1,7 @@
 _:
 let
   base =
-    { pkgs, ... }:
+    { self, pkgs, ... }:
     {
       nix.settings = {
         experimental-features = [
@@ -42,7 +42,7 @@ let
         shellcheck
         stow
         tmux
-        tmux-sessionizer # Note: custom shadowing
+        self.packages.${pkgs.system}.tmux-sessionizer
         unzip
         vim
         wget
