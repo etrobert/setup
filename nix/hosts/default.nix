@@ -74,6 +74,7 @@ in
   flake = {
     nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
       pi = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit self; };
         system = "aarch64-linux";
         modules = [
           ./pi/configuration.nix
