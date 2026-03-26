@@ -2,9 +2,9 @@ _:
 let
   workstation =
     {
+      agenix,
       pkgs,
       pronto,
-      agenix,
       ...
     }:
     {
