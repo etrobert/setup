@@ -17,6 +17,7 @@ let
           "@wheel"
         ];
         auto-optimise-store = true;
+        download-buffer-size = 134217728; # 128 MiB
       };
 
       nix.gc = {
