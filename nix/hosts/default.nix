@@ -14,8 +14,6 @@ let
   mkHost =
     {
       builder,
-      agenixModule,
-      homeManagerModule,
       homeModule,
       extraModules,
     }:
@@ -30,8 +28,6 @@ let
             localPackagesOverlay
           ];
         }
-        agenixModule
-        homeManagerModule
         {
           home-manager = {
             useGlobalPkgs = true;
@@ -45,10 +41,10 @@ let
 
   mkNixosHost = mkHost {
     builder = nixpkgs.lib.nixosSystem;
-    agenixModule = agenix.nixosModules.default;
-    homeManagerModule = home-manager.nixosModules.home-manager;
     homeModule = ../modules/home/linux.nix;
     extraModules = [
+      home-manager.nixosModules.home-manager
+      agenix.nixosModules.default
       self.nixosModules.nixosWorkstation
       self.nixosModules.workstation
       self.nixosModules.nixosBase
@@ -59,10 +55,10 @@ let
 
   mkDarwinHost = mkHost {
     builder = nix-darwin.lib.darwinSystem;
-    agenixModule = agenix.darwinModules.default;
-    homeManagerModule = home-manager.darwinModules.home-manager;
     homeModule = ../modules/home/darwin.nix;
     extraModules = [
+      home-manager.darwinModules.home-manager
+      agenix.darwinModules.default
       self.darwinModules.workstation
       self.darwinModules.base
       self.darwinModules.unfree
