@@ -48,6 +48,7 @@
           ./modules/base.nix
           ./modules/darwinModules.nix
           ./modules/unfree.nix
+          ./pkgs
         ];
 
         systems = [
@@ -85,8 +86,6 @@
             };
 
             formatter = pkgs.nixfmt;
-
-            packages = import ./pkgs { inherit pkgs; };
           };
       }
     );

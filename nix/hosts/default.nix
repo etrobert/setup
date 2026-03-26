@@ -9,8 +9,6 @@ let
     pronto
     ;
 
-  localPackagesOverlay = final: _prev: import ../pkgs { pkgs = final; };
-
   mkHost =
     {
       builder,
@@ -19,15 +17,10 @@ let
     }:
     host:
     builder {
-      specialArgs = { inherit pronto agenix; };
+      specialArgs = { inherit self pronto agenix; };
       modules = [
         ./${host}/configuration.nix
-        {
-          nixpkgs.overlays = [
-            neovim-nightly-overlay.overlays.default
-            localPackagesOverlay
-          ];
-        }
+        { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
         {
           home-manager = {
             useGlobalPkgs = true;

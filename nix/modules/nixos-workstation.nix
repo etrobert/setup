@@ -1,6 +1,6 @@
 _: {
   flake.nixosModules.nixosWorkstation =
-    { pkgs, ... }:
+    { self, pkgs, ... }:
     {
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
@@ -95,7 +95,7 @@ _: {
             exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
           '';
         in
-        (with pkgs; [
+        (with self.packages.${pkgs.system}; [
           nixos-option
           toggle-cpu-governor
           waybar-wrapped

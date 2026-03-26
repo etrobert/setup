@@ -2,6 +2,7 @@ _:
 let
   workstation =
     {
+      self,
       agenix,
       pkgs,
       pronto,
@@ -19,7 +20,7 @@ let
         pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
         agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
       ]
-      ++ (with pkgs; [
+      ++ (with self.packages.${pkgs.system}; [
         neovim-wrapped
         gen-commit-msg
         git-find-commit
