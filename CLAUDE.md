@@ -5,48 +5,20 @@ code in this repository.
 
 ## Repository Purpose
 
-This is a personal dotfiles and system configuration repository using GNU Stow
-for managing symlinked configurations. Each folder contains configuration for a
-specific tool or application.
+This is a personal dotfiles and system configuration repository using Nix for
+managing configurations.
 
-This repository used to be used to configure Mac and Arch Linux machines through
-the `setup.sh` script found in `setup/`. Today, it is used to configure Mac and
-NixOS through Nix (in `nix/`).
+There are nix-darwin and NixOS configurations.
 
 ## Architecture
 
 ### Stow-based Configuration Management
 
 - Each top-level directory represents a tool's configuration
-- Stow creates symlinks from these directories to the appropriate locations in
-  `$HOME`
-- Configuration files maintain their expected paths (e.g.,
-  `nvim/.config/nvim/init.lua`)
-
-### Shell Environment
-
-- Uses Bash as default shell with extensive customization in `bash/.bashrc`
-- Custom Rust based prompt (`git@github.com:etrobert/pronto`) 1 with git status,
-  command timing, and exit codes
-
-### MacOS System Integration
-
-- macOS-specific setup including dock configuration, trackpad settings, and
-  keyboard remapping
-- LaunchAgent for Caps Lock → Control remapping
-- skhd for hotkey management
-- Homebrew for package management including development tools and applications
+- The architecture of each of these directory represents the architecture from
+  root of home directory (like a `stow` directory).
 
 ### Development Environment
 
-- Neovim with Lua configuration and Lazy.nvim
+- Neovim with Lua configuration and nightly `vim.pack` package manager
 - Git configuration with custom completion and prompt integration
-- Development tools: Go, Rust, Bun, various CLI utilities
-
-## Important Notes
-
-- Font dependencies: Fira Code and Fira Code Nerd Font required
-- SSH key generation and GitHub CLI authentication handled by setup script
-- Some configurations require manual steps (Firefox profile setup, VS Code first
-  launch)
-- Setup script is idempotent and can be run multiple times safely
