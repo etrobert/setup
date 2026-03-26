@@ -46,7 +46,7 @@
           ./modules/workstation.nix
           ./modules/nixos-base.nix
           ./modules/base.nix
-          ./modules/sharedModules.nix
+          ./modules/darwinModules.nix
         ];
 
         systems = [
