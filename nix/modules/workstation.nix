@@ -8,8 +8,6 @@ let
       ...
     }:
     {
-      imports = [ ./unfree.nix ];
-
       allowedUnfreePackages = [
         "claude-code"
         "discord"

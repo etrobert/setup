@@ -47,6 +47,7 @@
           ./modules/nixos-base.nix
           ./modules/base.nix
           ./modules/darwinModules.nix
+          ./modules/unfree.nix
         ];
 
         systems = [

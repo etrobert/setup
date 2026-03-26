@@ -53,6 +53,7 @@ let
       self.nixosModules.workstation
       self.nixosModules.nixosBase
       self.nixosModules.base
+      self.nixosModules.unfree
     ];
   };
 
@@ -64,6 +65,7 @@ let
     extraModules = [
       self.darwinModules.workstation
       self.darwinModules.base
+      self.darwinModules.unfree
     ];
   };
 
