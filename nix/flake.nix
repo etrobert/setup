@@ -53,6 +53,7 @@
           ./modules/darwinModules.nix
           ./modules/unfree.nix
           ./pkgs
+          ./hosts/pi
         ];
 
         systems = [

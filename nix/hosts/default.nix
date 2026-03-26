@@ -72,18 +72,7 @@ let
 in
 {
   flake = {
-    nixosConfigurations = genAttrs nixosHosts mkNixosHost // {
-      pi = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit self; };
-        system = "aarch64-linux";
-        modules = [
-          ./pi/configuration.nix
-          self.nixosModules.nixosBase
-          self.nixosModules.base
-          agenix.nixosModules.default
-        ];
-      };
-    };
+    nixosConfigurations = genAttrs nixosHosts mkNixosHost;
 
     darwinConfigurations = genAttrs darwinHosts mkDarwinHost;
   };
