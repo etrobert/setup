@@ -5,10 +5,7 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ../../modules/nixos-workstation.nix
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   boot.kernelParams = [ "mem_sleep_default=deep" ];
 

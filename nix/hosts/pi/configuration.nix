@@ -8,7 +8,6 @@
 
   imports = [
     ./hardware-configuration.nix
-    ../../modules/nixos-base.nix
     ../../modules/home-assistant.nix
   ];
 

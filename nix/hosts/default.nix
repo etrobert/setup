@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 let
   inherit (inputs)
     nixpkgs
@@ -14,9 +14,8 @@ let
   mkHost =
     {
       builder,
-      agenixModule,
-      homeManagerModule,
       homeModule,
+      extraModules,
     }:
     host:
     builder {
@@ -29,8 +28,6 @@ let
             localPackagesOverlay
           ];
         }
-        agenixModule
-        homeManagerModule
         {
           home-manager = {
             useGlobalPkgs = true;
@@ -38,21 +35,34 @@ let
             users.soft = import homeModule;
           };
         }
-      ];
+      ]
+      ++ extraModules;
     };
 
   mkNixosHost = mkHost {
     builder = nixpkgs.lib.nixosSystem;
-    agenixModule = agenix.nixosModules.default;
-    homeManagerModule = home-manager.nixosModules.home-manager;
     homeModule = ../modules/home/linux.nix;
+    extraModules = [
+      home-manager.nixosModules.home-manager
+      agenix.nixosModules.default
+      self.nixosModules.nixosWorkstation
+      self.nixosModules.workstation
+      self.nixosModules.nixosBase
+      self.nixosModules.base
+      self.nixosModules.unfree
+    ];
   };
 
   mkDarwinHost = mkHost {
     builder = nix-darwin.lib.darwinSystem;
-    agenixModule = agenix.darwinModules.default;
-    homeManagerModule = home-manager.darwinModules.home-manager;
     homeModule = ../modules/home/darwin.nix;
+    extraModules = [
+      home-manager.darwinModules.home-manager
+      agenix.darwinModules.default
+      self.darwinModules.workstation
+      self.darwinModules.base
+      self.darwinModules.unfree
+    ];
   };
 
   inherit (nixpkgs.lib) genAttrs;
@@ -71,6 +81,8 @@ in
         system = "aarch64-linux";
         modules = [
           ./pi/configuration.nix
+          self.nixosModules.nixosBase
+          self.nixosModules.base
           agenix.nixosModules.default
         ];
       };

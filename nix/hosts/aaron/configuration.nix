@@ -9,8 +9,6 @@ let
   wallpaper = ../../../hyprland/.config/hypr/saint-levant.jpg;
 in
 {
-  imports = [ ../../modules/workstation.nix ];
-
   allowedUnfreePackages = [
     "betterdisplay"
     "raycast"
