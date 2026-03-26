@@ -21,6 +21,7 @@ symlinkJoin {
   name = "neovim-wrapped";
   buildInputs = [ makeWrapper ];
   paths = [ neovim ];
+  meta.mainProgram = "nvim";
   postBuild = ''
     wrapProgram $out/bin/nvim \
       --prefix PATH : ${
