@@ -7,6 +7,7 @@ let
     agenix
     neovim-nightly-overlay
     pronto
+    nix-index-database
     ;
 
   mkHost =
@@ -36,6 +37,7 @@ let
     builder = nixpkgs.lib.nixosSystem;
     homeModule = ../modules/home/linux.nix;
     extraModules = [
+      nix-index-database.nixosModules.default
       home-manager.nixosModules.home-manager
       agenix.nixosModules.default
       self.nixosModules.nixosWorkstation
@@ -50,6 +52,7 @@ let
     builder = nix-darwin.lib.darwinSystem;
     homeModule = ../modules/home/darwin.nix;
     extraModules = [
+      nix-index-database.darwinModules.nix-index
       home-manager.darwinModules.home-manager
       agenix.darwinModules.default
       self.darwinModules.workstation

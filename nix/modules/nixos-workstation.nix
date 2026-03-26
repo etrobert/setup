@@ -116,7 +116,6 @@ _: {
           hyprpaper
           mako
           mpc # Minimalist command line interface to MPD
-          nix-index
           pavucontrol
           pimsync
           playerctl
@@ -131,9 +130,10 @@ _: {
         hyprland.enable = true;
         hyprlock.enable = true;
 
-        zsh.interactiveShellInit = ''
-          source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-        '';
+        # TODO: fix
+        # zsh.interactiveShellInit = ''
+        #   source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+        # '';
       };
 
       age.secrets = {
