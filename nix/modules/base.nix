@@ -42,7 +42,7 @@ let
         shellcheck
         stow
         tmux
-        self.packages.${pkgs.system}.tmux-sessionizer
+        self.packages.${pkgs.stdenv.hostPlatform.system}.tmux-sessionizer
         unzip
         vim
         wget

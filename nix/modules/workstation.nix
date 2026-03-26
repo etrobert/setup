@@ -20,7 +20,7 @@ let
         pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
         agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
       ]
-      ++ (with self.packages.${pkgs.system}; [
+      ++ (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
         neovim-wrapped
         gen-commit-msg
         git-find-commit

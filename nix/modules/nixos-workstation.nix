@@ -95,7 +95,7 @@ _: {
             exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
           '';
         in
-        (with self.packages.${pkgs.system}; [
+        (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
           nixos-option
           toggle-cpu-governor
           waybar-wrapped
