@@ -61,8 +61,16 @@
         ];
 
         perSystem =
-          { pkgs, ... }:
+          { system, ... }:
+          let
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+            };
+          in
           {
+            _module.args.pkgs = pkgs;
+
             devShells = {
               default = pkgs.mkShell {
                 packages = with pkgs; [
