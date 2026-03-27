@@ -14,6 +14,7 @@ require("nvim-treesitter").install({
 	"bash",
 	"c",
 	"diff",
+	"hyprlang",
 	"html",
 	"lua",
 	"luadoc",
