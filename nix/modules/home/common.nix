@@ -19,7 +19,7 @@ in
 
       ".config/nvim".source = symlink "nvim/.config/nvim";
 
-      ".config/ghostty/config".source = ../../../ghostty/.config/ghostty/config;
+      ".config/ghostty/config".source = symlink "ghostty/.config/ghostty/config";
     };
 
     sessionVariablesExtra = ''
