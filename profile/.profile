@@ -35,7 +35,7 @@ if [ -d /opt/homebrew/opt/rustup/bin ]; then
   PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 fi
 
-export EDITOR=vim
+export EDITOR=nvim
 # export BROWSER=firefox
 export MAIL=etiennerobert33@gmail.com
 
