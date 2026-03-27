@@ -133,11 +133,6 @@ _: {
       programs = {
         hyprland.enable = true;
         hyprlock.enable = true;
-
-        # TODO: fix
-        # zsh.interactiveShellInit = ''
-        #   source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-        # '';
       };
 
       age.secrets = {
