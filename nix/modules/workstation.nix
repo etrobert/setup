@@ -76,6 +76,11 @@ let
       fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
 
       programs.nix-index-database.comma.enable = true;
+
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+      };
     };
 in
 {

@@ -19,14 +19,6 @@ in
     modules = [
       ./configuration.nix
       { nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ]; }
-      {
-        # TODO: Move this config elsewhere
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-          users.soft = import ../../modules/home/linux.nix;
-        };
-      }
       nix-index-database.nixosModules.default
       home-manager.nixosModules.home-manager
       agenix.nixosModules.default

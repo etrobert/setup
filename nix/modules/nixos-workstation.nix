@@ -144,5 +144,6 @@ _: {
           file = ../secrets/apple-pimsync-password.age;
         };
       };
+      home-manager.users.soft = import ../../modules/home/linux.nix;
     };
 }
