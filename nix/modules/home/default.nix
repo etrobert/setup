@@ -9,32 +9,31 @@ let
 in
 {
   flake = {
-    homeConfigurations =
-      let
-        mkHome =
-          { system, module }:
-          withSystem system (
-            { pkgs, ... }:
-            home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              modules = [ module ];
-            }
-          );
+    homeConfigurations = {
+      "soft@tower" = withSystem "x86_64-linux" (
+        { pkgs, ... }:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ self.homeModules.linux ];
+        }
+      );
 
-        mkLinuxHome = mkHome {
-          system = "x86_64-linux";
-          module = self.homeModules.linux;
-        };
+      "soft@leod" = withSystem "x86_64-linux" (
+        { pkgs, ... }:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ self.homeModules.linux ];
+        }
+      );
 
-        mkDarwinHome = mkHome {
-          system = "aarch64-darwin";
-          module = self.homeModules.darwin;
-        };
-      in
-      {
-        "soft@tower" = mkLinuxHome;
-        "soft@leod" = mkLinuxHome;
-        "soft@aaron" = mkDarwinHome;
-      };
+      "soft@aaron" = withSystem "aarch64-darwin" (
+        { pkgs, ... }:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ self.homeModules.darwin ];
+        }
+      );
+
+    };
   };
 }
