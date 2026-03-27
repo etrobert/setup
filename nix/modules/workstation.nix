@@ -74,6 +74,8 @@ let
       };
 
       fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
+
+      programs.nix-index-database.comma.enable = true;
     };
 in
 {
