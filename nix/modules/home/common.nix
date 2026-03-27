@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 let
   symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
 in
@@ -39,6 +39,7 @@ in
   programs = {
     firefox = {
       enable = true;
+      nativeMessagingHosts = [ pkgs.firefoxpwa ];
       policies = {
         PasswordManagerEnabled = false;
         SearchEngines = {

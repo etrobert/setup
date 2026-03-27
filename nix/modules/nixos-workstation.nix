@@ -111,6 +111,7 @@ _: {
           brightnessctl
           chromium
           ddcutil
+          firefoxpwa
           ghostty
           grim
           hyprpaper
