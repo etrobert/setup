@@ -18,6 +18,8 @@ in
       ".config/tmux/tmux.conf".source = ../../../tmux/.config/tmux/tmux.conf;
 
       ".config/nvim".source = symlink "nvim/.config/nvim";
+
+      ".config/ghostty/config".source = ../../../ghostty/.config/ghostty/config;
     };
 
     sessionVariablesExtra = ''
