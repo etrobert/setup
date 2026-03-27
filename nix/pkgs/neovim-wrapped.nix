@@ -6,6 +6,7 @@
   bash-language-server,
   black,
   gh,
+  git,
   gopls,
   imagemagick,
   isort,
@@ -25,11 +26,12 @@ symlinkJoin {
   meta.mainProgram = "nvim";
   postBuild = ''
     wrapProgram $out/bin/nvim \
-      --prefix PATH : ${
+      --set PATH ${
         lib.makeBinPath [
           bash-language-server
           black # python formatter
           gh # used by octo.lua
+          git
           gopls
           imagemagick # for image rendering in nvim using snacks.image
           isort # python import sorter
