@@ -45,6 +45,7 @@
       {
         imports = [
           ./hosts
+          ./hosts/tower
           ./modules/home
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix

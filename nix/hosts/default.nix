@@ -64,7 +64,6 @@ let
   inherit (nixpkgs.lib) genAttrs;
 
   nixosHosts = [
-    "tower"
     "leod"
   ];
 
