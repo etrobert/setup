@@ -146,6 +146,6 @@ _: {
         };
       };
 
-      home-manager.users.soft = import ./home/linux.nix;
+      home-manager.users.soft = self.homeModules.linux;
     };
 }

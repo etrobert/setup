@@ -1,6 +1,6 @@
-{ config, ... }:
+{ self, config, ... }:
 {
-  imports = [ ./common.nix ];
+  imports = [ self.homeModules.common ];
 
   home = {
     homeDirectory = "/Users/${config.home.username}";

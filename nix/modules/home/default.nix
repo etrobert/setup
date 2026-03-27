@@ -1,4 +1,9 @@
-{ inputs, withSystem, ... }:
+{
+  self,
+  inputs,
+  withSystem,
+  ...
+}:
 let
   inherit (inputs) home-manager;
 in
@@ -18,12 +23,12 @@ in
 
         mkLinuxHome = mkHome {
           system = "x86_64-linux";
-          module = ./linux.nix;
+          module = self.homeModules.linux;
         };
 
         mkDarwinHome = mkHome {
           system = "aarch64-darwin";
-          module = ./darwin.nix;
+          module = self.homeModules.darwin;
         };
       in
       {

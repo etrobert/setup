@@ -44,11 +44,14 @@
       { self, ... }:
       {
         imports = [
+          inputs.home-manager.flakeModules.home-manager
           ./modules/hosts/tower
           ./modules/hosts/aaron
           ./modules/hosts/leod
           ./modules/hosts/pi
           ./modules/home
+          ./modules/home/linux.nix
+          ./modules/home/common.nix
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
           ./modules/nixos-base.nix
