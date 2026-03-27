@@ -44,7 +44,6 @@
       { self, ... }:
       {
         imports = [
-          ./hosts
           ./hosts/tower
           ./hosts/aaron
           ./hosts/leod
