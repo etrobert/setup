@@ -1,12 +1,17 @@
 _: {
   perSystem =
-    { pkgs, lib, ... }:
+    {
+      self',
+      pkgs,
+      lib,
+      ...
+    }:
     {
       packages = {
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped.nix { };
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
-        gen-commit-msg = pkgs.callPackage ./gen-commit-msg.nix { };
+        gen-commit-msg = pkgs.callPackage ./gen-commit-msg.nix { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit.nix { };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };

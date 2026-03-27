@@ -1,8 +1,8 @@
 {
+  self',
   writeShellApplication,
   coreutils,
   curl,
-  neovim,
   git,
   gnused,
   jq,
@@ -12,7 +12,7 @@ writeShellApplication {
   runtimeInputs = [
     coreutils
     curl
-    neovim # for editing the commit
+    self'.packages.neovim-wrapped # for editing the commit
     git
     gnused
     jq

@@ -5,6 +5,7 @@
   lib,
   bash-language-server,
   black,
+  gh,
   gopls,
   imagemagick,
   isort,
@@ -28,6 +29,7 @@ symlinkJoin {
         lib.makeBinPath [
           bash-language-server
           black # python formatter
+          gh # used by octo.lua
           gopls
           imagemagick # for image rendering in nvim using snacks.image
           isort # python import sorter
