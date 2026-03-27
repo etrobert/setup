@@ -46,6 +46,9 @@
         imports = [
           ./hosts
           ./hosts/tower
+          ./hosts/aaron
+          ./hosts/leod
+          ./hosts/pi
           ./modules/home
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
@@ -54,7 +57,6 @@
           ./modules/darwinModules.nix
           ./modules/unfree.nix
           ./pkgs
-          ./hosts/pi
         ];
 
         systems = [
