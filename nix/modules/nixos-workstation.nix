@@ -2,6 +2,8 @@ _: {
   flake.nixosModules.nixosWorkstation =
     { self, pkgs, ... }:
     {
+      imports = [ self.nixosModules.networkmanager ];
+
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
 
@@ -31,44 +33,6 @@ _: {
         # Enable bluetooth
         bluetooth.enable = true;
         bluetooth.powerOnBoot = true;
-      };
-
-      networking.networkmanager = {
-        enable = true;
-        ensureProfiles = {
-          environmentFiles = [
-            "/run/agenix/wifi-soft"
-            "/run/agenix/wifi-iphone-de-zeus"
-          ];
-          profiles.soft = {
-            connection = {
-              id = "soft";
-              type = "wifi";
-            };
-            wifi = {
-              ssid = "soft";
-              mode = "infrastructure";
-            };
-            wifi-security = {
-              key-mgmt = "wpa-psk";
-              psk = "$WIFI_PASSWORD";
-            };
-          };
-          profiles.iphoneDeZeus = {
-            connection = {
-              id = "iPhone de Zeus";
-              type = "wifi";
-            };
-            wifi = {
-              ssid = "iPhone de Zeus";
-              mode = "infrastructure";
-            };
-            wifi-security = {
-              key-mgmt = "wpa-psk";
-              psk = "$WIFI_PASSWORD_IPHONE_DE_ZEUS";
-            };
-          };
-        };
       };
 
       security.rtkit.enable = true;

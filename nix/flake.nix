@@ -58,6 +58,7 @@
           ./modules/base.nix
           ./modules/darwinModules.nix
           ./modules/unfree.nix
+          ./modules/networkmanager.nix
           ./pkgs
         ];
 
