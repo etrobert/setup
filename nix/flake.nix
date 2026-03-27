@@ -44,10 +44,10 @@
       { self, ... }:
       {
         imports = [
-          ./hosts/tower
-          ./hosts/aaron
-          ./hosts/leod
-          ./hosts/pi
+          ./modules/hosts/tower
+          ./modules/hosts/aaron
+          ./modules/hosts/leod
+          ./modules/hosts/pi
           ./modules/home
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
