@@ -94,38 +94,41 @@ _: {
           nixos-option = pkgs.writeShellScriptBin "nixos-option" ''
             exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
           '';
+
+          customPackages = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+            nixos-option
+            toggle-cpu-governor
+            waybar-wrapped
+            brightness-control
+            volume-control
+            birthdays
+            creme
+            lock-suspend
+            check-bt-profile
+          ];
+
+          externalPackages = with pkgs; [
+            linuxPackages.cpupower
+            brightnessctl
+            chromium
+            ddcutil
+            firefoxpwa
+            ghostty
+            grim
+            hyprpaper
+            mako
+            mpc # Minimalist command line interface to MPD
+            pavucontrol
+            pimsync
+            playerctl
+            signal-desktop
+            slurp
+            usbutils # provides lsusb
+            wl-clipboard
+            wofi
+          ];
         in
-        (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
-          nixos-option
-          toggle-cpu-governor
-          waybar-wrapped
-          brightness-control
-          volume-control
-          birthdays
-          creme
-          lock-suspend
-          check-bt-profile
-        ])
-        ++ (with pkgs; [
-          linuxPackages.cpupower
-          brightnessctl
-          chromium
-          ddcutil
-          firefoxpwa
-          ghostty
-          grim
-          hyprpaper
-          mako
-          mpc # Minimalist command line interface to MPD
-          pavucontrol
-          pimsync
-          playerctl
-          signal-desktop
-          slurp
-          usbutils # provides lsusb
-          wl-clipboard
-          wofi
-        ]);
+        customPackages ++ externalPackages;
 
       programs = {
         hyprland.enable = true;
