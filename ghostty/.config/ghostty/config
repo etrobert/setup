@@ -15,7 +15,7 @@ window-padding-y = 0
 window-padding-balance = true
 
 # Streaming 24 / Recording 14
-font-size = 14
+# font-size = 12 # default value
 
 # configured by /terminal-setup inside claude
 # Manually switched from shift+enter (recommended in Claude docs) because it interferes with nvim
