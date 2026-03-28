@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.homeModules.darwin =
-    { config }:
+    { config, ... }:
     {
       imports = [ self.homeModules.common ];
 
