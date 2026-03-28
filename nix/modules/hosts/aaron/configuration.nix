@@ -17,6 +17,7 @@ in
   allowedUnfreePackages = [
     "betterdisplay"
     "raycast"
+    "whatsapp-for-mac"
   ];
 
   nix.gc.interval = {
@@ -105,6 +106,7 @@ in
     watch
     raycast
     defaultbrowser
+    whatsapp-for-mac
 
     (writeShellApplication {
       # This is necessary because the darwin tailscale module does not include authkey option
