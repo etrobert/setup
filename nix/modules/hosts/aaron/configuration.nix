@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  self,
+  pkgs,
+  lib,
+  ...
+}:
 let
   dockApps = import ../../dock-apps.nix;
 
@@ -155,7 +160,7 @@ in
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  home-manager.users.soft = import ../../modules/home/darwin.nix;
+  home-manager.users.soft = self.homeModules.darwin;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
