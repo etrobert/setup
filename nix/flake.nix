@@ -52,6 +52,7 @@
           ./modules/home
           ./modules/home/linux.nix
           ./modules/home/common.nix
+          ./modules/home/darwin.nix
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
           ./modules/nixos-base.nix
