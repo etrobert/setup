@@ -5,6 +5,7 @@
   lib,
   bash-language-server,
   black,
+  fd,
   gh,
   git,
   gopls,
@@ -13,6 +14,7 @@
   lua-language-server,
   nixd,
   nixfmt,
+  ripgrep,
   shfmt,
   stylua,
   tree-sitter,
@@ -30,6 +32,7 @@ symlinkJoin {
         lib.makeBinPath [
           bash-language-server
           black # python formatter
+          fd # used by telescope
           gh # used by octo.lua
           git
           gopls
@@ -38,6 +41,7 @@ symlinkJoin {
           lua-language-server
           nixd
           nixfmt
+          ripgrep # used by telescope
           shfmt
           stylua
           tree-sitter
