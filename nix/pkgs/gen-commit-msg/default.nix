@@ -18,5 +18,5 @@ writeShellApplication {
     jq
   ];
   inheritPath = false;
-  text = builtins.readFile ../../git/.local/bin/gen-commit-msg;
+  text = builtins.readFile ./gen-commit-msg.sh;
 }
