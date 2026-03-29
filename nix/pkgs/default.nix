@@ -10,6 +10,7 @@ _: {
       packages = {
         git-wrapped = pkgs.callPackage ./git-wrapped { };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped.nix { };
+        tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
