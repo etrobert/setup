@@ -20,8 +20,6 @@ _: {
 
           ".profile".source = ../../../profile/.profile;
 
-          ".gitconfig".source = ../../../git/.gitconfig;
-
           ".config/tmux/tmux.conf".source = ../../../tmux/.config/tmux/tmux.conf;
 
           ".config/nvim".source = symlink "nvim/.config/nvim";

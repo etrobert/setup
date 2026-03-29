@@ -25,31 +25,34 @@ _: {
           options = "--delete-older-than 10d";
         };
 
-        environment.systemPackages = with pkgs; [
-          bat
-          btop
-          coreutils
-          difftastic
-          entr
-          eza
-          fd
-          fzf
-          gh
-          git
-          htop
-          jq
-          magic-wormhole
-          ripgrep
-          shellcheck
-          stow
-          tmux
-          self.packages.${pkgs.stdenv.hostPlatform.system}.tmux-sessionizer
-          unzip
-          vim
-          wget
-          zsh-autosuggestions # Fish shell autosuggestions for Zsh
-          zsh-syntax-highlighting
-        ];
+        environment.systemPackages =
+          (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+            git-wrapped
+          ])
+          ++ (with pkgs; [
+            bat
+            btop
+            coreutils
+            difftastic
+            entr
+            eza
+            fd
+            fzf
+            gh
+            htop
+            jq
+            magic-wormhole
+            ripgrep
+            shellcheck
+            stow
+            tmux
+            self.packages.${pkgs.stdenv.hostPlatform.system}.tmux-sessionizer
+            unzip
+            vim
+            wget
+            zsh-autosuggestions # Fish shell autosuggestions for Zsh
+            zsh-syntax-highlighting
+          ]);
 
         age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
 
