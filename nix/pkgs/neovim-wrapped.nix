@@ -7,6 +7,7 @@
   lib,
   bash-language-server,
   black,
+  coreutils,
   curl,
   fd,
   gh,
@@ -23,6 +24,7 @@
   tree-sitter,
   typescript-language-server,
   vscode-langservers-extracted,
+  wl-clipboard,
 }:
 let
   pbcopy =
@@ -63,6 +65,10 @@ symlinkJoin {
             vscode-langservers-extracted
           ]
           ++ lib.optionals stdenv.isDarwin [ pbcopy ]
+          ++ lib.optionals stdenv.isLinux [
+            wl-clipboard
+            coreutils # provides cat for copying
+          ]
         )
       }
   '';
