@@ -88,6 +88,7 @@ _: {
             signal-desktop
             slurp
             usbutils # provides lsusb
+            whatsapp-electron
             wl-clipboard
             wofi
           ];
