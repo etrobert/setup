@@ -1,7 +1,7 @@
 { self, ... }:
 {
   flake.homeModules.linux =
-    { pkgs, config, ... }:
+    { config, ... }:
     let
       inherit (config.home) homeDirectory;
 
@@ -150,14 +150,6 @@
             ];
           };
         };
-      };
-
-      systemd.user.services.album-art-wallpaper = {
-        Unit.PartOf = [ "graphical-session.target" ];
-        Service.ExecStart = "${
-          self.packages.${pkgs.stdenv.hostPlatform.system}.album-art-wallpaper
-        }/bin/album-art-wallpaper";
-        Install.WantedBy = [ "graphical-session.target" ];
       };
     };
 }
