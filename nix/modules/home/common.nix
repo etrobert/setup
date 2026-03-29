@@ -184,7 +184,7 @@ _: {
 
         tmuxn = ''tmux new-session -A -s "$(basename "$(pwd)")" -e TMUX_SESSION_PATH="$(pwd)"'';
         ts = "tmux-sessionizer";
-        tcd = "cd \"$TMUX_SESSION_PATH\"";
+        tcd = ''cd "$TMUX_SESSION_PATH"'';
 
         # One-letter aliases for most used commands
         g = "git";
