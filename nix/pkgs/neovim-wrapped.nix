@@ -22,6 +22,7 @@
   shfmt,
   stylua,
   tree-sitter,
+  tmux,
   typescript-language-server,
   vscode-langservers-extracted,
   wl-clipboard,
@@ -59,6 +60,7 @@ symlinkJoin {
             shfmt
             stylua
             tree-sitter
+            tmux # required by vim-tmux-navigator
             typescript-language-server
             vscode-langservers-extracted
           ]
