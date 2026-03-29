@@ -44,7 +44,7 @@
   },
   "custom/weather": {
     "return-type": "json",
-    "exec": "get_weather.sh",
+    "exec": "get-weather",
     "interval": 3600,
   },
   "battery": {

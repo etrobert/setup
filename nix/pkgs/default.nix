@@ -21,6 +21,7 @@ _: {
         creme = pkgs.callPackage ./creme { };
         check-bt-profile = pkgs.callPackage ./check-bt-profile { };
         tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { };
+        get-weather = pkgs.callPackage ./get-weather { inherit self'; };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
