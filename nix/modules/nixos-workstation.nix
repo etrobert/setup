@@ -1,6 +1,11 @@
 _: {
   flake.nixosModules.nixosWorkstation =
-    { self, pkgs, ... }:
+    {
+      self,
+      pkgs,
+      lib,
+      ...
+    }:
     {
       imports = [ self.nixosModules.networkmanager ];
 
@@ -53,9 +58,9 @@ _: {
         services.album-art-wallpaper = {
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
-          serviceConfig.ExecStart = "${
-            self.packages.${pkgs.stdenv.hostPlatform.system}.album-art-wallpaper
-          }/bin/album-art-wallpaper";
+          serviceConfig.ExecStart =
+            lib.getExe
+              self.packages.${pkgs.stdenv.hostPlatform.system}.album-art-wallpaper;
         };
 
         tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
