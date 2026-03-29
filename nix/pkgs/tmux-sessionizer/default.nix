@@ -16,5 +16,5 @@ writeShellApplication {
     findutils
   ];
   inheritPath = true;
-  text = builtins.readFile ../../../tmux/.local/bin/tmux-sessionizer;
+  text = builtins.readFile ./tmux-sessionizer.sh;
 }
