@@ -128,7 +128,6 @@
       };
 
       services.pimsync.enable = true;
-      systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
 
       services = {
         mpd = {

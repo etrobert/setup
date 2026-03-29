@@ -49,6 +49,8 @@ _: {
         }
       ];
 
+      systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
+
       # NixOS workstation packages
       environment.systemPackages =
         let
