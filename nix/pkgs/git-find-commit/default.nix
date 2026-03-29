@@ -14,5 +14,5 @@ writeShellApplication {
     findutils # xargs
   ];
   inheritPath = false;
-  text = builtins.readFile ../../git/.local/bin/git-find-commit;
+  text = builtins.readFile ./git-find-commit.sh;
 }

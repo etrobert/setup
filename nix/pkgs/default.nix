@@ -13,7 +13,7 @@ _: {
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
-        git-find-commit = pkgs.callPackage ./git-find-commit.nix { };
+        git-find-commit = pkgs.callPackage ./git-find-commit { };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
         nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
