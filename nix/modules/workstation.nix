@@ -56,7 +56,6 @@ _: {
               ollama
               opencode
               pnpm
-              prettierd
               python3
               spotify
               yt-dlp

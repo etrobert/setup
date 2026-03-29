@@ -18,6 +18,7 @@
   lua-language-server,
   nixd,
   nixfmt,
+  prettierd,
   ripgrep,
   shfmt,
   stylua,
@@ -56,6 +57,7 @@ symlinkJoin {
             nixd
             nixfmt
             pbcopy
+            prettierd
             ripgrep # used by telescope
             shfmt
             stylua
