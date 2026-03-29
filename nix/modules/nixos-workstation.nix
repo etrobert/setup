@@ -80,6 +80,7 @@ _: {
             nixos-option
             toggle-cpu-governor
             waybar-wrapped
+            mako-wrapped
             brightness-control
             volume-control
             birthdays
@@ -97,7 +98,6 @@ _: {
             ghostty
             grim
             hyprpaper
-            mako
             mpc # Minimalist command line interface to MPD
             pavucontrol
             pimsync

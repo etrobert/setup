@@ -16,8 +16,6 @@
         sessionVariables.BROWSER = "firefox";
 
         file = {
-          ".config/mako/config".source = ../../../mako/.config/mako/config;
-
           ".config/pimsync/pimsync.conf".source = symlink "pimsync/.config/pimsync/pimsync.conf";
 
           ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
