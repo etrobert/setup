@@ -27,12 +27,10 @@
   wl-clipboard,
 }:
 let
-  pbcopy =
-    runCommand "pbcopy" { }
-      "
+  pbcopy = runCommand "pbcopy" { } ''
     mkdir -p $out/bin
     ln -s /usr/bin/pbcopy $out/bin/pbcopy
-  ";
+  '';
 in
 symlinkJoin {
   name = "neovim-wrapped";
