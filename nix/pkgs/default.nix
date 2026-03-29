@@ -21,11 +21,11 @@ _: {
         creme = pkgs.callPackage ./creme { };
         check-bt-profile = pkgs.callPackage ./check-bt-profile { };
         tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { };
-        get-weather = pkgs.callPackage ./get-weather { inherit self'; };
+        get-weather = pkgs.callPackage ./get-weather { };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
-        waybar-wrapped = pkgs.callPackage ./waybar-wrapped.nix { };
+        waybar-wrapped = pkgs.callPackage ./waybar-wrapped.nix { inherit self'; };
         brightness-control = pkgs.callPackage ./brightness-control { };
         volume-control = pkgs.callPackage ./volume-control { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };

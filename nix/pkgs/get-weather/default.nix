@@ -12,5 +12,5 @@ writeShellApplication {
     jq
   ];
   inheritPath = false;
-  text = builtins.readFile ../../waybar/.local/bin/get-weather.sh;
+  text = builtins.readFile ./get-weather.sh;
 }
