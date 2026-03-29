@@ -16,9 +16,6 @@
         sessionVariables.BROWSER = "firefox";
 
         file = {
-          ".config/waybar/config.jsonc".source = symlink "waybar/.config/waybar/config.jsonc";
-          ".config/waybar/style.css".source = symlink "waybar/.config/waybar/style.css";
-
           ".config/mako/config".source = ../../../mako/.config/mako/config;
 
           ".config/pimsync/pimsync.conf".source = symlink "pimsync/.config/pimsync/pimsync.conf";
