@@ -27,6 +27,7 @@ _: {
         brightness-control = pkgs.callPackage ./brightness-control { };
         volume-control = pkgs.callPackage ./volume-control { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
+        album-art-wallpaper = pkgs.callPackage ./album-art-wallpaper.nix { };
       };
     };
 }

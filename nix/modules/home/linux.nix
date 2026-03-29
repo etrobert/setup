@@ -6,22 +6,6 @@
       inherit (config.home) homeDirectory;
 
       symlink = path: config.lib.file.mkOutOfStoreSymlink "${homeDirectory}/setup/${path}";
-
-      albumArtWallpaper = pkgs.writeShellApplication {
-        name = "album-art-wallpaper";
-        runtimeInputs = with pkgs; [
-          playerctl
-          curl
-          hyprland
-        ];
-        text = ''
-          playerctl --follow metadata --format '{{mpris:artUrl}}' | while read -r url; do
-            [ -z "$url" ] && continue
-            curl -sL "$url" -o /tmp/albumart.jpg
-            hyprctl hyprpaper wallpaper ",/tmp/albumart.jpg"
-          done
-        '';
-      };
     in
     {
       imports = [ self.homeModules.common ];
@@ -173,7 +157,9 @@
 
       systemd.user.services.album-art-wallpaper = {
         Unit.PartOf = [ "graphical-session.target" ];
-        Service.ExecStart = "${albumArtWallpaper}/bin/album-art-wallpaper";
+        Service.ExecStart = "${
+          self.packages.${pkgs.stdenv.hostPlatform.system}.album-art-wallpaper
+        }/bin/album-art-wallpaper";
         Install.WantedBy = [ "graphical-session.target" ];
       };
     };
