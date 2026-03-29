@@ -5,6 +5,7 @@
   lib,
   bash-language-server,
   black,
+  curl,
   fd,
   gh,
   git,
@@ -32,6 +33,7 @@ symlinkJoin {
         lib.makeBinPath [
           bash-language-server
           black # python formatter
+          curl # used in my config
           fd # used by telescope
           gh # used by octo.lua
           git
