@@ -11,6 +11,6 @@ symlinkJoin {
   meta.mainProgram = "git";
   postBuild = ''
     wrapProgram $out/bin/git \
-      --set GIT_CONFIG_GLOBAL ${../../../git/.gitconfig}
+      --set GIT_CONFIG_GLOBAL ${./.gitconfig}
   '';
 }
