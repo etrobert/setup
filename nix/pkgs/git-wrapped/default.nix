@@ -6,7 +6,7 @@
 # TODO: --set PATH
 symlinkJoin {
   name = "git-wrapped";
-  buildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
   paths = [ git ];
   meta.mainProgram = "git";
   postBuild = ''

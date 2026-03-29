@@ -36,7 +36,7 @@ let
 in
 symlinkJoin {
   name = "neovim-wrapped";
-  buildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
   paths = [ neovim ];
   meta.mainProgram = "nvim";
   postBuild = ''

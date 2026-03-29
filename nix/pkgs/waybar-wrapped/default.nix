@@ -7,7 +7,7 @@
 }:
 symlinkJoin {
   name = "waybar-wrapped";
-  buildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeWrapper ];
   paths = [ waybar ];
   meta.mainProgram = "waybar";
   postBuild = ''
