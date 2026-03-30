@@ -14,6 +14,7 @@ _: {
           "discord"
           "github-copilot-cli"
           "spotify"
+          "vscode"
         ];
 
         environment.systemPackages =
@@ -61,6 +62,7 @@ _: {
               pnpm
               python3
               spotify
+              vscode
               yt-dlp
             ];
           in
