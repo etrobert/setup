@@ -33,6 +33,11 @@ let
     mkdir -p $out/bin
     ln -s /usr/bin/pbcopy $out/bin/pbcopy
   '';
+
+  pbpaste = runCommandLocal "pbpaste" { } ''
+    mkdir -p $out/bin
+    ln -s /usr/bin/pbpaste $out/bin/pbpaste
+  '';
 in
 symlinkJoin {
   name = "neovim-wrapped";
@@ -65,7 +70,10 @@ symlinkJoin {
             typescript-language-server
             vscode-langservers-extracted
           ]
-          ++ lib.optionals stdenv.isDarwin [ pbcopy ]
+          ++ lib.optionals stdenv.isDarwin [
+            pbcopy
+            pbpaste
+          ]
           ++ lib.optionals stdenv.isLinux [
             wl-clipboard
             coreutils # provides cat for copying
