@@ -58,6 +58,17 @@ _: {
       ];
 
       systemd.user = {
+        services.pimsync = {
+          description = "pimsync calendar and contacts synchronization";
+          partOf = [ "network-online.target" ];
+          after = [ "run-agenix.d.mount" ];
+          wantedBy = [ "default.target" ];
+          serviceConfig = {
+            Type = "simple";
+            ExecStart = "${lib.getExe pkgs.pimsync} -v warn daemon";
+          };
+        };
+
         services.album-art-wallpaper = {
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
