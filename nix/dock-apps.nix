@@ -5,7 +5,7 @@
   }
   {
     name = "Ghostty";
-    path = "/Applications/Ghostty.app";
+    path = "/Applications/Nix Apps/Ghostty.app";
   }
   {
     name = "Spotify";
