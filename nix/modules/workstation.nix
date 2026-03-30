@@ -26,6 +26,7 @@ _: {
             ];
 
             customPackages = with self.packages.${system}; [
+              alacritty-wrapped
               neovim-wrapped
               gen-commit-msg
               git-find-commit
