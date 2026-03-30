@@ -6,6 +6,9 @@ _: {
       lib,
       ...
     }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+    in
     {
       imports = [ self.nixosModules.networkmanager ];
 
@@ -58,9 +61,7 @@ _: {
         services.album-art-wallpaper = {
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
-          serviceConfig.ExecStart =
-            lib.getExe
-              self.packages.${pkgs.stdenv.hostPlatform.system}.album-art-wallpaper;
+          serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
         };
 
         tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
@@ -76,7 +77,7 @@ _: {
             exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
           '';
 
-          customPackages = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+          customPackages = with self.packages.${system}; [
             nixos-option
             toggle-cpu-governor
             waybar-wrapped
