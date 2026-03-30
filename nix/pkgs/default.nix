@@ -21,7 +21,7 @@ _: {
         printline = pkgs.callPackage ./printline.nix { };
         creme = pkgs.callPackage ./creme { };
         check-bt-profile = pkgs.callPackage ./check-bt-profile { };
-        tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { };
+        tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self'; };
         get-weather = pkgs.callPackage ./get-weather { };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {

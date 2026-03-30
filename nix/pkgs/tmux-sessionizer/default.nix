@@ -1,8 +1,8 @@
 {
+  self',
   writeShellApplication,
   coreutils,
   gnused,
-  tmux,
   fzf,
   findutils,
 }:
@@ -11,7 +11,7 @@ writeShellApplication {
   runtimeInputs = [
     coreutils
     gnused
-    tmux
+    self'.packages.tmux-wrapped
     fzf
     findutils
   ];
