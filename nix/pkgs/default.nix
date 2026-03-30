@@ -12,6 +12,7 @@ _: {
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped.nix { inherit self'; };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
+        vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };

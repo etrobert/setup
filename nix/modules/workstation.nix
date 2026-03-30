@@ -29,6 +29,7 @@ _: {
             customPackages = with self.packages.${system}; [
               alacritty-wrapped
               neovim-wrapped
+              vscode-wrapped
               gen-commit-msg
               git-find-commit
               pm
@@ -62,7 +63,6 @@ _: {
               pnpm
               python3
               spotify
-              vscode
               yt-dlp
             ];
           in
