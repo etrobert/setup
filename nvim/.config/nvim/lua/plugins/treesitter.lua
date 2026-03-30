@@ -17,6 +17,7 @@ require("nvim-treesitter").install({
 	"git_config",
 	"hyprlang",
 	"html",
+	"ini",
 	"lua",
 	"luadoc",
 	"markdown",
