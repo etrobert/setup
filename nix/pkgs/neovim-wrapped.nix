@@ -2,7 +2,7 @@
   stdenv,
   symlinkJoin,
   makeWrapper,
-  runCommand,
+  runCommandLocal,
   neovim,
   lib,
   bash-language-server,
@@ -29,7 +29,7 @@
   wl-clipboard,
 }:
 let
-  pbcopy = runCommand "pbcopy" { } ''
+  pbcopy = runCommandLocal "pbcopy" { } ''
     mkdir -p $out/bin
     ln -s /usr/bin/pbcopy $out/bin/pbcopy
   '';
@@ -56,7 +56,6 @@ symlinkJoin {
             lua-language-server
             nixd
             nixfmt
-            pbcopy
             prettierd
             ripgrep # used by telescope
             shfmt
