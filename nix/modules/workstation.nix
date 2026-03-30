@@ -18,12 +18,14 @@ _: {
 
         environment.systemPackages =
           let
+            inherit (pkgs.stdenv.hostPlatform) system;
+
             inputPackages = [
-              pronto.packages.${pkgs.stdenv.hostPlatform.system}.default
-              agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
+              pronto.packages.${system}.default
+              agenix.packages.${system}.default
             ];
 
-            customPackages = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+            customPackages = with self.packages.${system}; [
               neovim-wrapped
               gen-commit-msg
               git-find-commit
