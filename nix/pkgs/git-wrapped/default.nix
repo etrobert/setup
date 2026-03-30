@@ -1,4 +1,6 @@
 {
+  self',
+  lib,
   symlinkJoin,
   makeWrapper,
   git,
@@ -11,6 +13,7 @@ symlinkJoin {
   meta.mainProgram = "git";
   postBuild = ''
     wrapProgram $out/bin/git \
-      --set GIT_CONFIG_GLOBAL ${./.gitconfig}
+      --set GIT_CONFIG_GLOBAL ${./.gitconfig} \
+      --prefix PATH : ${lib.makeBinPath [ self'.packages.gen-commit-msg ]}
   '';
 }

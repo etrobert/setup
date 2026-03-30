@@ -8,7 +8,7 @@ _: {
     }:
     {
       packages = {
-        git-wrapped = pkgs.callPackage ./git-wrapped { };
+        git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped.nix { inherit self'; };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         batr = pkgs.callPackage ./batr.nix { };
