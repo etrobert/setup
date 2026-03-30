@@ -10,7 +10,10 @@ _: {
       inherit (pkgs.stdenv.hostPlatform) system;
     in
     {
-      imports = [ self.nixosModules.networkmanager ];
+      imports = [
+        self.nixosModules.networkmanager
+        self.nixosModules.pimsync
+      ];
 
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
@@ -58,17 +61,6 @@ _: {
       ];
 
       systemd.user = {
-        services.pimsync = {
-          description = "pimsync calendar and contacts synchronization";
-          partOf = [ "network-online.target" ];
-          after = [ "run-agenix.d.mount" ];
-          wantedBy = [ "default.target" ];
-          serviceConfig = {
-            Type = "simple";
-            ExecStart = "${lib.getExe pkgs.pimsync} -v warn daemon";
-          };
-        };
-
         services.album-art-wallpaper = {
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
@@ -132,10 +124,6 @@ _: {
       age.secrets = {
         wifi-soft.file = ../secrets/wifi-soft.age;
         wifi-iphone-de-zeus.file = ../secrets/wifi-iphone-de-zeus.age;
-        apple-pimsync-password = {
-          owner = "soft";
-          file = ../secrets/apple-pimsync-password.age;
-        };
       };
 
       home-manager.users.soft = self.homeModules.linux;

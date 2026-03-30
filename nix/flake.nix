@@ -60,6 +60,7 @@
           ./modules/darwinModules.nix
           ./modules/unfree.nix
           ./modules/networkmanager.nix
+          ./modules/pimsync.nix
           ./pkgs
         ];
 
