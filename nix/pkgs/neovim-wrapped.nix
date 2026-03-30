@@ -12,7 +12,9 @@
   fd,
   gh,
   git,
+  gnutar,
   gopls,
+  gzip,
   imagemagick,
   isort,
   lua-language-server,
@@ -51,11 +53,14 @@ symlinkJoin {
           [
             bash-language-server
             black # python formatter
+            stdenv.cc # required by tree-sitter parser compilation
             curl # used in my config
             fd # used by telescope
             gh # used by octo.lua
             git
+            gnutar # used by treesitter
             gopls
+            gzip # used by treesitter
             imagemagick # for image rendering in nvim using snacks.image
             isort # python import sorter
             lua-language-server
