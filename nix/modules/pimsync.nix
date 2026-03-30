@@ -28,12 +28,23 @@ _: {
           collections all
         }
       '';
+
+      pimsync = pkgs.symlinkJoin {
+        name = "pimsync";
+        paths = [ pkgs.pimsync ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/pimsync --add-flags "-c ${configFile}"
+        '';
+      };
     in
     {
       age.secrets.apple-pimsync-password = {
         owner = "soft";
         file = ../secrets/apple-pimsync-password.age;
       };
+
+      environment.systemPackages = [ pimsync ];
 
       systemd.user.services.pimsync = {
         description = "pimsync calendar and contacts synchronization";
@@ -42,7 +53,7 @@ _: {
         wantedBy = [ "default.target" ];
         serviceConfig = {
           Type = "simple";
-          ExecStart = "${lib.getExe pkgs.pimsync} -v warn -c ${configFile} daemon";
+          ExecStart = "${lib.getExe pimsync} -v warn daemon";
         };
       };
     };

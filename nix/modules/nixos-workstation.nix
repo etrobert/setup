@@ -104,7 +104,6 @@ _: {
             hyprpaper
             mpc # Minimalist command line interface to MPD
             pavucontrol
-            pimsync
             playerctl
             signal-desktop
             slurp
