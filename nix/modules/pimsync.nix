@@ -33,6 +33,7 @@ _: {
         name = "pimsync";
         paths = [ pkgs.pimsync ];
         buildInputs = [ pkgs.makeWrapper ];
+        meta.mainProgram = "pimsync";
         postBuild = ''
           wrapProgram $out/bin/pimsync --add-flags "-c ${configFile}"
         '';
@@ -53,7 +54,7 @@ _: {
         wantedBy = [ "default.target" ];
         serviceConfig = {
           Type = "simple";
-          ExecStart = "${lib.getExe pimsync} -v warn daemon";
+          ExecStart = "${lib.getExe pimsync} -v info daemon";
         };
       };
     };
