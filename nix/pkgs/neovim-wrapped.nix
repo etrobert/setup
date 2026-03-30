@@ -1,4 +1,5 @@
 {
+  self',
   stdenv,
   symlinkJoin,
   makeWrapper,
@@ -11,7 +12,6 @@
   curl,
   fd,
   gh,
-  git,
   gnutar,
   gopls,
   gzip,
@@ -57,7 +57,7 @@ symlinkJoin {
             curl # used in my config
             fd # used by telescope
             gh # used by octo.lua
-            git
+            self'.packages.git-wrapped
             gnutar # used by treesitter
             gopls
             gzip # used by treesitter
