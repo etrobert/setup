@@ -29,6 +29,7 @@ _: {
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
             git-wrapped
             tmux-wrapped
+            tmux-sessionizer
           ])
           ++ (with pkgs; [
             bat
@@ -46,7 +47,6 @@ _: {
             ripgrep
             shellcheck
             stow
-            self.packages.${pkgs.stdenv.hostPlatform.system}.tmux-sessionizer
             unzip
             vim
             wget
