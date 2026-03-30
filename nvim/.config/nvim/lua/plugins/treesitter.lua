@@ -22,6 +22,7 @@ require("nvim-treesitter").install({
 	"markdown",
 	"markdown_inline",
 	"nix",
+	"toml",
 	"query",
 	"ssh_config",
 	"vim",
