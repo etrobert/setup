@@ -90,15 +90,6 @@ in
     };
   };
 
-  homebrew = {
-    enable = true;
-    casks = [
-      "ghostty"
-    ];
-
-    onActivation.cleanup = "zap";
-  };
-
   environment.shells = [ pkgs.zsh ];
 
   environment.systemPackages = with pkgs; [
@@ -107,6 +98,7 @@ in
     raycast
     defaultbrowser
     whatsapp-for-mac
+    ghostty-bin
 
     (writeShellApplication {
       # This is necessary because the darwin tailscale module does not include authkey option
