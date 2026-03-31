@@ -13,6 +13,7 @@
   fd,
   gh,
   ghostty,
+  ghostty-bin,
   gnutar,
   gopls,
   gzip,
@@ -59,7 +60,6 @@ symlinkJoin {
             fd # used by telescope
             gh # used by octo.lua
             self'.packages.git-wrapped
-            ghostty # used by snacks.image
             gnutar # used by treesitter
             gopls
             gzip # used by treesitter
@@ -80,10 +80,12 @@ symlinkJoin {
           ++ lib.optionals stdenv.isDarwin [
             pbcopy
             pbpaste
+            ghostty-bin # used by snacks.image
           ]
           ++ lib.optionals stdenv.isLinux [
             wl-clipboard
             coreutils # provides cat for copying
+            ghostty # used by snacks.image
           ]
         )
       }
