@@ -6,6 +6,7 @@ _: {
         environmentFiles = [
           "/run/agenix/wifi-soft"
           "/run/agenix/wifi-iphone-de-zeus"
+          "/run/agenix/wifi-vinni"
         ];
         profiles.soft = {
           connection = {
@@ -33,6 +34,20 @@ _: {
           wifi-security = {
             key-mgmt = "wpa-psk";
             psk = "$WIFI_PASSWORD_IPHONE_DE_ZEUS";
+          };
+        };
+        profiles.vinni = {
+          connection = {
+            id = "Vodafone-150C";
+            type = "wifi";
+          };
+          wifi = {
+            ssid = "Vodafone-150C";
+            mode = "infrastructure";
+          };
+          wifi-security = {
+            key-mgmt = "wpa-psk";
+            psk = "$WIFI_PASSWORD_VINNI";
           };
         };
       };
