@@ -5,6 +5,18 @@ vim.pack.add({
 	"https://github.com/nvim-telescope/telescope-fzf-native.nvim",
 })
 
+local snacks_image = require("snacks.image")
+
+vim.api.nvim_create_autocmd("User", {
+	pattern = "TelescopePreviewerLoaded",
+	callback = function(args)
+		if snacks_image.supports_file(args.data.bufname) then
+			vim.api.nvim_buf_set_name(args.buf, args.data.bufname)
+			snacks_image.buf.attach(args.buf)
+		end
+	end,
+})
+
 require("telescope").setup({
 	defaults = {
 		file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
