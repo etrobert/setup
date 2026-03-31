@@ -12,6 +12,7 @@
   curl,
   fd,
   gh,
+  ghostty,
   gnutar,
   gopls,
   gzip,
@@ -58,6 +59,7 @@ symlinkJoin {
             fd # used by telescope
             gh # used by octo.lua
             self'.packages.git-wrapped
+            ghostty # used by snacks.image
             gnutar # used by treesitter
             gopls
             gzip # used by treesitter
