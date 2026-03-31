@@ -10,7 +10,7 @@
   boot.kernelParams = [ "mem_sleep_default=deep" ];
 
   boot.loader = {
-    systemd-boot.configurationLimit = 3;
+    systemd-boot.configurationLimit = 1;
 
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
