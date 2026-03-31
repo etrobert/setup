@@ -8,46 +8,51 @@ _: {
           "/run/agenix/wifi-iphone-de-zeus"
           "/run/agenix/wifi-vinni"
         ];
-        profiles.soft = {
-          connection = {
-            id = "soft";
-            type = "wifi";
+
+        profiles = {
+          soft = {
+            connection = {
+              id = "soft";
+              type = "wifi";
+            };
+            wifi = {
+              ssid = "soft";
+              mode = "infrastructure";
+            };
+            wifi-security = {
+              key-mgmt = "wpa-psk";
+              psk = "$WIFI_PASSWORD";
+            };
           };
-          wifi = {
-            ssid = "soft";
-            mode = "infrastructure";
+
+          iphoneDeZeus = {
+            connection = {
+              id = "iPhone de Zeus";
+              type = "wifi";
+            };
+            wifi = {
+              ssid = "iPhone de Zeus";
+              mode = "infrastructure";
+            };
+            wifi-security = {
+              key-mgmt = "wpa-psk";
+              psk = "$WIFI_PASSWORD_IPHONE_DE_ZEUS";
+            };
           };
-          wifi-security = {
-            key-mgmt = "wpa-psk";
-            psk = "$WIFI_PASSWORD";
-          };
-        };
-        profiles.iphoneDeZeus = {
-          connection = {
-            id = "iPhone de Zeus";
-            type = "wifi";
-          };
-          wifi = {
-            ssid = "iPhone de Zeus";
-            mode = "infrastructure";
-          };
-          wifi-security = {
-            key-mgmt = "wpa-psk";
-            psk = "$WIFI_PASSWORD_IPHONE_DE_ZEUS";
-          };
-        };
-        profiles.vinni = {
-          connection = {
-            id = "Vodafone-150C";
-            type = "wifi";
-          };
-          wifi = {
-            ssid = "Vodafone-150C";
-            mode = "infrastructure";
-          };
-          wifi-security = {
-            key-mgmt = "wpa-psk";
-            psk = "$WIFI_PASSWORD_VINNI";
+
+          vinni = {
+            connection = {
+              id = "Vodafone-150C";
+              type = "wifi";
+            };
+            wifi = {
+              ssid = "Vodafone-150C";
+              mode = "infrastructure";
+            };
+            wifi-security = {
+              key-mgmt = "wpa-psk";
+              psk = "$WIFI_PASSWORD_VINNI";
+            };
           };
         };
       };
