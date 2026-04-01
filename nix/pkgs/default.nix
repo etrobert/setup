@@ -26,6 +26,7 @@ _: {
         tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self'; };
         get-weather = pkgs.callPackage ./get-weather { };
         add-asset = pkgs.callPackage ./add-asset { };
+        switch = pkgs.callPackage ./switch.nix { };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
