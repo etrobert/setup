@@ -4,31 +4,41 @@
   writeShellApplication,
   runCommandLocal,
   inputs',
-  lib,
   nixos-rebuild,
   systemd,
 }:
-let
-  sudo-path = if stdenv.isDarwin then "/usr/bin/sudo" else "/run/wrappers/bin/sudo";
-
-  sudo-wrapped = runCommandLocal "sudo" { } ''
-    mkdir -p $out/bin
-    ln -s ${sudo-path} $out/bin/sudo
-  '';
-in
-writeShellApplication {
-  name = "switch";
-  runtimeInputs = [
-    coreutils # for id
-    sudo-wrapped
-  ]
-  ++ lib.optionals stdenv.isDarwin [
-    inputs'.nix-darwin.packages.darwin-rebuild
-  ]
-  ++ lib.optionals stdenv.isLinux [
-    nixos-rebuild
-    systemd
-  ];
-  inheritPath = false;
-  text = if stdenv.isLinux then "sudo nixos-rebuild switch" else "sudo darwin-rebuild switch";
-}
+if stdenv.isLinux then
+  let
+    sudo = runCommandLocal "sudo" { } ''
+      mkdir -p $out/bin
+      ln -s /run/wrappers/bin/sudo $out/bin/sudo
+    '';
+  in
+  writeShellApplication {
+    name = "switch";
+    runtimeInputs = [
+      coreutils # for id
+      sudo
+      nixos-rebuild
+      systemd
+    ];
+    inheritPath = false;
+    text = "sudo nixos-rebuild switch";
+  }
+else
+  let
+    sudo = runCommandLocal "sudo" { } ''
+      mkdir -p $out/bin
+      ln -s /usr/bin/sudo $out/bin/sudo
+    '';
+  in
+  writeShellApplication {
+    name = "switch";
+    runtimeInputs = [
+      coreutils # for id
+      sudo
+      inputs'.nix-darwin.packages.darwin-rebuild
+    ];
+    inheritPath = false;
+    text = "sudo darwin-rebuild switch";
+  }
