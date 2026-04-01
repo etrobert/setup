@@ -4,6 +4,7 @@ _: {
       self',
       pkgs,
       lib,
+      inputs',
       ...
     }:
     {
@@ -26,7 +27,7 @@ _: {
         tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self'; };
         get-weather = pkgs.callPackage ./get-weather { };
         add-asset = pkgs.callPackage ./add-asset { };
-        switch = pkgs.callPackage ./switch.nix { };
+        switch = pkgs.callPackage ./switch.nix { inherit inputs'; };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
