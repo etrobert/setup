@@ -16,7 +16,6 @@ vim.pack.add({
 
 	"https://github.com/tpope/vim-fugitive",
 	"https://github.com/rcarriga/nvim-notify",
-	"https://github.com/NvChad/nvim-colorizer.lua",
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/akinsho/bufferline.nvim",
 	"https://github.com/j-hui/fidget.nvim",
@@ -51,8 +50,6 @@ vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" }
 
 require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
 vim.notify = require("notify")
-
-require("colorizer").setup({ user_default_options = { tailwind = true } })
 
 require("treesj").setup({ max_join_length = 500 })
 

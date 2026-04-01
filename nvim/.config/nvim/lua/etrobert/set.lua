@@ -75,8 +75,12 @@ vim.lsp.enable({
 	"gopls",
 	"lua_ls",
 	"nixd",
+	"cssls",
+	"html",
 	-- "copilot",
 })
+
+vim.lsp.document_color.enable(true, nil, { style = "virtual" })
 
 vim.o.winborder = "rounded"
 
