@@ -38,8 +38,9 @@ _: {
               (defsrc caps a s d f j k l ;)
 
               (defhands
-                (left  q w e r t a s d f g z x c v b)
-                (right y u i o p h j k l ; n m , . / ))
+                (left  q w e r t a s d f g z x c v b 1 2 3 4 5)
+                (right y u i o p h j k l ; n m , . / 6 7 8 9 0)
+                )
 
               (defvar
                 timeout 150
