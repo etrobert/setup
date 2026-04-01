@@ -11,6 +11,7 @@
   coreutils,
   curl,
   fd,
+  git,
   gh,
   gnutar,
   gopls,
@@ -29,6 +30,7 @@
   typescript-language-server,
   vscode-langservers-extracted,
   wl-clipboard,
+  with-git ? true,
 }:
 let
   pbcopy = runCommandLocal "pbcopy" { } ''
@@ -57,7 +59,6 @@ symlinkJoin {
             curl # used in my config
             fd # used by telescope
             gh # used by octo.lua
-            self'.packages.git-wrapped
             gnutar # used by treesitter
             gopls
             gzip # used by treesitter
@@ -83,6 +84,7 @@ symlinkJoin {
             wl-clipboard
             coreutils # provides cat for copying
           ]
+          ++ (if with-git then [ self'.packages.git-wrapped ] else [ git ])
         )
       }
   '';
