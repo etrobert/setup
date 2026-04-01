@@ -5,6 +5,7 @@
   runCommandLocal,
   inputs',
   lib,
+  nixos-rebuild,
 }:
 let
   sudo-path = if stdenv.isDarwin then "/usr/bin/sudo" else "/run/wrappers/bin/sudo";
@@ -22,6 +23,9 @@ writeShellApplication {
   ]
   ++ lib.optionals stdenv.isDarwin [
     inputs'.nix-darwin.packages.darwin-rebuild
+  ]
+  ++ lib.optionals stdenv.isLinux [
+    nixos-rebuild
   ];
   inheritPath = false;
   text = if stdenv.isLinux then "sudo nixos-rebuild switch" else "sudo darwin-rebuild switch";
