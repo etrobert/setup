@@ -44,6 +44,44 @@ let
     mkdir -p $out/bin
     ln -s /usr/bin/pbpaste $out/bin/pbpaste
   '';
+
+  path = lib.makeBinPath (
+    [
+      bash-language-server
+      black # python formatter
+      stdenv.cc # required by tree-sitter parser compilation
+      curl # used in my config
+      fd # used by telescope
+      gh # used by octo.lua
+      gnutar # used by treesitter
+      gopls
+      gzip # used by treesitter
+      imagemagick # for image rendering in nvim using snacks.image
+      isort # python import sorter
+      lua-language-server
+      nixd
+      nixfmt
+      prettierd
+      ripgrep # used by telescope
+      shfmt
+      stylua
+      tree-sitter
+      tmux # required by vim-tmux-navigator
+      typescript-language-server
+      vscode-langservers-extracted
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      pbcopy
+      pbpaste
+      ghostty-bin # used by snacks.image
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      wl-clipboard
+      coreutils # provides cat for copying
+      ghostty # used by snacks.image
+    ]
+    ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
+  );
 in
 symlinkJoin {
   name = "neovim-wrapped";
@@ -52,44 +90,6 @@ symlinkJoin {
   meta.mainProgram = "nvim";
   postBuild = ''
     wrapProgram $out/bin/nvim \
-      --set PATH ${
-        lib.makeBinPath (
-          [
-            bash-language-server
-            black # python formatter
-            stdenv.cc # required by tree-sitter parser compilation
-            curl # used in my config
-            fd # used by telescope
-            gh # used by octo.lua
-            gnutar # used by treesitter
-            gopls
-            gzip # used by treesitter
-            imagemagick # for image rendering in nvim using snacks.image
-            isort # python import sorter
-            lua-language-server
-            nixd
-            nixfmt
-            prettierd
-            ripgrep # used by telescope
-            shfmt
-            stylua
-            tree-sitter
-            tmux # required by vim-tmux-navigator
-            typescript-language-server
-            vscode-langservers-extracted
-          ]
-          ++ lib.optionals stdenv.isDarwin [
-            pbcopy
-            pbpaste
-            ghostty-bin # used by snacks.image
-          ]
-          ++ lib.optionals stdenv.isLinux [
-            wl-clipboard
-            coreutils # provides cat for copying
-            ghostty # used by snacks.image
-          ]
-          ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
-        )
-      }
+      --set PATH ${path}
   '';
 }
