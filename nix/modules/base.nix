@@ -65,6 +65,10 @@ _: {
             hostNames = [ "tower" ];
             publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
           };
+          aaron = {
+            hostNames = [ "aaron" ];
+            publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/Y38NV8a/9rfDq+7W1UFfAFDo8SkwQ5JAl/U24u0ne";
+          };
         };
 
         programs.zsh = {
