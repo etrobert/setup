@@ -12,10 +12,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,16 +67,8 @@
         ];
 
         perSystem =
-          { system, ... }:
-          let
-            pkgs = import inputs.nixpkgs {
-              inherit system;
-              overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
-            };
-          in
+          { pkgs, ... }:
           {
-            _module.args.pkgs = pkgs;
-
             devShells = {
               default = pkgs.mkShell {
                 packages = with pkgs; [
