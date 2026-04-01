@@ -18,11 +18,20 @@ _: {
       zramSwap.enable = true;
 
       services = {
-        # Configure keymap in X11
-        xserver.xkb = {
-          layout = "us";
-          variant = "";
-          options = "ctrl:nocaps";
+        kanata = {
+          enable = true;
+          keyboards.default = {
+            config = /* scheme */ ''
+              (defsrc
+                caps
+              )
+
+              (deflayer base
+                (tap-hold-press 0 200 esc lctl)
+              )
+            '';
+            extraDefCfg = "process-unmapped-keys yes";
+          };
         };
 
         tailscale = {

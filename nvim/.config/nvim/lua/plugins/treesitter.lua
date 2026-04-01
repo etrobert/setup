@@ -32,6 +32,7 @@ require("nvim-treesitter").install({
 	"typescript",
 	"json",
 	"go",
+	"scheme",
 	"rust",
 })
 
