@@ -36,6 +36,7 @@ _: {
               nixplatforms
               batr
               printline
+              add-asset
             ];
 
             externalPackages = with pkgs; [
