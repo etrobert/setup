@@ -11,6 +11,7 @@
   coreutils,
   curl,
   fd,
+  git,
   gh,
   ghostty,
   ghostty-bin,
@@ -31,6 +32,7 @@
   typescript-language-server,
   vscode-langservers-extracted,
   wl-clipboard,
+  with-git-wrapped ? true,
 }:
 let
   pbcopy = runCommandLocal "pbcopy" { } ''
@@ -59,7 +61,6 @@ symlinkJoin {
             curl # used in my config
             fd # used by telescope
             gh # used by octo.lua
-            self'.packages.git-wrapped
             gnutar # used by treesitter
             gopls
             gzip # used by treesitter
@@ -87,6 +88,7 @@ symlinkJoin {
             coreutils # provides cat for copying
             ghostty # used by snacks.image
           ]
+          ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
         )
       }
   '';
