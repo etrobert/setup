@@ -2,7 +2,7 @@ _: {
   flake.nixosModules.nixosBase =
     { pkgs, config, ... }:
     {
-      system.activationScripts.nixos-symlink.text = ''
+      system.activationScripts.nixos-symlink.text = /* bash */ ''
         ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
       '';
 
