@@ -30,7 +30,7 @@
   typescript-language-server,
   vscode-langservers-extracted,
   wl-clipboard,
-  with-git ? true,
+  with-git-wrapped ? true,
 }:
 let
   pbcopy = runCommandLocal "pbcopy" { } ''
@@ -84,7 +84,7 @@ symlinkJoin {
             wl-clipboard
             coreutils # provides cat for copying
           ]
-          ++ (if with-git then [ self'.packages.git-wrapped ] else [ git ])
+          ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
         )
       }
   '';

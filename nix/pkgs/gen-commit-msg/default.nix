@@ -12,7 +12,7 @@ writeShellApplication {
   runtimeInputs = [
     coreutils
     curl
-    (self'.packages.neovim-wrapped.override { with-git = false; }) # for editing the commit
+    (self'.packages.neovim-wrapped.override { with-git-wrapped = false; }) # for editing the commit
     git
     gnused
     jq
