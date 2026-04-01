@@ -22,12 +22,24 @@ _: {
           enable = true;
           keyboards.default = {
             config = /* scheme */ ''
-              (defsrc
-                caps
-              )
+              (defsrc caps a s d f j k l ;)
+
+              (defhands
+                (left  q w e r t a s d f g z x c v b)
+                (right y u i o p h j k l ; n m , . / ))
 
               (deflayer base
                 (tap-hold-press 0 200 esc lctl)
+
+                (tap-hold-opposite-hand 150 a lmet)
+                (tap-hold-opposite-hand 150 s lalt)
+                (tap-hold-opposite-hand 150 d lctl)
+                (tap-hold-opposite-hand 150 f lsft)
+
+                (tap-hold-opposite-hand 150 j rsft)
+                (tap-hold-opposite-hand 150 k rctl)
+                (tap-hold-opposite-hand 150 l lalt)
+                (tap-hold-opposite-hand 150 ; rmet)
               )
             '';
             extraDefCfg = "process-unmapped-keys yes";

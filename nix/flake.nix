@@ -45,6 +45,7 @@
           ./modules/hosts/aaron
           ./modules/hosts/leod
           ./modules/hosts/pi
+          ./modules/overlays/kanata-main.nix
           ./modules/home
           ./modules/home/linux.nix
           ./modules/home/common.nix
