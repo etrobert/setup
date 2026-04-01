@@ -2,20 +2,15 @@
   coreutils,
   stdenv,
   writeShellApplication,
-  sudo,
   runCommandLocal,
   inputs',
   lib,
 }:
 let
-  sudo-wrapped =
-    if stdenv.isLinux then
-      sudo
-    else
-      runCommandLocal "sudo" { } ''
-        mkdir -p $out/bin
-        ln -s /usr/bin/sudo $out/bin/sudo
-      '';
+  sudo-wrapped = runCommandLocal "sudo" { } ''
+    mkdir -p $out/bin
+    ln -s /usr/bin/sudo $out/bin/sudo
+  '';
 in
 writeShellApplication {
   name = "switch";
