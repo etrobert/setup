@@ -28,18 +28,22 @@ _: {
                 (left  q w e r t a s d f g z x c v b)
                 (right y u i o p h j k l ; n m , . / ))
 
+              (defvar
+                timeout 150
+              )
+
               (deflayer base
                 (tap-hold-press 0 200 esc lctl)
 
-                (tap-hold-opposite-hand 150 a lmet)
-                (tap-hold-opposite-hand 150 s lalt)
-                (tap-hold-opposite-hand 150 d lctl)
-                (tap-hold-opposite-hand 150 f lsft)
+                (tap-hold-opposite-hand $timeout a lmet)
+                (tap-hold-opposite-hand $timeout s lalt)
+                (tap-hold-opposite-hand $timeout d lctl)
+                (tap-hold-opposite-hand $timeout f lsft)
 
-                (tap-hold-opposite-hand 150 j rsft)
-                (tap-hold-opposite-hand 150 k rctl)
-                (tap-hold-opposite-hand 150 l lalt)
-                (tap-hold-opposite-hand 150 ; rmet)
+                (tap-hold-opposite-hand $timeout j rsft)
+                (tap-hold-opposite-hand $timeout k rctl)
+                (tap-hold-opposite-hand $timeout l lalt)
+                (tap-hold-opposite-hand $timeout ; rmet)
               )
             '';
             extraDefCfg = "process-unmapped-keys yes";
