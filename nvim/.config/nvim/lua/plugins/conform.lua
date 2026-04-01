@@ -19,7 +19,7 @@ require("conform").setup({
 		fish = { "fish_indent" },
 		rust = { "rustfmt" },
 		python = { "isort", "black" },
-		nix = { "nixfmt" },
+		nix = { "nixfmt", "injected" },
 	},
 	format_on_save = {
 		timeout_ms = 1000,
