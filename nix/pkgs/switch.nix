@@ -7,9 +7,11 @@
   lib,
 }:
 let
+  sudo-path = if stdenv.isDarwin then "/usr/bin/sudo" else "/run/wrappers/bin/sudo";
+
   sudo-wrapped = runCommandLocal "sudo" { } ''
     mkdir -p $out/bin
-    ln -s /usr/bin/sudo $out/bin/sudo
+    ln -s ${sudo-path} $out/bin/sudo
   '';
 in
 writeShellApplication {
