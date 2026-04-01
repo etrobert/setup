@@ -30,6 +30,7 @@ _: {
             git-wrapped
             tmux-wrapped
             tmux-sessionizer
+            switch
           ])
           ++ (with pkgs; [
             bat
