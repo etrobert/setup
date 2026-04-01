@@ -5,6 +5,7 @@
   sudo,
   runCommandLocal,
   inputs',
+  lib,
 }:
 let
   sudo-wrapped =
@@ -20,8 +21,10 @@ writeShellApplication {
   name = "switch";
   runtimeInputs = [
     coreutils # for id
-    inputs'.nix-darwin.packages.darwin-rebuild
     sudo-wrapped
+  ]
+  ++ lib.optionals stdenv.isDarwin [
+    inputs'.nix-darwin.packages.darwin-rebuild
   ];
   inheritPath = false;
   text = if stdenv.isLinux then "sudo nixos-rebuild switch" else "sudo darwin-rebuild switch";
