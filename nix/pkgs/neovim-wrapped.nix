@@ -6,6 +6,7 @@
   runCommandLocal,
   neovim,
   lib,
+  bash,
   bash-language-server,
   black,
   coreutils,
@@ -64,6 +65,7 @@ let
       nixfmt
       prettierd
       ripgrep # used by telescope
+      bash # used by fugitive for cc
       shfmt
       stylua
       tailwindcss-language-server
