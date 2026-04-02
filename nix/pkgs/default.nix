@@ -32,6 +32,7 @@ _: {
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
         waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self'; };
+        niri-wrapped = pkgs.callPackage ./niri-wrapped { };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         brightness-control = pkgs.callPackage ./brightness-control { };
         volume-control = pkgs.callPackage ./volume-control { };

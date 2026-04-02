@@ -116,7 +116,10 @@ _: {
         customPackages ++ externalPackages;
 
       programs = {
-        hyprland.enable = true;
+        niri = {
+          enable = true;
+          package = self.packages.${system}.niri-wrapped;
+        };
         hyprlock.enable = true;
       };
 
