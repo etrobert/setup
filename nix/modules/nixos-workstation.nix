@@ -117,7 +117,7 @@ _: {
       programs = {
         niri = {
           enable = true;
-          package = self.packages.${system}.niri-wrapped;
+          package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
         };
         hyprlock.enable = true;
       };
