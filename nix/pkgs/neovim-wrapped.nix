@@ -26,6 +26,10 @@
   nixfmt,
   prettierd,
   ripgrep,
+  cargo,
+  rust-analyzer,
+  rustc,
+  rustfmt,
   shfmt,
   stylua,
   tailwindcss-language-server,
@@ -66,6 +70,10 @@ let
       prettierd
       ripgrep # used by telescope
       bash # used by fugitive for cc
+      cargo
+      rust-analyzer
+      rustc
+      rustfmt
       shfmt
       stylua
       tailwindcss-language-server
