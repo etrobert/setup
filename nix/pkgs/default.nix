@@ -39,7 +39,7 @@ _: {
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
           inherit self';
-          configPath = "/home/soft/setup/nix/pkgs/niri-wrapped/config.kdl";
+          dev = true;
         };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         brightness-control = pkgs.callPackage ./brightness-control { };
