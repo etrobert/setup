@@ -4,7 +4,7 @@
   symlinkJoin,
   makeWrapper,
   runCommandLocal,
-  neovim,
+  neovim-unwrapped,
   lib,
   bash-language-server,
   black,
@@ -34,8 +34,20 @@
   vscode-langservers-extracted,
   wl-clipboard,
   with-git-wrapped ? true,
+  fetchFromGitHub,
+  wrapNeovim,
 }:
 let
+  neovim-pinned = wrapNeovim (neovim-unwrapped.overrideAttrs (_old: {
+    version = "0.12.0";
+    src = fetchFromGitHub {
+      owner = "neovim";
+      repo = "neovim";
+      rev = "v0.12.0";
+      hash = "sha256-uWhrGAwQ2nnAkyJ46qGkYxJ5K1jtyUIQOAVu3yTlquk=";
+    };
+  })) { };
+
   pbcopy = runCommandLocal "pbcopy" { } ''
     mkdir -p $out/bin
     ln -s /usr/bin/pbcopy $out/bin/pbcopy
@@ -88,7 +100,7 @@ in
 symlinkJoin {
   name = "neovim-wrapped";
   nativeBuildInputs = [ makeWrapper ];
-  paths = [ neovim ];
+  paths = [ neovim-pinned ];
   meta.mainProgram = "nvim";
   postBuild = ''
     wrapProgram $out/bin/nvim \
