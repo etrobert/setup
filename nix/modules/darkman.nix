@@ -1,5 +1,3 @@
-# Source: https://github.com/nix-community/home-manager/blob/d166a078541982a76f14d3e06e9665fa5c9ed85e/modules/services/darkman.nix
-
 _: {
   flake.nixosModules.darkman =
     { lib, pkgs, ... }:
@@ -31,6 +29,7 @@ _: {
 
       environment.systemPackages = [ darkman ];
 
+      # Source: https://github.com/nix-community/home-manager/blob/d166a078541982a76f14d3e06e9665fa5c9ed85e/modules/services/darkman.nix
       systemd.user.services.darkman = {
         description = "Darkman system service";
         partOf = [ "graphical-session.target" ];
