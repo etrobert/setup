@@ -64,7 +64,7 @@ _: {
               python3
               spotify
               vscode
-              yt-dlp
+              # yt-dlp # TODO: Add back once the macos cache is back
             ];
           in
           inputPackages ++ customPackages ++ externalPackages;
