@@ -13,6 +13,7 @@ _: {
       imports = [
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
+        self.nixosModules.darkman
       ];
 
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];

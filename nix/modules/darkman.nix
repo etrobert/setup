@@ -1,0 +1,49 @@
+# Source: https://github.com/nix-community/home-manager/blob/d166a078541982a76f14d3e06e9665fa5c9ed85e/modules/services/darkman.nix
+
+_: {
+  flake.nixosModules.darkman =
+    { lib, pkgs, ... }:
+    {
+      systemd.user.services.darkman =
+        let
+          inherit (pkgs) symlinkJoin makeWrapper writeTextDir;
+
+          config = writeTextDir "darkman/config.yaml" ''
+            lat: 52.52
+            lng: 13.40
+            usegeoclue: false
+          '';
+
+          darkman = symlinkJoin {
+            name = "darkman";
+            nativeBuildInputs = [ makeWrapper ];
+            paths = [ pkgs.darkman ];
+            meta.mainProgram = "darkman";
+            postBuild = ''
+              XDG_CONFIG_HOME=${config} $out/bin/darkman check
+
+              wrapProgram $out/bin/darkman \
+                --set XDG_CONFIG_HOME ${config}
+            '';
+          };
+        in
+        {
+          description = "Darkman system service";
+          partOf = [ "graphical-session.target" ];
+          bindsTo = [ "graphical-session.target" ];
+          wantedBy = [ "graphical-session.target" ];
+          # TODO: Add restart triggers
+          # X-Restart-Triggers = mkIf (cfg.settings != { }) [
+          #   "${config.xdg.configFile."darkman/config.yaml".source}"
+          # ];
+          serviceConfig = {
+            Type = "dbus";
+            BusName = "nl.whynothugo.darkman";
+            ExecStart = "${lib.getExe darkman} run";
+            Restart = "on-failure";
+            TimeoutStopSec = 15;
+            Slice = "background.slice";
+          };
+        };
+    };
+}
