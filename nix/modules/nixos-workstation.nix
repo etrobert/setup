@@ -67,30 +67,6 @@ _: {
           serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
         };
 
-        services.watch-neovim-unstable = {
-          partOf = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          serviceConfig.ExecStart = lib.getExe (
-            pkgs.writeShellApplication {
-              name = "watch-neovim-unstable";
-              runtimeInputs = with pkgs; [
-                libnotify
-                nix
-              ];
-              text = ''
-                while true; do
-                  version=$(nix eval --raw github:NixOS/nixpkgs?ref=nixos-unstable#neovim.version)
-                  echo "Found version $version"
-                  if [ "$version" != "0.11.6" ]; then
-                    notify-send "Neovim is version $version!"
-                  fi
-                  sleep 60
-                done
-              '';
-            }
-          );
-        };
-
         tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
       };
 

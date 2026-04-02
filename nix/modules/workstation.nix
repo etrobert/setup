@@ -44,7 +44,7 @@ _: {
               adwaita-icon-theme
               audacity
               bun
-              claude-code
+              # claude-code # cache not ready yet
               codex # Lightweight coding agent that runs in your terminal
               discord
               gcc
