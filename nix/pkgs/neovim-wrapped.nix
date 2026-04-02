@@ -27,6 +27,7 @@
   ripgrep,
   shfmt,
   stylua,
+  tailwindcss-language-server,
   tree-sitter,
   tmux,
   typescript-language-server,
@@ -65,6 +66,7 @@ let
       ripgrep # used by telescope
       shfmt
       stylua
+      tailwindcss-language-server
       tree-sitter
       tmux # required by vim-tmux-navigator
       typescript-language-server
