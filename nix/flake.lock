@@ -183,11 +183,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1774532707,
-        "narHash": "sha256-72ntEzWcxlCJBjmrO0RIwWw2Y4DgzZjDnJN+Uqm9jHs=",
+        "lastModified": 1775168329,
+        "narHash": "sha256-oGwxb1csPzyjggXX7+Fb2ZBouR3FeWy3H4666Gpv438=",
         "owner": "etrobert",
         "repo": "pronto",
-        "rev": "ba919f07e8a143bafa46cbe28f3ff506e5a3acfd",
+        "rev": "cbd3dd2c6f42c89e7f53c4de39033b1b05dd9276",
         "type": "github"
       },
       "original": {
