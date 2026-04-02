@@ -99,6 +99,7 @@ _: {
             chromium
             ddcutil
             firefoxpwa
+            fuzzel # TODO: move to niri
             ghostty
             grim
             hyprpaper
@@ -110,7 +111,7 @@ _: {
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
-            wofi
+            wofi # TODO: Move to compositor
           ];
         in
         customPackages ++ externalPackages;
