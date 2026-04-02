@@ -9,6 +9,12 @@
 }:
 let
   config = if dev then "/home/soft/setup/nix/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
+
+  path = [
+    self'.packages.waybar-wrapped
+    self'.packages.volume-control
+    fuzzel
+  ];
 in
 symlinkJoin {
   name = "niri-wrapped";
@@ -20,12 +26,7 @@ symlinkJoin {
 
     wrapProgram $out/bin/niri \
       --set NIRI_CONFIG ${config} \
-      --prefix PATH : ${
-        lib.makeBinPath [
-          self'.packages.waybar-wrapped
-          fuzzel
-        ]
-      }
+      --prefix PATH : ${lib.makeBinPath path}
 
     rm $out/share/systemd/user/niri.service
     cp ${niri}/share/systemd/user/niri.service \
