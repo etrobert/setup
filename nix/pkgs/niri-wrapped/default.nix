@@ -11,7 +11,7 @@ symlinkJoin {
   paths = [ niri ];
   postBuild = ''
     wrapProgram $out/bin/niri \
-      --set NIRI_CONFIG ${./config.kdl}
+      --set NIRI_CONFIG ${./config.kdl} \
       --prefix PATH : ${lib.makeBinPath [ self'.packages.waybar-wrapped ]}
 
     rm $out/share/systemd/user/niri.service
