@@ -5,6 +5,7 @@
   makeWrapper,
   niri,
   fuzzel,
+  hyprpaper,
   dev ? false,
 }:
 let
@@ -14,6 +15,7 @@ let
     self'.packages.waybar-wrapped
     self'.packages.volume-control
     fuzzel
+    hyprpaper
   ];
 in
 symlinkJoin {
