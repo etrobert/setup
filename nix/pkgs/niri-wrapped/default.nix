@@ -9,7 +9,7 @@ symlinkJoin {
   paths = [ niri ];
   postBuild = ''
     wrapProgram $out/bin/niri \
-      --add-flags "--config ${./config.kdl}"
+      --set NIRI_CONFIG ${./config.kdl}
   '';
   passthru.providedSessions = niri.passthru.providedSessions;
 }
