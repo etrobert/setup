@@ -22,6 +22,7 @@
     "custom/cpu-governor",
     "bluetooth",
     "hyprland/workspaces",
+    "niri/workspaces",
   ],
   // Modules configuration
   "hyprland/window": {
