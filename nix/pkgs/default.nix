@@ -33,6 +33,10 @@ _: {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
         waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self'; };
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
+        niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
+          inherit self';
+          configPath = "/home/soft/setup/nix/pkgs/niri-wrapped/config.kdl";
+        };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         brightness-control = pkgs.callPackage ./brightness-control { };
         volume-control = pkgs.callPackage ./volume-control { };
