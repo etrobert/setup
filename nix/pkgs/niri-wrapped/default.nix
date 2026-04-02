@@ -1,4 +1,6 @@
 {
+  self',
+  lib,
   symlinkJoin,
   makeWrapper,
   niri,
@@ -10,6 +12,7 @@ symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/niri \
       --set NIRI_CONFIG ${./config.kdl}
+      --prefix PATH : ${lib.makeBinPath [ self'.packages.waybar-wrapped ]}
 
     rm $out/share/systemd/user/niri.service
     cp ${niri}/share/systemd/user/niri.service \
