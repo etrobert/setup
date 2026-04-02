@@ -3,43 +3,49 @@
 _: {
   flake.nixosModules.darkman =
     { lib, pkgs, ... }:
+    let
+      inherit (pkgs) symlinkJoin makeWrapper writeTextDir;
+
+      config = writeTextDir "darkman/config.yaml" /* yaml */ ''
+        lat: 52.5
+        lng: 13.4
+        usegeoclue: true
+      '';
+
+      darkman = symlinkJoin {
+        name = "darkman";
+        nativeBuildInputs = [ makeWrapper ];
+        paths = [ pkgs.darkman ];
+        meta.mainProgram = "darkman";
+        postBuild = ''
+          XDG_CONFIG_HOME=${config} $out/bin/darkman check
+
+          wrapProgram $out/bin/darkman \
+            --set XDG_CONFIG_HOME ${config}
+        '';
+      };
+    in
     {
-      systemd.user.services.darkman =
-        let
-          inherit (pkgs) symlinkJoin makeWrapper writeTextDir;
+      environment.etc."xdg-desktop-portal/portals.conf".text = /* ini */ ''
+        [preferred]
+        org.freedesktop.impl.portal.Settings=darkman
+      '';
 
-          config = writeTextDir "darkman/config.yaml" /* yaml */ ''
-            lat: 52.5
-            lng: 13.4
-            usegeoclue: true
-          '';
+      environment.systemPackages = [ darkman ];
 
-          darkman = symlinkJoin {
-            name = "darkman";
-            nativeBuildInputs = [ makeWrapper ];
-            paths = [ pkgs.darkman ];
-            meta.mainProgram = "darkman";
-            postBuild = ''
-              XDG_CONFIG_HOME=${config} $out/bin/darkman check
-
-              wrapProgram $out/bin/darkman \
-                --set XDG_CONFIG_HOME ${config}
-            '';
-          };
-        in
-        {
-          description = "Darkman system service";
-          partOf = [ "graphical-session.target" ];
-          bindsTo = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          serviceConfig = {
-            Type = "dbus";
-            BusName = "nl.whynothugo.darkman";
-            ExecStart = "${lib.getExe darkman} run";
-            Restart = "on-failure";
-            TimeoutStopSec = 15;
-            Slice = "background.slice";
-          };
+      systemd.user.services.darkman = {
+        description = "Darkman system service";
+        partOf = [ "graphical-session.target" ];
+        bindsTo = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "dbus";
+          BusName = "nl.whynothugo.darkman";
+          ExecStart = "${lib.getExe darkman} run";
+          Restart = "on-failure";
+          TimeoutStopSec = 15;
+          Slice = "background.slice";
         };
+      };
     };
 }
