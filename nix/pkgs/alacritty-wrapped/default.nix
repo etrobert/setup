@@ -24,7 +24,7 @@ let
 
     [font]
     normal.family = "FiraCode Nerd Font"
-    size = 14
+    size = 13
 
     [general]
     import = [ "${./catppuccin-macchiato.toml}" ]
