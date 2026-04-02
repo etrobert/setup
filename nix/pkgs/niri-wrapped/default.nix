@@ -10,6 +10,8 @@ symlinkJoin {
   nativeBuildInputs = [ makeWrapper ];
   paths = [ niri ];
   postBuild = ''
+    ${niri}/bin/niri validate --config ${./config.kdl}
+
     wrapProgram $out/bin/niri \
       --set NIRI_CONFIG ${./config.kdl} \
       --prefix PATH : ${lib.makeBinPath [ self'.packages.waybar-wrapped ]}
