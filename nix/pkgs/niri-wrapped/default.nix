@@ -4,6 +4,7 @@
   symlinkJoin,
   makeWrapper,
   niri,
+  fuzzel,
   dev ? false,
 }:
 let
@@ -19,7 +20,12 @@ symlinkJoin {
 
     wrapProgram $out/bin/niri \
       --set NIRI_CONFIG ${config} \
-      --prefix PATH : ${lib.makeBinPath [ self'.packages.waybar-wrapped ]}
+      --prefix PATH : ${
+        lib.makeBinPath [
+          self'.packages.waybar-wrapped
+          fuzzel
+        ]
+      }
 
     rm $out/share/systemd/user/niri.service
     cp ${niri}/share/systemd/user/niri.service \
