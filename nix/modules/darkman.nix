@@ -8,10 +8,10 @@ _: {
         let
           inherit (pkgs) symlinkJoin makeWrapper writeTextDir;
 
-          config = writeTextDir "darkman/config.yaml" ''
-            lat: 52.52
-            lng: 13.40
-            usegeoclue: false
+          config = writeTextDir "darkman/config.yaml" /* yaml */ ''
+            lat: 52.5
+            lng: 13.4
+            usegeoclue: true
           '';
 
           darkman = symlinkJoin {
@@ -32,10 +32,6 @@ _: {
           partOf = [ "graphical-session.target" ];
           bindsTo = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
-          # TODO: Add restart triggers
-          # X-Restart-Triggers = mkIf (cfg.settings != { }) [
-          #   "${config.xdg.configFile."darkman/config.yaml".source}"
-          # ];
           serviceConfig = {
             Type = "dbus";
             BusName = "nl.whynothugo.darkman";
