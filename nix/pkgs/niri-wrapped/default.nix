@@ -10,6 +10,7 @@ symlinkJoin {
   name = "niri-wrapped";
   nativeBuildInputs = [ makeWrapper ];
   paths = [ niri ];
+  meta.mainProgram = "niri";
   postBuild = ''
     ${niri}/bin/niri validate --config ${./config.kdl}
 
