@@ -110,13 +110,15 @@ _: {
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
-            wofi
           ];
         in
         customPackages ++ externalPackages;
 
       programs = {
-        hyprland.enable = true;
+        niri = {
+          enable = true;
+          package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
+        };
         hyprlock.enable = true;
       };
 

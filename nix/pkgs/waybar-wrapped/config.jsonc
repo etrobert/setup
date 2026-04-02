@@ -2,6 +2,7 @@
 {
   "name": "left",
   "position": "left",
+  "layer": "top",
   "spacing": 8, // Gaps between modules in px (default is 4px)
   "mtrgin": 4,
   "reload_style_on_change": true,
@@ -22,6 +23,7 @@
     "custom/cpu-governor",
     "bluetooth",
     "hyprland/workspaces",
+    "niri/workspaces",
   ],
   // Modules configuration
   "hyprland/window": {
