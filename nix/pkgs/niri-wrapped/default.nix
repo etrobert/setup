@@ -4,8 +4,11 @@
   symlinkJoin,
   makeWrapper,
   niri,
-  configPath ? ./config.kdl,
+  dev ? false,
 }:
+let
+  config = if dev then "/home/soft/setup/nix/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
+in
 symlinkJoin {
   name = "niri-wrapped";
   nativeBuildInputs = [ makeWrapper ];
@@ -15,7 +18,7 @@ symlinkJoin {
     ${niri}/bin/niri validate --config ${./config.kdl}
 
     wrapProgram $out/bin/niri \
-      --set NIRI_CONFIG ${toString configPath} \
+      --set NIRI_CONFIG ${config} \
       --prefix PATH : ${lib.makeBinPath [ self'.packages.waybar-wrapped ]}
 
     rm $out/share/systemd/user/niri.service
