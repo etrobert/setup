@@ -26,10 +26,8 @@ _: {
       };
     in
     {
-      environment.etc."xdg-desktop-portal/portals.conf".text = /* ini */ ''
-        [preferred]
-        org.freedesktop.impl.portal.Settings=darkman
-      '';
+      # Source: https://darkman.whynothugo.nl
+      xdg.portal.config.niri."org.freedesktop.impl.portal.Settings" = "darkman";
 
       environment.systemPackages = [ darkman ];
 
