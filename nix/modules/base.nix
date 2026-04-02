@@ -14,7 +14,8 @@ _: {
           ];
           trusted-users = [
             "root"
-            "@wheel"
+            "@wheel" # nixos
+            "@admin" # darwin
           ];
           auto-optimise-store = true;
           download-buffer-size = 134217728; # 128 MiB
