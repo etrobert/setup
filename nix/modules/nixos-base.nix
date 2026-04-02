@@ -49,15 +49,15 @@ _: {
               (deflayer base
                 (tap-hold-press 0 200 esc lctl)
 
-                (tap-hold-opposite-hand $timeout a lmet)
-                (tap-hold-opposite-hand $timeout s lalt)
-                (tap-hold-opposite-hand $timeout d lctl)
-                (tap-hold-opposite-hand $timeout f lsft)
+                (tap-hold-opposite-hand-release $timeout a lmet)
+                (tap-hold-opposite-hand-release $timeout s lalt)
+                (tap-hold-opposite-hand-release $timeout d lctl)
+                (tap-hold-opposite-hand-release $timeout f lsft)
 
-                (tap-hold-opposite-hand $timeout j rsft)
-                (tap-hold-opposite-hand $timeout k rctl)
-                (tap-hold-opposite-hand $timeout l lalt)
-                (tap-hold-opposite-hand $timeout ; rmet)
+                (tap-hold-opposite-hand-release $timeout j rsft)
+                (tap-hold-opposite-hand-release $timeout k rctl)
+                (tap-hold-opposite-hand-release $timeout l lalt)
+                (tap-hold-opposite-hand-release $timeout ; rmet)
               )
             '';
             extraDefCfg = "process-unmapped-keys yes";
