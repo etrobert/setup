@@ -41,6 +41,7 @@ _: {
           inherit self';
           dev = true;
         };
+        darkman-wrapped = pkgs.callPackage ./darkman-wrapped { };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         brightness-control = pkgs.callPackage ./brightness-control { };
         volume-control = pkgs.callPackage ./volume-control { };

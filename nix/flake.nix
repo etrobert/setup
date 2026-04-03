@@ -57,6 +57,7 @@
           ./modules/unfree.nix
           ./modules/networkmanager.nix
           ./modules/pimsync.nix
+          ./modules/darkman.nix
           ./pkgs
         ];
 
