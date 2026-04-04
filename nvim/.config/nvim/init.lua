@@ -56,6 +56,13 @@ local autotag = {
 	end,
 }
 
+local snacks = {
+	src = "https://github.com/folke/snacks.nvim",
+	config = function()
+		require("snacks").setup({ image = {} })
+	end,
+}
+
 -- TODO: Restore order
 local plugins = {
 	catppuccin,
@@ -63,6 +70,7 @@ local plugins = {
 	surround,
 	require("plugins.bufferline"),
 	autotag,
+	snacks,
 	-- hardtime,
 	fidget,
 	require("plugins.octo"),
@@ -86,7 +94,6 @@ vim.pack.add(vim.list_extend({
 	"https://github.com/folke/which-key.nvim",
 	"https://github.com/chrisgrieser/nvim-spider",
 	"https://github.com/folke/lazydev.nvim",
-	"https://github.com/folke/snacks.nvim",
 	"https://github.com/artemave/workspace-diagnostics.nvim",
 
 	"https://github.com/alex-popov-tech/store.nvim",
@@ -100,8 +107,6 @@ require("notify").setup({ merge_duplicates = false, background_colour = "#25273A
 vim.notify = require("notify")
 
 require("treesj").setup({ max_join_length = 500 })
-
-require("snacks").setup({ image = {} })
 
 local relative_path = { "filename", path = 1 }
 require("lualine").setup({
