@@ -7,19 +7,6 @@ require("etrobert")
 
 vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 
-local catppuccin = {
-	src = "https://github.com/catppuccin/nvim",
-	name = "catppuccin",
-	setup = function()
-		if os.getenv("WAYLAND_DISPLAY") or vim.fn.has("mac") == 1 then
-			-- Graphical session (Wayland on Linux or macOS)
-			require("catppuccin").setup({ float = { transparent = true, solid = false } })
-			vim.cmd("colorscheme catppuccin-macchiato")
-			-- else we're in a tty, using default theme
-		end
-	end,
-}
-
 local fugitive = {
 	src = "https://github.com/tpope/vim-fugitive",
 	setup = function()
@@ -56,7 +43,7 @@ local snacks = {
 
 -- TODO: Restore order
 local plugins = {
-	catppuccin,
+	require("plugins.catppuccin"),
 	fugitive,
 	surround,
 	require("plugins.bufferline"),
