@@ -37,7 +37,7 @@ local hardtime = {
 local plugins = {
 	catppuccin,
 	fugitive,
-	hardtime,
+	-- hardtime,
 }
 
 vim.pack.add(vim.list_extend(
