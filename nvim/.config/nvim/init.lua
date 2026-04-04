@@ -79,6 +79,7 @@ local plugins = {
 	require("plugins.bufferline"),
 	autotag,
 	snacks,
+	require("plugins.telescope"),
 	notify,
 	-- hardtime,
 	fidget,
@@ -143,7 +144,6 @@ require("plugins.harpoon")
 require("plugins.vim-tmux-navigator")
 require("plugins.conform")
 require("plugins.gitsigns")
-require("plugins.telescope")
 require("plugins.treesitter")
 require("plugins.cmp")
 
