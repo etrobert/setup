@@ -34,11 +34,19 @@ local hardtime = {
 	end,
 }
 
+local fidget = {
+	src = "https://github.com/j-hui/fidget.nvim",
+	config = function()
+		require("fidget").setup({})
+	end,
+}
+
 local plugins = {
 	catppuccin,
 	fugitive,
 	require("plugins.bufferline"),
 	-- hardtime,
+	fidget,
 	require("plugins.octo"),
 }
 
@@ -51,7 +59,6 @@ vim.pack.add(vim.list_extend(
 
 		"https://github.com/rcarriga/nvim-notify",
 		"https://github.com/Wansmer/treesj",
-		"https://github.com/j-hui/fidget.nvim",
 		"https://github.com/neovim/nvim-lspconfig",
 		"https://github.com/windwp/nvim-ts-autotag",
 		"https://github.com/nvim-lualine/lualine.nvim",
@@ -76,8 +83,6 @@ require("notify").setup({ merge_duplicates = false, background_colour = "#25273A
 vim.notify = require("notify")
 
 require("treesj").setup({ max_join_length = 500 })
-
-require("fidget").setup({})
 
 require("snacks").setup({ image = {} })
 
