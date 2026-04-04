@@ -27,9 +27,17 @@ local fugitive = {
 	end,
 }
 
+local hardtime = {
+	src = "https://github.com/m4xshen/hardtime.nvim",
+	config = function()
+		require("hardtime").setup()
+	end,
+}
+
 local plugins = {
 	catppuccin,
 	fugitive,
+	hardtime,
 }
 
 vim.pack.add(vim.list_extend(
@@ -49,7 +57,6 @@ vim.pack.add(vim.list_extend(
 		"https://github.com/folke/which-key.nvim",
 		"https://github.com/chrisgrieser/nvim-spider",
 		"https://github.com/folke/lazydev.nvim",
-		"https://github.com/m4xshen/hardtime.nvim",
 		"https://github.com/folke/snacks.nvim",
 		"https://github.com/artemave/workspace-diagnostics.nvim",
 
@@ -132,7 +139,5 @@ require("plugins.octo")
 -- 		end
 -- 	end,
 -- })
-
--- require("hardtime").setup()
 
 require("etrobert.startup_banner").setup()
