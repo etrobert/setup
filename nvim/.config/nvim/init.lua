@@ -47,15 +47,6 @@ local fidget = {
 	end,
 }
 
-local autotag = {
-	src = "https://github.com/windwp/nvim-ts-autotag",
-	setup = function()
-		require("nvim-ts-autotag").setup({
-			opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
-		})
-	end,
-}
-
 local snacks = {
 	src = "https://github.com/folke/snacks.nvim",
 	setup = function()
@@ -77,7 +68,7 @@ local plugins = {
 	fugitive,
 	surround,
 	require("plugins.bufferline"),
-	autotag,
+	require("plugins.nvim-ts-autotag"),
 	snacks,
 	require("plugins.telescope"),
 	notify,
