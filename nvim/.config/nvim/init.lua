@@ -10,7 +10,7 @@ vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
 local catppuccin = {
 	src = "https://github.com/catppuccin/nvim",
 	name = "catppuccin",
-	config = function()
+	setup = function()
 		if os.getenv("WAYLAND_DISPLAY") or vim.fn.has("mac") == 1 then
 			-- Graphical session (Wayland on Linux or macOS)
 			require("catppuccin").setup({ float = { transparent = true, solid = false } })
@@ -22,14 +22,14 @@ local catppuccin = {
 
 local fugitive = {
 	src = "https://github.com/tpope/vim-fugitive",
-	config = function()
+	setup = function()
 		vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
 	end,
 }
 
 local hardtime = {
 	src = "https://github.com/m4xshen/hardtime.nvim",
-	config = function()
+	setup = function()
 		require("hardtime").setup()
 	end,
 }
@@ -42,14 +42,14 @@ local surround = {
 
 local fidget = {
 	src = "https://github.com/j-hui/fidget.nvim",
-	config = function()
+	setup = function()
 		require("fidget").setup({})
 	end,
 }
 
 local autotag = {
 	src = "https://github.com/windwp/nvim-ts-autotag",
-	config = function()
+	setup = function()
 		require("nvim-ts-autotag").setup({
 			opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
 		})
@@ -58,14 +58,14 @@ local autotag = {
 
 local snacks = {
 	src = "https://github.com/folke/snacks.nvim",
-	config = function()
+	setup = function()
 		require("snacks").setup({ image = {} })
 	end,
 }
 
 local notify = {
 	src = "https://github.com/rcarriga/nvim-notify",
-	config = function()
+	setup = function()
 		require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
 		vim.notify = require("notify")
 	end,
@@ -146,7 +146,7 @@ require("plugins.treesitter")
 require("plugins.cmp")
 
 for _, plugin in ipairs(plugins) do
-	_ = plugin.config and plugin.config()
+	_ = plugin.setup and plugin.setup()
 end
 
 -- Disabled because this takes a monstrous amount of ressources

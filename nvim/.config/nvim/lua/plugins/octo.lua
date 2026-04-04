@@ -1,7 +1,7 @@
 return {
 	src = "https://github.com/pwntester/octo.nvim",
 
-	config = function()
+	setup = function()
 		require("octo").setup({
 			enable_builtin = true,
 			default_merge_method = "squash",

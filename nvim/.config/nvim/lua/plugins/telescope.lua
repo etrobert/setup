@@ -6,7 +6,7 @@ return {
 		{ src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
 		{ src = "https://github.com/nvim-telescope/telescope-fzf-native.nvim" },
 	},
-	config = function()
+	setup = function()
 		local snacks_image = require("snacks.image")
 
 		vim.api.nvim_create_autocmd("User", {
