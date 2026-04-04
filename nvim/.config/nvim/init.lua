@@ -63,6 +63,14 @@ local snacks = {
 	end,
 }
 
+local notify = {
+	src = "https://github.com/rcarriga/nvim-notify",
+	config = function()
+		require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
+		vim.notify = require("notify")
+	end,
+}
+
 -- TODO: Restore order
 local plugins = {
 	catppuccin,
@@ -71,6 +79,7 @@ local plugins = {
 	require("plugins.bufferline"),
 	autotag,
 	snacks,
+	notify,
 	-- hardtime,
 	fidget,
 	require("plugins.octo"),
@@ -87,7 +96,6 @@ local specs = vim.iter(specs_unflat):flatten():totable()
 vim.pack.add(vim.list_extend({
 	"https://github.com/nvim-tree/nvim-web-devicons",
 
-	"https://github.com/rcarriga/nvim-notify",
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/nvim-lualine/lualine.nvim",
@@ -102,9 +110,6 @@ vim.pack.add(vim.list_extend({
 }, specs))
 
 vim.cmd.packadd("nvim.undotree")
-
-require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
-vim.notify = require("notify")
 
 require("treesj").setup({ max_join_length = 500 })
 
