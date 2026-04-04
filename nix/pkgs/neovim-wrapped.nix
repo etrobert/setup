@@ -24,6 +24,7 @@
   lua-language-server,
   nixd,
   nixfmt,
+  nodejs_24,
   prettierd,
   ripgrep,
   cargo,
@@ -68,6 +69,7 @@ let
       lua-language-server
       nixd
       nixfmt
+      nodejs_24 # used by copilot plugin
       prettierd
       ripgrep # used by telescope
       bash # used by fugitive for cc
