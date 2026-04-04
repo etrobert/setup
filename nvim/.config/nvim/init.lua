@@ -44,6 +44,7 @@ local plugins = {
 	require("plugins.snacks"),
 	require("plugins.telescope"),
 	require("plugins.nvim-notify"),
+	require("plugins.lualine"),
 	-- hardtime,
 	fidget,
 	require("plugins.octo"),
@@ -60,7 +61,6 @@ local specs = vim.iter(specs_unflat):flatten():totable()
 vim.pack.add(vim.list_extend({
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/neovim/nvim-lspconfig",
-	"https://github.com/nvim-lualine/lualine.nvim",
 	"https://github.com/folke/which-key.nvim",
 	"https://github.com/chrisgrieser/nvim-spider",
 	"https://github.com/folke/lazydev.nvim",
@@ -74,12 +74,6 @@ vim.pack.add(vim.list_extend({
 vim.cmd.packadd("nvim.undotree")
 
 require("treesj").setup({ max_join_length = 500 })
-
-local relative_path = { "filename", path = 1 }
-require("lualine").setup({
-	sections = { lualine_c = { relative_path }, lualine_x = { "filetype" } },
-	inactive_sections = { lualine_c = { relative_path } },
-})
 
 require("which-key").setup({
 	spec = {
