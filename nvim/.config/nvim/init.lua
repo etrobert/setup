@@ -20,8 +20,16 @@ local catppuccin = {
 	end,
 }
 
+local fugitive = {
+	src = "https://github.com/tpope/vim-fugitive",
+	config = function()
+		vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
+	end,
+}
+
 local plugins = {
 	catppuccin,
+	fugitive,
 }
 
 vim.pack.add(vim.list_extend(
@@ -31,7 +39,6 @@ vim.pack.add(vim.list_extend(
 		"https://github.com/tpope/vim-repeat", -- to allow . repeat of vim-surround
 		"https://github.com/tpope/vim-surround",
 
-		"https://github.com/tpope/vim-fugitive",
 		"https://github.com/rcarriga/nvim-notify",
 		"https://github.com/Wansmer/treesj",
 		"https://github.com/akinsho/bufferline.nvim",
@@ -62,9 +69,6 @@ vim.cmd.packadd("nvim.undotree")
 for _, plugin in ipairs(plugins) do
 	_ = plugin.config and plugin.config()
 end
-
--- vim-fugitive
-vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
 
 require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
 vim.notify = require("notify")
