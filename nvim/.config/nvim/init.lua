@@ -46,6 +46,7 @@ local plugins = {
 	require("plugins.nvim-notify"),
 	require("plugins.lualine"),
 	require("plugins.conform"),
+	require("plugins.vim-tmux-navigator"),
 	-- hardtime,
 	fidget,
 	require("plugins.octo"),
@@ -97,7 +98,6 @@ vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<C
 vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>")
 
 require("plugins.harpoon")
-require("plugins.vim-tmux-navigator")
 require("plugins.gitsigns")
 require("plugins.treesitter")
 require("plugins.cmp")
