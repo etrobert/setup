@@ -95,8 +95,6 @@ end, plugins)
 local specs = vim.iter(specs_unflat):flatten():totable()
 
 vim.pack.add(vim.list_extend({
-	"https://github.com/nvim-tree/nvim-web-devicons",
-
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/nvim-lualine/lualine.nvim",
