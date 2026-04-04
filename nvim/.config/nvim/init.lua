@@ -37,6 +37,7 @@ local hardtime = {
 local plugins = {
 	catppuccin,
 	fugitive,
+	require("plugins.bufferline"),
 	-- hardtime,
 	require("plugins.octo"),
 }
@@ -50,7 +51,6 @@ vim.pack.add(vim.list_extend(
 
 		"https://github.com/rcarriga/nvim-notify",
 		"https://github.com/Wansmer/treesj",
-		"https://github.com/akinsho/bufferline.nvim",
 		"https://github.com/j-hui/fidget.nvim",
 		"https://github.com/neovim/nvim-lspconfig",
 		"https://github.com/windwp/nvim-ts-autotag",
@@ -76,10 +76,6 @@ require("notify").setup({ merge_duplicates = false, background_colour = "#25273A
 vim.notify = require("notify")
 
 require("treesj").setup({ max_join_length = 500 })
-
-require("bufferline").setup({
-	options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false },
-})
 
 require("fidget").setup({})
 
