@@ -34,6 +34,12 @@ local hardtime = {
 	end,
 }
 
+local surround = {
+	src = "https://github.com/tpope/vim-surround",
+	-- vim-repeat to allow . repeat of vim-surround
+	deps = { { src = "https://github.com/tpope/vim-repeat" } },
+}
+
 local fidget = {
 	src = "https://github.com/j-hui/fidget.nvim",
 	config = function()
@@ -44,38 +50,39 @@ local fidget = {
 local plugins = {
 	catppuccin,
 	fugitive,
+	surround,
 	require("plugins.bufferline"),
 	-- hardtime,
 	fidget,
 	require("plugins.octo"),
 }
 
-vim.pack.add(vim.list_extend(
-	{
-		"https://github.com/nvim-tree/nvim-web-devicons",
+local specs_unflat = vim.tbl_map(function(plugin)
+	local deps = plugin.deps or {}
+	table.insert(deps, { name = plugin.name, src = plugin.src })
+	return deps
+end, plugins)
 
-		"https://github.com/tpope/vim-repeat", -- to allow . repeat of vim-surround
-		"https://github.com/tpope/vim-surround",
+local specs = vim.iter(specs_unflat):flatten():totable()
 
-		"https://github.com/rcarriga/nvim-notify",
-		"https://github.com/Wansmer/treesj",
-		"https://github.com/neovim/nvim-lspconfig",
-		"https://github.com/windwp/nvim-ts-autotag",
-		"https://github.com/nvim-lualine/lualine.nvim",
-		"https://github.com/folke/which-key.nvim",
-		"https://github.com/chrisgrieser/nvim-spider",
-		"https://github.com/folke/lazydev.nvim",
-		"https://github.com/folke/snacks.nvim",
-		"https://github.com/artemave/workspace-diagnostics.nvim",
+vim.pack.add(vim.list_extend({
+	"https://github.com/nvim-tree/nvim-web-devicons",
 
-		"https://github.com/alex-popov-tech/store.nvim",
+	"https://github.com/rcarriga/nvim-notify",
+	"https://github.com/Wansmer/treesj",
+	"https://github.com/neovim/nvim-lspconfig",
+	"https://github.com/windwp/nvim-ts-autotag",
+	"https://github.com/nvim-lualine/lualine.nvim",
+	"https://github.com/folke/which-key.nvim",
+	"https://github.com/chrisgrieser/nvim-spider",
+	"https://github.com/folke/lazydev.nvim",
+	"https://github.com/folke/snacks.nvim",
+	"https://github.com/artemave/workspace-diagnostics.nvim",
 
-		"https://github.com/github/copilot.vim",
-	},
-	vim.tbl_map(function(plugin)
-		return { name = plugin.name, src = plugin.src }
-	end, plugins)
-))
+	"https://github.com/alex-popov-tech/store.nvim",
+
+	"https://github.com/github/copilot.vim",
+}, specs))
 
 vim.cmd.packadd("nvim.undotree")
 
