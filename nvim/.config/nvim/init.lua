@@ -38,6 +38,7 @@ local plugins = {
 	catppuccin,
 	fugitive,
 	-- hardtime,
+	require("plugins.octo"),
 }
 
 vim.pack.add(vim.list_extend(
@@ -62,8 +63,6 @@ vim.pack.add(vim.list_extend(
 
 		"https://github.com/alex-popov-tech/store.nvim",
 
-		"https://github.com/pwntester/octo.nvim",
-
 		"https://github.com/github/copilot.vim",
 	},
 	vim.tbl_map(function(plugin)
@@ -72,10 +71,6 @@ vim.pack.add(vim.list_extend(
 ))
 
 vim.cmd.packadd("nvim.undotree")
-
-for _, plugin in ipairs(plugins) do
-	_ = plugin.config and plugin.config()
-end
 
 require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
 vim.notify = require("notify")
@@ -127,7 +122,10 @@ require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")
 require("plugins.cmp")
-require("plugins.octo")
+
+for _, plugin in ipairs(plugins) do
+	_ = plugin.config and plugin.config()
+end
 
 -- Disabled because this takes a monstrous amount of ressources
 -- vim.api.nvim_create_autocmd("LspAttach", {
