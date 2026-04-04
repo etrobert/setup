@@ -47,11 +47,22 @@ local fidget = {
 	end,
 }
 
+local autotag = {
+	src = "https://github.com/windwp/nvim-ts-autotag",
+	config = function()
+		require("nvim-ts-autotag").setup({
+			opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
+		})
+	end,
+}
+
+-- TODO: Restore order
 local plugins = {
 	catppuccin,
 	fugitive,
 	surround,
 	require("plugins.bufferline"),
+	autotag,
 	-- hardtime,
 	fidget,
 	require("plugins.octo"),
@@ -71,7 +82,6 @@ vim.pack.add(vim.list_extend({
 	"https://github.com/rcarriga/nvim-notify",
 	"https://github.com/Wansmer/treesj",
 	"https://github.com/neovim/nvim-lspconfig",
-	"https://github.com/windwp/nvim-ts-autotag",
 	"https://github.com/nvim-lualine/lualine.nvim",
 	"https://github.com/folke/which-key.nvim",
 	"https://github.com/chrisgrieser/nvim-spider",
@@ -92,10 +102,6 @@ vim.notify = require("notify")
 require("treesj").setup({ max_join_length = 500 })
 
 require("snacks").setup({ image = {} })
-
-require("nvim-ts-autotag").setup({
-	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
-})
 
 local relative_path = { "filename", path = 1 }
 require("lualine").setup({
