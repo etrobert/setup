@@ -54,14 +54,6 @@ local snacks = {
 	end,
 }
 
-local notify = {
-	src = "https://github.com/rcarriga/nvim-notify",
-	setup = function()
-		require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
-		vim.notify = require("notify")
-	end,
-}
-
 -- TODO: Restore order
 local plugins = {
 	catppuccin,
@@ -71,7 +63,7 @@ local plugins = {
 	require("plugins.nvim-ts-autotag"),
 	snacks,
 	require("plugins.telescope"),
-	notify,
+	require("plugins.nvim-notify"),
 	-- hardtime,
 	fidget,
 	require("plugins.octo"),
