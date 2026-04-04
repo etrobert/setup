@@ -34,13 +34,6 @@ local fidget = {
 	end,
 }
 
-local snacks = {
-	src = "https://github.com/folke/snacks.nvim",
-	setup = function()
-		require("snacks").setup({ image = {} })
-	end,
-}
-
 -- TODO: Restore order
 local plugins = {
 	require("plugins.catppuccin"),
@@ -48,7 +41,7 @@ local plugins = {
 	surround,
 	require("plugins.bufferline"),
 	require("plugins.nvim-ts-autotag"),
-	snacks,
+	require("plugins.snacks"),
 	require("plugins.telescope"),
 	require("plugins.nvim-notify"),
 	-- hardtime,
