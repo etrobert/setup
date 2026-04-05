@@ -112,11 +112,7 @@ in
 wrapNeovimUnstable neovim-unwrapped {
   plugins =
     with vimPlugins;
-    [
-      snacks-nvim
-      nvim-web-devicons
-    ]
-    ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
+    [ snacks-nvim ] ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
   # TODO: Make a non dev variant
   luaRcContent = /* lua */ ''
     dofile(vim.fn.stdpath("config") .. "/init.lua")
