@@ -1,8 +1,8 @@
-{ vimPlugins }:
+{ pkgs, ... }:
 {
   plugins = [
     {
-      plugin = vimPlugins.lualine-nvim;
+      plugin = pkgs.vimPlugins.lualine-nvim;
       luaConfig = /* lua */ ''
         local relative_path = { "filename", path = 1 }
         require("lualine").setup({

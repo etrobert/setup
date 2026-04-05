@@ -1,4 +1,5 @@
 {
+  pkgs,
   self',
   stdenv,
   runCommandLocal,
@@ -46,9 +47,11 @@
 let
   cfg =
     (lib.evalModules {
+      specialArgs = { inherit pkgs; };
       modules = [
         ./module.nix
-        (import ./plugins/lualine-nvim.nix { inherit vimPlugins; })
+        ./plugins/lualine-nvim.nix
+        ./plugins/octo.nix
       ];
     }).config;
 
@@ -69,7 +72,6 @@ let
       stdenv.cc # required by tree-sitter parser compilation
       curl # used in my config
       fd # used by telescope
-      gh # used by octo.lua
       gnutar # used by treesitter
       gopls
       gzip # used by treesitter
