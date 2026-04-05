@@ -151,7 +151,10 @@ wrapNeovimUnstable neovim-unwrapped {
         EOF
       '';
     }
-    nvim-spider
+    {
+      plugin = nvim-spider;
+      config = /* vim */ ''lua require("spider").setup({ skipInsignificantPunctuation = false })'';
+    }
     octo-nvim
     nvim-web-devicons
     {
