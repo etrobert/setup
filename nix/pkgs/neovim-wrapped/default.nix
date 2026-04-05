@@ -52,7 +52,7 @@ let
         ./module.nix
         ./plugins/lualine-nvim.nix
         ./plugins/octo
-        ./plugins/fugitive.nix
+        ./plugins/fugitive
       ];
     }).config;
 
