@@ -5,37 +5,6 @@ vim.loader.enable()
 
 require("etrobert")
 
-vim.opt.packpath:prepend(vim.fn.stdpath("data") .. "/site")
-
-vim.pack.add({
-	{ src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
-	"https://github.com/nvim-tree/nvim-web-devicons",
-
-	"https://github.com/tpope/vim-repeat", -- to allow . repeat of vim-surround
-	"https://github.com/tpope/vim-surround",
-
-	"https://github.com/tpope/vim-fugitive",
-	"https://github.com/rcarriga/nvim-notify",
-	"https://github.com/Wansmer/treesj",
-	"https://github.com/akinsho/bufferline.nvim",
-	"https://github.com/j-hui/fidget.nvim",
-	"https://github.com/neovim/nvim-lspconfig",
-	"https://github.com/windwp/nvim-ts-autotag",
-	"https://github.com/nvim-lualine/lualine.nvim",
-	"https://github.com/folke/which-key.nvim",
-	"https://github.com/chrisgrieser/nvim-spider",
-	"https://github.com/folke/lazydev.nvim",
-	"https://github.com/m4xshen/hardtime.nvim",
-	"https://github.com/folke/snacks.nvim",
-	"https://github.com/artemave/workspace-diagnostics.nvim",
-
-	"https://github.com/alex-popov-tech/store.nvim",
-
-	"https://github.com/pwntester/octo.nvim",
-
-	"https://github.com/github/copilot.vim",
-})
-
 vim.cmd.packadd("nvim.undotree")
 
 if os.getenv("WAYLAND_DISPLAY") or vim.fn.has("mac") == 1 then

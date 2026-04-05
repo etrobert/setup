@@ -100,14 +100,27 @@ let
   );
 in
 wrapNeovimUnstable neovim-unwrapped {
-  plugins = [
+  plugins = with vimPlugins; [
     {
-      plugin = vimPlugins.bufferline-nvim;
+      plugin = bufferline-nvim;
+      # TODO: Try config attribute with wrapRc = true
       config = /* vim */ ''
         lua require("bufferline").setup({ options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false } })
       '';
     }
+    catppuccin-nvim
+    nvim-notify
+    treesj
+    fidget-nvim
+    snacks-nvim
+    nvim-ts-autotag
+    lualine-nvim
+    which-key-nvim
+    lazydev-nvim
+    nvim-spider
+    octo-nvim
   ];
+  wrapRc = false; # TODO: Check
   wrapperArgs = [
     "--set"
     "PATH"
