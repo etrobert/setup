@@ -1,10 +1,9 @@
 {
   self',
   stdenv,
-  symlinkJoin,
-  makeWrapper,
   runCommandLocal,
-  neovim,
+  neovim-unwrapped,
+  wrapNeovim,
   lib,
   bash,
   bash-language-server,
@@ -99,13 +98,10 @@ let
     ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
   );
 in
-symlinkJoin {
-  name = "neovim-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ neovim ];
-  meta.mainProgram = "nvim";
-  postBuild = ''
-    wrapProgram $out/bin/nvim \
-      --set PATH ${path}
-  '';
+wrapNeovim neovim-unwrapped {
+  wrapperArgs = [
+    "--set"
+    "PATH"
+    (lib.toString path)
+  ];
 }
