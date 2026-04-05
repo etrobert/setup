@@ -10,7 +10,6 @@ vim.cmd.packadd("nvim.undotree")
 require("snacks").setup({ image = {} })
 
 require("plugins.harpoon")
-require("plugins.conform")
 require("plugins.gitsigns")
 require("plugins.telescope")
 require("plugins.treesitter")

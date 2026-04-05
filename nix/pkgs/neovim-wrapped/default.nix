@@ -9,7 +9,6 @@
   lib,
   bash,
   bash-language-server,
-  black,
   coreutils,
   curl,
   fd,
@@ -21,18 +20,14 @@
   gopls,
   gzip,
   imagemagick,
-  isort,
   lua-language-server,
   nixd,
   nixfmt,
   nodejs_24,
-  prettierd,
   ripgrep,
   cargo,
   rust-analyzer,
   rustc,
-  rustfmt,
-  shfmt,
   stylua,
   openssh,
   tailwindcss-language-server,
@@ -63,6 +58,7 @@ let
         ./plugins/vim-tmux-navigator
         ./plugins/which-key
         ./plugins/notify
+        ./plugins/conform
       ];
     }).config;
 
@@ -79,7 +75,6 @@ let
   path = lib.makeBinPath (
     [
       bash-language-server
-      black # python formatter
       stdenv.cc # required by tree-sitter parser compilation
       curl # used in my config
       fd # used by telescope
@@ -87,19 +82,14 @@ let
       gopls
       gzip # used by treesitter
       imagemagick # for image rendering in nvim using snacks.image
-      isort # python import sorter
       lua-language-server
       nixd
       nixfmt
       nodejs_24 # used by copilot plugin
-      prettierd
       ripgrep # used by telescope
       cargo
       rust-analyzer
       rustc
-      rustfmt
-      shfmt
-      stylua
       tailwindcss-language-server
       tree-sitter
       typescript-language-server
