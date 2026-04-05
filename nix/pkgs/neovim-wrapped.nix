@@ -118,6 +118,12 @@ wrapNeovimUnstable neovim-unwrapped {
     lazydev-nvim
     nvim-spider
     octo-nvim
+    {
+      plugin = vim-fugitive;
+      config = /* vim */ ''
+        lua vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
+      '';
+    }
   ];
   # TODO: Make a non dev variant
   luaRcContent = /* lua */ ''

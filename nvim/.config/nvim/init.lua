@@ -14,9 +14,6 @@ if os.getenv("WAYLAND_DISPLAY") or vim.fn.has("mac") == 1 then
 	-- else we're in a tty, using default theme
 end
 
--- vim-fugitive
-vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
-
 require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
 vim.notify = require("notify")
 
