@@ -10,8 +10,6 @@ vim.cmd.packadd("nvim.undotree")
 require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
 vim.notify = require("notify")
 
-require("treesj").setup({ max_join_length = 500 })
-
 require("snacks").setup({ image = {} })
 
 require("which-key").setup({

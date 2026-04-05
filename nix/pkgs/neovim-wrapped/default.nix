@@ -59,6 +59,7 @@ let
         ./plugins/ts-autotag
         ./plugins/spider
         ./plugins/catppuccin
+        ./plugins/treesj
       ];
     }).config;
 
@@ -121,7 +122,6 @@ wrapNeovimUnstable neovim-unwrapped {
     with vimPlugins;
     [
       nvim-notify
-      treesj
       snacks-nvim
       which-key-nvim
       nvim-web-devicons
