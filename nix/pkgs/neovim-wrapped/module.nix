@@ -1,13 +1,16 @@
 { lib, ... }:
+let
+  inherit (lib) mkOption types;
+in
 {
-  options.plugins = lib.mkOption {
-    type = lib.types.listOf (
-      lib.types.submodule {
+  options.plugins = mkOption {
+    type = types.listOf (
+      types.submodule {
         options = {
-          plugin = lib.mkOption { type = lib.types.package; };
-          config = lib.mkOption {
-            type = lib.types.str;
-            default = "";
+          plugin = mkOption { type = types.package; };
+          config = mkOption {
+            type = types.nullOr types.lines;
+            default = null;
           };
         };
       }
