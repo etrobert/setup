@@ -57,6 +57,7 @@ let
         ./plugins/lazydev
         ./plugins/bufferline
         ./plugins/ts-autotag
+        ./plugins/spider
       ];
     }).config;
 
@@ -123,10 +124,6 @@ wrapNeovimUnstable neovim-unwrapped {
       treesj
       snacks-nvim
       which-key-nvim
-      {
-        plugin = nvim-spider;
-        config = /* vim */ ''lua require("spider").setup({ skipInsignificantPunctuation = false })'';
-      }
       nvim-web-devicons
     ]
     ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
