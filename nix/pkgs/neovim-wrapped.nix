@@ -125,6 +125,7 @@ wrapNeovimUnstable neovim-unwrapped {
     lazydev-nvim
     nvim-spider
     octo-nvim
+    nvim-web-devicons
     {
       plugin = vim-fugitive;
       config = /* vim */ ''
