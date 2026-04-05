@@ -141,7 +141,16 @@ wrapNeovimUnstable neovim-unwrapped {
       '';
     }
     which-key-nvim
-    lazydev-nvim
+    {
+      plugin = lazydev-nvim;
+      config = /* vim */ ''
+        lua << EOF
+          require("lazydev").setup({
+          	library = { { path = "''${3rd}/luv/library", words = { "vim%.uv" } } },
+          })
+        EOF
+      '';
+    }
     nvim-spider
     octo-nvim
     nvim-web-devicons
