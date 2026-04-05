@@ -3,7 +3,7 @@
   stdenv,
   runCommandLocal,
   neovim-unwrapped,
-  wrapNeovim,
+  wrapNeovimUnstable,
   lib,
   bash,
   bash-language-server,
@@ -39,6 +39,7 @@
   typescript-language-server,
   vscode-langservers-extracted,
   wl-clipboard,
+  vimPlugins,
   with-git-wrapped ? true,
 }:
 let
@@ -98,7 +99,15 @@ let
     ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
   );
 in
-wrapNeovim neovim-unwrapped {
+wrapNeovimUnstable neovim-unwrapped {
+  plugins = [
+    {
+      plugin = vimPlugins.bufferline-nvim;
+      config = ''
+        lua require("bufferline").setup({ options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false } })
+      '';
+    }
+  ];
   wrapperArgs = [
     "--set"
     "PATH"
