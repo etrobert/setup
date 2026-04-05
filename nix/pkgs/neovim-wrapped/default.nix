@@ -58,6 +58,7 @@ let
         ./plugins/bufferline
         ./plugins/ts-autotag
         ./plugins/spider
+        ./plugins/catppuccin
       ];
     }).config;
 
@@ -119,7 +120,6 @@ wrapNeovimUnstable neovim-unwrapped {
   plugins =
     with vimPlugins;
     [
-      catppuccin-nvim
       nvim-notify
       treesj
       snacks-nvim
