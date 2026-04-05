@@ -56,6 +56,7 @@ let
         ./plugins/fidget
         ./plugins/lazydev
         ./plugins/bufferline
+        ./plugins/ts-autotag
       ];
     }).config;
 
@@ -121,15 +122,6 @@ wrapNeovimUnstable neovim-unwrapped {
       nvim-notify
       treesj
       snacks-nvim
-      {
-        plugin = nvim-ts-autotag;
-        config = /* vim */ ''
-          lua << EOF
-            require("nvim-ts-autotag").setup({
-            	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
-            })
-          EOF'';
-      }
       which-key-nvim
       {
         plugin = nvim-spider;
