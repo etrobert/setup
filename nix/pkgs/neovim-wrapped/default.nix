@@ -2,6 +2,7 @@
   self',
   stdenv,
   runCommandLocal,
+  callPackage,
   neovim-unwrapped,
   wrapNeovimUnstable,
   lib,
@@ -128,18 +129,7 @@ wrapNeovimUnstable neovim-unwrapped {
           })
         EOF'';
     }
-    {
-      plugin = lualine-nvim;
-      config = /* vim */ ''
-        lua << EOF
-          local relative_path = { "filename", path = 1 }
-          require("lualine").setup({
-          	sections = { lualine_c = { relative_path }, lualine_x = { "filetype" } },
-          	inactive_sections = { lualine_c = { relative_path } },
-          })
-        EOF
-      '';
-    }
+    (import ./plugins/lualine-nvim.nix { inherit vimPlugins; })
     which-key-nvim
     {
       plugin = lazydev-nvim;
