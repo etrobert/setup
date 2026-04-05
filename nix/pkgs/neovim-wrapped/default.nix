@@ -52,6 +52,7 @@ let
         ./module.nix
         ./plugins/lualine-nvim.nix
         ./plugins/octo.nix
+        ./plugins/fugitive.nix
       ];
     }).config;
 
@@ -83,7 +84,6 @@ let
       nodejs_24 # used by copilot plugin
       prettierd
       ripgrep # used by telescope
-      bash # used by fugitive for cc
       cargo
       rust-analyzer
       rustc
@@ -159,12 +159,6 @@ wrapNeovimUnstable neovim-unwrapped {
       }
       octo-nvim
       nvim-web-devicons
-      {
-        plugin = vim-fugitive;
-        config = /* vim */ ''
-          lua vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
-        '';
-      }
     ]
     ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
   # TODO: Make a non dev variant
