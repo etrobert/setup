@@ -60,6 +60,7 @@ let
         ./plugins/spider
         ./plugins/catppuccin
         ./plugins/treesj
+        ./plugins/vim-tmux-navigator
       ];
     }).config;
 
@@ -99,7 +100,6 @@ let
       stylua
       tailwindcss-language-server
       tree-sitter
-      tmux # required by vim-tmux-navigator
       typescript-language-server
       vscode-langservers-extracted
     ]

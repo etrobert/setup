@@ -26,7 +26,6 @@ vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<C
 vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>")
 
 require("plugins.harpoon")
-require("plugins.vim-tmux-navigator")
 require("plugins.conform")
 require("plugins.gitsigns")
 require("plugins.telescope")
