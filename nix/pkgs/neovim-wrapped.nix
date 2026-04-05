@@ -119,6 +119,7 @@ wrapNeovimUnstable neovim-unwrapped {
     nvim-spider
     octo-nvim
   ];
+  # TODO: Make a non dev variant
   luaRcContent = /* lua */ ''
     dofile(vim.fn.stdpath("config") .. "/init.lua")
   '';
