@@ -106,6 +106,7 @@ let
       ghostty # used by snacks.image
     ]
     ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
+    ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
   );
 in
 wrapNeovimUnstable neovim-unwrapped {

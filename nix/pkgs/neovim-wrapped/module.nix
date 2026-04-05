@@ -12,6 +12,10 @@ in
             type = types.nullOr types.lines;
             default = null;
           };
+          extraPackages = lib.mkOption {
+            type = lib.types.listOf lib.types.package;
+            default = [ ];
+          };
         };
       }
     );
