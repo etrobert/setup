@@ -19,8 +19,6 @@ vim.notify = require("notify")
 
 require("treesj").setup({ max_join_length = 500 })
 
-require("fidget").setup({})
-
 require("snacks").setup({ image = {} })
 
 require("nvim-ts-autotag").setup({

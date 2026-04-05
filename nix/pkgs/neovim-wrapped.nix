@@ -114,7 +114,10 @@ wrapNeovimUnstable neovim-unwrapped {
     catppuccin-nvim
     nvim-notify
     treesj
-    fidget-nvim
+    {
+      plugin = fidget-nvim;
+      config = /* vim */ ''lua require("fidget").setup({})'';
+    }
     snacks-nvim
     nvim-ts-autotag
     lualine-nvim
