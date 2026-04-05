@@ -103,7 +103,7 @@ wrapNeovimUnstable neovim-unwrapped {
   plugins = [
     {
       plugin = vimPlugins.bufferline-nvim;
-      config = ''
+      config = /* vim */ ''
         lua require("bufferline").setup({ options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false } })
       '';
     }
