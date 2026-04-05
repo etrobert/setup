@@ -54,6 +54,7 @@ let
         ./plugins/octo
         ./plugins/fugitive
         ./plugins/fidget
+        ./plugins/lazydev
       ];
     }).config;
 
@@ -139,16 +140,6 @@ wrapNeovimUnstable neovim-unwrapped {
           EOF'';
       }
       which-key-nvim
-      {
-        plugin = lazydev-nvim;
-        config = /* vim */ ''
-          lua << EOF
-            require("lazydev").setup({
-            	library = { { path = "''${3rd}/luv/library", words = { "vim%.uv" } } },
-            })
-          EOF
-        '';
-      }
       {
         plugin = nvim-spider;
         config = /* vim */ ''lua require("spider").setup({ skipInsignificantPunctuation = false })'';
