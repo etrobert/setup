@@ -62,6 +62,7 @@ let
         ./plugins/treesj
         ./plugins/vim-tmux-navigator
         ./plugins/which-key
+        ./plugins/notify
       ];
     }).config;
 
@@ -122,7 +123,6 @@ wrapNeovimUnstable neovim-unwrapped {
   plugins =
     with vimPlugins;
     [
-      nvim-notify
       snacks-nvim
       nvim-web-devicons
     ]

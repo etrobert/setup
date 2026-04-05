@@ -7,9 +7,6 @@ require("etrobert")
 
 vim.cmd.packadd("nvim.undotree")
 
-require("notify").setup({ merge_duplicates = false, background_colour = "#25273A" })
-vim.notify = require("notify")
-
 require("snacks").setup({ image = {} })
 
 require("plugins.harpoon")
