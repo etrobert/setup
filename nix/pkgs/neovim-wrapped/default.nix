@@ -90,7 +90,6 @@ let
       rustfmt
       shfmt
       stylua
-      openssh # this is for :Git pull to be able to use ssh
       tailwindcss-language-server
       tree-sitter
       tmux # required by vim-tmux-navigator
