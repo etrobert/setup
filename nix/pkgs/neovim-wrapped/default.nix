@@ -51,7 +51,7 @@ let
       modules = [
         ./module.nix
         ./plugins/lualine-nvim.nix
-        ./plugins/octo.nix
+        ./plugins/octo
         ./plugins/fugitive.nix
       ];
     }).config;
@@ -156,7 +156,6 @@ wrapNeovimUnstable neovim-unwrapped {
         plugin = nvim-spider;
         config = /* vim */ ''lua require("spider").setup({ skipInsignificantPunctuation = false })'';
       }
-      octo-nvim
       nvim-web-devicons
     ]
     ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
