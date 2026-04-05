@@ -61,6 +61,7 @@ let
         ./plugins/catppuccin
         ./plugins/treesj
         ./plugins/vim-tmux-navigator
+        ./plugins/which-key
       ];
     }).config;
 
@@ -123,7 +124,6 @@ wrapNeovimUnstable neovim-unwrapped {
     [
       nvim-notify
       snacks-nvim
-      which-key-nvim
       nvim-web-devicons
     ]
     ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;

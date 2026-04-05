@@ -12,15 +12,6 @@ vim.notify = require("notify")
 
 require("snacks").setup({ image = {} })
 
-require("which-key").setup({
-	spec = {
-		{ "<leader>b", group = "Buffer" },
-		{ "<leader>g", group = "Telescope Git" },
-		{ "<leader>f", group = "Telescope Files" },
-		{ "<leader>o", group = "Octo" },
-	},
-})
-
 require("plugins.harpoon")
 require("plugins.conform")
 require("plugins.gitsigns")
