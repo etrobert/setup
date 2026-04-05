@@ -53,6 +53,7 @@ let
         ./plugins/lualine
         ./plugins/octo
         ./plugins/fugitive
+        ./plugins/fidget
       ];
     }).config;
 
@@ -127,10 +128,6 @@ wrapNeovimUnstable neovim-unwrapped {
       catppuccin-nvim
       nvim-notify
       treesj
-      {
-        plugin = fidget-nvim;
-        config = /* vim */ ''lua require("fidget").setup({})'';
-      }
       snacks-nvim
       {
         plugin = nvim-ts-autotag;
