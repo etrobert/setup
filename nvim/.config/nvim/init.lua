@@ -21,12 +21,6 @@ require("treesj").setup({ max_join_length = 500 })
 
 require("snacks").setup({ image = {} })
 
-local relative_path = { "filename", path = 1 }
-require("lualine").setup({
-	sections = { lualine_c = { relative_path }, lualine_x = { "filetype" } },
-	inactive_sections = { lualine_c = { relative_path } },
-})
-
 require("which-key").setup({
 	spec = {
 		{ "<leader>b", group = "Buffer" },
