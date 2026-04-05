@@ -50,7 +50,7 @@ let
       specialArgs = { inherit pkgs; };
       modules = [
         ./module.nix
-        ./plugins/lualine-nvim.nix
+        ./plugins/lualine
         ./plugins/octo
         ./plugins/fugitive
       ];
