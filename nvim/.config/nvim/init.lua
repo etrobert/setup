@@ -22,10 +22,6 @@ vim.notify = require("notify")
 
 require("treesj").setup({ max_join_length = 500 })
 
-require("bufferline").setup({
-	options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false },
-})
-
 require("fidget").setup({})
 
 require("snacks").setup({ image = {} })

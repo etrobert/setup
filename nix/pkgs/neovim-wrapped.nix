@@ -103,7 +103,6 @@ wrapNeovimUnstable neovim-unwrapped {
   plugins = with vimPlugins; [
     {
       plugin = bufferline-nvim;
-      # TODO: Try config attribute with wrapRc = true
       config = /* vim */ ''
         lua require("bufferline").setup({ options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false } })
       '';
@@ -120,7 +119,9 @@ wrapNeovimUnstable neovim-unwrapped {
     nvim-spider
     octo-nvim
   ];
-  wrapRc = false; # TODO: Check
+  luaRcContent = /* lua */ ''
+    dofile(vim.fn.stdpath("config") .. "/init.lua")
+  '';
   wrapperArgs = [
     "--set"
     "PATH"
