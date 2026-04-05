@@ -119,7 +119,15 @@ wrapNeovimUnstable neovim-unwrapped {
       config = /* vim */ ''lua require("fidget").setup({})'';
     }
     snacks-nvim
-    nvim-ts-autotag
+    {
+      plugin = nvim-ts-autotag;
+      config = /* vim */ ''
+        lua << EOF
+          require("nvim-ts-autotag").setup({
+          	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
+          })
+        EOF'';
+    }
     lualine-nvim
     which-key-nvim
     lazydev-nvim

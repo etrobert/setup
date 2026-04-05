@@ -21,10 +21,6 @@ require("treesj").setup({ max_join_length = 500 })
 
 require("snacks").setup({ image = {} })
 
-require("nvim-ts-autotag").setup({
-	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
-})
-
 local relative_path = { "filename", path = 1 }
 require("lualine").setup({
 	sections = { lualine_c = { relative_path }, lualine_x = { "filetype" } },
