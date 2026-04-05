@@ -55,6 +55,7 @@ let
         ./plugins/fugitive
         ./plugins/fidget
         ./plugins/lazydev
+        ./plugins/bufferline
       ];
     }).config;
 
@@ -116,16 +117,6 @@ wrapNeovimUnstable neovim-unwrapped {
   plugins =
     with vimPlugins;
     [
-      {
-        plugin = bufferline-nvim;
-        config = /* vim */ ''
-          lua << EOF
-            require("bufferline").setup({
-              options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false }
-            })
-          EOF
-        '';
-      }
       catppuccin-nvim
       nvim-notify
       treesj
