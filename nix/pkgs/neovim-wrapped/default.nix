@@ -44,6 +44,14 @@
   with-git-wrapped ? true,
 }:
 let
+  cfg =
+    (lib.evalModules {
+      modules = [
+        ./module.nix
+        (import ./plugins/lualine-nvim.nix { inherit vimPlugins; })
+      ];
+    }).config;
+
   pbcopy = runCommandLocal "pbcopy" { } ''
     mkdir -p $out/bin
     ln -s /usr/bin/pbcopy $out/bin/pbcopy
@@ -101,59 +109,61 @@ let
   );
 in
 wrapNeovimUnstable neovim-unwrapped {
-  plugins = with vimPlugins; [
-    {
-      plugin = bufferline-nvim;
-      config = /* vim */ ''
-        lua << EOF
-          require("bufferline").setup({
-            options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false }
-          })
-        EOF
-      '';
-    }
-    catppuccin-nvim
-    nvim-notify
-    treesj
-    {
-      plugin = fidget-nvim;
-      config = /* vim */ ''lua require("fidget").setup({})'';
-    }
-    snacks-nvim
-    {
-      plugin = nvim-ts-autotag;
-      config = /* vim */ ''
-        lua << EOF
-          require("nvim-ts-autotag").setup({
-          	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
-          })
-        EOF'';
-    }
-    (import ./plugins/lualine-nvim.nix { inherit vimPlugins; })
-    which-key-nvim
-    {
-      plugin = lazydev-nvim;
-      config = /* vim */ ''
-        lua << EOF
-          require("lazydev").setup({
-          	library = { { path = "''${3rd}/luv/library", words = { "vim%.uv" } } },
-          })
-        EOF
-      '';
-    }
-    {
-      plugin = nvim-spider;
-      config = /* vim */ ''lua require("spider").setup({ skipInsignificantPunctuation = false })'';
-    }
-    octo-nvim
-    nvim-web-devicons
-    {
-      plugin = vim-fugitive;
-      config = /* vim */ ''
-        lua vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
-      '';
-    }
-  ];
+  plugins =
+    with vimPlugins;
+    [
+      {
+        plugin = bufferline-nvim;
+        config = /* vim */ ''
+          lua << EOF
+            require("bufferline").setup({
+              options = { diagnostics = "nvim_lsp", numbers = "buffer_id", show_buffer_close_icons = false }
+            })
+          EOF
+        '';
+      }
+      catppuccin-nvim
+      nvim-notify
+      treesj
+      {
+        plugin = fidget-nvim;
+        config = /* vim */ ''lua require("fidget").setup({})'';
+      }
+      snacks-nvim
+      {
+        plugin = nvim-ts-autotag;
+        config = /* vim */ ''
+          lua << EOF
+            require("nvim-ts-autotag").setup({
+            	opts = { enable_close = false, enable_rename = true, enable_close_on_slash = false },
+            })
+          EOF'';
+      }
+      which-key-nvim
+      {
+        plugin = lazydev-nvim;
+        config = /* vim */ ''
+          lua << EOF
+            require("lazydev").setup({
+            	library = { { path = "''${3rd}/luv/library", words = { "vim%.uv" } } },
+            })
+          EOF
+        '';
+      }
+      {
+        plugin = nvim-spider;
+        config = /* vim */ ''lua require("spider").setup({ skipInsignificantPunctuation = false })'';
+      }
+      octo-nvim
+      nvim-web-devicons
+      {
+        plugin = vim-fugitive;
+        config = /* vim */ ''
+          lua vim.keymap.set("n", "<leader>ds", ":Gdiffsplit<CR>", { desc = "Git diff split" })
+        '';
+      }
+    ]
+    ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
   # TODO: Make a non dev variant
   luaRcContent = /* lua */ ''
     dofile(vim.fn.stdpath("config") .. "/init.lua")
