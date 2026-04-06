@@ -72,10 +72,6 @@
     "telescope.nvim": {
       "rev": "e6cdb4dc528c5dc4ca8da86e83ef4e3c84b0729c",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
-    },
-    "workspace-diagnostics.nvim": {
-      "rev": "60f9175b2501ae3f8b1aba9719c0df8827610c8e",
-      "src": "https://github.com/artemave/workspace-diagnostics.nvim"
     }
   }
 }
