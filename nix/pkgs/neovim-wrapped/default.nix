@@ -61,6 +61,7 @@ let
         ./plugins/conform
         ./plugins/telescope
         ./plugins/snacks
+        ./plugins/copilot
       ];
     }).config;
 
@@ -85,7 +86,6 @@ let
       lua-language-server
       nixd
       nixfmt
-      nodejs_24 # used by copilot plugin
       cargo
       rust-analyzer
       rustc
