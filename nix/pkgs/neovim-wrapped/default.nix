@@ -28,7 +28,7 @@
 let
   cfg =
     (lib.evalModules {
-      specialArgs = { inherit pkgs; };
+      specialArgs = { inherit self' pkgs with-git-wrapped; };
       modules = [
         ./module.nix
         ./plugins/lualine
@@ -83,7 +83,6 @@ let
       wl-clipboard
       coreutils # provides cat for copying
     ]
-    ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
     ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
   );
 in
