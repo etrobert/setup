@@ -48,6 +48,7 @@ let
         ./plugins/telescope
         ./plugins/snacks
         ./plugins/copilot
+        ./plugins/gitsigns
       ];
     }).config;
 

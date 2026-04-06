@@ -28,10 +28,6 @@
       "rev": "6cd7280adead7f586db6fccbd15d2cac7e2188b9",
       "src": "https://github.com/rafamadriz/friendly-snippets"
     },
-    "gitsigns.nvim": {
-      "rev": "50c205548d8b037b7ff6378fca6d21146f0b6161",
-      "src": "https://github.com/lewis6991/gitsigns.nvim"
-    },
     "hardtime.nvim": {
       "rev": "b4e431934af1fe224a3a801f632c008278cb7628",
       "src": "https://github.com/m4xshen/hardtime.nvim"
