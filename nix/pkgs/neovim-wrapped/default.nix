@@ -43,6 +43,7 @@ let
         ./plugins/harpoon
         ./plugins/cmp
         ./plugins/treesitter
+        ./plugins/surround
       ];
     }).config;
 
