@@ -1,14 +1,14 @@
 {
+  pkgs,
   self',
   stdenv,
-  symlinkJoin,
-  makeWrapper,
   runCommandLocal,
-  neovim,
+  callPackage,
+  neovim-unwrapped,
+  wrapNeovimUnstable,
   lib,
   bash,
   bash-language-server,
-  black,
   coreutils,
   curl,
   fd,
@@ -20,18 +20,14 @@
   gopls,
   gzip,
   imagemagick,
-  isort,
   lua-language-server,
   nixd,
   nixfmt,
   nodejs_24,
-  prettierd,
   ripgrep,
   cargo,
   rust-analyzer,
   rustc,
-  rustfmt,
-  shfmt,
   stylua,
   openssh,
   tailwindcss-language-server,
@@ -40,9 +36,32 @@
   typescript-language-server,
   vscode-langservers-extracted,
   wl-clipboard,
+  vimPlugins,
   with-git-wrapped ? true,
 }:
 let
+  cfg =
+    (lib.evalModules {
+      specialArgs = { inherit pkgs; };
+      modules = [
+        ./module.nix
+        ./plugins/lualine
+        ./plugins/octo
+        ./plugins/fugitive
+        ./plugins/fidget
+        ./plugins/lazydev
+        ./plugins/bufferline
+        ./plugins/ts-autotag
+        ./plugins/spider
+        ./plugins/catppuccin
+        ./plugins/treesj
+        ./plugins/vim-tmux-navigator
+        ./plugins/which-key
+        ./plugins/notify
+        ./plugins/conform
+      ];
+    }).config;
+
   pbcopy = runCommandLocal "pbcopy" { } ''
     mkdir -p $out/bin
     ln -s /usr/bin/pbcopy $out/bin/pbcopy
@@ -56,33 +75,23 @@ let
   path = lib.makeBinPath (
     [
       bash-language-server
-      black # python formatter
       stdenv.cc # required by tree-sitter parser compilation
       curl # used in my config
       fd # used by telescope
-      gh # used by octo.lua
       gnutar # used by treesitter
       gopls
       gzip # used by treesitter
       imagemagick # for image rendering in nvim using snacks.image
-      isort # python import sorter
       lua-language-server
       nixd
       nixfmt
       nodejs_24 # used by copilot plugin
-      prettierd
       ripgrep # used by telescope
-      bash # used by fugitive for cc
       cargo
       rust-analyzer
       rustc
-      rustfmt
-      shfmt
-      stylua
-      openssh # this is for :Git pull to be able to use ssh
       tailwindcss-language-server
       tree-sitter
-      tmux # required by vim-tmux-navigator
       typescript-language-server
       vscode-langservers-extracted
     ]
@@ -97,15 +106,20 @@ let
       ghostty # used by snacks.image
     ]
     ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
+    ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
   );
 in
-symlinkJoin {
-  name = "neovim-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ neovim ];
-  meta.mainProgram = "nvim";
-  postBuild = ''
-    wrapProgram $out/bin/nvim \
-      --set PATH ${path}
+wrapNeovimUnstable neovim-unwrapped {
+  plugins =
+    with vimPlugins;
+    [ snacks-nvim ] ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
+  # TODO: Make a non dev variant
+  luaRcContent = /* lua */ ''
+    dofile(vim.fn.stdpath("config") .. "/init.lua")
   '';
+  wrapperArgs = [
+    "--set"
+    "PATH"
+    (lib.toString path)
+  ];
 }
