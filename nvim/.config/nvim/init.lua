@@ -8,7 +8,6 @@ require("etrobert")
 vim.cmd.packadd("nvim.undotree")
 
 require("plugins.treesitter")
-require("plugins.cmp")
 
 -- require("hardtime").setup()
 

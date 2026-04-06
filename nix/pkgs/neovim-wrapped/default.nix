@@ -44,6 +44,7 @@ let
         # ./plugins/workspace-diagnostics
         ./plugins/lspconfig
         ./plugins/harpoon
+        ./plugins/cmp
       ];
     }).config;
 
