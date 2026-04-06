@@ -7,5 +7,6 @@
       extraPackages = with pkgs; [ gh ];
     }
     { plugin = pkgs.vimPlugins.nvim-web-devicons; }
+    { plugin = pkgs.vimPlugins.plenary-nvim; }
   ];
 }
