@@ -8,11 +8,8 @@
   lib,
   coreutils,
   curl,
-  gnutar,
-  gzip,
   cargo,
   rustc,
-  tree-sitter,
   wl-clipboard,
   with-git-wrapped ? true,
 }:
@@ -61,13 +58,9 @@ let
 
   path = lib.makeBinPath (
     [
-      stdenv.cc # required by tree-sitter parser compilation
       curl # used in my config
-      gnutar # used by treesitter
-      gzip # used by treesitter
       cargo
       rustc
-      tree-sitter
     ]
     ++ lib.optionals stdenv.isDarwin [
       pbcopy
