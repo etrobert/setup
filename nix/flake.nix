@@ -77,7 +77,13 @@
           {
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
-              config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "copilot.vim" ];
+              config.allowUnfreePredicate =
+                pkg:
+                builtins.elem (lib.getName pkg) [
+                  "copilot.vim"
+                  "vscode"
+                  "vscode-extension-ms-vsliveshare-vsliveshare"
+                ];
             };
 
             devShells = {

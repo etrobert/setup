@@ -36,24 +36,3 @@ cask "vlc"
 cask "gog-galaxy"
 cask "steam"
 cask "minecraft"
-
-vscode "eamodio.gitlens"
-vscode "oderwat.indent-rainbow"
-vscode "pkief.material-icon-theme"
-vscode "vscodevim.vim"
-vscode "aaron-bond.better-comments"
-vscode "github.copilot"
-vscode "github.copilot-chat"
-vscode "usernamehw.errorlens"
-vscode "ms-vsliveshare.vsliveshare"
-
-# JavaScript/TypeScript
-vscode "esbenp.prettier-vscode"
-vscode "dbaeumer.vscode-eslint"
-vscode "yoavbls.pretty-ts-errors"
-vscode "bradlc.vscode-tailwindcss"
-
-# Other Languages
-vscode "davidanson.vscode-markdownlint"
-vscode "rust-lang.rust-analyzer"
-vscode "yinfei.luahelper"

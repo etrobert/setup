@@ -14,7 +14,6 @@ _: {
           "discord"
           "github-copilot-cli"
           "spotify"
-          "vscode"
         ];
 
         environment.systemPackages =
@@ -29,6 +28,7 @@ _: {
             customPackages = with self.packages.${system}; [
               alacritty-wrapped
               neovim-wrapped
+              vscode-wrapped
               gen-commit-msg
               git-find-commit
               pm
@@ -63,7 +63,6 @@ _: {
               pnpm
               python3
               spotify
-              vscode
               # yt-dlp # TODO: Add back once the macos cache is back
             ];
           in
