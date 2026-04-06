@@ -11,6 +11,7 @@
         black # python formatter
         shfmt
         rustfmt
+        nixfmt
       ];
     }
   ];

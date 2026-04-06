@@ -22,7 +22,6 @@
   imagemagick,
   lua-language-server,
   nixd,
-  nixfmt,
   nodejs_24,
   ripgrep,
   cargo,
@@ -85,7 +84,6 @@ let
       gzip # used by treesitter
       lua-language-server
       nixd
-      nixfmt
       cargo
       rust-analyzer
       rustc
