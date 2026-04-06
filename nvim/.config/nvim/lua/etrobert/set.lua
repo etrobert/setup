@@ -66,20 +66,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- don't give the intro message when starting Vim, see :intro
 vim.opt.shortmess:append("I")
 
-vim.lsp.enable({
-	"bashls",
-	"eslint",
-	"tailwindcss",
-	"ts_ls",
-	"rust_analyzer",
-	"gopls",
-	"lua_ls",
-	"nixd",
-	"cssls",
-	"html",
-	-- "copilot",
-})
-
 vim.lsp.document_color.enable(true, nil, { style = "virtual" })
 
 vim.o.winborder = "rounded"

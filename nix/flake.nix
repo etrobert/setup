@@ -68,8 +68,18 @@
         ];
 
         perSystem =
-          { pkgs, ... }:
           {
+            pkgs,
+            system,
+            lib,
+            ...
+          }:
+          {
+            _module.args.pkgs = import inputs.nixpkgs {
+              inherit system;
+              config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "copilot.vim" ];
+            };
+
             devShells = {
               default = pkgs.mkShell {
                 packages = with pkgs; [
