@@ -2,7 +2,7 @@ name: Update Flake Inputs
 
 on:
   schedule:
-    - cron: "0 8 * * 1/2" # every other Monday at 8am UTC (roughly biweekly)
+    - cron: "0 8 * * 1" # every Monday at 8am UTC
   workflow_dispatch: # allow manual trigger
 
 jobs:
