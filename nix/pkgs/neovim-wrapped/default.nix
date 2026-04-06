@@ -59,6 +59,7 @@ let
         ./plugins/which-key
         ./plugins/notify
         ./plugins/conform
+        ./plugins/telescope
       ];
     }).config;
 

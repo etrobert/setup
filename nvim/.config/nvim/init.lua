@@ -11,7 +11,6 @@ require("snacks").setup({ image = {} })
 
 require("plugins.harpoon")
 require("plugins.gitsigns")
-require("plugins.telescope")
 require("plugins.treesitter")
 require("plugins.cmp")
 
