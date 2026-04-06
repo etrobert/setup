@@ -45,6 +45,7 @@ let
         ./plugins/lspconfig
         ./plugins/harpoon
         ./plugins/cmp
+        ./plugins/treesitter
       ];
     }).config;
 

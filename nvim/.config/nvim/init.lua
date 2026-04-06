@@ -7,8 +7,6 @@ require("etrobert")
 
 vim.cmd.packadd("nvim.undotree")
 
-require("plugins.treesitter")
-
 -- require("hardtime").setup()
 
 -- TODO: Fix this is injected before plugins are loaded
