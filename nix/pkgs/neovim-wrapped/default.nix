@@ -51,6 +51,7 @@ let
         ./plugins/gitsigns
         # Disabled because this takes a monstrous amount of ressources
         # ./plugins/workspace-diagnostics
+        ./plugins/lspconfig
       ];
     }).config;
 
@@ -64,17 +65,6 @@ let
     ln -s /usr/bin/pbpaste $out/bin/pbpaste
   '';
 
-  lsps = [
-    bash-language-server
-    gopls
-    lua-language-server
-    tailwindcss-language-server
-    typescript-language-server
-    vscode-langservers-extracted
-    rust-analyzer
-    nixd
-  ];
-
   path = lib.makeBinPath (
     [
       stdenv.cc # required by tree-sitter parser compilation
@@ -85,7 +75,6 @@ let
       rustc
       tree-sitter
     ]
-    ++ lsps
     ++ lib.optionals stdenv.isDarwin [
       pbcopy
       pbpaste
