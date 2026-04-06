@@ -60,6 +60,7 @@ let
         ./plugins/notify
         ./plugins/conform
         ./plugins/telescope
+        ./plugins/snacks
       ];
     }).config;
 
@@ -81,7 +82,6 @@ let
       gnutar # used by treesitter
       gopls
       gzip # used by treesitter
-      imagemagick # for image rendering in nvim using snacks.image
       lua-language-server
       nixd
       nixfmt
@@ -97,21 +97,17 @@ let
     ++ lib.optionals stdenv.isDarwin [
       pbcopy
       pbpaste
-      ghostty-bin # used by snacks.image
     ]
     ++ lib.optionals stdenv.isLinux [
       wl-clipboard
       coreutils # provides cat for copying
-      ghostty # used by snacks.image
     ]
     ++ (if with-git-wrapped then [ self'.packages.git-wrapped ] else [ git ])
     ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
   );
 in
 wrapNeovimUnstable neovim-unwrapped {
-  plugins =
-    with vimPlugins;
-    [ snacks-nvim ] ++ map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
+  plugins = map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
   # TODO: Make a non dev variant
   luaRcContent = /* lua */ ''
     dofile(vim.fn.stdpath("config") .. "/init.lua")

@@ -7,8 +7,6 @@ require("etrobert")
 
 vim.cmd.packadd("nvim.undotree")
 
-require("snacks").setup({ image = {} })
-
 require("plugins.harpoon")
 require("plugins.gitsigns")
 require("plugins.treesitter")
