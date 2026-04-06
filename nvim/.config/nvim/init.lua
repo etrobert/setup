@@ -12,4 +12,5 @@ require("plugins.cmp")
 
 -- require("hardtime").setup()
 
-require("etrobert.startup_banner").setup()
+-- TODO: Fix this is injected before plugins are loaded
+-- require("etrobert.startup_banner").setup()
