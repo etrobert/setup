@@ -52,6 +52,7 @@ let
         # Disabled because this takes a monstrous amount of ressources
         # ./plugins/workspace-diagnostics
         ./plugins/lspconfig
+        ./plugins/harpoon
       ];
     }).config;
 
