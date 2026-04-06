@@ -78,7 +78,6 @@ let
       bash-language-server
       stdenv.cc # required by tree-sitter parser compilation
       curl # used in my config
-      fd # used by telescope
       gnutar # used by treesitter
       gopls
       gzip # used by treesitter
@@ -87,7 +86,6 @@ let
       nixd
       nixfmt
       nodejs_24 # used by copilot plugin
-      ripgrep # used by telescope
       cargo
       rust-analyzer
       rustc
