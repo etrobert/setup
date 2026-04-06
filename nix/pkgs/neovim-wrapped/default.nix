@@ -62,24 +62,28 @@ let
     ln -s /usr/bin/pbpaste $out/bin/pbpaste
   '';
 
+  lsps = [
+    bash-language-server
+    gopls
+    lua-language-server
+    tailwindcss-language-server
+    typescript-language-server
+    vscode-langservers-extracted
+    rust-analyzer
+    nixd
+  ];
+
   path = lib.makeBinPath (
     [
-      bash-language-server
       stdenv.cc # required by tree-sitter parser compilation
       curl # used in my config
       gnutar # used by treesitter
-      gopls
       gzip # used by treesitter
-      lua-language-server
-      nixd
       cargo
-      rust-analyzer
       rustc
-      tailwindcss-language-server
       tree-sitter
-      typescript-language-server
-      vscode-langservers-extracted
     ]
+    ++ lsps
     ++ lib.optionals stdenv.isDarwin [
       pbcopy
       pbpaste
