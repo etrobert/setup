@@ -20,6 +20,7 @@ _: {
       services = {
         kanata = {
           enable = true;
+          # TODO: remove attribute once tap-hold-opposite-hand-release is in nixos-unstable
           package = pkgs.kanata.overrideAttrs (_: rec {
             doCheck = false;
             version = "main";
