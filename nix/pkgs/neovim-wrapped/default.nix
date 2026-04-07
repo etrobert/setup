@@ -43,6 +43,7 @@ let
         ./plugins/cmp
         ./plugins/treesitter
         ./plugins/surround
+        ./plugins/hardtime
       ];
     }).config;
 

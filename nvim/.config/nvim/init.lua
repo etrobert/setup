@@ -7,7 +7,5 @@ require("etrobert")
 
 vim.cmd.packadd("nvim.undotree")
 
--- require("hardtime").setup()
-
 -- TODO: Fix this is injected before plugins are loaded
 -- require("etrobert.startup_banner").setup()
