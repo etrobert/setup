@@ -69,6 +69,7 @@ vim.opt.shortmess:append("I")
 vim.lsp.document_color.enable(true, nil, { style = "virtual" })
 vim.lsp.linked_editing_range.enable(true)
 vim.lsp.codelens.enable(true)
+vim.lsp.inlay_hint.enable(true)
 
 vim.o.winborder = "rounded"
 
