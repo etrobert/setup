@@ -25,7 +25,6 @@ let
         ./plugins/fidget
         ./plugins/lazydev
         ./plugins/bufferline
-        ./plugins/ts-autotag
         ./plugins/spider
         ./plugins/catppuccin
         ./plugins/treesj
