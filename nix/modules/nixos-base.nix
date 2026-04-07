@@ -43,7 +43,7 @@ _: {
                 )
 
               (defvar
-                timeout 150
+                timeout 200
               )
 
               (deflayer base
