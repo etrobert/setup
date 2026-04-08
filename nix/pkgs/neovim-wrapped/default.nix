@@ -30,7 +30,6 @@ let
         ./plugins/treesj
         ./plugins/vim-tmux-navigator
         ./plugins/which-key
-        ./plugins/notify
         ./plugins/conform
         ./plugins/telescope
         ./plugins/snacks
