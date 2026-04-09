@@ -21,21 +21,15 @@
     "memory",
   ],
   // "modules-center": ["mpd"],
-  // "modules-center": ["hyprland/window"],
   "modules-right": [
     "pulseaudio",
     "network",
     "battery",
     "custom/cpu-governor",
     "bluetooth",
-    "hyprland/workspaces",
     "niri/workspaces",
   ],
   // Modules configuration
-  "hyprland/window": {
-    "rotate": 90,
-    "max-length": 30,
-  },
   "clock#time": {
     "format": "{:%H\n%M\n%S}",
     "tooltip-format": "Time to do cool shit!",

@@ -64,7 +64,7 @@ window#waybar {
 }
 
 .module {
-  /* Need to offset to account for the hyprland outer gap */
+  /* Need to offset to account for the niri outer gap */
   margin-left: 3px;
 }
 
