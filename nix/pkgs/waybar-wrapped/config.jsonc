@@ -13,7 +13,13 @@
     // "custom/weather",
     "clock#date",
   ],
-  "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory", "mpd"],
+  "modules-center": [
+    "temperature",
+    "cpu",
+    // "mpd"
+    "custom/cpu-freq",
+    "memory",
+  ],
   // "modules-center": ["mpd"],
   // "modules-center": ["hyprland/window"],
   "modules-right": [
