@@ -52,8 +52,6 @@ _: {
             unzip
             vim
             wget
-            zsh-autosuggestions # Fish shell autosuggestions for Zsh
-            zsh-syntax-highlighting
           ]);
 
         age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
