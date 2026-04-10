@@ -1,5 +1,5 @@
 {
-  self',
+  # self',
   lib,
   symlinkJoin,
   makeWrapper,
@@ -18,7 +18,9 @@ symlinkJoin {
       --set GIT_CONFIG_GLOBAL ${./.gitconfig} \
       --prefix PATH : ${
         lib.makeBinPath [
-          self'.packages.gen-commit-msg
+          # TODO: Fix this
+          # Removed so that neovim-wrapped is not included on the pi
+          # self'.packages.gen-commit-msg
           difftastic
           fzf
         ]
