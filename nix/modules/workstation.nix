@@ -43,12 +43,14 @@ _: {
               act
               adwaita-icon-theme
               audacity
+              btop
               bun
               # claude-code # cache not ready yet
               codex # Lightweight coding agent that runs in your terminal
               discord
               gcc
               gemini-cli # AI agent that brings the power of Gemini directly into your terminal
+              gh
               github-copilot-cli
               # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
               gnumake
@@ -62,7 +64,9 @@ _: {
               opencode
               pnpm
               python3
+              shellcheck
               spotify
+              unzip
               # yt-dlp # TODO: Add back once the macos cache is back
             ];
           in

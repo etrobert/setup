@@ -35,22 +35,15 @@ _: {
           ])
           ++ (with pkgs; [
             bat
-            btop
             coreutils
-            difftastic
             entr
             eza
             fd
             fzf
-            gh
             htop
             jq
             magic-wormhole
             ripgrep
-            shellcheck
-            stow
-            unzip
-            vim
             wget
           ]);
 

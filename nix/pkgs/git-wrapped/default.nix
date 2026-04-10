@@ -4,6 +4,8 @@
   symlinkJoin,
   makeWrapper,
   git,
+  difftastic,
+  fzf,
 }:
 # TODO: --set PATH
 symlinkJoin {
@@ -14,6 +16,13 @@ symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/git \
       --set GIT_CONFIG_GLOBAL ${./.gitconfig} \
-      --prefix PATH : ${lib.makeBinPath [ self'.packages.gen-commit-msg ]}
-  '';
+      --prefix PATH : ${
+        lib.makeBinPath [
+          self'.packages.gen-commit-msg
+          difftastic
+          fzf
+        ]
+      }
+  
+'';
 }
