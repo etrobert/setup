@@ -10,6 +10,7 @@
 let
   zshrcFinal = writeText "zshrc" ''
     source ${./config/.zshrc}
+    source ${./alias.sh}
     source ${zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   '';
   zdotdir = linkFarm "zdotdir" [

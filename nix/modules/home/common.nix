@@ -151,59 +151,6 @@ _: {
         fzf.enable = true;
       };
 
-      home.shellAliases = {
-        grep = "grep --color=auto";
-
-        # Ask for confirmation before overriding
-        mv = "mv --interactive";
-        cp = "cp --interactive";
-
-        # Create dirs recursively and verbosely
-        mkdir = "mkdir --parents --verbose";
-
-        LS = "ls";
-        sl = "ls";
-        SL = "ls";
-
-        # Using GNU ls from coreutils on both Linux and Darwin
-        ls = "ls --classify --human-readable --color";
-
-        gti = "git";
-        gi = "git";
-
-        make = "make -j8";
-        watch = "watch --interval=1";
-
-        rscp = "rsync -p --progress";
-
-        only-unique = "sort | uniq";
-
-        tmuxn = ''tmux new-session -A -s "$(basename "$(pwd)")" -e TMUX_SESSION_PATH="$(pwd)"'';
-        ts = "tmux-sessionizer";
-        tcd = ''cd "$TMUX_SESSION_PATH"'';
-
-        # One-letter aliases for most used commands
-        g = "git";
-        t = "tmux";
-        v = "nvim";
-
-        # tree="tree -CF --dirsfirst"
-        tree = "eza --tree --icons --group-directories-first --git-ignore";
-        ltree = "tree --icons=always --color=always | less --raw-control-chars";
-
-        font = "ghostty +show-face --string=Hello --style=regular";
-
-        duf = "du -sh * .* | sort -h";
-
-        server = "python3 -m http.server 8000";
-
-        fhistory = "history | sed -E 's/^ +[0-9]+ +//' | fzf --tac --no-sort";
-
-        agenix-rekey = "sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key";
-
-        music-dl = "yt-dlp --embed-thumbnail --extract-audio"; # --embed-metadata
-      };
-
       # Let Home Manager install and manage itself.
       programs.home-manager.enable = true;
     };
