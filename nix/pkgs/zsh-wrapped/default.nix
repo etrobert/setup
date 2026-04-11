@@ -6,12 +6,14 @@
   writeText,
   linkFarm,
   zsh-autosuggestions,
+  zsh-syntax-highlighting,
 }:
 let
   zshrcFinal = writeText "zshrc" ''
     source ${./config/.zshrc}
     source ${./alias.sh}
     source ${zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source ${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   '';
   zdotdir = linkFarm "zdotdir" [
     {
