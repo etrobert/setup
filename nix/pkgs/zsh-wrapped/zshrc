@@ -31,7 +31,7 @@ precmd() {
   unset CMD_TIMER_MS
 }
 
-# needed over enableCompletion = true; to avoid errors on mac
+# compinit -i needed to avoid errors on mac
 autoload -Uz compinit && compinit -i
 
 autoload -Uz edit-command-line
