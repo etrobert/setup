@@ -55,4 +55,5 @@ symlinkJoin {
     wrapProgram $out/bin/zsh \
       --set ZDOTDIR ${zdotdir}
   '';
+  passthru.shellPath = "/bin/zsh";
 }
