@@ -1,5 +1,4 @@
 {
-  lib,
   symlinkJoin,
   makeWrapper,
   zsh,
@@ -44,7 +43,6 @@ symlinkJoin {
   meta.mainProgram = "zsh";
   postBuild = ''
     wrapProgram $out/bin/zsh \
-      --set ZDOTDIR ${zdotdir} \
-      --prefix PATH : ${lib.makeBinPath [ ]}
+      --set ZDOTDIR ${zdotdir}
   '';
 }
