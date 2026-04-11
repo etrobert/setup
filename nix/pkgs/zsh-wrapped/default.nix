@@ -7,6 +7,7 @@
   zsh-autosuggestions,
   zsh-syntax-highlighting,
   fzf,
+  runCommandLocal,
 }:
 let
   zshrcFinal = writeText "zshrc" /* zsh */ ''
@@ -35,11 +36,20 @@ let
       path = zprofile;
     }
   ];
+
+  _checks = runCommandLocal "zsh-config-check" { } ''
+    ${zsh}/bin/zsh -n ${./zshrc}
+    ${zsh}/bin/zsh -n ${./alias.sh}
+    mkdir $out
+  '';
 in
 symlinkJoin {
   name = "zsh-wrapped";
   nativeBuildInputs = [ makeWrapper ];
-  paths = [ zsh ];
+  paths = [
+    zsh
+    _checks
+  ];
   meta.mainProgram = "zsh";
   postBuild = ''
     wrapProgram $out/bin/zsh \
