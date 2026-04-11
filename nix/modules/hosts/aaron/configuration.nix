@@ -87,7 +87,7 @@ in
   users.users = {
     soft = {
       uid = 505;
-      shell = self.packages.${system}.zsh-wrapped;
+      shell = lib.getExe self.packages.${system}.zsh-wrapped;
       home = "/Users/soft";
     };
   };
