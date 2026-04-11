@@ -116,6 +116,12 @@ _: {
         in
         customPackages ++ externalPackages;
 
+      environment.etc."xdg/mimeapps.list".text = ''
+        [Default Applications]
+        x-scheme-handler/sgnl=signal.desktop
+        x-scheme-handler/signalcaptcha=signal.desktop
+      '';
+
       programs = {
         niri = {
           enable = true;
