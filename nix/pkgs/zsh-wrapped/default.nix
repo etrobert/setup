@@ -15,10 +15,21 @@ let
     source ${zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source ${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   '';
+
+  zprofile = writeText "zprofile" /* bash */ ''
+    emulate sh
+    . ~/.profile
+    emulate zsh
+  '';
+
   zdotdir = linkFarm "zdotdir" [
     {
       name = ".zshrc";
       path = zshrcFinal;
+    }
+    {
+      name = ".zprofile";
+      path = zprofile;
     }
   ];
 in
