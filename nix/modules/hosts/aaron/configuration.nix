@@ -13,7 +13,8 @@ let
 
   wallpaper = ../../../../hyprland/.config/hypr/saint-levant.jpg;
 
-  system = pkgs.stdenv.hostPlatform.system;
+  inherit (pkgs.stdenv.hostPlatform) system;
+  inherit (self.packages.${system}) zsh-wrapped;
 in
 {
   allowedUnfreePackages = [
@@ -87,12 +88,12 @@ in
   users.users = {
     soft = {
       uid = 505;
-      shell = lib.getExe self.packages.${system}.zsh-wrapped;
+      shell = lib.getExe zsh-wrapped;
       home = "/Users/soft";
     };
   };
 
-  environment.shells = [ self.packages.${system}.zsh-wrapped ];
+  environment.shells = [ zsh-wrapped ];
 
   environment.systemPackages = with pkgs; [
     betterdisplay
