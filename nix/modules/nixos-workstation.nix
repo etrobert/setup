@@ -101,6 +101,7 @@ _: {
             ddcutil
             firefoxpwa
             ghostty
+            gnome-power-manager # TODO: find a better one
             grim
             hyprpaper
             mpc # Minimalist command line interface to MPD
