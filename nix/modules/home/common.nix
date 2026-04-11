@@ -25,11 +25,6 @@ _: {
           ".config/ghostty/config".source = symlink "ghostty/.config/ghostty/config";
         };
 
-        sessionVariablesExtra = ''
-          export OPENAI_API_KEY="$(cat /run/agenix/openai-api-key)"
-          export GEMINI_API_KEY="$(cat /run/agenix/gemini-api-key)"
-        '';
-
         # This value determines the Home Manager release that your
         # configuration is compatible with. This helps avoid breakage
         # when a new Home Manager release introduces backwards

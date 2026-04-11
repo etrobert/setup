@@ -53,3 +53,7 @@ bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
 
 bindkey "^Y" autosuggest-accept
+
+# Moved here from profile because on darwin profile loads before agenix
+[ -f /run/agenix/openai-api-key ] && export OPENAI_API_KEY="$(cat /run/agenix/openai-api-key)"
+[ -f /run/agenix/gemini-api-key ] && export GEMINI_API_KEY="$(cat /run/agenix/gemini-api-key)"
