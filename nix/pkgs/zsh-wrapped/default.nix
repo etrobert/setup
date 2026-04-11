@@ -9,7 +9,7 @@
   fzf,
 }:
 let
-  zshrcFinal = writeText "zshrc" /* bash */ ''
+  zshrcFinal = writeText "zshrc" /* zsh */ ''
     source ${./zshrc}
     source ${./alias.sh}
     if [[ $options[zle] = on ]]; then
@@ -19,7 +19,7 @@ let
     source ${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   '';
 
-  zprofile = writeText "zprofile" /* bash */ ''
+  zprofile = writeText "zprofile" /* zsh */ ''
     emulate sh
     . ~/.profile
     emulate zsh
