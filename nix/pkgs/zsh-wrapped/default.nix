@@ -11,7 +11,7 @@
 }:
 let
   zshrcFinal = writeText "zshrc" /* bash */ ''
-    source ${./config/.zshrc}
+    source ${./zshrc}
     source ${./alias.sh}
     if [[ $options[zle] = on ]]; then
       source <(${fzf}/bin/fzf --zsh)
