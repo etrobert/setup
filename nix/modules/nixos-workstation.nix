@@ -116,7 +116,7 @@ _: {
         in
         customPackages ++ externalPackages;
 
-      environment.etc."xdg/mimeapps.list".text = ''
+      environment.etc."xdg/mimeapps.list".text = /* ini */ ''
         [Default Applications]
         x-scheme-handler/sgnl=signal.desktop
         x-scheme-handler/signalcaptcha=signal.desktop
