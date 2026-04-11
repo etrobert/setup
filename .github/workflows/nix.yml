@@ -22,6 +22,11 @@ jobs:
         with:
           use-flakehub: false
 
+      - uses: cachix/cachix-action@v17
+        with:
+          name: soft-nix
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
       - name: Flake Check
         run: nix flake check ./nix --accept-flake-config
 
