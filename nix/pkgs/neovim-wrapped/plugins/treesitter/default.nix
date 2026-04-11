@@ -27,6 +27,7 @@
           go
           scheme
           rust
+          zsh
         ]
       );
       luaConfig = builtins.readFile ./config.lua;
