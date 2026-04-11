@@ -7,11 +7,15 @@
   linkFarm,
   zsh-autosuggestions,
   zsh-syntax-highlighting,
+  fzf,
 }:
 let
-  zshrcFinal = writeText "zshrc" ''
+  zshrcFinal = writeText "zshrc" /* bash */ ''
     source ${./config/.zshrc}
     source ${./alias.sh}
+    if [[ $options[zle] = on ]]; then
+      source <(${fzf}/bin/fzf --zsh)
+    fi
     source ${zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source ${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   '';
