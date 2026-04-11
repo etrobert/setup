@@ -62,4 +62,5 @@ jobs:
         run: |
           nix build ./nix#${{ matrix.platform }}Configurations.${{ matrix.host }}.config.system.build.toplevel \
             --accept-flake-config \
-            --print-build-logs
+            --print-build-logs \
+            --option stalled-download-timeout 10
