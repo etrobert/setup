@@ -3,14 +3,7 @@
   symlinkJoin,
   makeWrapper,
   zsh,
-  writeTextDir,
 }:
-let
-  config = writeTextDir ".zshrc" /* zsh */ ''
-    setopt PROMPT_SUBST
-    PS1='$(pronto $? --zsh)'
-  '';
-in
 symlinkJoin {
   name = "zsh-wrapped";
   nativeBuildInputs = [ makeWrapper ];
@@ -18,7 +11,7 @@ symlinkJoin {
   meta.mainProgram = "zsh";
   postBuild = ''
     wrapProgram $out/bin/zsh \
-      --set ZDOTDIR ${config} \
+      --set ZDOTDIR ${./config} \
       --prefix PATH : ${lib.makeBinPath [ ]}
   '';
 }
