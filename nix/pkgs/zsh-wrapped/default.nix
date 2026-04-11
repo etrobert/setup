@@ -6,7 +6,8 @@
   writeTextDir,
 }:
 let
-  config = writeTextDir "zsh/.zshrc" /* zsh */ ''
+  config = writeTextDir ".zshrc" /* zsh */ ''
+    setopt PROMPT_SUBST
     PS1='$(pronto $? --zsh)'
   '';
 in
