@@ -2,6 +2,7 @@ _: {
   flake.nixosModules.nixosBase =
     {
       self,
+      lib,
       pkgs,
       config,
       ...
@@ -73,7 +74,7 @@ _: {
           "wheel"
         ];
         hashedPasswordFile = config.age.secrets.soft-password.path;
-        shell = zsh-wrapped;
+        shell = lib.getExe zsh-wrapped;
       };
 
       age.secrets.soft-password = {
