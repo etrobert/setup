@@ -124,7 +124,7 @@
         };
 
         hypridle = {
-          enable = false; # TODO: Fix
+          enable = true;
           settings = {
             general = {
               lock_cmd = "pidof hyprlock || hyprlock";
