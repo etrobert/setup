@@ -1,4 +1,6 @@
 {
+  lib,
+  inputs',
   symlinkJoin,
   makeWrapper,
   zsh,
@@ -10,8 +12,15 @@
   runCommandLocal,
 }:
 let
+  pronto = lib.getExe inputs'.pronto.packages.default;
+
   zshrcFinal = writeText "zshrc" /* zsh */ ''
     source ${./zshrc}
+
+    setopt PROMPT_SUBST
+    PS1='$(${pronto} $? --zsh)'
+    RPROMPT='$(${pronto} $? --rprompt --zsh)'
+
     source ${./alias.sh}
     if [[ $options[zle] = on ]]; then
       source <(${fzf}/bin/fzf --zsh)

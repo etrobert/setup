@@ -12,7 +12,7 @@ _: {
         git-wrapped = pkgs.callPackage ./git-wrapped {
           # inherit self';
         };
-        zsh-wrapped = pkgs.callPackage ./zsh-wrapped { };
+        zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         vim-wrapped = pkgs.callPackage ./vim-wrapped { };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };

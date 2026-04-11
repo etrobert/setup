@@ -34,10 +34,6 @@ precmd() {
 # needed over enableCompletion = true; to avoid errors on mac
 autoload -Uz compinit && compinit -i
 
-setopt PROMPT_SUBST
-PS1='$(pronto $? --zsh)'
-RPROMPT='$(pronto $? --rprompt --zsh)'
-
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^F" edit-command-line
