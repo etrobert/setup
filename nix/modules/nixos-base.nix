@@ -1,6 +1,15 @@
 _: {
   flake.nixosModules.nixosBase =
-    { pkgs, config, ... }:
+    {
+      self,
+      pkgs,
+      config,
+      ...
+    }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (self.packages.${system}) zsh-wrapped;
+    in
     {
       system.activationScripts.nixos-symlink.text = /* bash */ ''
         ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
@@ -52,6 +61,10 @@ _: {
 
       };
 
+      environment.shells = [ zsh-wrapped ];
+
+      users.mutableUsers = false;
+
       users.users.soft = {
         isNormalUser = true;
         description = "Etienne";
@@ -59,7 +72,12 @@ _: {
           "networkmanager"
           "wheel"
         ];
-        shell = pkgs.zsh;
+        hashedPasswordFile = config.age.secrets.soft-password.path;
+        shell = zsh-wrapped;
+      };
+
+      age.secrets.soft-password = {
+        file = ../secrets/soft-password.age;
       };
     };
 }

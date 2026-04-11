@@ -20,4 +20,5 @@ in
   "wifi-vinni.age".publicKeys = allLinux;
   "tailscale-authkey.age".publicKeys = allMachines;
   "apple-pimsync-password.age".publicKeys = allLinux; # TODO: Restrict to linux workstations
+  "soft-password.age".publicKeys = allLinux;
 }
