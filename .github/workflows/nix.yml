@@ -63,6 +63,11 @@ jobs:
         with:
           use-flakehub: false
 
+      - uses: cachix/cachix-action@v17
+        with:
+          name: soft-nix
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
       - name: Build ${{ matrix.host }}
         run: |
           nix build ./nix#${{ matrix.platform }}Configurations.${{ matrix.host }}.config.system.build.toplevel \
