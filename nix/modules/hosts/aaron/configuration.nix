@@ -95,20 +95,26 @@ in
 
   environment.shells = [ zsh-wrapped ];
 
-  environment.systemPackages = with pkgs; [
-    betterdisplay
-    watch
-    raycast
-    defaultbrowser
-    whatsapp-for-mac
-    ghostty-bin
+  environment.systemPackages =
+    (with pkgs; [
+      betterdisplay
+      watch
+      raycast
+      defaultbrowser
+      whatsapp-for-mac
+      ghostty-bin
 
-    (writeShellApplication {
-      # This is necessary because the darwin tailscale module does not include authkey option
-      name = "tailscale-up";
-      text = "tailscale up --authkey \"$(cat /run/agenix/tailscale-authkey)\"";
-    })
-  ];
+      (writeShellApplication {
+        # This is necessary because the darwin tailscale module does not include authkey option
+        name = "tailscale-up";
+        text = "tailscale up --authkey \"$(cat /run/agenix/tailscale-authkey)\"";
+      })
+    ])
+    ++ (with self.packages.${system}; [
+      flush-dns
+      resize-window
+      finder
+    ]);
 
   launchd.daemons.caps-lock-to-control = {
     serviceConfig = {
