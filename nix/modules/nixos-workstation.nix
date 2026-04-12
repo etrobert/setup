@@ -8,6 +8,14 @@ _: {
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
+
+      zen-browser = pkgs.wrapFirefox self.inputs.zen-browser.packages.${system}.zen-browser-unwrapped {
+        extraPolicies = {
+          SearchEngines = {
+            Default = "DuckDuckGo";
+          };
+        };
+      };
     in
     {
       imports = [
@@ -92,6 +100,7 @@ _: {
             creme
             lock-suspend
             check-bt-profile
+            zen-browser
           ];
 
           externalPackages = with pkgs; [
@@ -112,7 +121,6 @@ _: {
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
-            self.inputs.zen-browser.packages.${system}.default
           ];
         in
         customPackages ++ externalPackages;
