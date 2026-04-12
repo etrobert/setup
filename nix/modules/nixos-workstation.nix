@@ -92,7 +92,7 @@ _: {
             creme
             lock-suspend
             check-bt-profile
-            zen-browser
+            zen-browser-wrapped
           ];
 
           externalPackages = with pkgs; [
