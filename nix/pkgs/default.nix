@@ -9,6 +9,7 @@ _: {
     }:
     {
       packages = {
+        zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit inputs'; };
         git-wrapped = pkgs.callPackage ./git-wrapped {
           # inherit self';
         };
