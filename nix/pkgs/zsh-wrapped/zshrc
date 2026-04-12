@@ -10,7 +10,6 @@ HISTSIZE="999999999"
 SAVEHIST="999999999"
 
 HISTFILE="$HOME/.zsh_history"
-mkdir -p "$(dirname "$HISTFILE")"
 
 export CMD_TIMER_MS=
 
