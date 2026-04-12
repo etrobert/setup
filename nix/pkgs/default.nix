@@ -33,6 +33,11 @@ _: {
         add-asset = pkgs.callPackage ./add-asset { };
         switch = pkgs.callPackage ./switch.nix { inherit inputs'; };
       }
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+        flush-dns = pkgs.callPackage ./flush-dns { };
+        resize-window = pkgs.callPackage ./resize-window { };
+        finder = pkgs.callPackage ./finder { };
+      }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
         waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self'; };
