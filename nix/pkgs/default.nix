@@ -9,7 +9,6 @@ _: {
     }:
     {
       packages = {
-        zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit inputs'; };
         git-wrapped = pkgs.callPackage ./git-wrapped {
           # inherit self';
         };
@@ -40,6 +39,8 @@ _: {
         finder = pkgs.callPackage ./finder { };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        # TODO: Move to general
+        zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit inputs'; };
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
         waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self'; };
         waybar-wrapped-dev = pkgs.callPackage ./waybar-wrapped {
