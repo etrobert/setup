@@ -37,6 +37,7 @@ _: {
         flush-dns = pkgs.callPackage ./flush-dns { };
         resize-window = pkgs.callPackage ./resize-window { };
         finder = pkgs.callPackage ./finder { };
+        raycast-scripts = pkgs.callPackage ./raycast-scripts { };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };

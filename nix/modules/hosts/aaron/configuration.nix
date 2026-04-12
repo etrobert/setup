@@ -114,6 +114,7 @@ in
       flush-dns
       resize-window
       finder
+      raycast-scripts
     ]);
 
   launchd.daemons.caps-lock-to-control = {
