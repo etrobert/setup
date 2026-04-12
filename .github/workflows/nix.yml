@@ -59,7 +59,11 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
+      # Skip magic-nix-cache-action on darwin: it uploads hundreds of
+      # darwin-specific paths to GitHub Actions Cache in its post-run step,
+      # taking 22+ minutes. Cachix already handles persistent caching.
       - uses: DeterminateSystems/magic-nix-cache-action@main
+        if: matrix.platform != 'darwin'
         with:
           use-flakehub: false
 
