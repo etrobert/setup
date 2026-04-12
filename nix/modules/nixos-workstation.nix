@@ -112,6 +112,7 @@ _: {
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
+            self.inputs.zen-browser.packages.${system}.default
           ];
         in
         customPackages ++ externalPackages;
