@@ -1,5 +1,5 @@
 { inputs', wrapFirefox }:
-wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
+inputs'.zen-browser.packages.beta.override {
   extraPrefs = /* javascript */ ''
     defaultPref("browser.ctrlTab.sortByRecentlyUsed", true);
     defaultPref(
