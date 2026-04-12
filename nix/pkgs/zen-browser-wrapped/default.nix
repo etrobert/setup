@@ -1,5 +1,9 @@
 { inputs', wrapFirefox }:
 wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
+  extraPrefs = ''
+    defaultPref("zen.theme.content-element-separation", 4);
+    defaultPref("zen.theme.border-radius", 12);
+  '';
   extraPolicies = {
     PasswordManagerEnabled = false;
 
