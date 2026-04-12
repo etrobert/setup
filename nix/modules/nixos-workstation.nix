@@ -8,14 +8,6 @@ _: {
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
-
-      zen-browser = pkgs.wrapFirefox self.inputs.zen-browser.packages.${system}.zen-browser-unwrapped {
-        extraPolicies = {
-          SearchEngines = {
-            Default = "DuckDuckGo";
-          };
-        };
-      };
     in
     {
       imports = [
