@@ -33,6 +33,21 @@ precmd() {
 # compinit -i needed to avoid errors on mac
 autoload -Uz compinit && compinit -i
 
+_tmux-sessionizer() {
+  local state
+  local -a projects
+  projects=(setup doc)
+  [[ -d $HOME/work ]] && projects+=($HOME/work/*(N/:t))
+  _arguments -s \
+    '(- *)'{-h,--help}'[show help]' \
+    '(-e --existing)'{-e,--existing}'[show only existing tmux sessions]' \
+    ':project:->project'
+  case $state in
+    project) compadd -a projects ;;
+  esac
+}
+compdef _tmux-sessionizer tmux-sessionizer ts
+
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey "^F" edit-command-line
