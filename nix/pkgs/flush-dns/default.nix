@@ -1,7 +1,7 @@
 { writeShellApplication }:
 writeShellApplication {
   name = "flush-dns";
-  inheritPath = false;
+  inheritPath = true;
   text = ''
     sudo dscacheutil -flushcache
     sudo killall -HUP mDNSResponder

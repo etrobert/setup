@@ -4,7 +4,7 @@ symlinkJoin {
   paths = [
     (writeShellApplication {
       name = "finder-hidefiles";
-      inheritPath = false;
+      inheritPath = true;
       text = ''
         defaults write com.apple.finder AppleShowAllFiles NO
         killall Finder
@@ -12,7 +12,7 @@ symlinkJoin {
     })
     (writeShellApplication {
       name = "finder-showfiles";
-      inheritPath = false;
+      inheritPath = true;
       text = ''
         defaults write com.apple.finder AppleShowAllFiles YES
         killall Finder
