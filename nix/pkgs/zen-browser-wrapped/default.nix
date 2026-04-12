@@ -1,6 +1,12 @@
 { inputs', wrapFirefox }:
 wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
-  extraPrefs = ''
+  extraPrefs = /* javascript */ ''
+    defaultPref("browser.ctrlTab.sortByRecentlyUsed", true);
+    defaultPref(
+      "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled",
+      true,
+    );
+
     defaultPref("zen.theme.content-element-separation", 4);
     defaultPref("zen.theme.border-radius", 12);
   '';
