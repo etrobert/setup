@@ -18,7 +18,7 @@ symlinkJoin {
     wrapProgram $out/bin/git \
       --set GIT_CONFIG_SYSTEM ${./gitconfig-system} \
       --set GIT_CONFIG_GLOBAL ${userConfig} \
-      --prefix PATH :${
+      --prefix PATH : ${
         lib.makeBinPath [
           # TODO: Fix this
           # Removed so that neovim-wrapped is not included on the pi
@@ -27,6 +27,5 @@ symlinkJoin {
           fzf
         ]
       }
-  
 '';
 }
