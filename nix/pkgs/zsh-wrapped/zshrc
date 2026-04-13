@@ -11,23 +11,23 @@ SAVEHIST="999999999"
 
 HISTFILE="$HOME/.zsh_history"
 
-export CMD_TIMER_MS=
+zmodload zsh/datetime
 
 preexec() {
-  if [[ -z $CMD_TIMER_MS ]]; then
-    CMD_TIMER_MS=$(date +%s%3N)
+  if [[ -z $_cmd_start ]]; then
+    _cmd_start=$EPOCHREALTIME
   fi
 }
 
 precmd() {
-  if [[ -z $CMD_TIMER_MS ]]; then
+  if [[ -z $_cmd_start ]]; then
     return
   fi
 
-  local now
-  now=$(date +%s%3N)
-  export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
-  unset CMD_TIMER_MS
+  local _elapsed=$((EPOCHREALTIME * 1000 - _cmd_start * 1000))
+  # Remove the decimal part to get the elapsed time in milliseconds as an integer
+  export LAST_CMD_TIME=${_elapsed%%.*}
+  unset _cmd_start
 }
 
 # compinit -i needed to avoid errors on mac
