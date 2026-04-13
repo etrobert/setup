@@ -1,0 +1,5 @@
+# vim: ft=gitconfig
+
+[user]
+  email = etiennerobert33@gmail.com
+  name = Etienne Robert

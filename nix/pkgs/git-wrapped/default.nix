@@ -3,21 +3,11 @@
   lib,
   symlinkJoin,
   makeWrapper,
-  writeText,
   git,
   difftastic,
   fzf,
-  userName ? "Etienne Robert",
-  userEmail ? "etiennerobert33@gmail.com",
+  userConfig ? ./gitconfig-user,
 }:
-let
-  gitConfig = writeText "gitconfig" ''
-    [user]
-      email = ${userEmail}
-      name = ${userName}
-    ${builtins.readFile ./.gitconfig}
-  '';
-in
 # TODO: --set PATH
 symlinkJoin {
   name = "git-wrapped";
@@ -26,7 +16,8 @@ symlinkJoin {
   meta.mainProgram = "git";
   postBuild = ''
     wrapProgram $out/bin/git \
-      --set GIT_CONFIG_GLOBAL ${gitConfig} \
+      --set GIT_CONFIG_SYSTEM ${./gitconfig-system} \
+      --set GIT_CONFIG_GLOBAL ${userConfig} \
       --prefix PATH :${
         lib.makeBinPath [
           # TODO: Fix this
