@@ -1,0 +1,15 @@
+# vim: ft=gitconfig
+
+[user]
+  email = etiennerobert33@gmail.com
+  name = Etienne Robert
+[core]
+  editor = nvim
+[merge]
+  tool = vimdiff
+[mergetool "vimdiff"]
+  path = nvim
+[diff]
+  tool = nvim_difftool
+[difftool "nvim_difftool"]
+  cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"

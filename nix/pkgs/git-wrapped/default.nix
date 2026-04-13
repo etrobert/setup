@@ -6,6 +6,7 @@
   git,
   difftastic,
   fzf,
+  userConfig ? ./gitconfig-user,
 }:
 # TODO: --set PATH
 symlinkJoin {
@@ -15,7 +16,8 @@ symlinkJoin {
   meta.mainProgram = "git";
   postBuild = ''
     wrapProgram $out/bin/git \
-      --set GIT_CONFIG_GLOBAL ${./.gitconfig} \
+      --set GIT_CONFIG_SYSTEM ${./gitconfig-system} \
+      --set GIT_CONFIG_GLOBAL ${userConfig} \
       --prefix PATH : ${
         lib.makeBinPath [
           # TODO: Fix this
@@ -25,6 +27,5 @@ symlinkJoin {
           fzf
         ]
       }
-  
 '';
 }
