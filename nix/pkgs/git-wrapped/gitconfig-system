@@ -1,3 +1,5 @@
+# vim: ft=gitconfig
+
 [core]
   whitespace = trailing-space tab-in-indent tabwidth=2
   editor = nvim
