@@ -7,7 +7,7 @@ let
   browserConfig = import ../../browser-config.nix { inherit lib; };
 in
 wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
-  extraPrefs = /* javascript */ ''
+  extraPrefs = ''
     ${browserConfig.renderDefaultPrefs (
       browserConfig.sharedSettings
       // {
