@@ -4,7 +4,7 @@
     settings:
     lib.concatLines (
       lib.mapAttrsToList (
-        name: value: "defaultPref(${lib.strings.toJSON name}, ${lib.strings.toJSON value});"
+        name: value: "lockPref(${lib.strings.toJSON name}, ${lib.strings.toJSON value});"
       ) settings
     );
 
