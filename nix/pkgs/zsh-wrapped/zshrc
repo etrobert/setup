@@ -13,6 +13,9 @@ HISTFILE="$HOME/.zsh_history"
 
 zmodload zsh/datetime
 
+# Exporting HOST as env var to be used in pronto
+export HOST
+
 preexec() {
   if [[ -z $_cmd_start ]]; then
     _cmd_start=$EPOCHREALTIME
