@@ -1,5 +1,5 @@
 { lib }:
-let
+{
   renderDefaultPrefs =
     settings:
     builtins.concatStringsSep "\n" (
@@ -37,7 +37,4 @@ let
     "browser.ctrlTab.sortByRecentlyUsed" = true;
     "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
   };
-in
-{
-  inherit renderDefaultPrefs sharedPolicies sharedSettings;
 }
