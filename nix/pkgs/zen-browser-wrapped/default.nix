@@ -1,6 +1,10 @@
-{ inputs', wrapFirefox }:
+{
+  inputs',
+  wrapFirefox,
+  lib,
+}:
 let
-  browserConfig = import ../../browser-config.nix;
+  browserConfig = import ../../browser-config.nix { inherit lib; };
 in
 wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
   extraPrefs = /* javascript */ ''
@@ -12,7 +16,5 @@ wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
       }
     )}
   '';
-  extraPolicies = browserConfig.sharedPolicies // {
-    DontCheckDefaultBrowser = true;
-  };
+  extraPolicies = browserConfig.sharedPolicies;
 }

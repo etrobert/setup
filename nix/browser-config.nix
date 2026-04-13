@@ -1,23 +1,16 @@
+{ lib }:
 let
-  renderPrefValue =
-    value:
-    if builtins.isBool value then
-      if value then "true" else "false"
-    else if builtins.isInt value then
-      toString value
-    else
-      builtins.toJSON value;
-
   renderDefaultPrefs =
     settings:
     builtins.concatStringsSep "\n" (
-      map (name: "defaultPref(${builtins.toJSON name}, ${renderPrefValue settings.${name}});") (
+      map (name: "defaultPref(${lib.strings.toJSON name}, ${lib.strings.toJSON settings.${name}});") (
         builtins.attrNames settings
       )
     );
 
   sharedPolicies = {
     PasswordManagerEnabled = false;
+    DontCheckDefaultBrowser = true;
     SearchEngines = {
       Default = "DuckDuckGo";
     };

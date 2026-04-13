@@ -9,7 +9,7 @@ _: {
     let
       symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
 
-      browserConfig = import ../../browser-config.nix;
+      browserConfig = import ../../browser-config.nix { inherit lib; };
     in
     {
       home = {
