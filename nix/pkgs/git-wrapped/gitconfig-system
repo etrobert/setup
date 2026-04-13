@@ -2,7 +2,6 @@
 
 [core]
   whitespace = trailing-space tab-in-indent tabwidth=2
-  editor = nvim
 [alias]
   sync = "!git pull && git push"
   ci = commit
@@ -49,7 +48,6 @@
   default = upstream
   autoSetupRemote = true
 [merge]
-  tool = vimdiff
   defaulttoupstream = true
   conflictstyle = diff3
   log = true
@@ -57,8 +55,6 @@
   keepBackup = false
 [mergetool]
   keepBackup = false
-[mergetool "vimdiff"]
-  path = nvim
 [log]
   decorate = true
 [branch]
@@ -73,7 +69,3 @@
   autoupdate = true
 [column]
   ui = auto
-[diff]
-  tool = nvim_difftool
-[difftool "nvim_difftool"]
-  cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"
