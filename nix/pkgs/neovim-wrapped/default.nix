@@ -43,6 +43,7 @@ let
         ./plugins/treesitter
         ./plugins/surround
         ./plugins/hardtime
+        ./plugins/matchup
       ];
     }).config;
 
