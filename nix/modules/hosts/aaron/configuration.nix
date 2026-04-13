@@ -34,6 +34,8 @@ in
     primaryUser = "soft";
 
     activationScripts.postActivation.text = ''
+      ln --symbolic --force --no-dereference /Users/soft/setup/nix /etc/nix-darwin
+
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
 
       # Set wallpaper

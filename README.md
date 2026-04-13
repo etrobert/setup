@@ -10,6 +10,6 @@ then can do `sudo nixos-rebuild switch`
 
 ## nix-darwin
 
-setup: `ln /Users/soft/setup/nix /etc/nix-darwin`
+setup: `sudo darwin-rebuild switch --flake /Users/soft/setup/nix`
 
 then can do `sudo darwin-rebuild switch`
