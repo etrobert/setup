@@ -6,6 +6,7 @@
   zsh,
   writeText,
   linkFarm,
+  direnv,
   zsh-autosuggestions,
   zsh-syntax-highlighting,
   fzf,
@@ -20,6 +21,8 @@ let
     setopt PROMPT_SUBST
     PS1='$(${pronto} $? --zsh)'
     RPROMPT='$(${pronto} $? --rprompt --zsh)'
+
+    eval "$(${lib.getExe direnv} hook zsh)"
 
     source ${./alias.sh}
     if [[ $options[zle] = on ]]; then
