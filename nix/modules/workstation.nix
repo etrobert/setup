@@ -85,6 +85,8 @@ _: {
 
         programs.nix-index-database.comma.enable = true;
 
+        programs.direnv.enable = true;
+
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
