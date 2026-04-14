@@ -66,6 +66,7 @@ _: {
               python3
               shellcheck
               sox # Voice for claude
+              telegram-desktop
               spotify
               unzip
               # yt-dlp # TODO: Add back once the macos cache is back
