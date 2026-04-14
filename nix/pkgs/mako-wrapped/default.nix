@@ -13,9 +13,12 @@ let
     background-color=#24273a
     border-color=#cdd6f4
 
-    # Firefox requests timeout=0 (never expire) for notifications like Google Calendar.
+    # Firefox/Zen request timeout=0 (never expire) for notifications like Google Calendar.
     # Override this to use our default-timeout instead.
     [app-name=Firefox]
+    ignore-timeout=1
+
+    [app-name="Zen Browser"]
     ignore-timeout=1
   '';
 in
