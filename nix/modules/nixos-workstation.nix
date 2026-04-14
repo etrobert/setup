@@ -133,6 +133,11 @@ _: {
           [Default Applications]
           x-scheme-handler/sgnl=signal.desktop
           x-scheme-handler/signalcaptcha=signal.desktop
+          text/html=zen.desktop
+          x-scheme-handler/http=zen.desktop
+          x-scheme-handler/https=zen.desktop
+          x-scheme-handler/about=zen.desktop
+          x-scheme-handler/unknown=zen.desktop
         '';
       };
 
