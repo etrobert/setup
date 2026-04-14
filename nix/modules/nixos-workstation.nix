@@ -126,6 +126,8 @@ _: {
         in
         customPackages ++ externalPackages;
 
+      environment.sessionVariables.BROWSER = "zen";
+
       environment.etc."xdg/mimeapps.list".text = /* ini */ ''
         [Default Applications]
         x-scheme-handler/sgnl=signal.desktop
