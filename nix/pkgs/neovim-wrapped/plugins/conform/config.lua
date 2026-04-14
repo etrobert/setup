@@ -17,7 +17,7 @@ require("conform").setup({
 		fish = { "fish_indent" },
 		rust = { "rustfmt" },
 		python = { "isort", "black" },
-		nix = { "nixfmt", "injected" },
+		nix = { "nixfmt" },
 	},
 	format_on_save = {
 		timeout_ms = 1000,
@@ -26,7 +26,13 @@ require("conform").setup({
 })
 
 vim.keymap.set("", "<leader>fm", function()
-	require("conform").format({ async = true })
+	local opts = { async = true }
+	-- injected formatters can format wrong because they don't underatand nix interpolations
+	-- so we restrict them to manual formatting
+	if vim.bo.filetype == "nix" then
+		opts.formatters = { "nixfmt", "injected" }
+	end
+	require("conform").format(opts)
 end, { desc = "Format current buffer" })
 
 vim.api.nvim_create_user_command("Format", function(args)
