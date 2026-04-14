@@ -4,6 +4,8 @@
   makeWrapper,
   lib,
   waybar,
+  jq,
+  gawk,
   dev ? false,
 }:
 let
@@ -20,6 +22,6 @@ symlinkJoin {
     wrapProgram $out/bin/waybar \
       --add-flags "--config ${config}" \
       --add-flags "--style ${style}" \
-      --prefix PATH : ${lib.makeBinPath [ self'.packages.get-weather ]}
+      --prefix PATH : ${lib.makeBinPath [ self'.packages.get-weather jq gawk ]}
   '';
 }

@@ -12,7 +12,6 @@ let
   config = if dev then "/home/soft/setup/nix/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
   path = [
-    self'.packages.waybar-wrapped
     self'.packages.volume-control
     fuzzel
     hyprpaper

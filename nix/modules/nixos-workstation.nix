@@ -62,6 +62,15 @@ _: {
       ];
 
       systemd.user = {
+        services.waybar = {
+          partOf = [ "graphical-session.target" ];
+          wantedBy = [ "graphical-session.target" ];
+          serviceConfig = {
+            ExecStart = lib.getExe self.packages.${system}.waybar-wrapped;
+            Restart = "on-failure";
+          };
+        };
+
         services.album-art-wallpaper = {
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
