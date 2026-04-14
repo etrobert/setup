@@ -22,6 +22,13 @@ symlinkJoin {
     wrapProgram $out/bin/waybar \
       --add-flags "--config ${config}" \
       --add-flags "--style ${style}" \
-      --prefix PATH : ${lib.makeBinPath [ self'.packages.get-weather jq gawk ]}
-  '';
+      --prefix PATH :${
+        lib.makeBinPath [
+          self'.packages.get-weather
+          jq # used by custom/weekday and custom/cpu-governor
+          gawk # used by custom/cpu-freq
+        ]
+      }
+  
+'';
 }
