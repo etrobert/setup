@@ -1,3 +1,9 @@
+if [[ $(uname) == 'Linux' ]]; then
+  alias open='xdg-open'
+  alias bt="bluetoothctl devices | fzf --with-nth=3.. | cut -d' ' -f2 | xargs bluetoothctl connect"
+  alias home-assistant="docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable"
+fi
+
 alias grep='grep --color=auto'
 
 # Ask for confirmation before overriding
