@@ -8,13 +8,13 @@ let
   path = "/home/soft/setup/nix/pkgs/waybar-wrapped";
   config = if dev then path + "/config.jsonc" else ./config.jsonc;
   style = if dev then path + "/style.css" else ./style.css;
-  runtimeDeps = with pkgs; [
+  nixpkgsDeps = with pkgs; [
     coreutils
-    self'.packages.get-weather
     jq # used by custom/weekday and custom/cpu-governor
     gawk # used by custom/cpu-freq
     pavucontrol
   ];
+  runtimeDeps = [ self'.packages.get-weather ] ++ nixpkgsDeps;
 in
 pkgs.symlinkJoin {
   name = "waybar-wrapped";
