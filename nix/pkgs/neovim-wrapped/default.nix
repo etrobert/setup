@@ -33,7 +33,7 @@ let
         ./plugins/cmp
         ./plugins/treesitter
         ./plugins/surround
-        ./plugins/hardtime
+        # ./plugins/hardtime
         ./plugins/matchup
       ];
     }).config;
