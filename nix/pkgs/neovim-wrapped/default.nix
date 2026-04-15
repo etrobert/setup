@@ -1,16 +1,7 @@
 {
   pkgs,
   self',
-  stdenv,
-  runCommandLocal,
-  neovim-unwrapped,
-  wrapNeovimUnstable,
   lib,
-  coreutils,
-  curl,
-  cargo,
-  rustc,
-  wl-clipboard,
   with-git-wrapped ? true,
 }:
 let
@@ -47,34 +38,40 @@ let
       ];
     }).config;
 
-  pbcopy = runCommandLocal "pbcopy" { } ''
+  pbcopy = pkgs.runCommandLocal "pbcopy" { } ''
     mkdir -p $out/bin
     ln -s /usr/bin/pbcopy $out/bin/pbcopy
   '';
 
-  pbpaste = runCommandLocal "pbpaste" { } ''
+  pbpaste = pkgs.runCommandLocal "pbpaste" { } ''
     mkdir -p $out/bin
     ln -s /usr/bin/pbpaste $out/bin/pbpaste
   '';
 
+  sharedDeps = with pkgs; [
+    curl # used in my config
+    cargo
+    rustc
+  ];
+
+  darwinDeps = [
+    pbcopy
+    pbpaste
+  ];
+
+  linuxDeps = with pkgs; [
+    wl-clipboard
+    coreutils # provides cat for copying
+  ];
+
   path = lib.makeBinPath (
-    [
-      curl # used in my config
-      cargo
-      rustc
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      pbcopy
-      pbpaste
-    ]
-    ++ lib.optionals stdenv.isLinux [
-      wl-clipboard
-      coreutils # provides cat for copying
-    ]
+    sharedDeps
+    ++ lib.optionals pkgs.stdenv.isDarwin darwinDeps
+    ++ lib.optionals pkgs.stdenv.isLinux linuxDeps
     ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
   );
 in
-wrapNeovimUnstable neovim-unwrapped {
+pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
   plugins = map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
   # TODO: Make a non dev variant
   luaRcContent = /* lua */ ''
