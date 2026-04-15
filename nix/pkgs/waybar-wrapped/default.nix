@@ -7,6 +7,7 @@
   jq,
   coreutils,
   gawk,
+  pavucontrol,
   dev ? false,
 }:
 let
@@ -18,6 +19,7 @@ let
     self'.packages.get-weather
     jq # used by custom/weekday and custom/cpu-governor
     gawk # used by custom/cpu-freq
+    pavucontrol
   ];
 in
 symlinkJoin {
