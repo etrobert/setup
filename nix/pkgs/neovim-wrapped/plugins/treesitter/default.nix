@@ -5,6 +5,7 @@
       plugin = pkgs.vimPlugins.nvim-treesitter.withPlugins (
         p: with p; [
           bash
+          caddy
           c
           diff
           git_config

@@ -18,7 +18,8 @@ in
     enable = true;
     virtualHosts = {
       "http://localhost" = {
-        extraConfig = ''
+        extraConfig = /* caddy */ ''
+          encode gzip
           root * ${self.packages.${system}.vite-test}
           try_files {path} /index.html
           file_server
