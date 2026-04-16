@@ -45,6 +45,26 @@
         "type": "github"
       }
     },
+    "etiennerobert-com": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776375838,
+        "narHash": "sha256-ZHqeB/stYY8QywLEef5lSG9Gu/XRc5PjuUYxDkV3ofE=",
+        "owner": "etrobert",
+        "repo": "etiennerobert.com",
+        "rev": "ad6e8669fbc6f4ad31d4b524f52ab6b1c430cbd3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etrobert",
+        "repo": "etiennerobert.com",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -199,6 +219,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "etiennerobert-com": "etiennerobert-com",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager_2",
         "nix-darwin": "nix-darwin",

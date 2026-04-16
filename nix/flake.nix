@@ -40,6 +40,10 @@
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    etiennerobert-com = {
+      url = "github:etrobert/etiennerobert.com";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
