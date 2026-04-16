@@ -69,7 +69,7 @@
     };
   };
 
-  age.secrets.cloudflare-tunnel-pi.file = ./secrets/cloudflare-tunnel-pi.age;
+  age.secrets.cloudflare-tunnel-pi.file = ../../../secrets/cloudflare-tunnel-pi.age;
 
   systemd.services.navidrome.serviceConfig.ProtectHome = lib.mkForce "read-only";
 
