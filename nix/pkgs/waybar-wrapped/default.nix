@@ -13,6 +13,7 @@ let
     jq # used by custom/weekday and custom/cpu-governor
     gawk # used by custom/cpu-freq
     pavucontrol
+    sudo # used to run toggle-cpu-governor
   ];
   runtimeDeps = [ self'.packages.get-weather ] ++ nixpkgsDeps;
 in
