@@ -1,7 +1,10 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ ... }:
+{ self, pkgs, ... }:
+let
+  inherit (pkgs.stdenv.hostPlatform) system;
+in
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -10,6 +13,19 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "tower";
+
+  services.caddy = {
+    enable = true;
+    virtualHosts = {
+      "http://localhost" = {
+        extraConfig = ''
+          root * ${self.packages.${system}.vite-test}
+          try_files {path} /index.html
+          file_server
+        '';
+      };
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
