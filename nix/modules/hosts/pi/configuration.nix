@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
   environment.systemPackages = with pkgs; [
@@ -39,17 +44,32 @@
 
   networking.networkmanager.enable = true;
 
-  services.tailscale.extraUpFlags = [ "--advertise-exit-node" ];
+  services = {
+    tailscale.extraUpFlags = [ "--advertise-exit-node" ];
 
-  services.navidrome = {
-    enable = true;
-    settings = {
-      Address = "0.0.0.0";
-      MusicFolder = "/home/soft/sync/music";
-      DataFolder = "/home/soft/.local/share/navidrome";
+    navidrome = {
+      enable = true;
+      settings = {
+        Address = "0.0.0.0";
+        MusicFolder = "/home/soft/sync/music";
+        DataFolder = "/home/soft/.local/share/navidrome";
+      };
+      user = "soft";
     };
-    user = "soft";
+
+    cloudflared = {
+      enable = true;
+      tunnels."4086e663-124f-4446-af5b-82b80e029f32" = {
+        credentialsFile = config.age.secrets.cloudflare-tunnel-pi.path;
+        default = "http_status:404";
+        ingress = {
+          "etiennerobert.com" = "http://localhost:80";
+        };
+      };
+    };
   };
+
+  age.secrets.cloudflare-tunnel-pi.file = ./secrets/cloudflare-tunnel-pi.age;
 
   systemd.services.navidrome.serviceConfig.ProtectHome = lib.mkForce "read-only";
 

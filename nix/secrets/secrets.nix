@@ -21,4 +21,5 @@ in
   "tailscale-authkey.age".publicKeys = allMachines;
   "apple-pimsync-password.age".publicKeys = allLinux; # TODO: Restrict to linux workstations
   "soft-password.age".publicKeys = allLinux;
+  "cloudflare-tunnel-pi.age".publicKeys = [ pi ];
 }
