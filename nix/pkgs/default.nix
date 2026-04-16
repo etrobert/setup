@@ -9,6 +9,7 @@ _: {
     }:
     {
       packages = {
+        vite-test = pkgs.callPackage ./vite-test { };
         git-wrapped = pkgs.callPackage ./git-wrapped {
           # inherit self';
         };
