@@ -12,8 +12,6 @@ _: {
       inherit (self.packages.${system}) zsh-wrapped;
     in
     {
-      networking.hosts."192.168.0.130" = [ "test.etiennerobert.com" ];
-
       system.activationScripts.nixos-symlink.text = /* bash */ ''
         ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
       '';

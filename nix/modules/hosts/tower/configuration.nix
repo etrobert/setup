@@ -18,6 +18,8 @@ in
 
   networking.hostName = "tower";
 
+  networking.hosts."192.168.0.130" = [ "test.etiennerobert.com" ];
+
   services.ddclient = {
     enable = true;
     protocol = "namecheap";
