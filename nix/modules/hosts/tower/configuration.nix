@@ -16,9 +16,19 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "tower";
+  networking = {
+    hostName = "tower";
 
-  networking.hosts."192.168.0.130" = [ "test.etiennerobert.com" ];
+    # Overwrite to be able to access that from LAN
+    # hairpin NAT trap
+    # Better fix would be to have DNS server on LAN
+    hosts."192.168.0.130" = [ "test.etiennerobert.com" ];
+
+    firewall.allowedTCPPorts = [
+      80
+      443
+    ];
+  };
 
   services.ddclient = {
     enable = true;
@@ -33,11 +43,6 @@ in
   };
 
   age.secrets.ddclient-password-etiennerobert-com.file = ../../../secrets/ddclient-password-etiennerobert-com.age;
-
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
 
   services.caddy = {
     enable = true;
