@@ -10,7 +10,6 @@ let
     home-manager
     pronto
     agenix
-    etiennerobert-com
     ;
 in
 {
@@ -19,7 +18,6 @@ in
     modules = [
       ./configuration.nix
       nix-index-database.nixosModules.default
-      etiennerobert-com.nixosModules.default
       home-manager.nixosModules.home-manager
       agenix.nixosModules.default
       self.nixosModules.nixosWorkstation
