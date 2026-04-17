@@ -1,8 +1,15 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, ... }:
-
+{
+  etiennerobert-com,
+  pkgs,
+  config,
+  ...
+}:
+let
+  inherit (pkgs.stdenv.hostPlatform) system;
+in
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -32,8 +39,11 @@
 
   services.caddy = {
     enable = true;
-    virtualHosts."test.etiennerobert.com".extraConfig = ''
-      respond "hello from tower" 200
+    virtualHosts."test.etiennerobert.com".extraConfig = /* caddy */ ''
+      root * ${etiennerobert-com.packages.${system}.default}
+      encode zstd gzip
+      try_files {path} /index.html
+      file_server
     '';
   };
 

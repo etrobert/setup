@@ -10,11 +10,19 @@ let
     home-manager
     pronto
     agenix
+    etiennerobert-com
     ;
 in
 {
   flake.nixosConfigurations.tower = nixpkgs.lib.nixosSystem {
-    specialArgs = { inherit self pronto agenix; };
+    specialArgs = {
+      inherit
+        self
+        pronto
+        agenix
+        etiennerobert-com
+        ;
+    };
     modules = [
       ./configuration.nix
       nix-index-database.nixosModules.default
