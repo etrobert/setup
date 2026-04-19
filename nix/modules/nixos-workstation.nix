@@ -92,6 +92,7 @@ _: {
 
           customPackages = with self.packages.${system}; [
             nixos-option
+            audio-output-switcher
             toggle-cpu-governor
             waybar-wrapped
             mako-wrapped

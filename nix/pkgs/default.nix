@@ -53,6 +53,7 @@ _: {
         };
         darkman-wrapped = pkgs.callPackage ./darkman-wrapped { };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
+        audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         brightness-control = pkgs.callPackage ./brightness-control { };
         volume-control = pkgs.callPackage ./volume-control { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };

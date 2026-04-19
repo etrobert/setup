@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+sink_filter='
+  .[]
+  | select(.type == "PipeWire:Interface:Node")
+  | select(.info.props["media.class"] == "Audio/Sink")
+  | "\(.id)\t\(
+      .info.props["node.description"]
+      // .info.props["node.name"]
+    )"
+'
+
+stream_filter='
+  .[]
+  | select(.type == "PipeWire:Interface:Node")
+  | select(.info.props["media.class"] == "Stream/Output/Audio")
+  | .id
+'
+
+sink=$(
+  pw-dump |
+    jq -r "$sink_filter" |
+    fzf --with-nth=2 --delimiter=$'\t' --prompt="Audio output: "
+)
+
+[ -z "$sink" ] && exit 0
+
+sink_id=$(echo "$sink" | cut -f1)
+sink_name=$(echo "$sink" | cut -f2)
+
+wpctl set-default "$sink_id"
+
+pw-dump | jq -r "$stream_filter" | while read -r stream_id; do
+  pw-metadata "$stream_id" target.object "$sink_id"
+done
+
+notify-send -i audio-headphones "Audio output" "$sink_name"
