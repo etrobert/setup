@@ -1,12 +1,14 @@
 {
   self,
   inputs,
-  etiennerobert-com,
   ...
 }:
 {
   flake.nixosConfigurations.pi = inputs.nixpkgs.lib.nixosSystem {
-    specialArgs = { inherit etiennerobert-com self; };
+    specialArgs = {
+      inherit (inputs) etiennerobert-com;
+      inherit self;
+    };
     system = "aarch64-linux";
     modules = [
       ./configuration.nix
