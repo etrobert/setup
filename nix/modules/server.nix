@@ -33,7 +33,7 @@ _: {
           usev4 = "webv4";
         };
 
-        age.secrets.ddclient-password-etiennerobert-com.file = ../../../secrets/ddclient-password-etiennerobert-com.age;
+        age.secrets.ddclient-password-etiennerobert-com.file = ../secrets/ddclient-password-etiennerobert-com.age;
 
         services.caddy = {
           enable = true;
