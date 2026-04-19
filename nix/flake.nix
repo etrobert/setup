@@ -44,6 +44,10 @@
       url = "github:etrobert/etiennerobert.com";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    creatures = {
+      url = "github:etrobert/creatures";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

@@ -3,12 +3,14 @@ _: {
     nixosModules.server =
       {
         etiennerobert-com,
+        creatures,
         config,
         pkgs,
         ...
       }:
       let
         inherit (pkgs.stdenv.hostPlatform) system;
+        creaturesPackage = creatures.packages.${system}.default;
       in
       {
         networking.firewall.allowedTCPPorts = [
@@ -35,6 +37,17 @@ _: {
 
         age.secrets.ddclient-password-etiennerobert-com.file = ../secrets/ddclient-password-etiennerobert-com.age;
 
+        systemd.services.creatures = {
+          description = "Creatures server";
+          wantedBy = [ "multi-user.target" ];
+          after = [ "network.target" ];
+          serviceConfig = {
+            ExecStart = "${creaturesPackage}/bin/creatures-server";
+            Restart = "on-failure";
+            DynamicUser = true;
+          };
+        };
+
         services.caddy = {
           enable = true;
           virtualHosts."test.etiennerobert.com".extraConfig = /* caddy */ ''
@@ -42,6 +55,9 @@ _: {
             encode zstd gzip
             try_files {path} /index.html
             file_server
+          '';
+          virtualHosts."creatures.etiennerobert.com".extraConfig = /* caddy */ ''
+            reverse_proxy localhost:3000
           '';
         };
 
