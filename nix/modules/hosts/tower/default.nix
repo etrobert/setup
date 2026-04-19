@@ -10,7 +10,6 @@ let
     home-manager
     pronto
     agenix
-    etiennerobert-com
     ;
 in
 {
@@ -20,7 +19,6 @@ in
         self
         pronto
         agenix
-        etiennerobert-com
         ;
     };
     modules = [
