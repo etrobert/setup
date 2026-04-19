@@ -19,7 +19,7 @@ _: {
         # Overwrite to be able to access that from LAN
         # hairpin NAT trap
         # Better fix would be to have DNS server on LAN
-        networking.hosts."192.168.0.130" = [ "test.etiennerobert.com" ];
+        networking.hosts."192.168.0.18" = [ "test.etiennerobert.com" ];
 
         services.ddclient = {
           enable = true;
