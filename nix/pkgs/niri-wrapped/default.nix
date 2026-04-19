@@ -13,6 +13,7 @@ let
 
   path = [
     self'.packages.volume-control
+    self'.packages.brightness-control
     fuzzel
     hyprpaper
   ];
