@@ -29,7 +29,10 @@ _: {
           server = "dynamicdns.park-your-domain.com";
           username = "etiennerobert.com";
           passwordFile = config.age.secrets.ddclient-password-etiennerobert-com.path;
-          domains = [ "test" ];
+          domains = [
+            "test"
+            "creatures"
+          ];
           interval = "5min";
           usev6 = "no";
           usev4 = "webv4";
