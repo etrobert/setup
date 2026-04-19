@@ -70,6 +70,7 @@
           ./modules/networkmanager.nix
           ./modules/pimsync.nix
           ./modules/darkman.nix
+          ./modules/server.nix
           ./pkgs
         ];
 
