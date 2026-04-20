@@ -24,39 +24,30 @@ vim.api.nvim_set_hl(0, "StatuslineBranchTerminal", { fg = p.teal, bg = p.surface
 -- Branch sep: surface0 → statusline background
 vim.api.nvim_set_hl(0, "StatuslineBranchSep", { fg = p.surface0 })
 
-local mode_hls = {
-	n = "StatuslineModeNormal",
-	i = "StatuslineModeInsert",
-	ic = "StatuslineModeInsert",
-	v = "StatuslineModeVisual",
-	V = "StatuslineModeVisual",
-	["\22"] = "StatuslineModeVisual",
-	c = "StatuslineModeCommand",
-	t = "StatuslineModeTerminal",
-}
-
-local branch_hls = {
-	n = "StatuslineBranchNormal",
-	i = "StatuslineBranchInsert",
-	ic = "StatuslineBranchInsert",
-	v = "StatuslineBranchVisual",
-	V = "StatuslineBranchVisual",
-	["\22"] = "StatuslineBranchVisual",
-	c = "StatuslineBranchCommand",
-	t = "StatuslineBranchTerminal",
+local mode_names = {
+	n = "Normal",
+	i = "Insert",
+	ic = "Insert",
+	v = "Visual",
+	V = "Visual",
+	["\22"] = "Visual",
+	c = "Command",
+	t = "Terminal",
 }
 
 local sep = "\u{E0B0}"
 
 local function mode_section()
 	local m = vim.fn.mode()
-	local hl = mode_hls[m] or "StatusLine"
+	local name = mode_names[m] or "Normal"
+	local hl = "StatuslineMode" .. name
 	return "%#" .. hl .. "# " .. m .. " %#" .. hl .. "Sep#" .. sep
 end
 
 local function branch_section()
 	local m = vim.fn.mode()
-	local hl = branch_hls[m] or "StatusLine"
+	local name = mode_names[m] or "Normal"
+	local hl = "StatuslineBranch" .. name
 	local branch = vim.b.gitsigns_head
 	local content = (branch and branch ~= "") and (" " .. branch .. " ") or " "
 	return "%#" .. hl .. "#" .. content .. "%#StatuslineBranchSep#" .. sep .. "%*"
