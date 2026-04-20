@@ -11,11 +11,11 @@ local modes = {
 	["O-Pending"] = p.blue,
 }
 
-for name, color in pairs(modes) do
+for mode, color in pairs(modes) do
 	-- Strong badge: dark text on mode color (mode label, loc)
-	vim.api.nvim_set_hl(0, "StatuslineBadge" .. name, { fg = p.base, bg = color, bold = true })
+	vim.api.nvim_set_hl(0, "StatuslineBadge" .. mode, { fg = p.base, bg = color, bold = true })
 	-- Surface: mode color on surface0 (right sep of badge, branch background)
-	vim.api.nvim_set_hl(0, "StatuslineSurface" .. name, { fg = color, bg = p.surface0 })
+	vim.api.nvim_set_hl(0, "StatuslineSurface" .. mode, { fg = color, bg = p.surface0 })
 end
 
 -- Surface sep: surface0 on statusline bg (right sep out of surface)
@@ -50,17 +50,17 @@ local sep = "\u{E0B0}"
 local sep_left = "\u{E0B2}"
 
 local function mode_section()
-	local name = mode_names[vim.fn.mode(1)] or "Normal"
-	return "%#StatuslineBadge" .. name .. "# " .. name:upper() .. " %#StatuslineSurface" .. name .. "#" .. sep
+	local mode = mode_names[vim.fn.mode(1)] or "Normal"
+	return "%#StatuslineBadge" .. mode .. "# " .. mode:upper() .. " %#StatuslineSurface" .. mode .. "#" .. sep
 end
 
 local function branch_section()
-	local name = mode_names[vim.fn.mode(1)] or "Normal"
+	local mode = mode_names[vim.fn.mode(1)] or "Normal"
 	-- gitsigns_head is a free variable read; FugitiveHead does a syscall on every render.
 	-- Prefer gitsigns, fall back to Fugitive for unnamed buffers where gitsigns doesn't attach.
 	local branch = vim.b.gitsigns_head or vim.fn.FugitiveHead()
 	local content = (branch and branch ~= "") and (" \u{E725} " .. branch .. " ") or " "
-	return "%#StatuslineSurface" .. name .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
+	return "%#StatuslineSurface" .. mode .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
 
 local function filetype_section()
@@ -70,16 +70,16 @@ local function filetype_section()
 end
 
 local function progress_section()
-	local name = mode_names[vim.fn.mode(1)] or "Normal"
+	local mode = mode_names[vim.fn.mode(1)] or "Normal"
 	local cur = vim.fn.line(".")
 	local total = vim.fn.line("$")
 	local pct = cur == 1 and "Top" or cur == total and "Bot" or "%p%%"
-	return "%#StatuslineSurfaceSep#" .. sep_left .. "%#StatuslineSurface" .. name .. "# " .. pct .. " "
+	return "%#StatuslineSurfaceSep#" .. sep_left .. "%#StatuslineSurface" .. mode .. "# " .. pct .. " "
 end
 
 local function loc_section()
-	local name = mode_names[vim.fn.mode(1)] or "Normal"
-	return "%#StatuslineSurface" .. name .. "#" .. sep_left .. "%#StatuslineBadge" .. name .. "# %l:%c "
+	local mode = mode_names[vim.fn.mode(1)] or "Normal"
+	return "%#StatuslineSurface" .. mode .. "#" .. sep_left .. "%#StatuslineBadge" .. mode .. "# %l:%c "
 end
 
 return {
