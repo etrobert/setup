@@ -42,7 +42,7 @@ end
 local function branch_section()
 	local name = mode_names[vim.fn.mode()] or "Normal"
 	local branch = vim.b.gitsigns_head
-	local content = (branch and branch ~= "") and (" " .. branch .. " ") or " "
+	local content = (branch and branch ~= "") and (" \u{E0A0} " .. branch .. " ") or " "
 	return "%#StatuslineSurface" .. name .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
 
