@@ -22,6 +22,20 @@ local function mode_section()
 	return "%#" .. hl .. "# " .. m .. " %*"
 end
 
-_G.Statusline = { mode_section = mode_section }
+vim.opt.statusline = "%!v:lua.require'etrobert.statusline'.render()"
 
-vim.opt.statusline = "%{%v:lua.Statusline.mode_section()%} %f"
+return {
+	render = function()
+		local active_win = vim.fn.win_getid()
+		local status_win = vim.g.statusline_winid
+
+		if status_win ~= active_win then
+			return "%f"
+		end
+
+		return table.concat({
+			mode_section(),
+			" %f %= %y %l:%c",
+		})
+	end,
+}
