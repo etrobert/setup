@@ -31,7 +31,7 @@ _: {
         tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self'; };
         get-weather = pkgs.callPackage ./get-weather { };
         add-asset = pkgs.callPackage ./add-asset { };
-        switch = pkgs.callPackage ./switch.nix { inherit inputs'; };
+        switch = pkgs.callPackage ./switch.nix { };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         flush-dns = pkgs.callPackage ./flush-dns { };

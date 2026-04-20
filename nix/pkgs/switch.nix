@@ -1,48 +1,45 @@
-{
-  coreutils,
-  stdenv,
-  writeShellApplication,
-  runCommandLocal,
-  inputs',
-  nixos-rebuild,
-  systemd,
-}:
+{ pkgs }:
 let
   switch-linux =
     let
-      sudo = runCommandLocal "sudo" { } ''
+      # nixpkgs#sudo lacks the setuid bit (the Nix store is mounted nosuid);
+      # NixOS places the real setuid wrapper at /run/wrappers/bin/sudo
+      sudo = pkgs.runCommandLocal "sudo" { } ''
         mkdir -p $out/bin
         ln -s /run/wrappers/bin/sudo $out/bin/sudo
       '';
     in
-    writeShellApplication {
+    pkgs.writeShellApplication {
       name = "switch";
-      runtimeInputs = [
-        coreutils # for id
+      # nh calls `sudo env nixos-rebuild ...`; all three must be in PATH so nh
+      # can resolve them to absolute store paths before invoking sudo
+      runtimeInputs = with pkgs; [
+        coreutils
+        nh
+        nix
         sudo
-        nixos-rebuild
-        systemd
       ];
       inheritPath = false;
-      text = "sudo nixos-rebuild switch";
+      text = "nh os switch";
     };
 
   switch-darwin =
     let
-      sudo = runCommandLocal "sudo" { } ''
+      sudo = pkgs.runCommandLocal "sudo" { } ''
         mkdir -p $out/bin
         ln -s /usr/bin/sudo $out/bin/sudo
       '';
     in
-    writeShellApplication {
+    pkgs.writeShellApplication {
       name = "switch";
-      runtimeInputs = [
-        coreutils # for id
+      runtimeInputs = with pkgs; [
+        coreutils
+        nh
+        nix
         sudo
-        inputs'.nix-darwin.packages.darwin-rebuild
       ];
       inheritPath = false;
-      text = "sudo darwin-rebuild switch";
+      text = "nh darwin switch";
     };
 in
-if stdenv.isLinux then switch-linux else switch-darwin
+if pkgs.stdenv.isLinux then switch-linux else switch-darwin
