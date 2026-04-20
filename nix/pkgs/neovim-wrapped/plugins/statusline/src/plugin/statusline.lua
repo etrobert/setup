@@ -6,3 +6,12 @@ vim.api.nvim_create_autocmd("ModeChanged", {
 		vim.cmd.redrawstatus()
 	end,
 })
+
+-- Redraw when gitsigns updates so branch changes are reflected immediately
+-- rather than waiting for the next cursor move or mode change.
+vim.api.nvim_create_autocmd("User", {
+	pattern = "GitSignsUpdate",
+	callback = function()
+		vim.cmd.redrawstatus()
+	end,
+})

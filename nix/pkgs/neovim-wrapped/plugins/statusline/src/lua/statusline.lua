@@ -58,7 +58,9 @@ end
 
 local function branch_section()
 	local name = mode_names[vim.fn.mode(1)] or "Normal"
-	local branch = vim.fn.FugitiveHead()
+	-- gitsigns_head is a free variable read; FugitiveHead does a syscall on every render.
+	-- Prefer gitsigns, fall back to Fugitive for unnamed buffers where gitsigns doesn't attach.
+	local branch = vim.b.gitsigns_head or vim.fn.FugitiveHead()
 	local content = (branch and branch ~= "") and (" \u{E725} " .. branch .. " ") or " "
 	return "%#StatuslineSurface" .. name .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
