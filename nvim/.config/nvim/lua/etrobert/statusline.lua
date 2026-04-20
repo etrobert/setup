@@ -1,14 +1,28 @@
 local p = require("catppuccin.palettes").get_palette("macchiato")
+
+-- Mode badge: dark text on mode color
 vim.api.nvim_set_hl(0, "StatuslineModeNormal", { fg = p.base, bg = p.blue, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeNormalSep", { fg = p.blue })
 vim.api.nvim_set_hl(0, "StatuslineModeInsert", { fg = p.base, bg = p.green, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeInsertSep", { fg = p.green })
 vim.api.nvim_set_hl(0, "StatuslineModeVisual", { fg = p.base, bg = p.mauve, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeVisualSep", { fg = p.mauve })
 vim.api.nvim_set_hl(0, "StatuslineModeCommand", { fg = p.base, bg = p.red, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeCommandSep", { fg = p.red })
 vim.api.nvim_set_hl(0, "StatuslineModeTerminal", { fg = p.base, bg = p.teal, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeTerminalSep", { fg = p.teal })
+
+-- Mode sep: mode color → surface0 (branch background)
+vim.api.nvim_set_hl(0, "StatuslineModeNormalSep", { fg = p.blue, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineModeInsertSep", { fg = p.green, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineModeVisualSep", { fg = p.mauve, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineModeCommandSep", { fg = p.red, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineModeTerminalSep", { fg = p.teal, bg = p.surface0 })
+
+-- Branch badge: mode color text on surface0
+vim.api.nvim_set_hl(0, "StatuslineBranchNormal", { fg = p.blue, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineBranchInsert", { fg = p.green, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineBranchVisual", { fg = p.mauve, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineBranchCommand", { fg = p.red, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineBranchTerminal", { fg = p.teal, bg = p.surface0 })
+
+-- Branch sep: surface0 → statusline background
+vim.api.nvim_set_hl(0, "StatuslineBranchSep", { fg = p.surface0 })
 
 local mode_hls = {
 	n = "StatuslineModeNormal",
@@ -21,20 +35,31 @@ local mode_hls = {
 	t = "StatuslineModeTerminal",
 }
 
+local branch_hls = {
+	n = "StatuslineBranchNormal",
+	i = "StatuslineBranchInsert",
+	ic = "StatuslineBranchInsert",
+	v = "StatuslineBranchVisual",
+	V = "StatuslineBranchVisual",
+	["\22"] = "StatuslineBranchVisual",
+	c = "StatuslineBranchCommand",
+	t = "StatuslineBranchTerminal",
+}
+
 local sep = "\u{E0B0}"
 
 local function mode_section()
 	local m = vim.fn.mode()
 	local hl = mode_hls[m] or "StatusLine"
-	return "%#" .. hl .. "# " .. m .. " %#" .. hl .. "Sep#" .. sep .. "%*"
+	return "%#" .. hl .. "# " .. m .. " %#" .. hl .. "Sep#" .. sep
 end
 
 local function branch_section()
+	local m = vim.fn.mode()
+	local hl = branch_hls[m] or "StatusLine"
 	local branch = vim.b.gitsigns_head
-	if not branch or branch == "" then
-		return ""
-	end
-	return " " .. branch
+	local content = (branch and branch ~= "") and (" " .. branch .. " ") or " "
+	return "%#" .. hl .. "#" .. content .. "%#StatuslineBranchSep#" .. sep .. "%*"
 end
 
 local function filetype_section()
