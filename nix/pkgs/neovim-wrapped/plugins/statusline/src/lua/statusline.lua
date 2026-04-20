@@ -85,7 +85,7 @@ local function get_diagnostics()
 	return table.concat(parts)
 end
 
-local function branch_section()
+local function branch_diagnostics_section()
 	local mode = mode_names[vim.fn.mode(1)] or "Normal"
 	local branch = get_branch()
 	local diagnostics = get_diagnostics()
@@ -129,7 +129,7 @@ return {
 
 		return table.concat({
 			mode_section(),
-			branch_section(),
+			branch_diagnostics_section(),
 			" %f %= ",
 			filetype_section(),
 			progress_section(),
