@@ -11,6 +11,7 @@ in
   plugins = [
     { plugin = pkgs.vimPlugins.catppuccin-nvim; }
     { plugin = pkgs.vimPlugins.nvim-web-devicons; }
+    { plugin = pkgs.vimPlugins.vim-fugitive; }
     { plugin = statusline; }
   ];
 }
