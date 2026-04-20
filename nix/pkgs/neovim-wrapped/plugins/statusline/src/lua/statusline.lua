@@ -68,6 +68,9 @@ local function filetype_section()
 	if ft == "" then
 		return ""
 	end
+	if ft == "" then
+		return ""
+	end
 	local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(ft, { default = true })
 	return "%#" .. hl .. "#" .. icon .. "%* " .. ft .. " "
 end
