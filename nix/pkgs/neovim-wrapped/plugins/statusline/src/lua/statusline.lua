@@ -4,7 +4,7 @@ local modes = {
 	Normal = p.blue,
 	Insert = p.green,
 	Visual = p.mauve,
-	Command = p.red,
+	Command = p.peach,
 	Terminal = p.teal,
 }
 
