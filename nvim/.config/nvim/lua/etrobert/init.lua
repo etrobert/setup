@@ -1,6 +1,5 @@
 require("etrobert.remap")
 require("etrobert.set")
-require("etrobert.statusline")
 require("etrobert.ask").setup()
 require("etrobert.code-exec").setup()
 require("etrobert.ai-rename").setup()

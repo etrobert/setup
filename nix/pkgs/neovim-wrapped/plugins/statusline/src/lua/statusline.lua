@@ -65,8 +65,6 @@ local function loc_section()
 	return "%#StatuslineSurface" .. name .. "#" .. sep_left .. "%#StatuslineBadge" .. name .. "# %l:%c "
 end
 
-vim.opt.statusline = "%!v:lua.require'etrobert.statusline'.render()"
-
 return {
 	render = function()
 		local active_win = vim.fn.win_getid()

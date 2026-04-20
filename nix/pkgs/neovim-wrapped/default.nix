@@ -34,6 +34,7 @@ let
         ./plugins/surround
         # ./plugins/hardtime
         ./plugins/matchup
+        ./plugins/statusline
       ];
     }).config;
 
