@@ -36,7 +36,7 @@ local sep_left = "\u{E0B2}"
 
 local function mode_section()
 	local name = mode_names[vim.fn.mode()] or "Normal"
-	return "%#StatuslineBadge" .. name .. "# " .. vim.fn.mode() .. " %#StatuslineSurface" .. name .. "#" .. sep
+	return "%#StatuslineBadge" .. name .. "# " .. name:upper() .. " %#StatuslineSurface" .. name .. "#" .. sep
 end
 
 local function branch_section()
