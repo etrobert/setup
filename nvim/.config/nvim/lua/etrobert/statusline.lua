@@ -52,9 +52,14 @@ local function filetype_section()
 	return "%#" .. hl .. "#" .. icon .. "%* " .. ft
 end
 
+local function progress_section()
+	local name = mode_names[vim.fn.mode()] or "Normal"
+	return "%#StatuslineSurfaceSep#" .. sep_left .. "%#StatuslineSurface" .. name .. "# %p%% "
+end
+
 local function loc_section()
 	local name = mode_names[vim.fn.mode()] or "Normal"
-	return "%#StatuslineBadge" .. name .. "Sep#" .. sep_left .. "%#StatuslineBadge" .. name .. "# %l:%c "
+	return "%#StatuslineSurface" .. name .. "#" .. sep_left .. "%#StatuslineBadge" .. name .. "# %l:%c "
 end
 
 -- gitsigns populates vim.b.gitsigns_head asynchronously, so the branch won't
@@ -83,6 +88,7 @@ return {
 			" %f %= ",
 			filetype_section(),
 			" ",
+			progress_section(),
 			loc_section(),
 		})
 	end,
