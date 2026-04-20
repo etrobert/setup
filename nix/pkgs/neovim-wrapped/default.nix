@@ -10,7 +10,6 @@ let
       specialArgs = { inherit self' pkgs with-git-wrapped; };
       modules = [
         ./module.nix
-        ./plugins/lualine
         ./plugins/octo
         ./plugins/fugitive
         ./plugins/fidget
@@ -35,6 +34,7 @@ let
         ./plugins/surround
         # ./plugins/hardtime
         ./plugins/matchup
+        ./plugins/statusline
       ];
     }).config;
 
