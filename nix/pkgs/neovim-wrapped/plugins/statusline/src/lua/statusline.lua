@@ -6,6 +6,7 @@ local modes = {
 	Visual = p.mauve,
 	Command = p.peach,
 	Terminal = p.teal,
+	Replace = p.red,
 }
 
 for name, color in pairs(modes) do
@@ -29,6 +30,11 @@ local mode_names = {
 	["\22"] = "Visual",
 	c = "Command",
 	t = "Terminal",
+	R = "Replace",
+	Rc = "Replace",
+	Rv = "Replace",
+	Rvc = "Replace",
+	Rvx = "Replace",
 }
 
 local sep = "\u{E0B0}"
