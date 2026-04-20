@@ -130,7 +130,7 @@ return {
 		return table.concat({
 			mode_section(),
 			branch_diagnostics_section(),
-			" %f %= ",
+			" %f %m %= ",
 			filetype_section(),
 			progress_section(),
 			loc_section(),
