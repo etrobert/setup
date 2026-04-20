@@ -80,5 +80,7 @@ _: {
       age.secrets.soft-password = {
         file = ../secrets/soft-password.age;
       };
+
+      programs.nh.enable = true;
     };
 }
