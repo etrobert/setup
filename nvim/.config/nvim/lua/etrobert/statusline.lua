@@ -54,7 +54,10 @@ end
 
 local function progress_section()
 	local name = mode_names[vim.fn.mode()] or "Normal"
-	return "%#StatuslineSurfaceSep#" .. sep_left .. "%#StatuslineSurface" .. name .. "# %p%% "
+	local cur = vim.fn.line(".")
+	local total = vim.fn.line("$")
+	local pct = cur == 1 and "Top" or cur == total and "Bot" or "%p%%"
+	return "%#StatuslineSurfaceSep#" .. sep_left .. "%#StatuslineSurface" .. name .. "# " .. pct .. " "
 end
 
 local function loc_section()
