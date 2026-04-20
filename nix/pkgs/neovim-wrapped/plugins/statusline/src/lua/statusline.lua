@@ -16,8 +16,6 @@ for name, color in pairs(modes) do
 	vim.api.nvim_set_hl(0, "StatuslineBadge" .. name, { fg = p.base, bg = color, bold = true })
 	-- Surface: mode color on surface0 (right sep of badge, branch background)
 	vim.api.nvim_set_hl(0, "StatuslineSurface" .. name, { fg = color, bg = p.surface0 })
-	-- Badge entry sep: mode color on statusline bg (left sep pointing into badge)
-	vim.api.nvim_set_hl(0, "StatuslineBadge" .. name .. "Sep", { fg = color })
 end
 
 -- Surface sep: surface0 on statusline bg (right sep out of surface)
