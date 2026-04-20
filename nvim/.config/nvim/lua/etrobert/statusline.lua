@@ -29,6 +29,14 @@ local function mode_section()
 	return "%#" .. hl .. "# " .. m .. " %#" .. hl .. "Sep#" .. sep .. "%*"
 end
 
+local function branch_section()
+	local branch = vim.b.gitsigns_head
+	if not branch or branch == "" then
+		return ""
+	end
+	return " " .. branch
+end
+
 local function filetype_section()
 	local ft = vim.bo.filetype
 	local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(ft, { default = true })
@@ -48,6 +56,7 @@ return {
 
 		return table.concat({
 			mode_section(),
+			branch_section(),
 			" %f %= ",
 			filetype_section(),
 			" %l:%c",
