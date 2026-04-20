@@ -1,18 +1,18 @@
 { pkgs, ... }:
 let
+  dependencies = with pkgs.vimPlugins; [
+    catppuccin-nvim
+    nvim-web-devicons
+    vim-fugitive
+    gitsigns-nvim
+  ];
+
   statusline = pkgs.vimUtils.buildVimPlugin {
     name = "statusline";
     src = ./src;
-    # Dependencies used for check phase
-    dependencies = [ pkgs.vimPlugins.catppuccin-nvim pkgs.vimPlugins.gitsigns-nvim ];
+    inherit dependencies;
   };
 in
 {
-  plugins = [
-    { plugin = pkgs.vimPlugins.catppuccin-nvim; }
-    { plugin = pkgs.vimPlugins.nvim-web-devicons; }
-    { plugin = pkgs.vimPlugins.vim-fugitive; }
-    { plugin = pkgs.vimPlugins.gitsigns-nvim; }
-    { plugin = statusline; }
-  ];
+  plugins = map (plugin: { inherit plugin; }) dependencies ++ [ { plugin = statusline; } ];
 }
