@@ -40,7 +40,7 @@ end
 local function filetype_section()
 	local ft = vim.bo.filetype
 	local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(ft, { default = true })
-	return "%#" .. hl .. "#" .. icon .. "%* %y"
+	return "%#" .. hl .. "#" .. icon .. "%* " .. ft
 end
 
 -- gitsigns populates vim.b.gitsigns_head asynchronously, so the branch won't
