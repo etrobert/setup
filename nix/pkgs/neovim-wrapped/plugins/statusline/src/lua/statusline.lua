@@ -69,7 +69,7 @@ local function filetype_section()
 		return ""
 	end
 	local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(ft, { default = true })
-	return "%#" .. hl .. "#" .. icon .. "%* " .. ft
+	return "%#" .. hl .. "#" .. icon .. "%* " .. ft .. " "
 end
 
 local function progress_section()
@@ -99,7 +99,6 @@ return {
 			branch_section(),
 			" %f %= ",
 			filetype_section(),
-			" ",
 			progress_section(),
 			loc_section(),
 		})
