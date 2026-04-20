@@ -43,6 +43,15 @@ local function filetype_section()
 	return "%#" .. hl .. "#" .. icon .. "%* %y"
 end
 
+-- gitsigns populates vim.b.gitsigns_head asynchronously, so the branch won't
+-- show on first render. Force a redraw as soon as gitsigns has the data.
+vim.api.nvim_create_autocmd("User", {
+	pattern = "GitSignsUpdate",
+	callback = function()
+		vim.cmd.redrawstatus()
+	end,
+})
+
 vim.opt.statusline = "%!v:lua.require'etrobert.statusline'.render()"
 
 return {
