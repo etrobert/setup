@@ -41,7 +41,7 @@ end
 
 local function branch_section()
 	local name = mode_names[vim.fn.mode()] or "Normal"
-	local branch = vim.b.gitsigns_head
+	local branch = vim.fn.FugitiveHead()
 	local content = (branch and branch ~= "") and (" \u{E725} " .. branch .. " ") or " "
 	return "%#StatuslineSurface" .. name .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
@@ -64,15 +64,6 @@ local function loc_section()
 	local name = mode_names[vim.fn.mode()] or "Normal"
 	return "%#StatuslineSurface" .. name .. "#" .. sep_left .. "%#StatuslineBadge" .. name .. "# %l:%c "
 end
-
--- gitsigns populates vim.b.gitsigns_head asynchronously, so the branch won't
--- show on first render. Force a redraw as soon as gitsigns has the data.
-vim.api.nvim_create_autocmd("User", {
-	pattern = "GitSignsUpdate",
-	callback = function()
-		vim.cmd.redrawstatus()
-	end,
-})
 
 vim.opt.statusline = "%!v:lua.require'etrobert.statusline'.render()"
 
