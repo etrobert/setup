@@ -90,7 +90,8 @@ local function branch_section()
 	local branch = get_branch()
 	local diagnostics = get_diagnostics()
 
-	local inner = branch .. diagnostics
+	local between = (branch ~= "" and diagnostics ~= "") and ("%#StatuslineSurface" .. mode .. "# \u{E0B1}") or ""
+	local inner = branch .. between .. diagnostics
 	local content = inner ~= "" and " " .. inner .. " " or " "
 	return "%#StatuslineSurface" .. mode .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
