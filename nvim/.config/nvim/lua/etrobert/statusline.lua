@@ -1,1 +1,1 @@
-vim.opt.statusline = "%f"
+vim.opt.statusline = "%{mode()} %f"
