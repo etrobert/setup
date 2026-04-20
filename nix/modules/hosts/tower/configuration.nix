@@ -10,6 +10,11 @@
 
   networking.hostName = "tower";
 
+  # Overwrite to be able to access that from LAN
+  # hairpin NAT trap
+  # Better fix would be to have DNS server on LAN
+  networking.hosts."192.168.0.18" = [ "creatures.etiennerobert.com" ];
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
