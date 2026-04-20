@@ -7,6 +7,8 @@ local modes = {
 	Command = p.peach,
 	Terminal = p.teal,
 	Replace = p.red,
+	Select = p.mauve,
+	["O-Pending"] = p.blue,
 }
 
 for name, color in pairs(modes) do
@@ -32,21 +34,30 @@ local mode_names = {
 	t = "Terminal",
 	R = "Replace",
 	Rc = "Replace",
+	Rx = "Replace",
 	Rv = "Replace",
 	Rvc = "Replace",
 	Rvx = "Replace",
+	ix = "Insert",
+	s = "Select",
+	S = "Select",
+	["\19"] = "Select",
+	no = "O-Pending",
+	nov = "O-Pending",
+	noV = "O-Pending",
+	["\22o"] = "O-Pending",
 }
 
 local sep = "\u{E0B0}"
 local sep_left = "\u{E0B2}"
 
 local function mode_section()
-	local name = mode_names[vim.fn.mode()] or "Normal"
+	local name = mode_names[vim.fn.mode(1)] or "Normal"
 	return "%#StatuslineBadge" .. name .. "# " .. name:upper() .. " %#StatuslineSurface" .. name .. "#" .. sep
 end
 
 local function branch_section()
-	local name = mode_names[vim.fn.mode()] or "Normal"
+	local name = mode_names[vim.fn.mode(1)] or "Normal"
 	local branch = vim.fn.FugitiveHead()
 	local content = (branch and branch ~= "") and (" \u{E725} " .. branch .. " ") or " "
 	return "%#StatuslineSurface" .. name .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
@@ -59,7 +70,7 @@ local function filetype_section()
 end
 
 local function progress_section()
-	local name = mode_names[vim.fn.mode()] or "Normal"
+	local name = mode_names[vim.fn.mode(1)] or "Normal"
 	local cur = vim.fn.line(".")
 	local total = vim.fn.line("$")
 	local pct = cur == 1 and "Top" or cur == total and "Bot" or "%p%%"
@@ -67,7 +78,7 @@ local function progress_section()
 end
 
 local function loc_section()
-	local name = mode_names[vim.fn.mode()] or "Normal"
+	local name = mode_names[vim.fn.mode(1)] or "Normal"
 	return "%#StatuslineSurface" .. name .. "#" .. sep_left .. "%#StatuslineBadge" .. name .. "# %l:%c "
 end
 
