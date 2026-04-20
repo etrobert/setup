@@ -1,9 +1,9 @@
--- Catppuccin Macchiato palette colors
-vim.api.nvim_set_hl(0, "StatuslineModeNormal", { fg = "#24273a", bg = "#8aadf4", bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeInsert", { fg = "#24273a", bg = "#a6da95", bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeVisual", { fg = "#24273a", bg = "#c6a0f6", bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeCommand", { fg = "#24273a", bg = "#ed8796", bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeTerminal", { fg = "#24273a", bg = "#8bd5ca", bold = true })
+local p = require("catppuccin.palettes").get_palette("macchiato")
+vim.api.nvim_set_hl(0, "StatuslineModeNormal", { fg = p.base, bg = p.blue, bold = true })
+vim.api.nvim_set_hl(0, "StatuslineModeInsert", { fg = p.base, bg = p.green, bold = true })
+vim.api.nvim_set_hl(0, "StatuslineModeVisual", { fg = p.base, bg = p.mauve, bold = true })
+vim.api.nvim_set_hl(0, "StatuslineModeCommand", { fg = p.base, bg = p.red, bold = true })
+vim.api.nvim_set_hl(0, "StatuslineModeTerminal", { fg = p.base, bg = p.teal, bold = true })
 
 local mode_hls = {
 	n = "StatuslineModeNormal",
