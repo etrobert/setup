@@ -1,28 +1,24 @@
 local p = require("catppuccin.palettes").get_palette("macchiato")
 
--- Mode badge: dark text on mode color
-vim.api.nvim_set_hl(0, "StatuslineModeNormal", { fg = p.base, bg = p.blue, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeInsert", { fg = p.base, bg = p.green, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeVisual", { fg = p.base, bg = p.mauve, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeCommand", { fg = p.base, bg = p.red, bold = true })
-vim.api.nvim_set_hl(0, "StatuslineModeTerminal", { fg = p.base, bg = p.teal, bold = true })
+local modes = {
+	Normal = p.blue,
+	Insert = p.green,
+	Visual = p.mauve,
+	Command = p.red,
+	Terminal = p.teal,
+}
 
--- Mode sep: mode color → surface0 (branch background)
-vim.api.nvim_set_hl(0, "StatuslineModeNormalSep", { fg = p.blue, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineModeInsertSep", { fg = p.green, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineModeVisualSep", { fg = p.mauve, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineModeCommandSep", { fg = p.red, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineModeTerminalSep", { fg = p.teal, bg = p.surface0 })
+for name, color in pairs(modes) do
+	-- Strong badge: dark text on mode color (mode label, loc)
+	vim.api.nvim_set_hl(0, "StatuslineBadge" .. name, { fg = p.base, bg = color, bold = true })
+	-- Surface: mode color on surface0 (right sep of badge, branch background)
+	vim.api.nvim_set_hl(0, "StatuslineSurface" .. name, { fg = color, bg = p.surface0 })
+	-- Badge entry sep: mode color on statusline bg (left sep pointing into badge)
+	vim.api.nvim_set_hl(0, "StatuslineBadge" .. name .. "Sep", { fg = color })
+end
 
--- Branch badge: mode color text on surface0
-vim.api.nvim_set_hl(0, "StatuslineBranchNormal", { fg = p.blue, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineBranchInsert", { fg = p.green, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineBranchVisual", { fg = p.mauve, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineBranchCommand", { fg = p.red, bg = p.surface0 })
-vim.api.nvim_set_hl(0, "StatuslineBranchTerminal", { fg = p.teal, bg = p.surface0 })
-
--- Branch sep: surface0 → statusline background
-vim.api.nvim_set_hl(0, "StatuslineBranchSep", { fg = p.surface0 })
+-- Surface sep: surface0 on statusline bg (right sep out of surface)
+vim.api.nvim_set_hl(0, "StatuslineSurfaceSep", { fg = p.surface0 })
 
 local mode_names = {
 	n = "Normal",
@@ -36,27 +32,29 @@ local mode_names = {
 }
 
 local sep = "\u{E0B0}"
+local sep_left = "\u{E0B2}"
 
 local function mode_section()
-	local m = vim.fn.mode()
-	local name = mode_names[m] or "Normal"
-	local hl = "StatuslineMode" .. name
-	return "%#" .. hl .. "# " .. m .. " %#" .. hl .. "Sep#" .. sep
+	local name = mode_names[vim.fn.mode()] or "Normal"
+	return "%#StatuslineBadge" .. name .. "# " .. vim.fn.mode() .. " %#StatuslineSurface" .. name .. "#" .. sep
 end
 
 local function branch_section()
-	local m = vim.fn.mode()
-	local name = mode_names[m] or "Normal"
-	local hl = "StatuslineBranch" .. name
+	local name = mode_names[vim.fn.mode()] or "Normal"
 	local branch = vim.b.gitsigns_head
 	local content = (branch and branch ~= "") and (" " .. branch .. " ") or " "
-	return "%#" .. hl .. "#" .. content .. "%#StatuslineBranchSep#" .. sep .. "%*"
+	return "%#StatuslineSurface" .. name .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
 
 local function filetype_section()
 	local ft = vim.bo.filetype
 	local icon, hl = require("nvim-web-devicons").get_icon_by_filetype(ft, { default = true })
 	return "%#" .. hl .. "#" .. icon .. "%* " .. ft
+end
+
+local function loc_section()
+	local name = mode_names[vim.fn.mode()] or "Normal"
+	return "%#StatuslineBadge" .. name .. "Sep#" .. sep_left .. "%#StatuslineBadge" .. name .. "# %l:%c "
 end
 
 -- gitsigns populates vim.b.gitsigns_head asynchronously, so the branch won't
@@ -84,7 +82,8 @@ return {
 			branch_section(),
 			" %f %= ",
 			filetype_section(),
-			" %l:%c",
+			" ",
+			loc_section(),
 		})
 	end,
 }
