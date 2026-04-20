@@ -21,6 +21,18 @@ end
 -- Surface sep: surface0 on statusline bg (right sep out of surface)
 vim.api.nvim_set_hl(0, "StatuslineSurfaceSep", { fg = p.surface0 })
 
+vim.api.nvim_set_hl(0, "StatuslineDiagError", { fg = p.red, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineDiagWarn", { fg = p.yellow, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineDiagInfo", { fg = p.sky, bg = p.surface0 })
+vim.api.nvim_set_hl(0, "StatuslineDiagHint", { fg = p.teal, bg = p.surface0 })
+
+local diag_levels = {
+	{ severity = vim.diagnostic.severity.ERROR, hl = "StatuslineDiagError", icon = "" },
+	{ severity = vim.diagnostic.severity.WARN, hl = "StatuslineDiagWarn", icon = "" },
+	{ severity = vim.diagnostic.severity.INFO, hl = "StatuslineDiagInfo", icon = "ℹ" },
+	{ severity = vim.diagnostic.severity.HINT, hl = "StatuslineDiagHint", icon = "" },
+}
+
 local mode_names = {
 	n = "Normal",
 	i = "Insert",
@@ -54,12 +66,32 @@ local function mode_section()
 	return "%#StatuslineBadge" .. mode .. "# " .. mode:upper() .. " %#StatuslineSurface" .. mode .. "#" .. sep
 end
 
-local function branch_section()
-	local mode = mode_names[vim.fn.mode(1)] or "Normal"
+local function get_branch()
 	-- gitsigns_head is a free variable read; FugitiveHead does a syscall on every render.
 	-- Prefer gitsigns, fall back to Fugitive for unnamed buffers where gitsigns doesn't attach.
 	local branch = vim.b.gitsigns_head or vim.fn.FugitiveHead()
-	local content = (branch and branch ~= "") and (" \u{E725} " .. branch .. " ") or " "
+	return (branch and branch ~= "") and (" \u{E725} " .. branch) or ""
+end
+
+local function get_diagnostics()
+	local counts = vim.diagnostic.count(0)
+	local parts = {}
+	for _, level in ipairs(diag_levels) do
+		local count = counts[level.severity] or 0
+		if count > 0 then
+			parts[#parts + 1] = "%#" .. level.hl .. "# " .. level.icon .. " " .. count
+		end
+	end
+	return table.concat(parts)
+end
+
+local function branch_section()
+	local mode = mode_names[vim.fn.mode(1)] or "Normal"
+	local branch = get_branch()
+	local diagnostics = get_diagnostics()
+
+	local inner = branch .. diagnostics
+	local content = inner ~= "" and " " .. inner .. " " or " "
 	return "%#StatuslineSurface" .. mode .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
 

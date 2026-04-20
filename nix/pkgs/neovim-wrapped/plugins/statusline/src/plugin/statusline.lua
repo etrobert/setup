@@ -15,3 +15,10 @@ vim.api.nvim_create_autocmd("User", {
 		vim.cmd.redrawstatus()
 	end,
 })
+
+-- Redraw when diagnostics change so counts update without waiting for cursor move.
+vim.api.nvim_create_autocmd("DiagnosticChanged", {
+	callback = function()
+		vim.cmd.redrawstatus()
+	end,
+})
