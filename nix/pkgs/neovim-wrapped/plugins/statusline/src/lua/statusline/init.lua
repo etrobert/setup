@@ -158,7 +158,7 @@ return {
 		return table.concat({
 			mode_section(),
 			git_status_diagnostics_section(),
-			" %f %m %= ",
+			" %<%f %m %= ",
 			filetype_section(),
 			progress_section(),
 			loc_section(),
