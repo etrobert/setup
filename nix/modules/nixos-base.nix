@@ -30,14 +30,45 @@ _: {
       services = {
         kanata = {
           enable = true;
+          # TODO: remove attribute once tap-hold-opposite-hand-release is in nixos-unstable
+          package = pkgs.kanata.overrideAttrs (_: rec {
+            doCheck = false;
+            version = "main";
+            src = pkgs.fetchFromGitHub {
+              owner = "jtroo";
+              repo = "kanata";
+              rev = "484368f406584255208dfd59359130f3769baf52";
+              hash = "sha256-IXnYds2pHLS0dOh2vDSP/0bA/8YmCuprJXAOgI0TDn4=";
+            };
+            cargoDeps = pkgs.rustPlatform.importCargoLock {
+              lockFile = "${src}/Cargo.lock";
+            };
+          });
           keyboards.default = {
             config = /* scheme */ ''
-              (defsrc
-                caps
+              (defsrc caps a s d f j k l ;)
+
+              (defhands
+                (left  q w e r t a s d f g z x c v b 1 2 3 4 5)
+                (right y u i o p h j k l ; n m , . / 6 7 8 9 0)
+                )
+
+              (defvar
+                timeout 200
               )
 
               (deflayer base
                 (tap-hold-press 0 200 esc lctl)
+
+                (tap-hold-opposite-hand-release $timeout a lmet)
+                (tap-hold-opposite-hand-release $timeout s lalt)
+                (tap-hold-opposite-hand-release $timeout d lctl)
+                (tap-hold-opposite-hand-release $timeout f lsft)
+
+                (tap-hold-opposite-hand-release $timeout j rsft)
+                (tap-hold-opposite-hand-release $timeout k rctl)
+                (tap-hold-opposite-hand-release $timeout l lalt)
+                (tap-hold-opposite-hand-release $timeout ; rmet)
               )
             '';
             extraDefCfg = "process-unmapped-keys yes";
