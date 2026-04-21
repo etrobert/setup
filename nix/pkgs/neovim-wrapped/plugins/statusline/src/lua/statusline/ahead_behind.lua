@@ -28,6 +28,10 @@ function M.update()
 	)
 end
 
+function M.invalidate()
+	last_update = 0
+end
+
 function M.get()
 	return cache
 end
