@@ -8,13 +8,12 @@ let
     nixpkgs
     nix-index-database
     home-manager
-    pronto
     agenix
     ;
 in
 {
   flake.nixosConfigurations.leod = nixpkgs.lib.nixosSystem {
-    specialArgs = { inherit self pronto agenix; };
+    specialArgs = { inherit self agenix; };
     modules = [
       ./configuration.nix
       nix-index-database.nixosModules.default

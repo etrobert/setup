@@ -5,7 +5,6 @@ _: {
         self,
         agenix,
         pkgs,
-        pronto,
         ...
       }:
       {
@@ -21,7 +20,6 @@ _: {
             inherit (pkgs.stdenv.hostPlatform) system;
 
             inputPackages = [
-              pronto.packages.${system}.default
               agenix.packages.${system}.default
             ];
 

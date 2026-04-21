@@ -8,7 +8,6 @@ let
     nixpkgs
     nix-index-database
     home-manager
-    pronto
     agenix
     ;
 in
@@ -17,7 +16,6 @@ in
     specialArgs = {
       inherit
         self
-        pronto
         agenix
         ;
     };
