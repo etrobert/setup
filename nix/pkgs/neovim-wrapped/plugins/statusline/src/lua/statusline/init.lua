@@ -87,7 +87,10 @@ local function get_branch()
 	-- gitsigns_head is a free variable read; FugitiveHead does a syscall on every render.
 	-- Prefer gitsigns, fall back to Fugitive for unnamed buffers where gitsigns doesn't attach.
 	local branch = vim.b.gitsigns_head or vim.fn.FugitiveHead()
-	return (branch and branch ~= "") and (" " .. branch) or ""
+	if not branch or branch == "" then
+		return ""
+	end
+	return " " .. branch
 end
 
 local function get_git_status()
