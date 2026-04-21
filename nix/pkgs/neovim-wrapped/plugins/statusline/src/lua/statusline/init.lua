@@ -73,7 +73,7 @@ local function get_ahead_behind()
 	local parts = {}
 
 	if data.behind > 0 then
-		parts[#parts + 1] = "\u{21E3}" .. data.behind
+		parts[#parts + 1] = "↓" .. data.behind
 	end
 
 	if data.ahead > 0 then
