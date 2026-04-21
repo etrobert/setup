@@ -1,32 +1,6 @@
 local p = require("catppuccin.palettes").get_palette("macchiato")
 
-local ahead_behind = { ahead = 0, behind = 0 }
-local ahead_behind_last_update = 0
-
-local function update_ahead_behind()
-	local now = vim.uv.now()
-	if now - ahead_behind_last_update < 5000 then
-		return
-	end
-	ahead_behind_last_update = now
-	local root = vim.fn.FugitiveWorkTree()
-	if root == "" then
-		return
-	end
-	vim.system(
-		{ "git", "-C", root, "rev-list", "--count", "--left-right", "@{u}...HEAD" },
-		{ text = true },
-		function(out)
-			if out.code == 0 and out.stdout then
-				local behind, ahead = out.stdout:match("(%d+)%s+(%d+)")
-				if behind then
-					ahead_behind = { ahead = tonumber(ahead), behind = tonumber(behind) }
-				end
-			end
-			vim.schedule(vim.cmd.redrawstatus)
-		end
-	)
-end
+local ahead_behind = require("statusline.ahead_behind")
 
 local modes = {
 	Normal = p.blue,
@@ -95,14 +69,15 @@ local function mode_section()
 end
 
 local function get_ahead_behind()
+	local data = ahead_behind.get()
 	local parts = {}
 
-	if ahead_behind.behind > 0 then
-		parts[#parts + 1] = "\u{21E3}" .. ahead_behind.behind
+	if data.behind > 0 then
+		parts[#parts + 1] = "\u{21E3}" .. data.behind
 	end
 
-	if ahead_behind.ahead > 0 then
-		parts[#parts + 1] = "↑" .. ahead_behind.ahead
+	if data.ahead > 0 then
+		parts[#parts + 1] = "↑" .. data.ahead
 	end
 
 	return table.concat(parts, " ")
@@ -175,7 +150,7 @@ return {
 			return "%f"
 		end
 
-		update_ahead_behind()
+		ahead_behind.update()
 
 		return table.concat({
 			mode_section(),
