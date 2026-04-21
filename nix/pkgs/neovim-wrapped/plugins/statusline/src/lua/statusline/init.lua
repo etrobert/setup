@@ -103,10 +103,10 @@ local function get_diagnostics()
 	for _, level in ipairs(diag_levels) do
 		local count = counts[level.severity] or 0
 		if count > 0 then
-			parts[#parts + 1] = "%#" .. level.hl .. "# " .. level.icon .. " " .. count
+			parts[#parts + 1] = "%#" .. level.hl .. "#" .. level.icon .. " " .. count
 		end
 	end
-	return table.concat(parts)
+	return table.concat(parts, " ")
 end
 
 local function git_status_diagnostics_section()
@@ -114,7 +114,7 @@ local function git_status_diagnostics_section()
 	local git_status = get_git_status()
 	local diagnostics = get_diagnostics()
 
-	local thin_sep = "%#StatuslineSurface" .. mode .. "# \u{E0B1}"
+	local thin_sep = " %#StatuslineSurface" .. mode .. "# "
 
 	local between = (git_status ~= "" and diagnostics ~= "") and thin_sep or ""
 	local inner = git_status .. between .. diagnostics
