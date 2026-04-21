@@ -1,5 +1,33 @@
 local p = require("catppuccin.palettes").get_palette("macchiato")
 
+local ahead_behind = { ahead = 0, behind = 0 }
+local ahead_behind_last_update = 0
+
+local function update_ahead_behind()
+	local now = vim.uv.now()
+	if now - ahead_behind_last_update < 5000 then
+		return
+	end
+	ahead_behind_last_update = now
+	local root = vim.fn.FugitiveWorkTree()
+	if root == "" then
+		return
+	end
+	vim.system(
+		{ "git", "-C", root, "rev-list", "--count", "--left-right", "@{u}...HEAD" },
+		{ text = true },
+		function(out)
+			if out.code == 0 and out.stdout then
+				local behind, ahead = out.stdout:match("(%d+)%s+(%d+)")
+				if behind then
+					ahead_behind = { ahead = tonumber(ahead), behind = tonumber(behind) }
+				end
+			end
+			vim.schedule(vim.cmd.redrawstatus)
+		end
+	)
+end
+
 local modes = {
 	Normal = p.blue,
 	Insert = p.green,
@@ -66,11 +94,29 @@ local function mode_section()
 	return "%#StatuslineBadge" .. mode .. "# " .. mode:upper() .. " %#StatuslineSurface" .. mode .. "#" .. sep
 end
 
+local function get_ahead_behind()
+	local parts = {}
+
+	if ahead_behind.behind > 0 then
+		parts[#parts + 1] = "\u{21E3}" .. ahead_behind.behind
+	end
+
+	if ahead_behind.ahead > 0 then
+		parts[#parts + 1] = "↑" .. ahead_behind.ahead
+	end
+
+	return table.concat(parts, " ")
+end
+
 local function get_branch()
 	-- gitsigns_head is a free variable read; FugitiveHead does a syscall on every render.
 	-- Prefer gitsigns, fall back to Fugitive for unnamed buffers where gitsigns doesn't attach.
 	local branch = vim.b.gitsigns_head or vim.fn.FugitiveHead()
 	return (branch and branch ~= "") and (" \u{E725} " .. branch) or ""
+end
+
+local function get_git_status()
+	return vim.trim(get_branch() .. " " .. get_ahead_behind())
 end
 
 local function get_diagnostics()
@@ -85,13 +131,15 @@ local function get_diagnostics()
 	return table.concat(parts)
 end
 
-local function branch_diagnostics_section()
+local function git_status_diagnostics_section()
 	local mode = mode_names[vim.fn.mode(1)] or "Normal"
-	local branch = get_branch()
+	local git_status = get_git_status()
 	local diagnostics = get_diagnostics()
 
-	local between = (branch ~= "" and diagnostics ~= "") and ("%#StatuslineSurface" .. mode .. "# \u{E0B1}") or ""
-	local inner = branch .. between .. diagnostics
+	local thin_sep = "%#StatuslineSurface" .. mode .. "# \u{E0B1}"
+
+	local between = (git_status ~= "" and diagnostics ~= "") and thin_sep or ""
+	local inner = git_status .. between .. diagnostics
 	local content = inner ~= "" and " " .. inner .. " " or " "
 	return "%#StatuslineSurface" .. mode .. "#" .. content .. "%#StatuslineSurfaceSep#" .. sep .. "%*"
 end
@@ -127,9 +175,11 @@ return {
 			return "%f"
 		end
 
+		update_ahead_behind()
+
 		return table.concat({
 			mode_section(),
-			branch_diagnostics_section(),
+			git_status_diagnostics_section(),
 			" %f %m %= ",
 			filetype_section(),
 			progress_section(),
