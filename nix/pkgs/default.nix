@@ -37,6 +37,7 @@ _: {
         flush-dns = pkgs.callPackage ./flush-dns { };
         resize-window = pkgs.callPackage ./resize-window { };
         finder = pkgs.callPackage ./finder { };
+        raycast-scripts = pkgs.callPackage ./raycast-scripts { };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit inputs'; };
