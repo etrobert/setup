@@ -18,7 +18,7 @@ let
     [app-name=Firefox]
     ignore-timeout=1
 
-    [app-name="Zen Browser"]
+    [app-name="Zen"]
     ignore-timeout=1
   '';
 in
