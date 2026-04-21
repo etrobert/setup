@@ -29,7 +29,6 @@ let
         # ./plugins/workspace-diagnostics
         ./plugins/lspconfig
         ./plugins/harpoon
-        ./plugins/cmp
         ./plugins/treesitter
         ./plugins/surround
         # ./plugins/hardtime
