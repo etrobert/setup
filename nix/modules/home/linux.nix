@@ -31,9 +31,10 @@
           general = {
             hide_cursor = true;
           };
-          auth = {
-            "fingerprint:enabled" = true;
-          };
+          # TODO: this is an experiment to see if we have faster wake times if we don't have fingerprint auth enabled.
+          # auth = {
+          #   "fingerprint:enabled" = true;
+          # };
           background = [
             {
               path = "screenshot";
