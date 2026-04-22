@@ -9,23 +9,25 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
+# TODO: Fix multi-monitor support
+
 DIRECTION=$1
 
 # Get the focused monitor from Hyprland
-MONITOR=$(hyprctl activeworkspace -j | jq -r '.monitor')
+# MONITOR=$(hyprctl activeworkspace -j | jq -r '.monitor')
 
 # Find the backlight device for this monitor by checking device paths
 DEVICE_ARG=""
-for bl in /sys/class/backlight/*; do
-  if readlink -f "$bl" | grep -q "card[0-9]*-${MONITOR}"; then
-    DEVICE_ARG="-d $(basename "$bl")"
-    break
-  fi
-done
+# for bl in /sys/class/backlight/*; do
+#   if readlink -f "$bl" | grep -q "card[0-9]*-${MONITOR}"; then
+#     DEVICE_ARG="-d $(basename "$bl")"
+#     break
+#   fi
+# done
 
-if [ -z "$DEVICE_ARG" ]; then
-  echo "Warning: No backlight device found for monitor $MONITOR, using default" >&2
-fi
+# if [ -z "$DEVICE_ARG" ]; then
+#   echo "Warning: No backlight device found for monitor $MONITOR, using default" >&2
+# fi
 
 EXPONENT=2
 INCREMENT=2.5%
