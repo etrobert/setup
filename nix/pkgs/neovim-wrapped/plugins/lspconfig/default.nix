@@ -16,6 +16,7 @@
         vscode-langservers-extracted
         rust-analyzer
         nixd
+        openscad-lsp
       ];
     }
   ];
