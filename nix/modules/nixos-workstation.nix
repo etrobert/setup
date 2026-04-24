@@ -118,7 +118,6 @@ _: {
             mpc # Minimalist command line interface to MPD
             pavucontrol
             playerctl
-            signal-desktop
             slurp
             usbutils # provides lsusb
             whatsapp-electron
