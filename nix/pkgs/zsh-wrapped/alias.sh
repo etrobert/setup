@@ -11,7 +11,7 @@ alias mv='mv --interactive'
 alias cp='cp --interactive'
 
 # Create dirs recursively and verbosely
-alias mkdir='mkdir --parents --verbose'
+alias mkdir='mkdir -pv'
 
 alias LS='ls'
 alias sl='ls'
