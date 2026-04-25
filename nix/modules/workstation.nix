@@ -60,7 +60,7 @@ _: {
               nodejs_24 # nodejs_latest does not always have cache ready
               ollama
               opencode
-              openscad
+              openscad-unstable
               pnpm
               python3
               shellcheck
