@@ -69,7 +69,7 @@ _: {
               telegram-desktop
               spotify
               unzip
-              # yt-dlp # TODO: Add back once the macos cache is back
+              yt-dlp
             ];
           in
           inputPackages ++ customPackages ++ externalPackages;
