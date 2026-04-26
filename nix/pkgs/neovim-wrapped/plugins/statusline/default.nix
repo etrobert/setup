@@ -8,7 +8,8 @@ let
   ];
 
   statusline = pkgs.vimUtils.buildVimPlugin {
-    name = "statusline";
+    pname = "statusline";
+    version = "0";
     src = ./src;
     inherit dependencies;
   };
