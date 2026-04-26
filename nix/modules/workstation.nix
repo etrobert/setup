@@ -87,6 +87,13 @@ _: {
 
         programs.nix-index-database.comma.enable = true;
 
+        # TODO: remove when direnv checkPhase no longer hangs on macOS (https://github.com/direnv/direnv/issues)
+        nixpkgs.overlays = [
+          (_: prev: {
+            direnv = prev.direnv.overrideAttrs (_: { doCheck = false; });
+          })
+        ];
+
         programs.direnv = {
           enable = true;
           settings.global.hide_env_diff = true;
