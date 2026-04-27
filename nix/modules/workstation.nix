@@ -12,6 +12,7 @@ _: {
           "claude-code"
           "discord"
           "github-copilot-cli"
+          "google-chrome"
           "spotify"
         ];
 
@@ -53,6 +54,7 @@ _: {
               # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
               gnumake
               go
+              google-chrome
               home-manager
               hyperfine # Command-line benchmarking tool
               jqp # TUI playground to experiment with jq
@@ -90,7 +92,9 @@ _: {
         # TODO: remove when direnv checkPhase no longer hangs on macOS (https://github.com/direnv/direnv/issues)
         nixpkgs.overlays = [
           (_: prev: {
-            direnv = prev.direnv.overrideAttrs (_: { doCheck = false; });
+            direnv = prev.direnv.overrideAttrs (_: {
+              doCheck = false;
+            });
           })
         ];
 
