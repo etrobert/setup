@@ -65,6 +65,7 @@
           ./modules/home/linux.nix
           ./modules/home/common.nix
           ./modules/home/darwin.nix
+          ./modules/home/hypridle.nix
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
           ./modules/nixos-base.nix
