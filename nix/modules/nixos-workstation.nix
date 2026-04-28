@@ -107,6 +107,7 @@ _: {
 
           externalPackages = with pkgs; [
             linuxPackages.cpupower
+            bambu-studio
             brightnessctl
             chromium
             ddcutil

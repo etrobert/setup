@@ -6,6 +6,7 @@
   niri,
   fuzzel,
   hyprpaper,
+  xwayland-satellite,
   dev ? false,
 }:
 let
@@ -16,6 +17,7 @@ let
     self'.packages.brightness-control
     fuzzel
     hyprpaper
+    xwayland-satellite
   ];
 in
 symlinkJoin {
