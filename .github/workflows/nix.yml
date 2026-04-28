@@ -55,12 +55,11 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Free disk space
+      - name: Free Disk Space (Ubuntu)
         if: matrix.platform != 'darwin'
-        run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
-            /opt/hostedtoolcache/CodeQL /usr/local/share/boost \
-            "$AGENT_TOOLSDIRECTORY"
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
 
       - uses: actions/checkout@v6
 
