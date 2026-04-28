@@ -19,6 +19,13 @@ _: {
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
 
+      # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
+      services.avahi = {
+        enable = true;
+        nssmdns4 = true;
+        openFirewall = true;
+      };
+
       services = {
         # Register DDC/CI devices on I2C buses for backlight control
         # (auto-probing is unavailable on kernel 6.8+)
