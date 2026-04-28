@@ -22,10 +22,7 @@ in
         { pkgs, ... }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [
-            self.homeModules.linux
-            self.homeModules.hypridle
-          ];
+          modules = [ self.homeModules.leod ];
         }
       );
 

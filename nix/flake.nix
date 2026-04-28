@@ -66,6 +66,7 @@
           ./modules/home/common.nix
           ./modules/home/darwin.nix
           ./modules/home/hypridle.nix
+          ./modules/home/leod.nix
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
           ./modules/nixos-base.nix
