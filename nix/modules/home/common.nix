@@ -41,6 +41,7 @@ _: {
       programs = {
         firefox = {
           enable = true;
+          configPath = "${config.xdg.configHome}/mozilla/firefox";
           nativeMessagingHosts = lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.firefoxpwa ];
           policies = browserConfig.sharedPolicies;
           profiles.default = {
