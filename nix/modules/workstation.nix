@@ -68,7 +68,6 @@ _: {
               shellcheck
               signal-desktop
               sox # Voice for claude
-              telegram-desktop
               spotify
               unzip
               yt-dlp
