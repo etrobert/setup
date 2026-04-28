@@ -55,11 +55,14 @@ jobs:
       fail-fast: false
 
     steps:
+      # large-packages and docker-images are slow (apt-get). Enable them if disk space becomes an issue.
       - name: Free Disk Space (Ubuntu)
         if: matrix.platform != 'darwin'
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: true
+          large-packages: false
+          docker-images: false
 
       - uses: actions/checkout@v6
 
