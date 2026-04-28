@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
+      "Skill(update-config)",
       "WebSearch",
+      "Read(//tmp/**)",
+      "Read(//home/soft/**)",
       "Bash(systemctl:*)",
       "Bash(systemd-analyze:*)",
       "Bash(journalctl:*)",
@@ -30,6 +33,7 @@
       "Bash(git ls-tree:*)",
       "Bash(grep:*)",
       "Bash(gh search:*)",
+      "Bash(gh pr:*)",
       "Bash(gh api:*)",
       "Bash(ghostty +list-keybinds:*)",
       "Bash(hyprctl monitors:*)",
@@ -55,6 +59,7 @@
       "Bash(mpc status:*)",
       "Bash(mpc outputs:*)",
       "Bash(mpc stats:*)",
+      "Bash(nixos-rebuild build *)",
       "Bash(shellcheck:*)",
       "Bash(pgrep:*)",
       "Bash(awk:*)",
@@ -79,6 +84,18 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:wiki.archlinux.org)",
       "WebFetch(domain:wiki.hyprland.org)",
+      "WebFetch(domain:www.msi.com)",
+      "WebFetch(domain:cdn.coollabs.io)",
+      "WebFetch(domain:flashmyboard.com)",
+      "WebFetch(domain:www.station-drivers.com)",
+      "WebFetch(domain:forums.anandtech.com)",
+      "WebFetch(domain:wccftech.com)",
+      "WebFetch(domain:www.tomshardware.com)",
+      "WebFetch(domain:forum-en.msi.com)",
+      "WebFetch(domain:www.phoronix.com)",
+      "WebFetch(domain:lore.kernel.org)",
+      "WebFetch(domain:bbs.archlinux.org)",
+      "WebFetch(domain:forums.unraid.net)",
       "WebFetch(domain:wiki.hypr.land)"
     ]
   }
