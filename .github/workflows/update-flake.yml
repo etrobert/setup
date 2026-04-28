@@ -18,8 +18,40 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-flakehub: false
+
+      - uses: cachix/cachix-action@v17
+        with:
+          name: soft-nix
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build pre-update system (leod)
+        run: |
+          nix build ./nix#nixosConfigurations.leod.config.system.build.toplevel \
+            --accept-flake-config \
+            --no-link \
+            --print-out-paths > /tmp/before
+
       - name: Update flake inputs
         run: nix flake update --flake ./nix --accept-flake-config
+
+      - name: Build post-update system (leod)
+        run: |
+          nix build ./nix#nixosConfigurations.leod.config.system.build.toplevel \
+            --accept-flake-config \
+            --no-link \
+            --print-out-paths > /tmp/after
+
+      - name: Compute package diff
+        id: diff
+        run: |
+          {
+            echo "diff<<EOF"
+            nix store diff-closures "$(cat /tmp/before)" "$(cat /tmp/after)"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
@@ -30,6 +62,10 @@ jobs:
           body: |
             Automated flake input update.
 
-            Review the `flake.lock` diff and merge when CI passes.
+            ## Package changes (leod)
+
+            ```
+            ${{ steps.diff.outputs.diff }}
+            ```
           branch: flake-update
           delete-branch: true
