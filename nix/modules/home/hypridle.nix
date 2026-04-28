@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+_: {
   flake.homeModules.hypridle =
     { ... }:
     {
