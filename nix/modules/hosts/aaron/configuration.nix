@@ -165,6 +165,9 @@ in
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
+  # TODO: remove when direnv no longer hangs on macOS (https://github.com/direnv/direnv/issues)
+  programs.direnv.enable = lib.mkForce false;
+
   home-manager.users.soft = self.homeModules.darwin;
 
   # Used for backwards compatibility, please read the changelog before changing.
