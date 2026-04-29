@@ -29,6 +29,7 @@
           scheme
           rust
           zsh
+          latex
         ] ++ [ (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-openscad) ]
       );
       luaConfig = builtins.readFile ./config.lua;
