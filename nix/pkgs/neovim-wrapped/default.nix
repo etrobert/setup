@@ -78,8 +78,9 @@ pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
     dofile(vim.fn.stdpath("config") .. "/init.lua")
   '';
   wrapperArgs = [
-    "--set"
+    "--prefix"
     "PATH"
+    ":"
     (lib.toString path)
   ];
 }

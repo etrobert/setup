@@ -17,6 +17,7 @@
         rust-analyzer
         nixd
         openscad-lsp
+        texlab
       ];
     }
   ];

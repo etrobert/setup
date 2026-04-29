@@ -80,5 +80,6 @@ vim.lsp.enable({
 	"openscad_lsp",
 	"cssls",
 	"html",
+	"texlab",
 	-- "copilot",
 })
