@@ -9,11 +9,12 @@ let
     nix-index-database
     home-manager
     agenix
+    nixpkgs-darwin-pins
     ;
 in
 {
   flake.darwinConfigurations.aaron = nix-darwin.lib.darwinSystem {
-    specialArgs = { inherit self agenix; };
+    specialArgs = { inherit self agenix nixpkgs-darwin-pins; };
     modules = [
       ./configuration.nix
       nix-index-database.darwinModules.nix-index
