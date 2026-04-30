@@ -15,6 +15,9 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Pinned nixpkgs for darwin packages that lack binary cache on newer revs.
+    # Update manually when the package is cached; excluded from automated updates.
+    nixpkgs-darwin-pins.url = "github:nixos/nixpkgs/0726a0ecb6d4e08f6adced58726b95db924cef57";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
