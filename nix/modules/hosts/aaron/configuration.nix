@@ -34,8 +34,8 @@ in
   # Packages pinned to older nixpkgs until binary cache is available.
   # Remove entries once the package has a cached build for aarch64-darwin.
   nixpkgs.overlays = [
-    (final: prev: {
-      deno = nixpkgs-darwin-pins.legacyPackages.aarch64-darwin.deno;
+    (_final: _prev: {
+      inherit (nixpkgs-darwin-pins.legacyPackages.aarch64-darwin) deno;
     })
   ];
 
