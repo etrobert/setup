@@ -127,7 +127,6 @@ _: {
             pavucontrol
             playerctl
             slurp
-            telegram-desktop
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard

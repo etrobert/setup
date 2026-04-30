@@ -69,6 +69,7 @@ _: {
               signal-desktop
               sox # Voice for claude
               spotify
+              telegram-desktop
               unzip
               yt-dlp
             ];
