@@ -158,6 +158,10 @@ _: {
         };
 
         hyprlock.enable = true;
+
+        # Note: moved here because the nix-index-database's
+        # command-not-found hangs on macos' zsh
+        nix-index-database.comma.enable = true;
       };
 
       home-manager.users.soft = self.homeModules.linux;

@@ -87,8 +87,6 @@ _: {
 
         fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
 
-        programs.nix-index-database.comma.enable = true;
-
         programs.direnv = {
           enable = true;
           settings.global.hide_env_diff = true;

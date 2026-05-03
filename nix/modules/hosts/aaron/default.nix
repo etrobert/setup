@@ -6,7 +6,6 @@
 let
   inherit (inputs)
     nix-darwin
-    nix-index-database
     home-manager
     agenix
     nixpkgs-darwin-pins
@@ -17,7 +16,6 @@ in
     specialArgs = { inherit self agenix nixpkgs-darwin-pins; };
     modules = [
       ./configuration.nix
-      nix-index-database.darwinModules.nix-index
       home-manager.darwinModules.home-manager
       agenix.darwinModules.default
       self.darwinModules.workstation
