@@ -15,7 +15,7 @@ let
   wallpaper = ../../../../hyprland/.config/hypr/saint-levant.jpg;
 
   inherit (pkgs.stdenv.hostPlatform) system;
-  inherit (self.packages.${system}) zsh-wrapped;
+  zsh-wrapped = (self.packages.${system}.zsh-wrapped).override { enablePronto = false; };
 in
 {
   allowedUnfreePackages = [

@@ -10,6 +10,7 @@
   zsh-syntax-highlighting,
   fzf,
   runCommandLocal,
+  enablePronto ? true,
 }:
 let
   pronto = lib.getExe inputs'.pronto.packages.default;
@@ -17,9 +18,11 @@ let
   zshrcFinal = writeText "zshrc" /* zsh */ ''
     source ${./zshrc}
 
-    setopt PROMPT_SUBST
-    PS1='$(${pronto} $? --zsh)'
-    RPROMPT='$(${pronto} $? --rprompt --zsh)'
+    ${lib.optionalString enablePronto /* zsh */ ''
+      setopt PROMPT_SUBST
+      PS1='$(${pronto} $? --zsh)'
+      RPROMPT='$(${pronto} $? --rprompt --zsh)'
+    ''}
 
     source ${./alias.sh}
     if [[ $options[zle] = on ]]; then
