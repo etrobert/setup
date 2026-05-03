@@ -81,6 +81,9 @@ _: {
         file = ../secrets/soft-password.age;
       };
 
-      programs.nh.enable = true;
+      programs.nh = {
+        enable = true;
+        flake = "/home/soft/setup/nix";
+      };
     };
 }
