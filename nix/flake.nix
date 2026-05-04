@@ -102,6 +102,7 @@
               config.allowUnfreePredicate =
                 pkg:
                 builtins.elem (lib.getName pkg) [
+                  "cmp-emoji"
                   "copilot.vim"
                   "vscode"
                   "vscode-extension-ms-vsliveshare-vsliveshare"
