@@ -42,39 +42,42 @@ jobs:
       - name: Update flake inputs
         run: nix flake update --flake ./nix --accept-flake-config
 
+      - name: Create pull request
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: "chore: update flake inputs"
+          title: "chore: update flake inputs"
+          body: Automated flake input update.
+          branch: flake-update
+          delete-branch: true
+
       - name: Build post-update system (leod)
         id: post_build
-        continue-on-error: true
         run: |
           nix build ./nix#nixosConfigurations.leod.config.system.build.toplevel \
             --accept-flake-config \
             --no-link \
             --print-out-paths > /tmp/after
 
-      - name: Compute package diff
-        id: diff
-        if: steps.post_build.outcome == 'success'
+      - name: Update PR body with diff
+        if: steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
           {
-            echo "diff<<EOF"
-            nix store diff-closures "$(cat /tmp/before)" "$(cat /tmp/after)" \
-              | sed -e 's/\x1B\[[0-9;]*m//g' -e 's/^.*added.*$/+&/' -e 's/^.*removed.*$/-&/'
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
-
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.PAT }}
-          commit-message: "chore: update flake inputs"
-          title: "chore: update flake inputs"
-          body: |
-            Automated flake input update.
-
-            ## Package changes (leod)
-
-            ```diff
-            ${{ steps.post_build.outcome == 'success' && steps.diff.outputs.diff || 'build failed — see workflow run' }}
-            ```
-          branch: flake-update
-          delete-branch: true
+            echo "Automated flake input update."
+            echo ""
+            echo "## Package changes (leod)"
+            echo ""
+            if [ "${{ steps.post_build.outcome }}" = "success" ]; then
+              printf '```diff\n'
+              nix store diff-closures "$(cat /tmp/before)" "$(cat /tmp/after)" \
+                | sed -e 's/\x1B\[[0-9;]*m//g' -e 's/^.*added.*$/+&/' -e 's/^.*removed.*$/-&/'
+              printf '```\n'
+            else
+              echo "_Build failed — see workflow run for details._"
+            fi
+          } > /tmp/pr-body.md
+          gh pr edit "${{ steps.cpr.outputs.pull-request-number }}" --body-file /tmp/pr-body.md
