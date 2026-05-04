@@ -10,6 +10,7 @@ _: {
       {
         allowedUnfreePackages = [
           "claude-code"
+          "cmp-emoji"
           "discord"
           "github-copilot-cli"
           "google-chrome"
