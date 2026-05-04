@@ -22,7 +22,9 @@ jobs:
         with:
           use-flakehub: false
 
+      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't fail the job
       - uses: cachix/cachix-action@v17
+        continue-on-error: true
         with:
           name: soft-nix
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
@@ -76,7 +78,9 @@ jobs:
         with:
           use-flakehub: false
 
+      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't fail the job
       - uses: cachix/cachix-action@v17
+        continue-on-error: true
         with:
           name: soft-nix
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
