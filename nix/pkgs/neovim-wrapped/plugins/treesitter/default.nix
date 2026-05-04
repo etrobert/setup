@@ -3,7 +3,9 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.nvim-treesitter.withPlugins (
-        p: with p; [
+        p:
+        with p;
+        [
           bash
           caddy
           c
@@ -30,7 +32,8 @@
           rust
           zsh
           latex
-        ] ++ [ (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-openscad) ]
+        ]
+        ++ [ (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-openscad) ]
       );
       luaConfig = builtins.readFile ./config.lua;
     }
