@@ -10,9 +10,7 @@ _: {
     {
       packages = {
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
-        git-wrapped = pkgs.callPackage ./git-wrapped {
-          # inherit self';
-        };
+        git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         vim-wrapped = pkgs.callPackage ./vim-wrapped { };

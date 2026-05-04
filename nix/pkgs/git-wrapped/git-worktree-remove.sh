@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-WORKTREE_PATH="$1"
-
-if [ -z "$WORKTREE_PATH" ]; then
+if [ $# -eq 0 ]; then
   echo "Usage: $0 <branch-name>"
   exit 1
 fi
+
+WORKTREE_PATH="$1"
 
 SESSION_NAME=$(basename "$WORKTREE_PATH")
 

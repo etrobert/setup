@@ -1,15 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-set -e
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <worktree-name>"
+  exit 1
+fi
 
 REPO_NAME=$(basename "$(git remote get-url origin)" .git)
 
 BRANCH="$1"
-
-if [ -z "$BRANCH" ]; then
-  echo "Usage: $0 <worktree-name>"
-  exit 1
-fi
 
 NAME="$REPO_NAME-$BRANCH"
 
