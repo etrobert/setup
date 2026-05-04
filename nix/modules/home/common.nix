@@ -23,8 +23,6 @@ _: {
           ".profile".source = ../../../profile/.profile;
 
           ".config/nvim".source = symlink "nvim/.config/nvim";
-
-          ".config/ghostty/config".source = symlink "ghostty/.config/ghostty/config";
         };
 
         # This value determines the Home Manager release that your

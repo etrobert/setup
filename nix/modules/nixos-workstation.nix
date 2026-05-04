@@ -110,6 +110,7 @@ _: {
             lock-suspend
             check-bt-profile
             zen-browser-wrapped
+            ghostty-wrapped
           ];
 
           externalPackages = with pkgs; [
@@ -119,7 +120,6 @@ _: {
             chromium
             ddcutil
             firefoxpwa
-            ghostty
             gnome-power-manager # TODO: find a better one
             kdePackages.okular
             grim

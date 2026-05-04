@@ -113,8 +113,6 @@ in
       raycast
       defaultbrowser
       whatsapp-for-mac
-      ghostty-bin
-
       (writeShellApplication {
         # This is necessary because the darwin tailscale module does not include authkey option
         name = "tailscale-up";
@@ -125,6 +123,7 @@ in
       flush-dns
       resize-window
       finder
+      ghostty-wrapped
     ]);
 
   launchd.daemons.caps-lock-to-control = {
