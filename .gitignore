@@ -12,4 +12,3 @@ fish/.config/fish/fish_variables
 .DS_Store
 .aider.*
 result
-.direnv
