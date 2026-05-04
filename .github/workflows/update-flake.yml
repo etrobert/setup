@@ -43,6 +43,8 @@ jobs:
         run: nix flake update --flake ./nix --accept-flake-config
 
       - name: Build post-update system (leod)
+        id: post_build
+        continue-on-error: true
         run: |
           nix build ./nix#nixosConfigurations.leod.config.system.build.toplevel \
             --accept-flake-config \
@@ -51,6 +53,7 @@ jobs:
 
       - name: Compute package diff
         id: diff
+        if: steps.post_build.outcome == 'success'
         run: |
           {
             echo "diff<<EOF"
@@ -71,7 +74,7 @@ jobs:
             ## Package changes (leod)
 
             ```diff
-            ${{ steps.diff.outputs.diff }}
+            ${{ steps.post_build.outcome == 'success' && steps.diff.outputs.diff || 'build failed — see workflow run' }}
             ```
           branch: flake-update
           delete-branch: true
