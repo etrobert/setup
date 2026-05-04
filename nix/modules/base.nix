@@ -53,6 +53,17 @@ _: {
 
         age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
 
+        programs.ssh.extraConfig = ''
+          Host *
+            ServerAliveInterval 10
+            ServerAliveCountMax 3
+            ControlMaster auto
+            ControlPersist 3600
+            ControlPath ~/.ssh/ctrl-%r@%h:%p
+            ForwardAgent yes
+            AddKeysToAgent yes
+        '';
+
         programs.ssh.knownHosts = {
           pi = {
             hostNames = [ "pi" ];
