@@ -36,6 +36,7 @@ let
         ./plugins/matchup
         ./plugins/statix
         ./plugins/deadnix
+        ./plugins/nix-check
         ./plugins/statusline
       ];
     }).config;
