@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
 
 WORKTREE_PATH="$1"
 
@@ -11,12 +13,10 @@ fi
 
 SESSION_NAME=$(basename "$WORKTREE_PATH")
 
-# Kill tmux session if it exists
 if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
   tmux kill-session -t "$SESSION_NAME"
 fi
 
-# Remove worktree
 git worktree remove "$WORKTREE_PATH"
 
 echo "Cleaned up $SESSION_NAME"

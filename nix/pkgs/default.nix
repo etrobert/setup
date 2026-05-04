@@ -23,6 +23,8 @@ _: {
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
+        git-worktree-add = pkgs.callPackage ./git-worktree-add { inherit self'; };
+        git-worktree-remove = pkgs.callPackage ./git-worktree-remove { };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
         nixplatforms = pkgs.callPackage ./nixplatforms.nix { };

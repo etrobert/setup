@@ -31,6 +31,8 @@ _: {
               vscode-wrapped
               gen-commit-msg
               git-find-commit
+              git-worktree-add
+              git-worktree-remove
               pm
               pdfshrink
               nixplatforms
