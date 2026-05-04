@@ -35,6 +35,7 @@ let
         # ./plugins/hardtime
         ./plugins/matchup
         ./plugins/statix
+        ./plugins/deadnix
         ./plugins/statusline
       ];
     }).config;
