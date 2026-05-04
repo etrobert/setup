@@ -13,14 +13,12 @@ $if mode=vi
 # set keyseq-timeout 100
 
 set keymap vi-command
-# these are for vi-command mode
 "\C-P": history-search-backward
 "\C-N": history-search-forward
 j: history-search-forward
 k: history-search-backward
 
 set keymap vi-insert
-# these are for vi-insert mode
 "\C-P": history-search-backward
 "\C-N": history-search-forward
 "\C-A": beginning-of-line

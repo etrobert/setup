@@ -1,0 +1,38 @@
+if [[ $(uname) == Darwin ]]; then
+  export BASH_SILENCE_DEPRECATION_WARNING=1
+fi
+
+PROMPT_COMMAND='history -a; precmd'
+
+if command -v gdate >/dev/null 2>&1; then
+  DATE='gdate'
+else
+  DATE='date'
+fi
+
+export CMD_TIMER_MS=
+
+preexec() {
+  if [[ -z $CMD_TIMER_MS ]]; then
+    CMD_TIMER_MS=$($DATE +%s%3N)
+  fi
+}
+
+precmd() {
+  if [[ -z $CMD_TIMER_MS ]]; then
+    return
+  fi
+  local now
+  now=$($DATE +%s%3N)
+  export LAST_CMD_TIME=$((now - CMD_TIMER_MS))
+  unset CMD_TIMER_MS
+}
+
+trap 'preexec' DEBUG
+
+stty -ixon
+shopt -s globstar dotglob
+bind '"\C-f": edit-and-execute-command'
+
+HISTSIZE=
+HISTFILESIZE=

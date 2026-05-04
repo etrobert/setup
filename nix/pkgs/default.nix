@@ -9,6 +9,7 @@ _: {
     }:
     {
       packages = {
+        bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
         git-wrapped = pkgs.callPackage ./git-wrapped {
           # inherit self';
         };

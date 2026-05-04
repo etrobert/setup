@@ -32,6 +32,7 @@ _: {
 
         environment.systemPackages =
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+            bash-wrapped
             git-wrapped
             tmux-wrapped
             tmux-sessionizer
