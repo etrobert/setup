@@ -59,7 +59,7 @@ _: {
         volume-control = pkgs.callPackage ./volume-control { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         album-art-wallpaper = pkgs.callPackage ./album-art-wallpaper.nix { };
-        ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped { ghostty = pkgs.ghostty; };
+        ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped { inherit (pkgs) ghostty; };
       };
     };
 }

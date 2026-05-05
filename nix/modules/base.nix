@@ -54,37 +54,39 @@ _: {
 
         age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
 
-        programs.ssh.extraConfig = ''
-          Host *
-            ServerAliveInterval 10
-            ServerAliveCountMax 3
-            ControlMaster auto
-            ControlPersist 3600
-            ControlPath ~/.ssh/ctrl-%r@%h:%p
-            ForwardAgent yes
-            AddKeysToAgent yes
-        '';
+        programs = {
+          ssh.extraConfig = ''
+            Host *
+              ServerAliveInterval 10
+              ServerAliveCountMax 3
+              ControlMaster auto
+              ControlPersist 3600
+              ControlPath ~/.ssh/ctrl-%r@%h:%p
+              ForwardAgent yes
+              AddKeysToAgent yes
+          '';
 
-        programs.ssh.knownHosts = {
-          pi = {
-            hostNames = [ "pi" ];
-            publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
+          ssh.knownHosts = {
+            pi = {
+              hostNames = [ "pi" ];
+              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
+            };
+            tower = {
+              hostNames = [ "tower" ];
+              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
+            };
+            aaron = {
+              hostNames = [ "aaron" ];
+              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/Y38NV8a/9rfDq+7W1UFfAFDo8SkwQ5JAl/U24u0ne";
+            };
           };
-          tower = {
-            hostNames = [ "tower" ];
-            publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
-          };
-          aaron = {
-            hostNames = [ "aaron" ];
-            publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/Y38NV8a/9rfDq+7W1UFfAFDo8SkwQ5JAl/U24u0ne";
-          };
-        };
 
-        programs.zsh = {
-          enable = true;
-          # Disable system compinit; we call compinit -u in .zshrc to skip
-          # insecure directory warnings caused by Nix store paths.
-          enableGlobalCompInit = false;
+          zsh = {
+            enable = true;
+            # Disable system compinit; we call compinit -u in .zshrc to skip
+            # insecure directory warnings caused by Nix store paths.
+            enableGlobalCompInit = false;
+          };
         };
 
         users.users.soft.openssh.authorizedKeys.keys = [
