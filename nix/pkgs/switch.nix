@@ -14,6 +14,7 @@ let
     '';
 
   nhSubcommand = if pkgs.stdenv.isLinux then "os" else "darwin";
+  flakePath = if pkgs.stdenv.isLinux then "/home/soft/setup/nix" else "/Users/soft/setup/nix";
 in
 pkgs.writeShellApplication {
   name = "switch";
@@ -26,5 +27,5 @@ pkgs.writeShellApplication {
     sudo
   ];
   inheritPath = false;
-  text = "nh ${nhSubcommand} switch";
+  text = "nh ${nhSubcommand} switch ${flakePath}";
 }
