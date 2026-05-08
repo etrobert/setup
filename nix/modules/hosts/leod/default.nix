@@ -6,7 +6,6 @@
 let
   inherit (inputs)
     nixpkgs
-    nix-index-database
     home-manager
     agenix
     ;
@@ -16,7 +15,7 @@ in
     specialArgs = { inherit self agenix; };
     modules = [
       ./configuration.nix
-      nix-index-database.nixosModules.default
+      self.nixosModules.nixIndex
       home-manager.nixosModules.home-manager
       agenix.nixosModules.default
       self.nixosModules.nixosWorkstation
