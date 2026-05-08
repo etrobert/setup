@@ -1,5 +1,11 @@
 { pkgs, ... }:
 let
+  snippets-extras = pkgs.vimUtils.buildVimPlugin {
+    name = "snippets-extras";
+    src = ./snippets-extras;
+    dependencies = [ pkgs.vimPlugins.luasnip ];
+  };
+
   tailwindcss-colorizer-cmp-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "tailwindcss-colorizer-cmp-nvim";
     version = "2024-01-01";
@@ -26,6 +32,7 @@ in
     { plugin = pkgs.vimPlugins.cmp-nvim-lsp-signature-help; }
     { plugin = tailwindcss-colorizer-cmp-nvim; }
     { plugin = pkgs.vimPlugins.friendly-snippets; }
+    { plugin = snippets-extras; }
     { plugin = pkgs.vimPlugins.cmp-emoji; }
   ];
 }
