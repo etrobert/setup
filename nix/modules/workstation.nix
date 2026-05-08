@@ -43,6 +43,7 @@ _: {
               act
               adwaita-icon-theme
               audacity
+              bitwarden-desktop
               btop
               bun
               claude-code # cache not ready yet
