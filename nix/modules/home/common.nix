@@ -19,8 +19,6 @@ _: {
           ".config/home-manager".source = symlink "nix";
 
           ".prettierrc".text = builtins.toJSON { proseWrap = "always"; };
-
-          ".config/nvim".source = symlink "nvim/.config/nvim";
         };
 
         # This value determines the Home Manager release that your
