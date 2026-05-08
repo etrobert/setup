@@ -38,6 +38,8 @@ let
         ./plugins/deadnix
         ./plugins/nix-check
         ./plugins/statusline
+        ./plugins/remap
+        ./plugins/set
         ./plugins/bookmarks
         ./plugins/code-exec
         ./plugins/ask
@@ -83,9 +85,7 @@ in
 pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
   plugins = map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
   # TODO: Make a non dev variant
-  luaRcContent = /* lua */ ''
-    dofile(vim.fn.stdpath("config") .. "/init.lua")
-  '';
+  luaRcContent = builtins.readFile ./init.lua;
   wrapperArgs = [
     "--prefix"
     "PATH"
