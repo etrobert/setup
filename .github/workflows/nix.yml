@@ -29,6 +29,10 @@ jobs:
           name: soft-nix
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
+      - name: Format Check
+        run: nix fmt . -- --ci
+        working-directory: nix
+
       - name: Flake Check
         run: nix flake check ./nix --accept-flake-config
 
