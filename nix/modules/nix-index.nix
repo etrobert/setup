@@ -1,10 +1,8 @@
 { inputs, ... }:
-{
-  flake.nixosModules.nixIndex =
+let
+  commonConfig =
     { config, ... }:
     {
-      imports = [ inputs.nix-index-database.nixosModules.default ];
-
       programs = {
         nix-index-database.comma.enable = true;
 
@@ -15,4 +13,15 @@
 
       environment.systemPackages = [ config.programs.nix-index.package ];
     };
+in
+{
+  flake.nixosModules.nixIndex.imports = [
+    inputs.nix-index-database.nixosModules.default
+    commonConfig
+  ];
+
+  flake.darwinModules.nixIndex.imports = [
+    inputs.nix-index-database.darwinModules.default
+    commonConfig
+  ];
 }

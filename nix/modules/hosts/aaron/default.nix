@@ -21,6 +21,7 @@ in
       self.darwinModules.workstation
       self.darwinModules.base
       self.darwinModules.unfree
+      self.darwinModules.nixIndex
     ];
   };
 }
