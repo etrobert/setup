@@ -5,7 +5,7 @@
   dev ? false,
 }:
 let
-  path = "/home/soft/setup/nix/pkgs/waybar-wrapped";
+  path = "/home/soft/setup/pkgs/waybar-wrapped";
   config = if dev then path + "/config.jsonc" else ./config.jsonc;
   style = if dev then path + "/style.css" else ./style.css;
   nixpkgsDeps = with pkgs; [

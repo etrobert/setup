@@ -4,20 +4,12 @@
     { config, ... }:
     let
       inherit (config.home) homeDirectory;
-
-      symlink = path: config.lib.file.mkOutOfStoreSymlink "${homeDirectory}/setup/${path}";
     in
     {
       imports = [ self.homeModules.common ];
 
       home = {
         homeDirectory = "/home/${config.home.username}";
-
-        file = {
-          ".config/hypr/hyprland.conf".source = symlink "hyprland/.config/hypr/hyprland.conf";
-          ".config/hypr/hyprpaper.conf".source = symlink "hyprland/.config/hypr/hyprpaper.conf";
-          ".config/hypr/saint-levant.jpg".source = ../../../hyprland/.config/hypr/saint-levant.jpg;
-        };
       };
 
       # Ensures XDG_DATA_DIRS includes the profile share directory

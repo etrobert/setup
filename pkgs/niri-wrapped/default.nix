@@ -10,7 +10,7 @@
   dev ? false,
 }:
 let
-  config = if dev then "/home/soft/setup/nix/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
+  config = if dev then "/home/soft/setup/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
   path = [
     self'.packages.volume-control

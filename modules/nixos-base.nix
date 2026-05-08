@@ -13,7 +13,7 @@ _: {
     in
     {
       system.activationScripts.nixos-symlink.text = /* bash */ ''
-        ln --symbolic --force --no-dereference /home/soft/setup/nix /etc/nixos
+        ln --symbolic --force --no-dereference /home/soft/setup /etc/nixos
       '';
 
       # Automatic timezone based on geolocation
@@ -83,7 +83,7 @@ _: {
 
       programs.nh = {
         enable = true;
-        flake = "/home/soft/setup/nix";
+        flake = "/home/soft/setup";
       };
     };
 }

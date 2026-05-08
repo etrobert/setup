@@ -12,7 +12,7 @@ let
     lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
   );
 
-  wallpaper = ../../../../hyprland/.config/hypr/saint-levant.jpg;
+  wallpaper = ../../../deprecated/hyprland/.config/hypr/saint-levant.jpg;
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
@@ -43,7 +43,7 @@ in
     primaryUser = "soft";
 
     activationScripts.postActivation.text = ''
-      ln --symbolic --force --no-dereference /Users/soft/setup/nix /etc/nix-darwin
+      ln --symbolic --force --no-dereference /Users/soft/setup /etc/nix-darwin
 
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
 

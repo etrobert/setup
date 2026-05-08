@@ -13,32 +13,31 @@ a Raspberry Pi (`pi`).
 
 ```sh
 # NixOS
-sudo nixos-rebuild switch --flake /home/soft/setup/nix
+sudo nixos-rebuild switch --flake /home/soft/setup
 
 # macOS (nix-darwin)
-sudo darwin-rebuild switch --flake /Users/soft/setup/nix
+sudo darwin-rebuild switch --flake /Users/soft/setup
 ```
 
 ## Architecture
 
 ### Configuration Layout
 
-Program configs live colocated with their wrapper in `nix/pkgs/`. Each
+Program configs live colocated with their wrapper in `pkgs/`. Each
 `*-wrapped` package embeds its config directly and is self-contained.
 
-The top-level stow-style directories (e.g. `nvim/`, `ghostty/`) are deprecated
-and being migrated to this wrapper pattern.
+The `deprecated/` directory contains stow-style directories not yet migrated.
 
-### Nix Flake Structure (`nix/`)
+### Nix Flake Structure
 
 **`flake.nix`** uses flake-parts. Key inputs: nixpkgs (unstable), nix-darwin,
 agenix (secrets).
 
-**Hosts** (`nix/modules/hosts/`): one directory per machine. Each has
+**Hosts** (`modules/hosts/`): one directory per machine. Each has
 `default.nix` (flake module), `configuration.nix` (host settings), and
 `hardware-configuration.nix` (Linux only).
 
-**Shared modules** (`nix/modules/`):
+**Shared modules** (`modules/`):
 
 - `base.nix` — common system config (nix settings, SSH keys, zsh, packages)
   applied to all hosts
@@ -48,11 +47,11 @@ agenix (secrets).
 - `nixos-workstation.nix` — NixOS desktop: Niri compositor, GDM, Waybar, audio,
   bluetooth
 
-**Custom packages** (`nix/pkgs/`): wrapped tool configurations (neovim-wrapped,
+**Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
 (gen-commit-msg, tmux-sessionizer, pm, brightness-control, etc.).
 
-**Secrets** (`nix/secrets/`): agenix-encrypted secrets (tailscale authkey,
+**Secrets** (`secrets/`): agenix-encrypted secrets (tailscale authkey,
 openai-api-key, gemini-api-key).
 
 ### Caches
@@ -64,7 +63,7 @@ Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 - skhd hotkeys: `Alt+HJKL` → arrow keys, `Alt+[1-9]` → app launch
 - Caps Lock remapped to Control via launchd daemon
 - Touch ID for sudo
-- Dock apps defined in `nix/modules/hosts/aaron/dock-apps.nix`
+- Dock apps defined in `modules/hosts/aaron/dock-apps.nix`
 
 ### Linux-specific
 
@@ -73,7 +72,7 @@ Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 
 ### Development Environment
 
-- Neovim with Lua config in `nix/pkgs/neovim-wrapped/`, plugins managed via Nix
+- Neovim with Lua config in `pkgs/neovim-wrapped/`, plugins managed via Nix
 - Git with custom scripts: `gen-commit-msg`, `git-find-commit`,
   `tmux-sessionizer`
 - Shell: zsh; terminal: Ghostty
