@@ -31,7 +31,7 @@ let
 
   zprofile = writeText "zprofile" /* zsh */ ''
     emulate sh
-    . ~/.profile
+    . ${./profile.sh}
     emulate zsh
   '';
 

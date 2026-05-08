@@ -20,8 +20,6 @@ _: {
 
           ".prettierrc".text = builtins.toJSON { proseWrap = "always"; };
 
-          ".profile".source = ../../../profile/.profile;
-
           ".config/nvim".source = symlink "nvim/.config/nvim";
         };
 
