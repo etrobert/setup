@@ -44,7 +44,8 @@ let
         ./plugins/code-exec
         ./plugins/ask
         ./plugins/ai-rename
-        ./plugins/startup-banner
+        # TODO: Figure out when to run the banner to make sure it measures the right startup time
+        # ./plugins/startup-banner
         ./plugins/tsc
       ];
     }).config;
