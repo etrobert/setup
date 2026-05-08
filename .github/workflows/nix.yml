@@ -31,10 +31,9 @@ jobs:
 
       - name: Format Check
         run: nix fmt . -- --ci
-        working-directory: nix
 
       - name: Flake Check
-        run: nix flake check ./nix --accept-flake-config
+        run: nix flake check --accept-flake-config
 
   build:
     name: Build ${{ matrix.host }}
@@ -91,7 +90,7 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         run: |
-          nix build ./nix#${{ matrix.platform }}Configurations.${{ matrix.host }}.config.system.build.toplevel \
+          nix build .#${{ matrix.platform }}Configurations.${{ matrix.host }}.config.system.build.toplevel \
             --accept-flake-config \
             --print-build-logs \
             --option stalled-download-timeout 10

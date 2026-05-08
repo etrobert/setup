@@ -34,13 +34,13 @@ jobs:
 
       - name: Build pre-update system (leod)
         run: |
-          nix build ./nix#nixosConfigurations.leod.config.system.build.toplevel \
+          nix build .#nixosConfigurations.leod.config.system.build.toplevel \
             --accept-flake-config \
             --no-link \
             --print-out-paths > /tmp/before
 
       - name: Update flake inputs
-        run: nix flake update --flake ./nix --accept-flake-config
+        run: nix flake update --accept-flake-config
 
       - name: Create pull request
         id: cpr
@@ -56,7 +56,7 @@ jobs:
       - name: Build post-update system (leod)
         id: post_build
         run: |
-          nix build ./nix#nixosConfigurations.leod.config.system.build.toplevel \
+          nix build .#nixosConfigurations.leod.config.system.build.toplevel \
             --accept-flake-config \
             --no-link \
             --print-out-paths > /tmp/after
