@@ -85,7 +85,6 @@ let
 in
 pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
   plugins = map (plugin: { inherit (plugin) plugin config; }) cfg.plugins;
-  # TODO: Make a non dev variant
   luaRcContent = builtins.readFile ./init.lua;
   wrapperArgs = [
     "--prefix"
