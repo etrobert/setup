@@ -38,6 +38,12 @@ let
         ./plugins/deadnix
         ./plugins/nix-check
         ./plugins/statusline
+        ./plugins/bookmarks
+        ./plugins/code-exec
+        ./plugins/ask
+        ./plugins/ai-rename
+        ./plugins/startup-banner
+        ./plugins/tsc
       ];
     }).config;
 
