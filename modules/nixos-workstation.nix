@@ -90,15 +90,7 @@ _: {
       # NixOS workstation packages
       environment.systemPackages =
         let
-          # See https://github.com/NixOS/nixpkgs/issues/436214
-          # TL;DR The flake should probably be at the root of the repo
-          # Until I fix it we have this wrapper
-          nixos-option = pkgs.writeShellScriptBin "nixos-option" ''
-            exec ${pkgs.nixos-option}/bin/nixos-option --flake "$HOME/setup?dir=nix#$(${pkgs.nettools}/bin/hostname)" "$@"
-          '';
-
           customPackages = with self.packages.${system}; [
-            nixos-option
             audio-output-switcher
             toggle-cpu-governor
             waybar-wrapped
