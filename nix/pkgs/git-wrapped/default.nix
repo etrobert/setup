@@ -37,7 +37,13 @@ in
 pkgs.symlinkJoin {
   name = "git-wrapped";
   nativeBuildInputs = with pkgs; [ makeWrapper ];
-  paths = with pkgs; [ git ] ++ [ git-worktree-add git-worktree-remove ];
+  paths =
+    with pkgs;
+    [ git ]
+    ++ [
+      git-worktree-add
+      git-worktree-remove
+    ];
   meta.mainProgram = "git";
   postBuild = ''
     wrapProgram $out/bin/git \
