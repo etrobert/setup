@@ -70,6 +70,7 @@ _: {
 
       systemd.user = {
         services.waybar = {
+          after = [ "graphical-session.target" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {
