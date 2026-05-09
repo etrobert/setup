@@ -14,36 +14,14 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: true
-
       - uses: actions/checkout@v6
 
       - uses: DeterminateSystems/determinate-nix-action@v3
-
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-        with:
-          use-flakehub: false
-
-      - uses: cachix/cachix-action@v17
-        with:
-          name: soft-nix
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: Build pre-update system (leod)
-        run: |
-          nix build .#nixosConfigurations.leod.config.system.build.toplevel \
-            --accept-flake-config \
-            --no-link \
-            --print-out-paths > /tmp/before
 
       - name: Update flake inputs
         run: nix flake update --accept-flake-config
 
       - name: Create pull request
-        id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.PAT }}
@@ -52,32 +30,3 @@ jobs:
           body: Automated flake input update.
           branch: flake-update
           delete-branch: true
-
-      - name: Build post-update system (leod)
-        id: post_build
-        run: |
-          nix build .#nixosConfigurations.leod.config.system.build.toplevel \
-            --accept-flake-config \
-            --no-link \
-            --print-out-paths > /tmp/after
-
-      - name: Update PR body with diff
-        if: steps.cpr.outputs.pull-request-number != ''
-        env:
-          GH_TOKEN: ${{ secrets.PAT }}
-        run: |
-          {
-            echo "Automated flake input update."
-            echo ""
-            echo "## Package changes (leod)"
-            echo ""
-            if [ "${{ steps.post_build.outcome }}" = "success" ]; then
-              printf '```diff\n'
-              nix store diff-closures "$(cat /tmp/before)" "$(cat /tmp/after)" \
-                | sed -e 's/\x1B\[[0-9;]*m//g' -e 's/^.*added.*$/+&/' -e 's/^.*removed.*$/-&/'
-              printf '```\n'
-            else
-              echo "_Build failed — see workflow run for details._"
-            fi
-          } > /tmp/pr-body.md
-          gh pr edit "${{ steps.cpr.outputs.pull-request-number }}" --body-file /tmp/pr-body.md
