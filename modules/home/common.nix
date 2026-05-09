@@ -1,4 +1,4 @@
-_: {
+{ self, ... }: {
   flake.homeModules.common =
     {
       pkgs,
@@ -9,7 +9,7 @@ _: {
     let
       symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
 
-      browserConfig = import ../../lib/browser-config.nix { inherit lib; };
+      browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
     in
     {
       home = {
