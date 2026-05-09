@@ -69,31 +69,33 @@ _: {
       ];
 
       systemd.user = {
-        services.waybar = {
-          after = [ "graphical-session.target" ];
-          partOf = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          serviceConfig = {
-            ExecStart = lib.getExe self.packages.${system}.waybar-wrapped;
-            Restart = "on-failure";
+        services = {
+          waybar = {
+            after = [ "graphical-session.target" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            serviceConfig = {
+              ExecStart = lib.getExe self.packages.${system}.waybar-wrapped;
+              Restart = "on-failure";
+            };
           };
-        };
 
-        services.hyprpaper = {
-          after = [ "graphical-session.target" ];
-          partOf = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          serviceConfig = {
-            ExecStart = lib.getExe self.packages.${system}.hyprpaper-wrapped;
-            Restart = "always";
-            RestartSec = "2s";
+          hyprpaper = {
+            after = [ "graphical-session.target" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            serviceConfig = {
+              ExecStart = lib.getExe self.packages.${system}.hyprpaper-wrapped;
+              Restart = "always";
+              RestartSec = "2s";
+            };
           };
-        };
 
-        services.album-art-wallpaper = {
-          partOf = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
+          album-art-wallpaper = {
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
+          };
         };
 
         tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
