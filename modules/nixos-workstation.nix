@@ -95,6 +95,7 @@ _: {
             toggle-cpu-governor
             waybar-wrapped
             mako-wrapped
+            hyprpaper-wrapped
             brightness-control
             volume-control
             birthdays
@@ -115,7 +116,6 @@ _: {
             gnome-power-manager # TODO: find a better one
             kdePackages.okular
             grim
-            hyprpaper
             mpc # Minimalist command line interface to MPD
             pavucontrol
             playerctl

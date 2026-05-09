@@ -5,7 +5,6 @@
   makeWrapper,
   niri,
   fuzzel,
-  hyprpaper,
   xwayland-satellite,
   dev ? false,
 }:
@@ -15,8 +14,8 @@ let
   path = [
     self'.packages.volume-control
     self'.packages.brightness-control
+    self'.packages.hyprpaper-wrapped
     fuzzel
-    hyprpaper
     xwayland-satellite
   ];
 in
