@@ -68,6 +68,8 @@ _: {
         }
       ];
 
+      systemd.packages = with self.packages.${system}; [ hyprpaper-wrapped ];
+
       systemd.user = {
         services = {
           waybar = {
@@ -80,15 +82,7 @@ _: {
             };
           };
 
-          hyprpaper = {
-            after = [ "graphical-session.target" ];
-            partOf = [ "graphical-session.target" ];
-            wantedBy = [ "graphical-session.target" ];
-            serviceConfig = {
-              ExecStart = lib.getExe self.packages.${system}.hyprpaper-wrapped;
-              Restart = "on-failure";
-            };
-          };
+          hyprpaper.wantedBy = [ "graphical-session.target" ];
 
           album-art-wallpaper = {
             partOf = [ "graphical-session.target" ];
