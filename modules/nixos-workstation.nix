@@ -68,19 +68,14 @@ _: {
         }
       ];
 
-      systemd.packages = with self.packages.${system}; [ hyprpaper-wrapped ];
+      systemd.packages = with self.packages.${system}; [
+        hyprpaper-wrapped
+        waybar-wrapped
+      ];
 
       systemd.user = {
         services = {
-          waybar = {
-            after = [ "graphical-session.target" ];
-            partOf = [ "graphical-session.target" ];
-            wantedBy = [ "graphical-session.target" ];
-            serviceConfig = {
-              ExecStart = lib.getExe self.packages.${system}.waybar-wrapped;
-              Restart = "on-failure";
-            };
-          };
+          waybar.wantedBy = [ "graphical-session.target" ];
 
           hyprpaper.wantedBy = [ "graphical-session.target" ];
 

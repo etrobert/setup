@@ -27,5 +27,11 @@ pkgs.symlinkJoin {
       --add-flags "--config ${config}" \
       --add-flags "--style ${style}" \
       --set PATH ${lib.makeBinPath runtimeDeps}
+
+    rm $out/share/systemd/user/waybar.service
+    cp ${pkgs.waybar}/share/systemd/user/waybar.service \
+      $out/share/systemd/user/waybar.service
+    substituteInPlace $out/share/systemd/user/waybar.service \
+      --replace-fail "${pkgs.waybar}/bin/waybar" "$out/bin/waybar"
   '';
 }
