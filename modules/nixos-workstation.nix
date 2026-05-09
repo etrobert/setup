@@ -86,8 +86,7 @@ _: {
             wantedBy = [ "graphical-session.target" ];
             serviceConfig = {
               ExecStart = lib.getExe self.packages.${system}.hyprpaper-wrapped;
-              Restart = "always";
-              RestartSec = "2s";
+              Restart = "on-failure";
             };
           };
 
