@@ -12,7 +12,7 @@ let
     lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
   );
 
-  wallpaper = ../../../deprecated/hyprland/.config/hypr/saint-levant.jpg;
+  wallpaper = ../../../assets/saint-levant.jpg;
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
