@@ -47,7 +47,6 @@ _: {
               btop
               bun
               claude-code # cache not ready yet
-              codex # Lightweight coding agent that runs in your terminal
               discord
               gcc
               gemini-cli # AI agent that brings the power of Gemini directly into your terminal
