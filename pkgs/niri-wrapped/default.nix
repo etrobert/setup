@@ -14,7 +14,6 @@ let
   path = [
     self'.packages.volume-control
     self'.packages.brightness-control
-    self'.packages.hyprpaper-wrapped
     fuzzel
     xwayland-satellite
   ];

@@ -78,6 +78,16 @@ _: {
           };
         };
 
+        services.hyprpaper = {
+          partOf = [ "graphical-session.target" ];
+          wantedBy = [ "graphical-session.target" ];
+          serviceConfig = {
+            ExecStart = lib.getExe self.packages.${system}.hyprpaper-wrapped;
+            Restart = "always";
+            RestartSec = "2s";
+          };
+        };
+
         services.album-art-wallpaper = {
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
@@ -95,7 +105,6 @@ _: {
             toggle-cpu-governor
             waybar-wrapped
             mako-wrapped
-            hyprpaper-wrapped
             brightness-control
             volume-control
             birthdays
