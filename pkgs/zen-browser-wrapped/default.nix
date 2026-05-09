@@ -1,10 +1,11 @@
 {
+  self,
   inputs',
   wrapFirefox,
   lib,
 }:
 let
-  browserConfig = import ../../lib/browser-config.nix { inherit lib; };
+  browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
 in
 wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
   extraPrefs = ''
