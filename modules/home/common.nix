@@ -1,4 +1,5 @@
-{ self, ... }: {
+{ self, ... }:
+{
   flake.homeModules.common =
     {
       pkgs,
