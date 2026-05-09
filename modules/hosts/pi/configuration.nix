@@ -31,7 +31,7 @@
 
   system.autoUpgrade = {
     enable = true;
-    flake = "github:etrobert/setup/main?dir=nix#pi";
+    flake = "github:etrobert/setup/main#pi";
     flags = [
       "--accept-flake-config"
       "--print-build-logs"
