@@ -16,7 +16,7 @@ _: {
         username = "soft";
 
         file = {
-          ".config/home-manager".source = symlink "nix";
+          ".config/home-manager".source = symlink ".";
 
           ".prettierrc".text = builtins.toJSON { proseWrap = "always"; };
         };
