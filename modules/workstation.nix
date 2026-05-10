@@ -48,6 +48,7 @@ _: {
               bun
               claude-code # cache not ready yet
               discord
+              ffmpeg
               gcc
               gemini-cli # AI agent that brings the power of Gemini directly into your terminal
               gh
