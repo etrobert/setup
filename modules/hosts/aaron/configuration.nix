@@ -122,6 +122,7 @@ in
       })
     ])
     ++ (with self.packages.${system}; [
+      firefox-wrapped
       flush-dns
       resize-window
       finder

@@ -1,16 +1,8 @@
-{ self, ... }:
-{
+_: {
   flake.homeModules.common =
-    {
-      pkgs,
-      config,
-      lib,
-      ...
-    }:
+    { config, ... }:
     let
       symlink = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/setup/${path}";
-
-      browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
     in
     {
       home = {
@@ -31,22 +23,6 @@
         # the Home Manager release notes for a list of state version
         # changes in each release.
         stateVersion = "25.11";
-      };
-
-      programs = {
-        firefox = {
-          enable = true;
-          configPath = "${config.xdg.configHome}/mozilla/firefox";
-          nativeMessagingHosts = lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.firefoxpwa ];
-          policies = browserConfig.sharedPolicies;
-          profiles.default = {
-            settings = browserConfig.sharedSettings // {
-              # Enable the new sidebar + vertical tabs via user prefs (policies block these).
-              "sidebar.revamp" = true;
-              "sidebar.verticalTabs" = true;
-            };
-          };
-        };
       };
 
       # Let Home Manager install and manage itself.
