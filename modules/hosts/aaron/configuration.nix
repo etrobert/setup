@@ -116,7 +116,7 @@ in
       (writeShellApplication {
         # This is necessary because the darwin tailscale module does not include authkey option
         name = "tailscale-up";
-        text = "tailscale up --authkey \"$(cat /run/agenix/tailscale-authkey)\"";
+        text = ''tailscale up --authkey "$(cat /run/agenix/tailscale-authkey)"'';
       })
     ])
     ++ (with self.packages.${system}; [
