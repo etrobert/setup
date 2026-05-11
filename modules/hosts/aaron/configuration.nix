@@ -129,7 +129,10 @@ in
 
   homebrew = {
     enable = true;
-    casks = [ "whatsapp" ];
+    casks = [
+      "bambu-studio"
+      "whatsapp"
+    ];
   };
 
   launchd.daemons.caps-lock-to-control = {
