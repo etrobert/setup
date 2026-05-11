@@ -23,7 +23,11 @@ _: {
 
       console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
-      nix.gc.dates = "daily";
+      nix.gc = {
+        automatic = true;
+        dates = "daily";
+        options = "--delete-older-than 10d";
+      };
 
       zramSwap.enable = true;
 

@@ -23,10 +23,8 @@ in
     "raycast"
   ];
 
-  nix.gc.interval = {
-    Hour = 0;
-    Minute = 0;
-  };
+  # Determinate Nix manages the daemon and GC; nix-darwin must not conflict.
+  nix.enable = false;
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 

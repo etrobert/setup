@@ -25,11 +25,6 @@ _: {
           download-buffer-size = 134217728; # 128 MiB
         };
 
-        nix.gc = {
-          automatic = true;
-          options = "--delete-older-than 10d";
-        };
-
         environment.systemPackages =
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
             bash-wrapped
