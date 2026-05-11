@@ -131,6 +131,7 @@ in
     enable = true;
     casks = [
       "bambu-studio"
+      "vlc"
       "whatsapp"
     ];
   };
