@@ -100,7 +100,7 @@ in
 
   users.users = {
     soft = {
-      uid = 505;
+      uid = 501;
       shell = lib.getExe zsh-wrapped;
       home = "/Users/soft";
     };
