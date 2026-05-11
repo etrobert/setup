@@ -72,7 +72,7 @@ _: {
             };
             aaron = {
               hostNames = [ "aaron" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/Y38NV8a/9rfDq+7W1UFfAFDo8SkwQ5JAl/U24u0ne";
+              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
             };
           };
 
