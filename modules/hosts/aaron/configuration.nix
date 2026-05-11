@@ -30,6 +30,9 @@ in
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 
+  networking.hostName = "aaron";
+  networking.computerName = "aaron";
+
   # Packages pinned to older nixpkgs until binary cache is available.
   # Remove entries once the package has a cached build for aarch64-darwin.
   nixpkgs.overlays = [
