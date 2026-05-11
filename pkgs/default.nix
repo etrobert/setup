@@ -33,6 +33,7 @@
         add-asset = pkgs.callPackage ./add-asset { };
         switch = pkgs.callPackage ./switch.nix { };
         deadnix-errfmt = pkgs.callPackage ./deadnix-errfmt { };
+        firefox-wrapped = pkgs.callPackage ./firefox-wrapped { inherit self; };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
         flush-dns = pkgs.callPackage ./flush-dns { };
