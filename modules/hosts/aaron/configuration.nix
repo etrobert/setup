@@ -170,16 +170,6 @@ in
 
   services.tailscale.enable = true;
 
-  # Open Raycast at login
-  launchd.user.agents.raycast.serviceConfig = {
-    ProgramArguments = [
-      "/usr/bin/open"
-      "-a"
-      "Raycast"
-    ];
-    RunAtLoad = true;
-  };
-
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
