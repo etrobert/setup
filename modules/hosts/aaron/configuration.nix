@@ -125,6 +125,11 @@ in
       ghostty-wrapped
     ]);
 
+  homebrew = {
+    enable = true;
+    casks = [ "whatsapp" ];
+  };
+
   launchd.daemons.caps-lock-to-control = {
     serviceConfig = {
       Label = "com.local.caps-lock-to-control";
