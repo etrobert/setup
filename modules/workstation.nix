@@ -26,6 +26,7 @@ _: {
             ];
 
             customPackages = with self.packages.${system}; [
+              firefox-wrapped
               alacritty-wrapped
               neovim-wrapped
               vscode-wrapped
