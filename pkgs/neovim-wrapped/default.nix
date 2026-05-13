@@ -48,6 +48,7 @@ let
         # TODO: Figure out when to run the banner to make sure it measures the right startup time
         # ./plugins/startup-banner
         ./plugins/tsc
+        ./plugins/spell
       ];
     }).config;
 
