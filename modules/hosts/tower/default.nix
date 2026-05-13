@@ -8,6 +8,8 @@ let
     nixpkgs
     home-manager
     agenix
+    etiennerobert-com
+    creatures
     ;
 in
 {
@@ -16,6 +18,8 @@ in
       inherit
         self
         agenix
+        etiennerobert-com
+        creatures
         ;
     };
     modules = [
@@ -28,6 +32,7 @@ in
       self.nixosModules.nixosBase
       self.nixosModules.base
       self.nixosModules.unfree
+      self.nixosModules.server
     ];
   };
 }
