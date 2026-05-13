@@ -69,6 +69,7 @@ _: {
           '';
           virtualHosts."files.etiennerobert.com".extraConfig = /* caddy */ ''
             root * /srv/files
+            header Access-Control-Allow-Origin *
             file_server browse
           '';
         };
