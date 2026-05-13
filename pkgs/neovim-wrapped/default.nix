@@ -21,6 +21,7 @@ let
         ./plugins/vim-tmux-navigator
         ./plugins/which-key
         ./plugins/conform
+        ./plugins/nvim-lint
         ./plugins/telescope
         ./plugins/snacks
         ./plugins/copilot
