@@ -24,6 +24,7 @@ _: {
         networking.hosts."192.168.0.130" = [
           "test.etiennerobert.com"
           "creatures.etiennerobert.com"
+          "files.etiennerobert.com"
         ];
 
         services.ddclient = {
@@ -35,6 +36,7 @@ _: {
           domains = [
             "test"
             "creatures"
+            "files"
           ];
           interval = "5min";
           usev6 = "no";
@@ -64,6 +66,10 @@ _: {
           '';
           virtualHosts."creatures.etiennerobert.com".extraConfig = /* caddy */ ''
             reverse_proxy localhost:3000
+          '';
+          virtualHosts."files.etiennerobert.com".extraConfig = /* caddy */ ''
+            root * /srv/files
+            file_server browse
           '';
         };
 
