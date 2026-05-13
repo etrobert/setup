@@ -89,11 +89,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778689387,
-        "narHash": "sha256-paKECfBO4AkdyBXfq1XU/DFyukhgt8kPlNSYc95/Z8k=",
+        "lastModified": 1778689969,
+        "narHash": "sha256-CZUHB2+qFfoSc8bA2DgooarFqzpYsapt1tkhjhGe8aM=",
         "owner": "etrobert",
         "repo": "etiennerobert.com",
-        "rev": "58478eed0ec9629cf09361d045992763b3cf14ba",
+        "rev": "1082032e1b3682234a8aa4730e8745ba167d615e",
         "type": "github"
       },
       "original": {
