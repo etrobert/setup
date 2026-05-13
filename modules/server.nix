@@ -58,20 +58,22 @@ _: {
 
         services.caddy = {
           enable = true;
-          virtualHosts."test.etiennerobert.com".extraConfig = /* caddy */ ''
-            root * ${etiennerobert-com.packages.${system}.default}
-            encode zstd gzip
-            try_files {path} /index.html
-            file_server
-          '';
-          virtualHosts."creatures.etiennerobert.com".extraConfig = /* caddy */ ''
-            reverse_proxy localhost:3000
-          '';
-          virtualHosts."files.etiennerobert.com".extraConfig = /* caddy */ ''
-            root * /srv/files
-            header Access-Control-Allow-Origin *
-            file_server browse
-          '';
+          virtualHosts = {
+            "test.etiennerobert.com".extraConfig = /* caddy */ ''
+              root * ${etiennerobert-com.packages.${system}.default}
+              encode zstd gzip
+              try_files {path} /index.html
+              file_server
+            '';
+            "creatures.etiennerobert.com".extraConfig = /* caddy */ ''
+              reverse_proxy localhost:3000
+            '';
+            "files.etiennerobert.com".extraConfig = /* caddy */ ''
+              root * /srv/files
+              header Access-Control-Allow-Origin *
+              file_server browse
+            '';
+          };
         };
 
       };
