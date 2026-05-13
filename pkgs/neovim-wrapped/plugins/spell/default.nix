@@ -1,13 +1,5 @@
 { pkgs, ... }:
 let
-  words = [
-    "Étienne"
-    "Maïlys"
-    "Tanzfabrik"
-  ];
-
-  wordFile = pkgs.writeText "nvim-spell-words" (builtins.concatStringsSep "\n" words);
-
   spellPkg =
     pkgs.runCommand "nvim-spell-custom"
       {
@@ -16,7 +8,7 @@ let
       ''
         mkdir -p $out/spell
         HOME=$(mktemp -d) nvim --headless --clean \
-          -c "mkspell $out/spell/custom ${wordFile}" \
+          -c "mkspell $out/spell/custom ${./words.add}" \
           -c "qa!"
       '';
 in
@@ -26,6 +18,7 @@ in
       plugin = spellPkg;
       luaConfig = /* lua */ ''
         vim.opt.spelllang = "en,custom"
+        vim.opt.spellfile = vim.fn.expand("~/setup/pkgs/neovim-wrapped/plugins/spell/words.add")
         vim.api.nvim_create_autocmd("FileType", {
           pattern = { "markdown", "gitcommit", "text" },
           callback = function()
