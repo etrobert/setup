@@ -88,9 +88,10 @@ vim.keymap.set({ "n", "x", "o" }, "]o", function()
 	move.goto_next_start({ "@loop.inner", "@loop.outer" }, "textobjects")
 end)
 -- You can also use captures from other query groups like `locals.scm` or `folds.scm`
-vim.keymap.set({ "n", "x", "o" }, "]s", function()
-	move.goto_next_start("@local.scope", "locals")
-end)
+-- ]s is a default keybind used for spelling
+-- vim.keymap.set({ "n", "x", "o" }, "]s", function()
+-- 	move.goto_next_start("@local.scope", "locals")
+-- end)
 vim.keymap.set({ "n", "x", "o" }, "]z", function()
 	move.goto_next_start("@fold", "folds")
 end)
