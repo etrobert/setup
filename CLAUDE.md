@@ -23,8 +23,8 @@ sudo darwin-rebuild switch --flake /Users/soft/setup
 
 ### Configuration Layout
 
-Program configs live colocated with their wrapper in `pkgs/`. Each
-`*-wrapped` package embeds its config directly and is self-contained.
+Program configs live colocated with their wrapper in `pkgs/`. Each `*-wrapped`
+package embeds its config directly and is self-contained.
 
 The `deprecated/` directory contains stow-style directories not yet migrated.
 
@@ -33,8 +33,8 @@ The `deprecated/` directory contains stow-style directories not yet migrated.
 **`flake.nix`** uses flake-parts. Key inputs: nixpkgs (unstable), nix-darwin,
 agenix (secrets).
 
-**Hosts** (`modules/hosts/`): one directory per machine. Each has
-`default.nix` (flake module), `configuration.nix` (host settings), and
+**Hosts** (`modules/hosts/`): one directory per machine. Each has `default.nix`
+(flake module), `configuration.nix` (host settings), and
 `hardware-configuration.nix` (Linux only).
 
 **Shared modules** (`modules/`):
