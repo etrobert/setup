@@ -63,6 +63,8 @@ _: {
           settings = {
             root = "/srv/files/adele";
             port = 8081;
+            username = "adele";
+            password = "$2a$10$IJiPBcbqVvJnAilE8Gs.uulWMWfq18tOEvlcYqaz8RvWjWP3sgBUK";
           };
         };
 
