@@ -9,16 +9,6 @@ Personal dotfiles and system configuration repository using Nix flakes, managing
 multiple machines: macOS (`aaron`) and Linux workstations (`tower`, `leod`) and
 a Raspberry Pi (`pi`).
 
-## Rebuild Commands
-
-```sh
-# NixOS
-sudo nixos-rebuild switch --flake /home/soft/setup
-
-# macOS (nix-darwin)
-sudo darwin-rebuild switch --flake /Users/soft/setup
-```
-
 ## Architecture
 
 ### Configuration Layout
@@ -69,6 +59,11 @@ Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 
 - Niri (Wayland compositor, dev channel) with Waybar status bar
 - DDC/CI backlight and brightness control
+
+### Running Packages
+
+If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
+or the comma shorthand `, <package>` rather than skipping the step.
 
 ### Development Environment
 
