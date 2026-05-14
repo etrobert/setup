@@ -25,6 +25,7 @@ _: {
           "test.etiennerobert.com"
           "creatures.etiennerobert.com"
           "files.etiennerobert.com"
+          "adele.etiennerobert.com"
         ];
 
         services.ddclient = {
@@ -37,6 +38,7 @@ _: {
             "test"
             "creatures"
             "files"
+            "adele"
           ];
           interval = "5min";
           usev6 = "no";
@@ -56,6 +58,14 @@ _: {
           };
         };
 
+        services.filebrowser = {
+          enable = true;
+          settings = {
+            root = "/srv/files/adele";
+            port = 8081;
+          };
+        };
+
         services.caddy = {
           enable = true;
           virtualHosts = {
@@ -72,6 +82,9 @@ _: {
               root * /srv/files
               header Access-Control-Allow-Origin *
               file_server browse
+            '';
+            "adele.etiennerobert.com".extraConfig = /* caddy */ ''
+              reverse_proxy localhost:8081
             '';
           };
         };
