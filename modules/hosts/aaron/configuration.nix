@@ -130,6 +130,7 @@ in
     enable = true;
     casks = [
       "bambu-studio"
+      "sonos"
       "vlc"
       "whatsapp"
     ];
