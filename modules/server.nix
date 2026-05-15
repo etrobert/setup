@@ -29,13 +29,6 @@ _: {
           "adele.etiennerobert.com"
         ];
 
-        # Override the filebrowser module's hardcoded UMask of 0077 so new files/dirs are world-readable (644/755),
-        # making them accessible to caddy.
-        systemd.services.filebrowser.serviceConfig.UMask = lib.mkForce "0022";
-        # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700 on every boot,
-        # which would block caddy from traversing into the directory.
-        systemd.tmpfiles.settings.filebrowser."/srv/files/adele".d.mode = lib.mkForce "0755";
-
         services = {
           ddclient = {
             enable = true;
@@ -90,14 +83,23 @@ _: {
 
         age.secrets.ddclient-password-etiennerobert-com.file = ../secrets/ddclient-password-etiennerobert-com.age;
 
-        systemd.services.creatures = {
-          description = "Creatures server";
-          wantedBy = [ "multi-user.target" ];
-          after = [ "network.target" ];
-          serviceConfig = {
-            ExecStart = "${creaturesPackage}/bin/creatures-server";
-            Restart = "on-failure";
-            DynamicUser = true;
+        systemd = {
+          # Override the filebrowser module's hardcoded UMask of 0077 so new files/dirs are world-readable (644/755),
+          # making them accessible to caddy.
+          services.filebrowser.serviceConfig.UMask = lib.mkForce "0022";
+          # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700 on every boot,
+          # which would block caddy from traversing into the directory.
+          tmpfiles.settings.filebrowser."/srv/files/adele".d.mode = lib.mkForce "0755";
+
+          services.creatures = {
+            description = "Creatures server";
+            wantedBy = [ "multi-user.target" ];
+            after = [ "network.target" ];
+            serviceConfig = {
+              ExecStart = "${creaturesPackage}/bin/creatures-server";
+              Restart = "on-failure";
+              DynamicUser = true;
+            };
           };
         };
       };
