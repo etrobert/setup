@@ -53,3 +53,5 @@ alias fhistory="history | sed -E 's/^ +[0-9]+ +//' | fzf --tac --no-sort"
 alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
 
 alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
+
+alias cly="claude --dangerously-skip-permissions"
