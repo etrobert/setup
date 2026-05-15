@@ -28,21 +28,56 @@ _: {
           "adele.etiennerobert.com"
         ];
 
-        services.ddclient = {
-          enable = true;
-          protocol = "namecheap";
-          server = "dynamicdns.park-your-domain.com";
-          username = "etiennerobert.com";
-          passwordFile = config.age.secrets.ddclient-password-etiennerobert-com.path;
-          domains = [
-            "test"
-            "creatures"
-            "files"
-            "adele"
-          ];
-          interval = "5min";
-          usev6 = "no";
-          usev4 = "webv4";
+        services = {
+          ddclient = {
+            enable = true;
+            protocol = "namecheap";
+            server = "dynamicdns.park-your-domain.com";
+            username = "etiennerobert.com";
+            passwordFile = config.age.secrets.ddclient-password-etiennerobert-com.path;
+            domains = [
+              "test"
+              "creatures"
+              "files"
+              "adele"
+            ];
+            interval = "5min";
+            usev6 = "no";
+            usev4 = "webv4";
+          };
+
+          filebrowser = {
+            enable = true;
+            settings = {
+              root = "/srv/files/adele";
+              port = 8081;
+              username = "adele";
+              password = "$2a$10$IJiPBcbqVvJnAilE8Gs.uulWMWfq18tOEvlcYqaz8RvWjWP3sgBUK";
+            };
+          };
+
+          caddy = {
+            enable = true;
+            virtualHosts = {
+              "test.etiennerobert.com".extraConfig = /* caddy */ ''
+                root * ${etiennerobert-com.packages.${system}.default}
+                encode zstd gzip
+                try_files {path} /index.html
+                file_server
+              '';
+              "creatures.etiennerobert.com".extraConfig = /* caddy */ ''
+                reverse_proxy localhost:3000
+              '';
+              "files.etiennerobert.com".extraConfig = /* caddy */ ''
+                root * /srv/files
+                header Access-Control-Allow-Origin *
+                file_server browse
+              '';
+              "adele.etiennerobert.com".extraConfig = /* caddy */ ''
+                reverse_proxy localhost:8081
+              '';
+            };
+          };
         };
 
         age.secrets.ddclient-password-etiennerobert-com.file = ../secrets/ddclient-password-etiennerobert-com.age;
@@ -57,40 +92,6 @@ _: {
             DynamicUser = true;
           };
         };
-
-        services.filebrowser = {
-          enable = true;
-          settings = {
-            root = "/srv/files/adele";
-            port = 8081;
-            username = "adele";
-            password = "$2a$10$IJiPBcbqVvJnAilE8Gs.uulWMWfq18tOEvlcYqaz8RvWjWP3sgBUK";
-          };
-        };
-
-        services.caddy = {
-          enable = true;
-          virtualHosts = {
-            "test.etiennerobert.com".extraConfig = /* caddy */ ''
-              root * ${etiennerobert-com.packages.${system}.default}
-              encode zstd gzip
-              try_files {path} /index.html
-              file_server
-            '';
-            "creatures.etiennerobert.com".extraConfig = /* caddy */ ''
-              reverse_proxy localhost:3000
-            '';
-            "files.etiennerobert.com".extraConfig = /* caddy */ ''
-              root * /srv/files
-              header Access-Control-Allow-Origin *
-              file_server browse
-            '';
-            "adele.etiennerobert.com".extraConfig = /* caddy */ ''
-              reverse_proxy localhost:8081
-            '';
-          };
-        };
-
       };
   };
 }
