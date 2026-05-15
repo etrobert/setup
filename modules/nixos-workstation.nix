@@ -79,6 +79,11 @@ _: {
 
           hyprpaper.wantedBy = [ "graphical-session.target" ];
 
+          # Prevent nixos-rebuild switch from restarting niri mid-session.
+          # Without this, switching causes a ghost niri to start (session inactive)
+          # which then blocks the legitimate niri when you log back in via GDM.
+          niri.restartIfChanged = false;
+
           album-art-wallpaper = {
             partOf = [ "graphical-session.target" ];
             wantedBy = [ "graphical-session.target" ];
