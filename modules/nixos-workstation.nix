@@ -110,6 +110,7 @@ _: {
             check-bt-profile
             zen-browser-wrapped
             ghostty-wrapped
+            open-url
           ];
 
           externalPackages = with pkgs; [
@@ -134,15 +135,15 @@ _: {
         customPackages ++ externalPackages;
 
       environment = {
-        sessionVariables.BROWSER = "zen";
+        sessionVariables.BROWSER = "open-url";
 
         etc."xdg/mimeapps.list".text = /* ini */ ''
           [Default Applications]
           x-scheme-handler/sgnl=signal.desktop
           x-scheme-handler/signalcaptcha=signal.desktop
-          text/html=zen.desktop
-          x-scheme-handler/http=zen.desktop
-          x-scheme-handler/https=zen.desktop
+          text/html=open-url.desktop
+          x-scheme-handler/http=open-url.desktop
+          x-scheme-handler/https=open-url.desktop
           x-scheme-handler/about=zen.desktop
           x-scheme-handler/unknown=zen.desktop
           application/pdf=zen.desktop
