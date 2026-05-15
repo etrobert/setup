@@ -59,6 +59,7 @@
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         brightness-control = pkgs.callPackage ./brightness-control { };
+        scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         volume-control = pkgs.callPackage ./volume-control { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         album-art-wallpaper = pkgs.callPackage ./album-art-wallpaper.nix { };

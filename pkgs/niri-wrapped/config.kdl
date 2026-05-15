@@ -576,6 +576,10 @@ binds {
     Mod+Minus { set-column-width "-10%"; }
     Mod+Equal { set-column-width "+10%"; }
 
+    // Scale a floating window proportionally (useful for picture-in-picture).
+    Mod+Ctrl+Minus { spawn "scale-floating-window" "down"; }
+    Mod+Ctrl+Equal { spawn "scale-floating-window" "up"; }
+
     // Finer height adjustments when in column with other windows.
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }

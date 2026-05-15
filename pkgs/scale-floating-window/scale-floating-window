@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [ $# -eq 0 ]; then
+  echo "Usage: scale-floating-window [up|down]"
+  exit 1
+fi
+
+case "$1" in
+  up)   factor=1.1 ;;
+  down) factor=0.9 ;;
+  *)    echo "Unknown direction: $1. Use 'up' or 'down'"; exit 1 ;;
+esac
+
+window=$(niri msg -j focused-window)
+
+if ! echo "$window" | jq -e '.is_floating' > /dev/null 2>&1; then
+  exit 0
+fi
+
+width=$(echo "$window" | jq '.layout.window_size[0]')
+height=$(echo "$window" | jq '.layout.window_size[1]')
+
+new_width=$(awk "BEGIN{printf \"%d\", $width * $factor}")
+new_height=$(awk "BEGIN{printf \"%d\", $height * $factor}")
+
+niri msg action set-window-width "$new_width"
+niri msg action set-window-height "$new_height"
