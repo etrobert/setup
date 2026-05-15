@@ -98,7 +98,6 @@ _: {
             waybar-wrapped
             mako-wrapped
             brightness-control
-            scale-floating-window
             volume-control
             birthdays
             creme
