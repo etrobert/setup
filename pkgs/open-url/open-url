@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+zen "$@" &
+disown
+
+window_id=$(niri msg --json windows | jq --raw-output '[.[] | select(.app_id == "zen")] | sort_by(.focus_timestamp.secs) | last | .id // empty')
+[ -n "$window_id" ] && niri msg action focus-window --id "$window_id"
