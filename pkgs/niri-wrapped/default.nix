@@ -4,7 +4,6 @@
   symlinkJoin,
   makeWrapper,
   niri,
-  fuzzel,
   xwayland-satellite,
   dev ? false,
 }:
@@ -12,10 +11,11 @@ let
   config = if dev then "/home/soft/setup/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
   path = [
+    self'.packages.ghostty-wrapped
+    self'.packages.fuzzel-wrapped
     self'.packages.volume-control
     self'.packages.brightness-control
     self'.packages.scale-floating-window
-    fuzzel
     xwayland-satellite
   ];
 in

@@ -49,6 +49,7 @@
           inherit self';
           dev = true;
         };
+        fuzzel-wrapped = pkgs.callPackage ./fuzzel-wrapped { };
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
           inherit self';
