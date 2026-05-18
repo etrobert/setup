@@ -124,6 +124,7 @@ _: {
             kdePackages.okular
             grim
             mpc # Minimalist command line interface to MPD
+            mpv
             pavucontrol
             playerctl
             slurp
