@@ -14,20 +14,11 @@ in
               type = types.nullOr types.lines;
               default = null;
             };
-            config = mkOption {
-              type = types.nullOr types.lines;
-              default = null;
-            };
             extraPackages = lib.mkOption {
               type = lib.types.listOf lib.types.package;
               default = [ ];
             };
           };
-          config.config = lib.mkIf (config.luaConfig != null) /* vim */ ''
-            lua << EOF
-            ${config.luaConfig}
-            EOF
-          '';
         }
       )
     );
