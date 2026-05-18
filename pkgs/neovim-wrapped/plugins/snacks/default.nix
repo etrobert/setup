@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.snacks-nvim;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         require("snacks").setup({ image = {} })
       '';
       extraPackages =

@@ -9,7 +9,7 @@ in
   plugins = [
     {
       plugin = bookmarks;
-      luaConfig = "require('bookmarks').setup()";
+      config = "require('bookmarks').setup()";
     }
   ];
 }

@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.workspace-diagnostics-nvim;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         -- Disabled because this takes a monstrous amount of ressources
         vim.api.nvim_create_autocmd("LspAttach", {
         	group = vim.api.nvim_create_augroup("workspace-diagnostics", { clear = true }),

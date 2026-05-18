@@ -9,7 +9,7 @@ in
   plugins = [
     {
       plugin = remap;
-      luaConfig = "require('remap')";
+      config = "require('remap')";
     }
   ];
 }

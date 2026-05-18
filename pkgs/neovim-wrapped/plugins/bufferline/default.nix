@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.bufferline-nvim;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         require("bufferline").setup({
         	options = {
         		diagnostics = "nvim_lsp",

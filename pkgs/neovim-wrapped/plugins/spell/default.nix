@@ -26,7 +26,7 @@ in
   plugins = [
     {
       plugin = customSpell;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         vim.opt.spelllang = "en,fr,custom"
         vim.opt.spellfile = vim.fn.expand("~/setup/pkgs/neovim-wrapped/plugins/spell/words.add")
         vim.api.nvim_create_autocmd("FileType", {

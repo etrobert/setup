@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.which-key-nvim;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         require("which-key").setup({
         	spec = {
         		{ "<leader>b", group = "Buffer" },

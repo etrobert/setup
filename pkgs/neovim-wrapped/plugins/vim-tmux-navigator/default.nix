@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.vim-tmux-navigator;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
         vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
         vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<cr>")

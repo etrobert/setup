@@ -9,7 +9,7 @@ in
   plugins = [
     {
       plugin = code-exec;
-      luaConfig = "require('code_exec').setup()";
+      config = "require('code_exec').setup()";
     }
   ];
 }

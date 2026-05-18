@@ -4,7 +4,7 @@
     {
       plugin = pkgs.vimPlugins.nvim-lspconfig;
 
-      luaConfig = builtins.readFile ./config.lua;
+      config = builtins.readFile ./config.lua;
 
       extraPackages = with pkgs; [
         bash-language-server

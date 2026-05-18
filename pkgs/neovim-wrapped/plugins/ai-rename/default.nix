@@ -9,7 +9,7 @@ in
   plugins = [
     {
       plugin = ai-rename;
-      luaConfig = "require('ai_rename').setup()";
+      config = "require('ai_rename').setup()";
     }
   ];
 }

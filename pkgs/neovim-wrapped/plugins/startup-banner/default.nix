@@ -9,7 +9,7 @@ in
   plugins = [
     {
       plugin = startup-banner;
-      luaConfig = "require('startup_banner').setup()";
+      config = "require('startup_banner').setup()";
     }
   ];
 }

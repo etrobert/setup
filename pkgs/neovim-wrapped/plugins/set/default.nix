@@ -9,7 +9,7 @@ in
   plugins = [
     {
       plugin = set;
-      luaConfig = "require('set')";
+      config = "require('set')";
     }
   ];
 }

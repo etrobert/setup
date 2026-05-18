@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.fidget-nvim;
-      luaConfig = /* lua */ ''require("fidget").setup({})'';
+      config = /* lua */ ''require("fidget").setup({})'';
     }
   ];
 }

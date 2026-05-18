@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.conform-nvim;
-      luaConfig = builtins.readFile ./config.lua;
+      config = builtins.readFile ./config.lua;
       extraPackages = with pkgs; [
         stylua
         prettierd

@@ -9,7 +9,7 @@ in
   plugins = [
     {
       plugin = ask;
-      luaConfig = "require('ask').setup()";
+      config = "require('ask').setup()";
     }
   ];
 }

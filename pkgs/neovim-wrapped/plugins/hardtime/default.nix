@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.hardtime-nvim;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         require("hardtime").setup()
       '';
     }

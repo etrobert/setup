@@ -10,7 +10,7 @@ in
         {
           options = {
             plugin = mkOption { type = types.package; };
-            luaConfig = mkOption {
+            config = mkOption {
               type = types.nullOr types.lines;
               default = null;
             };

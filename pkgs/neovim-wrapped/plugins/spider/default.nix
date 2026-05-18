@@ -3,7 +3,7 @@
   plugins = [
     {
       plugin = pkgs.vimPlugins.nvim-spider;
-      luaConfig = /* lua */ ''
+      config = /* lua */ ''
         require("spider").setup({ skipInsignificantPunctuation = false })
 
         vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>")

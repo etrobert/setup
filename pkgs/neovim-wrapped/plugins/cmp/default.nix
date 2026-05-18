@@ -21,7 +21,7 @@ in
   plugins = [
     {
       plugin = pkgs.vimPlugins.nvim-cmp;
-      luaConfig = builtins.readFile ./config.lua;
+      config = builtins.readFile ./config.lua;
     }
     { plugin = pkgs.vimPlugins.cmp-nvim-lsp; }
     { plugin = pkgs.vimPlugins.cmp-buffer; }

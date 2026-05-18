@@ -13,7 +13,7 @@ in
   plugins = [
     {
       plugin = pkgs.vimPlugins.telescope-nvim;
-      luaConfig = builtins.readFile ./config.lua;
+      config = builtins.readFile ./config.lua;
       extraPackages = with pkgs; [
         fd
         ripgrep

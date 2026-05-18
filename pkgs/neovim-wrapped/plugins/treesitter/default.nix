@@ -35,7 +35,7 @@
         ]
         ++ [ (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-openscad) ]
       );
-      luaConfig = builtins.readFile ./config.lua;
+      config = builtins.readFile ./config.lua;
     }
     { plugin = pkgs.vimPlugins.nvim-treesitter-textobjects; }
   ];
