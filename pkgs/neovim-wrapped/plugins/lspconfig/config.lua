@@ -68,6 +68,21 @@ vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
 	orig_inlay_hint_handler(err, result, ctx, config)
 end
 
+vim.lsp.config("nixd", {
+	settings = {
+		nixd = {
+			options = {
+				nixos = {
+					expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.tower.options",
+				},
+				darwin = {
+					expr = "(builtins.getFlake (builtins.toString ./.)).darwinConfigurations.aaron.options",
+				},
+			},
+		},
+	},
+})
+
 vim.lsp.enable({
 	"bashls",
 	"eslint",
