@@ -23,6 +23,8 @@ _: {
 
       console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
 
+      nix.settings.trusted-users = [ "@wheel" ];
+
       nix.gc = {
         automatic = true;
         dates = "daily";
