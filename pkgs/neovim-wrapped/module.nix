@@ -6,7 +6,7 @@ in
   options.plugins = mkOption {
     type = types.listOf (
       types.submodule (
-        { config, ... }:
+        _:
         {
           options = {
             plugin = mkOption { type = types.package; };
