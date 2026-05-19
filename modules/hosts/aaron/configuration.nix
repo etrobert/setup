@@ -26,9 +26,9 @@ in
   # Determinate Nix manages the daemon and GC; nix-darwin must not conflict.
   nix.enable = false;
 
-  # Determinate Nix ignores nix.settings; it manages /etc/nix/nix.conf itself
-  # and provides /etc/nix/nix.custom.conf for user overrides.
   environment = {
+    # Determinate Nix ignores nix.settings; it manages /etc/nix/nix.conf itself
+    # and provides /etc/nix/nix.custom.conf for user overrides.
     etc."nix/nix.custom.conf".text = ''
       trusted-users = root @admin
     '';
