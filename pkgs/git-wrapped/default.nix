@@ -33,6 +33,13 @@ let
     ];
     text = builtins.readFile ./git-worktree-remove.sh;
   };
+  systemConfig = pkgs.concatText "gitconfig-system" [
+    ./gitconfig-system
+    (pkgs.writeText "gitconfig-system-excludes" /* gitconfig */ ''
+      [core]
+        excludesFile = ${./gitignore-global}
+    '')
+  ];
 in
 pkgs.symlinkJoin {
   name = "git-wrapped";
@@ -47,7 +54,7 @@ pkgs.symlinkJoin {
   meta.mainProgram = "git";
   postBuild = ''
     wrapProgram $out/bin/git \
-      --set GIT_CONFIG_SYSTEM ${./gitconfig-system} \
+      --set GIT_CONFIG_SYSTEM ${systemConfig} \
       --set GIT_CONFIG_GLOBAL ${userConfig} \
       --prefix PATH : ${lib.makeBinPath deps}
   '';
