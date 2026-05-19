@@ -24,6 +24,7 @@ _: {
             inputPackages = [ agenix.packages.${system}.default ];
 
             customPackages = with self.packages.${system}; [
+              claude-code-wrapped
               firefox-wrapped
               alacritty-wrapped
               neovim-wrapped
@@ -45,7 +46,6 @@ _: {
               bitwarden-desktop
               btop
               bun
-              claude-code # cache not ready yet
               discord
               ffmpeg
               gcc

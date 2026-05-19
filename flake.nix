@@ -104,6 +104,7 @@
               config.allowUnfreePredicate =
                 pkg:
                 builtins.elem (lib.getName pkg) [
+                  "claude-code"
                   "cmp-emoji"
                   "copilot.vim"
                   "vscode"
