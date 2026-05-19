@@ -21,9 +21,7 @@ _: {
           let
             inherit (pkgs.stdenv.hostPlatform) system;
 
-            inputPackages = [
-              agenix.packages.${system}.default
-            ];
+            inputPackages = [ agenix.packages.${system}.default ];
 
             customPackages = with self.packages.${system}; [
               firefox-wrapped
