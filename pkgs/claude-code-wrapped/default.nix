@@ -1,4 +1,5 @@
 {
+  lib,
   symlinkJoin,
   makeWrapper,
   claude-code,
@@ -24,7 +25,7 @@ let
     builtins.toJSON {
       statusLine = {
         type = "command";
-        command = "${statuslineScript}/bin/claude-plan-usage";
+        command = lib.getExe statuslineScript;
       };
     }
   );
