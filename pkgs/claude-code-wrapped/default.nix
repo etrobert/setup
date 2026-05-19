@@ -11,6 +11,7 @@ let
   statuslineScript = writeShellApplication {
     name = "claude-plan-usage";
     runtimeInputs = [ jq ];
+    inheritPath = false;
     text = ''
       input=$(cat)
       five=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
