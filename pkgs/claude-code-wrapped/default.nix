@@ -3,6 +3,7 @@
   symlinkJoin,
   makeWrapper,
   claude-code,
+  coreutils,
   jq,
   writeShellApplication,
   writeText,
@@ -10,7 +11,10 @@
 let
   statuslineScript = writeShellApplication {
     name = "claude-plan-usage";
-    runtimeInputs = [ jq ];
+    runtimeInputs = [
+      coreutils
+      jq
+    ];
     inheritPath = false;
     text = ''
       input=$(cat)
