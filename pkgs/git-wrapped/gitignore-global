@@ -1,0 +1,5 @@
+.direnv
+.DS_Store
+result
+**/.claude/settings.local.json
+**/.claude/worktrees
