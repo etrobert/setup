@@ -26,11 +26,35 @@ in
   # Determinate Nix manages the daemon and GC; nix-darwin must not conflict.
   nix.enable = false;
 
-  # Determinate Nix ignores nix.settings; it manages /etc/nix/nix.conf itself
-  # and provides /etc/nix/nix.custom.conf for user overrides.
-  environment.etc."nix/nix.custom.conf".text = ''
-    trusted-users = root @admin
-  '';
+  environment = {
+    # Determinate Nix ignores nix.settings; it manages /etc/nix/nix.conf itself
+    # and provides /etc/nix/nix.custom.conf for user overrides.
+    etc."nix/nix.custom.conf".text = ''
+      trusted-users = root @admin
+    '';
+
+    shells = [ zsh-wrapped ];
+
+    systemPackages =
+      (with pkgs; [
+        betterdisplay
+        watch
+        raycast
+        defaultbrowser
+        ghostty-bin.terminfo
+        (writeShellApplication {
+          # This is necessary because the darwin tailscale module does not include authkey option
+          name = "tailscale-up";
+          text = ''tailscale up --authkey "$(cat /run/agenix/tailscale-authkey)"'';
+        })
+      ])
+      ++ (with self.packages.${system}; [
+        flush-dns
+        resize-window
+        finder
+        ghostty-wrapped
+      ]);
+  };
 
   nixpkgs.hostPlatform = "aarch64-darwin";
 
@@ -109,28 +133,6 @@ in
       home = "/Users/soft";
     };
   };
-
-  environment.shells = [ zsh-wrapped ];
-
-  environment.systemPackages =
-    (with pkgs; [
-      betterdisplay
-      watch
-      raycast
-      defaultbrowser
-      ghostty-bin.terminfo
-      (writeShellApplication {
-        # This is necessary because the darwin tailscale module does not include authkey option
-        name = "tailscale-up";
-        text = ''tailscale up --authkey "$(cat /run/agenix/tailscale-authkey)"'';
-      })
-    ])
-    ++ (with self.packages.${system}; [
-      flush-dns
-      resize-window
-      finder
-      ghostty-wrapped
-    ]);
 
   homebrew = {
     enable = true;
