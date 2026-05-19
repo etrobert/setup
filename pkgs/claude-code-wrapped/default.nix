@@ -16,12 +16,14 @@ let
     [ -n "$week" ] && out="$out 7d:$(printf '%.0f' "$week")%"
     echo "$out"
   '';
-  settingsFile = writeText "claude-settings.json" (builtins.toJSON {
-    statusLine = {
-      type = "command";
-      command = toString statuslineScript;
-    };
-  });
+  settingsFile = writeText "claude-settings.json" (
+    builtins.toJSON {
+      statusLine = {
+        type = "command";
+        command = toString statuslineScript;
+      };
+    }
+  );
 in
 symlinkJoin {
   name = "claude-code-wrapped";
