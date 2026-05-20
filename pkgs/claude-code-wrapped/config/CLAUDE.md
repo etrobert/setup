@@ -24,11 +24,12 @@ source/implementation. Don't rely on only one of these.
 ## Running Packages
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
-or the comma shorthand `, <package>` rather than skipping the step.
+rather than skipping the step.
 
 ## Code Style
 
-Always format, typecheck, and lint after making a change.
+Always format, typecheck, and lint after making a change. This includes Markdown
+files — format them with `nix run nixpkgs#prettier -- --write <file>`.
 
 Prefer `kebab-case` for directory names.
 
@@ -45,10 +46,12 @@ After committing on a branch, open a PR with `gh pr create`. Never merge to main
 directly — the user reviews all code and decides when to merge.
 
 Always rebase on origin/main before presenting a PR for review — both on initial
-`gh pr create` and after any follow-up changes before telling the user it's ready.
+`gh pr create` and after any follow-up changes before telling the user it's
+ready.
 
-After opening a PR, always check its status (`gh pr view --json state,mergeStateStatus`)
-and resolve any merge conflicts before reporting the task as done.
+After opening a PR, always check its status
+(`gh pr view --json state,mergeStateStatus`) and resolve any merge conflicts
+before reporting the task as done.
 
 Preferred merge strategy is squash merge (`--squash`).
 
@@ -59,8 +62,8 @@ Before pushing new commits to a branch, check that its PR has not already been
 merged (`gh pr view <number> --json state`). If it has, start a fresh branch
 from origin/main instead.
 
-When merging a PR from inside a git worktree, `gh pr merge` fails because
-`main` is already checked out in the parent worktree. Use the GitHub API instead:
+When merging a PR from inside a git worktree, `gh pr merge` fails because `main`
+is already checked out in the parent worktree. Use the GitHub API instead:
 
 ```bash
 gh api repos/{owner}/{repo}/pulls/{N}/merge -X PUT -f merge_method=squash
@@ -72,3 +75,16 @@ Only document project-specific conventions and decisions — not general knowled
 that Claude already knows from training (language semantics, standard tool
 behavior, common patterns). If removing a note wouldn't risk a future mistake
 specific to this project, don't write it.
+
+## Session Reflection
+
+At the end of every session, proactively ask: are there things learned this
+session worth writing down in either the global CLAUDE.md
+(`/home/soft/setup/pkgs/claude-code-wrapped/config/CLAUDE.md`) or the project
+CLAUDE.md — so that future sessions can know the user better or work more
+efficiently? Propose specific candidates from the session. Apply the CLAUDE.md
+Maintenance guidelines — only surface things that are non-obvious and genuinely
+specific to the user or project. Things about the user go in the global
+CLAUDE.md; project-specific workflow or conventions go in the project CLAUDE.md.
+If the user approves, create a PR with the changes following the standard git
+workflow.
