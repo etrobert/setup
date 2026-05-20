@@ -25,6 +25,7 @@ _: {
 
             customPackages = with self.packages.${system}; [
               claude-code-wrapped
+              claude-restart-daemon
               firefox-wrapped
               alacritty-wrapped
               neovim-wrapped

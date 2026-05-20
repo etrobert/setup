@@ -19,6 +19,7 @@
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped { };
+        claude-restart-daemon = pkgs.callPackage ./claude-restart-daemon { };
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
