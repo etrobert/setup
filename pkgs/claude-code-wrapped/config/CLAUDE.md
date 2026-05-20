@@ -7,6 +7,5 @@ or the comma shorthand `, <package>` rather than skipping the step.
 
 ## Git Workflow
 
-When working in a worktree branch, always open a PR with `gh pr create` after
-committing. Never push directly to main or merge the branch yourself — let the
-user decide when to merge.
+After committing on a branch, open a PR with `gh pr create`. Never merge to
+main directly — the user reviews all code and decides when to merge.
