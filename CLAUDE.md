@@ -60,11 +60,6 @@ Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 - Niri (Wayland compositor, dev channel) with Waybar status bar
 - DDC/CI backlight and brightness control
 
-### Running Packages
-
-If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
-or the comma shorthand `, <package>` rather than skipping the step.
-
 ### Development Environment
 
 - Neovim with Lua config in `pkgs/neovim-wrapped/`, plugins managed via Nix
