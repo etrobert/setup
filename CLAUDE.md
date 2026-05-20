@@ -66,3 +66,29 @@ Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 - Git with custom scripts: `gen-commit-msg`, `git-find-commit`,
   `tmux-sessionizer`
 - Shell: zsh; terminal: Ghostty
+
+### neovim-wrapped plugin conventions
+
+Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a
+`default.nix`. Plugins are registered in `pkgs/neovim-wrapped/default.nix`.
+
+**Existing catch-all plugins** — do not add unrelated code to these:
+- `set` — vim options only (`vim.opt.*`, `vim.o.*`)
+- `remap` — keymaps only (`vim.keymap.set`, `vim.api.nvim_create_user_command`)
+
+New behavior (autocmds, etc.) belongs in its own dedicated plugin.
+
+**Custom vs external plugins:**
+- External: `plugin = pkgs.vimPlugins.foo;` with a `config` string calling `setup()`
+- Custom (local Lua): `plugin = pkgs.vimUtils.buildVimPlugin { name = "..."; src = ./src; };`
+
+**Naming:** directory uses hyphens (`auto-mkdir`), Lua module uses underscores
+(`auto_mkdir`).
+
+**`plugin/` vs `lua/` inside a custom plugin's `src/`:**
+- `plugin/foo.lua` — auto-sourced by Neovim on startup; use for pure side-effect
+  code (autocmds) that nothing else calls into; omit the `config` field in `default.nix`
+- `lua/foo/init.lua` — only loaded via `require('foo')`; use when the module
+  exports functions that other code calls
+
+**`config` field is optional** — omit it when the plugin sources itself via `plugin/`.
