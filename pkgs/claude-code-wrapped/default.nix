@@ -47,7 +47,7 @@ let
       [ -n "$cost" ] && out="$out | \$$(printf '%.2f' "$cost")"
       if [ -n "$ctx_pct" ]; then
         pct_int=$(printf '%.0f' "$ctx_pct")
-        out="$out | $(pct_color "$pct_int")ctx:$pct_int%$reset"
+        out="$out | $(pct_color "$pct_int")$pct_int%$reset"
       fi
       if [ -n "$five_pct" ]; then
         pct_int=$(printf '%.0f' "$five_pct")
