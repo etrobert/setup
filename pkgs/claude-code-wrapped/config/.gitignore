@@ -1,3 +1,7 @@
+.claude.json
+mcp-needs-auth-cache.json
+plugins/
+projects/**/*.jsonl
 settings.local.json
 worktrees/
 todos/
