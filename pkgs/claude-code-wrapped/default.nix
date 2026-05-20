@@ -52,14 +52,14 @@ let
       if [ -n "$five_pct" ]; then
         pct_int=$(printf '%.0f' "$five_pct")
         five_str="$(pct_color "$pct_int")5h:$pct_int%$reset"
-        [ -n "$five_reset" ] && five_str="$five_str($(date -d "@$five_reset" +"%H:%M"))"
+        [ -n "$five_reset" ] && five_str="$five_str ($(date -d "@$five_reset" +"%H:%M"))"
         out="$out | $five_str"
       fi
       if [ -n "$week_pct" ]; then
         pct_int=$(printf '%.0f' "$week_pct")
         week_str="$(pct_color "$pct_int")7d:$pct_int%$reset"
-        [ -n "$week_reset" ] && week_str="$week_str($(date -d "@$week_reset" +"%a %H:%M"))"
-        out="$out $week_str"
+        [ -n "$week_reset" ] && week_str="$week_str ($(date -d "@$week_reset" +"%a %H:%M"))"
+        out="$out - $week_str"
       fi
       echo "$out"
     '';
