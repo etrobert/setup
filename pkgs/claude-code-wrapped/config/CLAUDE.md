@@ -1,5 +1,12 @@
 # CLAUDE.md
 
+## About the User
+
+Étienne Robert — software engineer with 15 years of experience, and a queer
+creative (dance, sewing, makeup, aerials, and more). Uses Claude for both
+software engineering and non-technical work. Tracks life documentation in
+Markdown files, often located at `~/sync/doc`.
+
 ## Running Packages
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
