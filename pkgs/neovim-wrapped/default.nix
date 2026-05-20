@@ -45,6 +45,7 @@ let
         ./plugins/code-exec
         ./plugins/ask
         ./plugins/ai-rename
+        ./plugins/auto-mkdir
         # TODO: Figure out when to run the banner to make sure it measures the right startup time
         # ./plugins/startup-banner
         ./plugins/tsc
