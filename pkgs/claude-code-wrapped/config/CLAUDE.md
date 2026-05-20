@@ -49,6 +49,13 @@ Before pushing new commits to a branch, check that its PR has not already been
 merged (`gh pr view <number> --json state`). If it has, start a fresh branch
 from origin/main instead.
 
+When merging a PR from inside a git worktree, `gh pr merge` fails because
+`main` is already checked out in the parent worktree. Use the GitHub API instead:
+
+```bash
+gh api repos/{owner}/{repo}/pulls/{N}/merge -X PUT -f merge_method=squash
+```
+
 ## CLAUDE.md Maintenance
 
 Only document project-specific conventions and decisions — not general knowledge
