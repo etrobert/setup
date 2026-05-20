@@ -1,0 +1,15 @@
+settings.local.json
+worktrees/
+todos/
+credentials/
+*.log
+history.jsonl
+backups/
+cache/
+file-history/
+daemon*
+session-env/
+sessions/
+telemetry/
+paste-cache/
+shell-snapshots/
