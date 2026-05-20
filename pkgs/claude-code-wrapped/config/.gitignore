@@ -18,3 +18,5 @@ sessions/
 telemetry/
 paste-cache/
 shell-snapshots/
+jobs/
+projects/*/?*-?*-?*-?*-?*/
