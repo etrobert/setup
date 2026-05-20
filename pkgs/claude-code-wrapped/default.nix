@@ -16,16 +16,17 @@ let
     inheritPath = false;
     text = ''
       input=$(cat)
+      model=$(echo "$input" | jq -r '.model.display_name')
       five_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
       five_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
       week_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
       week_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
-      out=""
+      out="[$model]"
       if [ -n "$five_pct" ]; then
         five_str="5h:$(printf '%.0f' "$five_pct")%"
         [ -n "$five_reset" ] && five_str="$five_str($(date -d "@$five_reset" +"%H:%M"))"
-        out="$five_str"
+        out="$out $five_str"
       fi
       if [ -n "$week_pct" ]; then
         week_str="7d:$(printf '%.0f' "$week_pct")%"
