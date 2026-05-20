@@ -3,6 +3,7 @@
   makeWrapper,
   claude-code,
   coreutils,
+  git,
   jq,
   writeShellApplication,
 }:
@@ -11,6 +12,7 @@ let
     name = "claude-plan-usage";
     runtimeInputs = [
       coreutils
+      git
       jq
     ];
     inheritPath = false;
@@ -22,11 +24,14 @@ let
       week_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
       week_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
+      branch=$(git branch --show-current 2>/dev/null)
+
       out="[$model]"
+      [ -n "$branch" ] && out="$out $branch"
       if [ -n "$five_pct" ]; then
         five_str="5h:$(printf '%.0f' "$five_pct")%"
         [ -n "$five_reset" ] && five_str="$five_str($(date -d "@$five_reset" +"%H:%M"))"
-        out="$out $five_str"
+        out="$out | $five_str"
       fi
       if [ -n "$week_pct" ]; then
         week_str="7d:$(printf '%.0f' "$week_pct")%"
