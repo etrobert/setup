@@ -16,6 +16,11 @@ Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
 Do not use the file-based memory system. Instead, write learnings and context
 into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
+## Research Approach
+
+When investigating how something works, consult both official documentation and
+source/implementation. Don't rely on only one of these.
+
 ## Running Packages
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
