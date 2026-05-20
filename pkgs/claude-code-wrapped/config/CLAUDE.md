@@ -40,3 +40,18 @@ After committing on a branch, open a PR with `gh pr create`. Never merge to main
 directly — the user reviews all code and decides when to merge.
 
 Always rebase the branch on origin/main before submitting a PR.
+
+Preferred merge strategy is squash merge (`--squash`).
+
+Keep PRs small and atomic — one logical change per PR.
+
+Before pushing new commits to a branch, check that its PR has not already been
+merged (`gh pr view <number> --json state`). If it has, start a fresh branch
+from origin/main instead.
+
+## CLAUDE.md Maintenance
+
+Only document project-specific conventions and decisions — not general knowledge
+that Claude already knows from training (language semantics, standard tool
+behavior, common patterns). If removing a note wouldn't risk a future mistake
+specific to this project, don't write it.
