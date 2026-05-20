@@ -1,4 +1,5 @@
 .claude.json
+.credentials.json
 *-cache.json
 plugins/
 projects/**/*.jsonl
