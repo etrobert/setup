@@ -47,9 +47,13 @@ directly — the user reviews all code and decides when to merge.
 Always rebase on origin/main before presenting a PR for review — both on initial
 `gh pr create` and after any follow-up changes before telling the user it's ready.
 
+After opening a PR, always check its status (`gh pr view --json state,mergeStateStatus`)
+and resolve any merge conflicts before reporting the task as done.
+
 Preferred merge strategy is squash merge (`--squash`).
 
-Keep PRs small and atomic — one logical change per PR.
+Keep PRs small and atomic — one logical change per PR. CLAUDE.md and context
+updates must be in their own PR, separate from code changes.
 
 Before pushing new commits to a branch, check that its PR has not already been
 merged (`gh pr view <number> --json state`). If it has, start a fresh branch
