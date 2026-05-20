@@ -6,10 +6,5 @@ let
   };
 in
 {
-  plugins = [
-    {
-      plugin = auto-mkdir;
-      config = "require('auto_mkdir')";
-    }
-  ];
+  plugins = [ { plugin = auto-mkdir; } ];
 }
