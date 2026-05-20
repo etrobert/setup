@@ -35,27 +35,27 @@ agenix (secrets).
   etc.)
 - `nixos-base.nix` — NixOS system baseline
 - `nixos-workstation.nix` — NixOS desktop: Niri compositor, GDM, Waybar, audio,
-  bluetooth
+  Bluetooth
 
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
 (gen-commit-msg, tmux-sessionizer, pm, brightness-control, etc.).
 
-**Secrets** (`secrets/`): agenix-encrypted secrets (tailscale authkey,
+**Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey,
 openai-api-key, gemini-api-key).
 
 ### Caches
 
 Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 
-### macOS-specific (`aaron`)
+### macOS specific (`aaron`)
 
 - skhd hotkeys: `Alt+HJKL` → arrow keys, `Alt+[1-9]` → app launch
 - Caps Lock remapped to Control via launchd daemon
 - Touch ID for sudo
 - Dock apps defined in `modules/hosts/aaron/dock-apps.nix`
 
-### Linux-specific
+### Linux specific
 
 - Niri (Wayland compositor, dev channel) with Waybar status bar
 - DDC/CI backlight and brightness control
