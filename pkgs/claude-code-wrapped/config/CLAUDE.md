@@ -39,7 +39,8 @@ Run `git alias` to discover available git aliases before running git commands.
 After committing on a branch, open a PR with `gh pr create`. Never merge to main
 directly — the user reviews all code and decides when to merge.
 
-Always rebase the branch on origin/main before submitting a PR.
+Always rebase on origin/main before presenting a PR for review — both on initial
+`gh pr create` and after any follow-up changes before telling the user it's ready.
 
 Preferred merge strategy is squash merge (`--squash`).
 
@@ -48,6 +49,13 @@ Keep PRs small and atomic — one logical change per PR.
 Before pushing new commits to a branch, check that its PR has not already been
 merged (`gh pr view <number> --json state`). If it has, start a fresh branch
 from origin/main instead.
+
+When merging a PR from inside a git worktree, `gh pr merge` fails because
+`main` is already checked out in the parent worktree. Use the GitHub API instead:
+
+```bash
+gh api repos/{owner}/{repo}/pulls/{N}/merge -X PUT -f merge_method=squash
+```
 
 ## CLAUDE.md Maintenance
 
