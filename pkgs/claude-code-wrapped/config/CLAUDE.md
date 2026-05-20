@@ -52,8 +52,8 @@ and resolve any merge conflicts before reporting the task as done.
 
 Preferred merge strategy is squash merge (`--squash`).
 
-Keep PRs small and atomic — one logical change per PR. CLAUDE.md and context
-updates must be in their own PR, separate from code changes.
+Keep PRs small and atomic — one logical change per PR. Unrelated changes must
+always be in separate PRs, even if they are small.
 
 Before pushing new commits to a branch, check that its PR has not already been
 merged (`gh pr view <number> --json state`). If it has, start a fresh branch
