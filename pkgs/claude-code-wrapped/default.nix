@@ -1,12 +1,10 @@
 {
-  lib,
   symlinkJoin,
   makeWrapper,
   claude-code,
   coreutils,
   jq,
   writeShellApplication,
-  writeText,
 }:
 let
   statuslineScript = writeShellApplication {
@@ -26,14 +24,6 @@ let
       echo "$out"
     '';
   };
-  settingsFile = writeText "claude-settings.json" (
-    builtins.toJSON {
-      statusLine = {
-        type = "command";
-        command = lib.getExe statuslineScript;
-      };
-    }
-  );
 in
 symlinkJoin {
   name = "claude-code-wrapped";
@@ -44,6 +34,6 @@ symlinkJoin {
     wrapProgram $out/bin/claude \
       --set CLAUDE_CODE_NO_FLICKER 1 \
       --run 'export CLAUDE_CONFIG_DIR="$HOME/setup/pkgs/claude-code-wrapped/config"' \
-      --add-flags "--settings ${settingsFile}"
+      --prefix PATH : ${statuslineScript}/bin
   '';
 }
