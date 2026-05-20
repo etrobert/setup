@@ -55,6 +55,9 @@ before reporting the task as done.
 
 Preferred merge strategy is squash merge (`--squash`).
 
+After merging, delete the remote branch with
+`git push origin --delete <branch>`.
+
 Keep PRs small and atomic — one logical change per PR. Unrelated changes must
 always be in separate PRs, even if they are small.
 
