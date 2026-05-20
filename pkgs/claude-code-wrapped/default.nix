@@ -43,6 +43,7 @@ symlinkJoin {
   postBuild = ''
     wrapProgram $out/bin/claude \
       --set CLAUDE_CODE_NO_FLICKER 1 \
+      --set CLAUDE_CONFIG_DIR "$HOME/setup/pkgs/claude-code-wrapped/config" \
       --add-flags "--settings ${settingsFile}"
   '';
 }
