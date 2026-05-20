@@ -1,5 +1,5 @@
 .claude.json
-mcp-needs-auth-cache.json
+*-cache.json
 plugins/
 projects/**/*.jsonl
 settings.local.json
