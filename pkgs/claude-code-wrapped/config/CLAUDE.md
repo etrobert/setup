@@ -7,6 +7,15 @@ creative (dance, sewing, makeup, aerials, and more). Uses Claude for both
 software engineering and non-technical work. Tracks life documentation in
 Markdown files, often located at `~/sync/doc`.
 
+No longer employed at Banani (as of May 2026). Currently setting up as a
+freelancer in Germany — pursuing Gründungszuschuss and AVGS-Coaching through
+Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
+
+## Memory
+
+Do not use the file-based memory system. Instead, write learnings and context
+into this global CLAUDE.md or the relevant project's CLAUDE.md.
+
 ## Running Packages
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
