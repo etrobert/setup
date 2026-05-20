@@ -82,13 +82,4 @@ New behavior (autocmds, etc.) belongs in its own dedicated plugin.
 - External: `plugin = pkgs.vimPlugins.foo;` with a `config` string calling `setup()`
 - Custom (local Lua): `plugin = pkgs.vimUtils.buildVimPlugin { name = "..."; src = ./src; };`
 
-**Naming:** directory uses hyphens (`auto-mkdir`), Lua module uses underscores
-(`auto_mkdir`).
-
-**`plugin/` vs `lua/` inside a custom plugin's `src/`:**
-- `plugin/foo.lua` — auto-sourced by Neovim on startup; use for pure side-effect
-  code (autocmds) that nothing else calls into; omit the `config` field in `default.nix`
-- `lua/foo/init.lua` — only loaded via `require('foo')`; use when the module
-  exports functions that other code calls
-
 **`config` field is optional** — omit it when the plugin sources itself via `plugin/`.

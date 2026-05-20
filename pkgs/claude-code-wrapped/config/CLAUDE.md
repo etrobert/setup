@@ -25,6 +25,8 @@ or the comma shorthand `, <package>` rather than skipping the step.
 
 Always format, typecheck, and lint after making a change.
 
+Prefer `kebab-case` for directory names.
+
 ## Testing
 
 Always test that code works before committing. Run the relevant test, build, or
