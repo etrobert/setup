@@ -11,6 +11,7 @@ history.jsonl
 backups/
 cache/
 file-history/
+.last-cleanup
 daemon*
 session-env/
 sessions/
