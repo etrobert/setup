@@ -16,7 +16,10 @@ _: {
         auth_providers = [
           {
             type = "trusted_networks";
-            trusted_networks = [ "100.64.0.0/10" ];
+            trusted_networks = [
+              "192.168.0.0/24"
+              "100.64.0.0/10"
+            ];
             allow_bypass_login = true;
           }
           { type = "homeassistant"; }
