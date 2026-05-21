@@ -27,7 +27,7 @@ agenix (secrets).
 (flake module), `configuration.nix` (host settings), and
 `hardware-configuration.nix` (Linux only).
 
-**Shared modules** (`modules/`):
+**Shared modules** (`modules/`) — the core baseline:
 
 - `base.nix` — common system config (nix settings, SSH keys, zsh, packages)
   applied to all hosts
@@ -37,6 +37,12 @@ agenix (secrets).
 - `nixos-workstation.nix` — NixOS desktop: Niri compositor, GDM, Waybar, audio,
   Bluetooth
 
+Opt-in feature modules expose `flake.nixosModules.<name>` and are imported
+per-host as needed: `server.nix`, `home-assistant.nix`, `darkman.nix`,
+`networkmanager.nix`, `pimsync.nix`. Plumbing modules: `darwinModules.nix`
+(darwin module-type plumbing), `unfree.nix` (`allowedUnfreePackages` option),
+`nix-index.nix`. See `modules/` for the full set.
+
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
 (gen-commit-msg, tmux-sessionizer, pm, brightness-control, etc.).
@@ -44,8 +50,9 @@ zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
 Shell scripts are packaged with `writeShellApplication` with `inheritPath = false`
 and explicit `runtimeInputs`.
 
-**Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey,
-openai-api-key, gemini-api-key).
+**Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey, API keys,
+Wi-Fi passwords, account passwords, etc.). See `secrets/secrets.nix` for the
+authoritative list.
 
 ### Caches
 
