@@ -32,6 +32,7 @@
           rust
           zsh
           latex
+          jinja
         ]
         ++ [ (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-openscad) ]
       );
