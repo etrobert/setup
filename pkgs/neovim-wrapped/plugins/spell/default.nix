@@ -21,13 +21,23 @@ let
     mkdir -p $out/spell
     cp ${frSpl} $out/spell/fr.utf-8.spl
   '';
+
+  deSpl = pkgs.fetchurl {
+    url = "https://ftp.nluug.nl/pub/vim/runtime/spell/de.utf-8.spl";
+    hash = "sha256-c8cQfqM5hWzb6SHeuSpFk5xN5uucByYdobndGfaDo9E=";
+  };
+
+  deSpell = pkgs.runCommand "nvim-spell-de" { } ''
+    mkdir -p $out/spell
+    cp ${deSpl} $out/spell/de.utf-8.spl
+  '';
 in
 {
   plugins = [
     {
       plugin = customSpell;
       config = /* lua */ ''
-        vim.opt.spelllang = "en,fr,custom"
+        vim.opt.spelllang = "en,fr,de,custom"
         vim.opt.spellfile = vim.fn.expand("~/setup/pkgs/neovim-wrapped/plugins/spell/words.add")
         vim.api.nvim_create_autocmd("FileType", {
           pattern = { "markdown", "gitcommit", "text" },
@@ -40,5 +50,6 @@ in
       '';
     }
     { plugin = frSpell; }
+    { plugin = deSpell; }
   ];
 }
