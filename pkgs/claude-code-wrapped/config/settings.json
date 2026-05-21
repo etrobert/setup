@@ -1,7 +1,8 @@
 {
-  "theme": "auto",
   "statusLine": {
     "type": "command",
     "command": "claude-plan-usage"
-  }
+  },
+  "theme": "auto",
+  "skipDangerousModePermissionPrompt": true
 }
