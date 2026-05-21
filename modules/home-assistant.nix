@@ -42,8 +42,8 @@ _: {
                 offset_time = 5;
                 min_brightness = 64;
                 max_brightness = 255;
-                min_color_temp = 250;
-                max_color_temp = 500;
+                min_color_temp_kelvin = 2000;
+                max_color_temp_kelvin = 4000;
               };
             }
             {
@@ -57,12 +57,12 @@ _: {
                   {% set normalized = (clamped - (min_time - offset_time)) / ((max_time - offset_time) - (min_time - offset_time)) %}
                   {{ (min_brightness + ((1 - normalized) * (max_brightness - min_brightness))) | int }}
                 '';
-                color_temp = ''
+                color_temp_kelvin = ''
                   {% set time = now().hour + (now().minute / 60.0) %}
                   {% set adjusted_time = (time - offset_time) % 24 %}
                   {% set clamped = [min_time - offset_time, [adjusted_time, max_time - offset_time] | min] | max %}
                   {% set normalized = (clamped - (min_time - offset_time)) / ((max_time - offset_time) - (min_time - offset_time)) %}
-                  {{ (max_color_temp - ((1 - normalized) * (max_color_temp - min_color_temp))) | int }}
+                  {{ (min_color_temp_kelvin + ((1 - normalized) * (max_color_temp_kelvin - min_color_temp_kelvin))) | int }}
                 '';
                 transition = 5;
               };
