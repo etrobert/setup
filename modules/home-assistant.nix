@@ -12,6 +12,12 @@ _: {
       # Includes dependencies for a basic setup
       # https://www.home-assistant.io/integrations/default_config/
       default_config = { };
+      input_boolean = {
+        auto_brightness = {
+          name = "Auto Brightness";
+          icon = "mdi:brightness-auto";
+        };
+      };
       automation = [
         {
           id = "circadian_lighting";
@@ -26,11 +32,21 @@ _: {
               platform = "homeassistant";
               event = "start";
             }
+            {
+              platform = "state";
+              entity_id = "input_boolean.auto_brightness";
+              to = "on";
+            }
           ];
           condition = [
             {
               condition = "state";
               entity_id = "light.home";
+              state = "on";
+            }
+            {
+              condition = "state";
+              entity_id = "input_boolean.auto_brightness";
               state = "on";
             }
           ];
