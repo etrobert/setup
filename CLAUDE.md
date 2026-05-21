@@ -41,6 +41,9 @@ agenix (secrets).
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
 (gen-commit-msg, tmux-sessionizer, pm, brightness-control, etc.).
 
+Shell scripts are packaged with `writeShellApplication` with `inheritPath = false`
+and explicit `runtimeInputs`.
+
 **Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey,
 openai-api-key, gemini-api-key).
 
