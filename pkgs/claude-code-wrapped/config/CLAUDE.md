@@ -63,9 +63,10 @@ After merging, delete the remote branch with
 Keep PRs small and atomic — one logical change per PR. Unrelated changes must
 always be in separate PRs, even if they are small.
 
-Before pushing new commits to a branch, check that its PR has not already been
-merged (`gh pr view <number> --json state`). If it has, start a fresh branch
-from origin/main instead.
+**IMPORTANT:** Before pushing new commits to a branch, always check that its PR
+has not already been merged (`gh pr view <number> --json state`). If it has,
+start a fresh branch from origin/main instead. Skipping this will push directly
+to main.
 
 To push a local branch to a new remote branch of the same name, use
 `git push origin HEAD:<branch-name>`. Avoid `git push -u origin <branch>` on a
