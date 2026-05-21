@@ -7,7 +7,7 @@ five_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
 week_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 week_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
-branch=$(git branch --show-current 2>/dev/null)
+branch=$(git branch --show-current 2>/dev/null || true)
 
 green=$'\033[32m'
 yellow=$'\033[33m'
