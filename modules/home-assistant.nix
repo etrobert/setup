@@ -50,14 +50,14 @@ _: {
               service = "light.turn_on";
               target.entity_id = "light.home";
               data = {
-                brightness = ''
+                brightness = /* jinja */ ''
                   {% set time = now().hour + (now().minute / 60.0) %}
                   {% set adjusted_time = (time - offset_time) % 24 %}
                   {% set clamped = [min_time - offset_time, [adjusted_time, max_time - offset_time] | min] | max %}
                   {% set normalized = (clamped - (min_time - offset_time)) / ((max_time - offset_time) - (min_time - offset_time)) %}
                   {{ (min_brightness + ((1 - normalized) * (max_brightness - min_brightness))) | int }}
                 '';
-                color_temp_kelvin = ''
+                color_temp_kelvin = /* jinja */ ''
                   {% set time = now().hour + (now().minute / 60.0) %}
                   {% set adjusted_time = (time - offset_time) % 24 %}
                   {% set clamped = [min_time - offset_time, [adjusted_time, max_time - offset_time] | min] | max %}
