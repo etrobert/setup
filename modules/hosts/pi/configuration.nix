@@ -12,7 +12,6 @@
 
   imports = [
     ./hardware-configuration.nix
-    ../../home-assistant.nix
   ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
