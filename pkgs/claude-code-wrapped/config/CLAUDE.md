@@ -16,6 +16,16 @@ Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
 Do not use the file-based memory system. Instead, write learnings and context
 into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
+## Working Style
+
+Work on one thing at a time. When a task naturally leads to a follow-up (e.g.
+removing a config after verifying a migration), open a separate PR rather than
+bundling it. Present the next step and wait for confirmation before starting.
+
+Before asking a question, check if the answer is obtainable by reading files,
+running a command, or SSHing into a machine. Only ask when a reasonable
+investigation wouldn't yield the answer.
+
 ## Research Approach
 
 When investigating how something works, consult both official documentation and
