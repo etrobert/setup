@@ -77,6 +77,13 @@ Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
   `tmux-sessionizer`
 - Shell: zsh; terminal: Ghostty
 
+### Testing wrapped package changes
+
+The `*-wrapped` packages bake their config into the Nix store, so editing a
+config file (e.g. a neovim plugin's `config.lua`) does not affect the installed
+binary until a system rebuild. To test a change in isolation, run just that
+package from the flake — e.g. `nix run ".#neovim-wrapped" -- <file-or-dir>`.
+
 ### neovim-wrapped plugin conventions
 
 Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a
