@@ -73,6 +73,8 @@ After merging, delete the remote branch with
 Keep PRs small and atomic — one logical change per PR. Unrelated changes must
 always be in separate PRs, even if they are small.
 
+For complex features that naturally split into layers, use stacked PRs: each PR builds on the previous one.
+
 **IMPORTANT:** Before pushing new commits to a branch, always check that its PR
 has not already been merged (`gh pr view <number> --json state`). If it has,
 start a fresh branch from origin/main instead. Skipping this will push directly
