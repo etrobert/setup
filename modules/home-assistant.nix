@@ -4,7 +4,7 @@ _: {
   services.home-assistant = {
     enable = true;
     extraComponents = [
-      "hue_ble"
+      "hue"
       "led_ble"
       "ibeacon"
     ];
