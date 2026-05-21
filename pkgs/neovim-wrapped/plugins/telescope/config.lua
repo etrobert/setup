@@ -12,7 +12,13 @@ vim.api.nvim_create_autocmd("User", {
 
 require("telescope").setup({
 	defaults = {
-		file_ignore_patterns = { "node_modules", "%.git%/", "package%-lock.json", "pnpm%-lock.yaml" },
+		file_ignore_patterns = {
+			"node_modules",
+			"%.git%/",
+			"%.claude%/worktrees%/",
+			"package%-lock.json",
+			"pnpm%-lock.yaml",
+		},
 	},
 	pickers = {
 		find_files = {
