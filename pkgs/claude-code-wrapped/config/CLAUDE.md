@@ -7,6 +7,8 @@ creative (dance, sewing, makeup, aerials, and more). Uses Claude for both
 software engineering and non-technical work. Tracks life documentation in
 Markdown files, often located at `~/sync/doc`.
 
+Sews decently. IKEA Family member (Germany).
+
 No longer employed at Banani (as of May 2026). Currently setting up as a
 freelancer in Germany — pursuing Gründungszuschuss and AVGS-Coaching through
 Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
@@ -41,7 +43,8 @@ rather than skipping the step.
 Always format, typecheck, and lint after making a change. Check the conform
 config (`pkgs/neovim-wrapped/plugins/conform/config.lua`) to see which formatter
 applies to a given file type. Markdown files use
-`nix run nixpkgs#prettier -- --write <file>`.
+`nix run nixpkgs#prettier -- --write <file>`. Format after every individual
+edit, not just at the end of a session.
 
 Prefer `kebab-case` for directory names.
 
