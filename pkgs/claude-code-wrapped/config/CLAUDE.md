@@ -30,10 +30,6 @@ All machines are connected via Tailscale. SSH into any of them by name
 machine. If SSH is refused, check whether Tailscale is running
 (`tailscale status`) and bring it up with `sudo tailscale-up` if needed.
 
-The Tailscale auth key in agenix (`secrets/tailscale-authkey.age`) must be
-**reusable** — a one-time key gets consumed on first use and breaks subsequent
-`tailscale up` calls.
-
 ## Nix Philosophy
 
 Does not like home-manager and is actively removing it from the setup piece by
