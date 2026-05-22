@@ -14,6 +14,7 @@ _: {
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
+        self.nixosModules.copilot-api
       ];
 
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
