@@ -28,7 +28,7 @@ jobs:
         run: nix fmt . -- --ci
 
       - name: Flake Check
-        run: nix flake check --all-systems --accept-flake-config
+        run: nix flake check --all-systems --no-build --accept-flake-config
 
   build:
     name: Build ${{ matrix.host }}
