@@ -47,8 +47,8 @@ per-host as needed: `server.nix`, `home-assistant.nix`, `darkman.nix`,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
 (gen-commit-msg, tmux-sessionizer, pm, brightness-control, etc.).
 
-Shell scripts are packaged with `writeShellApplication` with `inheritPath = false`
-and explicit `runtimeInputs`.
+Shell scripts are packaged with `writeShellApplication` with
+`inheritPath = false` and explicit `runtimeInputs`.
 
 **Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey, API keys,
 Wi-Fi passwords, account passwords, etc.). See `secrets/secrets.nix` for the
@@ -90,13 +90,24 @@ Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a
 `default.nix`. Plugins are registered in `pkgs/neovim-wrapped/default.nix`.
 
 **Existing catch-all plugins** — do not add unrelated code to these:
+
 - `set` — vim options only (`vim.opt.*`, `vim.o.*`)
 - `remap` — keymaps only (`vim.keymap.set`, `vim.api.nvim_create_user_command`)
 
 New behavior (autocmds, etc.) belongs in its own dedicated plugin.
 
 **Custom vs external plugins:**
-- External: `plugin = pkgs.vimPlugins.foo;` with a `config` string calling `setup()`
-- Custom (local Lua): `plugin = pkgs.vimUtils.buildVimPlugin { name = "..."; src = ./src; };`
 
-**`config` field is optional** — omit it when the plugin sources itself via `plugin/`.
+- External: `plugin = pkgs.vimPlugins.foo;` with a `config` string calling
+  `setup()`
+- Custom (local Lua):
+  `plugin = pkgs.vimUtils.buildVimPlugin { name = "..."; src = ./src; };`
+
+**`config` field is optional** — omit it when the plugin sources itself via
+`plugin/`.
+
+## GitHub
+
+The `etrobert-bot` account used by Claude Code does not have admin rights on
+this repo. Admin-level operations (branch protection, repo settings) require the
+`etrobert` account — flag these to the user rather than attempting them.
