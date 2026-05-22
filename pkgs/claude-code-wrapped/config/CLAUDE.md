@@ -87,7 +87,8 @@ before reporting the task as done.
 Before merging, always fetch and read all review comments — never merge with
 open threads. Reply to every comment: if applying a suggestion without anything
 to add, say so explicitly. The user uses Conventional Comments to signal intent
-(e.g. `**issue:**`, `**question:**`, `**suggestion:**`).
+(e.g. `**issue:**`, `**question:**`, `**suggestion:**`). "Reviewed" does not
+mean approved — always check for open comments before merging.
 
 Preferred merge strategy is squash merge (`--squash`).
 
