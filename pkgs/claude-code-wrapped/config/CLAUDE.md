@@ -9,6 +9,11 @@ Markdown files, often located at `~/sync/doc`.
 
 Sews decently. IKEA Family member (Germany).
 
+Uses Home Assistant and prefers local integrations where available.
+ESPHome-based devices are a good fit. Comfortable with kit assembly and DIY
+hardware. Pragmatic about warranties — willing to skip them for meaningful cost
+savings.
+
 No longer employed at Banani (as of May 2026). Currently setting up as a
 freelancer in Germany — pursuing Gründungszuschuss and AVGS-Coaching through
 Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
