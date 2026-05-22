@@ -22,10 +22,11 @@ let
     text = builtins.readFile ./claude-plan-usage.sh;
   };
   envFlags = lib.concatStringsSep " " (
-    lib.mapAttrsToList (name: value: "--set ${lib.escapeShellArg name} ${lib.escapeShellArg value}") extraEnv
+    lib.mapAttrsToList (
+      name: value: "--set ${lib.escapeShellArg name} ${lib.escapeShellArg value}"
+    ) extraEnv
   );
-  agenixTokenFlag = lib.optionalString readTokenFromAgenix
-    "--run 'export ANTHROPIC_AUTH_TOKEN=\"$(cat /run/agenix/z-ai-auth-token 2>/dev/null || true)\"'";
+  agenixTokenFlag = lib.optionalString readTokenFromAgenix "--run 'export ANTHROPIC_AUTH_TOKEN=\"$(cat /run/agenix/z-ai-auth-token 2>/dev/null || true)\"'";
 in
 symlinkJoin {
   name = "claude-code-wrapped";
