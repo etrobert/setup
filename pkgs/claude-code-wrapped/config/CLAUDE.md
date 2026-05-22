@@ -23,6 +23,13 @@ Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
 Do not use the file-based memory system. Instead, write learnings and context
 into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
+## Machines
+
+All machines are connected via Tailscale. SSH into any of them by name
+(`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current
+machine. If SSH is refused, check whether Tailscale is running
+(`tailscale status`) and bring it up with `sudo tailscale-up` if needed.
+
 ## Nix Philosophy
 
 Does not like home-manager and is actively removing it from the setup piece by
