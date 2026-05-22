@@ -16,6 +16,9 @@ let
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
+
+  browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
+  chromePolicies = pkgs.writeText "chrome-policies.json" (builtins.toJSON browserConfig.sharedChromeExtraOpts);
 in
 {
   allowedUnfreePackages = [
@@ -71,6 +74,11 @@ in
 
   system = {
     primaryUser = "soft";
+
+    activationScripts.chromePolicies.text = ''
+      mkdir -p "/Library/Application Support/Google/Chrome/policies/managed"
+      cp ${chromePolicies} "/Library/Application Support/Google/Chrome/policies/managed/nix.json"
+    '';
 
     activationScripts.postActivation.text = ''
       ln --symbolic --force --no-dereference /Users/soft/setup /etc/nix-darwin

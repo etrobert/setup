@@ -33,6 +33,12 @@
     };
   };
 
+  sharedChromeExtraOpts = {
+    ExtensionInstallForcelist = [
+      "bfbogjkneaangbdaafblgfnbpaapmnlb;https://clients2.google.com/service/update2/crx"
+    ];
+  };
+
   sharedSettings = {
     "browser.ctrlTab.sortByRecentlyUsed" = true;
     "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;

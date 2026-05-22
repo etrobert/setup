@@ -8,6 +8,7 @@ _: {
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
+      browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
     in
     {
       imports = [
@@ -158,6 +159,8 @@ _: {
         };
 
         hyprlock.enable = true;
+
+        chromium.extraOpts = browserConfig.sharedChromeExtraOpts;
       };
 
       home-manager.users.soft = self.homeModules.linux;
