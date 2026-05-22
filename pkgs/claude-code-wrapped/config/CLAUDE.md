@@ -23,6 +23,12 @@ Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
 Do not use the file-based memory system. Instead, write learnings and context
 into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
+## Nix Philosophy
+
+Does not like home-manager and is actively removing it from the setup piece by
+piece. Never suggest home-manager as a solution. Prefers the `-wrapped` pattern
+for configuring programs, and darwin/nixos modules for everything else.
+
 ## Working Style
 
 Work on one thing at a time. When a task naturally leads to a follow-up (e.g.
@@ -86,7 +92,8 @@ After merging, delete the remote branch with
 Keep PRs small and atomic — one logical change per PR. Unrelated changes must
 always be in separate PRs, even if they are small.
 
-For complex features that naturally split into layers, use stacked PRs: each PR builds on the previous one.
+For complex features that naturally split into layers, use stacked PRs: each PR
+builds on the previous one.
 
 **IMPORTANT:** Before pushing new commits to a branch, always check that its PR
 has not already been merged (`gh pr view <number> --json state`). If it has,
