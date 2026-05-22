@@ -78,13 +78,19 @@ _: {
           in
           inputPackages ++ customPackages ++ externalPackages;
 
-        age.secrets.openai-api-key = {
-          file = ../secrets/openai-api-key.age;
-          owner = "soft";
-        };
-        age.secrets.gemini-api-key = {
-          file = ../secrets/gemini-api-key.age;
-          owner = "soft";
+        age.secrets = {
+          openai-api-key = {
+            file = ../secrets/openai-api-key.age;
+            owner = "soft";
+          };
+          gemini-api-key = {
+            file = ../secrets/gemini-api-key.age;
+            owner = "soft";
+          };
+          github-bot-token = {
+            file = ../secrets/github-bot-token.age;
+            owner = "soft";
+          };
         };
 
         fonts.packages = with pkgs; [ nerd-fonts.fira-code ];

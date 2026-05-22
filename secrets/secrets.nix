@@ -10,6 +10,11 @@ let
     leod
     pi
   ];
+  allWorkstations = [
+    tower
+    leod
+    aaron
+  ];
   allMachines = allLinux ++ [ aaron ];
 in
 {
@@ -23,4 +28,5 @@ in
   "soft-password.age".publicKeys = allLinux;
   # TODO: Restrict to relevant machines
   "ddclient-password-etiennerobert-com.age".publicKeys = allLinux;
+  "github-bot-token.age".publicKeys = allWorkstations;
 }
