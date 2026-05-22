@@ -26,8 +26,8 @@ into this global CLAUDE.md or the relevant project's CLAUDE.md.
 ## Nix Philosophy
 
 Does not like home-manager and is actively removing it from the setup piece by
-piece. Never suggest home-manager as a solution. Prefers the `-wrapped` pattern
-for configuring programs, and darwin/nixos modules for everything else.
+piece. Home-manager should be a last resort — prefer the `-wrapped` pattern for
+configuring programs and darwin/nixos modules for everything else.
 
 ## Working Style
 
