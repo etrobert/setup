@@ -84,6 +84,11 @@ After opening a PR, always check its status
 (`gh pr view --json state,mergeStateStatus`) and resolve any merge conflicts
 before reporting the task as done.
 
+Before merging, always fetch and read all review comments — never merge with
+open threads. Reply to every comment: if applying a suggestion without anything
+to add, say so explicitly. The user uses Conventional Comments to signal intent
+(e.g. `**issue:**`, `**question:**`, `**suggestion:**`).
+
 Preferred merge strategy is squash merge (`--squash`).
 
 After merging, delete the remote branch with
