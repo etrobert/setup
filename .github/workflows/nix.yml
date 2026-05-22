@@ -28,6 +28,9 @@ jobs:
         run: nix fmt . -- --ci
 
       - name: Flake Check
+        run: nix flake check --accept-flake-config
+
+      - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
 
   build:
