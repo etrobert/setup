@@ -18,7 +18,9 @@ let
   inherit (self.packages.${system}) zsh-wrapped;
 
   browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
-  chromePolicies = pkgs.writeText "chrome-policies.json" (builtins.toJSON browserConfig.sharedChromeExtraOpts);
+  chromePolicies = pkgs.writeText "chrome-policies.json" (
+    builtins.toJSON browserConfig.sharedChromeExtraOpts
+  );
 in
 {
   allowedUnfreePackages = [
