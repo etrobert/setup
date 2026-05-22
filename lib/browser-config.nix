@@ -36,5 +36,10 @@
   sharedSettings = {
     "browser.ctrlTab.sortByRecentlyUsed" = true;
     "media.videocontrols.picture-in-picture.enable-when-switching-tabs.enabled" = true;
+    # Render at integer scale and let the compositor downscale. Firefox's own
+    # Wayland fractional scaling triggers a popup-grab bug under Niri where
+    # right-click menus and extension popups stop opening after a while, until
+    # the browser is restarted (https://bugzilla.mozilla.org/show_bug.cgi?id=1849109).
+    "widget.wayland.fractional-scale.enabled" = false;
   };
 }
