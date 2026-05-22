@@ -29,4 +29,5 @@ in
   # TODO: Restrict to relevant machines
   "ddclient-password-etiennerobert-com.age".publicKeys = allLinux;
   "github-bot-token.age".publicKeys = allWorkstations;
+  "z-ai-auth-token.age".publicKeys = allWorkstations;
 }

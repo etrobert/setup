@@ -91,6 +91,10 @@ _: {
             file = ../secrets/github-bot-token.age;
             owner = "soft";
           };
+          z-ai-auth-token = {
+            file = ../secrets/z-ai-auth-token.age;
+            owner = "soft";
+          };
         };
 
         fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
