@@ -86,6 +86,10 @@ _: {
           file = ../secrets/gemini-api-key.age;
           owner = "soft";
         };
+        age.secrets.github-bot-token = {
+          file = ../secrets/github-bot-token.age;
+          owner = "soft";
+        };
 
         fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
 
