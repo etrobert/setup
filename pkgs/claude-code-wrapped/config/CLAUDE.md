@@ -90,9 +90,8 @@ to add, say so explicitly. The user uses Conventional Comments to signal intent
 (e.g. `**issue:**`, `**question:**`, `**suggestion:**`). "Reviewed" does not
 mean approved — always check for open comments before merging.
 
-Preferred merge strategy is squash merge (`--squash`). When the user approves a
-PR and CI is still running, use `gh pr merge --squash --auto` rather than
-waiting for CI to finish.
+Preferred merge strategy is squash merge (`--squash`). When ready to merge but
+CI is still running, use `gh pr merge --squash --auto` rather than waiting.
 
 After merging, delete the remote branch with
 `git push origin --delete <branch>`.
