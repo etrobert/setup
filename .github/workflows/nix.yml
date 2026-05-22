@@ -59,6 +59,19 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # large-packages and docker-images are slow (apt-get). Enable them if disk space becomes an issue.
+      - name: Free disk space
+        if: runner.os == 'Linux'
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: false
+          docker-images: false
+          swap-storage: false
+
       - uses: DeterminateSystems/determinate-nix-action@v3
 
       # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't fail the job
