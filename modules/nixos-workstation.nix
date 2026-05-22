@@ -158,10 +158,6 @@ _: {
         };
 
         hyprlock.enable = true;
-
-        chromium.extraOpts.ExtensionInstallForcelist = [
-          "bfbogjkneaangbdaafblgfnbpaapmnlb;https://clients2.google.com/service/update2/crx"
-        ];
       };
 
       home-manager.users.soft = self.homeModules.linux;
