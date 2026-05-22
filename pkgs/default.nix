@@ -29,6 +29,18 @@
           };
           readTokenFromAgenix = true;
         };
+        copilot-api = pkgs.callPackage ./copilot-api { };
+        claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
+          extraEnv = {
+            ANTHROPIC_BASE_URL = "http://localhost:4141";
+            ANTHROPIC_AUTH_TOKEN = "dummy"; # proxy authenticates via GitHub itself
+            API_TIMEOUT_MS = "3000000";
+            ANTHROPIC_DEFAULT_HAIKU_MODEL = "claude-haiku-4.5";
+            ANTHROPIC_DEFAULT_SONNET_MODEL = "claude-sonnet-4.6";
+            # Opus is unavailable on Copilot Pro; degrade to Sonnet rather than error.
+            ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-sonnet-4.6";
+          };
+        };
         claude-restart-daemon = pkgs.callPackage ./claude-restart-daemon { };
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };

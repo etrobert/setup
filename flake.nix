@@ -81,6 +81,7 @@
           ./modules/networkmanager.nix
           ./modules/pimsync.nix
           ./modules/darkman.nix
+          ./modules/copilot-api.nix
           ./modules/server.nix
           ./pkgs
         ];
