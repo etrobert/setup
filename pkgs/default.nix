@@ -28,6 +28,7 @@
             ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.1";
           };
           readTokenFromAgenix = true;
+          binName = "claude-glm";
         };
         copilot-api = pkgs.callPackage ./copilot-api { };
         claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
@@ -40,6 +41,7 @@
             # Opus is unavailable on Copilot Pro; degrade to Sonnet rather than error.
             ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-sonnet-4.6";
           };
+          binName = "claude-copilot";
         };
         claude-restart-daemon = pkgs.callPackage ./claude-restart-daemon { };
         batr = pkgs.callPackage ./batr.nix { };
