@@ -43,6 +43,11 @@ source/implementation. Don't rely on only one of these.
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
 rather than skipping the step.
 
+To verify a change, either build it (`nix build`) or run it with a test
+parameter (`nix run <program> -- --test-param`) — both are fine. But when
+handing the user a command to execute themselves, prefer the simplest invocation
+(e.g. `nix run` over `nix build` followed by `./result/bin/...`).
+
 ## Code Style
 
 Always format, typecheck, and lint after making a change. Check the conform
