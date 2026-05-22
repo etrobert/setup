@@ -14,7 +14,8 @@ a Raspberry Pi (`pi`).
 ### Configuration Layout
 
 Program configs live colocated with their wrapper in `pkgs/`. Each `*-wrapped`
-package embeds its config directly and is self-contained.
+package embeds its config directly and is self-contained. Home-manager should be
+a last resort — prefer `-wrapped` packages and darwin/nixos modules.
 
 The `deprecated/` directory contains stow-style directories not yet migrated.
 

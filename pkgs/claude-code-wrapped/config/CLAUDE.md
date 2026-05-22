@@ -30,12 +30,6 @@ All machines are connected via Tailscale. SSH into any of them by name
 machine. If SSH is refused, check whether Tailscale is running
 (`tailscale status`) and bring it up with `sudo tailscale-up` if needed.
 
-## Nix Philosophy
-
-Does not like home-manager and is actively removing it from the setup piece by
-piece. Home-manager should be a last resort — prefer the `-wrapped` pattern for
-configuring programs and darwin/nixos modules for everything else.
-
 ## Working Style
 
 Work on one thing at a time. When a task naturally leads to a follow-up (e.g.
