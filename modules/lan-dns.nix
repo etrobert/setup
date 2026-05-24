@@ -28,9 +28,13 @@ _: {
               "files.etiennerobert.com,192.168.0.130"
               "adele.etiennerobert.com,192.168.0.130"
             ];
-            dhcp-range = "192.168.0.50,192.168.0.250,12h";
+            dhcp-range = [
+              "192.168.0.50,192.168.0.250,12h"
+              "::1,::ffff,constructor:${config.services.lanDns.interface},ra-stateless"
+            ];
             dhcp-option = [ "option:router,192.168.0.1" ];
             dhcp-host = "c8:4b:d6:ce:4e:78,192.168.0.130";
+            enable-ra = true;
           };
         };
 
