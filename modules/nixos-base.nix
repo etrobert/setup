@@ -55,8 +55,6 @@ _: {
           authKeyFile = config.age.secrets.tailscale-authkey.path;
         };
 
-        openssh.enable = true;
-
         syncthing = {
           enable = true;
           user = "soft";
