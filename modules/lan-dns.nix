@@ -3,13 +3,12 @@ _: {
     { config, lib, ... }:
     {
       options.services.lanDns = {
-        enable = lib.mkEnableOption "LAN split-horizon DNS via dnsmasq";
+        enable = lib.mkEnableOption "LAN DHCP and split-horizon DNS via dnsmasq";
         interface = lib.mkOption {
           type = lib.types.str;
           default = "end0";
-          description = "LAN interface to listen on for DNS and DHCP";
+          description = "LAN interface to listen on";
         };
-        dhcp.enable = lib.mkEnableOption "DHCP server";
       };
 
       config = lib.mkIf config.services.lanDns.enable {
@@ -29,12 +28,8 @@ _: {
               "files.etiennerobert.com,192.168.0.130"
               "adele.etiennerobert.com,192.168.0.130"
             ];
-          }
-          // lib.optionalAttrs config.services.lanDns.dhcp.enable {
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
-            dhcp-option = [
-              "option:router,192.168.0.1"
-            ];
+            dhcp-option = [ "option:router,192.168.0.1" ];
             dhcp-host = "c8:4b:d6:ce:4e:78,192.168.0.130";
             domain = "kabelbox.local";
           };
@@ -42,7 +37,10 @@ _: {
 
         networking.firewall.interfaces.${config.services.lanDns.interface} = {
           allowedTCPPorts = [ 53 ];
-          allowedUDPPorts = [ 53 ] ++ lib.optionals config.services.lanDns.dhcp.enable [ 67 ];
+          allowedUDPPorts = [
+            53
+            67
+          ];
         };
       };
     };
