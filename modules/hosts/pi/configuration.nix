@@ -59,6 +59,7 @@
   services.lanDns = {
     enable = true;
     interface = "end0";
+    dhcp.enable = true;
   };
 
   services = {
