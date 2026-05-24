@@ -40,7 +40,26 @@
 
   networking.hostName = "pi";
 
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    ensureProfiles.profiles."end0-static" = {
+      connection = {
+        id = "end0-static";
+        type = "ethernet";
+        interface-name = "end0";
+      };
+      ipv4 = {
+        method = "manual";
+        address1 = "192.168.0.18/24,192.168.0.1";
+        dns = "1.1.1.1;9.9.9.9;";
+      };
+    };
+  };
+
+  services.lanDns = {
+    enable = true;
+    interface = "end0";
+  };
 
   services = {
     tailscale.extraUpFlags = [ "--advertise-exit-node" ];

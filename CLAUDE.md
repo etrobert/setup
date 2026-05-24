@@ -40,9 +40,10 @@ agenix (secrets).
 
 Opt-in feature modules expose `flake.nixosModules.<name>` and are imported
 per-host as needed: `server.nix`, `home-assistant.nix`, `darkman.nix`,
-`networkmanager.nix`, `pimsync.nix`. Plumbing modules: `darwinModules.nix`
-(darwin module-type plumbing), `unfree.nix` (`allowedUnfreePackages` option),
-`nix-index.nix`. See `modules/` for the full set.
+`networkmanager.nix`, `pimsync.nix`, `lan-dns.nix`. Plumbing modules:
+`darwinModules.nix` (darwin module-type plumbing), `unfree.nix`
+(`allowedUnfreePackages` option), `nix-index.nix`. See `modules/` for the full
+set.
 
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
@@ -106,6 +107,17 @@ New behavior (autocmds, etc.) belongs in its own dedicated plugin.
 
 **`config` field is optional** — omit it when the plugin sources itself via
 `plugin/`.
+
+## LAN Networking
+
+**Home router:** Vodafone Station Arris TG3442DE (`192.168.0.1`).
+
+**LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
+listening on `end0`, static `.18`).
+
+**Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
+`.130` (MAC `C8:4B:D6:CE:4E:78`, also the 80/443 port-forward target on the
+Station).
 
 ## GitHub
 
