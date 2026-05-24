@@ -19,16 +19,6 @@ _: {
           443
         ];
 
-        # Overwrite to be able to access that from LAN
-        # hairpin NAT trap
-        # Better fix would be to have DNS server on LAN
-        networking.hosts."192.168.0.130" = [
-          "test.etiennerobert.com"
-          "creatures.etiennerobert.com"
-          "files.etiennerobert.com"
-          "adele.etiennerobert.com"
-        ];
-
         services = {
           ddclient = {
             enable = true;
