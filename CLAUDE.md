@@ -112,8 +112,7 @@ New behavior (autocmds, etc.) belongs in its own dedicated plugin.
 
 **Home router:** Vodafone Station Arris TG3442DE (`192.168.0.1`) — **no NAT
 reflection/hairpin**. LAN DHCP is toggled via IPv4 page → `Local DHCPv4 Server`
-(currently OFF after PR2 cutover). The router cannot advertise a custom DNS via
-DHCP.
+(currently OFF after PR2 cutover).
 
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
 listening on `end0`, static `.18`). Split-horizon overrides only tower-hosted
