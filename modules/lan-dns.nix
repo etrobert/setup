@@ -22,8 +22,6 @@ _: {
               "1.1.1.1"
               "9.9.9.9"
             ];
-            # Exact overrides only — do NOT wildcard the etiennerobert.com zone.
-            # Other subdomains live outside tower and must resolve publicly.
             host-record = [
               "test.etiennerobert.com,192.168.0.130"
               "creatures.etiennerobert.com,192.168.0.130"
