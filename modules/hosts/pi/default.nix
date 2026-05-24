@@ -11,6 +11,7 @@
       ./configuration.nix
       self.nixosModules.nixosBase
       self.nixosModules.base
+      self.nixosModules.lanDns
       inputs.agenix.nixosModules.default
     ];
   };
