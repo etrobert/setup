@@ -13,6 +13,19 @@
 
   networking.hostName = "tower";
 
+  networking.networkmanager.ensureProfiles.profiles."enp13s0u1u4u3-static" = {
+    connection = {
+      id = "enp13s0u1u4u3-static";
+      type = "ethernet";
+      interface-name = "enp13s0u1u4u3";
+    };
+    ipv4 = {
+      method = "manual";
+      address1 = "192.168.0.130/24,192.168.0.1";
+      dns = "192.168.0.18;";
+    };
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
