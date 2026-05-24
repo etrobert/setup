@@ -31,7 +31,6 @@ _: {
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
             dhcp-option = [ "option:router,192.168.0.1" ];
             dhcp-host = "c8:4b:d6:ce:4e:78,192.168.0.130";
-            domain = "kabelbox.local";
           };
         };
 
