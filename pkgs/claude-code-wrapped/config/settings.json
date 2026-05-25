@@ -1,10 +1,10 @@
 {
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "claude-plan-usage"
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
-  "model": "opus",
   "verbose": true
 }
