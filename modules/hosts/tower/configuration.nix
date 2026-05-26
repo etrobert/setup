@@ -24,6 +24,10 @@
       address1 = "192.168.0.130/24,192.168.0.1";
       dns = "192.168.0.18;";
     };
+    ipv6 = {
+      method = "manual";
+      address1 = "fd00::130/64";
+    };
   };
 
   # This value determines the NixOS release from which the default
