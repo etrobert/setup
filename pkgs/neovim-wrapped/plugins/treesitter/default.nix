@@ -9,6 +9,7 @@
           bash
           caddy
           c
+          css
           diff
           git_config
           hyprlang
