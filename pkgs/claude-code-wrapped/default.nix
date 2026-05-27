@@ -1,6 +1,7 @@
 {
   symlinkJoin,
   makeWrapper,
+  callPackage,
   claude-code,
   coreutils,
   git,
@@ -24,6 +25,7 @@ let
     inheritPath = false;
     text = builtins.readFile ./claude-plan-usage.sh;
   };
+  formatFileScript = callPackage ./format-file.nix { };
   envFlags = lib.concatStringsSep " " (
     lib.mapAttrsToList (
       name: value: "--set ${lib.escapeShellArg name} ${lib.escapeShellArg value}"
@@ -46,6 +48,7 @@ symlinkJoin {
       --run 'export GITHUB_TOKEN="$(cat /run/agenix/github-bot-token 2>/dev/null || true)"' \
       ${agenixTokenFlag} \
       --prefix PATH : ${statuslineScript}/bin \
+      --prefix PATH : ${formatFileScript}/bin \
       ${envFlags}
   '';
 }
