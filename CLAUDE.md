@@ -110,14 +110,39 @@ New behavior (autocmds, etc.) belongs in its own dedicated plugin.
 
 ## LAN Networking
 
-**Home router:** Vodafone Station Arris TG3442DE (`192.168.0.1`).
+**Home router:** Vodafone Station Arris CGA6444VF (`192.168.0.1`). WAN IP:
+`91.64.99.245`. No NAT hairpin. DHCP is disabled (pi handles it). Ports 80/443
+are port-forwarded to tower (`.130`). The router **blocks LAN→LAN traffic on
+port-forwarded ports** — WiFi clients cannot reach tower:80/443 directly.
 
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
-listening on `end0`, static `.18`).
+listening on `end0`, static `.18`). Pi auto-upgrades from main nightly — test
+before merging.
 
 **Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
-`.130` (MAC `C8:4B:D6:CE:4E:78`, also the 80/443 port-forward target on the
-Station).
+`.130` (MAC `C8:4B:D6:CE:4E:78`).
+
+**Split-horizon DNS targets:** `test/creatures/files/adele.etiennerobert.com`.
+Dnsmasq overrides these to **`192.168.0.18` (pi)**, not tower directly, because
+pi acts as a TCP proxy (DNAT 80/443 → tower). Direct `.130` doesn't work from
+WiFi due to the port-forward block above.
+
+**TCP proxy:** pi forwards ports 80/443 to tower via nftables DNAT + MASQUERADE.
+WiFi clients hit pi (not blocked) → pi forwards to tower. Implemented in
+`modules/lan-dns.nix` as an option on the `lanDns` module.
+
+**IPv6:** The router sends RA with RDNSS pointing to its own GUA
+`2a02:8109:8892:b700:14ea:8aff:febe:9cfd` (which proxies to Vodafone's upstream
+DNS `2a02:8100:c0:241::4:1101`). This RDNSS **cannot be disabled** — the router
+UI has no IPv6 configuration at all (ISP-locked). Pi has **no GUA IPv6** (only
+ULA `fd00::18`). The router's IPv6 DHCP is disabled; pi's dnsmasq handles DHCP
+only over IPv4.
+
+**Vodafone Station API** (for future automation): model CGA6444VF, PHP-based
+REST at `/api/v1/`. All calls require `X-Requested-With: XMLHttpRequest`. Login
+is a two-step PBKDF2 flow — see session transcript for details.
+`api/v1/session/ menu` is the authenticated entry point; `api/v1/login_conf` is
+unauthenticated.
 
 ## GitHub
 
