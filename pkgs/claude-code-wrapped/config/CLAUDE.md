@@ -60,6 +60,19 @@ parameter (`nix run <program> -- --test-param`) — both are fine. But when
 handing the user a command to execute themselves, prefer the simplest invocation
 (e.g. `nix run` over `nix build` followed by `./result/bin/...`).
 
+## Nix Style
+
+Prefer flake-native Nix over legacy invocations. Examples:
+
+- `nix run nixpkgs#foo` over `nix-shell -p foo --run` or `nix-env -iA`
+- `nix eval nixpkgs#attr --apply <fn>` over
+  `nix eval --impure --expr 'with import <nixpkgs> {}; ...'`
+- `nix shell nixpkgs#foo` over `nix-shell -p foo`
+- `nix build .#pkg` over `nix-build`
+
+Avoid `with import <nixpkgs> {}` and `<nixpkgs>` channel lookups in commands —
+use `nixpkgs#` flake refs and `--apply` to transform results.
+
 ## Code Style
 
 Always format, typecheck, and lint after making a change. Check the conform
