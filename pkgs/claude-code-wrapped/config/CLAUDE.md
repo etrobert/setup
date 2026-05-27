@@ -62,11 +62,7 @@ handing the user a command to execute themselves, prefer the simplest invocation
 
 ## Code Style
 
-Always format, typecheck, and lint after making a change. Check the conform
-config (`pkgs/neovim-wrapped/plugins/conform/config.lua`) to see which formatter
-applies to a given file type. Markdown files use
-`nix run nixpkgs#prettier -- --write <file>`. Format after every individual
-edit, not just at the end of a session.
+Always typecheck and lint after making a change.
 
 Prefer `kebab-case` for directory names.
 

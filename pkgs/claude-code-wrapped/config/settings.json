@@ -6,5 +6,19 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
-  "verbose": true
+  "verbose": true,
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); [ -n \"$f\" ] && format-file \"$f\" || true",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
 }
