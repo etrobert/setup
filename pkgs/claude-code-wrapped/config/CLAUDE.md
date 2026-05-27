@@ -12,6 +12,8 @@ requests/month, resetting on the 1st).
 
 Sews decently. IKEA Family member (Germany).
 
+Lives in Berlin. Does not have a driver's license.
+
 Uses Home Assistant and prefers local integrations where available.
 ESPHome-based devices are a good fit. Comfortable with kit assembly and DIY
 hardware. Pragmatic about warranties — willing to skip them for meaningful cost
