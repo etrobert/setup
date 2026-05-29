@@ -2,6 +2,7 @@ _: {
   flake.nixosModules.nixosWorkstation =
     {
       self,
+      config,
       pkgs,
       lib,
       ...
@@ -16,6 +17,14 @@ _: {
         self.nixosModules.darkman
         self.nixosModules.copilot-api
       ];
+
+      age.secrets.cachix-token.file = ../secrets/cachix-token.age;
+
+      services.cachix-watch-store = {
+        enable = true;
+        cacheName = "soft-nix";
+        cachixTokenFile = config.age.secrets.cachix-token.path;
+      };
 
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
