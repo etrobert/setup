@@ -18,7 +18,7 @@
 
   networking.hostName = "leod"; # Define your hostname.
 
-  age.secrets.cachix-token.file = ../../../secrets/cachix-leod-token.age;
+  age.secrets.cachix-token.file = ../../../secrets/cachix-token.age;
 
   # Tracks battery usage
   services.upower.enable = true;

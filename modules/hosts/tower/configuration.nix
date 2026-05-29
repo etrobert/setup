@@ -13,7 +13,7 @@
 
   networking.hostName = "tower";
 
-  age.secrets.cachix-token.file = ../../../secrets/cachix-tower-token.age;
+  age.secrets.cachix-token.file = ../../../secrets/cachix-token.age;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
