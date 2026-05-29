@@ -28,6 +28,7 @@ in
   "soft-password.age".publicKeys = allLinux;
   # TODO: Restrict to relevant machines
   "ddclient-password-etiennerobert-com.age".publicKeys = allLinux;
+  "umami-app-secret.age".publicKeys = allLinux;
   "github-bot-token.age".publicKeys = allWorkstations;
   "z-ai-auth-token.age".publicKeys = allWorkstations;
   "cachix-token.age".publicKeys = allWorkstations;
