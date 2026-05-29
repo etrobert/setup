@@ -20,4 +20,5 @@ telemetry/
 paste-cache/
 shell-snapshots/
 jobs/
+tasks/
 projects/*/?*-?*-?*-?*-?*/
