@@ -149,3 +149,9 @@ unauthenticated.
 The `etrobert-bot` account used by Claude Code does not have admin rights on
 this repo. Admin-level operations (branch protection, repo settings) require the
 `etrobert` account — flag these to the user rather than attempting them.
+
+## Planning future work
+
+Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`
+files. Open an issue with the full plan body; reference it from PRs that
+implement it.
