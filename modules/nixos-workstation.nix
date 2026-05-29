@@ -20,23 +20,23 @@ _: {
 
       age.secrets.cachix-token.file = ../secrets/cachix-token.age;
 
-      services.cachix-watch-store = {
-        enable = true;
-        cacheName = "soft-nix";
-        cachixTokenFile = config.age.secrets.cachix-token.path;
-      };
-
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
 
-      # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
-      services.avahi = {
-        enable = true;
-        nssmdns4 = true;
-        openFirewall = true;
-      };
-
       services = {
+        cachix-watch-store = {
+          enable = true;
+          cacheName = "soft-nix";
+          cachixTokenFile = config.age.secrets.cachix-token.path;
+        };
+
+        # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
+        avahi = {
+          enable = true;
+          nssmdns4 = true;
+          openFirewall = true;
+        };
+
         # Register DDC/CI devices on I2C buses for backlight control
         # (auto-probing is unavailable on kernel 6.8+)
         # Source https://wiki.nixos.org/wiki/Backlight#DDC/CI
