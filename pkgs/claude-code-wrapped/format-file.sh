@@ -8,9 +8,7 @@ case $file in
 *.js | *.jsx | *.ts | *.tsx | *.json | *.jsonc | *.html | *.md | *.css | *.yaml | *.yml)
 	prettier --write "$file"
 	;;
-*.swift) swiftformat "$file" ;;
 *.sh | *.bash | *.zsh) shfmt -w "$file" ;;
-*.fish) fish_indent -w "$file" ;;
 *.rs) rustfmt "$file" ;;
 *.py) isort "$file" && black "$file" ;;
 *.nix) nixfmt "$file" ;;
