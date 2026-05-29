@@ -84,6 +84,7 @@
           ./modules/darkman.nix
           ./modules/copilot-api.nix
           ./modules/server.nix
+          ./modules/cachix-push.nix
           ./pkgs
         ];
 
