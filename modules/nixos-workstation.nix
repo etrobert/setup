@@ -14,20 +14,21 @@ _: {
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
+        self.nixosModules.cachix-push
         self.nixosModules.copilot-api
       ];
 
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
 
-      # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
-      services.avahi = {
-        enable = true;
-        nssmdns4 = true;
-        openFirewall = true;
-      };
-
       services = {
+        # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
+        avahi = {
+          enable = true;
+          nssmdns4 = true;
+          openFirewall = true;
+        };
+
         # Register DDC/CI devices on I2C buses for backlight control
         # (auto-probing is unavailable on kernel 6.8+)
         # Source https://wiki.nixos.org/wiki/Backlight#DDC/CI

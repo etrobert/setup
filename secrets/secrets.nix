@@ -30,4 +30,5 @@ in
   "ddclient-password-etiennerobert-com.age".publicKeys = allLinux;
   "github-bot-token.age".publicKeys = allWorkstations;
   "z-ai-auth-token.age".publicKeys = allWorkstations;
+  "cachix-token.age".publicKeys = allWorkstations;
 }
