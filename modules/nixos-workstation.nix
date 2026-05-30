@@ -55,6 +55,15 @@ _: {
         displayManager.gdm.enable = true;
       };
 
+      # cachix's HTTP client (Haskell) has no happy-eyeballs and hangs forever
+      # in SYN-SENT when AAAA is reachable in routing but not actually routed.
+      # Tower's router-advertised IPv6 default is exactly that — so deny IPv6
+      # sockets for this service and the client falls through to A.
+      systemd.services.cachix-watch-store-agent.serviceConfig.RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+      ];
+
       hardware = {
         # Enable I2C for ddcutil (external monitor brightness)
         i2c.enable = true;
