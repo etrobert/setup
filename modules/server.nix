@@ -73,9 +73,14 @@ _: {
 
         age.secrets.ddclient-password-etiennerobert-com.file = ../secrets/ddclient-password-etiennerobert-com.age;
 
+        # Filebrowser creates files/dirs via the web UI with modes 0640/0750 (settings.FileMode /
+        # settings.DirMode defaults), which grant no world access. Add caddy to the filebrowser
+        # group so it can serve uploaded content.
+        users.users.caddy.extraGroups = [ "filebrowser" ];
+
         systemd = {
-          # Override the filebrowser module's hardcoded UMask of 0077 so new files/dirs are world-readable (644/755),
-          # making them accessible to caddy.
+          # Override the filebrowser module's default UMask of 0077, which would strip the group
+          # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
           services.filebrowser.serviceConfig.UMask = lib.mkForce "0022";
           # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700 on every boot,
           # which would block caddy from traversing into the directory.
