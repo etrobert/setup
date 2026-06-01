@@ -86,6 +86,7 @@
           ./modules/copilot-api.nix
           ./modules/server.nix
           ./modules/homepage.nix
+          ./modules/cockpit.nix
           ./pkgs
         ];
 

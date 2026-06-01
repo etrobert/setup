@@ -34,6 +34,7 @@ in
       self.nixosModules.unfree
       self.nixosModules.server
       self.nixosModules.homepage
+      self.nixosModules.cockpit
     ];
   };
 }
