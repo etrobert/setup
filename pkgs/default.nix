@@ -18,7 +18,13 @@
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
-        claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped { };
+        claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
+          extraEnv = {
+            # nixpkgs claude-code 2.1.148 doesn't bake in claude-opus-4-8 yet
+            # (lands in 2.1.158). Remove once nixos-unstable catches up.
+            ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-4-8";
+          };
+        };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
