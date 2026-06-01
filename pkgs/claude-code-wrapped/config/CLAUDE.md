@@ -35,6 +35,11 @@ All machines are connected via Tailscale. SSH into any of them by name
 machine. If SSH is refused, check whether Tailscale is running
 (`tailscale status`) and bring it up with `sudo tailscale-up` if needed.
 
+Each project may carry a local `.tmux.conf` defining its standard windows (e.g.
+`new-window -d -n "server" "go run ."`). Check `<project>/.tmux.conf` before
+starting or restarting a long-running process — it is likely the canonical
+command for that project.
+
 ## Working Style
 
 Work on one thing at a time. When a task naturally leads to a follow-up (e.g.
