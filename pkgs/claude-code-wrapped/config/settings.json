@@ -1,12 +1,5 @@
 {
   "model": "opus",
-  "statusLine": {
-    "type": "command",
-    "command": "claude-plan-usage"
-  },
-  "skipDangerousModePermissionPrompt": true,
-  "theme": "auto",
-  "verbose": true,
   "hooks": {
     "PostToolUse": [
       {
@@ -20,5 +13,17 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "claude-plan-usage"
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "verbose": true,
+  "voiceEnabled": true,
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
   }
 }
