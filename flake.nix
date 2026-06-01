@@ -85,6 +85,7 @@
           ./modules/cachix-push.nix
           ./modules/copilot-api.nix
           ./modules/server.nix
+          ./modules/homepage.nix
           ./pkgs
         ];
 
