@@ -78,12 +78,6 @@ _: {
             disk = "/";
           };
         }
-        {
-          search = {
-            provider = "duckduckgo";
-            target = "_blank";
-          };
-        }
       ];
     };
   };
