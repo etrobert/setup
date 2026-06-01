@@ -20,8 +20,8 @@
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
           extraEnv = {
-            # nixpkgs claude-code 2.1.148 doesn't bake in claude-opus-4-8 yet
-            # (lands in 2.1.158). Remove once nixos-unstable catches up.
+            # TODO: nixpkgs claude-code 2.1.148 doesn't bake in claude-opus-4-8
+            # yet (lands in 2.1.158). Remove once nixos-unstable catches up.
             ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-4-8";
           };
         };
