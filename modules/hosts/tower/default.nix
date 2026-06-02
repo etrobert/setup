@@ -35,7 +35,6 @@ in
       self.nixosModules.server
       self.nixosModules.homepage
       self.nixosModules.cockpit
-      self.nixosModules.umami
     ];
   };
 }
