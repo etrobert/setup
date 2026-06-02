@@ -89,6 +89,28 @@ _: {
             wantedBy = [ "graphical-session.target" ];
             serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
           };
+
+          awww-daemon = {
+            description = "Animated wallpaper daemon for Wayland";
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            serviceConfig = {
+              ExecStart = lib.getExe' pkgs.awww "awww-daemon";
+              Restart = "on-failure";
+            };
+          };
+
+          awww-set-default-wallpaper = {
+            description = "Set the default desktop wallpaper via awww";
+            after = [ "awww-daemon.service" ];
+            requires = [ "awww-daemon.service" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = "${lib.getExe pkgs.awww} img ${../assets/saint-levant.jpg}";
+            };
+          };
         };
 
         tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
@@ -115,6 +137,7 @@ _: {
 
           externalPackages = with pkgs; [
             linuxPackages.cpupower
+            awww
             bambu-studio
             brightnessctl
             chromium
