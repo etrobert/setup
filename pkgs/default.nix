@@ -92,7 +92,6 @@
           dev = true;
         };
         darkman-wrapped = pkgs.callPackage ./darkman-wrapped { };
-        hyprpaper-wrapped = pkgs.callPackage ./hyprpaper-wrapped { };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         brightness-control = pkgs.callPackage ./brightness-control { };
