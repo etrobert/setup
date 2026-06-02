@@ -2,20 +2,20 @@
   writeShellApplication,
   playerctl,
   curl,
-  hyprland,
+  awww,
 }:
 writeShellApplication {
   name = "album-art-wallpaper";
   runtimeInputs = [
     playerctl
     curl
-    hyprland
+    awww
   ];
   text = ''
     playerctl --follow metadata --format '{{mpris:artUrl}}' | while read -r url; do
       [ -z "$url" ] && continue
       curl -sL "$url" -o /tmp/albumart.jpg
-      hyprctl hyprpaper wallpaper ",/tmp/albumart.jpg"
+      awww img /tmp/albumart.jpg
     done
   '';
 }
