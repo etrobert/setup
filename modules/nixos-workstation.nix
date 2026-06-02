@@ -71,7 +71,6 @@ _: {
       ];
 
       systemd.packages = with self.packages.${system}; [
-        hyprpaper-wrapped
         waybar-wrapped
       ];
 
@@ -79,18 +78,10 @@ _: {
         services = {
           waybar.wantedBy = [ "graphical-session.target" ];
 
-          hyprpaper.wantedBy = [ "graphical-session.target" ];
-
           # Prevent nixos-rebuild switch from restarting niri mid-session.
           # Without this, switching causes a ghost niri to start (session inactive)
           # which then blocks the legitimate niri when you log back in via GDM.
           niri.restartIfChanged = false;
-
-          album-art-wallpaper = {
-            partOf = [ "graphical-session.target" ];
-            wantedBy = [ "graphical-session.target" ];
-            serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
-          };
         };
 
         tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];

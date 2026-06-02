@@ -92,7 +92,6 @@
           dev = true;
         };
         darkman-wrapped = pkgs.callPackage ./darkman-wrapped { };
-        hyprpaper-wrapped = pkgs.callPackage ./hyprpaper-wrapped { };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         brightness-control = pkgs.callPackage ./brightness-control { };
@@ -100,7 +99,6 @@
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         volume-control = pkgs.callPackage ./volume-control { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
-        album-art-wallpaper = pkgs.callPackage ./album-art-wallpaper.nix { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped { inherit (pkgs) ghostty; };
       };
     };
