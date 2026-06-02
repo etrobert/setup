@@ -123,13 +123,7 @@ before merging.
 `.130` (MAC `C8:4B:D6:CE:4E:78`).
 
 **Split-horizon DNS targets:** `test/creatures/files/adele.etiennerobert.com`.
-Dnsmasq overrides these to **`192.168.0.18` (pi)**, not tower directly, because
-pi acts as a TCP proxy (DNAT 80/443 → tower). Direct `.130` doesn't work from
-WiFi due to the port-forward block above.
-
-**TCP proxy:** pi forwards ports 80/443 to tower via nftables DNAT + MASQUERADE.
-WiFi clients hit pi (not blocked) → pi forwards to tower. Implemented in
-`modules/lan-dns.nix` as an option on the `lanDns` module.
+Dnsmasq overrides these to **`192.168.0.130` (tower)**.
 
 **IPv6:** The router sends RA with RDNSS pointing to its own GUA
 `2a02:8109:8892:b700:14ea:8aff:febe:9cfd` (which proxies to Vodafone's upstream
