@@ -87,6 +87,7 @@
           ./modules/server.nix
           ./modules/homepage.nix
           ./modules/cockpit.nix
+          ./modules/umami.nix
           ./pkgs
         ];
 

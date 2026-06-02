@@ -1,4 +1,5 @@
-_: {
+{ self, ... }:
+{
   flake = {
     nixosModules.server =
       {
@@ -14,6 +15,8 @@ _: {
         creaturesPackage = creatures.packages.${system}.default;
       in
       {
+        imports = [ self.nixosModules.umami ];
+
         networking.firewall.allowedTCPPorts = [
           80
           443
@@ -31,6 +34,7 @@ _: {
               "creatures"
               "files"
               "adele"
+              "umami"
             ];
             interval = "5min";
             usev6 = "no";
@@ -66,6 +70,9 @@ _: {
               '';
               "adele.etiennerobert.com".extraConfig = /* caddy */ ''
                 reverse_proxy localhost:8081
+              '';
+              "umami.etiennerobert.com".extraConfig = /* caddy */ ''
+                reverse_proxy localhost:3001
               '';
             };
           };
