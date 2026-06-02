@@ -18,14 +18,17 @@
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
-        claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
-          extraEnv = {
-            # nixpkgs claude-code 2.1.148 doesn't bake in claude-opus-4-8 yet
-            # (lands in 2.1.158).
-            # TODO: Remove once nixos-unstable catches up.
-            ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-4-8";
+        claude-code-wrapped =
+          # The assert below fails flake check once the locked nixpkgs ships
+          # claude-code >= 2.1.158 (which bakes in claude-opus-4-8), prompting
+          # removal of the ANTHROPIC_DEFAULT_OPUS_MODEL override.
+          assert lib.assertMsg (lib.versionOlder pkgs.claude-code.version "2.1.158")
+            "claude-code ${pkgs.claude-code.version} bakes in claude-opus-4-8 — drop the ANTHROPIC_DEFAULT_OPUS_MODEL override in pkgs/default.nix.";
+          pkgs.callPackage ./claude-code-wrapped {
+            extraEnv = {
+              ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-4-8";
+            };
           };
-        };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
