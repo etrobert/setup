@@ -68,6 +68,17 @@ _: {
             }
           ];
         }
+        {
+          "System" = [
+            {
+              "Cockpit" = {
+                href = "https://tower:9090";
+                description = "Systemd units, logs, system admin";
+                siteMonitor = "http://localhost:9090";
+              };
+            }
+          ];
+        }
       ];
 
       widgets = [
