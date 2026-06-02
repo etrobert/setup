@@ -71,12 +71,15 @@ _: {
       ];
 
       systemd.packages = with self.packages.${system}; [
+        hyprpaper-wrapped
         waybar-wrapped
       ];
 
       systemd.user = {
         services = {
           waybar.wantedBy = [ "graphical-session.target" ];
+
+          hyprpaper.wantedBy = [ "graphical-session.target" ];
 
           # Prevent nixos-rebuild switch from restarting niri mid-session.
           # Without this, switching causes a ghost niri to start (session inactive)
