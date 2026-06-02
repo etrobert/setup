@@ -82,6 +82,7 @@
           ./modules/pimsync.nix
           ./modules/lan-dns.nix
           ./modules/darkman.nix
+          ./modules/awww.nix
           ./modules/cachix-push.nix
           ./modules/copilot-api.nix
           ./modules/server.nix
