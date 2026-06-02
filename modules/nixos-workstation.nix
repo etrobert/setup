@@ -71,15 +71,12 @@ _: {
       ];
 
       systemd.packages = with self.packages.${system}; [
-        hyprpaper-wrapped
         waybar-wrapped
       ];
 
       systemd.user = {
         services = {
           waybar.wantedBy = [ "graphical-session.target" ];
-
-          hyprpaper.wantedBy = [ "graphical-session.target" ];
 
           # Prevent nixos-rebuild switch from restarting niri mid-session.
           # Without this, switching causes a ghost niri to start (session inactive)
@@ -90,6 +87,28 @@ _: {
             partOf = [ "graphical-session.target" ];
             wantedBy = [ "graphical-session.target" ];
             serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
+          };
+
+          awww-daemon = {
+            description = "Animated wallpaper daemon for Wayland";
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            serviceConfig = {
+              ExecStart = lib.getExe' pkgs.awww "awww-daemon";
+              Restart = "on-failure";
+            };
+          };
+
+          awww-set-default-wallpaper = {
+            description = "Set the default desktop wallpaper via awww";
+            after = [ "awww-daemon.service" ];
+            requires = [ "awww-daemon.service" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = "${lib.getExe pkgs.awww} img ${../assets/saint-levant.jpg}";
+            };
           };
         };
 
@@ -117,6 +136,7 @@ _: {
 
           externalPackages = with pkgs; [
             linuxPackages.cpupower
+            awww
             bambu-studio
             brightnessctl
             chromium
