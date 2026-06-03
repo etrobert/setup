@@ -27,7 +27,7 @@ _: {
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {
             Type = "oneshot";
-            ExecStart = "${lib.getExe pkgs.awww} img ${../assets/saint-levant.jpg}";
+            ExecStart = "${lib.getExe pkgs.awww} img --transition-type none ${../assets/saint-levant.jpg}";
           };
         };
       };
