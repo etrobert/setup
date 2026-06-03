@@ -45,15 +45,12 @@ _: {
             (registerDdcci "AUX *") # Intel GPUs (DisplayPort)
           ];
 
-        # Autologin straight into Niri. niri-session re-execs through a login
-        # shell and imports the environment into systemd/D-Bus itself; bash -l
-        # guarantees environment.sessionVariables are loaded.
+        # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
+        # through a login shell and imports the environment into systemd/D-Bus
+        # itself; bash -l guarantees environment.sessionVariables are loaded.
         greetd = {
           enable = true;
-          settings.default_session = {
-            command = "${pkgs.bash}/bin/bash -l -c niri-session";
-            user = "soft";
-          };
+          settings.default_session.command = ''${lib.getExe pkgs.greetd.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
         };
       };
 
