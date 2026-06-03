@@ -33,6 +33,18 @@ _: {
 
       zramSwap.enable = true;
 
+      # Shorten how long the user systemd manager waits for an unresponsive
+      # user-session process to exit on SIGTERM before SIGKILL (default 90s).
+      # Motivating case: claude-code's background daemon and its bg-spare PTY
+      # hosts don't exit promptly on SIGTERM, so a tmux pane running claude
+      # would stall poweroff for the full 90s. This is general workstation
+      # policy, not a claude-specific patch — system units keep the 90s default
+      # (databases/VMs that need a long graceful flush live there), and any user
+      # unit that genuinely needs longer overrides TimeoutStopSec itself.
+      systemd.user.extraConfig = ''
+        DefaultTimeoutStopSec=15s
+      '';
+
       services = {
         kanata = {
           enable = true;
