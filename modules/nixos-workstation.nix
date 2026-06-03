@@ -8,6 +8,13 @@ _: {
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
+      # Autologin straight into Niri. niri-session re-execs through a login
+      # shell and imports the environment into systemd/D-Bus itself; bash -l
+      # guarantees environment.sessionVariables are loaded.
+      niriAutologin = {
+        command = "${pkgs.bash}/bin/bash -l -c niri-session";
+        user = "soft";
+      };
     in
     {
       imports = [
@@ -45,7 +52,13 @@ _: {
             (registerDdcci "AUX *") # Intel GPUs (DisplayPort)
           ];
 
-        displayManager.gdm.enable = true;
+        greetd = {
+          enable = true;
+          settings = {
+            initial_session = niriAutologin;
+            default_session = niriAutologin;
+          };
+        };
       };
 
       hardware = {
@@ -81,7 +94,7 @@ _: {
 
           # Prevent nixos-rebuild switch from restarting niri mid-session.
           # Without this, switching causes a ghost niri to start (session inactive)
-          # which then blocks the legitimate niri when you log back in via GDM.
+          # which then blocks the legitimate niri when you log back in.
           niri.restartIfChanged = false;
 
           album-art-wallpaper = {
