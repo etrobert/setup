@@ -19,7 +19,15 @@ let
     }
   '';
   darwinPrimitives = ''
-    notify() { /usr/bin/osascript -e "display notification \"$2\" with title \"$1\""; }
+    notify() {
+      # Pass title/body as argv so quotes/backslashes/newlines can't break or
+      # inject into the AppleScript.
+      /usr/bin/osascript \
+        -e 'on run argv' \
+        -e 'display notification (item 2 of argv) with title (item 1 of argv)' \
+        -e 'end run' \
+        "$1" "$2"
+    }
     schedule_reset() {
       # No systemd on macOS; detach a sleep that survives the parent exiting.
       ( trap "" HUP; sleep "$1"; notify "Claude" "Usage window has reset — you're good to go" ) >/dev/null 2>&1 &
