@@ -50,6 +50,10 @@ investigation wouldn't yield the answer.
 When investigating how something works, consult both official documentation and
 source/implementation. Don't rely on only one of these.
 
+Cite the source for factual claims — name and, where useful, quote or link the
+command, `--help` output, web search result, documentation page (with URL), or
+file the information came from, rather than stating it unsourced.
+
 ## Running Packages
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
