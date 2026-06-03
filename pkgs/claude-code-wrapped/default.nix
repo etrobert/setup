@@ -7,6 +7,7 @@
   git,
   jq,
   lib,
+  stdenv,
   writeShellApplication,
   extraEnv ? { },
   readTokenFromAgenix ? false,
@@ -26,6 +27,15 @@ let
     text = builtins.readFile ./claude-plan-usage.sh;
   };
   formatFileScript = callPackage ./format-file.nix { };
+  # systemd-run + notify-send are Linux-only, so this script is wired in only on Linux.
+  rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { };
+  binPath = lib.makeBinPath (
+    [
+      statuslineScript
+      formatFileScript
+    ]
+    ++ lib.optional stdenv.isLinux rateLimitNotifyScript
+  );
   envFlags = lib.concatStringsSep " " (
     lib.mapAttrsToList (
       name: value: "--set ${lib.escapeShellArg name} ${lib.escapeShellArg value}"
@@ -47,8 +57,7 @@ symlinkJoin {
       --run 'export CLAUDE_CONFIG_DIR="$HOME/setup/pkgs/claude-code-wrapped/config"' \
       --run 'export GITHUB_TOKEN="$(cat /run/agenix/github-bot-token 2>/dev/null || true)"' \
       ${agenixTokenFlag} \
-      --prefix PATH : ${statuslineScript}/bin \
-      --prefix PATH : ${formatFileScript}/bin \
+      --prefix PATH : ${binPath} \
       ${envFlags}
   '';
 }
