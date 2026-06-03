@@ -1,7 +1,7 @@
 if [[ $(uname) == 'Linux' ]]; then
-  alias open='xdg-open'
-  alias bt="bluetoothctl devices | fzf --with-nth=3.. | cut -d' ' -f2 | xargs bluetoothctl connect"
-  alias home-assistant="docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable"
+	alias open='xdg-open'
+	alias bt="bluetoothctl devices | fzf --with-nth=3.. | cut -d' ' -f2 | xargs bluetoothctl connect"
+	alias home-assistant="docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable"
 fi
 
 alias grep='grep --color=auto'
@@ -22,6 +22,13 @@ alias ls='ls --classify --human-readable --color'
 
 alias gti='git'
 alias gi='git'
+
+# git worktree switch: cd into a worktree, fuzzy-picked or matched by arg
+gws() {
+	local wt
+	wt=$(git worktree list | fzf --query="${1:-}" --select-1 --exit-0 | cut -d' ' -f1)
+	[ -n "$wt" ] && cd "$wt"
+}
 
 alias make='make -j8'
 alias watch='watch --interval=1'
