@@ -79,6 +79,9 @@ Always typecheck and lint after making a change.
 
 Prefer `kebab-case` for directory names.
 
+In shell scripts, prefer long-form parameters over single-letter ones where
+possible (e.g. `--raw-output` over `-r`, `--only-matching` over `-o`).
+
 ## Testing
 
 Always test that code works before committing. Run the relevant test, build, or
