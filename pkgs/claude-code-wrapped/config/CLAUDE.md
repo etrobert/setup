@@ -77,6 +77,21 @@ Prefer flake-native Nix over legacy invocations. Examples:
 Avoid `with import <nixpkgs> {}` and `<nixpkgs>` channel lookups in commands —
 use `nixpkgs#` flake refs and `--apply` to transform results.
 
+When embedding another language inside a plain Nix string (e.g. a `foo = ''…''`
+binding holding shell), add a language-hint comment so the editor injects syntax
+highlighting. The comment must be adjacent to the string (between the `=` and
+the `''`, not above the binding). Prefer an inline block comment:
+
+```nix
+linuxPrimitives = /* bash */ ''
+  notify() { notify-send "$1" "$2"; }
+'';
+```
+
+Skip it when the builder already implies the language and nvim-treesitter
+injects automatically — e.g. `writeShellApplication`/`writeShellScript` text, or
+`*Phase`/`pre*`/`post*` attrs.
+
 ## Code Style
 
 Always typecheck and lint after making a change.
