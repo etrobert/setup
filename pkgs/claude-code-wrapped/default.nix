@@ -52,6 +52,9 @@ symlinkJoin {
       --set CLAUDE_CODE_NO_FLICKER 1 \
       --run 'export CLAUDE_CONFIG_DIR="$HOME/setup/pkgs/claude-code-wrapped/config"' \
       --run 'export GITHUB_TOKEN="$(cat /run/agenix/github-bot-token 2>/dev/null || true)"' \
+      --set GIT_CONFIG_COUNT 1 \
+      --set GIT_CONFIG_KEY_0 include.path \
+      --set GIT_CONFIG_VALUE_0 ${./gitconfig-bot} \
       ${agenixTokenFlag} \
       --prefix PATH : ${binPath} \
       ${envFlags}
