@@ -1,0 +1,8 @@
+# Routes git pushes through the etrobert-bot GITHUB_TOKEN instead of the user's
+# SSH key, so pushes to protected branches (main) are rejected server-side
+# rather than slipping through the user's admin override. Pulled in via
+# include.path from the claude-code wrapper; fetches stay on SSH as the user.
+[url "https://github.com/"]
+	pushInsteadOf = git@github.com:
+[credential "https://github.com"]
+	helper = "!f() { echo username=x-access-token; echo password=$GITHUB_TOKEN; }; f"
