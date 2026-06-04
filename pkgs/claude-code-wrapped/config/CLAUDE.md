@@ -12,7 +12,9 @@ requests/month, resetting on the 1st).
 
 Sews decently. IKEA Family member (Germany).
 
-Lives in Berlin. Does not have a driver's license.
+Lives in Berlin but does not speak German. Communicate in English and avoid
+German terms in filenames or output — prefer English equivalents (e.g. "proof of
+value" not "Wertnachweis"). Does not have a driver's license.
 
 Uses Home Assistant and prefers local integrations where available.
 ESPHome-based devices are a good fit. Comfortable with kit assembly and DIY
