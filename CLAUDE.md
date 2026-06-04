@@ -108,6 +108,19 @@ New behavior (autocmds, etc.) belongs in its own dedicated plugin.
 **`config` field is optional** — omit it when the plugin sources itself via
 `plugin/`.
 
+## Self-Cleaning Guards
+
+When adding a temporary workaround that should be dropped once an upstream
+condition changes (e.g. a `permittedInsecurePackages` entry, a version pin, a
+patch), pair it with a guard that fails the build once the workaround stops
+being load-bearing — don't rely on remembering to revisit it. Prefer this
+whenever the "still needed?" condition can be expressed in Nix.
+
+Example: the `electron-39.8.10` permit in `modules/workstation.nix` is paired
+with an assertion that re-evaluates its consumer against a nixpkgs instance
+without the permit (via `builtins.tryEval`); when the consumer no longer pulls
+the insecure package, the assertion fails and prompts removal.
+
 ## LAN Networking
 
 **Home router:** Vodafone Station Arris CGA6444VF (`192.168.0.1`). WAN IP:
