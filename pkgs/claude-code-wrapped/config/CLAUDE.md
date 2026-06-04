@@ -89,8 +89,9 @@ linuxPrimitives = /* bash */ ''
 ```
 
 Skip it when nvim-treesitter's Nix injection queries already cover the attr name
-— e.g. `writeShellApplication`/`writeShellScript` text attrs, `*Phase`, `pre*`,
-and `post*` attrs (all defined in `queries/nix/injections.scm`).
+— e.g. `writeShellApplication`/`writeShellScript` text attrs, or
+`stdenv.mkDerivation` phase hooks (`*Phase`, `pre*`, `post*` — like
+`buildPhase`, `postInstall`). All defined in `queries/nix/injections.scm`.
 
 ## Code Style
 
