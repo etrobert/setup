@@ -127,7 +127,6 @@ _: {
             brightnessctl
             chromium
             ddcutil
-            firefoxpwa
             gnome-power-manager # TODO: find a better one
             kdePackages.okular
             grim
