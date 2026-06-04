@@ -19,6 +19,8 @@ _: {
         self.nixosModules.copilot-api
       ];
 
+      allowedUnfreePackages = [ "bambu-studio" ];
+
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
 

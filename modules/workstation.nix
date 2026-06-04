@@ -17,6 +17,10 @@ _: {
           "spotify"
         ];
 
+        # discord/signal-desktop/whatsapp still pin electron 39 upstream, which
+        # nixpkgs now marks EOL/insecure.
+        nixpkgs.config.permittedInsecurePackages = [ "electron-39.8.10" ];
+
         environment.systemPackages =
           let
             inherit (pkgs.stdenv.hostPlatform) system;
