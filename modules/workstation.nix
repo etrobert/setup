@@ -1,4 +1,5 @@
-_: {
+{ inputs, ... }:
+{
   flake = rec {
     nixosModules.workstation =
       {
@@ -44,6 +45,16 @@ _: {
             inherit (pkgs.stdenv.hostPlatform) system;
 
             inputPackages = [ agenix.packages.${system}.default ];
+
+            # bitwarden-desktop 2026.5.0 fails to build on darwin (its
+            # electron-builder codesign step calls /usr/bin/security, absent in
+            # the Nix sandbox), so darwin takes it from a pinned nixpkgs. Drop
+            # the pin and this binding once upstream fixes the darwin build.
+            bitwarden-desktop =
+              if pkgs.stdenv.hostPlatform.isLinux then
+                pkgs.bitwarden-desktop
+              else
+                inputs.nixpkgs-darwin-pins.legacyPackages.${system}.bitwarden-desktop;
 
             customPackages = with self.packages.${system}; [
               claude-code-wrapped
