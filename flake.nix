@@ -15,13 +15,20 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Pinned nixpkgs for darwin packages that lack binary cache on newer revs.
-    # Update manually when the package is cached; excluded from automated updates.
-    # nixpkgs-darwin-pins.url = "github:nixos/nixpkgs/0726a0ecb6d4e08f6adced58726b95db924cef57";
+    # Stable, darwin-tested channel for aaron's *system* package set. aaron is
+    # the only host on nix-darwin, so pointing nix-darwin's nixpkgs here (below)
+    # moves its external GUI apps (telegram, bitwarden, discord, …) onto cached
+    # stable — sparing aaron the slow, breakage-prone darwin-unstable builds.
+    # The *-wrapped dev tools (neovim, claude, firefox, …) are built from
+    # `nixpkgs` (unstable) via perSystem and stay fresh and identical to the
+    # Linux hosts, so their embedded configs don't drift.
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # aaron (the only darwin host) takes its system packages from the stable
+      # channel; see the nixpkgs-stable comment above.
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     pronto = {
       url = "github:etrobert/pronto";

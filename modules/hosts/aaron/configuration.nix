@@ -16,6 +16,15 @@ let
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
+
+  # stable nixpkgs with the insecure permit dropped, used by the guard below to
+  # detect when the electron-39 permit stops being load-bearing.
+  pkgsStrict = import pkgs.path {
+    inherit system;
+    config.allowUnfree = true;
+  };
+  electron39StillNeeded =
+    !(builtins.tryEval (builtins.seq pkgsStrict.bitwarden-desktop.drvPath true)).success;
 in
 {
   allowedUnfreePackages = [
@@ -62,32 +71,16 @@ in
   networking.hostName = "aaron";
   networking.computerName = "aaron";
 
-  # Workaround for NixOS/nixpkgs#480849: building llvmPackages_18.compiler-rt
-  # on Darwin fails because Apple SDK 26.4 ships libc++ 21, which dropped the
-  # fallbacks for __builtin_ctzg/__builtin_clzg — builtins that Clang 18 does
-  # not recognize. Mirror the fix from NixOS/nixpkgs#523142 by disabling the
-  # C++ components of compiler-rt 18 here.
-  #
-  # TODO: remove this overlay once nixos-unstable advances past the fix.
-  # Trigger: NixOS/nixpkgs#523142 (or its replacement) is merged AND lands in
-  # nixos-unstable. Verify by deleting the overlay block below and running
-  # `nix build .#darwinConfigurations.aaron.system` — if it succeeds, delete
-  # for good. If it still errors with `__builtin_ctzg`, keep the overlay.
-  nixpkgs.overlays = [
-    (_final: prev: {
-      llvmPackages_18 = prev.llvmPackages_18.overrideScope (
-        _llvmFinal: llvmPrev: {
-          compiler-rt-libc = llvmPrev.compiler-rt-libc.overrideAttrs (old: {
-            cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-              (lib.cmakeBool "COMPILER_RT_BUILD_XRAY" false)
-              (lib.cmakeBool "COMPILER_RT_BUILD_LIBFUZZER" false)
-              (lib.cmakeBool "COMPILER_RT_BUILD_MEMPROF" false)
-              (lib.cmakeBool "COMPILER_RT_BUILD_ORC" false)
-            ];
-          });
-        }
-      );
-    })
+  # stable's bitwarden-desktop still pulls electron 39, which nixpkgs marks
+  # EOL/insecure. Permit it; the assertion below fails once bitwarden no longer
+  # pulls it, so we remember to drop this permit.
+  nixpkgs.config.permittedInsecurePackages = [ "electron-39.8.10" ];
+
+  assertions = [
+    {
+      assertion = electron39StillNeeded;
+      message = "electron-39.8.10 is no longer pulled by bitwarden-desktop; remove the permittedInsecurePackages entry and this guard in modules/hosts/aaron/configuration.nix.";
+    }
   ];
 
   system = {
@@ -202,7 +195,13 @@ in
   # Enable Touch ID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  home-manager.users.soft = self.homeModules.darwin;
+  home-manager.users.soft = {
+    imports = [ self.homeModules.darwin ];
+    # aaron's system pkgs track stable (26.05) while the home-manager input
+    # follows unstable (26.11) — a deliberate skew, since wrapped dev tools stay
+    # on unstable. Silence home-manager's release-mismatch warning.
+    home.enableNixpkgsReleaseCheck = false;
+  };
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
