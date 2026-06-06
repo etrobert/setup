@@ -35,6 +35,7 @@
               "files"
               "adele"
               "umami"
+              "images"
             ];
             interval = "5min";
             usev6 = "no";
@@ -53,6 +54,13 @@
 
           caddy = {
             enable = true;
+            package = pkgs.caddy.withPlugins {
+              plugins = [
+                "github.com/caddyserver/cache-handler@v0.16.0"
+                "github.com/darkweak/storages/badger/caddy@v0.0.19"
+              ];
+              hash = "sha256-ueSf6zEs/tbbboSWsaxdovL204GwMY0gUihrcm5hRXE=";
+            };
             virtualHosts = {
               "test.etiennerobert.com".extraConfig = /* caddy */ ''
                 root * ${etiennerobert-com.packages.${system}.default}
@@ -74,6 +82,15 @@
               "umami.etiennerobert.com".extraConfig = /* caddy */ ''
                 reverse_proxy localhost:3001
               '';
+              "images.etiennerobert.com".extraConfig = /* caddy */ ''
+                cache {
+                  badger {
+                    path /var/cache/caddy-imgproxy
+                  }
+                  ttl 720h
+                }
+                reverse_proxy localhost:8889
+              '';
             };
           };
         };
@@ -88,19 +105,39 @@
         systemd = {
           # Override the filebrowser module's default UMask of 0077, which would strip the group
           # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
-          services.filebrowser.serviceConfig.UMask = lib.mkForce "0022";
           # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700 on every boot,
           # which would block caddy from traversing into the directory.
           tmpfiles.settings.filebrowser."/srv/files/adele".d.mode = lib.mkForce "0755";
+          tmpfiles.rules = [ "d /var/cache/caddy-imgproxy 0700 caddy caddy -" ];
 
-          services.creatures = {
-            description = "Creatures server";
-            wantedBy = [ "multi-user.target" ];
-            after = [ "network.target" ];
-            serviceConfig = {
-              ExecStart = "${creaturesPackage}/bin/creatures-server";
-              Restart = "on-failure";
-              DynamicUser = true;
+          services = {
+            filebrowser.serviceConfig.UMask = lib.mkForce "0022";
+
+            creatures = {
+              description = "Creatures server";
+              wantedBy = [ "multi-user.target" ];
+              after = [ "network.target" ];
+              serviceConfig = {
+                ExecStart = "${creaturesPackage}/bin/creatures-server";
+                Restart = "on-failure";
+                DynamicUser = true;
+              };
+            };
+
+            imgproxy = {
+              description = "imgproxy";
+              wantedBy = [ "multi-user.target" ];
+              after = [ "network.target" ];
+              serviceConfig = {
+                ExecStart = "${pkgs.imgproxy}/bin/imgproxy";
+                Restart = "on-failure";
+                DynamicUser = true;
+                Environment = [
+                  "IMGPROXY_BIND=localhost:8889"
+                  "IMGPROXY_LOCAL_FILESYSTEM_ROOT=/srv/files"
+                  "IMGPROXY_USE_ETAG=true"
+                ];
+              };
             };
           };
         };
