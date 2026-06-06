@@ -5,7 +5,7 @@ _: {
       listenPort = 8082;
       # Reachable on the LAN only — the home router doesn't forward 8082.
       openFirewall = true;
-      allowedHosts = "tower:8082,tower.lan:8082,192.168.0.130:8082,localhost:8082";
+      allowedHosts = "tower:8082,tower.lan:8082,192.168.0.10:8082,localhost:8082";
 
       settings = {
         title = "tower";

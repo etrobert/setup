@@ -7,7 +7,7 @@ _: {
       allowed-origins = [
         "https://tower:9090"
         "https://tower.lan:9090"
-        "https://192.168.0.130:9090"
+        "https://192.168.0.10:9090"
         "https://localhost:9090"
       ];
     };

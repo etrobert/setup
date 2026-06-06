@@ -125,7 +125,7 @@ the insecure package, the assertion fails and prompts removal.
 
 **Home router:** Vodafone Station Arris CGA6444VF (`192.168.0.1`). WAN IP:
 `91.64.99.245`. No NAT hairpin. DHCP is disabled (pi handles it). Ports 80/443
-are port-forwarded to tower (`.130`). The router **blocks LAN→LAN traffic on
+are port-forwarded to tower (`.10`). The router **blocks LAN→LAN traffic on
 port-forwarded ports** — WiFi clients cannot reach tower:80/443 directly.
 
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
@@ -133,10 +133,12 @@ listening on `end0`, static `.18`). Pi auto-upgrades from main nightly — test
 before merging.
 
 **Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
-`.130` (MAC `C8:4B:D6:CE:4E:78`).
+`.10` (motherboard NIC `enp11s0`, static via NetworkManager in
+`modules/hosts/tower/configuration.nix` — not a pi DHCP reservation). Tower's NM
+profile uses pi (`.18`) for DNS so split-horizon resolution works on tower too.
 
 **Split-horizon DNS targets:** `test/creatures/files/adele.etiennerobert.com`.
-Dnsmasq overrides these to **`192.168.0.130` (tower)**.
+Dnsmasq overrides these to **`192.168.0.10` (tower)**.
 
 **IPv6:** The router sends RA with RDNSS pointing to its own GUA
 `2a02:8109:8892:b700:14ea:8aff:febe:9cfd` (which proxies to Vodafone's upstream
