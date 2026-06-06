@@ -109,6 +109,13 @@ possible (e.g. `--raw-output` over `-r`, `--only-matching` over `-o`).
 Always test that code works before committing. Run the relevant test, build, or
 manual verification step first.
 
+## GitHub Identity
+
+Claude Code has its own GitHub account (`etrobert-bot`) and must use it for all
+GitHub operations — never impersonate the user (`etrobert`). If a permission is
+missing (e.g. `etrobert-bot` is not a collaborator on a repo), ask the user to
+grant it rather than attempting to act as them.
+
 ## Git Workflow
 
 Run `git alias` to discover available git aliases before running git commands.
