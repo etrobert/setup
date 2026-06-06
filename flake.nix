@@ -82,6 +82,7 @@
           ./modules/unfree.nix
           ./modules/networkmanager.nix
           ./modules/pimsync.nix
+          ./modules/syncthing.nix
           ./modules/lan-dns.nix
           ./modules/darkman.nix
           ./modules/awww.nix
