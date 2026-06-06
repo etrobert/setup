@@ -23,15 +23,14 @@ _: {
               "9.9.9.9"
             ];
             host-record = [
-              "test.etiennerobert.com,192.168.0.130"
-              "creatures.etiennerobert.com,192.168.0.130"
-              "files.etiennerobert.com,192.168.0.130"
-              "adele.etiennerobert.com,192.168.0.130"
-              "umami.etiennerobert.com,192.168.0.130"
+              "test.etiennerobert.com,192.168.0.10"
+              "creatures.etiennerobert.com,192.168.0.10"
+              "files.etiennerobert.com,192.168.0.10"
+              "adele.etiennerobert.com,192.168.0.10"
+              "umami.etiennerobert.com,192.168.0.10"
             ];
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
             dhcp-option = [ "option:router,192.168.0.1" ];
-            dhcp-host = "c8:4b:d6:ce:4e:78,192.168.0.130";
           };
         };
 
