@@ -67,7 +67,6 @@ _: {
               act
               adwaita-icon-theme
               audacity
-              bitwarden-desktop
               btop
               bun
               discord

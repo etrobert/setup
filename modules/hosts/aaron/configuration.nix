@@ -2,7 +2,6 @@
   self,
   pkgs,
   lib,
-  nixpkgs-darwin-pins,
   ...
 }:
 let
@@ -90,26 +89,6 @@ in
 
   nixpkgs.overlays = [
     compilerRtOverlay
-
-    # bitwarden-desktop 2026.5.0's electron-builder step fails on darwin with
-    # `spawn security ENOENT` (NixOS/nixpkgs#526914): codesign shells out to
-    # /usr/bin/security, absent from the build sandbox. Pin it to the pre-bump
-    # nixpkgs-darwin-pins rev, imported with compilerRtOverlay so the build is
-    # byte-identical to the one main already caches on darwin. Scoped to aaron
-    # since the Linux hosts build bitwarden-desktop from nixos-unstable fine.
-    #
-    # TODO: remove this overlay AND the nixpkgs-darwin-pins input once
-    # bitwarden-desktop builds on darwin from nixos-unstable. The version
-    # assertion below fails on the next bump to force a re-check.
-    (_final: prev: {
-      bitwarden-desktop =
-        assert lib.assertMsg (prev.bitwarden-desktop.version == "2026.5.0")
-          "nixpkgs bitwarden-desktop moved off 2026.5.0 — re-check whether it builds on darwin (spawn security ENOENT, NixOS/nixpkgs#526914). If fixed, drop the nixpkgs-darwin-pins pin + this overlay in modules/hosts/aaron/configuration.nix; else bump this guard.";
-        (import nixpkgs-darwin-pins {
-          inherit (prev.stdenv.hostPlatform) system;
-          overlays = [ compilerRtOverlay ];
-        }).bitwarden-desktop;
-    })
 
     # manifold 3.5.0's test binary traps (Trace/BPT trap: 5) on aarch64-darwin
     # at Manifold.GetNormalLegacyContract, failing openscad's build. The library
