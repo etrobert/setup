@@ -25,6 +25,30 @@ let
   };
   electron39StillNeeded =
     !(builtins.tryEval (builtins.seq pkgsStrict.bitwarden-desktop.drvPath true)).success;
+
+  # Building llvmPackages_18.compiler-rt on darwin fails (NixOS/nixpkgs#480849):
+  # Apple SDK 26.4 ships libc++ 21, which dropped the __builtin_ctzg/__builtin_clzg
+  # fallbacks that Clang 18 doesn't recognise, so the XRAY component won't compile.
+  # stable's compiler-rt-libc-18 isn't in the binary cache, so it builds from
+  # source and hits this — disable the C++ components to fix it (per #523142).
+  #
+  # TODO: drop this overlay once stable's compiler-rt-18 builds (or is cached) on
+  # darwin. Verify by removing it and running
+  # `nix build .#darwinConfigurations.aaron.system`.
+  compilerRtOverlay = _final: prev: {
+    llvmPackages_18 = prev.llvmPackages_18.overrideScope (
+      _llvmFinal: llvmPrev: {
+        compiler-rt-libc = llvmPrev.compiler-rt-libc.overrideAttrs (old: {
+          cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+            (lib.cmakeBool "COMPILER_RT_BUILD_XRAY" false)
+            (lib.cmakeBool "COMPILER_RT_BUILD_LIBFUZZER" false)
+            (lib.cmakeBool "COMPILER_RT_BUILD_MEMPROF" false)
+            (lib.cmakeBool "COMPILER_RT_BUILD_ORC" false)
+          ];
+        });
+      }
+    );
+  };
 in
 {
   allowedUnfreePackages = [
@@ -66,15 +90,18 @@ in
       ]);
   };
 
-  nixpkgs.hostPlatform = "aarch64-darwin";
-
   networking.hostName = "aaron";
   networking.computerName = "aaron";
 
-  # stable's bitwarden-desktop still pulls electron 39, which nixpkgs marks
-  # EOL/insecure. Permit it; the assertion below fails once bitwarden no longer
-  # pulls it, so we remember to drop this permit.
-  nixpkgs.config.permittedInsecurePackages = [ "electron-39.8.10" ];
+  nixpkgs = {
+    hostPlatform = "aarch64-darwin";
+    overlays = [ compilerRtOverlay ];
+
+    # stable's bitwarden-desktop still pulls electron 39, which nixpkgs marks
+    # EOL/insecure. Permit it; the assertion below fails once bitwarden no longer
+    # pulls it, so we remember to drop this permit.
+    config.permittedInsecurePackages = [ "electron-39.8.10" ];
+  };
 
   assertions = [
     {
