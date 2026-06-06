@@ -39,7 +39,10 @@
 
   services.ollama = {
     enable = true;
-    loadModels = [ "qwen3:14b" ];
+    loadModels = [
+      "qwen3:14b"
+      "qwen3:8b"
+    ];
     syncModels = true;
   };
 }
