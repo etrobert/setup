@@ -28,6 +28,7 @@ _: {
               "files.etiennerobert.com,192.168.0.10"
               "adele.etiennerobert.com,192.168.0.10"
               "umami.etiennerobert.com,192.168.0.10"
+              "images.etiennerobert.com,192.168.0.10"
             ];
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
             dhcp-option = [ "option:router,192.168.0.1" ];
