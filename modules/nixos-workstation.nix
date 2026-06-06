@@ -52,7 +52,7 @@ _: {
         # itself; bash -l guarantees environment.sessionVariables are loaded.
         greetd = {
           enable = true;
-          settings.default_session.command = ''${lib.getExe pkgs.greetd.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
+          settings.default_session.command = ''${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
         };
       };
 
