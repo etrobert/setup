@@ -7,6 +7,16 @@ _: {
         pkgs,
         ...
       }:
+      let
+        # nixpkgs instance with the insecure permit dropped, used by the guard
+        # below to detect when the permit is no longer load-bearing.
+        pkgsStrict = import pkgs.path {
+          inherit (pkgs.stdenv.hostPlatform) system;
+          config.allowUnfree = true;
+        };
+        electron39StillNeeded =
+          !(builtins.tryEval (builtins.seq pkgsStrict.bitwarden-desktop.drvPath true)).success;
+      in
       {
         allowedUnfreePackages = [
           "claude-code"
@@ -15,6 +25,18 @@ _: {
           "github-copilot-cli"
           "google-chrome"
           "spotify"
+        ];
+
+        # bitwarden-desktop still pins electron 39 upstream, which nixpkgs now
+        # marks EOL/insecure. The assertion below fails once it stops, so we
+        # remember to drop this permit.
+        nixpkgs.config.permittedInsecurePackages = [ "electron-39.8.10" ];
+
+        assertions = [
+          {
+            assertion = electron39StillNeeded;
+            message = "electron-39.8.10 is no longer pulled by bitwarden-desktop; remove the permittedInsecurePackages entry and this guard in modules/workstation.nix.";
+          }
         ];
 
         environment.systemPackages =
