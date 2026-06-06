@@ -91,6 +91,7 @@ vim.lsp.enable({
 	"rust_analyzer",
 	"gopls",
 	"lua_ls",
+	"marksman",
 	"nixd",
 	"openscad_lsp",
 	"cssls",
