@@ -25,6 +25,12 @@ _: {
       boot.kernelModules = [ "ddcci-backlight" ];
 
       services = {
+        ollama = {
+          enable = true;
+          loadModels = [ "qwen3:8b" ];
+          syncModels = true;
+        };
+
         # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
         avahi = {
           enable = true;
