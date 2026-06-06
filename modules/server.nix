@@ -136,6 +136,7 @@
                   "IMGPROXY_BIND=localhost:8889"
                   "IMGPROXY_LOCAL_FILESYSTEM_ROOT=/srv/files"
                   "IMGPROXY_USE_ETAG=true"
+                  "IMGPROXY_ALLOWED_SOURCES=local://"
                 ];
               };
             };
