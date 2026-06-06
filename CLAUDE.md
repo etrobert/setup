@@ -140,6 +140,13 @@ profile uses pi (`.18`) for DNS so split-horizon resolution works on tower too.
 **Split-horizon DNS targets:** `test/creatures/files/adele.etiennerobert.com`.
 Dnsmasq overrides these to **`192.168.0.10` (tower)**.
 
+**Testing the public/external path:** LAN clients resolve these names to tower
+directly (split-horizon) and bypass the port-forward, so they can't exercise the
+real external path. To test as an outside visitor would (public DNS →
+`91.64.99.245` → port-forward → tower), move `aaron` onto the iPhone's cellular
+hotspot — then `ssh aaron` and requests from it resolve to the public IP and
+traverse the real path. Useful for end-to-end latency/throughput measurements.
+
 **IPv6:** The router sends RA with RDNSS pointing to its own GUA
 `2a02:8109:8892:b700:14ea:8aff:febe:9cfd` (which proxies to Vodafone's upstream
 DNS `2a02:8100:c0:241::4:1101`). This RDNSS **cannot be disabled** — the router
