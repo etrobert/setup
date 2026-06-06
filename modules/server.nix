@@ -54,13 +54,6 @@
 
           caddy = {
             enable = true;
-            package = pkgs.caddy.withPlugins {
-              plugins = [
-                "github.com/caddyserver/cache-handler@v0.16.0"
-                "github.com/darkweak/storages/badger/caddy@v0.0.19"
-              ];
-              hash = "sha256-ueSf6zEs/tbbboSWsaxdovL204GwMY0gUihrcm5hRXE=";
-            };
             virtualHosts = {
               "test.etiennerobert.com".extraConfig = /* caddy */ ''
                 root * ${etiennerobert-com.packages.${system}.default}
@@ -83,12 +76,6 @@
                 reverse_proxy localhost:3001
               '';
               "images.etiennerobert.com".extraConfig = /* caddy */ ''
-                cache {
-                  badger {
-                    path /var/cache/caddy-imgproxy
-                  }
-                  ttl 720h
-                }
                 reverse_proxy localhost:8889
               '';
             };
@@ -108,7 +95,6 @@
           # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700 on every boot,
           # which would block caddy from traversing into the directory.
           tmpfiles.settings.filebrowser."/srv/files/adele".d.mode = lib.mkForce "0755";
-          tmpfiles.rules = [ "d /var/cache/caddy-imgproxy 0700 caddy caddy -" ];
 
           services = {
             filebrowser.serviceConfig.UMask = lib.mkForce "0022";
