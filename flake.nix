@@ -23,6 +23,12 @@
     # `nixpkgs` (unstable) via perSystem and stay fresh and identical to the
     # Linux hosts, so their embedded configs don't drift.
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
+    # Pinned nixpkgs rev where bitwarden-desktop 2026.5.0 still builds on darwin.
+    # Both stable and unstable carry 2026.5.0, which now fails with
+    # `spawn security ENOENT` (NixOS/nixpkgs#526914) — and since bitwarden is
+    # unfree, Hydra never caches it, so every channel builds from source and
+    # hits the bug. aaron's overlay pulls bitwarden from this rev instead.
+    nixpkgs-darwin-pins.url = "github:nixos/nixpkgs/64c08a7ca051951c8eae34e3e3cb1e202fe36786";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";

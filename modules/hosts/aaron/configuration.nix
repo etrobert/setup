@@ -2,7 +2,7 @@
   self,
   pkgs,
   lib,
-  # nixpkgs-darwin-pins,
+  nixpkgs-darwin-pins,
   ...
 }:
 let
@@ -16,15 +16,6 @@ let
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
-
-  # stable nixpkgs with the insecure permit dropped, used by the guard below to
-  # detect when the electron-39 permit stops being load-bearing.
-  pkgsStrict = import pkgs.path {
-    inherit system;
-    config.allowUnfree = true;
-  };
-  electron39StillNeeded =
-    !(builtins.tryEval (builtins.seq pkgsStrict.bitwarden-desktop.drvPath true)).success;
 
   # Building llvmPackages_18.compiler-rt on darwin fails (NixOS/nixpkgs#480849):
   # Apple SDK 26.4 ships libc++ 21, which dropped the __builtin_ctzg/__builtin_clzg
@@ -116,20 +107,28 @@ in
             doCheck = false;
           });
       })
+
+      # `spawn security ENOENT` (NixOS/nixpkgs#526914): codesign shells out to
+      # /usr/bin/security, absent from the build sandbox. Stable's bitwarden
+      # 2026.5.0 hits this too, and since bitwarden is unfree it is never on
+      # Hydra, so it always builds from source. Pin it to a nixpkgs rev where the
+      # build still works, imported with compilerRtOverlay so it is byte-identical
+      # to the one main already caches on darwin.
+      #
+      # TODO: remove this overlay AND the nixpkgs-darwin-pins input once
+      # bitwarden-desktop builds on darwin again. The version assertion below
+      # fails on the next bump to force a re-check.
+      (_final: prev: {
+        bitwarden-desktop =
+          assert lib.assertMsg (prev.bitwarden-desktop.version == "2026.5.0")
+            "nixpkgs bitwarden-desktop moved off 2026.5.0 — re-check whether it builds on darwin (spawn security ENOENT, NixOS/nixpkgs#526914). If fixed, drop the nixpkgs-darwin-pins pin + this overlay in modules/hosts/aaron/configuration.nix; else bump this guard.";
+          (import nixpkgs-darwin-pins {
+            inherit (prev.stdenv.hostPlatform) system;
+            overlays = [ compilerRtOverlay ];
+          }).bitwarden-desktop;
+      })
     ];
-
-    # stable's bitwarden-desktop still pulls electron 39, which nixpkgs marks
-    # EOL/insecure. Permit it; the assertion below fails once bitwarden no longer
-    # pulls it, so we remember to drop this permit.
-    config.permittedInsecurePackages = [ "electron-39.8.10" ];
   };
-
-  assertions = [
-    {
-      assertion = electron39StillNeeded;
-      message = "electron-39.8.10 is no longer pulled by bitwarden-desktop; remove the permittedInsecurePackages entry and this guard in modules/hosts/aaron/configuration.nix.";
-    }
-  ];
 
   system = {
     primaryUser = "soft";
