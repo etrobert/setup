@@ -9,12 +9,12 @@ let
     home-manager
     agenix
     nix-homebrew
-    # nixpkgs-darwin-pins
+    nixpkgs-darwin-pins
     ;
 in
 {
   flake.darwinConfigurations.aaron = nix-darwin.lib.darwinSystem {
-    specialArgs = { inherit self agenix; };
+    specialArgs = { inherit self agenix nixpkgs-darwin-pins; };
     modules = [
       ./configuration.nix
       home-manager.darwinModules.home-manager

@@ -2,7 +2,7 @@
   self,
   pkgs,
   lib,
-  # nixpkgs-darwin-pins,
+  nixpkgs-darwin-pins,
   ...
 }:
 let
@@ -16,6 +16,32 @@ let
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
+
+  # Workaround for NixOS/nixpkgs#480849: building llvmPackages_18.compiler-rt
+  # on Darwin fails because Apple SDK 26.4 ships libc++ 21, which dropped the
+  # fallbacks for __builtin_ctzg/__builtin_clzg — builtins that Clang 18 does
+  # not recognize. Mirror the fix from NixOS/nixpkgs#523142 by disabling the
+  # C++ components of compiler-rt 18 here.
+  #
+  # TODO: remove this overlay once nixos-unstable advances past the fix.
+  # Trigger: NixOS/nixpkgs#523142 (or its replacement) is merged AND lands in
+  # nixos-unstable. Verify by deleting the overlay block below and running
+  # `nix build .#darwinConfigurations.aaron.system` — if it succeeds, delete
+  # for good. If it still errors with `__builtin_ctzg`, keep the overlay.
+  compilerRtOverlay = _final: prev: {
+    llvmPackages_18 = prev.llvmPackages_18.overrideScope (
+      _llvmFinal: llvmPrev: {
+        compiler-rt-libc = llvmPrev.compiler-rt-libc.overrideAttrs (old: {
+          cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+            (lib.cmakeBool "COMPILER_RT_BUILD_XRAY" false)
+            (lib.cmakeBool "COMPILER_RT_BUILD_LIBFUZZER" false)
+            (lib.cmakeBool "COMPILER_RT_BUILD_MEMPROF" false)
+            (lib.cmakeBool "COMPILER_RT_BUILD_ORC" false)
+          ];
+        });
+      }
+    );
+  };
 in
 {
   allowedUnfreePackages = [
@@ -62,31 +88,27 @@ in
   networking.hostName = "aaron";
   networking.computerName = "aaron";
 
-  # Workaround for NixOS/nixpkgs#480849: building llvmPackages_18.compiler-rt
-  # on Darwin fails because Apple SDK 26.4 ships libc++ 21, which dropped the
-  # fallbacks for __builtin_ctzg/__builtin_clzg — builtins that Clang 18 does
-  # not recognize. Mirror the fix from NixOS/nixpkgs#523142 by disabling the
-  # C++ components of compiler-rt 18 here.
-  #
-  # TODO: remove this overlay once nixos-unstable advances past the fix.
-  # Trigger: NixOS/nixpkgs#523142 (or its replacement) is merged AND lands in
-  # nixos-unstable. Verify by deleting the overlay block below and running
-  # `nix build .#darwinConfigurations.aaron.system` — if it succeeds, delete
-  # for good. If it still errors with `__builtin_ctzg`, keep the overlay.
   nixpkgs.overlays = [
+    compilerRtOverlay
+
+    # bitwarden-desktop 2026.5.0's electron-builder step fails on darwin with
+    # `spawn security ENOENT` (NixOS/nixpkgs#526914): codesign shells out to
+    # /usr/bin/security, absent from the build sandbox. Pin it to the pre-bump
+    # nixpkgs-darwin-pins rev, imported with compilerRtOverlay so the build is
+    # byte-identical to the one main already caches on darwin. Scoped to aaron
+    # since the Linux hosts build bitwarden-desktop from nixos-unstable fine.
+    #
+    # TODO: remove this overlay AND the nixpkgs-darwin-pins input once
+    # bitwarden-desktop builds on darwin from nixos-unstable. The version
+    # assertion below fails on the next bump to force a re-check.
     (_final: prev: {
-      llvmPackages_18 = prev.llvmPackages_18.overrideScope (
-        _llvmFinal: llvmPrev: {
-          compiler-rt-libc = llvmPrev.compiler-rt-libc.overrideAttrs (old: {
-            cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-              (lib.cmakeBool "COMPILER_RT_BUILD_XRAY" false)
-              (lib.cmakeBool "COMPILER_RT_BUILD_LIBFUZZER" false)
-              (lib.cmakeBool "COMPILER_RT_BUILD_MEMPROF" false)
-              (lib.cmakeBool "COMPILER_RT_BUILD_ORC" false)
-            ];
-          });
-        }
-      );
+      bitwarden-desktop =
+        assert lib.assertMsg (prev.bitwarden-desktop.version == "2026.5.0")
+          "nixpkgs bitwarden-desktop moved off 2026.5.0 — re-check whether it builds on darwin (spawn security ENOENT, NixOS/nixpkgs#526914). If fixed, drop the nixpkgs-darwin-pins pin + this overlay in modules/hosts/aaron/configuration.nix; else bump this guard.";
+        (import nixpkgs-darwin-pins {
+          inherit (prev.stdenv.hostPlatform) system;
+          overlays = [ compilerRtOverlay ];
+        }).bitwarden-desktop;
     })
 
     # manifold 3.5.0's test binary traps (Trace/BPT trap: 5) on aarch64-darwin
