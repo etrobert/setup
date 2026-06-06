@@ -128,6 +128,12 @@ in
         '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>252</integer><key>KeyboardLayout Name</key><string>ABC</string></dict>'
       sudo -u soft /usr/bin/defaults write com.apple.HIToolbox AppleInputSourceHistory -array \
         '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>252</integer><key>KeyboardLayout Name</key><string>ABC</string></dict>'
+
+      # Pull default ollama model if not present
+      if ! ${pkgs.ollama}/bin/ollama list 2>/dev/null | grep -q "qwen3:8b"; then
+        echo "Pulling qwen3:8b model..."
+        ${pkgs.ollama}/bin/ollama pull qwen3:8b
+      fi
     '';
 
     # macOS-specific settings
@@ -196,6 +202,20 @@ in
         ''{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}''
       ];
       RunAtLoad = true;
+    };
+  };
+
+  launchd.daemons.ollama = {
+    serviceConfig = {
+      Label = "com.ollama.serve";
+      ProgramArguments = [
+        "${pkgs.ollama}/bin/ollama"
+        "serve"
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/ollama.log";
+      StandardErrorPath = "/tmp/ollama.log";
     };
   };
 
