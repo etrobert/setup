@@ -54,6 +54,11 @@
               if pkgs.stdenv.hostPlatform.isLinux then
                 pkgs.bitwarden-desktop
               else
+                # A build failure (unlike the insecure-permit guard above) is not
+                # eval-detectable, so fail on the next upstream bump to force a
+                # manual re-check that darwin still needs the pin.
+                assert pkgs.lib.assertMsg (pkgs.bitwarden-desktop.version == "2026.5.0")
+                  "nixpkgs bitwarden-desktop moved off 2026.5.0 — re-check whether it builds on darwin (the `spawn security ENOENT` failure). If fixed, drop the nixpkgs-darwin-pins pin and this ternary in modules/workstation.nix; otherwise bump the version in this guard.";
                 inputs.nixpkgs-darwin-pins.legacyPackages.${system}.bitwarden-desktop;
 
             customPackages = with self.packages.${system}; [
