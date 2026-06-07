@@ -74,7 +74,6 @@ in
         "${lib.getExe pkgs.ollama}"
         "serve"
       ];
-      EnvironmentVariables.HOME = "/Users/soft";
       RunAtLoad = true;
       KeepAlive = true;
       StandardOutPath = "/tmp/ollama.log";
