@@ -69,7 +69,6 @@ in
   # locating ~/.ollama.
   launchd.user.agents.ollama = {
     serviceConfig = {
-      Label = "com.ollama.serve";
       ProgramArguments = [
         "${lib.getExe pkgs.ollama}"
         "serve"
@@ -86,7 +85,6 @@ in
   # re-run on every login.
   launchd.user.agents.ollama-load-models = {
     serviceConfig = {
-      Label = "com.ollama.load-models";
       ProgramArguments = [ "${lib.getExe ollamaLoadModels}" ];
       RunAtLoad = true;
       StandardOutPath = "/tmp/ollama-load-models.log";
