@@ -64,37 +64,39 @@ in
     }
   ];
 
-  # Run as a *user* agent, not a system daemon: launchd does not set $HOME for
-  # it, so set it explicitly or ollama panics with "$HOME is not defined" when
-  # locating ~/.ollama.
-  launchd.user.agents.ollama =
-    { config, ... }:
-    {
-      serviceConfig = {
-        ProgramArguments = [
-          "${lib.getExe pkgs.ollama}"
-          "serve"
-        ];
-        RunAtLoad = true;
-        KeepAlive = true;
-        # /tmp/org.nixos.ollama.log
-        StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
-        StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
+  launchd.user.agents = {
+    # Run as a *user* agent, not a system daemon: launchd does not set $HOME for
+    # it, so set it explicitly or ollama panics with "$HOME is not defined" when
+    # locating ~/.ollama.
+    ollama =
+      { config, ... }:
+      {
+        serviceConfig = {
+          ProgramArguments = [
+            "${lib.getExe pkgs.ollama}"
+            "serve"
+          ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          # /tmp/org.nixos.ollama.log
+          StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
+          StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
+        };
       };
-    };
 
-  # One-shot user agent: pull the declared models once the serve agent is up.
-  # Idempotent (/api/pull is a no-op for present models), so it is safe to
-  # re-run on every login.
-  launchd.user.agents.ollama-load-models =
-    { config, ... }:
-    {
-      serviceConfig = {
-        ProgramArguments = [ "${lib.getExe ollamaLoadModels}" ];
-        RunAtLoad = true;
-        # /tmp/org.nixos.ollama-load-models.log
-        StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
-        StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
+    # One-shot user agent: pull the declared models once the serve agent is up.
+    # Idempotent (/api/pull is a no-op for present models), so it is safe to
+    # re-run on every login.
+    ollama-load-models =
+      { config, ... }:
+      {
+        serviceConfig = {
+          ProgramArguments = [ "${lib.getExe ollamaLoadModels}" ];
+          RunAtLoad = true;
+          # /tmp/org.nixos.ollama-load-models.log
+          StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
+          StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
+        };
       };
-    };
+  };
 }
