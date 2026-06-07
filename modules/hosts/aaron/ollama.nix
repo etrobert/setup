@@ -86,12 +86,15 @@ in
   # One-shot user agent: pull the declared models once the serve agent is up.
   # Idempotent (/api/pull is a no-op for present models), so it is safe to
   # re-run on every login.
-  launchd.user.agents.ollama-load-models = {
-    serviceConfig = {
-      ProgramArguments = [ "${lib.getExe ollamaLoadModels}" ];
-      RunAtLoad = true;
-      StandardOutPath = "/tmp/ollama-load-models.log";
-      StandardErrorPath = "/tmp/ollama-load-models.log";
+  launchd.user.agents.ollama-load-models =
+    { config, ... }:
+    {
+      serviceConfig = {
+        ProgramArguments = [ "${lib.getExe ollamaLoadModels}" ];
+        RunAtLoad = true;
+        # /tmp/org.nixos.ollama-load-models.log
+        StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
+        StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
+      };
     };
-  };
 }
