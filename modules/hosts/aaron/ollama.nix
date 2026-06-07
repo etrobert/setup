@@ -23,9 +23,9 @@ let
   # /api/pull is a no-op for models already present, so this is safe to re-run.
   ollamaLoadModels = pkgs.writeShellApplication {
     name = "ollama-load-models";
-    runtimeInputs = [
-      pkgs.curl
-      pkgs.coreutils
+    runtimeInputs = with pkgs; [
+      curl
+      coreutils
     ];
     inheritPath = false;
     # SC2043: the loop runs once today (single model) but generalises to many.
