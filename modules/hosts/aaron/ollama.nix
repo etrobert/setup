@@ -43,6 +43,21 @@ let
       done
     '';
   };
+
+  # File-local logging policy: every agent below logs to /tmp/<its-label>.log.
+  # Each agent is wrapped as a submodule function so it can read its own
+  # resolved Label; recursiveUpdate keeps the agent body (right) authoritative,
+  # so a unit can still override these paths.
+  withLogPaths = lib.mapAttrs (
+    _: agent:
+    { config, ... }:
+    lib.recursiveUpdate {
+      serviceConfig = {
+        StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
+        StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
+      };
+    } agent
+  );
 in
 {
   # Self-cleaning guard: fails the build once nix-darwin provides services.ollama
@@ -64,39 +79,26 @@ in
     }
   ];
 
-  launchd.user.agents = {
+  # Log paths (/tmp/<label>.log) are injected by withLogPaths above.
+  launchd.user.agents = withLogPaths {
     # Run as a *user* agent, not a system daemon: launchd does not set $HOME for
     # it, so set it explicitly or ollama panics with "$HOME is not defined" when
     # locating ~/.ollama.
-    ollama =
-      { config, ... }:
-      {
-        serviceConfig = {
-          ProgramArguments = [
-            "${lib.getExe pkgs.ollama}"
-            "serve"
-          ];
-          RunAtLoad = true;
-          KeepAlive = true;
-          # /tmp/org.nixos.ollama.log
-          StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
-          StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
-        };
-      };
+    ollama.serviceConfig = {
+      ProgramArguments = [
+        "${lib.getExe pkgs.ollama}"
+        "serve"
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
 
     # One-shot user agent: pull the declared models once the serve agent is up.
     # Idempotent (/api/pull is a no-op for present models), so it is safe to
     # re-run on every login.
-    ollama-load-models =
-      { config, ... }:
-      {
-        serviceConfig = {
-          ProgramArguments = [ "${lib.getExe ollamaLoadModels}" ];
-          RunAtLoad = true;
-          # /tmp/org.nixos.ollama-load-models.log
-          StandardOutPath = "/tmp/${config.serviceConfig.Label}.log";
-          StandardErrorPath = "/tmp/${config.serviceConfig.Label}.log";
-        };
-      };
+    ollama-load-models.serviceConfig = {
+      ProgramArguments = [ "${lib.getExe ollamaLoadModels}" ];
+      RunAtLoad = true;
+    };
   };
 }
