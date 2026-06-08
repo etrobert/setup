@@ -7,8 +7,8 @@ last_message=$(echo "$input" | jq --raw-output '.last_assistant_message')
 reset_time=$(echo "$last_message" | grep --only-matching --perl-regexp '\d+:\d+(?:am|pm)')
 
 if [[ -z "$reset_time" ]]; then
-	notify "Claude (warning)" "Could not parse reset time from: ${last_message}"
-	exit 1
+  notify "Claude (warning)" "Could not parse reset time from: ${last_message}"
+  exit 1
 fi
 
 # Immediate notification
@@ -21,8 +21,8 @@ delay=$((reset_epoch - now_epoch))
 
 # If the reset time is in the past (e.g. we're past midnight), try tomorrow
 if [[ $delay -le 0 ]]; then
-	reset_epoch=$(date --date="tomorrow $reset_time" +%s)
-	delay=$((reset_epoch - now_epoch))
+  reset_epoch=$(date --date="tomorrow $reset_time" +%s)
+  delay=$((reset_epoch - now_epoch))
 fi
 
 # Schedule the reset notification
