@@ -123,6 +123,8 @@ Run `git alias` to discover available git aliases before running git commands.
 After committing on a branch, open a PR with `gh pr create`. Never merge to main
 directly — the user reviews all code and decides when to merge.
 
+Each commit should be functional — don't commit broken or speculative states.
+
 Always rebase on origin/main before presenting a PR for review — both on initial
 `gh pr create` and after any follow-up changes before telling the user it's
 ready.
