@@ -8,12 +8,6 @@ _: {
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
-
-      # Turn an ntfy message into a desktop notification. ntfy passes the
-      # message fields in via the environment when it runs this per message.
-      ntfyNotify = pkgs.writeShellScript "ntfy-notify" ''
-        exec ${pkgs.libnotify}/bin/notify-send -- "''${title:-Notification}" "$message"
-      '';
     in
     {
       imports = [
@@ -23,6 +17,7 @@ _: {
         self.nixosModules.awww
         self.nixosModules.cachix-push
         self.nixosModules.copilot-api
+        self.nixosModules.ntfyDesktop
       ];
 
       allowedUnfreePackages = [ "bambu-studio" ];
@@ -109,19 +104,6 @@ _: {
             wantedBy = [ "graphical-session.target" ];
             serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
           };
-
-          # Subscribe to the ntfy server (modules/ntfy.nix) and surface each
-          # message as a mako desktop notification.
-          ntfy-notify = {
-            description = "Desktop notifications from ntfy";
-            partOf = [ "graphical-session.target" ];
-            wantedBy = [ "graphical-session.target" ];
-            serviceConfig = {
-              ExecStart = "${lib.getExe pkgs.ntfy-sh} subscribe http://tower:2586/home ${ntfyNotify}";
-              Restart = "always";
-              RestartSec = 10;
-            };
-          };
         };
 
         tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
@@ -158,7 +140,6 @@ _: {
             grim
             mpc # Minimalist command line interface to MPD
             mpv
-            ntfy-sh # publish/subscribe to the ntfy notification server
             pavucontrol
             playerctl
             slurp

@@ -6,7 +6,6 @@
   imports = [
     ./hardware-configuration.nix
     ../../home-assistant.nix
-    ../../ntfy.nix
   ];
 
   boot.loader.systemd-boot.enable = true;

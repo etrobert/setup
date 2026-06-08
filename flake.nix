@@ -88,6 +88,7 @@
           ./modules/cachix-push.nix
           ./modules/copilot-api.nix
           ./modules/server.nix
+          ./modules/ntfy.nix
           ./modules/homepage.nix
           ./modules/cockpit.nix
           ./modules/umami.nix
