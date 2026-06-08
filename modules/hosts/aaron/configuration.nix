@@ -16,6 +16,28 @@ let
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
 
+  # Workaround for NixOS/nixpkgs#529280: ollama 0.30.5 CMake configure fails on
+  # aarch64-darwin because cmake/local.cmake auto-enables MLX Metal backends,
+  # which require Xcode's Metal toolchain — unavailable in the Nix sandbox.
+  # The fix (NixOS/nixpkgs#529079) landed on nixpkgs master 2026-06-07 but
+  # hasn't reached nixos-unstable yet. Disable MLX by force-setting
+  # OLLAMA_MLX_BACKENDS="" before cmake/local.cmake reads it.
+  #
+  # TODO: remove once nixos-unstable advances past the fix.
+  # Trigger: ollama bumps past 0.30.5 in nixos-unstable. Verify by deleting
+  # this overlay and running `nix build .#darwinConfigurations.aaron.system`.
+  ollamaOverlay = _final: prev: {
+    ollama =
+      assert lib.assertMsg (prev.ollama.version == "0.30.5")
+        "ollama is no longer 0.30.5 — check whether NixOS/nixpkgs#529079 landed in nixos-unstable and drop this overlay in modules/hosts/aaron/configuration.nix.";
+      prev.ollama.overrideAttrs (old: {
+        postPatch = old.postPatch + /* bash */ ''
+          # Prepend to cmake/local.cmake to disable MLX before its auto-detection.
+          printf 'set(OLLAMA_MLX_BACKENDS "" CACHE STRING "" FORCE)\n' | cat - cmake/local.cmake > cmake/local.cmake.tmp && mv cmake/local.cmake.tmp cmake/local.cmake
+        '';
+      });
+  };
+
   # Workaround for NixOS/nixpkgs#480849: building llvmPackages_18.compiler-rt
   # on Darwin fails because Apple SDK 26.4 ships libc++ 21, which dropped the
   # fallbacks for __builtin_ctzg/__builtin_clzg — builtins that Clang 18 does
@@ -89,26 +111,7 @@ in
 
   nixpkgs.overlays = [
     compilerRtOverlay
-
-    # manifold 3.5.0's test binary traps (Trace/BPT trap: 5) on aarch64-darwin
-    # at Manifold.GetNormalLegacyContract, failing openscad's build. The library
-    # itself compiles fine, so skip its check phase. Scoped to aaron so the
-    # Linux hosts keep using the cached, test-passing manifold.
-    #
-    # TODO: remove this overlay once manifold's darwin test no longer crashes.
-    # Trigger: a manifold version past 3.5.0 lands in nixos-unstable. Verify by
-    # deleting the overlay entry and running
-    # `nix build .#darwinConfigurations.aaron.system` — if openscad builds,
-    # delete for good. The version assertion below fails on the next bump to
-    # force a re-check.
-    (_final: prev: {
-      manifold =
-        assert lib.assertMsg (prev.manifold.version == "3.5.0")
-          "manifold is no longer 3.5.0 — re-check whether the darwin test still crashes and drop this overlay in modules/hosts/aaron/configuration.nix if it is fixed.";
-        prev.manifold.overrideAttrs (_: {
-          doCheck = false;
-        });
-    })
+    ollamaOverlay
   ];
 
   system = {
