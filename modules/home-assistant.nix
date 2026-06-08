@@ -38,11 +38,11 @@ _: {
                       min = 400;
                       max = 2000;
                       needle = true;
-                      # ppm: <800 fresh, 800-1200 stuffy, >1200 ventilate
+                      # ppm: <800 fresh, 800-1000 stuffy, >1000 ventilate
                       severity = {
                         green = 400;
                         yellow = 800;
-                        red = 1200;
+                        red = 1000;
                       };
                     }
                     {
@@ -207,12 +207,12 @@ _: {
         {
           id = "co2_air_the_room";
           alias = "Air Quality - Notify to air the room";
-          description = "Notify when CO2 stays above 1200 ppm for 10 minutes.";
+          description = "Notify when CO2 stays above 1000 ppm for 10 minutes.";
           trigger = [
             {
               platform = "numeric_state";
               entity_id = "sensor.i_9psl_carbon_dioxide";
-              above = 1200;
+              above = 1000;
               for = {
                 minutes = 10;
               };
