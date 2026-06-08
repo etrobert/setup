@@ -204,6 +204,31 @@ _: {
           ];
           mode = "restart";
         }
+        {
+          id = "co2_air_the_room";
+          alias = "Air Quality - Notify to air the room";
+          description = "Notify when CO2 stays above 1200 ppm for 10 minutes.";
+          trigger = [
+            {
+              platform = "numeric_state";
+              entity_id = "sensor.i_9psl_carbon_dioxide";
+              above = 1200;
+              for = {
+                minutes = 10;
+              };
+            }
+          ];
+          action = [
+            {
+              service = "notify.mobile_app_soft_phone";
+              data = {
+                title = "Air the room 🪟";
+                message = "CO₂ is {{ states('sensor.i_9psl_carbon_dioxide') }} ppm — open a window.";
+              };
+            }
+          ];
+          mode = "single";
+        }
       ];
       homeassistant = {
         auth_providers = [
