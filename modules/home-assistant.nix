@@ -7,6 +7,7 @@ _: {
       "hue"
       "led_ble"
       "ibeacon"
+      "airgradient"
     ];
     config = {
       # Includes dependencies for a basic setup
