@@ -89,26 +89,6 @@ in
 
   nixpkgs.overlays = [
     compilerRtOverlay
-
-    # manifold 3.5.0's test binary traps (Trace/BPT trap: 5) on aarch64-darwin
-    # at Manifold.GetNormalLegacyContract, failing openscad's build. The library
-    # itself compiles fine, so skip its check phase. Scoped to aaron so the
-    # Linux hosts keep using the cached, test-passing manifold.
-    #
-    # TODO: remove this overlay once manifold's darwin test no longer crashes.
-    # Trigger: a manifold version past 3.5.0 lands in nixos-unstable. Verify by
-    # deleting the overlay entry and running
-    # `nix build .#darwinConfigurations.aaron.system` — if openscad builds,
-    # delete for good. The version assertion below fails on the next bump to
-    # force a re-check.
-    (_final: prev: {
-      manifold =
-        assert lib.assertMsg (prev.manifold.version == "3.5.0")
-          "manifold is no longer 3.5.0 — re-check whether the darwin test still crashes and drop this overlay in modules/hosts/aaron/configuration.nix if it is fixed.";
-        prev.manifold.overrideAttrs (_: {
-          doCheck = false;
-        });
-    })
   ];
 
   system = {
