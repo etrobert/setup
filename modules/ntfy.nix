@@ -3,7 +3,8 @@
 # - `ntfy` (server): runs ntfy on tower, reachable only over Tailscale (the
 #   port is opened on tailscale0 only — never the LAN or WAN).
 # - `ntfyDesktop` (subscriber): a Linux user service that subscribes to the
-#   topic and surfaces each message as a mako desktop notification.
+#   topic and surfaces each message as a mako desktop notification. Also ships
+#   the `notify` CLI (see `mkNotify`) for publishing to the bus.
 #
 # No Home Assistant wiring here — this is just the transport. Test with:
 #   curl -d "hello" http://tower:2586/home
@@ -13,6 +14,23 @@ let
   port = 2586;
   topic = "home";
   url = "http://${host}:${toString port}";
+
+  # `notify` CLI: publish to the bus topic without retyping the server URL.
+  # Setting NTFY_TOPIC lets the topic argument be omitted, so every `ntfy
+  # publish` flag (--title, --tags, --priority, …) and the message pass
+  # straight through:  notify --title "Build" "done". `ntfyBin` is the ntfy
+  # executable to call — nixpkgs' ntfy-sh on Linux, Homebrew's on darwin
+  # (where ntfy-sh doesn't build).
+  mkNotify =
+    pkgs: ntfyBin:
+    pkgs.writeShellApplication {
+      name = "notify";
+      inheritPath = false;
+      text = ''
+        export NTFY_TOPIC=${url}/${topic}
+        exec ${ntfyBin} publish "$@"
+      '';
+    };
 in
 {
   flake = {
@@ -44,8 +62,11 @@ in
         '';
       in
       {
-        # ntfy CLI for manual publish/subscribe.
-        environment.systemPackages = [ pkgs.ntfy-sh ];
+        # ntfy CLI for manual publish/subscribe, plus the `notify` wrapper.
+        environment.systemPackages = [
+          pkgs.ntfy-sh
+          (mkNotify pkgs (lib.getExe pkgs.ntfy-sh))
+        ];
 
         systemd.user.services.ntfy-notify = {
           description = "Desktop notifications from ntfy";
@@ -84,6 +105,9 @@ in
       in
       {
         homebrew.brews = [ "ntfy" ];
+
+        # `notify` wrapper, calling the Homebrew ntfy installed above.
+        environment.systemPackages = [ (mkNotify pkgs ntfy) ];
 
         launchd.user.agents.ntfy-notify = {
           serviceConfig = {
