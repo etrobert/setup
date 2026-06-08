@@ -2,13 +2,8 @@
   symlinkJoin,
   makeWrapper,
   callPackage,
-  bc,
   claude-code,
-  coreutils,
-  git,
-  jq,
   lib,
-  writeShellApplication,
   extraEnv ? { },
   readTokenFromAgenix ? false,
   # Name of the installed binary. Variants override this (e.g. "claude-copilot")
@@ -16,28 +11,10 @@
   binName ? "claude",
 }:
 let
-  weekProgressScript = writeShellApplication {
-    name = "week-progress";
-    runtimeInputs = [ coreutils ];
-    inheritPath = false;
-    text = builtins.readFile ./week-progress.sh;
-  };
-  statuslineScript = writeShellApplication {
-    name = "claude-plan-usage";
-    runtimeInputs = [
-      bc
-      coreutils
-      git
-      jq
-      weekProgressScript
-    ];
-    inheritPath = false;
-    text = builtins.readFile ./claude-plan-usage.sh;
-  };
+  statuslineScript = callPackage ./claude-plan-usage.nix { };
   formatFileScript = callPackage ./format-file.nix { };
   rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { };
   binPath = lib.makeBinPath [
-    weekProgressScript
     statuslineScript
     formatFileScript
     rateLimitNotifyScript

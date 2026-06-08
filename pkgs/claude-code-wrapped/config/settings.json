@@ -1,5 +1,4 @@
 {
-  "model": "opus",
   "hooks": {
     "StopFailure": [
       {
@@ -36,6 +35,6 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "verbose": true,
-  "voiceEnabled": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "voiceEnabled": true
 }
