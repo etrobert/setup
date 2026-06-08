@@ -57,4 +57,44 @@ in
         };
       };
     };
+
+  # macOS counterpart of ntfyDesktop: a launchd user agent that subscribes to
+  # the same topic and posts each message to Notification Center via osascript
+  # (matching pkgs/claude-code-wrapped/claude-rate-limit-notify.nix).
+  #
+  # The ntfy CLI comes from Homebrew because nixpkgs' ntfy-sh currently fails
+  # to build on darwin (undefined maybeRunAsService / sigHandlerConfigReload).
+  # TODO: switch back to pkgs.ntfy-sh (environment.systemPackages) once the
+  # darwin build is fixed.
+  flake.darwinModules.ntfyDesktop =
+    { pkgs, ... }:
+    let
+      ntfyNotify = pkgs.writeShellScript "ntfy-notify" ''
+        # Pass title/body as argv so quotes/backslashes/newlines in the ntfy
+        # message can't break or inject into the AppleScript.
+        /usr/bin/osascript \
+          -e 'on run argv' \
+          -e 'display notification (item 2 of argv) with title (item 1 of argv)' \
+          -e 'end run' \
+          "''${title:-Notification}" "$message"
+      '';
+      # Apple Silicon Homebrew prefix.
+      ntfy = "/opt/homebrew/bin/ntfy";
+    in
+    {
+      homebrew.brews = [ "ntfy" ];
+
+      launchd.user.agents.ntfy-notify = {
+        serviceConfig = {
+          ProgramArguments = [
+            ntfy
+            "subscribe"
+            "${url}/${topic}"
+            "${ntfyNotify}"
+          ];
+          KeepAlive = true;
+          RunAtLoad = true;
+        };
+      };
+    };
 }
