@@ -2,6 +2,7 @@
   symlinkJoin,
   makeWrapper,
   callPackage,
+  bc,
   claude-code,
   coreutils,
   git,
@@ -15,12 +16,20 @@
   binName ? "claude",
 }:
 let
+  weekProgressScript = writeShellApplication {
+    name = "week-progress";
+    runtimeInputs = [ coreutils ];
+    inheritPath = false;
+    text = builtins.readFile ./week-progress.sh;
+  };
   statuslineScript = writeShellApplication {
     name = "claude-plan-usage";
     runtimeInputs = [
+      bc
       coreutils
       git
       jq
+      weekProgressScript
     ];
     inheritPath = false;
     text = builtins.readFile ./claude-plan-usage.sh;
@@ -28,6 +37,7 @@ let
   formatFileScript = callPackage ./format-file.nix { };
   rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { };
   binPath = lib.makeBinPath [
+    weekProgressScript
     statuslineScript
     formatFileScript
     rateLimitNotifyScript
