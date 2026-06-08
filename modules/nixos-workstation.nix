@@ -17,6 +17,7 @@ _: {
         self.nixosModules.awww
         self.nixosModules.cachix-push
         self.nixosModules.copilot-api
+        self.nixosModules.ntfyDesktop
       ];
 
       allowedUnfreePackages = [ "bambu-studio" ];

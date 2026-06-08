@@ -33,6 +33,7 @@ in
       self.nixosModules.base
       self.nixosModules.unfree
       self.nixosModules.server
+      self.nixosModules.ntfy
       self.nixosModules.homepage
       self.nixosModules.cockpit
     ];

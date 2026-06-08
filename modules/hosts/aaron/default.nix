@@ -32,6 +32,7 @@ in
       self.darwinModules.base
       self.darwinModules.unfree
       self.darwinModules.nixIndex
+      self.darwinModules.ntfyDesktop
     ];
   };
 }
