@@ -53,7 +53,8 @@ if [ -n "$week_pct" ]; then
 		else
 			week_color="$green"
 		fi
-		week_str="${week_color}7d:${pct_int}%/${week_elapsed_pct}%${reset} ($(date -d "@$week_reset" +"%a %H:%M"))"
+		pace_display=$(echo "scale=1; $pace / 100" | bc)
+		week_str="${week_color}7d:${pct_int}% ×${pace_display}${reset} ($(date -d "@$week_reset" +"%a %H:%M"))"
 	else
 		week_str="$(pct_color "$pct_int")7d:$pct_int%$reset"
 	fi

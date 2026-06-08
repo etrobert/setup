@@ -2,6 +2,7 @@
   symlinkJoin,
   makeWrapper,
   callPackage,
+  bc,
   claude-code,
   coreutils,
   git,
@@ -24,6 +25,7 @@ let
   statuslineScript = writeShellApplication {
     name = "claude-plan-usage";
     runtimeInputs = [
+      bc
       coreutils
       git
       jq
