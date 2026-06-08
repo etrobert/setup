@@ -29,12 +29,13 @@
     "type": "command",
     "command": "claude-plan-usage"
   },
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "verbose": true,
   "voiceEnabled": true,
-  "voice": {
-    "enabled": true,
-    "mode": "hold"
-  }
+  "agentPushNotifEnabled": true
 }
