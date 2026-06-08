@@ -204,6 +204,60 @@ _: {
           ];
           mode = "restart";
         }
+        {
+          id = "co2_air_the_room";
+          alias = "Air Quality - Notify to air the room";
+          description = "Notify when CO2 stays above 1200 ppm for 10 minutes.";
+          trigger = [
+            {
+              platform = "numeric_state";
+              entity_id = "sensor.i_9psl_carbon_dioxide";
+              above = 1200;
+              for = {
+                minutes = 10;
+              };
+            }
+          ];
+          action = [
+            {
+              service = "notify.all_devices";
+              data = {
+                title = "Air the room 🪟";
+                message = "CO₂ is {{ states('sensor.i_9psl_carbon_dioxide') }} ppm — open a window.";
+              };
+            }
+          ];
+          mode = "single";
+        }
+      ];
+      # Notification targets. `all_devices` fans a notification out to the
+      # phone (Companion app) and the self-hosted ntfy bus, which the desktops
+      # (tower/leod/aaron) subscribe to — see modules/ntfy.nix. Automations
+      # notify `notify.all_devices` so every alert reaches all surfaces.
+      notify = [
+        {
+          # Publish to the ntfy `home` topic. HA runs on tower alongside the
+          # ntfy server, so it posts to localhost. POST_JSON to the ntfy root
+          # URL sends `{message, title, topic}` — ntfy's JSON publish format —
+          # so this works as a real notify service and can join a group below.
+          platform = "rest";
+          name = "ntfy_home";
+          resource = "http://localhost:2586";
+          method = "POST_JSON";
+          message_param_name = "message";
+          title_param_name = "title";
+          data = {
+            topic = "home";
+          };
+        }
+        {
+          platform = "group";
+          name = "all_devices";
+          services = [
+            { service = "mobile_app_soft_phone"; }
+            { service = "ntfy_home"; }
+          ];
+        }
       ];
       homeassistant = {
         auth_providers = [
