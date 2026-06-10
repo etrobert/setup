@@ -8,6 +8,12 @@
       inputs',
       ...
     }:
+    let
+      # Latest Claude Code, ahead of nixpkgs' cadence (see flake.nix input).
+      # Minimal variant: the full one bundles gh, which our wrapper does not
+      # need (it manages PATH and ships its own gitconfig-bot).
+      claude-code = inputs'.nix-claude-code.packages.claude-minimal;
+    in
     {
       packages = {
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
@@ -18,8 +24,9 @@
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
-        claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped { };
+        claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped { inherit claude-code; };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
+          inherit claude-code;
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
             API_TIMEOUT_MS = "3000000";
@@ -32,6 +39,7 @@
         };
         copilot-api = pkgs.callPackage ./copilot-api { };
         claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
+          inherit claude-code;
           extraEnv = {
             ANTHROPIC_BASE_URL = "http://localhost:4141";
             ANTHROPIC_AUTH_TOKEN = "dummy"; # proxy authenticates via GitHub itself
