@@ -51,7 +51,7 @@ if [ -n "$week_pct" ]; then
     elif [ "$pace" -ge 100 ]; then
       week_color="$yellow"
     else
-      week_color="$green"
+      week_color="$reset"
     fi
     pace_display=$(echo "scale=2; $pace / 100" | bc)
     week_str="${week_color}7d:${pct_int}% ×${pace_display}${reset} ($(date -d "@$week_reset" +"%a %H:%M"))"
