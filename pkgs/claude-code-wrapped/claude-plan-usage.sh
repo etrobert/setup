@@ -44,7 +44,7 @@ pace_segment() {
     local color
     if [ "$pace" -ge 110 ]; then
       color="$red"
-    elif [ "$pace" -ge 100 ]; then
+    elif [ "$pace" -ge 90 ]; then
       color="$yellow"
     else
       color="$reset"
