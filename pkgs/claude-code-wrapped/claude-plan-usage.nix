@@ -6,11 +6,11 @@
   writeShellApplication,
 }:
 let
-  weekProgressScript = writeShellApplication {
-    name = "week-progress";
+  windowProgressScript = writeShellApplication {
+    name = "window-progress";
     runtimeInputs = [ coreutils ];
     inheritPath = false;
-    text = builtins.readFile ./week-progress.sh;
+    text = builtins.readFile ./window-progress.sh;
   };
 in
 writeShellApplication {
@@ -20,7 +20,7 @@ writeShellApplication {
     coreutils
     git
     jq
-    weekProgressScript
+    windowProgressScript
   ];
   inheritPath = false;
   text = builtins.readFile ./claude-plan-usage.sh;
