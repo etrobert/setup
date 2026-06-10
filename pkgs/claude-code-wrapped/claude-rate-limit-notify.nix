@@ -2,7 +2,7 @@
   coreutils,
   gnugrep,
   jq,
-  pkgs,
+  ntfy-sh,
   writeShellApplication,
 }:
 writeShellApplication {
@@ -11,7 +11,7 @@ writeShellApplication {
     coreutils
     gnugrep
     jq
-    pkgs.ntfy-sh
+    ntfy-sh
   ];
   inheritPath = false;
   text = builtins.readFile ./claude-rate-limit-notify.sh;
