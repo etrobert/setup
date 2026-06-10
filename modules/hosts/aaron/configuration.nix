@@ -183,6 +183,7 @@ in
     enable = true;
     casks = [
       "bambu-studio"
+      "claude"
       "sonos"
       "vlc"
       "whatsapp"
