@@ -44,8 +44,8 @@ in
         '';
       in
       {
-        # ntfy CLI for manual publish/subscribe.
-        environment.systemPackages = [ pkgs.ntfy-sh ];
+        # The interactive ntfy CLI (with endpoint pre-set) comes from
+        # ntfy-wrapped in base.nix — not installed here to avoid a collision.
 
         systemd.user.services.ntfy-notify = {
           description = "Desktop notifications from ntfy";
@@ -76,7 +76,8 @@ in
         '';
       in
       {
-        environment.systemPackages = [ pkgs.ntfy-sh ];
+        # The interactive ntfy CLI (with endpoint pre-set) comes from
+        # ntfy-wrapped in base.nix — not installed here to avoid a collision.
 
         launchd.user.agents.ntfy-notify = {
           serviceConfig = {

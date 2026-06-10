@@ -24,6 +24,7 @@ _: {
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
             bash-wrapped
             git-wrapped
+            ntfy-wrapped
             tmux-wrapped
             tmux-sessionizer
             switch
