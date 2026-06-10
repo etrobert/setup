@@ -1,17 +1,17 @@
 {
   coreutils,
-  curl,
   gnugrep,
   jq,
+  pkgs,
   writeShellApplication,
 }:
 writeShellApplication {
   name = "claude-rate-limit-notify";
   runtimeInputs = [
     coreutils
-    curl
     gnugrep
     jq
+    pkgs.ntfy-sh
   ];
   inheritPath = false;
   text = builtins.readFile ./claude-rate-limit-notify.sh;
