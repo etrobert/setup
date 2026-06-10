@@ -101,6 +101,9 @@ Always typecheck and lint after making a change.
 
 Prefer `kebab-case` for directory names.
 
+When spacing elements within a container (CSS/Tailwind), prefer `gap` on the
+container over `margin` on the children.
+
 In shell scripts, prefer long-form parameters over single-letter ones where
 possible (e.g. `--raw-output` over `-r`, `--only-matching` over `-o`).
 
