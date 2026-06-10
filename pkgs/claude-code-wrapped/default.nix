@@ -4,6 +4,7 @@
   callPackage,
   claude-code,
   lib,
+  ntfy-wrapped,
   extraEnv ? { },
   readTokenFromAgenix ? false,
   # Name of the installed binary. Variants override this (e.g. "claude-copilot")
@@ -13,7 +14,7 @@
 let
   statuslineScript = callPackage ./claude-plan-usage.nix { };
   formatFileScript = callPackage ./format-file.nix { };
-  rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { };
+  rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { ntfy-sh = ntfy-wrapped; };
   binPath = lib.makeBinPath [
     statuslineScript
     formatFileScript

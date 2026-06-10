@@ -6,7 +6,7 @@
 #   topic and surfaces each message as a mako desktop notification.
 #
 # No Home Assistant wiring here — this is just the transport. Test with:
-#   curl -d "hello" http://tower:2586/home
+#   ntfy publish "hello"
 _:
 let
   host = "tower";
