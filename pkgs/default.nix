@@ -56,6 +56,7 @@
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
+        ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
         nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
