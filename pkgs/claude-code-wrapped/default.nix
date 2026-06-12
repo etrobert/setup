@@ -3,6 +3,7 @@
   makeWrapper,
   callPackage,
   claude-code,
+  hass-cli-wrapped,
   lib,
   ntfy-wrapped,
   extraEnv ? { },
@@ -19,6 +20,7 @@ let
     statuslineScript
     formatFileScript
     rateLimitNotifyScript
+    hass-cli-wrapped
   ];
   envFlags = lib.concatStringsSep " " (
     lib.mapAttrsToList (

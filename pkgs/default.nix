@@ -14,6 +14,7 @@
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
+      hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
     in
     {
       packages = {
@@ -25,9 +26,11 @@
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
-        claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped { inherit claude-code ntfy-wrapped; };
+        claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
+          inherit claude-code ntfy-wrapped hass-cli-wrapped;
+        };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
-          inherit claude-code ntfy-wrapped;
+          inherit claude-code ntfy-wrapped hass-cli-wrapped;
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
             API_TIMEOUT_MS = "3000000";
@@ -40,7 +43,7 @@
         };
         copilot-api = pkgs.callPackage ./copilot-api { };
         claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
-          inherit claude-code ntfy-wrapped;
+          inherit claude-code ntfy-wrapped hass-cli-wrapped;
           extraEnv = {
             ANTHROPIC_BASE_URL = "http://localhost:4141";
             ANTHROPIC_AUTH_TOKEN = "dummy"; # proxy authenticates via GitHub itself
@@ -58,6 +61,7 @@
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
         ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
+        inherit hass-cli-wrapped;
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
         nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
