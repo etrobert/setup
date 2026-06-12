@@ -163,22 +163,10 @@ unauthenticated.
 ## Home Assistant
 
 HA runs on **`tower:8123`** (`modules/home-assistant.nix`). Access uses a
-long-lived token: agenix secret `hass-token` (recipients = workstations),
-decrypted to `/run/agenix/hass-token`. The `hass-cli-wrapped` package bakes in
+long-lived token: agenix secret `hass-token`, decrypted to
+`/run/agenix/hass-token`. The `hass-cli-wrapped` package bakes in
 `HASS_SERVER=http://tower:8123` and reads that token at runtime, and is on PATH
-for both the user's shells and Claude Code (`claude-code-wrapped` ships it
-rather than re-exporting the env vars, so the token stays out of Claude's own
-environment).
-
-Two access paths, pick by task:
-
-- **`hass-cli`** — quick interactive reads (`hass-cli state get sensor.<id>`)
-  and service calls (controlling devices). Self-configured; no env setup needed.
-- **Raw REST + `jq`** — data analysis. History/aggregation is far easier this
-  way. Read the token from the file (it is not in Claude's env):
-  `curl -H "Authorization: Bearer $(cat /run/agenix/hass-token)" "http://tower:8123/api/history/period/<ISO-start>?filter_entity_id=<id>&minimal_response&no_attributes"`
-  returns JSON to pipe into `jq`. `hass-cli` has no good bulk-history path. Use
-  `curl -w '%{http_code}'` for auth debugging.
+for both the user's shells and Claude Code.
 
 **AirGradient ONE** (living room) entities are prefixed `sensor.i_9psl_*`. The
 recorder keeps more than the dashboard shows — notably `sensor.i_9psl_pm0_3`
