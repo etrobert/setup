@@ -17,5 +17,5 @@ runCommandLocal "hass-cli-wrapped"
   ''
     makeWrapper ${home-assistant-cli}/bin/hass-cli $out/bin/hass-cli \
       --set-default HASS_SERVER http://tower:8123 \
-      --run 'export HASS_TOKEN="''${HASS_TOKEN:-$(cat /run/agenix/hass-token 2>/dev/null || true)}"'
+      --run 'export HASS_TOKEN="''${HASS_TOKEN:-$(cat /run/agenix/hass-token)}"'
   ''
