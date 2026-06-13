@@ -82,38 +82,40 @@ _: {
         }
       ];
 
-      systemd.packages = with self.packages.${system}; [
-        waybar-wrapped
-      ];
+      systemd = {
+        packages = with self.packages.${system}; [
+          waybar-wrapped
+        ];
 
-      # Instantiate ddcci backlight devices for any responsive DDC/CI monitor.
-      # Triggered at boot and on DRM hotplug (see services.udev.extraRules).
-      systemd.services.ddcci-register = {
-        description = "Register DDC/CI monitors as backlight devices";
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = lib.getExe self.packages.${system}.ddcci-register;
-        };
-      };
-
-      systemd.user = {
-        services = {
-          waybar.wantedBy = [ "graphical-session.target" ];
-
-          # Prevent nixos-rebuild switch from restarting niri mid-session.
-          # Without this, switching causes a ghost niri to start (session inactive)
-          # which then blocks the legitimate niri when you log back in.
-          niri.restartIfChanged = false;
-
-          album-art-wallpaper = {
-            partOf = [ "graphical-session.target" ];
-            wantedBy = [ "graphical-session.target" ];
-            serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
+        # Instantiate ddcci backlight devices for any responsive DDC/CI monitor.
+        # Triggered at boot and on DRM hotplug (see services.udev.extraRules).
+        services.ddcci-register = {
+          description = "Register DDC/CI monitors as backlight devices";
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = lib.getExe self.packages.${system}.ddcci-register;
           };
         };
 
-        tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
+        user = {
+          services = {
+            waybar.wantedBy = [ "graphical-session.target" ];
+
+            # Prevent nixos-rebuild switch from restarting niri mid-session.
+            # Without this, switching causes a ghost niri to start (session inactive)
+            # which then blocks the legitimate niri when you log back in.
+            niri.restartIfChanged = false;
+
+            album-art-wallpaper = {
+              partOf = [ "graphical-session.target" ];
+              wantedBy = [ "graphical-session.target" ];
+              serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
+            };
+          };
+
+          tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
+        };
       };
 
       # NixOS workstation packages
