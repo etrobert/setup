@@ -13,10 +13,6 @@ if [ -d "/opt/homebrew" ]; then
   export HOMEBREW_NO_ANALYTICS=1
 fi
 
-# disable claude code auto updates
-# source: https://formulae.brew.sh/cask/claude-code
-export DISABLE_AUTOUPDATER=1
-
 # Source Home Manager session variables
 # Necessary to add here because we overwrite the .profile with this file
 if [ -f "/etc/profiles/per-user/$USER/etc/profile.d/hm-session-vars.sh" ]; then
