@@ -43,6 +43,12 @@ _: {
             wget
           ]);
 
+        # Set EDITOR via environment.variables (not zsh's login-only .zprofile)
+        # so it applies to non-login shells too, e.g. shells spawned by ghostty.
+        # Sourced by /etc/zshenv on both NixOS and nix-darwin, and overrides the
+        # nixpkgs `mkDefault "nano"`. See issue #227.
+        environment.variables.EDITOR = "nvim";
+
         age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
 
         programs = {

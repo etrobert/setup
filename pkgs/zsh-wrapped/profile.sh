@@ -35,7 +35,8 @@ if [ -d /opt/homebrew/opt/rustup/bin ]; then
   PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 fi
 
-export EDITOR=nvim
+# EDITOR is set via environment.variables in modules/base.nix so it applies to
+# non-login shells too (this file is .zprofile, login-only). See issue #227.
 # export BROWSER=firefox
 export MAIL=etiennerobert33@gmail.com
 
