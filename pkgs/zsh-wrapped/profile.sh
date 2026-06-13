@@ -13,8 +13,6 @@ if [ -d "/opt/homebrew" ]; then
   export HOMEBREW_NO_ANALYTICS=1
 fi
 
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-
 # disable claude code auto updates
 # source: https://formulae.brew.sh/cask/claude-code
 export DISABLE_AUTOUPDATER=1
