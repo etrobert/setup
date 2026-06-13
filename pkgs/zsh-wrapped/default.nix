@@ -29,20 +29,10 @@ let
     source ${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   '';
 
-  zprofile = writeText "zprofile" /* zsh */ ''
-    emulate sh
-    . ${./profile.sh}
-    emulate zsh
-  '';
-
   zdotdir = linkFarm "zdotdir" [
     {
       name = ".zshrc";
       path = zshrcFinal;
-    }
-    {
-      name = ".zprofile";
-      path = zprofile;
     }
   ];
 
@@ -62,8 +52,9 @@ symlinkJoin {
   meta.mainProgram = "zsh";
   postBuild = ''
     # --inherit-argv0 preserves the login-shell dash in argv[0] (e.g. `-zsh`)
-    # so zsh runs .zprofile. A makeWrapper shell-script wrapper loses it to the
-    # shebang re-exec, demoting login shells to non-login. See issue #225.
+    # so zsh is correctly detected as a login shell. A makeWrapper shell-script
+    # wrapper loses it to the shebang re-exec, demoting login shells to
+    # non-login. See issue #225.
     wrapProgram $out/bin/zsh \
       --inherit-argv0 \
       --set ZDOTDIR ${zdotdir}
