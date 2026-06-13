@@ -2,7 +2,7 @@
   lib,
   inputs',
   symlinkJoin,
-  makeWrapper,
+  makeBinaryWrapper,
   zsh,
   writeText,
   linkFarm,
@@ -54,14 +54,18 @@ let
 in
 symlinkJoin {
   name = "zsh-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ makeBinaryWrapper ];
   paths = [
     zsh
     _checks
   ];
   meta.mainProgram = "zsh";
   postBuild = ''
+    # --inherit-argv0 preserves the login-shell dash in argv[0] (e.g. `-zsh`)
+    # so zsh runs .zprofile. A makeWrapper shell-script wrapper loses it to the
+    # shebang re-exec, demoting login shells to non-login. See issue #225.
     wrapProgram $out/bin/zsh \
+      --inherit-argv0 \
       --set ZDOTDIR ${zdotdir}
   '';
   passthru.shellPath = "/bin/zsh";
