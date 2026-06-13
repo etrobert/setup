@@ -179,6 +179,12 @@ in
     };
   };
 
+  # Disable Homebrew's InfluxDB analytics -- the only part of the old `brew
+  # shellenv` block worth keeping in Nix. nix-homebrew already provides `brew`
+  # on PATH, brew self-derives HOMEBREW_PREFIX/CELLAR/REPOSITORY, and there are
+  # no CLI formulae needing /opt/homebrew/bin on PATH. See issue #229.
+  environment.variables.HOMEBREW_NO_ANALYTICS = "1";
+
   homebrew = {
     enable = true;
     casks = [
