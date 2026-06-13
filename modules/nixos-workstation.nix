@@ -39,20 +39,16 @@ _: {
           openFirewall = true;
         };
 
-        # Register DDC/CI devices on I2C buses for backlight control
-        # (auto-probing is unavailable on kernel 6.8+)
+        # Re-run DDC/CI backlight registration whenever a monitor is connected
+        # or powered on. The kernel emits a DRM "change" hotplug event; the
+        # registration itself (and the boot-time pass) lives in the
+        # ddcci-register service below. This replaces a one-shot udev "add" rule
+        # that only fired at boot, so a monitor that was off at boot now gets
+        # picked up when it comes up. ddcci can't auto-probe on kernel 6.8+.
         # Source https://wiki.nixos.org/wiki/Backlight#DDC/CI
-        udev.extraRules =
-          let
-            bash = "${pkgs.bash}/bin/bash";
-            registerDdcci = ddcciDev: ''
-              SUBSYSTEM=="i2c", ACTION=="add", ATTR{name}=="${ddcciDev}", RUN+="${bash} -c 'sleep 30; printf ddcci\ 0x37 > /sys/%p/new_device'"
-            '';
-          in
-          builtins.concatStringsSep "\n" [
-            (registerDdcci "AMDGPU DM i2c hw bus*") # AMD GPUs
-            (registerDdcci "AUX *") # Intel GPUs (DisplayPort)
-          ];
+        udev.extraRules = ''
+          SUBSYSTEM=="drm", ACTION=="change", ENV{HOTPLUG}=="1", RUN+="${pkgs.systemd}/bin/systemctl start --no-block ddcci-register.service"
+        '';
 
         # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
         # through a login shell and imports the environment into systemd/D-Bus
@@ -86,27 +82,40 @@ _: {
         }
       ];
 
-      systemd.packages = with self.packages.${system}; [
-        waybar-wrapped
-      ];
+      systemd = {
+        packages = with self.packages.${system}; [
+          waybar-wrapped
+        ];
 
-      systemd.user = {
-        services = {
-          waybar.wantedBy = [ "graphical-session.target" ];
-
-          # Prevent nixos-rebuild switch from restarting niri mid-session.
-          # Without this, switching causes a ghost niri to start (session inactive)
-          # which then blocks the legitimate niri when you log back in.
-          niri.restartIfChanged = false;
-
-          album-art-wallpaper = {
-            partOf = [ "graphical-session.target" ];
-            wantedBy = [ "graphical-session.target" ];
-            serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
+        # Instantiate ddcci backlight devices for any responsive DDC/CI monitor.
+        # Triggered at boot and on DRM hotplug (see services.udev.extraRules).
+        services.ddcci-register = {
+          description = "Register DDC/CI monitors as backlight devices";
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = lib.getExe self.packages.${system}.ddcci-register;
           };
         };
 
-        tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
+        user = {
+          services = {
+            waybar.wantedBy = [ "graphical-session.target" ];
+
+            # Prevent nixos-rebuild switch from restarting niri mid-session.
+            # Without this, switching causes a ghost niri to start (session inactive)
+            # which then blocks the legitimate niri when you log back in.
+            niri.restartIfChanged = false;
+
+            album-art-wallpaper = {
+              partOf = [ "graphical-session.target" ];
+              wantedBy = [ "graphical-session.target" ];
+              serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
+            };
+          };
+
+          tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
+        };
       };
 
       # NixOS workstation packages
