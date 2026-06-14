@@ -55,6 +55,7 @@ _: {
               vscode-wrapped
               gen-commit-msg
               git-find-commit
+              hass-cli-wrapped
               pm
               pdfshrink
               nixplatforms
@@ -115,6 +116,12 @@ _: {
           };
           z-ai-auth-token = {
             file = ../secrets/z-ai-auth-token.age;
+            owner = "soft";
+          };
+          # Home Assistant long-lived access token, used by Claude Code to
+          # query sensor data and call services over the LAN (http://tower:8123).
+          hass-token = {
+            file = ../secrets/hass-token.age;
             owner = "soft";
           };
         };

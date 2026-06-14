@@ -160,6 +160,24 @@ is a two-step PBKDF2 flow — see session transcript for details.
 `api/v1/session/ menu` is the authenticated entry point; `api/v1/login_conf` is
 unauthenticated.
 
+## Home Assistant
+
+HA runs on **`tower:8123`** (`modules/home-assistant.nix`). Access uses a
+long-lived token: agenix secret `hass-token`, decrypted to
+`/run/agenix/hass-token`. The `hass-cli-wrapped` package bakes in
+`HASS_SERVER=http://100.103.91.42:8123` (tower's Tailscale IP, not the `tower`
+hostname) and reads that token at runtime, and is on PATH for both the user's
+shells and Claude Code. The IP is deliberate: `hass-cli` resolves names via
+aiohttp/aiodns (c-ares), which ignores macOS scoped DNS / Tailscale MagicDNS, so
+the `tower` hostname fails to resolve on `aaron`. `curl` (below) uses
+`getaddrinfo`, so `tower:8123` is fine there.
+
+**AirGradient ONE** (living room) entities are prefixed `sensor.i_9psl_*`. The
+recorder keeps more than the dashboard shows — notably `sensor.i_9psl_pm0_3`
+(0.3 µm particle _count_, the best fine-particle signal),
+`sensor.i_9psl_voc_index`, and `sensor.i_9psl_nox_index`. The device's own local
+API (`http://<ip>/measures/current`) returns only current values, no history.
+
 ## GitHub
 
 The `etrobert-bot` account used by Claude Code does not have admin rights on
