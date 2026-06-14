@@ -105,6 +105,7 @@
         volume-control = pkgs.callPackage ./volume-control { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         album-art-wallpaper = pkgs.callPackage ./album-art-wallpaper.nix { };
+        awww-restore-on-hotplug = pkgs.callPackage ./awww-restore-on-hotplug.nix { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped { inherit (pkgs) ghostty; };
       };
     };
