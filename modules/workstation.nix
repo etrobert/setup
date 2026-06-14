@@ -124,6 +124,14 @@ _: {
             file = ../secrets/hass-token.age;
             owner = "soft";
           };
+          # Google Health API OAuth client credentials (the client secret JSON
+          # downloaded from Google Cloud), used by Claude Code to read Fitbit Air
+          # / health data. See the `google-health` skill (claude-code-wrapped
+          # config) for the access recipe.
+          google-health-oauth-client = {
+            file = ../secrets/google-health-oauth-client.age;
+            owner = "soft";
+          };
         };
 
         fonts.packages = with pkgs; [ nerd-fonts.fira-code ];

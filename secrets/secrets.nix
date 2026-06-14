@@ -33,4 +33,5 @@ in
   "z-ai-auth-token.age".publicKeys = allWorkstations;
   "cachix-token.age".publicKeys = allWorkstations;
   "hass-token.age".publicKeys = allWorkstations;
+  "google-health-oauth-client.age".publicKeys = allWorkstations;
 }
