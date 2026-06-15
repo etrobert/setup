@@ -16,6 +16,14 @@ jobs:
       - uses: actions/checkout@v6
 
       - uses: DeterminateSystems/determinate-nix-action@v3
+        # eval-cores = 1 pins single-threaded evaluation. Determinate Nix's
+        # parallel evaluator (default since the eval-cores default flipped to
+        # all-cores) has concurrency bugs that intermittently SIGSEGV during
+        # `nix flake check --all-systems` — the heaviest eval, evaluating every
+        # output for every system. Drop once the parallel evaluator is fixed.
+        with:
+          extra-conf: |
+            eval-cores = 1
 
       # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't fail the job
       - uses: cachix/cachix-action@v17
