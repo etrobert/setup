@@ -1,6 +1,7 @@
+---
 name: Nix
 
-on:
+"on":
   push:
     branches: [main]
   pull_request:
@@ -17,7 +18,8 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
-      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't fail the job
+      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
+      # fail the job
       - uses: cachix/cachix-action@v17
         continue-on-error: true
         with:
@@ -59,7 +61,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      # large-packages and docker-images are slow (apt-get). Enable them if disk space becomes an issue.
+      # large-packages and docker-images are slow (apt-get). Enable them if
+      # disk space becomes an issue.
       - name: Free disk space
         if: runner.os == 'Linux'
         uses: jlumbroso/free-disk-space@v1.3.1
@@ -74,7 +77,8 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
-      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't fail the job
+      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
+      # fail the job
       - uses: cachix/cachix-action@v17
         continue-on-error: true
         with:
@@ -83,7 +87,8 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         run: |
-          nix build .#${{ matrix.platform }}Configurations.${{ matrix.host }}.config.system.build.toplevel \
+          attr="${{ matrix.platform }}Configurations.${{ matrix.host }}"
+          nix build ".#$attr.config.system.build.toplevel" \
             --accept-flake-config \
             --print-build-logs \
             --option stalled-download-timeout 10
