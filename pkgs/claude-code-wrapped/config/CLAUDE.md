@@ -9,9 +9,9 @@ Markdown files, often located at `~/sync/doc`.
 
 On the Claude **Pro** plan (the entry paid tier, so the tightest 5-hour and
 weekly limits) — lean toward cost-aware model choice and be limit-aware. Has a
-GitHub Copilot Pro individual subscription (annual, ~300 premium requests/month,
-resetting on the 1st). Has a GLM Pro subscription (z.ai) powering the
-`claude-glm` / `claude-code-wrapped-glm` backend, expiring 2026-06-22.
+GitHub Copilot Pro individual subscription (annual, ~300 premium
+requests/month). Has a GLM Pro subscription (z.ai) powering the `claude-glm` /
+`claude-code-wrapped-glm` backend.
 
 Sews decently. IKEA Family member (Germany).
 
@@ -24,9 +24,9 @@ ESPHome-based devices are a good fit. Comfortable with kit assembly and DIY
 hardware. Pragmatic about warranties — willing to skip them for meaningful cost
 savings.
 
-No longer employed at Banani (as of May 2026). Currently setting up as a
-freelancer in Germany — pursuing Gründungszuschuss and AVGS-Coaching through
-Agentur für Arbeit. Has AXA private liability insurance (Privathaftpflicht).
+Currently setting up as a freelancer in Germany — pursuing Gründungszuschuss and
+AVGS-Coaching through Agentur für Arbeit. Has AXA private liability insurance
+(Privathaftpflicht).
 
 ## Memory
 
@@ -45,9 +45,11 @@ machine. If SSH is refused, check whether Tailscale is running
 
 ## Working Style
 
-Work on one thing at a time. When a task naturally leads to a follow-up (e.g.
-removing a config after verifying a migration), open a separate PR rather than
-bundling it. Present the next step and wait for confirmation before starting.
+Work on one thing at a time. When a task naturally leads to a follow-up, present
+the next step and wait for confirmation before starting.
+
+Assume senior-engineer fluency: be terse, skip preamble and flattery, and lead
+with the answer.
 
 Before asking a question, check if the answer is obtainable by reading files,
 running a command, or SSHing into a machine. Only ask when a reasonable
@@ -103,20 +105,15 @@ Skip it when nvim-treesitter's Nix injection queries already cover the attr name
 
 ## Code Style
 
-Always typecheck and lint after making a change.
-
 Prefer `kebab-case` for directory names.
-
-When spacing elements within a container (CSS/Tailwind), prefer `gap` on the
-container over `margin` on the children.
 
 In shell scripts, prefer long-form parameters over single-letter ones where
 possible (e.g. `--raw-output` over `-r`, `--only-matching` over `-o`).
 
 ## Testing
 
-Always test that code works before committing. Run the relevant test, build, or
-manual verification step first.
+Before committing, verify the change: typecheck, lint, and run the relevant
+test, build, or manual verification step.
 
 ## GitHub Identity
 
@@ -183,13 +180,8 @@ specific to this project, don't write it.
 
 ## Session Reflection
 
-At the end of every session, proactively ask: are there things learned this
-session worth writing down in either the global CLAUDE.md
-(`/home/soft/setup/pkgs/claude-code-wrapped/config/CLAUDE.md`) or the project
-CLAUDE.md — so that future sessions can know the user better or work more
-efficiently? Propose specific candidates from the session. Apply the CLAUDE.md
-Maintenance guidelines — only surface things that are non-obvious and genuinely
-specific to the user or project. Things about the user go in the global
-CLAUDE.md; project-specific workflow or conventions go in the project CLAUDE.md.
-If the user approves, create a PR with the changes following the standard git
-workflow.
+At the end of every session, proactively propose any non-obvious, durable
+learnings worth recording — user facts to the global CLAUDE.md
+(`/home/soft/setup/pkgs/claude-code-wrapped/config/CLAUDE.md`), project
+conventions to the project CLAUDE.md — following the Maintenance guidelines
+above. If the user approves, open a PR per the standard git workflow.
