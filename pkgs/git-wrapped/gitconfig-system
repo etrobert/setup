@@ -27,6 +27,7 @@
   pshu = push
   psuh = push
   slist = -c diff.external=difft stash list -p --ext-diff
+  untracked = ls-files --others --exclude-standard
   ushow = "!git ls-files --others --exclude-standard -z | xargs -0 bat"
   empty = commit --allow-empty -m 'trigger ci'
   # grep filters out broken lines from aliases with embedded newlines
