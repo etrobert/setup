@@ -32,38 +32,24 @@
       ...
     }:
     let
-      cfg = config.services.claude-warmup;
       inherit (pkgs.stdenv.hostPlatform) system;
       claude = lib.getExe self.packages.${system}.claude-code-wrapped;
+
+      # Run as the user who owns the Claude credentials. A system service (not a
+      # user service) so it fires unattended regardless of login state, without
+      # needing `loginctl enable-linger` — the warmup needs no user session.
+      user = "soft";
+      # Cheapest model: the 5h session is shared across models, so Haiku anchors
+      # the same window for the least cost against the weekly cap.
+      model = "claude-haiku-4-5-20251001";
+      # Fixed anchors so resets land at predictable hours; 24h is not divisible
+      # by 5, so there is one longer gap overnight (acceptable while asleep).
+      onCalendar = "*-*-* 08,13,18,23:00:00";
     in
     {
-      options.services.claude-warmup = {
-        enable = lib.mkEnableOption "the Claude 5-hour session warmup timer";
+      options.services.claude-warmup.enable = lib.mkEnableOption "the Claude 5-hour session warmup timer";
 
-        user = lib.mkOption {
-          type = lib.types.str;
-          default = "soft";
-          description = "User to run the warmup as (owns the Claude credentials).";
-        };
-
-        onCalendar = lib.mkOption {
-          type = lib.types.str;
-          default = "*-*-* 08,13,18,23:00:00";
-          description = ''
-            systemd OnCalendar expression for warmup times. Default anchors
-            sessions so resets land at predictable hours; 24h is not divisible
-            by 5, so there is one longer gap overnight (acceptable while asleep).
-          '';
-        };
-
-        model = lib.mkOption {
-          type = lib.types.str;
-          default = "claude-haiku-4-5-20251001";
-          description = "Model used for the warmup ping (cheapest anchors the same session).";
-        };
-      };
-
-      config = lib.mkIf cfg.enable {
+      config = lib.mkIf config.services.claude-warmup.enable {
         systemd.services.claude-warmup = {
           description = "Anchor a fresh Claude 5-hour usage session";
           # git is referenced by the wrapped claude for repo context; a neutral
@@ -71,9 +57,9 @@
           path = [ pkgs.git ];
           serviceConfig = {
             Type = "oneshot";
-            User = cfg.user;
-            WorkingDirectory = "/home/${cfg.user}";
-            ExecStart = "${claude} --print --model ${cfg.model} hi";
+            User = user;
+            WorkingDirectory = "/home/${user}";
+            ExecStart = "${claude} --print --model ${model} hi";
             # Network may be flaky / token refresh may blip; one retry is enough.
             Restart = "on-failure";
             RestartSec = 30;
@@ -86,8 +72,9 @@
           description = "Schedule the Claude 5-hour session warmup";
           wantedBy = [ "timers.target" ];
           timerConfig = {
-            OnCalendar = cfg.onCalendar;
-            # Catch up after downtime so a missed slot still anchors a session.
+            OnCalendar = onCalendar;
+            # Catch up after downtime: fires once on boot if any slot was missed
+            # (systemd coalesces missed runs into a single catch-up trigger).
             Persistent = true;
           };
         };
