@@ -45,9 +45,6 @@ machine. If SSH is refused, check whether Tailscale is running
 
 ## Working Style
 
-Work on one thing at a time. When a task naturally leads to a follow-up, present
-the next step and wait for confirmation before starting.
-
 Assume senior-engineer fluency: be terse, skip preamble and flattery, and lead
 with the answer.
 
