@@ -13,6 +13,9 @@
 
   networking.hostName = "tower";
 
+  # Keep a Claude 5h usage session always ticking over (see modules/claude-warmup.nix).
+  services.claude-warmup.enable = true;
+
   # Static IP on the motherboard NIC so the link survives the monitor (and its
   # USB ethernet adapter) being turned off. DNS points at pi for split-horizon
   # resolution of internal *.etiennerobert.com names.

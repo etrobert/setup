@@ -99,6 +99,7 @@
           ./modules/homepage.nix
           ./modules/cockpit.nix
           ./modules/umami.nix
+          ./modules/claude-warmup.nix
           ./pkgs
         ];
 
