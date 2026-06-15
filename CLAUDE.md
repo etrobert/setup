@@ -160,6 +160,13 @@ is a two-step PBKDF2 flow — see session transcript for details.
 `api/v1/session/ menu` is the authenticated entry point; `api/v1/login_conf` is
 unauthenticated.
 
+## Notifications (ntfy)
+
+`ntfy-wrapped` wraps the ntfy CLI with `NTFY_TOPIC=http://tower:2586/home`
+pre-set. Use `ntfy publish "message"` to send a notification to all
+workstations. Use `--delay 10m` (or `--at 8:30am`) to schedule delivery
+server-side rather than sleeping locally.
+
 ## Home Assistant
 
 HA runs on **`tower:8123`** (`modules/home-assistant.nix`). Access uses a
