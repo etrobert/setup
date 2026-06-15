@@ -1,0 +1,48 @@
+# VS Code is pointed at this directory via --user-data-dir (see ../default.nix),
+# so it writes its entire runtime profile here. Only User/settings.json and
+# User/keybindings.json are tracked; ignore the runtime state VS Code generates.
+# This is a best-effort denylist — fine if it misses the occasional new file.
+
+# Caches
+Cache/
+CachedData/
+CachedExtensionVSIXs/
+CachedProfilesData/
+Code Cache/
+GPUCache/
+DawnGraphiteCache/
+DawnWebGPUCache/
+blob_storage/
+clp/
+
+# Logs / crash / telemetry
+logs/
+*.log
+Crashpad/
+crashDumps/
+
+# Per-profile / per-workspace state
+User/globalStorage/
+User/workspaceStorage/
+User/History/
+User/sync/
+User/profiles/
+
+# Backups and machine-local bits
+Backups/
+machineid
+languagepacks.json
+
+# Chromium/Electron storage
+Local Storage/
+Session Storage/
+Shared Dictionary/
+Service Worker/
+Network/
+Dictionaries/
+Cookies
+Cookies-journal
+TransportSecurity
+Preferences
+QuotaManager
+QuotaManager-journal
