@@ -135,6 +135,7 @@
                   statix
                   deadnix
                   nixfmt
+                  yamllint
                 ];
               };
 
@@ -152,6 +153,10 @@
 
               deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
                 deadnix --fail ${self} && touch $out
+              '';
+
+              yamllint = pkgs.runCommand "yamllint-check" { nativeBuildInputs = [ pkgs.yamllint ]; } ''
+                yamllint --strict ${self} && touch $out
               '';
             };
 
