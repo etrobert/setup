@@ -10,7 +10,8 @@ Markdown files, often located at `~/sync/doc`.
 On the Claude **Pro** plan (the entry paid tier, so the tightest 5-hour and
 weekly limits) — lean toward cost-aware model choice and be limit-aware. Has a
 GitHub Copilot Pro individual subscription (annual, ~300 premium requests/month,
-resetting on the 1st).
+resetting on the 1st). Has a GLM Pro subscription (z.ai) powering the
+`claude-glm` / `claude-code-wrapped-glm` backend, expiring 2026-06-22.
 
 Sews decently. IKEA Family member (Germany).
 
