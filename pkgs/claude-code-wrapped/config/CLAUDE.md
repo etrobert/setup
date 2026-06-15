@@ -178,7 +178,6 @@ specific to this project, don't write it.
 ## Session Reflection
 
 At the end of every session, proactively propose any non-obvious, durable
-learnings worth recording — user facts to the global CLAUDE.md
-(`/home/soft/setup/pkgs/claude-code-wrapped/config/CLAUDE.md`), project
+learnings worth recording — user facts to the global CLAUDE.md, project
 conventions to the project CLAUDE.md — following the Maintenance guidelines
 above. If the user approves, open a PR per the standard git workflow.
