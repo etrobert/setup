@@ -42,9 +42,10 @@
       # Cheapest model: the 5h session is shared across models, so Haiku anchors
       # the same window for the least cost against the weekly cap.
       model = "claude-haiku-4-5-20251001";
-      # Fixed anchors so resets land at predictable hours; 24h is not divisible
-      # by 5, so there is one longer gap overnight (acceptable while asleep).
-      onCalendar = "*-*-* 08,13,18,23:00:00";
+      # Fixed anchors so resets land at predictable hours. Stops at 18:00 (whose
+      # session runs to 23:00) — no late-night warmup, since coding past then
+      # anchors a fresh session on its own.
+      onCalendar = "*-*-* 08,13,18:00:00";
     in
     {
       options.services.claude-warmup.enable = lib.mkEnableOption "the Claude 5-hour session warmup timer";
