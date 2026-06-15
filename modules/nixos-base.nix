@@ -41,9 +41,9 @@ _: {
       # policy, not a claude-specific patch — system units keep the 90s default
       # (databases/VMs that need a long graceful flush live there), and any user
       # unit that genuinely needs longer overrides TimeoutStopSec itself.
-      systemd.user.extraConfig = ''
-        DefaultTimeoutStopSec=15s
-      '';
+      systemd.user.settings.Manager = {
+        DefaultTimeoutStopSec = "15s";
+      };
 
       services = {
         kanata = {
