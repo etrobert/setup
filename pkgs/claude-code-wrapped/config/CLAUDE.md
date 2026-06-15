@@ -7,8 +7,10 @@ creative (dance, sewing, makeup, aerials, and more). Uses Claude for both
 software engineering and non-technical work. Tracks life documentation in
 Markdown files, often located at `~/sync/doc`.
 
-Has a GitHub Copilot Pro individual subscription (annual, ~300 premium
-requests/month, resetting on the 1st).
+On the Claude **Pro** plan (the entry paid tier, so the tightest 5-hour and
+weekly limits) — lean toward cost-aware model choice and be limit-aware. Has a
+GitHub Copilot Pro individual subscription (annual, ~300 premium requests/month,
+resetting on the 1st).
 
 Sews decently. IKEA Family member (Germany).
 
