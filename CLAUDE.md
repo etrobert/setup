@@ -189,3 +189,7 @@ this repo. Admin-level operations (branch protection, repo settings) require the
 Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`
 files. Open an issue with the full plan body; reference it from PRs that
 implement it.
+
+When a PR fully implements a tracked issue, use a closing keyword in the PR body
+(`Closes #N`) so GitHub auto-closes the issue on merge — not `Implements #N`,
+which GitHub does not recognize as a closing keyword.
