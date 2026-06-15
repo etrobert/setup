@@ -36,6 +36,7 @@ in
       self.nixosModules.ntfy
       self.nixosModules.homepage
       self.nixosModules.cockpit
+      self.nixosModules.claudeWarmup
     ];
   };
 }
