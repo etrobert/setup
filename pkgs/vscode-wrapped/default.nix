@@ -16,7 +16,7 @@ vscode-with-extensions.override {
   # ~/setup is the repo path on both Linux and macOS, mirroring how
   # claude-code-wrapped points CLAUDE_CONFIG_DIR at $HOME/setup.
   vscode = vscode.override {
-    commandLineArgs = "--user-data-dir=$HOME/setup/pkgs/vscode-wrapped/user-data";
+    commandLineArgs = " --user-data-dir=$HOME/setup/pkgs/vscode-wrapped/user-data";
   };
   vscodeExtensions = with vscode-extensions; [
     eamodio.gitlens
