@@ -15,6 +15,7 @@ require("telescope").setup({
 		file_ignore_patterns = {
 			"node_modules",
 			"%.git%/",
+			"%.direnv%/",
 			"%.claude%/worktrees%/",
 			"package%-lock.json",
 			"pnpm%-lock.yaml",
