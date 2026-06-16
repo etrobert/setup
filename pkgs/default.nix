@@ -103,6 +103,7 @@
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         volume-control = pkgs.callPackage ./volume-control { };
+        screenshot-clipboard = pkgs.callPackage ./screenshot-clipboard { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         album-art-wallpaper = pkgs.callPackage ./album-art-wallpaper.nix { };
         awww-restore-on-hotplug = pkgs.callPackage ./awww-restore-on-hotplug.nix { };

@@ -128,6 +128,7 @@ _: {
             mako-wrapped
             brightness-control
             volume-control
+            screenshot-clipboard
             birthdays
             creme
             lock-suspend

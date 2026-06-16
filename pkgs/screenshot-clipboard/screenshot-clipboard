@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+MODE="${1:-region}"
+
+case "$MODE" in
+region)
+  # slurp exits non-zero when the selection is cancelled (Esc); bail quietly.
+  GEOMETRY=$(slurp) || exit 0
+  grim -g "$GEOMETRY" - | wl-copy --type image/png
+  ;;
+screen)
+  grim - | wl-copy --type image/png
+  ;;
+*)
+  echo "Usage: screenshot-clipboard [region|screen]" >&2
+  exit 1
+  ;;
+esac
+
+notify-send "Screenshot" "Copied to clipboard"

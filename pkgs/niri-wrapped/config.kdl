@@ -612,6 +612,10 @@ binds {
     Alt+Print { screenshot-window; }
     Mod+P { screenshot; }
 
+    // Region screenshot straight to the clipboard (grim + slurp + wl-copy).
+    Mod+Shift+S hotkey-overlay-title="Screenshot Region to Clipboard" { spawn "screenshot-clipboard" "region"; }
+    Mod+Ctrl+Shift+S hotkey-overlay-title="Screenshot Screen to Clipboard" { spawn "screenshot-clipboard" "screen"; }
+
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
     // so they may, for example, forward the key presses as-is to a remote machine.
