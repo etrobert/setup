@@ -5,6 +5,7 @@
   gnused,
   jq,
   pipewire,
+  util-linux,
   writeShellApplication,
 }:
 writeShellApplication {
@@ -16,6 +17,7 @@ writeShellApplication {
     gnused
     jq
     pipewire
+    util-linux
   ];
   inheritPath = false;
   # SC2016: backtick patterns in sed single-quoted strings are intentional
