@@ -40,23 +40,29 @@ if [[ -z "$text" ]]; then
   exit 0
 fi
 
-# Strip markdown so symbols aren't spoken aloud:
-# 1. Code fences (``` blocks)
-# 2. Inline backticks
-# 3. URLs (http/https)
-# 4. Bold/italic markers (* ** _ __)
-# 5. Headings (#)
-# 6. Remaining backticks
+# Strip markdown so symbols aren't spoken aloud.
+# Steps:
+# 1. Multi-line fenced code blocks (``` ... ```) — delete entire fence sections
+# 2. Inline backtick spans
+# 3. Markdown links [text](url) → keep text only
+# 4. Bare URLs
+# 5. Bold/italic markers (* ** __ but NOT underscores inside identifiers)
+# 6. Headings (#)
+# 7. Leading list markers (- or * at line start)
+# 8. Remaining lone backticks
+# shellcheck disable=SC2016
 cleaned=$(
-  echo "$text" |
-    sed --regexp-extended 's/```[^`]*```//g' |
+  printf '%s' "$text" |
+    sed --regexp-extended '/^```/,/^```/d' |
     sed --regexp-extended 's/`[^`]*`//g' |
+    sed --regexp-extended 's/\[([^]]*)\]\([^)]*\)/\1/g' |
     sed --regexp-extended 's|https?://[^ \t\n)>"]*||g' |
     sed --regexp-extended 's/\*\*([^*]*)\*\*/\1/g' |
     sed --regexp-extended 's/\*([^*]*)\*/\1/g' |
     sed --regexp-extended 's/__([^_]*)__/\1/g' |
-    sed --regexp-extended 's/_([^_]*)_/\1/g' |
-    sed --regexp-extended 's/^#{1,6} //gm' |
+    sed --regexp-extended 's/(^|[[:space:]])_([^_[:space:]][^_]*)_([[:space:]]|$)/\1\2\3/g' |
+    sed --regexp-extended 's/^#{1,6} //g' |
+    sed --regexp-extended 's/^[[:space:]]*[-*] //g' |
     sed --regexp-extended 's/`//g'
 )
 
@@ -69,32 +75,46 @@ if [[ ${#cleaned} -gt 2000 ]]; then
   cleaned="${cleaned:0:2000}… (message truncated)"
 fi
 
-# Overlap guard: kill any in-flight speech process before starting a new one.
+# Overlap guard: kill any in-flight speech process group before starting a new one.
+# We use setsid to put the speech child in its own process group and store the PGID.
+# On the next invocation we kill -- -$pgid to reach the entire group (espeak-ng,
+# pw-play, say, etc.) — not just the subshell wrapper whose children would otherwise
+# survive.
 if [[ "$(uname --kernel-name)" == "Darwin" ]]; then
-  pid_file="/tmp/claude-speak.pid"
+  pgid_file="/tmp/claude-speak.pgid"
 else
-  pid_file="${XDG_RUNTIME_DIR:-/tmp}/claude-speak.pid"
+  pgid_file="${XDG_RUNTIME_DIR:-/tmp}/claude-speak.pgid"
 fi
 
-if [[ -f "$pid_file" ]]; then
-  old_pid=$(cat "$pid_file" 2>/dev/null || true)
-  if [[ -n "$old_pid" ]] && kill --signal 0 "$old_pid" 2>/dev/null; then
-    kill "$old_pid" 2>/dev/null || true
+if [[ -f "$pgid_file" ]]; then
+  old_pgid=$(cat "$pgid_file" 2>/dev/null || true)
+  if [[ -n "$old_pgid" ]]; then
+    # Verify the group leader still exists before killing to avoid hitting a
+    # recycled PGID.
+    if kill -0 -- "-$old_pgid" 2>/dev/null; then
+      kill -- "-$old_pgid" 2>/dev/null || true
+    fi
   fi
-  rm --force "$pid_file"
+  rm --force "$pgid_file"
 fi
 
-# Speak in a background subshell; write its PID for future overlap-guard checks.
+# Speak in a new session (setsid makes it a process-group leader); store its PGID.
+# The PGID equals the PID of the setsid'd process, which we capture via $!.
 if [[ "$(uname --kernel-name)" == "Darwin" ]]; then
-  (
-    /usr/bin/say "$cleaned"
-    rm --force "$pid_file"
-  ) &
-  echo "$!" >"$pid_file"
+  setsid /usr/bin/say "$cleaned" &
+  speak_pid=$!
+  echo "$speak_pid" >"$pgid_file"
+  # Clean up pgid file when speech finishes naturally.
+  {
+    wait "$speak_pid" 2>/dev/null
+    rm --force "$pgid_file"
+  } &
 else
-  (
-    espeak-ng --stdout "$cleaned" | pw-play --target=0 -
-    rm --force "$pid_file"
-  ) &
-  echo "$!" >"$pid_file"
+  setsid bash -c 'espeak-ng --stdout "$1" | pw-play --target=0 -' -- "$cleaned" &
+  speak_pid=$!
+  echo "$speak_pid" >"$pgid_file"
+  {
+    wait "$speak_pid" 2>/dev/null
+    rm --force "$pgid_file"
+  } &
 fi
