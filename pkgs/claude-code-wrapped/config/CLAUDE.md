@@ -152,15 +152,6 @@ always be in separate PRs, even if they are small.
 For complex features that naturally split into layers, use stacked PRs: each PR
 builds on the previous one.
 
-**IMPORTANT:** Before pushing new commits to a branch, always check that its PR
-has not already been merged (`gh pr view <number> --json state`). If it has,
-start a fresh branch from origin/main instead. Skipping this will push directly
-to main.
-
-To push a local branch to a new remote branch of the same name, use
-`git push origin HEAD:<branch-name>`. Avoid `git push -u origin <branch>` on a
-branch that tracks `origin/main` — it will push to main directly.
-
 When merging a PR from inside a git worktree, `gh pr merge` fails because `main`
 is already checked out in the parent worktree. Use the GitHub API instead:
 
