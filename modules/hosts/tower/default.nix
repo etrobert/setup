@@ -10,6 +10,7 @@ let
     agenix
     etiennerobert-com
     creatures
+    rift-radar
     ;
 in
 {
@@ -20,6 +21,7 @@ in
         agenix
         etiennerobert-com
         creatures
+        rift-radar
         ;
     };
     modules = [

@@ -5,6 +5,7 @@
       {
         etiennerobert-com,
         creatures,
+        rift-radar,
         config,
         pkgs,
         lib,
@@ -15,7 +16,10 @@
         creaturesPackage = creatures.packages.${system}.default;
       in
       {
-        imports = [ self.nixosModules.umami ];
+        imports = [
+          self.nixosModules.umami
+          rift-radar.nixosModules.default
+        ];
 
         networking.firewall.allowedTCPPorts = [
           80
@@ -36,6 +40,7 @@
               "adele"
               "umami"
               "images"
+              "rift"
             ];
             interval = "5min";
             usev6 = "no";
@@ -80,9 +85,19 @@
               '';
             };
           };
+
+          # Redis cache, backend systemd unit and the rift.etiennerobert.com
+          # Caddy vhost are provided by rift-radar's own nixosModule (imported
+          # above); we only supply host-specific config.
+          rift-radar = {
+            enable = true;
+            hostName = "rift.etiennerobert.com";
+            riotKeyFile = config.age.secrets.riot-api-key.path;
+          };
         };
 
         age.secrets.ddclient-password-etiennerobert-com.file = ../secrets/ddclient-password-etiennerobert-com.age;
+        age.secrets.riot-api-key.file = ../secrets/riot-api-key.age;
 
         # Filebrowser creates files/dirs via the web UI with modes 0640/0750 (settings.FileMode /
         # settings.DirMode defaults), which grant no world access. Add caddy to the filebrowser
