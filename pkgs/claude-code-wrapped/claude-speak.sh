@@ -10,30 +10,11 @@ fi
 
 input=$(cat)
 
-transcript_path=$(echo "$input" | jq --raw-output '.transcript_path // empty')
-if [[ -z "$transcript_path" ]]; then
-  exit 0
-fi
-
-if [[ ! -f "$transcript_path" ]]; then
-  exit 0
-fi
-
-# Extract the last assistant entry's text content blocks (skip thinking + tool_use).
-# grep without --only-matching returns the full JSONL line so jq gets a complete object.
-text=$(
-  grep '"type":"assistant"' "$transcript_path" |
-    tail --lines=1 |
-    jq --raw-output '
-        .message.content
-        | if type == "array" then .
-          else []
-          end
-        | map(select(.type == "text" and .text != null))
-        | map(.text)
-        | join("\n")
-      ' 2>/dev/null || true
-)
+# Read the final message straight from the hook payload's `last_assistant_message`
+# field (same source as claude-rate-limit-notify). Re-parsing the transcript file
+# instead raced the flush: at Stop time the just-finished assistant line is not yet
+# written, so `tail -1` returned the *previous* turn's message.
+text=$(echo "$input" | jq --raw-output '.last_assistant_message // empty')
 
 if [[ -z "$text" ]]; then
   # Tool-only turn or no assistant content — exit silently.
