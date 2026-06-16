@@ -26,6 +26,7 @@
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
+        claude-speak = pkgs.callPackage ./claude-code-wrapped/claude-speak.nix { };
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
           inherit claude-code ntfy-wrapped hass-cli-wrapped;
         };
