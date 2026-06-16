@@ -12,6 +12,13 @@ vim.api.nvim_create_autocmd("User", {
 
 require("telescope").setup({
 	defaults = {
+		mappings = {
+			i = {
+				-- Disable Telescope's "scroll preview up" so Neovim's native
+				-- insert-mode <C-u> (i_CTRL-U, clear line) applies in the prompt.
+				["<C-u>"] = false,
+			},
+		},
 		file_ignore_patterns = {
 			"node_modules",
 			"%.git%/",
