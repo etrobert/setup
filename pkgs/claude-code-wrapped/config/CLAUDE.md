@@ -45,9 +45,6 @@ machine. If SSH is refused, check whether Tailscale is running
 
 ## Working Style
 
-Assume senior-engineer fluency: be terse, skip preamble and flattery, and lead
-with the answer.
-
 Before asking a question, check if the answer is obtainable by reading files,
 running a command, or SSHing into a machine. Only ask when a reasonable
 investigation wouldn't yield the answer.
