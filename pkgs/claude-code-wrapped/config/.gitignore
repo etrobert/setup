@@ -11,6 +11,7 @@ credentials/
 history.jsonl
 backups/
 cache/
+debug/
 file-history/
 .last-cleanup
 daemon*

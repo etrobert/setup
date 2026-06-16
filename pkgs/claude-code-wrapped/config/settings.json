@@ -1,6 +1,16 @@
 {
   "model": "opus",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-session-host"
+          }
+        ]
+      }
+    ],
     "StopFailure": [
       {
         "matcher": "rate_limit",
