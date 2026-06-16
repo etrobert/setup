@@ -1,4 +1,6 @@
 {
+  lib,
+  stdenv,
   coreutils,
   espeak-ng,
   gnugrep,
@@ -10,12 +12,16 @@
 }:
 writeShellApplication {
   name = "claude-speak";
+  # pipewire (pw-play) and util-linux (setsid) are Linux-only in nixpkgs and
+  # fail to build on darwin, where the script uses /usr/bin/say instead.
   runtimeInputs = [
     coreutils
     espeak-ng
     gnugrep
     gnused
     jq
+  ]
+  ++ lib.optionals stdenv.isLinux [
     pipewire
     util-linux
   ];

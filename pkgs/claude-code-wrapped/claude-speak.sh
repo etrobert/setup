@@ -128,7 +128,9 @@ else
   # inherits that PGID so kill -- -$pgid reaches both processes.
   # $BASH is the path to the current interpreter — avoids relying on bare "bash"
   # which is not in PATH when inheritPath = false.
-  setsid "$BASH" -c 'espeak-ng --stdout "$1" | pw-play --target=0 -' -- "$cleaned" &
+  # No --target: pw-play defaults to "auto", linking to the default sink.
+  # (--target=0 means "don't link", which plays silently to nothing.)
+  setsid "$BASH" -c 'espeak-ng --stdout "$1" | pw-play -' -- "$cleaned" &
   speak_pid=$!
   echo "$speak_pid" >"$pgid_file"
   {
