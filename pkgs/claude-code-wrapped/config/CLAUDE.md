@@ -121,8 +121,7 @@ grant it rather than attempting to act as them.
 
 ## Git Workflow
 
-After committing on a branch, open a PR with `gh pr create`. Never merge to main
-directly — the user reviews all code and decides when to merge.
+After committing on a branch, open a PR with `gh pr create`.
 
 Each commit should be functional — don't commit broken or speculative states.
 
