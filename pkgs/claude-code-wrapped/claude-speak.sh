@@ -105,13 +105,19 @@ else
     rm --force "$pgid_file"
   fi
 
-  # setsid creates a new session/process group; the pipeline (espeak-ng | pw-play)
+  # setsid creates a new session/process group; the pipeline (piper | pw-play)
   # inherits that PGID so kill -- -$pgid reaches both processes.
   # $BASH is the path to the current interpreter — avoids relying on bare "bash"
   # which is not in PATH when inheritPath = false.
+  # piper reads text on stdin and writes a WAV (with header) to stdout via
+  # --output_file -; pw-play autodetects the format from that header. PIPER_MODEL
+  # is the vendored voice path exported by runtimeEnv; piper finds its .json
+  # config next to the .onnx by adjacency (its --config flag is a no-op).
   # No --target: pw-play defaults to "auto", linking to the default sink.
   # (--target=0 means "don't link", which plays silently to nothing.)
-  setsid "$BASH" -c 'espeak-ng --stdout "$1" | pw-play -' -- "$cleaned" &
+  setsid "$BASH" -c \
+    'piper --model "$PIPER_MODEL" --output_file - <<<"$1" | pw-play -' \
+    -- "$cleaned" &
   speak_pid=$!
   echo "$speak_pid" >"$pgid_file"
   {
