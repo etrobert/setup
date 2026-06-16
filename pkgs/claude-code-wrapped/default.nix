@@ -16,10 +16,12 @@ let
   statuslineScript = callPackage ./claude-plan-usage.nix { };
   formatFileScript = callPackage ./format-file.nix { };
   rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { ntfy-sh = ntfy-wrapped; };
+  sessionHostScript = callPackage ./claude-session-host.nix { };
   binPath = lib.makeBinPath [
     statuslineScript
     formatFileScript
     rateLimitNotifyScript
+    sessionHostScript
     hass-cli-wrapped
   ];
   envFlags = lib.concatStringsSep " " (

@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"You are running on host: %s (Tailscale IP: %s). This is the current machine — do NOT ssh or scp into it; run commands directly instead.\"}}' \"$(hostname)\" \"$(tailscale ip -4 2>/dev/null | head -1)\""
+            "command": "claude-session-host"
           }
         ]
       }
