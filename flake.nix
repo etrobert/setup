@@ -54,6 +54,10 @@
       url = "github:etrobert/creatures";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rift-radar = {
+      url = "github:etrobert/rift-radar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Tracks the latest Claude Code release ahead of nixpkgs' packaging cadence
     # (hourly bot, official Anthropic binaries). `nix flake update` keeps it
     # current. Built against our own nixpkgs via the follows below.

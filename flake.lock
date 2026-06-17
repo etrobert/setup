@@ -307,6 +307,26 @@
         "type": "github"
       }
     },
+    "rift-radar": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1781695762,
+        "narHash": "sha256-1secLQmFkSfjKVsJyzUHWsqjDmnggHmemQUg1+ViraQ=",
+        "owner": "etrobert",
+        "repo": "rift-radar",
+        "rev": "8404f2a3732f78b7a1ca6169f180366924cd5aac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etrobert",
+        "repo": "rift-radar",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -321,6 +341,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-darwin-pins": "nixpkgs-darwin-pins",
         "pronto": "pronto",
+        "rift-radar": "rift-radar",
         "zen-browser": "zen-browser"
       }
     },

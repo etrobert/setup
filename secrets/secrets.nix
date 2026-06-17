@@ -34,4 +34,5 @@ in
   "cachix-token.age".publicKeys = allWorkstations;
   "hass-token.age".publicKeys = allWorkstations;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
+  "riot-api-key.age".publicKeys = allLinux;
 }
