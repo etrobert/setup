@@ -72,6 +72,11 @@
               "files.etiennerobert.com".extraConfig = /* caddy */ ''
                 root * /srv/files
                 header Access-Control-Allow-Origin *
+                # Metadata here (info.toml, dir listings) is hand-edited live and
+                # must take effect without a rebuild. Force revalidation so the
+                # browser's heuristic cache can't serve stale data; ETag keeps it
+                # cheap (304s when unchanged).
+                header Cache-Control "no-cache"
                 file_server browse
               '';
               "adele.etiennerobert.com".extraConfig = /* caddy */ ''
