@@ -11,6 +11,7 @@ let
     etiennerobert-com
     creatures
     rift-radar
+    rack
     ;
 in
 {
@@ -22,6 +23,7 @@ in
         etiennerobert-com
         creatures
         rift-radar
+        rack
         ;
     };
     modules = [
