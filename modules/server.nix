@@ -92,7 +92,7 @@
           rift-radar = {
             enable = true;
             hostName = "rift.etiennerobert.com";
-            riotKeyFile = config.age.secrets.riot-api-key.path;
+            riotKey = config.age.secrets.riot-api-key;
           };
         };
 
@@ -113,13 +113,6 @@
 
           services = {
             filebrowser.serviceConfig.UMask = lib.mkForce "0022";
-
-            # The rift-radar unit (from rift-radar's nixosModule) reads the Riot
-            # key via EnvironmentFile=/run/agenix/riot-api-key — a fixed path, so
-            # its unit text is unchanged when the key rotates and `switch` won't
-            # restart it on its own. Trigger a restart on the encrypted secret's
-            # store path (agenix re-encrypts on every edit, changing it).
-            rift-radar.restartTriggers = [ config.age.secrets.riot-api-key.file ];
 
             creatures = {
               description = "Creatures server";

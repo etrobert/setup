@@ -314,11 +314,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781654483,
-        "narHash": "sha256-QGK+g0abpvtdIQPWzD2jSR+/8lUYitjuhanYlODsqBI=",
+        "lastModified": 1781695762,
+        "narHash": "sha256-1secLQmFkSfjKVsJyzUHWsqjDmnggHmemQUg1+ViraQ=",
         "owner": "etrobert",
         "repo": "rift-radar",
-        "rev": "d46950b45b1f7864d43c7263262676e67a0e5186",
+        "rev": "8404f2a3732f78b7a1ca6169f180366924cd5aac",
         "type": "github"
       },
       "original": {
