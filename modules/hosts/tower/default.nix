@@ -8,10 +8,6 @@ let
     nixpkgs
     home-manager
     agenix
-    etiennerobert-com
-    creatures
-    rift-radar
-    rack
     ;
 in
 {
@@ -20,10 +16,6 @@ in
       inherit
         self
         agenix
-        etiennerobert-com
-        creatures
-        rift-radar
-        rack
         ;
     };
     modules = [

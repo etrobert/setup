@@ -1,12 +1,8 @@
-{ self, ... }:
+{ self, inputs, ... }:
 {
   flake = {
     nixosModules.server =
       {
-        etiennerobert-com,
-        creatures,
-        rift-radar,
-        rack,
         config,
         pkgs,
         lib,
@@ -14,13 +10,13 @@
       }:
       let
         inherit (pkgs.stdenv.hostPlatform) system;
-        creaturesPackage = creatures.packages.${system}.default;
+        creaturesPackage = inputs.creatures.packages.${system}.default;
       in
       {
         imports = [
           self.nixosModules.umami
-          rift-radar.nixosModules.default
-          rack.nixosModules.default
+          inputs.rift-radar.nixosModules.default
+          inputs.rack.nixosModules.default
         ];
 
         networking.firewall.allowedTCPPorts = [
@@ -64,7 +60,7 @@
             enable = true;
             virtualHosts = {
               "test.etiennerobert.com".extraConfig = /* caddy */ ''
-                root * ${etiennerobert-com.packages.${system}.default}
+                root * ${inputs.etiennerobert-com.packages.${system}.default}
                 encode zstd gzip
                 try_files {path} /index.html
                 file_server
