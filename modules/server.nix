@@ -6,6 +6,7 @@
         etiennerobert-com,
         creatures,
         rift-radar,
+        rack,
         config,
         pkgs,
         lib,
@@ -19,6 +20,7 @@
         imports = [
           self.nixosModules.umami
           rift-radar.nixosModules.default
+          rack.nixosModules.default
         ];
 
         networking.firewall.allowedTCPPorts = [
@@ -41,6 +43,7 @@
               "umami"
               "images"
               "rift"
+              "rack"
             ];
             interval = "5min";
             usev6 = "no";
@@ -98,6 +101,14 @@
             enable = true;
             hostName = "rift.etiennerobert.com";
             riotKey = config.age.secrets.riot-api-key;
+          };
+
+          # The rack.etiennerobert.com Caddy vhost is provided by rack's own
+          # nixosModule (imported above); we only point it at the domain. Piece
+          # photos/metadata are served separately from files.etiennerobert.com.
+          rack = {
+            enable = true;
+            hostName = "rack.etiennerobert.com";
           };
         };
 
