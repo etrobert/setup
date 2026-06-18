@@ -62,6 +62,7 @@ _: {
               batr
               printline
               add-asset
+              ils
             ];
 
             externalPackages = with pkgs; [
