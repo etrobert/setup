@@ -19,6 +19,7 @@
         nixd
         openscad-lsp
         texlab
+        taplo
       ];
     }
   ];

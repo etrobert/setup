@@ -6,6 +6,7 @@
   rustfmt,
   shfmt,
   stylua,
+  taplo,
   writeShellApplication,
 }:
 writeShellApplication {
@@ -18,6 +19,7 @@ writeShellApplication {
     rustfmt
     shfmt
     stylua
+    taplo
   ];
   inheritPath = false;
   text = builtins.readFile ./format-file.sh;

@@ -12,6 +12,7 @@ case $file in
 # Source: https://github.com/stevearc/conform.nvim/blob/master/lua/conform/formatters/shfmt.lua
 *.sh | *.bash | *.zsh) shfmt --write --indent 2 "$file" ;;
 *.rs) rustfmt "$file" ;;
+*.toml) taplo fmt "$file" ;;
 *.py) isort "$file" && black "$file" ;;
 *.nix) nixfmt "$file" ;;
 esac

@@ -97,5 +97,6 @@ vim.lsp.enable({
 	"cssls",
 	"html",
 	"texlab",
+	"taplo",
 	-- "copilot",
 })
