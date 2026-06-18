@@ -33,6 +33,11 @@
     flags = [
       "--accept-flake-config"
       "--print-build-logs"
+      # cache.nixos.org currently serves a corrupted NAR for the aarch64
+      # openapv-0.2.1.2 (an ffmpeg/navidrome dep), which fails substitution
+      # with a hash mismatch. --fallback builds that one path from source so
+      # the nightly upgrade still succeeds; everything else stays cached.
+      "--fallback"
     ];
     # dates = "4:40"; # default value
     randomizedDelaySec = "5min";
