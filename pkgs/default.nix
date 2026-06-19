@@ -13,6 +13,7 @@
       # Minimal variant: the full one bundles gh, which our wrapper does not
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
+      wrapPackage = pkgs.callPackage ./lib/wrap-package.nix { };
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
     in
@@ -85,9 +86,9 @@
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit self inputs'; };
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
-        waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self'; };
+        waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self' wrapPackage; };
         waybar-wrapped-dev = pkgs.callPackage ./waybar-wrapped {
-          inherit self';
+          inherit self' wrapPackage;
           dev = true;
         };
         fuzzel-wrapped = pkgs.callPackage ./fuzzel-wrapped { };
