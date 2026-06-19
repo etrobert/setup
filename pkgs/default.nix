@@ -15,7 +15,7 @@
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
       wrapPackage = pkgs.callPackage ./lib/wrap-package.nix { };
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { inherit wrapPackage; };
-      hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
+      hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { inherit wrapPackage; };
     in
     {
       packages = {
