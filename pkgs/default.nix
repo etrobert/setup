@@ -25,7 +25,7 @@
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         vim-wrapped = pkgs.callPackage ./vim-wrapped { };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
-        alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
+        alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { inherit wrapPackage; };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
           inherit claude-code ntfy-wrapped hass-cli-wrapped;
