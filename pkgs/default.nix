@@ -14,7 +14,7 @@
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
       wrapPackage = pkgs.callPackage ./lib/wrap-package.nix { };
-      ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
+      ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { inherit wrapPackage; };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
     in
     {
@@ -61,8 +61,7 @@
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
-        ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
-        inherit hass-cli-wrapped;
+        inherit ntfy-wrapped hass-cli-wrapped;
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
         nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
