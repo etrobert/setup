@@ -54,7 +54,9 @@
 let
   binName = package.meta.mainProgram;
 
-  pathPrefix = if inheritPath then "--prefix" else "--set";
+  # --prefix needs a separator argument (`--prefix PATH : <value>`); --set does
+  # not.  Bake the whole prefix in so the PATH line below stays uniform.
+  pathPrefix = if inheritPath then "--prefix PATH :" else "--set PATH";
 
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
@@ -77,7 +79,10 @@ let
     # is single-quoted so the build shell passes it to makeWrapper verbatim; any
     # $VAR / $(…) inside it is expanded only when the wrapper actually runs.
     ++ map (r: "    --run ${lib.escapeShellArg r}") run
-    ++ [ "    ${pathPrefix} PATH ${lib.makeBinPath runtimeInputs}" ];
+    # With empty runtimeInputs the --set form emits `--set PATH ''`, deliberately
+    # clearing PATH so the wrapped program runs against a known tool set rather
+    # than the ambient one.
+    ++ [ "    ${pathPrefix} ${lib.makeBinPath runtimeInputs}" ];
 
   wrapCall =
     "wrapProgram $out/bin/${binName}"
