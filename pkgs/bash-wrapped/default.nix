@@ -1,12 +1,10 @@
 {
   inputs',
-  symlinkJoin,
-  makeWrapper,
   bash,
   writeText,
   fzf,
   git,
-  runCommandLocal,
+  wrapPackage,
 }:
 let
   pronto = "${inputs'.pronto.packages.default}/bin/pronto";
@@ -22,23 +20,11 @@ let
   '';
 
   inputrc = writeText "inputrc" (builtins.readFile ./inputrc);
-
-  _checks = runCommandLocal "bash-config-check" { } ''
-    ${bash}/bin/bash -n ${./bashrc}
-    mkdir $out
-  '';
 in
-symlinkJoin {
-  name = "bash-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [
-    bash
-    _checks
-  ];
-  meta.mainProgram = "bash";
-  postBuild = ''
-    wrapProgram $out/bin/bash \
-      --set INPUTRC ${inputrc} \
-      --add-flags "--rcfile ${bashrcFinal}"
-  '';
+wrapPackage {
+  package = bash;
+  env.INPUTRC = "${inputrc}";
+  flags = [ "--rcfile ${bashrcFinal}" ];
+  # Fail the build on a syntax error in our bashrc rather than at shell start-up.
+  checks = [ "${bash}/bin/bash -n ${./bashrc}" ];
 }

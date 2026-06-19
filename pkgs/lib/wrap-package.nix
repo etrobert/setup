@@ -8,9 +8,14 @@
 #   wrapPackage {
 #     package        = pkgs.foo;           # required – base package
 #     name           ? "<mainProgram>-wrapped"; # derivation name
+#     env            ? {};                 # attrset; each becomes --set NAME value
+#                                         #   (forced; overrides the environment)
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
 #                                         #   (a default the environment can override)
 #     flags          ? [];                 # raw strings; each becomes one --add-flags "…"
+#     checks         ? [];                 # raw shell snippets run at build time before the
+#                                         #   wrapper is generated; a non-zero exit fails the
+#                                         #   build (e.g. validate the bundled config)
 #     run            ? [];                 # raw shell snippets; each becomes one --run "…",
 #                                         #   executed by the wrapper before it exec's the
 #                                         #   binary (e.g. derive an env var at runtime)
@@ -38,11 +43,13 @@
 {
   package,
   inheritPath ? false,
+  env ? { },
   setDefaults ? { },
   flags ? [ ],
   run ? [ ],
   runtimeInputs ? [ ],
   filesToPatch ? [ ],
+  checks ? [ ],
 }:
 let
   binName = package.meta.mainProgram;
@@ -52,9 +59,12 @@ let
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
   lines =
+    # --set: force a value into the environment the wrapped program sees,
+    # overriding whatever was present at launch.
+    lib.mapAttrsToList (k: v: "    --set ${lib.escapeShellArg k} ${lib.escapeShellArg v}") env
     # --set-default: bake in a value the wrapped program uses unless the same
     # variable is already present in the environment at runtime.
-    lib.mapAttrsToList (
+    ++ lib.mapAttrsToList (
       k: v: "    --set-default ${lib.escapeShellArg k} ${lib.escapeShellArg v}"
     ) setDefaults
     # --add-flags values are inserted *verbatim* into the generated wrapper
@@ -88,6 +98,12 @@ let
     substituteInPlace "${file}" \
       --replace-fail ${lib.escapeShellArg "${package}"} "$out"
   '') filesToPatch;
+
+  # checks: build-time validation snippets, run before the wrapper is generated
+  # so a bad bundled config fails the build (and is checked against the
+  # unwrapped binary still present at $out/bin).  The build runs under `set -e`,
+  # so any non-zero exit aborts.
+  checkScript = lib.concatStringsSep "\n" checks;
 in
 symlinkJoin {
   name = "${binName}-wrapped";
@@ -95,6 +111,8 @@ symlinkJoin {
   paths = [ package ];
   meta.mainProgram = binName;
   postBuild = ''
+    ${checkScript}
+
     ${wrapCall}
 
     ${patchScript}
