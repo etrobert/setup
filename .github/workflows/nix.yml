@@ -96,7 +96,14 @@ jobs:
       - name: Build ${{ matrix.host }}
         run: |
           attr="${{ matrix.platform }}Configurations.${{ matrix.host }}"
+          # --fallback: build a path from source when its substitute can't be
+          # realised. cache.nixos.org currently serves a corrupted NAR for the
+          # aarch64 openapv-0.2.1.2 (an ffmpeg/navidrome dep), failing the pi
+          # build with a hash mismatch on import. Falling back to a source build
+          # of that single path recovers it while keeping everything else
+          # cached, and makes CI resilient to future cache corruption.
           nix build ".#$attr.config.system.build.toplevel" \
             --accept-flake-config \
             --print-build-logs \
+            --fallback \
             --option stalled-download-timeout 10
