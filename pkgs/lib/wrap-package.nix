@@ -34,16 +34,17 @@
 
 {
   package,
+  inheritPath ? false,
   setDefaults ? { },
   flags ? [ ],
   runtimeInputs ? [ ],
   filesToPatch ? [ ],
 }:
 let
-  # The binary to wrap.  Derived from meta.mainProgram rather than exposed as a
-  # parameter: no current consumer renames the binary (claude-code's renamed
-  # variants are deliberately bespoke).  Promote back to an argument if one does.
   binName = package.meta.mainProgram;
+
+  pathPrefix = if inheritPath then "--prefix" else "--set";
+
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
   lines =
@@ -58,11 +59,7 @@ let
     # the wrapProgram call; bash processes any quoting inside the value when
     # the wrapper actually runs.
     ++ map (f: "    " + ''--add-flags "${f}"'') flags
-    # --set (not --prefix): replace PATH with exactly runtimeInputs, so the
-    # wrapped program runs against a known set of tools regardless of the PATH
-    # it was launched with.  (Note this differs from writeShellApplication's
-    # runtimeInputs, which *prepends*.)
-    ++ lib.optional (runtimeInputs != [ ]) "    --set PATH ${lib.makeBinPath runtimeInputs}";
+    ++ [ "    ${pathPrefix} PATH ${lib.makeBinPath runtimeInputs}" ];
 
   wrapCall =
     "wrapProgram $out/bin/${binName}"
