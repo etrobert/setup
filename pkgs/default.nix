@@ -19,7 +19,7 @@
     in
     {
       packages = {
-        bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
+        bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs' wrapPackage; };
         git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
