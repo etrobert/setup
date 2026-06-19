@@ -1,8 +1,7 @@
 {
-  symlinkJoin,
-  makeWrapper,
   writeTextDir,
   darkman,
+  wrapPackage,
 }:
 let
   config = writeTextDir "darkman/config.yaml" /* yaml */ ''
@@ -11,16 +10,9 @@ let
     usegeoclue: true
   '';
 in
-
-symlinkJoin {
-  name = "darkman-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ darkman ];
-  meta.mainProgram = "darkman";
-  postBuild = ''
-    XDG_CONFIG_HOME=${config} $out/bin/darkman check
-
-    wrapProgram $out/bin/darkman \
-      --set XDG_CONFIG_HOME ${config}
-  '';
+wrapPackage {
+  package = darkman;
+  env.XDG_CONFIG_HOME = "${config}";
+  # Fail the build on an invalid config rather than at service start-up.
+  checks = [ "XDG_CONFIG_HOME=${config} $out/bin/darkman check" ];
 }
