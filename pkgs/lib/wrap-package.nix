@@ -7,8 +7,7 @@
 #
 #   wrapPackage {
 #     package        = pkgs.foo;           # required – base package
-#     binName        ? <mainProgram>;      # binary name; default: package.meta.mainProgram
-#     name           ? "${binName}-wrapped"; # derivation name
+#     name           ? "<mainProgram>-wrapped"; # derivation name
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
 #                                         #   (a default the environment can override)
 #     flags          ? [];                 # raw strings; each becomes one --add-flags "…"
@@ -35,14 +34,17 @@
 
 {
   package,
-  binName ? package.meta.mainProgram,
-  name ? "${binName}-wrapped",
+  name ? "${package.meta.mainProgram}-wrapped",
   setDefaults ? { },
   flags ? [ ],
   runtimeInputs ? [ ],
   filesToPatch ? [ ],
 }:
 let
+  # The binary to wrap.  Derived from meta.mainProgram rather than exposed as a
+  # parameter: no current consumer renames the binary (claude-code's renamed
+  # variants are deliberately bespoke).  Promote back to an argument if one does.
+  binName = package.meta.mainProgram;
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
   lines =
