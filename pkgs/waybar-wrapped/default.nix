@@ -1,7 +1,7 @@
 {
   self',
-  lib,
   pkgs,
+  wrapPackage,
   dev ? false,
 }:
 let
@@ -17,21 +17,13 @@ let
   ];
   runtimeDeps = [ self'.packages.get-weather ] ++ nixpkgsDeps;
 in
-pkgs.symlinkJoin {
-  name = "waybar-wrapped";
-  nativeBuildInputs = with pkgs; [ makeWrapper ];
-  paths = with pkgs; [ waybar ];
-  meta.mainProgram = "waybar";
-  postBuild = ''
-    wrapProgram $out/bin/waybar \
-      --add-flags "--config ${config}" \
-      --add-flags "--style ${style}" \
-      --set PATH ${lib.makeBinPath runtimeDeps}
-
-    rm $out/share/systemd/user/waybar.service
-    cp ${pkgs.waybar}/share/systemd/user/waybar.service \
-      $out/share/systemd/user/waybar.service
-    substituteInPlace $out/share/systemd/user/waybar.service \
-      --replace-fail "${pkgs.waybar}/bin/waybar" "$out/bin/waybar"
-  '';
+wrapPackage {
+  package = pkgs.waybar;
+  flags = [
+    "--config ${config}"
+    "--style ${style}"
+  ];
+  runtimeInputs = runtimeDeps;
+  # waybar.service points at the unwrapped binary; patch it to use the wrapper
+  filesToPatch = [ "$out/share/systemd/user/waybar.service" ];
 }
