@@ -5,22 +5,18 @@
 # Token wiring mirrors pkgs/claude-code-wrapped/default.nix; the secret is
 # declared in modules/workstation.nix and secrets/secrets.nix.
 {
-  makeWrapper,
   home-assistant-cli,
-  runCommandLocal,
+  wrapPackage,
 }:
-runCommandLocal "hass-cli-wrapped"
-  {
-    nativeBuildInputs = [ makeWrapper ];
-    meta.mainProgram = "hass-cli";
-  }
+wrapPackage {
+  package = home-assistant-cli;
   # tower's Tailscale IP rather than the `tower` hostname: hass-cli is built on
   # aiohttp, whose closure includes aiodns, so aiohttp resolves names via c-ares
   # instead of getaddrinfo. c-ares reads /etc/resolv.conf directly and ignores
   # macOS scoped DNS / Tailscale MagicDNS, so `tower` fails to resolve on aaron
   # (ClientConnectorDNSError). An IP sidesteps name resolution on every OS.
-  ''
-    makeWrapper ${home-assistant-cli}/bin/hass-cli $out/bin/hass-cli \
-      --set-default HASS_SERVER http://100.103.91.42:8123 \
-      --run 'export HASS_TOKEN="''${HASS_TOKEN:-$(cat /run/agenix/hass-token)}"'
-  ''
+  # --set-default so an existing HASS_SERVER still wins.
+  setDefaults.HASS_SERVER = "http://100.103.91.42:8123";
+  # Read the long-lived token at runtime, unless HASS_TOKEN is already set.
+  run = [ ''export HASS_TOKEN="''${HASS_TOKEN:-$(cat /run/agenix/hass-token)}"'' ];
+}

@@ -11,6 +11,9 @@
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
 #                                         #   (a default the environment can override)
 #     flags          ? [];                 # raw strings; each becomes one --add-flags "…"
+#     run            ? [];                 # raw shell snippets; each becomes one --run "…",
+#                                         #   executed by the wrapper before it exec's the
+#                                         #   binary (e.g. derive an env var at runtime)
 #     runtimeInputs  ? [];                 # packages; becomes --prefix PATH : (makeBinPath …)
 #     filesToPatch   ? [];                 # explicit file paths (may contain $out);
 #                                         #   each service/dbus file is rewritten to
@@ -37,6 +40,7 @@
   inheritPath ? false,
   setDefaults ? { },
   flags ? [ ],
+  run ? [ ],
   runtimeInputs ? [ ],
   filesToPatch ? [ ],
 }:
@@ -59,6 +63,10 @@ let
     # the wrapProgram call; bash processes any quoting inside the value when
     # the wrapper actually runs.
     ++ map (f: "    " + ''--add-flags "${f}"'') flags
+    # --run: a command the wrapper runs before exec'ing the binary.  The snippet
+    # is single-quoted so the build shell passes it to makeWrapper verbatim; any
+    # $VAR / $(…) inside it is expanded only when the wrapper actually runs.
+    ++ map (r: "    --run ${lib.escapeShellArg r}") run
     ++ [ "    ${pathPrefix} PATH ${lib.makeBinPath runtimeInputs}" ];
 
   wrapCall =
