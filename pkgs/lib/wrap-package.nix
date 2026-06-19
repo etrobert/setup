@@ -9,6 +9,8 @@
 #     package        = pkgs.foo;           # required – base package
 #     binName        ? <mainProgram>;      # binary name; default: package.meta.mainProgram
 #     name           ? "${binName}-wrapped"; # derivation name
+#     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
+#                                         #   (a default the environment can override)
 #     flags          ? [];                 # raw strings; each becomes one --add-flags "…"
 #     runtimeInputs  ? [];                 # packages; becomes --prefix PATH : (makeBinPath …)
 #     filesToPatch   ? [];                 # explicit file paths (may contain $out);
@@ -17,8 +19,9 @@
 #                                         #   package store path
 #   }
 #
-# This is the minimal surface needed by the waybar pilot; later conversions add
-# more options (env, setDefaults, …) as they need them.
+# The surface grows one conversion at a time: each new wrapped package adds only
+# the option it needs (waybar → flags/runtimeInputs/filesToPatch; ntfy →
+# setDefaults; further ones will add env, … as required).
 #
 # filesToPatch: for each listed file, resolve the symlink to its target, copy
 # the file (replacing the symlink with a writable copy) and substituteInPlace it
@@ -34,6 +37,7 @@
   package,
   binName ? package.meta.mainProgram,
   name ? "${binName}-wrapped",
+  setDefaults ? { },
   flags ? [ ],
   runtimeInputs ? [ ],
   filesToPatch ? [ ],
@@ -42,12 +46,17 @@ let
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
   lines =
+    # --set-default: bake in a value the wrapped program uses unless the same
+    # variable is already present in the environment at runtime.
+    lib.mapAttrsToList (
+      k: v: "    --set-default ${lib.escapeShellArg k} ${lib.escapeShellArg v}"
+    ) setDefaults
     # --add-flags values are inserted *verbatim* into the generated wrapper
     # script (see makeWrapper docs: "ARGS verbatim to the Bash-interpreted
     # invocation").  Double-quoting keeps the value as one shell word during
     # the wrapProgram call; bash processes any quoting inside the value when
     # the wrapper actually runs.
-    map (f: "    " + ''--add-flags "${f}"'') flags
+    ++ map (f: "    " + ''--add-flags "${f}"'') flags
     # --set (not --prefix): replace PATH with exactly runtimeInputs, so the
     # wrapped program runs against a known set of tools regardless of the PATH
     # it was launched with.  (Note this differs from writeShellApplication's
