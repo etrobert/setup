@@ -90,7 +90,7 @@
           inherit self' wrapPackage;
           dev = true;
         };
-        fuzzel-wrapped = pkgs.callPackage ./fuzzel-wrapped { };
+        fuzzel-wrapped = pkgs.callPackage ./fuzzel-wrapped { inherit wrapPackage; };
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
           inherit self';
