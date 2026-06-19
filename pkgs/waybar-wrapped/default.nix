@@ -15,7 +15,6 @@ let
     pavucontrol
     sudo # used to run toggle-cpu-governor
   ];
-  runtimeDeps = [ self'.packages.get-weather ] ++ nixpkgsDeps;
 in
 wrapPackage {
   package = pkgs.waybar;
@@ -23,7 +22,7 @@ wrapPackage {
     "--config ${config}"
     "--style ${style}"
   ];
-  runtimeInputs = runtimeDeps;
+  runtimeInputs = [ self'.packages.get-weather ] ++ nixpkgsDeps;
   # waybar.service points at the unwrapped binary; patch it to use the wrapper
   filesToPatch = [ "$out/share/systemd/user/waybar.service" ];
 }
