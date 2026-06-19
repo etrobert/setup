@@ -23,7 +23,7 @@
         git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
-        vim-wrapped = pkgs.callPackage ./vim-wrapped { };
+        vim-wrapped = pkgs.callPackage ./vim-wrapped { inherit wrapPackage; };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
