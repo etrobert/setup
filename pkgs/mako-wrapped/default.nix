@@ -1,8 +1,7 @@
 {
-  symlinkJoin,
-  makeWrapper,
   mako,
   writeText,
+  wrapPackage,
 }:
 let
   config = writeText "config" /* ini */ ''
@@ -22,25 +21,13 @@ let
     ignore-timeout=1
   '';
 in
-symlinkJoin {
-  name = "mako-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ mako ];
-  meta.mainProgram = "mako";
-  postBuild = ''
-    wrapProgram $out/bin/mako \
-      --add-flags "--config ${config}"
-
-    rm $out/share/dbus-1/services/fr.emersion.mako.service
-    cp ${mako}/share/dbus-1/services/fr.emersion.mako.service \
-      $out/share/dbus-1/services/fr.emersion.mako.service
-    substituteInPlace $out/share/dbus-1/services/fr.emersion.mako.service \
-      --replace-fail "${mako}/bin/mako" "$out/bin/mako"
-
-    rm $out/share/systemd/user/mako.service
-    cp ${mako}/share/systemd/user/mako.service \
-      $out/share/systemd/user/mako.service
-    substituteInPlace $out/share/systemd/user/mako.service \
-      --replace-fail "${mako}/bin/mako" "$out/bin/mako"
-  '';
+wrapPackage {
+  package = mako;
+  flags = [ "--config ${config}" ];
+  # mako ships a dbus activation service and a systemd user unit that both
+  # reference the unwrapped binary; patch them so activation uses the wrapper.
+  filesToPatch = [
+    "$out/share/dbus-1/services/fr.emersion.mako.service"
+    "$out/share/systemd/user/mako.service"
+  ];
 }
