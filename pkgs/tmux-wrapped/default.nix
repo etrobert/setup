@@ -1,15 +1,8 @@
 {
-  symlinkJoin,
-  makeWrapper,
   tmux,
+  wrapPackage,
 }:
-# TODO: --set PATH
-symlinkJoin {
-  name = "tmux-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ tmux ];
-  postBuild = ''
-    wrapProgram $out/bin/tmux \
-      --add-flags "-f ${./tmux.conf}"
-  '';
+wrapPackage {
+  package = tmux;
+  flags = [ "-f ${./tmux.conf}" ];
 }

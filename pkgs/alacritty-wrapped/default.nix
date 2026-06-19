@@ -1,8 +1,7 @@
 {
-  symlinkJoin,
-  makeWrapper,
   alacritty,
   writeText,
+  wrapPackage,
 }:
 let
   configFile = writeText "alacritty.toml" /* toml */ ''
@@ -30,14 +29,9 @@ let
     import = [ "${./catppuccin-macchiato.toml}" ]
   '';
 in
-# TODO: --set PATH
-symlinkJoin {
-  name = "alacritty-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ alacritty ];
-  meta.mainProgram = "alacritty";
-  postBuild = ''
-    wrapProgram $out/bin/alacritty \
-      --add-flags "--config-file ${configFile}"
-  '';
+# alacritty ships a .desktop file referencing the unwrapped binary, but it
+# uses the Exec= value from $PATH at launch time, so no filesToPatch needed.
+wrapPackage {
+  package = alacritty;
+  flags = [ "--config-file ${configFile}" ];
 }

@@ -1,8 +1,7 @@
 {
-  symlinkJoin,
-  makeWrapper,
-  writeTextDir,
   darkman,
+  writeTextDir,
+  wrapPackage,
 }:
 let
   config = writeTextDir "darkman/config.yaml" /* yaml */ ''
@@ -11,16 +10,11 @@ let
     usegeoclue: true
   '';
 in
-
-symlinkJoin {
-  name = "darkman-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ darkman ];
-  meta.mainProgram = "darkman";
+wrapPackage {
+  package = darkman;
+  env.XDG_CONFIG_HOME = config;
+  # Validate config at build time (runs after wrapProgram sets XDG_CONFIG_HOME).
   postBuild = ''
-    XDG_CONFIG_HOME=${config} $out/bin/darkman check
-
-    wrapProgram $out/bin/darkman \
-      --set XDG_CONFIG_HOME ${config}
+    $out/bin/darkman check
   '';
 }

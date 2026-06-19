@@ -2,17 +2,11 @@
 # `ntfy publish "msg"` reaches it without naming the server or topic.
 # Endpoint mirrors host/port/topic in modules/ntfy.nix.
 {
-  lib,
-  makeWrapper,
   ntfy-sh,
-  runCommandLocal,
+  wrapPackage,
 }:
-runCommandLocal "ntfy-wrapped"
-  {
-    nativeBuildInputs = [ makeWrapper ];
-    meta.mainProgram = "ntfy";
-  }
-  ''
-    makeWrapper ${lib.getExe ntfy-sh} $out/bin/ntfy \
-      --set-default NTFY_TOPIC http://tower:2586/home
-  ''
+wrapPackage {
+  package = ntfy-sh;
+  # Allow per-invocation overrides via the environment.
+  setDefaults.NTFY_TOPIC = "http://tower:2586/home";
+}
