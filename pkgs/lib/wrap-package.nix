@@ -34,7 +34,6 @@
 
 {
   package,
-  name ? "${package.meta.mainProgram}-wrapped",
   setDefaults ? { },
   flags ? [ ],
   runtimeInputs ? [ ],
@@ -86,7 +85,7 @@ let
   '') filesToPatch;
 in
 symlinkJoin {
-  inherit name;
+  name = "${binName}-wrapped";
   nativeBuildInputs = [ makeWrapper ];
   paths = [ package ];
   meta.mainProgram = binName;
