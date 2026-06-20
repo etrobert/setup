@@ -1,10 +1,8 @@
 {
   self',
-  lib,
-  symlinkJoin,
-  makeWrapper,
   niri,
   xwayland-satellite,
+  wrapPackage,
   dev ? false,
 }:
 let
@@ -19,23 +17,15 @@ let
     xwayland-satellite
   ];
 in
-symlinkJoin {
-  name = "niri-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
-  paths = [ niri ];
-  meta.mainProgram = "niri";
-  postBuild = ''
-    ${niri}/bin/niri validate --config ${./config.kdl}
-
-    wrapProgram $out/bin/niri \
-      --set NIRI_CONFIG ${config} \
-      --prefix PATH : ${lib.makeBinPath path}
-
-    rm $out/share/systemd/user/niri.service
-    cp ${niri}/share/systemd/user/niri.service \
-      $out/share/systemd/user/niri.service
-    substituteInPlace $out/share/systemd/user/niri.service \
-      --replace-fail "${niri}/bin/niri" "$out/bin/niri"
-  '';
+wrapPackage {
+  package = niri;
+  env.NIRI_CONFIG = "${config}";
+  runtimeInputs = path;
+  inheritPath = true;
+  # niri.service points at the unwrapped binary; patch it to use the wrapper.
+  filesToPatch = [ "$out/share/systemd/user/niri.service" ];
+  # Fail the build on an invalid config rather than at compositor start-up.
+  checks = [ "${niri}/bin/niri validate --config ${./config.kdl}" ];
+  # Required for niri to register as a session with the display manager.
   passthru.providedSessions = niri.passthru.providedSessions;
 }

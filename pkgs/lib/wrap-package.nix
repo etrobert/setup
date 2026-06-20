@@ -24,6 +24,8 @@
 #                                         #   each service/dbus file is rewritten to
 #                                         #   reference $out instead of the original
 #                                         #   package store path
+#     passthru       ? {};                 # forwarded to the derivation's passthru
+#                                         #   (e.g. niri's providedSessions)
 #   }
 #
 # The surface grows one conversion at a time: each new wrapped package adds only
@@ -50,6 +52,7 @@
   runtimeInputs ? [ ],
   filesToPatch ? [ ],
   checks ? [ ],
+  passthru ? { },
 }:
 let
   binName = package.meta.mainProgram;
@@ -115,6 +118,7 @@ symlinkJoin {
   nativeBuildInputs = [ makeWrapper ];
   paths = [ package ];
   meta.mainProgram = binName;
+  inherit passthru;
   postBuild = ''
     ${checkScript}
 

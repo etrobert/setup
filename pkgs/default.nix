@@ -91,9 +91,9 @@
           dev = true;
         };
         fuzzel-wrapped = pkgs.callPackage ./fuzzel-wrapped { inherit wrapPackage; };
-        niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
+        niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self' wrapPackage; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
-          inherit self';
+          inherit self' wrapPackage;
           dev = true;
         };
         darkman-wrapped = pkgs.callPackage ./darkman-wrapped { inherit wrapPackage; };
