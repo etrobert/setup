@@ -32,4 +32,5 @@ in
 wrapPackage {
   package = alacritty;
   flags = [ "--config-file ${configFile}" ];
+  inheritPath = true;
 }
