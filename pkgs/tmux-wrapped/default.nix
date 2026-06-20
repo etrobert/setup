@@ -5,4 +5,5 @@
 wrapPackage {
   package = tmux;
   flags = [ "-f ${./tmux.conf}" ];
+  inheritPath = true;
 }
