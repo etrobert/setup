@@ -27,4 +27,5 @@ wrapPackage {
   flags = [ "--rcfile ${bashrcFinal}" ];
   # Fail the build on a syntax error in our bashrc rather than at shell start-up.
   checks = [ "${bash}/bin/bash -n ${./bashrc}" ];
+  inheritPath = true;
 }
