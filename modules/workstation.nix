@@ -96,6 +96,7 @@ _: {
               sox # Voice for claude
               spotify
               telegram-desktop
+              timg
               unzip
               yt-dlp
             ];
