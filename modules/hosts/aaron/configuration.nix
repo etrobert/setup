@@ -129,18 +129,36 @@ in
       NSGlobalDomain.InitialKeyRepeat = 15;
       NSGlobalDomain.KeyRepeat = 2;
 
-      CustomUserPreferences."com.raycast.macos" = {
-        # Cmd + Space
-        raycastGlobalHotkey = "Command-49";
-      };
+      CustomUserPreferences = {
+        "com.raycast.macos" = {
+          # Cmd + Space
+          raycastGlobalHotkey = "Command-49";
+        };
 
-      CustomUserPreferences."com.apple.symbolichotkeys" = {
-        AppleSymbolicHotKeys = {
-          # Disable Spotlight search shortcut (Cmd + Space)
-          "64" = {
-            enabled = false;
+        "com.apple.symbolichotkeys" = {
+          AppleSymbolicHotKeys = {
+            # Disable Spotlight search shortcut (Cmd + Space)
+            "64" = {
+              enabled = false;
+            };
           };
         };
+
+        # System default voice for `say` (and Spoken Content) — used by the
+        # claude-speak Stop hook, which calls bare `say` with no -v. The premium
+        # Zoe asset is a one-time GUI download (System Settings → Accessibility →
+        # Spoken Content → Manage Voices); Apple ships no headless installer, so
+        # this selection is reproducible but the asset is not. If absent, `say`
+        # falls back to the default voice rather than erroring.
+        "com.apple.Accessibility".SpokenContentDefaultVoiceSelectionsByLanguage = [
+          "en"
+          {
+            "_type" = "Speech.VoiceSelection";
+            "_version" = 0;
+            boundLanguage = "en";
+            voiceId = "com.apple.voice.premium.en-US.Zoe";
+          }
+        ];
       };
     };
   };
