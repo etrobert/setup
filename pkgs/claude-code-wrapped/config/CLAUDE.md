@@ -107,6 +107,11 @@ Prefer `kebab-case` for directory names.
 In shell scripts, prefer long-form parameters over single-letter ones where
 possible (e.g. `--raw-output` over `-r`, `--only-matching` over `-o`).
 
+Always put a comment next to a suppression directive explaining why it is needed
+(e.g. a `# shellcheck disable=SCxxxx` line preceded by a comment stating why the
+warning is a false positive here). Prefer narrow inline disables over project-
+or file-wide excludes, so future genuine warnings aren't masked.
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
