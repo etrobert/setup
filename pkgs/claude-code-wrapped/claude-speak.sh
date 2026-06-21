@@ -16,29 +16,32 @@ if [[ -z "$text" ]]; then
 fi
 
 # Strip markdown so symbols aren't spoken aloud.
-# Steps:
-# 1. Multi-line fenced code blocks (``` ... ```) — delete entire fence sections
-#    (including indented ones)
-# 2. Inline backtick spans
-# 3. Markdown links [text](url) → keep text only
-# 4. Bare URLs
-# 5. Bold/italic markers (* ** __ but NOT underscores inside identifiers)
-# 6. Headings (#)
-# 7. Leading list markers (- or * at line start)
-# 8. Remaining lone backticks
+# SC2016: the sed regexes below contain literal backticks, which shellcheck
+# mistakes for command substitution; they are regex literals, not expansions.
 # shellcheck disable=SC2016
 cleaned=$(
   printf '%s' "$text" |
+    # Delete entire multi-line fenced code blocks (``` ... ```), including indented ones.
     sed --regexp-extended '/^[[:space:]]*```/,/^[[:space:]]*```/d' |
-    sed --regexp-extended 's/`[^`]*`//g' |
+    # Inline backtick code spans (`code`) → keep the text, drop the backticks.
+    sed --regexp-extended 's/`([^`]*)`/\1/g' |
+    # Markdown links [text](url) → keep the link text, drop the URL.
     sed --regexp-extended 's/\[([^]]*)\]\([^)]*\)/\1/g' |
+    # Remove bare URLs (http:// or https://).
     sed --regexp-extended 's|https?://[^ \t\n)>"]*||g' |
+    # Strip bold markers (**text**), keeping the text.
     sed --regexp-extended 's/\*\*([^*]*)\*\*/\1/g' |
+    # Strip italic markers (*text*), keeping the text.
     sed --regexp-extended 's/\*([^*]*)\*/\1/g' |
+    # Strip bold underscore markers (__text__), keeping the text.
     sed --regexp-extended 's/__([^_]*)__/\1/g' |
+    # Strip italic underscore markers (_text_) but NOT underscores inside identifiers.
     sed --regexp-extended 's/(^|[[:space:]])_([^_[:space:]][^_]*)_([[:space:]]|$)/\1\2\3/g' |
+    # Remove heading markers (# … ######) at line start.
     sed --regexp-extended 's/^#{1,6} //g' |
+    # Remove leading list markers (- or * at line start).
     sed --regexp-extended 's/^[[:space:]]*[-*] //g' |
+    # Remove any remaining lone backticks.
     sed --regexp-extended 's/`//g'
 )
 
@@ -109,6 +112,9 @@ else
   # config next to the .onnx by adjacency (its --config flag is a no-op).
   # No --target: pw-play defaults to "auto", linking to the default sink.
   # (--target=0 means "don't link", which plays silently to nothing.)
+  # SC2016: $PIPER_MODEL and $1 are intentionally single-quoted so the inner
+  # shell (the setsid bash -c) expands them, not this outer one.
+  # shellcheck disable=SC2016
   setsid "$BASH" -c \
     'piper --model "$PIPER_MODEL" --output_file - <<<"$1" | pw-play -' \
     -- "$cleaned" &

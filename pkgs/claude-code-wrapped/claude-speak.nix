@@ -52,8 +52,5 @@ writeShellApplication {
     PIPER_MODEL = "${voiceDir}/en_US-ryan-high.onnx";
   };
   inheritPath = false;
-  # SC2016: backtick patterns in sed single-quoted strings are intentional
-  # (they are regex literals, not shell expansions).
-  excludeShellChecks = [ "SC2016" ];
   text = builtins.readFile ./claude-speak.sh;
 }
