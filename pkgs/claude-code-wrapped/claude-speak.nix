@@ -13,21 +13,23 @@
   writeShellApplication,
 }:
 let
-  # Vendored Piper voice (en_US-lessac-medium). Piper's CLI ignores --config and
-  # always reads the config as "<model-path>.json" by adjacency, so the .onnx and
-  # .onnx.json must live in the same directory — linkFarm colocates them.
-  voiceBase = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium";
+  # Vendored Piper voice (en_US-ryan-high). The "high" quality tier (22.05 kHz,
+  # larger model) sounds noticeably more natural than the "medium" tier. Piper's
+  # CLI ignores --config and always reads the config as "<model-path>.json" by
+  # adjacency, so the .onnx and .onnx.json must live in the same directory —
+  # linkFarm colocates them.
+  voiceBase = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/ryan/high";
   voiceModel = fetchurl {
-    url = "${voiceBase}/en_US-lessac-medium.onnx";
-    hash = "sha256-Xv4J5pkCGHgnr2RuGm6dJp3udp+Yd9F7FrG0buqvAZ8=";
+    url = "${voiceBase}/en_US-ryan-high.onnx";
+    hash = "sha256-s5kNdgbhg+yNv7pwpGBwdPFi3hoMQS4BgNH/YLsVTso=";
   };
   voiceConfig = fetchurl {
-    url = "${voiceBase}/en_US-lessac-medium.onnx.json";
-    hash = "sha256-7+GcQXvtBV8taZCCSMa6ZQ+hNbyGiw5quz2hgdq2kKA=";
+    url = "${voiceBase}/en_US-ryan-high.onnx.json";
+    hash = "sha256-xtO5jwgxXLS+vw1J1Q/E/0kbUDxkuUDNPVyihUO0gBE=";
   };
-  voiceDir = linkFarm "piper-voice-lessac-medium" {
-    "en_US-lessac-medium.onnx" = voiceModel;
-    "en_US-lessac-medium.onnx.json" = voiceConfig;
+  voiceDir = linkFarm "piper-voice-ryan-high" {
+    "en_US-ryan-high.onnx" = voiceModel;
+    "en_US-ryan-high.onnx.json" = voiceConfig;
   };
 in
 writeShellApplication {
@@ -47,7 +49,7 @@ writeShellApplication {
     util-linux
   ];
   runtimeEnv = {
-    PIPER_MODEL = "${voiceDir}/en_US-lessac-medium.onnx";
+    PIPER_MODEL = "${voiceDir}/en_US-ryan-high.onnx";
   };
   inheritPath = false;
   # SC2016: backtick patterns in sed single-quoted strings are intentional
