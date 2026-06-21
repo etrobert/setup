@@ -2,18 +2,12 @@
 # Stop hook: read the final assistant message aloud via TTS.
 # Set CLAUDE_SPEAK=0 to mute without rebuilding.
 
-set -euo pipefail
-
 if [[ "${CLAUDE_SPEAK:-}" == "0" ]]; then
   exit 0
 fi
 
 input=$(cat)
 
-# Read the final message straight from the hook payload's `last_assistant_message`
-# field (same source as claude-rate-limit-notify). Re-parsing the transcript file
-# instead raced the flush: at Stop time the just-finished assistant line is not yet
-# written, so `tail -1` returned the *previous* turn's message.
 text=$(echo "$input" | jq --raw-output '.last_assistant_message // empty')
 
 if [[ -z "$text" ]]; then
