@@ -2,7 +2,7 @@
   writeShellApplication,
   bashInteractive,
   coreutils,
-  nodejs_24,
+  nodejs_26,
   pnpm,
   yarn,
 }:
@@ -11,7 +11,7 @@ writeShellApplication {
   runtimeInputs = [
     bashInteractive # provides sh for npm to spawn scripts
     coreutils
-    nodejs_24 # nodejs_latest does not always have cache ready
+    nodejs_26 # pinned (not nodejs_latest) so the binary cache stays reliable
     pnpm
     yarn
   ];
