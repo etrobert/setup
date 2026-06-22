@@ -31,10 +31,9 @@ let
 in
 wrapPackage {
   package = claude-code;
-  # Pass binName so variants (e.g. claude-glm, claude-copilot) get renamed
-  # before wrapping; the null default in wrapPackage falls back to mainProgram
-  # ("claude"), but we pass the explicit name for clarity.
-  binName = if binName == "claude" then null else binName;
+  # Variants (e.g. claude-glm, claude-copilot) get renamed before wrapping;
+  # the default "claude" matches the package's mainProgram, so it's a no-op.
+  inherit binName;
   inheritPath = true;
   env = {
     CLAUDE_CODE_NO_FLICKER = "1";
