@@ -17,7 +17,10 @@ let
   formatFileScript = callPackage ./format-file.nix { };
   rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { ntfy-sh = ntfy-wrapped; };
   sessionHostScript = callPackage ./claude-session-host.nix { };
-  speakScript = callPackage ./speak.nix { };
+  # TTS engine for `speak`. Swap this for another backend (e.g. ./tts-piper.nix)
+  # and rebuild to change which engine reads replies aloud.
+  tts = callPackage ./tts-say.nix { };
+  speakScript = callPackage ./speak.nix { inherit tts; };
   binPath = lib.makeBinPath [
     statuslineScript
     formatFileScript

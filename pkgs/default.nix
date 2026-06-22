@@ -42,6 +42,10 @@
           readTokenFromAgenix = true;
           binName = "claude-glm";
         };
+        # TTS backend for `speak` (stdin -> audio), runnable standalone to
+        # audition engines, e.g. `echo hi | nix run .#tts-say`. The engine speak
+        # uses is selected at build time in claude-code-wrapped/default.nix.
+        tts-say = pkgs.callPackage ./claude-code-wrapped/tts-say.nix { };
         copilot-api = pkgs.callPackage ./copilot-api { };
         claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
           inherit claude-code ntfy-wrapped hass-cli-wrapped;

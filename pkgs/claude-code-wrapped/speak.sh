@@ -1,14 +1,9 @@
-# Speak the current Claude Code session's last assistant message aloud, verbatim,
-# using the system's default voice. Reads the message straight from the session
-# transcript, so it runs instantly and costs no model tokens. Invoke in-session
-# with the bash prefix: `!speak`.
-
-say_bin=/usr/bin/say
-
-if [ ! -x "$say_bin" ]; then
-  echo "speak: $say_bin not found (macOS only)" >&2
-  exit 1
-fi
+# Speak the current Claude Code session's last assistant message aloud, verbatim.
+# Reads the message straight from the session transcript, so it runs instantly
+# and costs no model tokens. Invoke in-session with the bash prefix: `!speak`.
+#
+# The text is piped to the `tts` backend, whose engine is chosen at build time
+# in default.nix (swap the tts-*.nix wired there and rebuild to change engine).
 
 config="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 
@@ -39,4 +34,4 @@ if [ -z "$text" ]; then
   exit 1
 fi
 
-printf '%s' "$text" | "$say_bin"
+printf '%s' "$text" | tts
