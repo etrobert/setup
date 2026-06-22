@@ -127,6 +127,12 @@ After committing on a branch, open a PR with `gh pr create`.
 When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
 output), include a screenshot in the PR description.
 
+When rendering a terminal-UI screenshot headlessly (xterm under Xvfb), load
+the terminal theme's 16-color ANSI palette into xterm
+(`-xrm 'xterm*color4: #8aadf4' …`) — otherwise palette references like
+`colour4`/`colour0` render as harsh xterm defaults instead of the real theme
+colors.
+
 Each commit should be functional — don't commit broken or speculative states.
 
 Always rebase on origin/main before presenting a PR for review — both on initial
