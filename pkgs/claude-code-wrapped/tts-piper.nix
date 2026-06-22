@@ -16,7 +16,6 @@
 # is fetched below. Unlike a wheel, it is a single immutable artifact: the hash
 # is set once and never needs bumping.
 {
-  lib,
   stdenv,
   fetchurl,
   runCommand,
