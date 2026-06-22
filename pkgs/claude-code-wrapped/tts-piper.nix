@@ -9,15 +9,18 @@
 # Uses the nixpkgs `piper-tts` package directly — no wheel hashes to pin or
 # version matrix to maintain.
 #
-# That package declares piper's full training stack (torch, pytorch-lightning,
-# tensorboard, pysilero-vad) as runtime `dependencies`, but we only ever run
-# inference (onnxruntime). Worse, `pysilero-vad` is marked broken on darwin
-# (`ld: unknown option: --disable-new-dtags`, with no upstream fix), which fails
-# the aaron build outright. So we strip `dependencies` down to the three the
-# inference path actually needs — onnxruntime, numpy, pathvalidate. This fixes
-# the darwin build and shrinks the closure from ~2.9 GB to ~845 MB.
-# `dontCheckRuntimeDeps` because we are deliberately dropping declared (but
-# never-imported-at-inference) requirements.
+# nixpkgs wires piper's full training stack (torch, pytorch-lightning,
+# tensorboard, pysilero-vad) in as runtime `dependencies`, but in piper's own
+# metadata those are all optional extras (`extra == "train"` etc.) — the only
+# core runtime requirements are onnxruntime and pathvalidate. Inference goes
+# through onnxruntime and needs none of the extras, so we strip `dependencies`
+# back to the core requirements, shrinking the closure from ~2.9 GB to ~845 MB.
+# The standard runtime-deps check still passes, since it only enforces the
+# core requires (verified: dropping onnxruntime makes it fail).
+#
+# A side benefit: stripping the training stack also drops `pysilero-vad`, which
+# is marked broken on darwin (`ld: unknown option: --disable-new-dtags`) — so
+# the strip is also what lets the aaron build evaluate at all.
 #
 # The voice model itself is not packaged in nixpkgs (only the engine is), so it
 # is fetched below. Unlike a wheel, it is a single immutable artifact: the hash
@@ -35,25 +38,14 @@
 let
   # Inference-only piper: see header for why the training stack is stripped.
   piper = piper-tts.overridePythonAttrs (old: {
-    dontCheckRuntimeDeps = true;
     dependencies = builtins.filter (
       d:
       builtins.any (s: lib.hasInfix s (d.pname or d.name or "")) [
         "onnxruntime"
-        "numpy"
         "pathvalidate"
       ]
     ) (old.dependencies or old.propagatedBuildInputs or [ ]);
   });
-
-  # Self-cleaning guard: the dependency strip above is forced by pysilero-vad
-  # being broken on darwin. Once the unmodified package evaluates there again,
-  # the assertion below fails so we revisit the strip (keep it only for the
-  # closure-size win, or drop it) instead of relying on memory. tryEval catches
-  # the broken-eval throw; off darwin piper-tts always evaluates, so it's a
-  # no-op there.
-  darwinStripStillForced =
-    !stdenv.isDarwin || !(builtins.tryEval (builtins.seq piper-tts.drvPath true)).success;
 
   # Bundle the default voice (model + its config) in one store path so the
   # wrapper can point piper at it.
@@ -78,8 +70,6 @@ let
   # dependency stays off the Darwin closure.
   player = if stdenv.isDarwin then "/usr/bin/afplay" else "${pulseaudio}/bin/paplay";
 in
-assert lib.assertMsg darwinStripStillForced
-  "tts-piper: piper-tts now evaluates on darwin (pysilero-vad no longer broken) — revisit the dependency strip in pkgs/claude-code-wrapped/tts-piper.nix.";
 writeShellApplication {
   name = "tts-piper";
   runtimeInputs = [
