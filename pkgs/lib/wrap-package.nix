@@ -16,6 +16,10 @@
 #     extraPaths     ? [];                 # additional derivations merged into the
 #                                         #   symlinkJoin paths alongside package
 #                                         #   (e.g. helper scripts to co-install)
+#     binaryWrapper  ? false;              # use makeBinaryWrapper instead of makeWrapper;
+#                                         #   produces a compiled binary rather than a shell
+#                                         #   script — required on macOS for .app bundles
+#                                         #   (macOS refuses shell-script .app executables)
 #     env            ? {};                 # attrset; each becomes --set NAME value
 #                                         #   (forced; overrides the environment)
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
@@ -32,6 +36,10 @@
 #                                         #   each service/dbus file is rewritten to
 #                                         #   reference $out instead of the original
 #                                         #   package store path
+#     postWrap       ? [];                 # raw shell snippets appended to postBuild AFTER
+#                                         #   the wrapProgram call and filesToPatch rewrites;
+#                                         #   useful for post-wrap fixups (e.g. repointing an
+#                                         #   .app bundle symlink at the new wrapper binary)
 #     passthru       ? {};                 # forwarded to the derivation's passthru
 #                                         #   (e.g. niri's providedSessions)
 #   }
@@ -48,6 +56,7 @@
   lib,
   symlinkJoin,
   makeWrapper,
+  makeBinaryWrapper,
 }:
 
 {
@@ -55,6 +64,7 @@
   binName ? package.meta.mainProgram,
   extraPaths ? [ ],
   inheritPath ? false,
+  binaryWrapper ? false,
   env ? { },
   setDefaults ? { },
   flags ? [ ],
@@ -62,6 +72,7 @@
   runtimeInputs ? [ ],
   filesToPatch ? [ ],
   checks ? [ ],
+  postWrap ? [ ],
   passthru ? { },
 }:
 let
@@ -72,10 +83,6 @@ let
   # binName defaults to mainProgram, so this is a no-op unless overridden.
   renameScript =
     if binName != mainProgram then "mv $out/bin/${mainProgram} $out/bin/${binName}" else "";
-
-  # --prefix needs a separator argument (`--prefix PATH : <value>`); --set does
-  # not.  Bake the whole prefix in so the PATH line below stays uniform.
-  pathPrefix = if inheritPath then "--prefix PATH :" else "--set PATH";
 
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
@@ -98,10 +105,24 @@ let
     # is single-quoted so the build shell passes it to makeWrapper verbatim; any
     # $VAR / $(…) inside it is expanded only when the wrapper actually runs.
     ++ map (r: "    --run ${lib.escapeShellArg r}") run
-    # With empty runtimeInputs the --set form emits `--set PATH ''`, deliberately
-    # clearing PATH so the wrapped program runs against a known tool set rather
-    # than the ambient one.
-    ++ [ "    ${pathPrefix} ${lib.makeBinPath runtimeInputs}" ];
+    # PATH manipulation.  escapeShellArg keeps the value a properly quoted
+    # argument in both the shell and binary wrapper cases.
+    ++ (
+      let
+        path = lib.escapeShellArg (lib.makeBinPath runtimeInputs);
+      in
+      if !inheritPath then
+        # --set PATH '' deliberately clears PATH so the wrapped program runs
+        # against a known tool set (controlled execution environment) — emitted
+        # even when runtimeInputs is empty.
+        [ "    --set PATH ${path}" ]
+      else
+        # inheritPath=true: only prefix when there is something to add.  An
+        # empty --prefix value would prepend a leading colon (empty PATH element
+        # = CWD) under makeBinaryWrapper rather than being a no-op — a silent
+        # security regression — so omit the line entirely instead.
+        lib.optional (runtimeInputs != [ ]) "    --prefix PATH : ${path}"
+    );
 
   wrapCall =
     "wrapProgram $out/bin/${binName}"
@@ -128,10 +149,15 @@ let
   # unwrapped binary still present at $out/bin).  The build runs under `set -e`,
   # so any non-zero exit aborts.
   checkScript = lib.concatStringsSep "\n" checks;
+
+  # postWrap: arbitrary shell snippets run after wrapProgram and filesToPatch
+  # have both completed.  Useful for fixups that depend on the wrapper already
+  # being in place (e.g. repointing an .app bundle symlink at the new wrapper).
+  postWrapScript = lib.concatStringsSep "\n" postWrap;
 in
 symlinkJoin {
   name = "${binName}-wrapped";
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [ (if binaryWrapper then makeBinaryWrapper else makeWrapper) ];
   paths = [ package ] ++ extraPaths;
   meta.mainProgram = binName;
   inherit passthru;
@@ -143,5 +169,7 @@ symlinkJoin {
     ${wrapCall}
 
     ${patchScript}
+
+    ${postWrapScript}
   '';
 }

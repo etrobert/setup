@@ -99,7 +99,10 @@
         flush-dns = pkgs.callPackage ./flush-dns { };
         resize-window = pkgs.callPackage ./resize-window { };
         finder = pkgs.callPackage ./finder { };
-        ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped { ghostty = pkgs.ghostty-bin; };
+        ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {
+          ghostty = pkgs.ghostty-bin;
+          inherit wrapPackage;
+        };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit self inputs'; };
@@ -126,7 +129,10 @@
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         album-art-wallpaper = pkgs.callPackage ./album-art-wallpaper.nix { };
         awww-restore-on-hotplug = pkgs.callPackage ./awww-restore-on-hotplug.nix { };
-        ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped { inherit (pkgs) ghostty; };
+        ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {
+          inherit (pkgs) ghostty;
+          inherit wrapPackage;
+        };
       };
     };
 }
