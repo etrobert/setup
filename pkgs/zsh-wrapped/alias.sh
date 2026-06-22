@@ -1,7 +1,7 @@
 if [[ $(uname) == 'Linux' ]]; then
-	alias open='xdg-open'
-	alias bt="bluetoothctl devices | fzf --with-nth=3.. | cut -d' ' -f2 | xargs bluetoothctl connect"
-	alias home-assistant="docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable"
+  alias open='xdg-open'
+  alias bt="bluetoothctl devices | fzf --with-nth=3.. | cut -d' ' -f2 | xargs bluetoothctl connect"
+  alias home-assistant="docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable"
 fi
 
 alias grep='grep --color=auto'
@@ -25,9 +25,9 @@ alias gi='git'
 
 # git worktree switch: cd into a worktree, fuzzy-picked or matched by arg
 gws() {
-	local wt
-	wt=$(git worktree list | fzf --query="${1:-}" --select-1 --exit-0 | cut -d' ' -f1)
-	[ -n "$wt" ] && cd "$wt"
+  local wt
+  wt=$(git worktree list | fzf --query="${1:-}" --select-1 --exit-0 | cut -d' ' -f1)
+  [ -n "$wt" ] && cd "$wt"
 }
 
 alias make='make -j8'
@@ -62,3 +62,9 @@ alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
 alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
 
 alias cly="claude --dangerously-skip-permissions"
+
+# Background agents view scoped to one project: defaults to the current dir,
+# accepts a path override.  Avoids the merged cross-project list.
+agents() {
+  claude agents --cwd "${1:-$PWD}"
+}
