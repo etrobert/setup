@@ -8,6 +8,11 @@
 #   wrapPackage {
 #     package        = pkgs.foo;           # required – base package
 #     name           ? "<mainProgram>-wrapped"; # derivation name
+#     binName        ? null;               # optional rename: when set and different from
+#                                         #   package.meta.mainProgram, the binary is
+#                                         #   mv'd to this name before wrapping; the wrap
+#                                         #   target and meta.mainProgram both use binName.
+#                                         #   Null (default) keeps the upstream name.
 #     env            ? {};                 # attrset; each becomes --set NAME value
 #                                         #   (forced; overrides the environment)
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
@@ -44,6 +49,7 @@
 
 {
   package,
+  binName ? null,
   inheritPath ? false,
   env ? { },
   setDefaults ? { },
@@ -55,7 +61,19 @@
   passthru ? { },
 }:
 let
-  binName = package.meta.mainProgram;
+  mainProgram = package.meta.mainProgram;
+  # Effective binary name: binName when supplied, otherwise the package's own
+  # mainProgram.  When binName differs from mainProgram a rename step runs in
+  # postBuild (before the wrap call) so the wrapper targets the right file.
+  effectiveBinName = if binName != null then binName else mainProgram;
+
+  # Rename the binary in $out/bin before wrapping when the caller requested a
+  # different name (e.g. claude → claude-copilot for alongside-install variants).
+  renameScript =
+    if binName != null && binName != mainProgram then
+      "mv $out/bin/${mainProgram} $out/bin/${binName}"
+    else
+      "";
 
   # --prefix needs a separator argument (`--prefix PATH : <value>`); --set does
   # not.  Bake the whole prefix in so the PATH line below stays uniform.
@@ -88,7 +106,7 @@ let
     ++ [ "    ${pathPrefix} ${lib.makeBinPath runtimeInputs}" ];
 
   wrapCall =
-    "wrapProgram $out/bin/${binName}"
+    "wrapProgram $out/bin/${effectiveBinName}"
     + (if lines == [ ] then "" else " \\\n" + lib.concatStringsSep " \\\n" lines);
 
   # filesToPatch: rewrite each listed file's reference to the original package
@@ -114,13 +132,15 @@ let
   checkScript = lib.concatStringsSep "\n" checks;
 in
 symlinkJoin {
-  name = "${binName}-wrapped";
+  name = "${effectiveBinName}-wrapped";
   nativeBuildInputs = [ makeWrapper ];
   paths = [ package ];
-  meta.mainProgram = binName;
+  meta.mainProgram = effectiveBinName;
   inherit passthru;
   postBuild = ''
     ${checkScript}
+
+    ${renameScript}
 
     ${wrapCall}
 
