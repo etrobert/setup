@@ -102,6 +102,12 @@ Prefer `kebab-case` for directory names.
 In shell scripts, prefer long-form parameters over single-letter ones where
 possible (e.g. `--raw-output` over `-r`, `--only-matching` over `-o`).
 
+Separate multi-line definitions/blocks with a blank line. Consecutive
+single-line bindings may be grouped together without blank lines, but a
+definition that spans multiple lines should be set off by a blank line before
+and after it — don't butt a multi-line binding (e.g. `runtimeInputs = [ … ]`)
+directly against an adjacent definition.
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
