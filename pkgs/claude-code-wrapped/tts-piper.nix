@@ -6,10 +6,15 @@
 # `say`, it only produces audio samples, so this backend plays them itself:
 # afplay on macOS, paplay on Linux.
 #
-# This variant uses the nixpkgs `piper-tts` package directly. It is much simpler
-# than the wheel-packaged variant, but `piper-tts` propagates the full training
-# stack (torch, pytorch-lightning, tensorboard, pysilero-vad) as runtime deps,
-# so the closure is ~2.9 GB vs ~903 MB for the wheel build.
+# Uses the nixpkgs `piper-tts` package directly — no wheel hashes to pin or
+# version matrix to maintain. That package propagates piper's training stack
+# (torch, pytorch-lightning, tensorboard, pysilero-vad) as runtime deps, so the
+# closure is ~2.9 GB; but synthesis runs through onnxruntime and never imports
+# them, so there is no runtime cost — the price is purely disk.
+#
+# The voice model itself is not packaged in nixpkgs (only the engine is), so it
+# is fetched below. Unlike a wheel, it is a single immutable artifact: the hash
+# is set once and never needs bumping.
 {
   lib,
   stdenv,
