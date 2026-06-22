@@ -22,22 +22,33 @@ fi
 # rather than literal "asterisk asterisk", backticks, hash headers, and link URLs.
 text=$(
   jq --raw-output --slurp '
-    # Reduce common Markdown to its spoken text. Order matters: fenced/inline
-    # code and links are unwrapped before emphasis so their delimiters do not
-    # linger. Underscore emphasis is deliberately left alone to avoid mangling
-    # snake_case identifiers and file_paths.
+    # Reduce common Markdown to its spoken text, rule by rule. Underscore
+    # emphasis is deliberately left alone to avoid mangling snake_case
+    # identifiers and file_paths.
     def strip_md:
-      gsub("(?m)^```.*$"; "")                                 # code fence lines
-      | gsub("`(?<c>[^`]*)`"; .c)                             # `inline code`
-      | gsub("!\\[(?<t>[^\\]]*)\\]\\([^)]*\\)"; .t)           # ![alt](url)
-      | gsub("\\[(?<t>[^\\]]*)\\]\\([^)]*\\)"; .t)            # [text](url)
-      | gsub("\\*\\*(?<t>[^*]+)\\*\\*"; .t)                   # **bold**
-      | gsub("\\*(?<t>[^*]+)\\*"; .t)                         # *italic*
-      | gsub("~~(?<t>[^~]+)~~"; .t)                           # ~~strikethrough~~
-      | gsub("(?m)^\\s{0,3}#{1,6}\\s+"; "")                   # # headers
-      | gsub("(?m)^\\s{0,3}>\\s?"; "")                        # > blockquotes
-      | gsub("(?m)^\\s*[-*+]\\s+"; "")                        # - bullet markers
-      | gsub("(?m)^\\s*\\d+\\.\\s+"; "")                      # 1. ordered markers
+      # Drop fenced-code delimiter lines (``` optionally followed by a language),
+      # leaving the code body to be spoken as plain text.
+      gsub("(?m)^```.*$"; "")
+      # Unwrap `inline code`, keeping the captured contents.
+      | gsub("`(?<c>[^`]*)`"; .c)
+      # Image ![alt](url) -> just the alt text.
+      | gsub("!\\[(?<t>[^\\]]*)\\]\\([^)]*\\)"; .t)
+      # Link [text](url) -> just the link text, discarding the URL.
+      | gsub("\\[(?<t>[^\\]]*)\\]\\([^)]*\\)"; .t)
+      # **bold** -> bold. Must run before the single-asterisk rule below.
+      | gsub("\\*\\*(?<t>[^*]+)\\*\\*"; .t)
+      # *italic* -> italic.
+      | gsub("\\*(?<t>[^*]+)\\*"; .t)
+      # ~~strikethrough~~ -> strikethrough.
+      | gsub("~~(?<t>[^~]+)~~"; .t)
+      # Strip leading ATX heading markers (# .. ######) and their trailing space.
+      | gsub("(?m)^\\s{0,3}#{1,6}\\s+"; "")
+      # Strip the leading > of blockquote lines.
+      | gsub("(?m)^\\s{0,3}>\\s?"; "")
+      # Strip unordered list markers (-, *, +) at the start of a line.
+      | gsub("(?m)^\\s*[-*+]\\s+"; "")
+      # Strip ordered list markers (1., 2., ...) at the start of a line.
+      | gsub("(?m)^\\s*\\d+\\.\\s+"; "")
       ;
     [ .[]
       | select(.type == "assistant")
