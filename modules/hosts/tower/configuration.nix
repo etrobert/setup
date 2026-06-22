@@ -16,19 +16,26 @@
   # Keep a Claude 5h usage session always ticking over (see modules/claude-warmup.nix).
   services.claude-warmup.enable = true;
 
-  # Static IP on the motherboard NIC so the link survives the monitor (and its
-  # USB ethernet adapter) being turned off. DNS points at pi for split-horizon
-  # resolution of internal *.etiennerobert.com names.
-  networking.networkmanager.ensureProfiles.profiles."enp11s0-static" = {
-    connection = {
-      id = "enp11s0-static";
-      type = "ethernet";
-      interface-name = "enp11s0";
-    };
-    ipv4 = {
-      method = "manual";
-      address1 = "192.168.0.10/24,192.168.0.1";
-      dns = "192.168.0.18;";
+  networking.networkmanager = {
+    # Disable WiFi: tower is a wired desktop on the static enp11s0 link below, so
+    # WiFi only added a second IP on the same /24. That dual-homing intermittently
+    # broke Home Assistant's zeroconf at startup (mDNS multicast ENODEV). See #281.
+    unmanaged = [ "interface-name:wlp12s0" ];
+
+    # Static IP on the motherboard NIC so the link survives the monitor (and its
+    # USB ethernet adapter) being turned off. DNS points at pi for split-horizon
+    # resolution of internal *.etiennerobert.com names.
+    ensureProfiles.profiles."enp11s0-static" = {
+      connection = {
+        id = "enp11s0-static";
+        type = "ethernet";
+        interface-name = "enp11s0";
+      };
+      ipv4 = {
+        method = "manual";
+        address1 = "192.168.0.10/24,192.168.0.1";
+        dns = "192.168.0.18;";
+      };
     };
   };
 
