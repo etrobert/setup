@@ -55,6 +55,7 @@ _: {
               vscode-wrapped
               gen-commit-msg
               git-find-commit
+              agents
               hass-cli-wrapped
               pm
               pdfshrink
