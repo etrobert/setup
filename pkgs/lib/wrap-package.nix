@@ -13,6 +13,9 @@
 #                                         #   binary is mv'd to it before wrapping; the
 #                                         #   wrap target and meta.mainProgram both use it.
 #                                         #   Defaults to the upstream name (a no-op).
+#     extraPaths     ? [];                 # additional derivations merged into the
+#                                         #   symlinkJoin paths alongside package
+#                                         #   (e.g. helper scripts to co-install)
 #     env            ? {};                 # attrset; each becomes --set NAME value
 #                                         #   (forced; overrides the environment)
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
@@ -50,6 +53,7 @@
 {
   package,
   binName ? package.meta.mainProgram,
+  extraPaths ? [ ],
   inheritPath ? false,
   env ? { },
   setDefaults ? { },
@@ -128,7 +132,7 @@ in
 symlinkJoin {
   name = "${binName}-wrapped";
   nativeBuildInputs = [ makeWrapper ];
-  paths = [ package ];
+  paths = [ package ] ++ extraPaths;
   meta.mainProgram = binName;
   inherit passthru;
   postBuild = ''
