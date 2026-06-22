@@ -1,99 +1,118 @@
 _: {
   flake = rec {
     nixosModules.base =
-      { self, pkgs, ... }:
       {
-        nix.settings = {
-          experimental-features = [
-            "nix-command"
-            "flakes"
-          ];
-          extra-substituters = [
-            "https://nix-community.cachix.org"
-            "https://soft-nix.cachix.org"
-          ];
-          extra-trusted-public-keys = [
-            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-            "soft-nix.cachix.org-1:/e6Y6fH2WAyIFK+F7+8bXTF4KdO4eRa4ed/d46Ytrxs="
-          ];
-          auto-optimise-store = true;
-          download-buffer-size = 134217728; # 128 MiB
-        };
-
-        environment.systemPackages =
-          (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
-            bash-wrapped
-            git-wrapped
-            ntfy-wrapped
-            send-file
-            tmux-wrapped
-            tmux-sessionizer
-            switch
-          ])
-          ++ (with pkgs; [
-            bat
-            coreutils
-            entr
-            eza
-            fd
-            fzf
-            htop
-            jq
-            magic-wormhole
-            ripgrep
-            wget
-          ]);
-
-        # Set EDITOR via environment.variables (not zsh's login-only .zprofile)
-        # so it applies to non-login shells too, e.g. shells spawned by ghostty.
-        # Sourced by /etc/zshenv on both NixOS and nix-darwin, and overrides the
-        # nixpkgs `mkDefault "nano"`. See issue #227.
-        environment.variables.EDITOR = "nvim";
-
-        age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
-
-        programs = {
-          ssh.extraConfig = ''
-            Host *
-              ServerAliveInterval 10
-              ServerAliveCountMax 3
-              ControlMaster auto
-              ControlPersist 3600
-              ControlPath ~/.ssh/ctrl-%r@%h:%p
-              ForwardAgent yes
-              AddKeysToAgent yes
+        self,
+        pkgs,
+        lib,
+        config,
+        ...
+      }:
+      {
+        options.programs.gitWrapped.extraRuntimeInputs = lib.mkOption {
+          type = lib.types.listOf lib.types.package;
+          default = [ ];
+          description = ''
+            Extra tools placed on git's controlled PATH. git-wrapped runs with
+            inheritPath = false, so anything it shells out to must be enumerated.
+            Used for host-specific tools kept out of every closure — notably the
+            editor and gen-commit-msg, which pull neovim-wrapped (off the pi).
           '';
-
-          ssh.knownHosts = {
-            pi = {
-              hostNames = [ "pi" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
-            };
-            tower = {
-              hostNames = [ "tower" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
-            };
-            aaron = {
-              hostNames = [ "aaron" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
-            };
-          };
-
-          zsh = {
-            enable = true;
-            # Disable system compinit; we call compinit -u in .zshrc to skip
-            # insecure directory warnings caused by Nix store paths.
-            enableGlobalCompInit = false;
-          };
         };
 
-        services.openssh.enable = true;
+        config = {
+          nix.settings = {
+            experimental-features = [
+              "nix-command"
+              "flakes"
+            ];
+            extra-substituters = [
+              "https://nix-community.cachix.org"
+              "https://soft-nix.cachix.org"
+            ];
+            extra-trusted-public-keys = [
+              "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+              "soft-nix.cachix.org-1:/e6Y6fH2WAyIFK+F7+8bXTF4KdO4eRa4ed/d46Ytrxs="
+            ];
+            auto-optimise-store = true;
+            download-buffer-size = 134217728; # 128 MiB
+          };
 
-        users.users.soft.openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSr+lSqswj8+pzE2Aym5AAjpHHO+48n4IhVk8y7oEpk soft@aaron"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHXiLGjBlPoqRSzJ7KfEyMzJ3JRBqelOepsiL4ri9OqW soft@leod"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILe8/rx4MPrvwQBU1cy5qkhBgnRALS6Jzc9I20EcBnAx soft@nixos"
-        ];
+          environment.systemPackages =
+            (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+              bash-wrapped
+              (git-wrapped.override { inherit (config.programs.gitWrapped) extraRuntimeInputs; })
+              ntfy-wrapped
+              send-file
+              tmux-wrapped
+              tmux-sessionizer
+              switch
+            ])
+            ++ (with pkgs; [
+              bat
+              coreutils
+              entr
+              eza
+              fd
+              fzf
+              htop
+              jq
+              magic-wormhole
+              ripgrep
+              wget
+            ]);
+
+          # Set EDITOR via environment.variables (not zsh's login-only .zprofile)
+          # so it applies to non-login shells too, e.g. shells spawned by ghostty.
+          # Sourced by /etc/zshenv on both NixOS and nix-darwin, and overrides the
+          # nixpkgs `mkDefault "nano"`. See issue #227.
+          environment.variables.EDITOR = "nvim";
+
+          age.secrets.tailscale-authkey.file = ../secrets/tailscale-authkey.age;
+
+          programs = {
+            ssh.extraConfig = ''
+              Host *
+                ServerAliveInterval 10
+                ServerAliveCountMax 3
+                ControlMaster auto
+                ControlPersist 3600
+                ControlPath ~/.ssh/ctrl-%r@%h:%p
+                ForwardAgent yes
+                AddKeysToAgent yes
+            '';
+
+            ssh.knownHosts = {
+              pi = {
+                hostNames = [ "pi" ];
+                publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
+              };
+              tower = {
+                hostNames = [ "tower" ];
+                publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
+              };
+              aaron = {
+                hostNames = [ "aaron" ];
+                publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
+              };
+            };
+
+            zsh = {
+              enable = true;
+              # Disable system compinit; we call compinit -u in .zshrc to skip
+              # insecure directory warnings caused by Nix store paths.
+              enableGlobalCompInit = false;
+            };
+          };
+
+          services.openssh.enable = true;
+
+          users.users.soft.openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSr+lSqswj8+pzE2Aym5AAjpHHO+48n4IhVk8y7oEpk soft@aaron"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHXiLGjBlPoqRSzJ7KfEyMzJ3JRBqelOepsiL4ri9OqW soft@leod"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILe8/rx4MPrvwQBU1cy5qkhBgnRALS6Jzc9I20EcBnAx soft@nixos"
+          ];
+        };
       };
 
     darwinModules.base = nixosModules.base;

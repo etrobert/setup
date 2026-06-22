@@ -104,6 +104,15 @@ _: {
           in
           inputPackages ++ customPackages ++ externalPackages;
 
+        # git-wrapped runs with a controlled PATH (inheritPath = false). Put the
+        # editor and commit helpers on it here rather than in base so neovim-wrapped
+        # stays out of the pi's closure.
+        programs.gitWrapped.extraRuntimeInputs = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+          neovim-wrapped
+          gen-commit-msg
+          git-find-commit
+        ];
+
         age.secrets = {
           openai-api-key = {
             file = ../secrets/openai-api-key.age;

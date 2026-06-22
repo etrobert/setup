@@ -3,27 +3,29 @@
   self',
   wrapPackage,
   userConfig ? ./gitconfig-user,
+  # Host-specific tools git shells out to that we don't want in every closure
+  # (notably the editor / gen-commit-msg, which pull neovim-wrapped — kept off
+  # the pi). Workstations inject these via modules/workstation.nix.
+  extraRuntimeInputs ? [ ],
 }:
-# TODO: restrict PATH to explicit inputs (inheritPath = false) rather than
-# inheriting the ambient PATH — see discussion on #295.
 let
-  deps = with pkgs; [
-    # TODO: Fix this
-    # Removed so that neovim-wrapped is not included on the pi
-    # self'.packages.gen-commit-msg
-    difftastic
-    fzf
-
-    # Tools the shell aliases in gitconfig-system call out to. Without these the
-    # aliases break when nothing on the ambient PATH provides them (e.g. under a
-    # bare `nix run`).
-    bat # ushow
-    coreutils # sort, cut (alias, falias, fw)
-    findutils # xargs (dbranch, ushow, falias)
-    gnugrep # grep (dbranch, alias)
-    gnused # sed (sco, alias)
-    util-linux # column (alias)
-  ];
+  # git runs with inheritPath = false, so it sees a controlled PATH rather than
+  # the ambient one. Everything git shells out to during normal operation and
+  # for the aliases baked into gitconfig-system must be enumerated here.
+  deps =
+    (with pkgs; [
+      difftastic # `ds`/`dft`/`dlog`/`dshow`/`slist` aliases (diff.external=difft)
+      fzf # `sco`/`falias`/`fw` aliases
+      gnused # `sco`/`alias` aliases
+      gnugrep # `dbranch`/`alias` aliases
+      findutils # xargs in `dbranch`/`ushow`/`falias`
+      util-linux # column in `alias`
+      coreutils # sort/cut/column pipelines in `alias`/`falias`/`fw`
+      bat # `ushow` alias
+      less # default pager
+      openssh # push/fetch over SSH
+    ])
+    ++ extraRuntimeInputs;
 
   git-worktree-add = pkgs.writeShellApplication {
     name = "git-worktree-add";
@@ -64,5 +66,5 @@ wrapPackage {
     GIT_CONFIG_GLOBAL = "${userConfig}";
   };
   runtimeInputs = deps;
-  inheritPath = true;
+  inheritPath = false;
 }
