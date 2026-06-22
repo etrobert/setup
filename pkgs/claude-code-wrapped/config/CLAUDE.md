@@ -120,6 +120,9 @@ grant it rather than attempting to act as them.
 
 After committing on a branch, open a PR with `gh pr create`.
 
+When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
+output), include a screenshot in the PR description.
+
 Each commit should be functional — don't commit broken or speculative states.
 
 Always rebase on origin/main before presenting a PR for review — both on initial
