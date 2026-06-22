@@ -62,9 +62,3 @@ alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
 alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
 
 alias cly="claude --dangerously-skip-permissions"
-
-# Background agents view scoped to one project: defaults to the current dir,
-# accepts a path override.  Avoids the merged cross-project list.
-agents() {
-  claude agents --cwd "${1:-$PWD}"
-}

@@ -80,6 +80,7 @@
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
+        agents = pkgs.callPackage ./agents { inherit self'; };
         inherit ntfy-wrapped hass-cli-wrapped;
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
