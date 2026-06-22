@@ -7,15 +7,23 @@
 # afplay on macOS, paplay on Linux.
 #
 # Uses the nixpkgs `piper-tts` package directly — no wheel hashes to pin or
-# version matrix to maintain. That package propagates piper's training stack
-# (torch, pytorch-lightning, tensorboard, pysilero-vad) as runtime deps, so the
-# closure is ~2.9 GB; but synthesis runs through onnxruntime and never imports
-# them, so there is no runtime cost — the price is purely disk.
+# version matrix to maintain.
+#
+# That package declares piper's full training stack (torch, pytorch-lightning,
+# tensorboard, pysilero-vad) as runtime `dependencies`, but we only ever run
+# inference (onnxruntime). Worse, `pysilero-vad` is marked broken on darwin
+# (`ld: unknown option: --disable-new-dtags`, with no upstream fix), which fails
+# the aaron build outright. So we strip `dependencies` down to the three the
+# inference path actually needs — onnxruntime, numpy, pathvalidate. This fixes
+# the darwin build and shrinks the closure from ~2.9 GB to ~845 MB.
+# `dontCheckRuntimeDeps` because we are deliberately dropping declared (but
+# never-imported-at-inference) requirements.
 #
 # The voice model itself is not packaged in nixpkgs (only the engine is), so it
 # is fetched below. Unlike a wheel, it is a single immutable artifact: the hash
 # is set once and never needs bumping.
 {
+  lib,
   stdenv,
   fetchurl,
   runCommand,
@@ -25,6 +33,18 @@
   writeShellApplication,
 }:
 let
+  # Inference-only piper: see header for why the training stack is stripped.
+  piper = piper-tts.overridePythonAttrs (old: {
+    dontCheckRuntimeDeps = true;
+    dependencies = builtins.filter (
+      d:
+      builtins.any (s: lib.hasInfix s (d.pname or d.name or "")) [
+        "onnxruntime"
+        "numpy"
+        "pathvalidate"
+      ]
+    ) (old.dependencies or old.propagatedBuildInputs or [ ]);
+  });
   # Bundle the default voice (model + its config) in one store path so the
   # wrapper can point piper at it.
   ryanHigh = runCommand "piper-voice-en_US-ryan-high" { } ''
@@ -51,7 +71,7 @@ in
 writeShellApplication {
   name = "tts-piper";
   runtimeInputs = [
-    piper-tts
+    piper
     coreutils
   ];
   inheritPath = false;
