@@ -4,6 +4,10 @@ if [[ $(uname) == 'Linux' ]]; then
   alias home-assistant="docker run -d --name homeassistant -e TZ=\"Europe/Berlin\" -v ~/.config/home-assistant:/config --network=host ghcr.io/home-assistant/home-assistant:stable"
 fi
 
+if [[ $(uname) == 'Darwin' ]]; then
+  alias bg="open \"/Volumes/T7/Applications/Baldur's Gate 3.app/Contents/MacOS/Baldur's Gate 3 GOG\""
+fi
+
 alias grep='grep --color=auto'
 
 # Ask for confirmation before overriding
