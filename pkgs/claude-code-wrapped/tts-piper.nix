@@ -1,19 +1,16 @@
 # Piper TTS backend: reads text on stdin and speaks it with a local neural voice
-# (default en_US-ryan-high). Implements the `tts-*` interface consumed by
-# `speak` (stdin in, audio out); swap engines at runtime via $SPEAK_TTS.
+# (en_US-ryan-high). Implements the `tts-*` interface consumed by `speak`
+# (stdin in, audio out); swap engines at runtime via $SPEAK_TTS.
 #
 # Piper is fully local (no cloud, no cost) and cross-platform. Unlike macOS
-# `say`, it only produces audio samples, so this backend plays them itself:
-# afplay on macOS, paplay on Linux.
+# `say`, it only produces audio samples, so this backend plays them itself via
+# the `play` helper (afplay on macOS, paplay on Linux).
 #
-# Override the voice with $SPEAK_PIPER_VOICE set to an absolute path to a
-# `<voice>.onnx` file (its `.onnx.json` must sit beside it). Default is the
-# bundled ryan-high.
-#
-# Packaged from the upstream v1.4.2 wheel: nixpkgs `piper-tts` is broken
-# (its training dep pysilero-vad is marked broken) and the prebuilt macOS
-# standalone binary ships no dylibs. The wheel needs only onnxruntime + numpy
-# (espeak-ng is bundled inside it), so the closure stays light (no torch).
+# Packaged from the upstream v1.4.2 wheel rather than nixpkgs `piper-tts`: the
+# nixpkgs package propagates the full training stack (torch, pytorch-lightning,
+# tensorboard, pysilero-vad) as runtime deps. The wheel needs only onnxruntime
+# + numpy + pathvalidate (espeak-ng is bundled inside it), so the closure stays
+# light (no torch).
 {
   lib,
   stdenv,
@@ -82,31 +79,43 @@ let
       }
     } $out/en_US-ryan-high.onnx.json
   '';
+
+  # `play <file.wav>`: which player and whether PulseAudio is pulled in is a
+  # build-time choice, so the PulseAudio dependency only enters the Linux
+  # closure. afplay is built into macOS.
+  play =
+    if stdenv.isDarwin then
+      writeShellApplication {
+        name = "play";
+        inheritPath = false;
+        text = ''/usr/bin/afplay "$@"'';
+      }
+    else
+      writeShellApplication {
+        name = "play";
+        runtimeInputs = [ pulseaudio ];
+        inheritPath = false;
+        text = ''paplay "$@"'';
+      };
 in
 writeShellApplication {
   name = "tts-piper";
   runtimeInputs = [
     pythonEnv
     coreutils
-  ]
-  ++ lib.optionals stdenv.isLinux [ pulseaudio ];
+    play
+  ];
   inheritPath = false;
   text = ''
-    model="''${SPEAK_PIPER_VOICE:-${ryanHigh}/en_US-ryan-high.onnx}"
-    if [ ! -f "$model" ]; then
-      echo "tts-piper: voice model not found: $model" >&2
-      exit 1
-    fi
+    model="${ryanHigh}/en_US-ryan-high.onnx"
 
-    wav=$(mktemp -t tts-piper.XXXXXX.wav)
-    trap 'rm -f "$wav"' EXIT
+    # piper only emits audio samples, so synthesize to a temp WAV and play it.
+    wav=$(mktemp --tmpdir tts-piper.XXXXXX.wav)
+    trap 'rm --force "$wav"' EXIT
 
-    # piper reads the text to speak on stdin and writes a WAV to -f.
+    # piper reads the text to speak on stdin and writes a WAV to --output-file.
     python -m piper --model "$model" --output-file "$wav"
 
-    case "$(uname)" in
-      Darwin) /usr/bin/afplay "$wav" ;;
-      *) paplay "$wav" ;;
-    esac
+    play "$wav"
   '';
 }
