@@ -99,6 +99,7 @@
           ./modules/pimsync.nix
           ./modules/lan-dns.nix
           ./modules/darkman.nix
+          ./modules/mpd.nix
           ./modules/hypridle.nix
           ./modules/awww.nix
           ./modules/cachix-push.nix
