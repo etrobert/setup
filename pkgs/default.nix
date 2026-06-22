@@ -45,6 +45,7 @@
         # TTS backends for `speak` (stdin -> audio). Selected at runtime via
         # $SPEAK_TTS; each is runnable standalone, e.g. `echo hi | nix run .#tts-say`.
         tts-say = pkgs.callPackage ./claude-code-wrapped/tts-say.nix { };
+        tts-piper = pkgs.callPackage ./claude-code-wrapped/tts-piper.nix { };
         copilot-api = pkgs.callPackage ./copilot-api { };
         claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
           inherit claude-code ntfy-wrapped hass-cli-wrapped;
