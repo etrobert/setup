@@ -28,10 +28,20 @@
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { inherit wrapPackage; };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
-          inherit claude-code ntfy-wrapped hass-cli-wrapped;
+          inherit
+            claude-code
+            ntfy-wrapped
+            hass-cli-wrapped
+            wrapPackage
+            ;
         };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
-          inherit claude-code ntfy-wrapped hass-cli-wrapped;
+          inherit
+            claude-code
+            ntfy-wrapped
+            hass-cli-wrapped
+            wrapPackage
+            ;
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
             API_TIMEOUT_MS = "3000000";
@@ -48,7 +58,12 @@
         tts-piper = pkgs.callPackage ./claude-code-wrapped/tts-piper.nix { };
         copilot-api = pkgs.callPackage ./copilot-api { };
         claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
-          inherit claude-code ntfy-wrapped hass-cli-wrapped;
+          inherit
+            claude-code
+            ntfy-wrapped
+            hass-cli-wrapped
+            wrapPackage
+            ;
           extraEnv = {
             ANTHROPIC_BASE_URL = "http://localhost:4141";
             ANTHROPIC_AUTH_TOKEN = "dummy"; # proxy authenticates via GitHub itself

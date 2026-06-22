@@ -8,6 +8,11 @@
 #   wrapPackage {
 #     package        = pkgs.foo;           # required – base package
 #     name           ? "<mainProgram>-wrapped"; # derivation name
+#     binName        ? package.meta.mainProgram; # optional rename: when this
+#                                         #   differs from package.meta.mainProgram the
+#                                         #   binary is mv'd to it before wrapping; the
+#                                         #   wrap target and meta.mainProgram both use it.
+#                                         #   Defaults to the upstream name (a no-op).
 #     env            ? {};                 # attrset; each becomes --set NAME value
 #                                         #   (forced; overrides the environment)
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
@@ -44,6 +49,7 @@
 
 {
   package,
+  binName ? package.meta.mainProgram,
   inheritPath ? false,
   env ? { },
   setDefaults ? { },
@@ -55,7 +61,13 @@
   passthru ? { },
 }:
 let
-  binName = package.meta.mainProgram;
+  mainProgram = package.meta.mainProgram;
+
+  # Rename the binary in $out/bin before wrapping when the caller requested a
+  # different name (e.g. claude → claude-copilot for alongside-install variants).
+  # binName defaults to mainProgram, so this is a no-op unless overridden.
+  renameScript =
+    if binName != mainProgram then "mv $out/bin/${mainProgram} $out/bin/${binName}" else "";
 
   # --prefix needs a separator argument (`--prefix PATH : <value>`); --set does
   # not.  Bake the whole prefix in so the PATH line below stays uniform.
@@ -121,6 +133,8 @@ symlinkJoin {
   inherit passthru;
   postBuild = ''
     ${checkScript}
+
+    ${renameScript}
 
     ${wrapCall}
 
