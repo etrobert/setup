@@ -107,6 +107,13 @@ input {
     position x=1280 y=0
 }
 
+// tower's Dell U3223QE (4K). Matched by make/model/serial so it only applies
+// to this exact monitor, not other hosts' HDMI-A-1. 1.5 = 150% zoom, logical
+// 2560x1440. Niri auto-picks 1.25 otherwise.
+output "Dell Inc. DELL U3223QE 1GPL9P3" {
+    scale 1.5
+}
+
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Layout
