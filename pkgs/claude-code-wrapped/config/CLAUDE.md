@@ -79,10 +79,8 @@ Prefer flake-native Nix over legacy invocations. Examples:
 Avoid `with import <nixpkgs> {}` and `<nixpkgs>` channel lookups in commands —
 use `nixpkgs#` flake refs and `--apply` to transform results.
 
-When embedding another language inside a plain Nix string, add a language-hint
-comment so the editor injects syntax highlighting. The comment must be adjacent
-to the string (between the `=` and the `''`, not above the binding). Prefer an
-inline block comment:
+When embedding another language inside a plain Nix string, add a language hint
+comment so the editor injects syntax highlighting. Example:
 
 ```nix
 linuxPrimitives = /* bash */ ''
