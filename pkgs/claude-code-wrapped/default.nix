@@ -16,11 +16,14 @@ let
   formatFileScript = callPackage ./format-file.nix { };
   rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { ntfy-sh = ntfy-wrapped; };
   sessionHostScript = callPackage ./claude-session-host.nix { };
+
   ttsBackends = [
     (callPackage ./tts-say.nix { })
     (callPackage ./tts-piper.nix { })
   ];
+
   speakScript = callPackage ./speak.nix { inherit ttsBackends; };
+
   runtimeInputs = [
     statuslineScript
     formatFileScript
@@ -30,6 +33,7 @@ let
     hass-cli-wrapped
   ]
   ++ ttsBackends;
+
   agenixTokenRun = lib.optional readTokenFromAgenix ''export ANTHROPIC_AUTH_TOKEN="$(cat /run/agenix/z-ai-auth-token 2>/dev/null || true)"'';
 in
 wrapPackage {
