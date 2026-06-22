@@ -184,7 +184,12 @@ _: {
           package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
         };
 
-        hyprlock.enable = true;
+        hyprlock = {
+          enable = true;
+          # Supply the baked config via the wrapper; PAM and the binary remain
+          # managed by the NixOS programs.hyprlock module.
+          package = self.packages.${system}.hyprlock-wrapped;
+        };
       };
 
       home-manager.users.soft = self.homeModules.linux;
