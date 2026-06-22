@@ -84,10 +84,6 @@ let
   renameScript =
     if binName != mainProgram then "mv $out/bin/${mainProgram} $out/bin/${binName}" else "";
 
-  # --prefix needs a separator argument (`--prefix PATH : <value>`); --set does
-  # not.  Bake the whole prefix in so the PATH line below stays uniform.
-  pathPrefix = if inheritPath then "--prefix PATH :" else "--set PATH";
-
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
   lines =
@@ -109,12 +105,24 @@ let
     # is single-quoted so the build shell passes it to makeWrapper verbatim; any
     # $VAR / $(…) inside it is expanded only when the wrapper actually runs.
     ++ map (r: "    --run ${lib.escapeShellArg r}") run
-    # With empty runtimeInputs the --set form emits `--set PATH ''`, deliberately
-    # clearing PATH so the wrapped program runs against a known tool set rather
-    # than the ambient one.  escapeShellArg ensures the empty string is passed
-    # as a proper quoted argument (makeBinaryWrapper generates C at build time
-    # and requires the exact argument count to be correct).
-    ++ [ "    ${pathPrefix} ${lib.escapeShellArg (lib.makeBinPath runtimeInputs)}" ];
+    # PATH manipulation.  escapeShellArg keeps the value a properly quoted
+    # argument in both the shell and binary wrapper cases.
+    ++ (
+      let
+        path = lib.escapeShellArg (lib.makeBinPath runtimeInputs);
+      in
+      if !inheritPath then
+        # --set PATH '' deliberately clears PATH so the wrapped program runs
+        # against a known tool set (controlled execution environment) — emitted
+        # even when runtimeInputs is empty.
+        [ "    --set PATH ${path}" ]
+      else
+        # inheritPath=true: only prefix when there is something to add.  An
+        # empty --prefix value would prepend a leading colon (empty PATH element
+        # = CWD) under makeBinaryWrapper rather than being a no-op — a silent
+        # security regression — so omit the line entirely instead.
+        lib.optional (runtimeInputs != [ ]) "    --prefix PATH : ${path}"
+    );
 
   wrapCall =
     "wrapProgram $out/bin/${binName}"
