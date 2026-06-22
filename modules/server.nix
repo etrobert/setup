@@ -104,9 +104,6 @@
             hostName = "rack.etiennerobert.com";
           };
 
-          # The creatures systemd unit and the creatures.etiennerobert.com Caddy
-          # vhost are provided by creatures' own nixosModule (imported above); we
-          # only point it at the domain.
           creatures = {
             enable = true;
             hostName = "creatures.etiennerobert.com";
