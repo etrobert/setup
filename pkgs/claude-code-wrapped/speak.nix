@@ -4,7 +4,7 @@
   jq,
   writeShellApplication,
   # TTS backends made available on speak's PATH; the active one is chosen at
-  # runtime via $SPEAK_TTS (default tts-say).
+  # runtime via $SPEAK_TTS (default tts-piper).
   ttsBackends,
 }:
 writeShellApplication {

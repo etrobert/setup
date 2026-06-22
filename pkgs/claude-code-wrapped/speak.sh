@@ -4,7 +4,7 @@
 # Markdown formatting is stripped so the spoken output is plain prose.
 #
 # The text is piped to a swappable TTS backend named by $SPEAK_TTS (default
-# tts-say). Set e.g. SPEAK_TTS=tts-piper to switch engines without a rebuild;
+# tts-piper). Set e.g. SPEAK_TTS=tts-say to switch engines without a rebuild;
 # each backend reads text on stdin and speaks it.
 
 config="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
@@ -65,4 +65,4 @@ if [ -z "$text" ]; then
   exit 1
 fi
 
-printf '%s' "$text" | "${SPEAK_TTS:-tts-say}"
+printf '%s' "$text" | "${SPEAK_TTS:-tts-piper}"
