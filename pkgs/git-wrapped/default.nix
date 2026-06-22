@@ -4,6 +4,8 @@
   wrapPackage,
   userConfig ? ./gitconfig-user,
 }:
+# TODO: restrict PATH to explicit inputs (inheritPath = false) rather than
+# inheriting the ambient PATH — see discussion on #295.
 let
   deps = with pkgs; [
     # TODO: Fix this
