@@ -1,15 +1,13 @@
 {
   lib,
   inputs',
-  symlinkJoin,
-  makeBinaryWrapper,
+  wrapPackage,
   zsh,
   writeText,
   linkFarm,
   zsh-autosuggestions,
   zsh-syntax-highlighting,
   fzf,
-  runCommandLocal,
 }:
 let
   pronto = lib.getExe inputs'.pronto.packages.default;
@@ -35,29 +33,30 @@ let
       path = zshrcFinal;
     }
   ];
-
-  _checks = runCommandLocal "zsh-config-check" { } ''
-    ${zsh}/bin/zsh -n ${./zshrc}
-    ${zsh}/bin/zsh -n ${./alias.sh}
-    mkdir $out
-  '';
 in
-symlinkJoin {
-  name = "zsh-wrapped";
-  nativeBuildInputs = [ makeBinaryWrapper ];
-  paths = [
-    zsh
-    _checks
+wrapPackage {
+  package = zsh;
+  # makeBinaryWrapper is required: it supports --inherit-argv0, which the
+  # shell-script makeWrapper does not.
+  binaryWrapper = true;
+  # --inherit-argv0 preserves the login-shell dash in argv[0] (e.g. `-zsh`)
+  # so zsh is correctly detected as a login shell.  A makeWrapper shell-script
+  # wrapper loses it to the shebang re-exec, demoting login shells to
+  # non-login.  See issue #225.
+  inheritArgv0 = true;
+  # zsh is an interactive shell: it must inherit PATH from the environment so
+  # user commands resolve normally.  inheritPath = true with no runtimeInputs
+  # causes wrapPackage to omit the PATH line entirely, which avoids the bare ':'
+  # that makeBinaryWrapper's C prefix function would prepend with an empty value.
+  inheritPath = true;
+  env = {
+    ZDOTDIR = zdotdir;
+  };
+  passthru = {
+    shellPath = "/bin/zsh";
+  };
+  checks = [
+    "${zsh}/bin/zsh -n ${./zshrc}"
+    "${zsh}/bin/zsh -n ${./alias.sh}"
   ];
-  meta.mainProgram = "zsh";
-  postBuild = ''
-    # --inherit-argv0 preserves the login-shell dash in argv[0] (e.g. `-zsh`)
-    # so zsh is correctly detected as a login shell. A makeWrapper shell-script
-    # wrapper loses it to the shebang re-exec, demoting login shells to
-    # non-login. See issue #225.
-    wrapProgram $out/bin/zsh \
-      --inherit-argv0 \
-      --set ZDOTDIR ${zdotdir}
-  '';
-  passthru.shellPath = "/bin/zsh";
 }
