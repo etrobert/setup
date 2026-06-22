@@ -7,11 +7,9 @@ creative (dance, sewing, makeup, aerials, and more). Uses Claude for both
 software engineering and non-technical work. Tracks life documentation in
 Markdown files, often located at `~/sync/doc`.
 
-On the Claude **Max** plan (the top paid tier, with the most generous 5-hour and
-weekly limits) — limits are comfortable but not unlimited, so stay limit-aware.
-Has a GitHub Copilot Pro individual subscription (annual, ~300 premium
-requests/month). Has a GLM Pro subscription (z.ai) powering the `claude-glm` /
-`claude-code-wrapped-glm` backend.
+On the Claude **Max** plan. Has a GitHub Copilot Pro individual subscription
+(annual, ~300 premium requests/month). Has a GLM Pro subscription (z.ai)
+powering the `claude-glm` / `claude-code-wrapped-glm` backend.
 
 Sews decently. IKEA Family member (Germany).
 
