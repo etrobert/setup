@@ -44,6 +44,11 @@ wrapPackage {
   # wrapper loses it to the shebang re-exec, demoting login shells to
   # non-login.  See issue #225.
   inheritArgv0 = true;
+  # zsh is an interactive shell: it must inherit PATH from the environment so
+  # user commands resolve normally.  inheritPath = true with no runtimeInputs
+  # causes wrapPackage to omit the PATH line entirely, which avoids the bare ':'
+  # that makeBinaryWrapper's C prefix function would prepend with an empty value.
+  inheritPath = true;
   env = {
     ZDOTDIR = zdotdir;
   };
