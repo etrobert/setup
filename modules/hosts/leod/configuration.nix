@@ -25,7 +25,6 @@
 
   hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
-  # Overriding so that it gets hypridle
   home-manager.users.soft = self.homeModules.leod;
 
   # Disable fingerprint as part of PAM in hyprlock

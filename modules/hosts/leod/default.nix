@@ -23,6 +23,7 @@ in
       self.nixosModules.nixosBase
       self.nixosModules.base
       self.nixosModules.unfree
+      self.nixosModules.hypridle
     ];
   };
 }
