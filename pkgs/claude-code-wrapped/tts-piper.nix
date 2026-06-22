@@ -3,8 +3,8 @@
 # (stdin in, audio out); swap engines at runtime via $SPEAK_TTS.
 #
 # Piper is fully local (no cloud, no cost) and cross-platform. Unlike macOS
-# `say`, it only produces audio samples, so this backend plays them itself via
-# the `play` helper (afplay on macOS, paplay on Linux).
+# `say`, it only produces audio samples, so this backend plays them itself:
+# afplay on macOS, paplay on Linux.
 #
 # Packaged from the upstream v1.4.2 wheel rather than nixpkgs `piper-tts`: the
 # nixpkgs package propagates the full training stack (torch, pytorch-lightning,
@@ -80,30 +80,16 @@ let
     } $out/en_US-ryan-high.onnx.json
   '';
 
-  # `play <file.wav>`: which player and whether PulseAudio is pulled in is a
-  # build-time choice, so the PulseAudio dependency only enters the Linux
-  # closure. afplay is built into macOS.
-  play =
-    if stdenv.isDarwin then
-      writeShellApplication {
-        name = "play";
-        inheritPath = false;
-        text = ''/usr/bin/afplay "$@"'';
-      }
-    else
-      writeShellApplication {
-        name = "play";
-        runtimeInputs = [ pulseaudio ];
-        inheritPath = false;
-        text = ''paplay "$@"'';
-      };
+  # Referencing paplay by absolute store path pulls PulseAudio into the closure
+  # only on Linux; on macOS afplay is a bare string (built into the OS), so the
+  # dependency stays off the Darwin closure.
+  player = if stdenv.isDarwin then "/usr/bin/afplay" else "${pulseaudio}/bin/paplay";
 in
 writeShellApplication {
   name = "tts-piper";
   runtimeInputs = [
     pythonEnv
     coreutils
-    play
   ];
   inheritPath = false;
   text = ''
@@ -116,6 +102,6 @@ writeShellApplication {
     # piper reads the text to speak on stdin and writes a WAV to --output-file.
     python -m piper --model "$model" --output-file "$wav"
 
-    play "$wav"
+    ${player} "$wav"
   '';
 }
