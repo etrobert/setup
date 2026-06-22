@@ -21,7 +21,7 @@
       packages = {
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs' wrapPackage; };
         git-wrapped = pkgs.callPackage ./git-wrapped { inherit self' wrapPackage; };
-        zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
+        zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs' wrapPackage; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         vim-wrapped = pkgs.callPackage ./vim-wrapped { inherit wrapPackage; };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { inherit wrapPackage; };

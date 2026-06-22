@@ -20,6 +20,12 @@
 #                                         #   produces a compiled binary rather than a shell
 #                                         #   script — required on macOS for .app bundles
 #                                         #   (macOS refuses shell-script .app executables)
+#                                         #   and for flags only the binary wrapper supports
+#                                         #   such as --inherit-argv0
+#     inheritArgv0   ? false;              # pass --inherit-argv0 to the wrap
+#                                         #   call, preserving argv[0] across
+#                                         #   exec (e.g. the login-shell dash);
+#                                         #   requires binaryWrapper = true
 #     env            ? {};                 # attrset; each becomes --set NAME value
 #                                         #   (forced; overrides the environment)
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
@@ -46,7 +52,7 @@
 #
 # The surface grows one conversion at a time: each new wrapped package adds only
 # the option it needs (waybar → flags/runtimeInputs/filesToPatch; ntfy →
-# setDefaults; further ones will add env, … as required).
+# setDefaults; zsh → env/binaryWrapper/inheritArgv0; …).
 #
 # filesToPatch: for each listed file, resolve the symlink to its target, copy
 # the file (replacing the symlink with a writable copy) and substituteInPlace it
@@ -65,6 +71,7 @@
   extraPaths ? [ ],
   inheritPath ? false,
   binaryWrapper ? false,
+  inheritArgv0 ? false,
   env ? { },
   setDefaults ? { },
   flags ? [ ],
@@ -87,9 +94,14 @@ let
   # Build the wrapProgram argument lines.  Each element of `lines` is one
   # continuation line (the line-continuation backslash is added by the join).
   lines =
+    # --inherit-argv0: preserve argv[0] across exec so the login-shell dash
+    # (e.g. `-zsh`) survives the wrapper exec.  A shell-script wrapper loses it
+    # to the shebang re-exec, demoting login shells to non-login (issue #225).
+    # Only makeBinaryWrapper supports this flag.
+    lib.optional inheritArgv0 "    --inherit-argv0"
     # --set: force a value into the environment the wrapped program sees,
     # overriding whatever was present at launch.
-    lib.mapAttrsToList (k: v: "    --set ${lib.escapeShellArg k} ${lib.escapeShellArg v}") env
+    ++ lib.mapAttrsToList (k: v: "    --set ${lib.escapeShellArg k} ${lib.escapeShellArg v}") env
     # --set-default: bake in a value the wrapped program uses unless the same
     # variable is already present in the environment at runtime.
     ++ lib.mapAttrsToList (
