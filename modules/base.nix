@@ -2,6 +2,10 @@ _: {
   flake = rec {
     nixosModules.base =
       { self, pkgs, ... }:
+      let
+        prettierrcContent = builtins.toJSON { proseWrap = "always"; };
+        homeDir = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/soft" else "/home/soft";
+      in
       {
         nix.settings = {
           experimental-features = [
@@ -94,6 +98,12 @@ _: {
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHXiLGjBlPoqRSzJ7KfEyMzJ3JRBqelOepsiL4ri9OqW soft@leod"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILe8/rx4MPrvwQBU1cy5qkhBgnRALS6Jzc9I20EcBnAx soft@nixos"
         ];
+
+        system.activationScripts.prettierrc.text = /* bash */ ''
+          printf '%s' '${prettierrcContent}' > '${homeDir}/.prettierrc'
+          chown soft '${homeDir}/.prettierrc'
+          chmod 644 '${homeDir}/.prettierrc'
+        '';
       };
 
     darwinModules.base = nixosModules.base;
