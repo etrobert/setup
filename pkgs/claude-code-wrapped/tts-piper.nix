@@ -9,13 +9,14 @@
 # Uses the nixpkgs `piper-tts` package directly — no wheel hashes to pin or
 # version matrix to maintain.
 #
-# That package declares piper's full training stack (torch, pytorch-lightning,
-# tensorboard, pysilero-vad) as runtime `dependencies`, but inference needs none
-# of it — Piper synthesizes through onnxruntime. So we strip `dependencies` down
-# to what the inference path actually uses (onnxruntime, numpy, pathvalidate),
-# shrinking the closure from ~2.9 GB to ~845 MB. `dontCheckRuntimeDeps` because
-# we deliberately drop declared-but-unused requirements; if Piper ever imported
-# one at inference time, the build's import check would catch it.
+# nixpkgs wires piper's full training stack (torch, pytorch-lightning,
+# tensorboard, pysilero-vad) in as runtime `dependencies`, but in piper's own
+# metadata those are all optional extras (`extra == "train"` etc.) — the only
+# core runtime requirements are onnxruntime and pathvalidate. Inference goes
+# through onnxruntime and needs none of the extras, so we strip `dependencies`
+# back to the core requirements, shrinking the closure from ~2.9 GB to ~845 MB.
+# The standard runtime-deps check still passes, since it only enforces the
+# core requires (verified: dropping onnxruntime makes it fail).
 #
 # A side benefit: stripping the training stack also drops `pysilero-vad`, which
 # is marked broken on darwin (`ld: unknown option: --disable-new-dtags`) — so
@@ -37,12 +38,10 @@
 let
   # Inference-only piper: see header for why the training stack is stripped.
   piper = piper-tts.overridePythonAttrs (old: {
-    dontCheckRuntimeDeps = true;
     dependencies = builtins.filter (
       d:
       builtins.any (s: lib.hasInfix s (d.pname or d.name or "")) [
         "onnxruntime"
-        "numpy"
         "pathvalidate"
       ]
     ) (old.dependencies or old.propagatedBuildInputs or [ ]);
