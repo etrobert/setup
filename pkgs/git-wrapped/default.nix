@@ -1,10 +1,11 @@
 {
   pkgs,
   self',
-  lib,
+  wrapPackage,
   userConfig ? ./gitconfig-user,
 }:
-# TODO: --set PATH
+# TODO: restrict PATH to explicit inputs (inheritPath = false) rather than
+# inheriting the ambient PATH — see discussion on #295.
 let
   deps = with pkgs; [
     # TODO: Fix this
@@ -33,6 +34,7 @@ let
     ];
     text = builtins.readFile ./git-worktree-remove.sh;
   };
+
   systemConfig = pkgs.concatText "gitconfig-system" [
     ./gitconfig-system
     (pkgs.writeText "gitconfig-system-excludes" /* gitconfig */ ''
@@ -41,21 +43,16 @@ let
     '')
   ];
 in
-pkgs.symlinkJoin {
-  name = "git-wrapped";
-  nativeBuildInputs = with pkgs; [ makeWrapper ];
-  paths =
-    with pkgs;
-    [ git ]
-    ++ [
-      git-worktree-add
-      git-worktree-remove
-    ];
-  meta.mainProgram = "git";
-  postBuild = ''
-    wrapProgram $out/bin/git \
-      --set GIT_CONFIG_SYSTEM ${systemConfig} \
-      --set GIT_CONFIG_GLOBAL ${userConfig} \
-      --prefix PATH : ${lib.makeBinPath deps}
-  '';
+wrapPackage {
+  package = pkgs.git;
+  extraPaths = [
+    git-worktree-add
+    git-worktree-remove
+  ];
+  env = {
+    GIT_CONFIG_SYSTEM = "${systemConfig}";
+    GIT_CONFIG_GLOBAL = "${userConfig}";
+  };
+  runtimeInputs = deps;
+  inheritPath = true;
 }
