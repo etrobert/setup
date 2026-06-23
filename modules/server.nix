@@ -119,13 +119,27 @@
         users.users.caddy.extraGroups = [ "filebrowser" ];
 
         systemd = {
-          # Override the filebrowser module's default UMask of 0077, which would strip the group
-          # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
-          # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700 on every boot,
-          # which would block caddy from traversing into the directory.
-          tmpfiles.settings.filebrowser."/srv/files/adele".d.mode = lib.mkForce "0755";
+          # Own /srv/files as soft:users with the setgid bit so it can be populated over
+          # plain SSH/scp without sudo, and so new entries consistently inherit group
+          # "users" (caddy/imgproxy read via the world r-x bits, so they need no membership).
+          # Without this the dir is root:root 0755 — every write needs sudo, and ad-hoc
+          # `sudo cp` leaves a mix of root/soft-owned files. The filebrowser-managed
+          # adele/ subtree keeps its own ownership (see the caddy group + UMask overrides).
+          tmpfiles.settings.filebrowser = {
+            "/srv/files".d = {
+              user = "soft";
+              group = "users";
+              mode = "2775";
+            };
+
+            # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700
+            # on every boot, which would block caddy from traversing into the directory.
+            "/srv/files/adele".d.mode = lib.mkForce "0755";
+          };
 
           services = {
+            # Override the filebrowser module's default UMask of 0077, which would strip the group
+            # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
             filebrowser.serviceConfig.UMask = lib.mkForce "0022";
 
             imgproxy = {
