@@ -13,33 +13,16 @@ fi
 
 DIRECTION=$1
 
-# Get the focused monitor from Hyprland
-# MONITOR=$(hyprctl activeworkspace -j | jq -r '.monitor')
-
-# Find the backlight device for this monitor by checking device paths
-DEVICE_ARG=""
-# for bl in /sys/class/backlight/*; do
-#   if readlink -f "$bl" | grep -q "card[0-9]*-${MONITOR}"; then
-#     DEVICE_ARG="-d $(basename "$bl")"
-#     break
-#   fi
-# done
-
-# if [ -z "$DEVICE_ARG" ]; then
-#   echo "Warning: No backlight device found for monitor $MONITOR, using default" >&2
-# fi
-
 EXPONENT=2
 INCREMENT=2.5%
 
-# shellcheck disable=SC2086 # DEVICE_ARG intentionally unquoted to expand to nothing or "-d name"
 if [ "$DIRECTION" = "up" ]; then
-  brightnessctl $DEVICE_ARG set --min-value=1 --exponent=$EXPONENT $INCREMENT+
+  brightnessctl set --min-value=1 --exponent="$EXPONENT" "$INCREMENT+"
 elif [ "$DIRECTION" = "down" ]; then
-  brightnessctl $DEVICE_ARG set --min-value=1 --exponent=$EXPONENT $INCREMENT-
+  brightnessctl set --min-value=1 --exponent="$EXPONENT" "$INCREMENT-"
 fi
-# shellcheck disable=SC2086 # DEVICE_ARG intentionally unquoted to expand to nothing or "-d name"
-PERCENT=$(brightnessctl --exponent=$EXPONENT $DEVICE_ARG -m | cut -d, -f4 | tr -d %)
+
+PERCENT=$(brightnessctl --exponent="$EXPONENT" -m | cut -d, -f4 | tr -d %)
 
 notify-send -h int:value:"$PERCENT" \
   -h string:x-canonical-private-synchronous:brightness \
