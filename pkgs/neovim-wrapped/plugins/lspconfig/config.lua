@@ -71,6 +71,9 @@ end
 vim.lsp.config("nixd", {
 	settings = {
 		nixd = {
+			nixpkgs = {
+				expr = "import (builtins.getFlake (builtins.toString ./.)).inputs.nixpkgs { }",
+			},
 			options = {
 				nixos = {
 					expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.tower.options",
