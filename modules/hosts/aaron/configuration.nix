@@ -100,6 +100,13 @@ in
       # Suppress the login MOTD (replaces home-manager home.file.".hushlogin")
       touch /Users/soft/.hushlogin
 
+      # Dock launches bypass the ghostty-wrapped wrapper, so install its config
+      # at the path GUI Ghostty reads (why not modify the .app: see ghostty-wrapped).
+      sudo -u soft mkdir -p /Users/soft/.config/ghostty
+      sudo -u soft ln --symbolic --force --no-dereference \
+        ${self.packages.${system}.ghostty-wrapped.configFile} \
+        /Users/soft/.config/ghostty/config
+
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
 
       # Set wallpaper

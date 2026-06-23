@@ -20,16 +20,8 @@ wrapPackage {
   # Linux-only: macOS has no desktop file and filesToPatch fails if it's absent.
   filesToPatch = lib.optional stdenv.hostPlatform.isLinux "$out/share/applications/com.mitchellh.ghostty.desktop";
 
-  postWrap = [
-    # On macOS, the .app bundle's binary symlinks directly to the unwrapped
-    # binary, bypassing the wrapper when launched from the Dock. Replace it
-    # with a symlink to $out/bin/ghostty so the Dock uses the wrapper too.
-    # The guard makes this a no-op on Linux where no .app bundle is present.
-    ''
-      if [ -d "$out/Applications/Ghostty.app" ]; then
-        rm $out/Applications/Ghostty.app/Contents/MacOS/ghostty
-        ln -s $out/bin/ghostty $out/Applications/Ghostty.app/Contents/MacOS/ghostty
-      fi
-    ''
-  ];
+  # Don't modify the .app: swapping its binary invalidates the code signature,
+  # which macOS 27 SIGKILLs. The Dock bypasses this wrapper, so the host instead
+  # delivers the GUI config via ~/.config/ghostty/config using this file.
+  passthru.configFile = ./config;
 }
