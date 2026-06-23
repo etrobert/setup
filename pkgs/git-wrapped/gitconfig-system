@@ -51,9 +51,8 @@
   defaulttoupstream = true
   conflictstyle = diff3
   log = true
-  # Don't keep backup .orig files
-  keepBackup = false
 [mergetool]
+  # Don't keep backup .orig files
   keepBackup = false
 [log]
   decorate = true
