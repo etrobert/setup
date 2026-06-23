@@ -17,6 +17,7 @@
     "temperature",
     "cpu",
     // "mpd"
+    "mpris",
     "custom/cpu-freq",
     "memory",
   ],
@@ -127,6 +128,17 @@
     "state-icons": {
       "paused": " ",
     },
+  },
+  "mpris": {
+    "format": "{status_icon}",
+    "status-icons": {
+      "playing": "󰐊",
+      "paused": "󰏤",
+      "stopped": "",
+    },
+    "tooltip-format": "{title}\n{artist}",
+    "on-click": "playerctl play-pause",
+    "interval": 2,
   },
   "bluetooth": {
     "format-on": "󰂯",
