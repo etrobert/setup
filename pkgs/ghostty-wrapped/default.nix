@@ -1,5 +1,7 @@
 {
   ghostty,
+  lib,
+  stdenv,
   wrapPackage,
 }:
 wrapPackage {
@@ -12,6 +14,12 @@ wrapPackage {
   # it must inherit the caller's PATH rather than having it cleared or replaced.
   inheritPath = true;
   flags = [ "--config-file=${./config}" ];
+
+  # The XDG desktop entry's Exec= points at the unwrapped binary, so launchers
+  # (fuzzel, etc.) bypass the wrapper's --config-file flag. Repoint it at $out.
+  # Linux-only: macOS has no desktop file and filesToPatch fails if it's absent.
+  filesToPatch = lib.optional stdenv.hostPlatform.isLinux "$out/share/applications/com.mitchellh.ghostty.desktop";
+
   postWrap = [
     # On macOS, the .app bundle's binary symlinks directly to the unwrapped
     # binary, bypassing the wrapper when launched from the Dock. Replace it
