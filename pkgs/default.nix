@@ -108,9 +108,9 @@
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit self inputs'; };
         toggle-cpu-governor = pkgs.callPackage ./toggle-cpu-governor { };
-        waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self' wrapPackage; };
+        waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit wrapPackage; };
         waybar-wrapped-dev = pkgs.callPackage ./waybar-wrapped {
-          inherit self' wrapPackage;
+          inherit wrapPackage;
           dev = true;
         };
         fuzzel-wrapped = pkgs.callPackage ./fuzzel-wrapped { inherit wrapPackage; };

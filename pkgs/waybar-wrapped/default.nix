@@ -1,5 +1,4 @@
 {
-  self',
   pkgs,
   wrapPackage,
   dev ? false,
