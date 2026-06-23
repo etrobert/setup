@@ -379,6 +379,7 @@ binds {
     // Using ghostty because of image and emoji support
     Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+E hotkey-overlay-title="Pick an Emoji: bemoji" { spawn-sh "BEMOJI_PICKER_CMD='fuzzel --dmenu' bemoji --type"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.

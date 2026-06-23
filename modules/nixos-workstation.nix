@@ -141,6 +141,7 @@ _: {
           externalPackages = with pkgs; [
             linuxPackages.cpupower
             bambu-studio
+            bemoji
             bitwarden-desktop
             brightnessctl
             chromium
@@ -156,6 +157,7 @@ _: {
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
+            wtype
           ];
         in
         customPackages ++ externalPackages;
