@@ -97,6 +97,9 @@ in
     activationScripts.postActivation.text = ''
       ln --symbolic --force --no-dereference /Users/soft/setup /etc/nix-darwin
 
+      # Suppress the login MOTD (replaces home-manager home.file.".hushlogin")
+      touch /Users/soft/.hushlogin
+
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
 
       # Set wallpaper
