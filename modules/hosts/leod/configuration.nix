@@ -5,7 +5,10 @@
 { self, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./low-battery.nix
+  ];
 
   boot.kernelParams = [ "mem_sleep_default=deep" ];
 
