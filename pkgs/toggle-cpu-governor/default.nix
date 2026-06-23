@@ -1,13 +1,11 @@
 {
   writeShellApplication,
-  coreutils,
   linuxPackages,
   kmod,
 }:
 writeShellApplication {
   name = "toggle-cpu-governor";
   runtimeInputs = [
-    coreutils
     linuxPackages.cpupower
     kmod # for modprobe called by cpupower
   ];

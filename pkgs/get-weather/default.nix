@@ -1,13 +1,11 @@
 {
   writeShellApplication,
-  coreutils,
   curl,
   jq,
 }:
 writeShellApplication {
   name = "get-weather";
   runtimeInputs = [
-    coreutils
     curl
     jq
   ];
