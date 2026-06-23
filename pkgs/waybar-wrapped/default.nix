@@ -22,7 +22,7 @@ wrapPackage {
     "--config ${config}"
     "--style ${style}"
   ];
-  runtimeInputs = [ self'.packages.get-weather ] ++ nixpkgsDeps;
+  runtimeInputs = nixpkgsDeps;
   # waybar.service points at the unwrapped binary; patch it to use the wrapper
   filesToPatch = [ "$out/share/systemd/user/waybar.service" ];
 }

@@ -4,23 +4,10 @@
   "position": "left",
   "layer": "top",
   "spacing": 8, // Gaps between modules in px (default is 4px)
-  "mtrgin": 4,
   "reload_style_on_change": true,
   // Choose the order of the modules
-  "modules-left": [
-    "clock#time",
-    "custom/weekday",
-    // "custom/weather",
-    "clock#date",
-  ],
-  "modules-center": [
-    "temperature",
-    "cpu",
-    // "mpd"
-    "custom/cpu-freq",
-    "memory",
-  ],
-  // "modules-center": ["mpd"],
+  "modules-left": ["clock#time", "custom/weekday", "clock#date"],
+  "modules-center": ["temperature", "cpu", "custom/cpu-freq", "memory"],
   "modules-right": [
     "pulseaudio",
     "network",
@@ -43,11 +30,6 @@
     "return-type": "json",
     "exec": "jq --null-input --compact-output --arg text \"$(date +'%a' | cut -c1-2)\" --arg tooltip \"$(date +'%A')\" '{ text: $text, tooltip: $tooltip }'",
     "interval": 60,
-  },
-  "custom/weather": {
-    "return-type": "json",
-    "exec": "get-weather",
-    "interval": 3600,
   },
   "battery": {
     "states": {
@@ -118,15 +100,6 @@
     "format-disconnected": "󰤫",
     "format-disabled": "󰤮",
     "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-  },
-  "mpd": {
-    "rotate": 90,
-    "format": "{stateIcon}{artist} - {title}",
-    "format-stopped": "",
-    "on-click": "mpc toggle",
-    "state-icons": {
-      "paused": " ",
-    },
   },
   "bluetooth": {
     "format-on": "󰂯",
