@@ -23,7 +23,6 @@ for fname in os.listdir(folder):
     path = os.path.join(folder, fname)
     for card in vobject.readComponents(open(path).read()):
         if not hasattr(card, "fn") or not hasattr(card, "bday"):
-            # print("No fn or bday, skipping")
             continue
 
         try:
