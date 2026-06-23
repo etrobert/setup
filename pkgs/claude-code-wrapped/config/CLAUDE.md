@@ -101,6 +101,10 @@ Skip it when nvim-treesitter's Nix injection queries already cover the attr name
 
 ## Code Style
 
+Default to simple code over feature-rich code. Build the minimal thing that
+solves the problem at hand; additional functionality can always be added later
+when it's actually needed.
+
 Prefer `kebab-case` for directory names.
 
 In shell scripts, prefer long-form parameters over single-letter ones where
