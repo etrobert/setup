@@ -58,9 +58,9 @@ file the information came from, rather than stating it unsourced.
 
 ## Exploring External Code
 
-To understand how a tool or library works, you're encouraged to clone its public
-repo and read the source — don't rely on docs alone. Clone into
-`~/.cache/explore/` (create it if needed).
+To understand how a tool or library works, you're encouraged to clone its repo
+and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
+(create it if needed).
 
 ## Running Packages
 
