@@ -5,7 +5,7 @@ description:
   Spawned each round by the build-it orchestrator; later rounds address the
   reviewer's BLOCKING items.
 tools: Bash, Read, Edit, Write, Grep, Glob
-model: sonnet
+model: opus
 ---
 
 Implement the approved plan in the given issue, inside the worktree you're
