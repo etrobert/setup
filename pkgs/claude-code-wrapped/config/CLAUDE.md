@@ -56,6 +56,12 @@ Cite the source for factual claims — name and, where useful, quote or link the
 command, `--help` output, web search result, documentation page (with URL), or
 file the information came from, rather than stating it unsourced.
 
+## Exploring External Code
+
+To understand how a tool or library works, you're encouraged to clone its repo
+and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
+(create it if needed).
+
 ## Running Packages
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
@@ -125,8 +131,8 @@ After committing on a branch, open a PR with `gh pr create`.
 When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
 output), include a screenshot in the PR description.
 
-When rendering a terminal-UI screenshot headlessly (xterm under Xvfb), load
-the terminal theme's 16-color ANSI palette into xterm
+When rendering a terminal-UI screenshot headlessly (xterm under Xvfb), load the
+terminal theme's 16-color ANSI palette into xterm
 (`-xrm 'xterm*color4: #8aadf4' …`) — otherwise palette references like
 `colour4`/`colour0` render as harsh xterm defaults instead of the real theme
 colors.
