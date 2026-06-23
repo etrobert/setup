@@ -21,7 +21,7 @@ _: {
 
       i18n.defaultLocale = "en_US.UTF-8";
 
-      console.useXkbConfig = true; # Apply XKB options (e.g. Caps -> Ctrl)
+      console.useXkbConfig = true; # Apply XKB options to the TTY too
 
       nix.settings.trusted-users = [ "@wheel" ];
 
@@ -61,6 +61,11 @@ _: {
             extraDefCfg = "process-unmapped-keys yes";
           };
         };
+
+        # Right Alt as a Compose key, so e.g. RAlt e ' types é. niri inherits
+        # this via locale1 (its xkb block is empty). terminate:ctrl_alt_bksp is
+        # the NixOS default, kept here since setting this replaces it.
+        xserver.xkb.options = "terminate:ctrl_alt_bksp,compose:ralt";
 
         tailscale = {
           enable = true;
