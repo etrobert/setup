@@ -1,6 +1,6 @@
 {
   writeShellApplication,
-  nodejs,
+  nodejs_26,
   bash,
 }:
 # Reverse-engineered proxy that exposes GitHub Copilot as an OpenAI/Anthropic
@@ -13,7 +13,7 @@
 writeShellApplication {
   name = "copilot-api";
   runtimeInputs = [
-    nodejs
+    nodejs_26
     bash
   ];
   inheritPath = false;

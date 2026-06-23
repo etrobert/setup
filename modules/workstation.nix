@@ -86,7 +86,7 @@ _: {
               hyperfine # Command-line benchmarking tool
               jqp # TUI playground to experiment with jq
               libnotify
-              nodejs_24 # nodejs_latest does not always have cache ready
+              nodejs_26 # pinned (not nodejs_latest) so the binary cache stays reliable
               ollama
               opencode
               openscad-unstable
