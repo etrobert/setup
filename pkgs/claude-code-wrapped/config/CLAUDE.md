@@ -60,9 +60,7 @@ file the information came from, rather than stating it unsourced.
 
 To understand how a tool or library works, you're encouraged to clone its public
 repo and read the source — don't rely on docs alone. Clone into
-`~/.cache/explore/` (create it if needed). This follows XDG cache semantics:
-everything there is non-essential and safe to delete, so reclone freely. Prefer
-`git clone --depth 1`. Ask before cloning private repos.
+`~/.cache/explore/` (create it if needed).
 
 ## Running Packages
 
