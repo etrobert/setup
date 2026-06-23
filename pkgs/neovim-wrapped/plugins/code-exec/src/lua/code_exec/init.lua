@@ -119,10 +119,15 @@ end
 
 function M.setup()
 	vim.keymap.set("n", "<leader>ex", M.execute_code_block, { desc = "Execute code block" })
+
+	-- Use the ":lua …<CR>" command form rather than a direct callback: the marks
+	-- '< / '> are only updated when visual mode exits, and the ":" exits it first.
+	-- A direct callback fires while still in visual mode, so get_visual_selection
+	-- would read the *previous* selection's marks instead of the current one.
 	vim.keymap.set(
 		"v",
 		"<leader>ex",
-		":lua require('etrobert.code-exec').execute_visual_selection()<CR>",
+		":lua require('code_exec').execute_visual_selection()<CR>",
 		{ desc = "Execute visual selection" }
 	)
 end
