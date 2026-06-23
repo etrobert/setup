@@ -119,12 +119,7 @@ end
 
 function M.setup()
 	vim.keymap.set("n", "<leader>ex", M.execute_code_block, { desc = "Execute code block" })
-	vim.keymap.set(
-		"v",
-		"<leader>ex",
-		":lua require('etrobert.code-exec').execute_visual_selection()<CR>",
-		{ desc = "Execute visual selection" }
-	)
+	vim.keymap.set("v", "<leader>ex", M.execute_visual_selection, { desc = "Execute visual selection" })
 end
 
 return M
