@@ -16,6 +16,9 @@
 #     extraPaths     ? [];                 # additional derivations merged into the
 #                                         #   symlinkJoin paths alongside package
 #                                         #   (e.g. helper scripts to co-install)
+#     nativeBuildInputs ? [];             # extra build-time tools on PATH during
+#                                         #   postBuild (e.g. rsync for a postWrap
+#                                         #   fixup); merged with the wrapper maker
 #     binaryWrapper  ? false;              # use makeBinaryWrapper instead of makeWrapper;
 #                                         #   produces a compiled binary rather than a shell
 #                                         #   script — required on macOS for .app bundles
@@ -69,6 +72,7 @@
   package,
   binName ? package.meta.mainProgram,
   extraPaths ? [ ],
+  nativeBuildInputs ? [ ],
   inheritPath ? false,
   binaryWrapper ? false,
   inheritArgv0 ? false,
@@ -169,7 +173,10 @@ let
 in
 symlinkJoin {
   name = "${binName}-wrapped";
-  nativeBuildInputs = [ (if binaryWrapper then makeBinaryWrapper else makeWrapper) ];
+  nativeBuildInputs = [
+    (if binaryWrapper then makeBinaryWrapper else makeWrapper)
+  ]
+  ++ nativeBuildInputs;
   paths = [ package ] ++ extraPaths;
   meta.mainProgram = binName;
   inherit passthru;
