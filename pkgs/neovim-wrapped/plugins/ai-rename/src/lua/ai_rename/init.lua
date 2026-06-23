@@ -126,9 +126,6 @@ If the current name is already descriptive, return the current name.
 Examples: "userCount", "totalPrice", "isValid"
 ]]
 
-	-- Debugging
-	vim.notify(prompt)
-
 	return vim.system({
 		"curl",
 		"https://api.openai.com/v1/chat/completions",
