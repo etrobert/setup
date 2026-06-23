@@ -18,7 +18,6 @@ in
     modules = [
       ./configuration.nix
       ./ollama.nix
-      ./syncthing.nix
       home-manager.darwinModules.home-manager
       agenix.darwinModules.default
       nix-homebrew.darwinModules.nix-homebrew
