@@ -22,6 +22,16 @@ in
         settings = {
           base-url = url;
           listen-http = ":${toString port}";
+
+          # iOS forbids the long-lived background connection ntfy uses on
+          # Android, so the only way to wake the iOS app is Apple's push service
+          # (APNs) — which only ntfy.sh's infrastructure can reach. Forward a
+          # content-free poll request to ntfy.sh so it relays an APNs wake to the
+          # phone, which then fetches the real message from us over Tailscale.
+          # The upstream sees only a SHA-256 of the topic URL and the message ID
+          # (body is a generic "New message") — never our titles, bodies, or
+          # attachments. Free tier (~250 msg/day) is ample for personal use.
+          upstream-base-url = "https://ntfy.sh";
         };
       };
 
