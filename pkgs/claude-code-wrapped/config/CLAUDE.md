@@ -23,8 +23,9 @@ hardware. Pragmatic about warranties — willing to skip them for meaningful cos
 savings.
 
 Currently setting up as a freelancer in Germany — pursuing Gründungszuschuss and
-AVGS-Coaching through Agentur für Arbeit. Has AXA private liability insurance
-(Privathaftpflicht).
+AVGS-Coaching through Agentur für Arbeit. As of mid-2026 receives
+Arbeitslosengeld I (~€2,460/mo) until December 2026. Has AXA private liability
+insurance (Privathaftpflicht).
 
 ## Memory
 
