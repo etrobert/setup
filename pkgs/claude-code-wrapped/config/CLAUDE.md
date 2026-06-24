@@ -104,7 +104,8 @@ Skip it when nvim-treesitter's Nix injection queries already cover the attr name
 
 Default to simple code over feature-rich code. Build the minimal thing that
 solves the problem at hand; additional functionality can always be added later
-when it's actually needed.
+when it's actually needed. Question every piece of code you add — ask whether it
+is really necessary to achieve the goal, and drop it if not.
 
 Prefer `kebab-case` for directory names.
 
