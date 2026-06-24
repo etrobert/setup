@@ -82,6 +82,7 @@
         git-find-commit = pkgs.callPackage ./git-find-commit { };
         agents = pkgs.callPackage ./agents { inherit self'; };
         inherit ntfy-wrapped hass-cli-wrapped;
+        send-file = pkgs.callPackage ./send-file { inherit ntfy-wrapped; };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
         nixplatforms = pkgs.callPackage ./nixplatforms.nix { };

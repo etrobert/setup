@@ -25,6 +25,7 @@ _: {
             bash-wrapped
             git-wrapped
             ntfy-wrapped
+            send-file
             tmux-wrapped
             tmux-sessionizer
             switch
