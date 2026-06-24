@@ -96,6 +96,7 @@
           ./modules/darwinModules.nix
           ./modules/unfree.nix
           ./modules/networkmanager.nix
+          ./modules/file-manager.nix
           ./modules/pimsync.nix
           ./modules/lan-dns.nix
           ./modules/darkman.nix
