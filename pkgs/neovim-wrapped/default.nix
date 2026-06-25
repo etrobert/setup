@@ -19,6 +19,7 @@ let
         ./plugins/catppuccin
         ./plugins/treesj
         ./plugins/vim-tmux-navigator
+        ./plugins/tidal
         ./plugins/which-key
         ./plugins/conform
         ./plugins/nvim-lint
