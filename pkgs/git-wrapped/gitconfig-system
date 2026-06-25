@@ -7,7 +7,7 @@
   ci = commit
   sci = "!gen-commit-msg"
   co = checkout
-  st = status --short --branch
+  st = status
   br = branch
   w = worktree
   ds = -c diff.external=difft diff --staged
@@ -43,6 +43,9 @@
   find = "!git-find-commit"
   div-dft = "!git dft $(git merge-base origin/main HEAD)..HEAD"
   amend = commit --amend --no-edit
+[status]
+  short = true
+  branch = true
 [pager]
   status = on
 [push]
