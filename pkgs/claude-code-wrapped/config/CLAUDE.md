@@ -118,6 +118,13 @@ definition that spans multiple lines should be set off by a blank line before
 and after it — don't butt a multi-line binding (e.g. `runtimeInputs = [ … ]`)
 directly against an adjacent definition.
 
+## Documentation & Notes
+
+When writing docs, notes, or comments, state only what's true now. Don't record
+obsolete or superseded information — e.g. after moving a file, just give the new
+path; don't note where it used to live or that an old copy is "superseded." Such
+references are dead text that add noise without value.
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
