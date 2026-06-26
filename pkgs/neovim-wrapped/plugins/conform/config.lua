@@ -1,4 +1,9 @@
 require("conform").setup({
+	formatters = {
+		-- .tidal files are GHCi statement sequences, not Haskell modules, so
+		-- bare ormolu can't parse them; tidal-fmt formats block-by-block.
+		tidal_fmt = { command = "tidal-fmt" },
+	},
 	formatters_by_ft = {
 		lua = { "stylua" },
 		javascript = { "prettierd", "prettier", stop_after_first = true },
@@ -18,7 +23,7 @@ require("conform").setup({
 		rust = { "rustfmt" },
 		python = { "isort", "black" },
 		nix = { "nixfmt" },
-		tidal = { "ormolu" }, -- Tidal patterns are Haskell
+		tidal = { "tidal_fmt" },
 	},
 	format_on_save = {
 		timeout_ms = 1000,
