@@ -1,7 +1,4 @@
 { pkgs, ... }:
-let
-  tidal-fmt = pkgs.callPackage ./tidal-fmt.nix { };
-in
 {
   plugins = [
     {
@@ -15,7 +12,7 @@ in
         shfmt
         rustfmt
         nixfmt
-        tidal-fmt # ormolu-based formatter for .tidal files
+        ormolu # haskell formatter, used for .tidal files
       ];
     }
   ];
