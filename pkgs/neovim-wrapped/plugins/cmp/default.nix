@@ -8,7 +8,7 @@ let
 
   tailwindcss-colorizer-cmp-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "tailwindcss-colorizer-cmp-nvim";
-    version = "2024-01-01";
+    version = "0-unstable-2024-03-23";
     src = pkgs.fetchFromGitHub {
       owner = "roobert";
       repo = "tailwindcss-colorizer-cmp.nvim";
