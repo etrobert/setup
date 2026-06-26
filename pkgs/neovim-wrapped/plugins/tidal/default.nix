@@ -24,6 +24,10 @@ in
         -- pattern language and SuperDirt engine come from the electronic-music
         -- flake's devShell, not from here.
         vim.g.tidal_target = "tmux"
+
+        -- Tidal patterns are Haskell; drive treesitter highlighting (and
+        -- ormolu formatting via conform) off the haskell grammar.
+        vim.treesitter.language.register("haskell", "tidal")
       '';
       extraPackages = with pkgs; [ tmux ];
     }
