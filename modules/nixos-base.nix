@@ -52,10 +52,12 @@ _: {
             config = /* scheme */ ''
               (defsrc
                 caps
+                esc
               )
 
               (deflayer base
                 (tap-hold-press 0 200 esc lctl)
+                (tap-hold 200 200 esc caps)
               )
             '';
             extraDefCfg = "process-unmapped-keys yes";
