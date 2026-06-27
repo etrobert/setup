@@ -137,6 +137,16 @@
             "/srv/files/adele".d.mode = lib.mkForce "0755";
           };
 
+          # Auto-expiring drop-zone for files shared over files.etiennerobert.com:
+          # tmpfiles-clean removes anything left untouched (atime) for 30 days.
+          # 2775/users mirror /srv/files so drops stay readable by caddy/imgproxy.
+          tmpfiles.settings.share-temp."/srv/files/temp".d = {
+            user = "soft";
+            group = "users";
+            mode = "2775";
+            age = "30d";
+          };
+
           services = {
             # Override the filebrowser module's default UMask of 0077, which would strip the group
             # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
