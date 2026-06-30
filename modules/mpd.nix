@@ -4,15 +4,15 @@ _: {
     let
       user = "soft";
       home = "/home/${user}";
-      dataDir = "${home}/.local/share/mpd";
       musicDir = "${home}/sync/music";
 
       mpdConf = pkgs.writeText "mpd.conf" ''
         music_directory    "${musicDir}"
         playlist_directory "${home}/sync/playlists"
-        # Persist queue/volume/paused state across restarts; without a
-        # state_file MPD keeps no state and restore_paused below is a no-op.
-        state_file         "${dataDir}/state"
+        # Persist queue/volume/paused state across restarts (without a
+        # state_file MPD keeps no state and restore_paused below is a no-op).
+        # The parent dir is created by the unit's StateDirectory=mpd below.
+        state_file         "~/.local/state/mpd/state"
         # Default is "any" (all interfaces); keep MPD on loopback only.
         bind_to_address    "127.0.0.1"
         restore_paused     "yes"
@@ -51,6 +51,8 @@ _: {
             wantedBy = [ "default.target" ];
             serviceConfig = {
               Type = "notify";
+              # Create and own ~/.local/state/mpd for the state_file above.
+              StateDirectory = "mpd";
               ExecStart = "${pkgs.mpd}/bin/mpd --no-daemon ${mpdConf}";
             };
           };
@@ -69,8 +71,6 @@ _: {
             };
           };
         };
-
-        tmpfiles.rules = [ "d %h/.local/share/mpd 0700 - - -" ];
       };
     };
 }
