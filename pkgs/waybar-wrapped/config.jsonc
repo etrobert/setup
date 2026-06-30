@@ -22,6 +22,7 @@
   ],
   // "modules-center": ["mpd"],
   "modules-right": [
+    "mpris",
     "pulseaudio",
     "network",
     "battery",
@@ -127,6 +128,16 @@
     "state-icons": {
       "paused": " ",
     },
+  },
+  "mpris": {
+    "format": "{status_icon}",
+    "status-icons": {
+      "playing": "󰐊",
+      "paused": "󰏤",
+      "stopped": "",
+    },
+    "tooltip-format": "{title}\n{artist}",
+    "on-click": "playerctl play-pause",
   },
   "bluetooth": {
     "format-on": "󰂯",
