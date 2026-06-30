@@ -2,6 +2,8 @@
   wrapPackage,
   callPackage,
   claude-code,
+  coreutils,
+  git,
   hass-cli-wrapped,
   lib,
   ntfy-wrapped,
@@ -31,6 +33,8 @@ let
     sessionHostScript
     speakScript
     hass-cli-wrapped
+    git
+    coreutils
   ]
   ++ ttsBackends;
 
