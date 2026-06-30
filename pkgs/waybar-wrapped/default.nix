@@ -13,6 +13,7 @@ let
     jq # used by custom/weekday and custom/cpu-governor
     gawk # used by custom/cpu-freq
     pavucontrol
+    playerctl # used by mpris on-click
     sudo # used to run toggle-cpu-governor
   ];
 in
