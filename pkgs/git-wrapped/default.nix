@@ -13,6 +13,16 @@ let
     # self'.packages.gen-commit-msg
     difftastic
     fzf
+
+    # Tools the shell aliases in gitconfig-system call out to. Without these the
+    # aliases break when nothing on the ambient PATH provides them (e.g. under a
+    # bare `nix run`).
+    bat # ushow
+    coreutils # sort, cut (alias, falias, fw)
+    findutils # xargs (dbranch, ushow, falias)
+    gnugrep # grep (dbranch, alias)
+    gnused # sed (sco, alias)
+    util-linux # column (alias)
   ];
 
   git-worktree-add = pkgs.writeShellApplication {
