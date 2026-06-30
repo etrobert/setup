@@ -10,9 +10,10 @@ _: {
       mpdConf = pkgs.writeText "mpd.conf" ''
         music_directory    "${musicDir}"
         playlist_directory "${home}/sync/playlists"
-        db_file            "${dataDir}/tag_cache"
+        # Persist queue/volume/paused state across restarts; without a
+        # state_file MPD keeps no state and restore_paused below is a no-op.
         state_file         "${dataDir}/state"
-        sticker_file       "${dataDir}/sticker.sql"
+        # Default is "any" (all interfaces); keep MPD on loopback only.
         bind_to_address    "127.0.0.1"
         restore_paused     "yes"
         auto_update        "yes"
