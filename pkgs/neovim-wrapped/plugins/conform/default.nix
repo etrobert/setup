@@ -12,6 +12,7 @@
         shfmt
         rustfmt
         nixfmt
+        ormolu # haskell formatter, used for .tidal files
       ];
     }
   ];
