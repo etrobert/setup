@@ -14,6 +14,7 @@ _: {
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
+        self.nixosModules.mpd
         self.nixosModules.awww
         self.nixosModules.cachix-push
         self.nixosModules.copilot-api
@@ -149,7 +150,6 @@ _: {
             gnome-power-manager # TODO: find a better one
             kdePackages.okular
             grim
-            mpc # Minimalist command line interface to MPD
             mpv
             pavucontrol
             playerctl
