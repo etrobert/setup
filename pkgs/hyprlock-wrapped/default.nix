@@ -1,5 +1,6 @@
 {
   hyprlock,
+  coreutils,
   writeText,
   wrapPackage,
 }:
@@ -59,4 +60,5 @@ in
 wrapPackage {
   package = hyprlock;
   flags = [ "--config ${config}" ];
+  runtimeInputs = [ coreutils ]; # date
 }
