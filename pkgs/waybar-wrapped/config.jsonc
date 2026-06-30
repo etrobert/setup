@@ -17,12 +17,12 @@
     "temperature",
     "cpu",
     // "mpd"
-    "mpris",
     "custom/cpu-freq",
     "memory",
   ],
   // "modules-center": ["mpd"],
   "modules-right": [
+    "mpris",
     "pulseaudio",
     "network",
     "battery",
