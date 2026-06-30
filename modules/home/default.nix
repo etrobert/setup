@@ -22,7 +22,7 @@ in
         { pkgs, ... }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ self.homeModules.leod ];
+          modules = [ self.homeModules.linux ];
         }
       );
 

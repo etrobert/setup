@@ -87,7 +87,6 @@
           ./modules/home/common.nix
           ./modules/home/darwin.nix
           ./modules/home/hypridle.nix
-          ./modules/home/leod.nix
           ./modules/nix-index.nix
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
