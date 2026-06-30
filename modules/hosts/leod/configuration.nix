@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ self, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -24,9 +24,6 @@
   services.fprintd.enable = true;
 
   hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
-
-  # Overriding so that it gets hypridle
-  home-manager.users.soft = self.homeModules.leod;
 
   # Disable fingerprint as part of PAM in hyprlock
   # As this has weird behaviors when unlocking

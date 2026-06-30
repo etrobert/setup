@@ -87,7 +87,6 @@
           ./modules/home/common.nix
           ./modules/home/darwin.nix
           ./modules/home/hypridle.nix
-          ./modules/home/leod.nix
           ./modules/nix-index.nix
           ./modules/nixos-workstation.nix
           ./modules/workstation.nix
@@ -100,6 +99,7 @@
           ./modules/pimsync.nix
           ./modules/lan-dns.nix
           ./modules/darkman.nix
+          ./modules/hypridle.nix
           ./modules/awww.nix
           ./modules/cachix-push.nix
           ./modules/copilot-api.nix
