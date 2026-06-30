@@ -2,6 +2,8 @@
   wrapPackage,
   callPackage,
   claude-code,
+  coreutils,
+  git,
   hass-cli-wrapped,
   lib,
   ntfy-wrapped,
@@ -31,6 +33,11 @@ let
     sessionHostScript
     speakScript
     hass-cli-wrapped
+    # Background sessions are launched by the daemon with an empty PATH, so
+    # inheritPath has nothing to inherit. git is required by the harness for
+    # worktree management; coreutils for the Bash tool and hooks.
+    git
+    coreutils
   ]
   ++ ttsBackends;
 
