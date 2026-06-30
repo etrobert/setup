@@ -56,16 +56,7 @@ window#waybar {
 }
 
 #clock.time {
-  margin-top: 8px;
-}
-
-#workspaces {
-  margin-bottom: 3px;
-}
-
-.module {
-  /* Need to offset to account for the niri outer gap */
-  margin-left: 3px;
+  margin-top: 4px;
 }
 
 #custom-weather {
@@ -73,13 +64,13 @@ window#waybar {
   margin-left: 10px;
 }
 
-#workspaces {
-  margin-left: 3px;
+/* Individual icon alignment fixes */
+#custom-cpu-governor {
+  margin-left: -2px;
 }
 
 #pulseaudio,
 #network,
 #battery {
-  /* Individual icon alignment fixes */
-  margin-left: 0;
+  margin-left: -3px;
 }
