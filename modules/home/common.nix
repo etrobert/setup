@@ -8,11 +8,7 @@ _: {
       home = {
         username = "soft";
 
-        file = {
-          ".config/home-manager".source = symlink ".";
-
-          ".prettierrc".text = builtins.toJSON { proseWrap = "always"; };
-        };
+        file.".config/home-manager".source = symlink ".";
 
         # This value determines the Home Manager release that your
         # configuration is compatible with. This helps avoid breakage
