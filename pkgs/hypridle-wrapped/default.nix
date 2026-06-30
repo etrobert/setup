@@ -1,6 +1,9 @@
 {
+  self',
   writeTextDir,
   hypridle,
+  procps,
+  systemd,
   wrapPackage,
 }:
 let
@@ -24,5 +27,10 @@ in
 wrapPackage {
   package = hypridle;
   env.XDG_CONFIG_HOME = "${config}";
-  inheritPath = true;
+
+  runtimeInputs = [
+    procps # pidof
+    systemd # loginctl, systemctl
+    self'.packages.hyprlock-wrapped # hyprlock
+  ];
 }
