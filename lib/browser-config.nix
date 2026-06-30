@@ -31,6 +31,13 @@
         installation_mode = "force_installed";
         default_area = "menupanel";
       };
+      # Unhook — declutters YouTube (hides suggested/related videos, the
+      # homepage feed, Shorts, end-screen cards, etc.) via per-element toggles.
+      "myallychou@gmail.com" = {
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/youtube-recommended-videos/latest.xpi";
+        installation_mode = "force_installed";
+        default_area = "menupanel";
+      };
     };
   };
 
