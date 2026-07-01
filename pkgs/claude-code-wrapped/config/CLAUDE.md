@@ -125,6 +125,11 @@ obsolete or superseded information — e.g. after moving a file, just give the n
 path; don't note where it used to live or that an old copy is "superseded." Such
 references are dead text that add noise without value.
 
+Keep code comments proportional to the code. State only the single non-obvious
+point — the gotcha or "why" — and leave narrative context (root-cause chains,
+incident history) for the commit or PR. A two-line change rarely needs more than
+a two-line comment.
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
