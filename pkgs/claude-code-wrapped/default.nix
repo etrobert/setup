@@ -55,7 +55,12 @@ wrapPackage {
   // extraEnv;
   run = [
     ''export CLAUDE_CONFIG_DIR="$HOME/setup/pkgs/claude-code-wrapped/config"''
-    ''export GITHUB_TOKEN="$(cat /run/agenix/github-bot-token 2>/dev/null || true)"''
+
+    # Bare assignment, not `export GITHUB_TOKEN=$(…)`: `export VAR=$(cmd)` masks
+    # the command's failure under `set -e`, so an unreadable secret would bake in
+    # an empty token instead of aborting the launch.
+    ''GITHUB_TOKEN="$(cat /run/agenix/github-bot-token)"''
+    "export GITHUB_TOKEN"
   ]
   ++ agenixTokenRun;
   inherit runtimeInputs;
