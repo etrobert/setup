@@ -26,8 +26,6 @@ let
 
   speakScript = callPackage ./speak.nix { inherit ttsBackends; };
 
-  # git-wrapped's default global config bakes Étienne's identity; Claude must
-  # commit as etrobert-bot, so swap in the bot identity + credentials.
   botGit = git-wrapped.override { userConfig = ./gitconfig-bot; };
 
   runtimeInputs = [
