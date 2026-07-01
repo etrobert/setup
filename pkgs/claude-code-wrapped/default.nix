@@ -3,7 +3,7 @@
   callPackage,
   claude-code,
   coreutils,
-  git,
+  git-wrapped,
   hass-cli-wrapped,
   lib,
   ntfy-wrapped,
@@ -26,6 +26,10 @@ let
 
   speakScript = callPackage ./speak.nix { inherit ttsBackends; };
 
+  # git-wrapped's default global config bakes Étienne's identity; Claude must
+  # commit as etrobert-bot, so swap in a bot [user] section.
+  botGit = git-wrapped.override { userConfig = ./gitconfig-bot-user; };
+
   runtimeInputs = [
     statuslineScript
     formatFileScript
@@ -33,7 +37,7 @@ let
     sessionHostScript
     speakScript
     hass-cli-wrapped
-    git
+    botGit
     coreutils
   ]
   ++ ttsBackends;

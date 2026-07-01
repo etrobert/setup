@@ -1,0 +1,5 @@
+# vim: ft=gitconfig
+
+[user]
+  name = etrobert-bot
+  email = etiennerobert33+github-bot@gmail.com
