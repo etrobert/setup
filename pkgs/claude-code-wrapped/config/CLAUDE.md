@@ -130,6 +130,10 @@ point — the gotcha or "why" — and leave narrative context (root-cause chains
 incident history) for the commit or PR. A two-line change rarely needs more than
 a two-line comment.
 
+Apply the deletion test: if a comment only restates what the code, filename, or
+option names already convey, cut it. Don't describe how or where code is wired
+up (e.g. which hosts import a module).
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
