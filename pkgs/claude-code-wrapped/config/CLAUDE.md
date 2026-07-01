@@ -144,6 +144,10 @@ the tree? If either is yes, cut it — that reasoning, along with narrative
 context generally (root-cause chains, incident history), belongs in the commit
 or PR.
 
+Apply the deletion test: if a comment only restates what the code, filename, or
+option names already convey, cut it. Don't describe how or where code is wired
+up (e.g. which hosts import a module).
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
