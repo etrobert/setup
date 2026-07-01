@@ -110,6 +110,7 @@
           ./modules/cockpit.nix
           ./modules/umami.nix
           ./modules/claude-warmup.nix
+          ./modules/gaming.nix
           ./pkgs
         ];
 

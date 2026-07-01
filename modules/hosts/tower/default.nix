@@ -33,6 +33,7 @@ in
       self.nixosModules.homepage
       self.nixosModules.cockpit
       self.nixosModules.claudeWarmup
+      self.nixosModules.gaming
     ];
   };
 }
