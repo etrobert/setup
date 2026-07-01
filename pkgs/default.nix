@@ -16,11 +16,11 @@
       wrapPackage = pkgs.callPackage ./lib/wrap-package.nix { };
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { inherit wrapPackage; };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { inherit wrapPackage; };
+      git-wrapped = pkgs.callPackage ./git-wrapped { inherit self' wrapPackage; };
     in
     {
       packages = {
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs' wrapPackage; };
-        git-wrapped = pkgs.callPackage ./git-wrapped { inherit self' wrapPackage; };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs' wrapPackage; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         vim-wrapped = pkgs.callPackage ./vim-wrapped { inherit wrapPackage; };
@@ -30,6 +30,7 @@
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
           inherit
             claude-code
+            git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
             wrapPackage
@@ -38,6 +39,7 @@
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
           inherit
             claude-code
+            git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
             wrapPackage
@@ -60,6 +62,7 @@
         claude-code-wrapped-copilot = pkgs.callPackage ./claude-code-wrapped {
           inherit
             claude-code
+            git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
             wrapPackage
@@ -81,7 +84,7 @@
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
         agents = pkgs.callPackage ./agents { inherit self'; };
-        inherit ntfy-wrapped hass-cli-wrapped;
+        inherit ntfy-wrapped hass-cli-wrapped git-wrapped;
         send-file = pkgs.callPackage ./send-file { inherit ntfy-wrapped; };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };

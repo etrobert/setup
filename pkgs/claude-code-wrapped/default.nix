@@ -3,7 +3,7 @@
   callPackage,
   claude-code,
   coreutils,
-  git,
+  git-wrapped,
   hass-cli-wrapped,
   lib,
   ntfy-wrapped,
@@ -26,6 +26,8 @@ let
 
   speakScript = callPackage ./speak.nix { inherit ttsBackends; };
 
+  botGit = git-wrapped.override { userConfig = ./gitconfig-bot; };
+
   runtimeInputs = [
     statuslineScript
     formatFileScript
@@ -33,7 +35,7 @@ let
     sessionHostScript
     speakScript
     hass-cli-wrapped
-    git
+    botGit
     coreutils
   ]
   ++ ttsBackends;
@@ -54,9 +56,6 @@ wrapPackage {
   inheritPath = true;
   env = {
     CLAUDE_CODE_NO_FLICKER = "1";
-    GIT_CONFIG_COUNT = "1";
-    GIT_CONFIG_KEY_0 = "include.path";
-    GIT_CONFIG_VALUE_0 = toString ./gitconfig-bot;
   }
   // extraEnv;
   run = [
