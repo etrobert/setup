@@ -27,8 +27,8 @@ let
   speakScript = callPackage ./speak.nix { inherit ttsBackends; };
 
   # git-wrapped's default global config bakes Étienne's identity; Claude must
-  # commit as etrobert-bot, so swap in a bot [user] section.
-  botGit = git-wrapped.override { userConfig = ./gitconfig-bot-user; };
+  # commit as etrobert-bot, so swap in the bot identity + credentials.
+  botGit = git-wrapped.override { userConfig = ./gitconfig-bot; };
 
   runtimeInputs = [
     statuslineScript
@@ -58,9 +58,6 @@ wrapPackage {
   inheritPath = true;
   env = {
     CLAUDE_CODE_NO_FLICKER = "1";
-    GIT_CONFIG_COUNT = "1";
-    GIT_CONFIG_KEY_0 = "include.path";
-    GIT_CONFIG_VALUE_0 = toString ./gitconfig-bot;
   }
   // extraEnv;
   run = [

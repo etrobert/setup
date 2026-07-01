@@ -1,7 +1,11 @@
-# Routes git pushes through the etrobert-bot GITHUB_TOKEN instead of the user's
-# SSH key, so pushes to protected branches (main) are rejected server-side
-# rather than slipping through the user's admin override. Pulled in via
-# include.path from the claude-code wrapper; fetches stay on SSH as the user.
+# Baked into the bot git-wrapped variant as GIT_CONFIG_GLOBAL (see botGit in
+# default.nix). Routes git pushes through the etrobert-bot GITHUB_TOKEN instead
+# of the user's SSH key, so pushes to protected branches (main) are rejected
+# server-side rather than slipping through the user's admin override; fetches
+# stay on SSH as the user.
+[user]
+	name = etrobert-bot
+	email = etiennerobert33+github-bot@gmail.com
 [url "https://github.com/"]
 	pushInsteadOf = git@github.com:
 [credential "https://github.com"]
