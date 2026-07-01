@@ -34,9 +34,7 @@ _: {
       zramSwap.enable = true;
 
       # systemd-oomd runs by default but acts only on cgroups marked with
-      # ManagedOOM* properties — with none marked (the NixOS default) the
-      # kernel OOM killer acts alone, firing too late and killing by
-      # per-process score rather than by which workload causes the pressure.
+      # ManagedOOM* properties — without these flags it monitors nothing.
       systemd.oomd = {
         enableRootSlice = true;
         enableSystemSlice = true;
