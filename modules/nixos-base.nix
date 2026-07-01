@@ -33,6 +33,16 @@ _: {
 
       zramSwap.enable = true;
 
+      # systemd-oomd runs by default but acts only on cgroups marked with
+      # ManagedOOM* properties — with none marked (the NixOS default) the
+      # kernel OOM killer acts alone, firing too late and killing by
+      # per-process score rather than by which workload causes the pressure.
+      systemd.oomd = {
+        enableRootSlice = true;
+        enableSystemSlice = true;
+        enableUserSlices = true;
+      };
+
       # Shorten how long the user systemd manager waits for an unresponsive
       # user-session process to exit on SIGTERM before SIGKILL (default 90s).
       # Motivating case: claude-code's background daemon and its bg-spare PTY
