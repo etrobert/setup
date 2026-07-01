@@ -56,10 +56,12 @@ wrapPackage {
   run = [
     ''export CLAUDE_CONFIG_DIR="$HOME/setup/pkgs/claude-code-wrapped/config"''
 
-    # Bare assignment, not `export GITHUB_TOKEN=$(…)`: `export VAR=$(cmd)` masks
-    # the command's failure under `set -e`, so an unreadable secret would bake in
-    # an empty token instead of aborting the launch.
-    ''GITHUB_TOKEN="$(cat /run/agenix/github-bot-token)"''
+    # `$(<file)` builtin, not `cat`: this --run prelude executes before the
+    # wrapper prefixes its own PATH, so an external `cat` isn't found when a
+    # thin-PATH caller invokes claude (the `agents` launcher is inheritPath=false).
+    # Bare assignment, not `export VAR=$(…)`, so `set -e` aborts loudly on an
+    # unreadable secret instead of baking in an empty token.
+    ''GITHUB_TOKEN="$(< /run/agenix/github-bot-token)"''
     "export GITHUB_TOKEN"
   ]
   ++ agenixTokenRun;
