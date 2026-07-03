@@ -39,6 +39,9 @@
     "type": "command",
     "command": "claude-plan-usage"
   },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
   "voice": {
     "enabled": true,
     "mode": "hold"
@@ -47,8 +50,5 @@
   "theme": "auto",
   "verbose": true,
   "agentPushNotifEnabled": true,
-  "voiceEnabled": true,
-  "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true
-  }
+  "voiceEnabled": true
 }
