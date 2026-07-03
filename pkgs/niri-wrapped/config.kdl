@@ -78,7 +78,7 @@ cursor {
 
     // Slightly bigger than the 24px default. Bibata ships this size exactly
     // (and 64 for 2x outputs), so it renders without snapping to a neighbor.
-    xcursor-size 32
+    xcursor-size 30
 }
 
 // You can configure outputs by their name, which you can find
