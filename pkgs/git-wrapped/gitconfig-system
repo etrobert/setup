@@ -4,6 +4,8 @@
   whitespace = trailing-space tab-in-indent tabwidth=2
 [alias]
   sync = "!git pull && git push"
+  # commits the last fetch added to the upstream-tracking ref
+  pulled = log --oneline --reverse @{u}@{1}..@{u}
   ci = commit
   sci = "!gen-commit-msg"
   co = checkout
