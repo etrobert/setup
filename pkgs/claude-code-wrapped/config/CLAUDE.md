@@ -5,22 +5,19 @@
 Étienne Robert — software engineer with 15 years of experience, and a queer
 creative (dance, sewing, makeup, aerials, and more). Uses Claude for both
 software engineering and non-technical work. Tracks life documentation in
-Markdown files, often located at `~/sync/doc`.
+Markdown files at `~/sync/doc`.
 
 On the Claude **Max** plan. Has a GitHub Copilot Pro individual subscription
-(annual, ~300 premium requests/month). Has a GLM Pro subscription (z.ai)
-powering the `claude-glm` / `claude-code-wrapped-glm` backend.
+(annual, ~300 premium requests/month).
 
-Sews decently. IKEA Family member (Germany).
+Sews decently.
 
 Lives in Berlin but does not speak German. Communicate in English and avoid
 German terms in filenames or output — prefer English equivalents (e.g. "proof of
 value" not "Wertnachweis"). Does not have a driver's license.
 
-Uses Home Assistant and prefers local integrations where available.
-ESPHome-based devices are a good fit. Comfortable with kit assembly and DIY
-hardware. Pragmatic about warranties — willing to skip them for meaningful cost
-savings.
+Uses Home Assistant and prefers local integrations where available. Comfortable
+with kit assembly and DIY hardware.
 
 Currently setting up as a freelancer in Germany — pursuing Gründungszuschuss and
 AVGS-Coaching through Agentur für Arbeit. As of mid-2026 receives
@@ -39,8 +36,7 @@ Git repos are cloned at `~/work/*`, except for the setup repo which lives at
 
 All machines are connected via Tailscale. SSH into any of them by name
 (`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current
-machine. If SSH is refused, check whether Tailscale is running
-(`tailscale status`) and bring it up with `sudo tailscale-up` if needed.
+machine.
 
 ## Working Style
 
@@ -95,11 +91,6 @@ linuxPrimitives = /* bash */ ''
 '';
 ```
 
-Skip it when nvim-treesitter's Nix injection queries already cover the attr name
-— e.g. `writeShellApplication`/`writeShellScript` text attrs, or
-`stdenv.mkDerivation` phase hooks (`*Phase`, `pre*`, `post*` — like
-`buildPhase`, `postInstall`). All defined in `queries/nix/injections.scm`.
-
 ## Code Style
 
 Default to simple code over feature-rich code. Build the minimal thing that
@@ -125,10 +116,8 @@ obsolete or superseded information — e.g. after moving a file, just give the n
 path; don't note where it used to live or that an old copy is "superseded." Such
 references are dead text that add noise without value.
 
-Keep code comments proportional to the code. State only the single non-obvious
-point — the gotcha or "why" — and leave narrative context (root-cause chains,
-incident history) for the commit or PR. A two-line change rarely needs more than
-a two-line comment.
+Keep code comments minimal. State only the single non-obvious points and leave
+narrative context (root-cause chains, incident history) for the commit or PR.
 
 ## Testing
 
@@ -143,8 +132,6 @@ missing (e.g. `etrobert-bot` is not a collaborator on a repo), ask the user to
 grant it rather than attempting to act as them.
 
 ## Git Workflow
-
-After committing on a branch, open a PR with `gh pr create`.
 
 When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
 output), include a screenshot in the PR description.
@@ -161,34 +148,19 @@ Always rebase on origin/main before presenting a PR for review — both on initi
 `gh pr create` and after any follow-up changes before telling the user it's
 ready.
 
-After opening a PR, always check its status
-(`gh pr view --json state,mergeStateStatus`) and resolve any merge conflicts
-before reporting the task as done.
+Always resolve merge conflicts before reporting the task as done.
 
-Before merging, always fetch and read all review comments — never merge with
-open threads. Reply to every comment: if applying a suggestion without anything
-to add, say so explicitly. The user uses Conventional Comments to signal intent
-(e.g. `**issue:**`, `**question:**`, `**suggestion:**`). "Reviewed" does not
-mean approved — always check for open comments before merging.
+To review, use Conventional Comments.
 
-Preferred merge strategy is squash merge (`--squash`). When ready to merge but
-CI is still running, use `gh pr merge --squash --auto` rather than waiting.
+To follow up on a review, reply to every comment: if applying a suggestion
+without anything to add, say so explicitly.
 
-After merging, delete the remote branch with
-`git push origin --delete <branch>`.
+Preferred merge strategy is squash merge (`--squash`).
 
-Keep PRs small and atomic — one logical change per PR. Unrelated changes must
-always be in separate PRs, even if they are small.
+Keep PRs small and atomic — one logical change per PR.
 
 For complex features that naturally split into layers, use stacked PRs: each PR
 builds on the previous one.
-
-When merging a PR from inside a git worktree, `gh pr merge` fails because `main`
-is already checked out in the parent worktree. Use the GitHub API instead:
-
-```bash
-gh api repos/{owner}/{repo}/pulls/{N}/merge -X PUT -f merge_method=squash
-```
 
 ## CLAUDE.md Maintenance
 

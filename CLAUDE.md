@@ -173,12 +173,6 @@ recorder keeps more than the dashboard shows — notably `sensor.i_9psl_pm0_3`
 `sensor.i_9psl_voc_index`, and `sensor.i_9psl_nox_index`. The device's own local
 API (`http://<ip>/measures/current`) returns only current values, no history.
 
-## GitHub
-
-The `etrobert-bot` account used by Claude Code does not have admin rights on
-this repo. Admin-level operations (branch protection, repo settings) require the
-`etrobert` account — flag these to the user rather than attempting them.
-
 ## Planning future work
 
 Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`
