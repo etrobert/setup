@@ -2,6 +2,7 @@
   self',
   niri,
   xwayland-satellite,
+  bibata-cursors,
   wrapPackage,
   dev ? false,
 }:
@@ -20,6 +21,12 @@ in
 wrapPackage {
   package = niri;
   env.NIRI_CONFIG = "${config}";
+
+  # Ship the cursor theme set in config.kdl as part of the package: its
+  # share/icons lands in the system profile, which is on the cursor search
+  # path (XCURSOR_PATH).
+  extraPaths = [ bibata-cursors ];
+
   runtimeInputs = path;
   inheritPath = true;
   # niri.service points at the unwrapped binary; patch it to use the wrapper.
