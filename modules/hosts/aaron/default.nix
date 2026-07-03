@@ -17,7 +17,6 @@ in
     specialArgs = { inherit self agenix nixpkgs-darwin-pins; };
     modules = [
       ./configuration.nix
-      ./ollama.nix
       home-manager.darwinModules.home-manager
       agenix.darwinModules.default
       nix-homebrew.darwinModules.nix-homebrew
