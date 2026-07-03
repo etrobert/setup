@@ -71,6 +71,11 @@ input {
 }
 
 cursor {
+    // The theme is load-bearing: without it niri looks for a theme literally
+    // named "default", finds none, and falls back to a built-in cursor whose
+    // size ignores xcursor-size.
+    xcursor-theme "Adwaita"
+
     // Slightly bigger than the 24px default.
     xcursor-size 32
 }
