@@ -58,16 +58,14 @@ authoritative list.
 
 Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 
-### Linux specific
-
-- Niri with Waybar status bar
-
 ### Development Environment
 
-- Neovim with Lua config in `pkgs/neovim-wrapped/`, plugins managed via Nix
-- Git with custom scripts: `gen-commit-msg`, `git-find-commit`,
-  `tmux-sessionizer`
-- Shell: zsh; terminal: Ghostty
+- Window Manager (NixOS): Niri with Waybar
+- Editor: Neovim, plugins managed via Nix
+- Version Control: Git
+- Session management: tmux, tmux-sessionizer script
+- Shell: zsh
+- Terminal: Ghostty
 
 ### Testing wrapped package changes
 
