@@ -15,7 +15,7 @@ Personal dotfiles and system configuration repository using Nix flakes for:
 
 Program configs live colocated with their wrapper in `pkgs/`. Each `*-wrapped`
 package embeds its config directly and is self-contained. Home-manager should be
-a last resort — prefer `-wrapped` packages and darwin/nixos modules.
+a last resort — prefer `-wrapped` packages and darwin/NixOS modules.
 
 ### Nix Flake Structure
 
@@ -58,17 +58,9 @@ authoritative list.
 
 Personal Cachix: `soft-nix.cachix.org`. Also uses `nix-community.cachix.org`.
 
-### macOS specific (`aaron`)
-
-- skhd hotkeys: `Alt+HJKL` → arrow keys, `Alt+[1-9]` → app launch
-- Caps Lock remapped to Control via launchd daemon
-- Touch ID for sudo
-- Dock apps defined in `modules/hosts/aaron/dock-apps.nix`
-
 ### Linux specific
 
-- Niri (Wayland compositor, dev channel) with Waybar status bar
-- DDC/CI backlight and brightness control
+- Niri with Waybar status bar
 
 ### Development Environment
 
