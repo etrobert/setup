@@ -68,7 +68,6 @@ _: {
 
             externalPackages = with pkgs; [
               act
-              adwaita-icon-theme
               audacity
               btop
               bun
