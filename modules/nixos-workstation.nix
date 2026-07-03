@@ -27,12 +27,6 @@ _: {
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
 
-      # Keep systemd from printing "[ OK ] Started ..." lines over tuigreet:
-      # quiet makes systemd.show_status default to error, so late units
-      # (network-online, docker, caddy) no longer draw on tty1 after the
-      # greeter is up. Failures still print.
-      boot.kernelParams = [ "quiet" ];
-
       services = {
         # Firmware updates from LVFS: fwupdmgr refresh / get-updates / update.
         # Lenovo publishes leod's system firmware there; MSI doesn't, so
@@ -63,8 +57,9 @@ _: {
         # itself; bash -l guarantees environment.sessionVariables are loaded.
         greetd = {
           enable = true;
-          # Reset the VT before the greeter starts so earlier boot log text
-          # doesn't linger behind the tuigreet UI.
+          # Stops boot log lines from drawing over the tuigreet UI: resets the
+          # VT at greeter start, and wires greetd's stdio to tty1 so systemd
+          # counts the console as owned and stops printing status to it.
           useTextGreeter = true;
           settings.default_session.command = ''${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
         };
