@@ -6,6 +6,7 @@
   git-wrapped,
   hass-cli-wrapped,
   lib,
+  nix,
   ntfy-wrapped,
   extraEnv ? { },
   readTokenFromAgenix ? false,
@@ -37,6 +38,7 @@ let
     hass-cli-wrapped
     botGit
     coreutils
+    nix
   ]
   ++ ttsBackends;
 
