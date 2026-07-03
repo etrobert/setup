@@ -73,6 +73,37 @@ in
           name = "tailscale-up";
           text = ''tailscale up --authkey "$(cat /run/agenix/tailscale-authkey)"'';
         })
+
+        (writeShellApplication {
+          # One-time setup for the Firefox codesign step in postActivation:
+          # create a self-signed "nix-apps" code-signing identity in the System
+          # keychain and trust it. Prompts for sudo.
+          name = "nix-apps-codesign-setup";
+          runtimeInputs = [
+            coreutils
+            openssl
+          ];
+
+          inheritPath = false;
+          text = ''
+            tmp=$(mktemp -d)
+            trap 'rm -rf "$tmp"' EXIT
+
+            openssl req -x509 -newkey rsa:2048 -days 3650 -nodes \
+              -keyout "$tmp/key.pem" -out "$tmp/cert.pem" \
+              -subj "/CN=nix-apps" \
+              -addext "keyUsage=critical,digitalSignature" \
+              -addext "extendedKeyUsage=critical,codeSigning" \
+              -addext "basicConstraints=critical,CA:false"
+
+            /usr/bin/sudo /usr/bin/security import "$tmp/key.pem" \
+              -k /Library/Keychains/System.keychain -T /usr/bin/codesign
+            /usr/bin/sudo /usr/bin/security import "$tmp/cert.pem" \
+              -k /Library/Keychains/System.keychain
+            /usr/bin/sudo /usr/bin/security add-trusted-cert -d -r trustRoot -p codeSign \
+              -k /Library/Keychains/System.keychain "$tmp/cert.pem"
+          '';
+        })
       ])
       ++ (with self.packages.${system}; [
         flush-dns
@@ -101,6 +132,25 @@ in
       touch /Users/soft/.hushlogin
 
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
+
+      # Re-sign the nix-built Firefox with the stable "nix-apps" identity so
+      # TCC grants (Full Disk Access — needed to read its own profile since
+      # macOS 27 protects browser data — camera, mic) survive rebuilds; the
+      # default ad-hoc signature changes every rebuild, resetting all grants.
+      # The inner binary (the actual process image TCC checks) needs an
+      # explicit sign with the bundle identifier: --deep gives it an
+      # identifier derived from the binary UUID, unstable across rebuilds.
+      firefox_app="/Applications/Nix Apps/Firefox.app"
+      if /usr/bin/security find-certificate -c nix-apps /Library/Keychains/System.keychain >/dev/null 2>&1; then
+        {
+          /usr/bin/codesign --force --deep --sign nix-apps "$firefox_app" &&
+            /usr/bin/codesign --force --sign nix-apps --identifier org.nixos.firefox \
+              "$firefox_app/Contents/MacOS/.firefox-old" &&
+            /usr/bin/codesign --force --sign nix-apps "$firefox_app"
+        } || echo "warning: codesigning Firefox.app failed; TCC grants will not survive rebuilds" >&2
+      else
+        echo "warning: nix-apps signing certificate not found; run nix-apps-codesign-setup" >&2
+      fi
 
       # Set wallpaper
       launchctl asuser "$(id -u soft)" /usr/bin/osascript -e \
