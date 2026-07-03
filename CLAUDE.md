@@ -1,13 +1,13 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with
-code in this repository.
-
 ## Repository Purpose
 
-Personal dotfiles and system configuration repository using Nix flakes, managing
-multiple machines: macOS (`aaron`) and Linux workstations (`tower`, `leod`) and
-a Raspberry Pi (`pi`).
+Personal dotfiles and system configuration repository using Nix flakes for:
+
+- aaron: MacBook Pro M3 Pro 18GB RAM (macOS w/ nix-darwin)
+- tower: AMD Ryzen 9700X Desktop — home server and workstation (NixOS)
+- leod: Lenovo ThinkPad X1 Carbon 7th Gen (NixOS/Windows)
+- pi: Raspberry Pi 4 Model B (Rev 1.1) (NixOS)
 
 ## Architecture
 
