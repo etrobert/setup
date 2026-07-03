@@ -28,6 +28,12 @@ _: {
       boot.kernelModules = [ "ddcci-backlight" ];
 
       services = {
+        # Firmware updates from LVFS: fwupdmgr refresh / get-updates / update.
+        # Lenovo publishes leod's system firmware there; MSI doesn't, so
+        # tower's BIOS stays manual (M-Flash), but NVMe, UEFI dbx, and
+        # peripheral updates still apply.
+        fwupd.enable = true;
+
         ollama = {
           enable = true;
           loadModels = [ "qwen3:8b" ];
