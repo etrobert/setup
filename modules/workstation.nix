@@ -87,7 +87,6 @@ _: {
               jqp # TUI playground to experiment with jq
               libnotify
               nodejs_26 # pinned (not nodejs_latest) so the binary cache stays reliable
-              ollama
               opencode
               openscad-unstable
               pnpm

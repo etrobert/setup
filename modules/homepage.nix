@@ -59,13 +59,6 @@ _: {
                 siteMonitor = "http://localhost:8123";
               };
             }
-            {
-              "Ollama" = {
-                href = "http://tower:11434";
-                description = "LLM server";
-                siteMonitor = "http://localhost:11434";
-              };
-            }
           ];
         }
         {
