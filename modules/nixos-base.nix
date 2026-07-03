@@ -80,6 +80,8 @@ _: {
         tailscale = {
           enable = true;
           authKeyFile = config.age.secrets.tailscale-authkey.path;
+          # Let the local user drive tailscale without sudo (e.g. `tailscale file get`).
+          extraSetFlags = [ "--operator=soft" ];
         };
 
         syncthing = {
