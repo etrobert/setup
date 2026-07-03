@@ -57,6 +57,10 @@ _: {
         # itself; bash -l guarantees environment.sessionVariables are loaded.
         greetd = {
           enable = true;
+          # Stops boot log lines from drawing over the tuigreet UI: resets the
+          # VT at greeter start, and wires greetd's stdio to tty1 so systemd
+          # counts the console as owned and stops printing status to it.
+          useTextGreeter = true;
           settings.default_session.command = ''${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
         };
       };
