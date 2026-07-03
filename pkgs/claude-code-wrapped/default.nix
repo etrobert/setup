@@ -59,6 +59,8 @@ wrapPackage {
   }
   // extraEnv;
   run = [
+    # Mutable path, not a store copy: Claude writes runtime state (sessions,
+    # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
     ''export CLAUDE_CONFIG_DIR="$HOME/setup/pkgs/claude-code-wrapped/config"''
 
     # `$(<file)` builtin, not `cat`: this --run prelude executes before the
