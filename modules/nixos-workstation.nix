@@ -147,7 +147,6 @@ _: {
             linuxPackages.cpupower
             bambu-studio
             bemoji
-            bibata-cursors # cursor theme set in niri's config.kdl
             bitwarden-desktop
             brightnessctl
             chromium

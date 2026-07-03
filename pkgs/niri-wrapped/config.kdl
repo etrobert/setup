@@ -73,11 +73,12 @@ input {
 cursor {
     // The theme is load-bearing: without it niri looks for a theme literally
     // named "default", finds none, and falls back to a built-in cursor whose
-    // size ignores xcursor-size. Bibata is installed in nixos-workstation.nix.
+    // size ignores xcursor-size. The theme comes from the wrapper's
+    // XCURSOR_PATH (see default.nix), not from system packages.
     xcursor-theme "Bibata-Modern-Classic"
 
-    // Slightly bigger than the 24px default. Bibata ships this size exactly
-    // (and 64 for 2x outputs), so it renders without snapping to a neighbor.
+    // Slightly bigger than the 24px default. Renders the nearest size Bibata
+    // ships (…28, 32…), picked per output scale.
     xcursor-size 30
 }
 
