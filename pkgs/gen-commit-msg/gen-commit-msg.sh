@@ -12,8 +12,9 @@ case "${1:-}" in
   ;;
 esac
 
-OLLAMA_URL="${OLLAMA_URL:-http://localhost:11434}"
-OLLAMA_MODEL="${OLLAMA_MSG_MODEL:-qwen3:8b}"
+MODEL="${COMMIT_MSG_MODEL:-gpt-4.1}"
+
+OPENAI_API_KEY="$(< /run/agenix/openai-api-key)"
 
 if ! DIFF=$(git diff --cached -- ':!/package-lock.json' ':!/pnpm-lock.yaml' ':!/yarn.lock' 2>/dev/null); then
   echo "Error: Unable to get staged changes."
@@ -45,8 +46,9 @@ Write a clear commit message for this diff:
 
 $DIFF"
 
-REQUEST_BODY=$(jq --null-input --arg user_prompt "$USER_PROMPT" --arg system_prompt "$SYSTEM_PROMPT" --arg model "$OLLAMA_MODEL" '{
+REQUEST_BODY=$(jq --null-input --arg user_prompt "$USER_PROMPT" --arg system_prompt "$SYSTEM_PROMPT" --arg model "$MODEL" '{
   "model": $model,
+  "max_tokens": 128,
   "messages": [
     {
       "role": "system",
@@ -56,25 +58,24 @@ REQUEST_BODY=$(jq --null-input --arg user_prompt "$USER_PROMPT" --arg system_pro
       "role": "user",
       "content": $user_prompt
     }
-  ],
-  "stream": false,
-  "think": false
+  ]
 }')
 
-RESPONSE=$(curl -s -w "\n%{http_code}" "$OLLAMA_URL/api/chat" \
-  -H "Content-Type: application/json" \
-  -d "$REQUEST_BODY")
+RESPONSE=$(curl --silent --write-out "\n%{http_code}" https://api.openai.com/v1/chat/completions \
+  --header "Content-Type: application/json" \
+  --header "Authorization: Bearer $OPENAI_API_KEY" \
+  --data "$REQUEST_BODY")
 
 HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)
 RESPONSE_BODY=$(echo "$RESPONSE" | sed '$d')
 
 if [ "$HTTP_CODE" -ne 200 ]; then
-  echo "Error: Ollama returned HTTP $HTTP_CODE
+  echo "Error: OpenAI returned HTTP $HTTP_CODE
 $RESPONSE_BODY"
   exit 1
 fi
 
-MESSAGE=$(echo "$RESPONSE_BODY" | jq -r '.message.content')
+MESSAGE=$(echo "$RESPONSE_BODY" | jq -r '.choices[0].message.content')
 
 if [ -z "$MESSAGE" ]; then
   echo "No commit message generated."
