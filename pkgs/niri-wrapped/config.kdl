@@ -71,14 +71,7 @@ input {
 }
 
 cursor {
-    // The theme is load-bearing: without it niri looks for a theme literally
-    // named "default", finds none, and falls back to a built-in cursor whose
-    // size ignores xcursor-size. The theme ships with niri-wrapped (see
-    // extraPaths in default.nix).
     xcursor-theme "Bibata-Modern-Classic"
-
-    // Slightly bigger than the 24px default. Renders the nearest size Bibata
-    // ships (…28, 32…), picked per output scale.
     xcursor-size 30
 }
 
