@@ -22,10 +22,10 @@ wrapPackage {
   package = niri;
   env.NIRI_CONFIG = "${config}";
 
-  # Make the cursor theme set in config.kdl findable without installing it
-  # system-wide. Prefix rather than set, so ~/.icons etc. stay usable for
-  # trying out other themes. Clients spawned by niri inherit this.
-  run = [ "export XCURSOR_PATH=${bibata-cursors}/share/icons\${XCURSOR_PATH:+:$XCURSOR_PATH}" ];
+  # Ship the cursor theme set in config.kdl as part of the package: its
+  # share/icons lands in the system profile, which is on the cursor search
+  # path (XCURSOR_PATH).
+  extraPaths = [ bibata-cursors ];
 
   runtimeInputs = path;
   inheritPath = true;
