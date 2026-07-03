@@ -1,5 +1,7 @@
 local M = {}
 
+local default_base_url = "https://api.openai.com/v1"
+
 local function append(buf, text)
 	local last_line = vim.api.nvim_buf_get_lines(buf, -2, -1, false)[1]
 
@@ -26,7 +28,13 @@ end
 
 ---@param opts { args: string }
 function M.ask(opts)
-	if not os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY") == "" then
+	-- ASK_BASE_URL must point at an OpenAI-compatible API
+	-- (e.g. ollama's or copilot-api's /v1).
+	local base_url = os.getenv("ASK_BASE_URL") or default_base_url
+	local model = os.getenv("ASK_MODEL") or "gpt-4.1"
+	local api_key = os.getenv("OPENAI_API_KEY")
+
+	if base_url == default_base_url and (not api_key or api_key == "") then
 		vim.notify("Missing OPENAI_API_KEY environment variable.", vim.log.levels.ERROR)
 		return
 	end
@@ -61,24 +69,28 @@ break lines with a newline if needed.
 Use markdown formatting.
 ]]
 
-	local job = vim.system({
+	local command = {
 		"curl",
-		"https://api.openai.com/v1/chat/completions",
+		base_url .. "/chat/completions",
 		"-N",
-		"-H",
-		"Authorization: Bearer " .. os.getenv("OPENAI_API_KEY"),
 		"-H",
 		"Content-Type: application/json",
 		"-d",
 		vim.fn.json_encode({
-			model = "gpt-4.1",
+			model = model,
 			messages = {
 				{ role = "system", content = system_message },
 				{ role = "user", content = prompt },
 			},
 			stream = true,
 		}),
-	}, {
+	}
+	if api_key and api_key ~= "" then
+		table.insert(command, "-H")
+		table.insert(command, "Authorization: Bearer " .. api_key)
+	end
+
+	local job = vim.system(command, {
 		stdout = function(_, data)
 			if not data then
 				return
