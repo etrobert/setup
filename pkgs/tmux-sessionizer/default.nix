@@ -4,6 +4,7 @@
   symlinkJoin,
   coreutils,
   gnused,
+  eza,
   fzf,
   findutils,
 }:
@@ -14,6 +15,7 @@ let
       coreutils
       gnused
       self'.packages.tmux-wrapped
+      eza
       fzf
       findutils
     ];

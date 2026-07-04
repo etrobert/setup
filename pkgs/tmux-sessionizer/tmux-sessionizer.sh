@@ -31,11 +31,19 @@ if [ $# -eq 1 ]; then
     ;;
   esac
 else
+  # shellcheck disable=SC2016
   project=$({
     find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
     echo "setup"
     echo "doc"
-  } | fzf)
+  } | fzf \
+      --preview 'case {} in
+          setup) dir=$HOME/setup ;;
+          doc)   dir=$HOME/sync/doc ;;
+          *)     dir=$HOME/work/{} ;;
+        esac
+        eza --tree --level=2 --color=always "$dir" 2>/dev/null || ls "$dir"' \
+      --preview-window 'right,60%,<45(up,55%)')
 fi
 
 if [ -z "$project" ]; then
