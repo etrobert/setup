@@ -31,6 +31,7 @@ _: {
             "awww-daemon.service"
             "graphical-session.target"
           ];
+
           requires = [ "awww-daemon.service" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
@@ -47,6 +48,7 @@ _: {
             "awww-daemon.service"
             "graphical-session.target"
           ];
+
           requires = [ "awww-daemon.service" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
