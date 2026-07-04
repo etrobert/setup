@@ -59,7 +59,12 @@ _: {
 
           mpdris2 = {
             description = "MPRIS 2 support for MPD";
-            after = [ "mpd.service" ];
+
+            after = [
+              "mpd.service"
+              "graphical-session.target"
+            ];
+
             partOf = [ "graphical-session.target" ];
             bindsTo = [ "graphical-session.target" ];
             wantedBy = [ "graphical-session.target" ];

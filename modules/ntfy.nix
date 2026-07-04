@@ -59,6 +59,7 @@ in
 
         systemd.user.services.ntfy-notify = {
           description = "Desktop notifications from ntfy";
+          after = [ "graphical-session.target" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {

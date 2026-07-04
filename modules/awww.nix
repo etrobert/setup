@@ -15,6 +15,7 @@ _: {
       systemd.user.services = {
         awww-daemon = {
           description = "Animated wallpaper daemon for Wayland";
+          after = [ "graphical-session.target" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {
@@ -25,7 +26,12 @@ _: {
 
         awww-set-default-wallpaper = {
           description = "Set the default desktop wallpaper via awww";
-          after = [ "awww-daemon.service" ];
+
+          after = [
+            "awww-daemon.service"
+            "graphical-session.target"
+          ];
+
           requires = [ "awww-daemon.service" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
@@ -37,7 +43,12 @@ _: {
 
         awww-restore-on-hotplug = {
           description = "Reapply awww wallpaper when a monitor is hot-plugged";
-          after = [ "awww-daemon.service" ];
+
+          after = [
+            "awww-daemon.service"
+            "graphical-session.target"
+          ];
+
           requires = [ "awww-daemon.service" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];

@@ -114,6 +114,7 @@ _: {
             niri.restartIfChanged = false;
 
             album-art-wallpaper = {
+              after = [ "graphical-session.target" ];
               partOf = [ "graphical-session.target" ];
               wantedBy = [ "graphical-session.target" ];
               serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
@@ -124,6 +125,7 @@ _: {
             # (4000K night, 6500K day).
             wlsunset = {
               description = "Day/night screen color temperature";
+              after = [ "graphical-session.target" ];
               partOf = [ "graphical-session.target" ];
               bindsTo = [ "graphical-session.target" ];
               wantedBy = [ "graphical-session.target" ];
