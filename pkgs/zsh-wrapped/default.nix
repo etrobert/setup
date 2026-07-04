@@ -8,6 +8,7 @@
   zsh-autosuggestions,
   zsh-syntax-highlighting,
   fzf,
+  zoxide,
 }:
 let
   pronto = lib.getExe inputs'.pronto.packages.default;
@@ -23,6 +24,7 @@ let
     if [[ $options[zle] = on ]]; then
       source <(${fzf}/bin/fzf --zsh)
     fi
+    source <(${zoxide}/bin/zoxide init zsh)
     source ${zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source ${zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
   '';
