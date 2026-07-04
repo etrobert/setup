@@ -23,18 +23,27 @@ if [ $# -eq 1 ]; then
     exit 0
     ;;
   -e | --existing)
-    project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf)
+    project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null |
+      fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right:60%')
     ;;
   *)
     project=$(echo "$1" | sed 's/\/$//')
     ;;
   esac
 else
+  # shellcheck disable=SC2016
   project=$({
     find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
     echo "setup"
     echo "doc"
-  } | fzf)
+  } | fzf \
+      --preview 'case {} in
+          setup) dir=$HOME/setup ;;
+          doc)   dir=$HOME/sync/doc ;;
+          *)     dir=$HOME/work/{} ;;
+        esac
+        eza --tree --level=2 --color=always "$dir" 2>/dev/null || ls "$dir"' \
+      --preview-window 'right:55%')
 fi
 
 if [ -z "$project" ]; then
