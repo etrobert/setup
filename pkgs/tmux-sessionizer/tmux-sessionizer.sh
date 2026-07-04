@@ -23,7 +23,8 @@ if [ $# -eq 1 ]; then
     exit 0
     ;;
   -e | --existing)
-    project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf)
+    project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null |
+      fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right:60%')
     ;;
   *)
     project=$(echo "$1" | sed 's/\/$//')
