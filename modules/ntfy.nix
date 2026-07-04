@@ -44,6 +44,8 @@ in
       # Alert on any systemd service failure: a top-level drop-in (service.d/)
       # attaches OnFailure=ntfy-failure@<unit>.service to every system service,
       # and the template posts the failing unit's recent journal to the topic.
+      # Delivery is best-effort — no rate limiting and no retry; an undelivered
+      # alert only leaves a failed ntfy-failure@ instance (systemctl --failed).
       ntfyFailureAlerts =
         { config, pkgs, ... }:
         {
@@ -79,7 +81,7 @@ in
             script = /* bash */ ''
               journalctl --unit "$1" --lines 15 --no-pager |
                 tail --bytes 4000 |
-                curl --silent --show-error --max-time 10 \
+                curl --fail --silent --show-error --max-time 10 \
                   --header "Title: $1 failed on ${config.networking.hostName}" \
                   --data-binary @- \
                   "${url}/${topic}"
