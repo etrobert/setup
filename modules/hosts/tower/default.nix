@@ -30,7 +30,6 @@ in
       self.nixosModules.unfree
       self.nixosModules.server
       self.nixosModules.ntfy
-      self.nixosModules.ntfyFailureAlerts
       self.nixosModules.homepage
       self.nixosModules.cockpit
       self.nixosModules.claudeWarmup

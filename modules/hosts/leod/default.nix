@@ -24,7 +24,6 @@ in
       self.nixosModules.base
       self.nixosModules.unfree
       self.nixosModules.hypridle
-      self.nixosModules.ntfyFailureAlerts
     ];
   };
 }
