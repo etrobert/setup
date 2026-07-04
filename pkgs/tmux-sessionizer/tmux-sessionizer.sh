@@ -24,7 +24,7 @@ if [ $# -eq 1 ]; then
     ;;
   -e | --existing)
     project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null |
-      fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right,60%,<45(up,55%)')
+      fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right:60%')
     ;;
   *)
     project=$(echo "$1" | sed 's/\/$//')
