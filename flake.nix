@@ -106,6 +106,7 @@
           ./modules/copilot-api.nix
           ./modules/server.nix
           ./modules/ntfy.nix
+          ./modules/ntfy-failure-alerts.nix
           ./modules/homepage.nix
           ./modules/cockpit.nix
           ./modules/umami.nix
