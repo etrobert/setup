@@ -136,7 +136,11 @@ _: {
             cliphist = {
               partOf = [ "graphical-session.target" ];
               wantedBy = [ "graphical-session.target" ];
-              serviceConfig.ExecStart = "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --watch ${lib.getExe pkgs.cliphist} store";
+
+              serviceConfig = {
+                ExecStart = "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --watch ${lib.getExe pkgs.cliphist} store";
+                Restart = "on-failure";
+              };
             };
           };
 
