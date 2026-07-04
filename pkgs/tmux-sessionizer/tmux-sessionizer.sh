@@ -54,7 +54,7 @@ if [ ! -d "$project_path" ]; then
   exit 1
 fi
 
-project=${project/./_}
+project=${project//./_}
 
 if ! tmux has-session -t="$project" 2>/dev/null; then
   tmux new-session -d -s "$project" -c "$project_path" -e "TMUX_SESSION_PATH=$project_path"
