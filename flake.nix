@@ -148,6 +148,7 @@
                   deadnix
                   nixfmt
                   yamllint
+                  stylua
                 ];
               };
 
@@ -169,6 +170,10 @@
 
               yamllint = pkgs.runCommand "yamllint-check" { nativeBuildInputs = [ pkgs.yamllint ]; } ''
                 yamllint --strict ${self} && touch $out
+              '';
+
+              stylua = pkgs.runCommand "stylua-check" { nativeBuildInputs = [ pkgs.stylua ]; } ''
+                stylua --check ${self}/pkgs/neovim-wrapped && touch $out
               '';
             };
 
