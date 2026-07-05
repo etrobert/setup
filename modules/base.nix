@@ -47,6 +47,7 @@ _: {
             magic-wormhole
             ripgrep
             wget
+            zoxide
           ]);
 
         # Set EDITOR via environment.variables (not zsh's login-only .zprofile)
