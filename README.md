@@ -22,3 +22,12 @@ then can do `sudo darwin-rebuild switch`
   config selects this voice as the system default for `say` (used by the
   `claude-speak` hook), but Apple ships no headless installer for the asset. If
   it isn't downloaded, `say` silently falls back to the default robotic voice.
+
+## Nix in docker
+
+Run nix commands in a docker container without installing Nix on your host
+machine:
+
+```sh
+docker run -it -e NIX_CONFIG="experimental-features = nix-command flakes" nixos/nix nix run nixpkgs#hello
+```
