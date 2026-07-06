@@ -102,8 +102,9 @@ in
   #     overlaid nixpkgs) whose default system-path also builds the manual
   # Man pages are unaffected.
   #
-  # TODO: remove both once nix-darwin's doc/manual passes `--sidebar-depth`.
-  # Verify by deleting them and running
+  # TODO: remove both once nix-darwin's doc/manual passes `--sidebar-depth`
+  # (upstream fix nix-darwin/nix-darwin#1819, tracking issue #1817) lands in the
+  # pinned input. Verify by deleting them and running
   # `nix build .#darwinConfigurations.aaron.system` — if it succeeds, drop them.
   documentation.doc.enable = false;
 
