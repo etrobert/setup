@@ -67,10 +67,8 @@
   },
   // Running alongside `battery` to compare charging-state update latency.
   "upower": {
-    "icon-size": 16,
+    "icon-size": 0,
     "format": "",
-    "hide-if-empty": true,
-    "tooltip": true,
     "tooltip-format": "{percentage} {time}",
   },
   "pulseaudio": {
