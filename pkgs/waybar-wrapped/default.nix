@@ -24,6 +24,14 @@ wrapPackage {
     "--style ${style}"
   ];
   runtimeInputs = [ self'.packages.get-weather ] ++ nixpkgsDeps;
+
+  # The upower module draws a GTK symbolic battery icon looked up from an icon
+  # theme via XDG_DATA_DIRS. Prepend Adwaita so the icon resolves regardless of
+  # what the session provides, without clobbering the session's own dirs.
+  run = [
+    "export XDG_DATA_DIRS=${pkgs.adwaita-icon-theme}/share\${XDG_DATA_DIRS:+:$XDG_DATA_DIRS}"
+  ];
+
   # waybar.service points at the unwrapped binary; patch it to use the wrapper
   filesToPatch = [ "$out/share/systemd/user/waybar.service" ];
 }

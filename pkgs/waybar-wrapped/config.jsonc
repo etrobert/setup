@@ -25,7 +25,7 @@
     "mpris",
     "pulseaudio",
     "network",
-    "battery",
+    "upower",
     "custom/cpu-governor",
     "bluetooth",
     "niri/workspaces",
@@ -50,18 +50,17 @@
     "exec": "get-weather",
     "interval": 3600,
   },
-  "battery": {
-    "states": {
-      "warning": 30,
-      "critical": 15,
-    },
-    "format": "{icon}",
-    "format-full": "{icon}",
-    "format-icons": {
-      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-      "default": ["", "", "", "", ""],
-    },
-    "tooltip-format": "{capacity}%\n{timeTo}",
+  // D-Bus UPower module: reflects the Charging/Discharging transition within
+  // ~3s (UPower fast-repolls for 5s after an AC change), unlike the sysfs
+  // "battery" module which can show a stale state for 25-60s. The icon is a
+  // GTK symbolic icon (no format-icons/states support); icon-only to match the
+  // vertical bar.
+  "upower": {
+    "icon-size": 16,
+    "format": "",
+    "hide-if-empty": true,
+    "tooltip": true,
+    "tooltip-format": "{percentage} {time}",
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
