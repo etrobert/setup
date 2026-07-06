@@ -14,7 +14,14 @@ let
 in
 {
   flake.darwinConfigurations.aaron = nix-darwin.lib.darwinSystem {
-    specialArgs = { inherit self agenix nixpkgs-darwin-pins; };
+    specialArgs = {
+      inherit
+        self
+        agenix
+        nixpkgs-darwin-pins
+        nix-darwin
+        ;
+    };
     modules = [
       ./configuration.nix
       home-manager.darwinModules.home-manager

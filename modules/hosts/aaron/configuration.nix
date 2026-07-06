@@ -2,6 +2,7 @@
   self,
   pkgs,
   lib,
+  nix-darwin,
   ...
 }:
 let
@@ -102,11 +103,17 @@ in
   #     overlaid nixpkgs) whose default system-path also builds the manual
   # Man pages are unaffected.
   #
-  # TODO: remove both once nix-darwin's doc/manual passes `--sidebar-depth`
-  # (upstream fix nix-darwin/nix-darwin#1819, tracking issue #1817) lands in the
-  # pinned input. Verify by deleting them and running
-  # `nix build .#darwinConfigurations.aaron.system` — if it succeeds, drop them.
+  # The assertion below fails once the upstream fix (nix-darwin/nix-darwin#1818,
+  # tracking issue #1817) lands in the pinned input — then remove both disables
+  # and the guard.
   documentation.doc.enable = false;
+
+  assertions = [
+    {
+      assertion = lib.hasInfix "--toc-depth" (builtins.readFile "${nix-darwin}/doc/manual/default.nix");
+      message = "nix-darwin's manual no longer uses --toc-depth; remove the documentation.doc.enable and system.tools.darwin-uninstaller.enable workaround and this guard.";
+    }
+  ];
 
   system = {
     # See the darwin-manual-html workaround note above documentation.doc.enable.
