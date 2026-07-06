@@ -44,6 +44,9 @@ Before asking a question, check if the answer is obtainable by reading files,
 running a command, or SSHing into a machine. Only ask when a reasonable
 investigation wouldn't yield the answer.
 
+Don't be afraid to make multiple different implementations of the same feature
+to compare them.
+
 ## Research Approach
 
 When investigating how something works, consult both official documentation and
