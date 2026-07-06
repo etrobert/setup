@@ -21,9 +21,6 @@ in
 wrapPackage {
   package = niri;
   env.NIRI_CONFIG = "${config}";
-
-  # Make the cursor theme set in config.kdl discoverable by prepending it to
-  # XCURSOR_PATH at runtime, rather than merging it into the package output.
   prefix.XCURSOR_PATH = "${bibata-cursors}/share/icons";
 
   runtimeInputs = path;
