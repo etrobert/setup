@@ -26,6 +26,7 @@
     "pulseaudio",
     "network",
     "battery",
+    "upower",
     "custom/cpu-governor",
     "bluetooth",
     "niri/workspaces",
@@ -63,6 +64,14 @@
       "default": ["", "", "", "", ""],
     },
     "tooltip-format": "{capacity}%\n{timeTo}",
+  },
+  // Running alongside `battery` to compare charging-state update latency.
+  "upower": {
+    "icon-size": 16,
+    "format": "",
+    "hide-if-empty": true,
+    "tooltip": true,
+    "tooltip-format": "{percentage} {time}",
   },
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float

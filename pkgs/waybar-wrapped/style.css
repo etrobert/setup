@@ -71,6 +71,7 @@ window#waybar {
 
 #pulseaudio,
 #network,
-#battery {
+#battery,
+#upower {
   margin-left: -3px;
 }
