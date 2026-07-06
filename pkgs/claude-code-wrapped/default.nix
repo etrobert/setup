@@ -8,6 +8,7 @@
   lib,
   nix,
   ntfy-wrapped,
+  sox,
   extraEnv ? { },
   readTokenFromAgenix ? false,
   # Name of the installed binary. Variants override this (e.g. "claude-copilot")
@@ -39,6 +40,12 @@ let
     botGit
     coreutils
     nix
+
+    # Voice input (hold space) records via SoX's `rec`. Its bundled native
+    # audio-capture module needs libasound.so.2, which isn't in this closure,
+    # so it falls back to `rec`/`arecord` on PATH — neither of which we'd
+    # otherwise provide.
+    sox
   ]
   ++ ttsBackends;
 
