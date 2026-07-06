@@ -3,6 +3,7 @@
   inputs',
   wrapFirefox,
   lib,
+  extraSettings ? { },
 }:
 let
   browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
@@ -14,6 +15,7 @@ wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
       "zen.theme.content-element-separation" = 4;
       "zen.theme.border-radius" = 12;
     }
+    // extraSettings
   );
   extraPolicies = browserConfig.sharedPolicies;
 }
