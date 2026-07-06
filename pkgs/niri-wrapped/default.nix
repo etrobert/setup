@@ -21,11 +21,7 @@ in
 wrapPackage {
   package = niri;
   env.NIRI_CONFIG = "${config}";
-
-  # Ship the cursor theme set in config.kdl as part of the package: its
-  # share/icons lands in the system profile, which is on the cursor search
-  # path (XCURSOR_PATH).
-  extraPaths = [ bibata-cursors ];
+  prefix.XCURSOR_PATH = "${bibata-cursors}/share/icons";
 
   runtimeInputs = path;
   inheritPath = true;

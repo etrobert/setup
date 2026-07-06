@@ -30,6 +30,10 @@
 #                                         #   (forced; overrides the environment)
 #     setDefaults    ? {};                 # attrset; each becomes --set-default NAME value
 #                                         #   (a default the environment can override)
+#     prefix         ? {};                 # attrset; each becomes --prefix NAME : value —
+#                                         #   colon-prepends onto a (possibly-unset) list
+#                                         #   var at runtime without clobbering (e.g.
+#                                         #   XDG_DATA_DIRS); use --set/env to force instead
 #     flags          ? [];                 # raw strings; each becomes one --add-flags "…"
 #     checks         ? [];                 # raw shell snippets run at build time before the
 #                                         #   wrapper is generated; a non-zero exit fails the
@@ -74,6 +78,7 @@
   inheritArgv0 ? false,
   env ? { },
   setDefaults ? { },
+  prefix ? { },
   flags ? [ ],
   run ? [ ],
   runtimeInputs ? [ ],
@@ -107,6 +112,12 @@ let
     ++ lib.mapAttrsToList (
       k: v: "    --set-default ${lib.escapeShellArg k} ${lib.escapeShellArg v}"
     ) setDefaults
+    # --prefix: colon-prepend a value onto a (possibly-unset) list-style variable
+    # at runtime without clobbering existing entries — the right tool for
+    # XDG_DATA_DIRS/-style paths (unlike --set, which forces a literal value).
+    ++ lib.mapAttrsToList (
+      k: v: "    --prefix ${lib.escapeShellArg k} : ${lib.escapeShellArg v}"
+    ) prefix
     # --add-flags values are inserted *verbatim* into the generated wrapper
     # script (see makeWrapper docs: "ARGS verbatim to the Bash-interpreted
     # invocation").  Double-quoting keeps the value as one shell word during
