@@ -91,7 +91,26 @@ in
     compilerRtOverlay
   ];
 
+  # Workaround: nix-darwin's darwin-manual-html builds with
+  # `nixos-render-docs manual html --toc-depth`, but nixos-unstable removed
+  # `--toc-depth` in favour of `--sidebar-depth`, so the HTML manual fails to
+  # build. It is pulled in two ways, both disabled (here and via
+  # system.tools.darwin-uninstaller.enable below):
+  #   - documentation.doc.enable → aaron's own system-path (manualHTML + the
+  #     `darwin-help` command)
+  #   - the darwin-uninstaller embeds a reference system (via a fresh, un-
+  #     overlaid nixpkgs) whose default system-path also builds the manual
+  # Man pages are unaffected.
+  #
+  # TODO: remove both once nix-darwin's doc/manual passes `--sidebar-depth`.
+  # Verify by deleting them and running
+  # `nix build .#darwinConfigurations.aaron.system` — if it succeeds, drop them.
+  documentation.doc.enable = false;
+
   system = {
+    # See the darwin-manual-html workaround note above documentation.doc.enable.
+    tools.darwin-uninstaller.enable = false;
+
     primaryUser = "soft";
 
     activationScripts.postActivation.text = ''
