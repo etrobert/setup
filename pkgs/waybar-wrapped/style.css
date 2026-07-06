@@ -69,9 +69,12 @@ window#waybar {
   margin-left: -2px;
 }
 
+#upower {
+  margin-left: 6px;
+}
+
 #pulseaudio,
 #network,
-#battery,
-#upower {
+#battery {
   margin-left: -3px;
 }
