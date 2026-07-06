@@ -184,6 +184,7 @@ _: {
             linuxPackages.cpupower
             bambu-studio
             bemoji
+            bibata-cursors
             bitwarden-desktop
             brightnessctl
             chromium
@@ -221,6 +222,23 @@ _: {
       };
 
       programs = {
+        # GTK apps (waybar, pavucontrol, …) pick their cursor by GSettings
+        # theme *name* and search XCURSOR_PATH for it — they ignore niri's
+        # private cursor config. Point the name at Bibata and put the package
+        # on the system profile (whose share/icons is on the global
+        # XCURSOR_PATH) so every GTK app matches the compositor cursor.
+        dconf = {
+          enable = true;
+          profiles.user.databases = [
+            {
+              settings."org/gnome/desktop/interface" = {
+                cursor-theme = "Bibata-Modern-Classic";
+                cursor-size = lib.gvariant.mkInt32 30;
+              };
+            }
+          ];
+        };
+
         niri = {
           enable = true;
           package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
