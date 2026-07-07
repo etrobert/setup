@@ -2,6 +2,7 @@
   self',
   pkgs,
   wrapPackage,
+  setuid-sudo,
   dev ? false,
 }:
 let
@@ -14,7 +15,6 @@ let
     gawk # used by custom/cpu-freq
     pavucontrol
     playerctl # used by mpris on-click
-    sudo # used to run toggle-cpu-governor
   ];
 in
 wrapPackage {
@@ -23,7 +23,12 @@ wrapPackage {
     "--config ${config}"
     "--style ${style}"
   ];
-  runtimeInputs = [ self'.packages.get-weather ] ++ nixpkgsDeps;
+  runtimeInputs = [
+    self'.packages.get-weather
+    self'.packages.toggle-cpu-governor
+    setuid-sudo # used to run toggle-cpu-governor
+  ]
+  ++ nixpkgsDeps;
 
   # The upower module renders a GTK symbolic battery icon from an icon theme.
   prefix.XDG_DATA_DIRS = "${pkgs.adwaita-icon-theme}/share";
