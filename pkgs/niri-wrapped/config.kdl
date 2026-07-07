@@ -391,7 +391,7 @@ window-rule {
 }
 
 window-rule {
-    match app-id=r#"^spotify$"#
+    match app-id=r#"^Spotify$"#
     open-on-workspace "4"
 }
 
