@@ -64,7 +64,7 @@ jobs:
             runner: [self-hosted]
             platform: nixos
           - host: pi
-            runner: ubuntu-24.04-arm
+            runner: [self-hosted]
             platform: nixos
           - host: aaron
             runner: macos-latest
