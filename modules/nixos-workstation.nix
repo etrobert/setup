@@ -10,8 +10,6 @@ _: {
     let
       inherit (pkgs.stdenv.hostPlatform) system;
 
-      ddcci-register = pkgs.callPackage ./ddcci-register { };
-
       # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1 streams
       # software-decode and peg the CPU. Disabling it makes sites serve VP9,
       # which this GPU decodes in hardware. Drop when leod goes.
@@ -28,6 +26,7 @@ _: {
         self.nixosModules.darkman
         self.nixosModules.mpd
         self.nixosModules.awww
+        self.nixosModules.ddcci
         self.nixosModules.cachix-push
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop
@@ -35,9 +34,6 @@ _: {
       ];
 
       allowedUnfreePackages = [ "bambu-studio" ];
-
-      boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
-      boot.kernelModules = [ "ddcci-backlight" ];
 
       services = {
         # Firmware updates from LVFS: fwupdmgr refresh / get-updates / update.
@@ -53,17 +49,6 @@ _: {
           openFirewall = true;
         };
 
-        # Re-run DDC/CI backlight registration whenever a monitor is connected
-        # or powered on. The kernel emits a DRM "change" hotplug event; the
-        # registration itself (and the boot-time pass) lives in the
-        # ddcci-register service below. This replaces a one-shot udev "add" rule
-        # that only fired at boot, so a monitor that was off at boot now gets
-        # picked up when it comes up. ddcci can't auto-probe on kernel 6.8+.
-        # Source https://wiki.nixos.org/wiki/Backlight#DDC/CI
-        udev.extraRules = ''
-          SUBSYSTEM=="drm", ACTION=="change", ENV{HOTPLUG}=="1", RUN+="${pkgs.systemd}/bin/systemctl start --no-block ddcci-register.service"
-        '';
-
         # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
         # through a login shell and imports the environment into systemd/D-Bus
         # itself; bash -l guarantees environment.sessionVariables are loaded.
@@ -78,9 +63,6 @@ _: {
       };
 
       hardware = {
-        # Enable I2C for ddcutil (external monitor brightness)
-        i2c.enable = true;
-
         # Enable bluetooth
         bluetooth.enable = true;
         bluetooth.powerOnBoot = true;
@@ -104,17 +86,6 @@ _: {
         packages = with self.packages.${system}; [
           waybar-wrapped
         ];
-
-        # Instantiate ddcci backlight devices for any responsive DDC/CI monitor.
-        # Triggered at boot and on DRM hotplug (see services.udev.extraRules).
-        services.ddcci-register = {
-          description = "Register DDC/CI monitors as backlight devices";
-          wantedBy = [ "multi-user.target" ];
-          serviceConfig = {
-            Type = "oneshot";
-            ExecStart = lib.getExe ddcci-register;
-          };
-        };
 
         user = {
           services = {
