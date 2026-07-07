@@ -16,7 +16,7 @@ concurrency:
 jobs:
   check:
     name: Check
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted]
     permissions:
       contents: read
     steps:
@@ -61,7 +61,7 @@ jobs:
             runner: [self-hosted]
             platform: nixos
           - host: leod
-            runner: ubuntu-latest
+            runner: [self-hosted]
             platform: nixos
           - host: pi
             runner: ubuntu-24.04-arm
