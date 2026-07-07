@@ -122,6 +122,10 @@ references are dead text that add noise without value.
 Keep code comments minimal. State only the single non-obvious points and leave
 narrative context (root-cause chains, incident history) for the commit or PR.
 
+Apply the deletion test: if a comment only restates what the code, filename, or
+option names already convey, cut it. Don't describe how or where code is wired
+up (e.g. which hosts import a module).
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
