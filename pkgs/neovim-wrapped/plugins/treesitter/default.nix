@@ -29,6 +29,7 @@
           typescript
           json
           go
+          haskell # .tidal files (Tidal patterns are Haskell)
           scheme
           rust
           zsh
