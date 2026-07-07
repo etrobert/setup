@@ -395,14 +395,9 @@ window-rule {
     open-on-workspace "4"
 }
 
-// Float dialogs and small utility windows by default.
+// Float the pavucontrol volume control (verified app-id: org.pulseaudio.pavucontrol).
 window-rule {
-    match app-id=r#"^pavucontrol$"#
-    match app-id=r#"^nm-connection-editor$"#
-    match app-id=r#".*blueman-manager$"#
-    match app-id=r#"^org\.gnome\.FileChooser$"#
-    match app-id=r#"^xdg-desktop-portal-gtk$"#
-    match title=r#"(?i)^(preferences|settings|properties)$"#
+    match app-id=r#"^org\.pulseaudio\.pavucontrol$"#
     open-floating true
 }
 
