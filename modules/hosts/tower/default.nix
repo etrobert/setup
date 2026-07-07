@@ -34,6 +34,7 @@ in
       self.nixosModules.cockpit
       self.nixosModules.claudeWarmup
       self.nixosModules.gaming
+      self.nixosModules.githubRunner
     ];
   };
 }
