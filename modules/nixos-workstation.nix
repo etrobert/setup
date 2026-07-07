@@ -123,15 +123,6 @@ _: {
             # which then blocks the legitimate niri when you log back in.
             niri.restartIfChanged = false;
 
-            # Disabled: keeps the album-art-wallpaper package around but does
-            # not run it. Re-enable by uncommenting this service.
-            # album-art-wallpaper = {
-            #   after = [ "graphical-session.target" ];
-            #   partOf = [ "graphical-session.target" ];
-            #   wantedBy = [ "graphical-session.target" ];
-            #   serviceConfig.ExecStart = lib.getExe self.packages.${system}.album-art-wallpaper;
-            # };
-
             # Night-time color temperature; computes sunrise/sunset from
             # Berlin coordinates. Temperatures are wlsunset's defaults
             # (4000K night, 6500K day).
