@@ -1,13 +1,27 @@
 _: {
   flake.nixosModules.awww =
     {
-      self,
       lib,
       pkgs,
       ...
     }:
     let
-      inherit (pkgs.stdenv.hostPlatform) system;
+      awww-restore-on-hotplug = pkgs.writeShellApplication {
+        name = "awww-restore-on-hotplug";
+
+        runtimeInputs = [
+          pkgs.niri
+          pkgs.awww
+        ];
+
+        text = ''
+          niri msg --json event-stream | while read -r line; do
+            case "$line" in *'"ConfigLoaded"'*) ;; *) continue ;; esac
+            sleep 0.5
+            awww restore
+          done
+        '';
+      };
     in
     {
       environment.systemPackages = [ pkgs.awww ];
@@ -53,7 +67,7 @@ _: {
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {
-            ExecStart = lib.getExe self.packages.${system}.awww-restore-on-hotplug;
+            ExecStart = lib.getExe awww-restore-on-hotplug;
             Restart = "on-failure";
           };
         };
