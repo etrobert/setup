@@ -377,16 +377,19 @@ window-rule {
     match app-id=r#"^zen$"#
     open-on-workspace "1"
 }
+
 window-rule {
     match app-id=r#"^com\.mitchellh\.ghostty$"#
     open-on-workspace "2"
 }
+
 window-rule {
     match app-id=r#"^whatsapp-electron$"#
     match app-id=r#"^signal$"#
     match app-id=r#"^org\.telegram\.desktop$"#
     open-on-workspace "3"
 }
+
 window-rule {
     match app-id=r#"^spotify$"#
     open-on-workspace "4"
