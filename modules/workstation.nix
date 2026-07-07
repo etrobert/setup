@@ -68,6 +68,7 @@ _: {
               git-find-commit
               agents
               hass-cli-wrapped
+              llm-wrapped
               pm
               pdfshrink
               nixplatforms
