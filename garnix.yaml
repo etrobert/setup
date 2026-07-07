@@ -1,0 +1,9 @@
+# Build only the host system closures, mirroring the GitHub Actions matrix
+# (tower, leod, pi — nixos; aaron — darwin). Garnix's default additionally
+# builds all linux packages, checks and devShells; scope down to conserve
+# free-tier CI minutes during the trial.
+builds:
+  include:
+    - 'nixosConfigurations.*'
+    - 'darwinConfigurations.*'
+  exclude: []
