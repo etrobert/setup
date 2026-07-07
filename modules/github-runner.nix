@@ -10,7 +10,6 @@ _:
         enable = true;
         url = "https://github.com/etrobert/setup";
         tokenFile = config.age.secrets.github-runner-token.path;
-        extraLabels = [ "tower" ];
         replace = true;
       };
 
