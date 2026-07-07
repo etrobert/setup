@@ -18,8 +18,8 @@ _: {
 
         text = ''
           # $OUT_PATHS is a space-separated list of paths; split it into
-          # separate arguments (IFS) without glob-expanding any of them (set -f).
-          set -f
+          # separate arguments (IFS) without glob-expanding any of them (noglob).
+          set -o noglob
           export IFS=' '
 
           CACHIX_AUTH_TOKEN="$(< ${config.age.secrets.cachix-token.path})"
