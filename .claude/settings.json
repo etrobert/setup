@@ -109,5 +109,8 @@
       "Bash(ghostty +list-keybinds:*)",
       "Bash(nvim:*)"
     ]
+  },
+  "worktree": {
+    "bgIsolation": "none"
   }
 }
