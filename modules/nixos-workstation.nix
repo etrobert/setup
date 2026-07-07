@@ -10,6 +10,8 @@ _: {
     let
       inherit (pkgs.stdenv.hostPlatform) system;
 
+      ddcci-register = pkgs.callPackage ./ddcci-register { };
+
       # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1 streams
       # software-decode and peg the CPU. Disabling it makes sites serve VP9,
       # which this GPU decodes in hardware. Drop when leod goes.
@@ -110,7 +112,7 @@ _: {
           wantedBy = [ "multi-user.target" ];
           serviceConfig = {
             Type = "oneshot";
-            ExecStart = lib.getExe self.packages.${system}.ddcci-register;
+            ExecStart = lib.getExe ddcci-register;
           };
         };
 

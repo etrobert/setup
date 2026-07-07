@@ -130,7 +130,6 @@
         mako-wrapped = pkgs.callPackage ./mako-wrapped { inherit wrapPackage; };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         brightness-control = pkgs.callPackage ./brightness-control { };
-        ddcci-register = pkgs.callPackage ./ddcci-register { };
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         volume-control = pkgs.callPackage ./volume-control { };
