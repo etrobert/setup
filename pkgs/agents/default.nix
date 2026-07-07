@@ -5,7 +5,7 @@
 writeShellApplication {
   name = "agents";
   runtimeInputs = [ self'.packages.claude-code-wrapped ]; # provides `claude`
-  inheritPath = false;
+  inheritPath = true;
   text = ''
     # Background agents view scoped to one project: claude agents merges
     # background sessions from every project into one list.  --cwd restricts it
