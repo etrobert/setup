@@ -1,8 +1,7 @@
 # Self-hosted GitHub Actions runner for the etrobert/setup CI. nix and git are
 # already on the runner's PATH (github-runner module), so the checkout and
 # `nix build` steps need no extraPackages.
-_:
-{
+_: {
   flake.nixosModules.githubRunner =
     { config, ... }:
     {
