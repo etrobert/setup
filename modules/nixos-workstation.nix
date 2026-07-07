@@ -91,7 +91,7 @@ _: {
           groups = [ "wheel" ];
           commands = [
             {
-              command = "/run/current-system/sw/bin/toggle-cpu-governor";
+              command = lib.getExe self.packages.${system}.toggle-cpu-governor;
               options = [ "NOPASSWD" ];
             }
           ];

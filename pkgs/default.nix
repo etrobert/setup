@@ -96,7 +96,8 @@
         get-weather = pkgs.callPackage ./get-weather { };
         ils = pkgs.callPackage ./ils { };
         add-asset = pkgs.callPackage ./add-asset { };
-        switch = pkgs.callPackage ./switch.nix { };
+        setuid-sudo = pkgs.callPackage ./setuid-sudo { };
+        switch = pkgs.callPackage ./switch.nix { inherit self'; };
         deadnix-errfmt = pkgs.callPackage ./deadnix-errfmt { };
         firefox-wrapped = pkgs.callPackage ./firefox-wrapped { inherit self; };
       }
