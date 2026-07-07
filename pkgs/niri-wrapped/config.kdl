@@ -395,6 +395,17 @@ window-rule {
     open-on-workspace "4"
 }
 
+// Float dialogs and small utility windows by default.
+window-rule {
+    match app-id=r#"^pavucontrol$"#
+    match app-id=r#"^nm-connection-editor$"#
+    match app-id=r#".*blueman-manager$"#
+    match app-id=r#"^org\.gnome\.FileChooser$"#
+    match app-id=r#"^xdg-desktop-portal-gtk$"#
+    match title=r#"(?i)^(preferences|settings|properties)$"#
+    open-floating true
+}
+
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
