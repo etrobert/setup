@@ -102,6 +102,7 @@
           ./modules/mpd.nix
           ./modules/hypridle.nix
           ./modules/awww.nix
+          ./modules/ddcci
           ./modules/album-art-wallpaper.nix
           ./modules/cachix-push.nix
           ./modules/copilot-api.nix
