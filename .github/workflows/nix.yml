@@ -32,14 +32,6 @@ jobs:
           extra-conf: |
             eval-cores = 1
 
-      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
-      # fail the job
-      - uses: cachix/cachix-action@v17
-        continue-on-error: true
-        with:
-          name: soft-nix
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
       - name: Format Check
         run: nix fmt . -- --ci
 
@@ -76,9 +68,14 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
+      # Self-hosted jobs skip this: tower's cachix-watch-store-agent
+      # (modules/cachix-push.nix) already pushes everything built there, and
+      # the action can't work anyway — its `cachix use` needs a nix
+      # trusted user, which the runner user deliberately isn't.
       # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
       # fail the job
       - uses: cachix/cachix-action@v17
+        if: ${{ !contains(matrix.runner, 'self-hosted') }}
         continue-on-error: true
         with:
           name: soft-nix
