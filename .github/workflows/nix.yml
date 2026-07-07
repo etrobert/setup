@@ -49,26 +49,51 @@ jobs:
       - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
 
+  # Discover every host the flake exposes so the build matrix doesn't have to
+  # be maintained by hand — adding a nixos-/darwin-Configuration is enough.
+  # Each host's arch (from nixpkgs.hostPlatform) picks its runner.
+  discover:
+    name: Discover configurations
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.set.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Build matrix from flake
+        id: set
+        run: |
+          systems() {
+            nix eval --json ".#$1" --accept-flake-config \
+              --apply 'builtins.mapAttrs (_: c: c.config.nixpkgs.hostPlatform.system)' \
+              2>/dev/null || echo '{}'
+          }
+          matrix=$(jq --compact-output --null-input \
+            --argjson nixos "$(systems nixosConfigurations)" \
+            --argjson darwin "$(systems darwinConfigurations)" '
+              def runner: {
+                "x86_64-linux": "ubuntu-latest",
+                "aarch64-linux": "ubuntu-24.04-arm",
+                "aarch64-darwin": "macos-latest",
+                "x86_64-darwin": "macos-13"
+              }[.];
+              { include:
+                [ ($nixos  | to_entries[] | {host: .key, platform: "nixos",  runner: (.value | runner)}),
+                  ($darwin | to_entries[] | {host: .key, platform: "darwin", runner: (.value | runner)}) ] }')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
   build:
     name: Build ${{ matrix.host }}
     runs-on: ${{ matrix.runner }}
+    needs: discover
     permissions:
       contents: read
     strategy:
-      matrix:
-        include:
-          - host: tower
-            runner: ubuntu-latest
-            platform: nixos
-          - host: leod
-            runner: ubuntu-latest
-            platform: nixos
-          - host: pi
-            runner: ubuntu-24.04-arm
-            platform: nixos
-          - host: aaron
-            runner: macos-latest
-            platform: darwin
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
       fail-fast: false
 
     steps:
