@@ -58,7 +58,7 @@ jobs:
       matrix:
         include:
           - host: tower
-            runner: ubuntu-latest
+            runner: [self-hosted, tower]
             platform: nixos
           - host: leod
             runner: ubuntu-latest
