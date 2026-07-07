@@ -126,6 +126,11 @@ layout {
     // Set gaps around windows in logical pixels.
     gaps 8
 
+    // Transparent so the awww wallpaper in the Overview backdrop shows
+    // through the workspaces (see the layer-rule below). Without this,
+    // niri paints its opaque default grey over the wallpaper.
+    background-color "transparent"
+
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
     //   or right edge of the screen.
@@ -357,6 +362,14 @@ window-rule {
 window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
+}
+
+// Render the awww wallpaper inside the Overview's zoomed-out backdrop
+// instead of the flat backdrop color. awww uses the "awww-daemon"
+// namespace and draws on the background layer.
+layer-rule {
+    match namespace="^awww-daemon$"
+    place-within-backdrop true
 }
 
 binds {
