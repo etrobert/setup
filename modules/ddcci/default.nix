@@ -31,10 +31,8 @@ _: {
       boot.extraModulePackages = with pkgs.linuxPackages; [ ddcci-driver ];
       boot.kernelModules = [ "ddcci-backlight" ];
 
-      # Re-run registration whenever a monitor is connected or powered on: the
-      # kernel emits a DRM "change" hotplug event. This replaces a one-shot udev
-      # "add" rule that only fired at boot, so a monitor that was off at boot now
-      # gets picked up when it comes up.
+      # Re-run registration on DRM hotplug (the kernel emits a "change" event)
+      # so a monitor that was off at boot gets picked up when it comes up.
       services.udev.extraRules = ''
         SUBSYSTEM=="drm", ACTION=="change", ENV{HOTPLUG}=="1", RUN+="${pkgs.systemd}/bin/systemctl start --no-block ddcci-register.service"
       '';
