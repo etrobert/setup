@@ -8,13 +8,8 @@
     ../../home-assistant.nix
   ];
 
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-
-    # Run aarch64 builds (pi's CI job) via QEMU user emulation.
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
-  };
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "tower";
 
