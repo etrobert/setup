@@ -21,6 +21,9 @@
   # Keep a Claude 5h usage session always ticking over (see modules/claude-warmup.nix).
   services.claude-warmup.enable = true;
 
+  # Run aarch64 builds (pi's CI job) via QEMU user emulation.
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   networking.networkmanager = {
     # Disable WiFi: tower is a wired desktop on the static enp11s0 link below, so
     # WiFi only added a second IP on the same /24. That dual-homing intermittently
