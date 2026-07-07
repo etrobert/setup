@@ -7,6 +7,12 @@ name: Nix
   pull_request:
     branches: [main]
 
+# Cancel superseded runs per ref when iterating fast, but never on main:
+# every main commit must finish and push to cachix (pi auto-upgrades from it).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   check:
     name: Check
