@@ -1,4 +1,4 @@
-{ pkgs, setuid-sudo }:
+{ self', pkgs }:
 let
   nhSubcommand = if pkgs.stdenv.isLinux then "os" else "darwin";
   flakePath = if pkgs.stdenv.isLinux then "/home/soft/setup" else "/Users/soft/setup";
@@ -8,7 +8,7 @@ pkgs.writeShellApplication {
   # nh calls `sudo env nixos-rebuild ...`; all three must be in PATH so nh
   # can resolve them to absolute store paths before invoking sudo
   runtimeInputs = [
-    setuid-sudo
+    self'.packages.setuid-sudo
   ]
   ++ (with pkgs; [
     coreutils

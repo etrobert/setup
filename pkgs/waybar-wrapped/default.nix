@@ -2,7 +2,6 @@
   self',
   pkgs,
   wrapPackage,
-  setuid-sudo,
   dev ? false,
 }:
 let
@@ -26,7 +25,7 @@ wrapPackage {
   runtimeInputs = [
     self'.packages.get-weather
     self'.packages.toggle-cpu-governor
-    setuid-sudo # used to run toggle-cpu-governor
+    self'.packages.setuid-sudo # used to run toggle-cpu-governor
   ]
   ++ nixpkgsDeps;
 
