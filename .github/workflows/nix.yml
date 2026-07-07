@@ -43,9 +43,34 @@ jobs:
       - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
 
+  # Detect whether anything other than Markdown changed. The Check job (which
+  # includes the format check) always runs, so Markdown is still verified; only
+  # the host builds are skipped for docs-only changes.
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          predicate-quantifier: every
+          filters: |
+            code:
+              - '**'
+              - '!**/*.md'
+
   build:
     name: Build ${{ matrix.host }}
     runs-on: ${{ matrix.runner }}
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     permissions:
       contents: read
     strategy:
