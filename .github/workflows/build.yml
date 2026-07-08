@@ -39,29 +39,50 @@ jobs:
           echo "aaron status: $status; picked $runner"
           echo "runner=$runner" >> "$GITHUB_OUTPUT"
 
+  discover:
+    name: Discover
+    needs: probe
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+    outputs:
+      matrix: ${{ steps.list.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v6
+
+      # Emit the build matrix from the flake: nixos hosts build on the
+      # self-hosted Linux runners, darwin hosts on the runner the probe picked.
+      - name: List host configurations
+        id: list
+        env:
+          DARWIN_RUNNER: ${{ needs.probe.outputs.runner }}
+        run: |
+          nixos=$(nix eval .#nixosConfigurations \
+            --apply builtins.attrNames --json)
+          darwin=$(nix eval .#darwinConfigurations \
+            --apply builtins.attrNames --json)
+          # shellcheck disable=SC2016  # $-names are jq variables, not shell
+          matrix=$(nix run nixpkgs#jq -- --compact-output --null-input \
+            --argjson nixos "$nixos" \
+            --argjson darwin "$darwin" \
+            --argjson darwinRunner "$DARWIN_RUNNER" \
+            '{
+              include:
+                [$nixos[] | {host: ., platform: "nixos",
+                            runner: ["self-hosted", "Linux"]}]
+              + [$darwin[] | {host: ., platform: "darwin",
+                             runner: $darwinRunner}]
+            }')
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
   build:
     name: ${{ matrix.host }}
-    needs: probe
-    runs-on: ${{ fromJSON(matrix.runner) }}
+    needs: discover
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
     strategy:
-      # runner values are JSON strings (parsed by the fromJSON in runs-on)
-      # because aaron's comes from the probe and job outputs are strings.
-      matrix:
-        include:
-          - host: tower
-            runner: '["self-hosted", "Linux"]'
-            platform: nixos
-          - host: leod
-            runner: '["self-hosted", "Linux"]'
-            platform: nixos
-          - host: pi
-            runner: '["self-hosted", "Linux"]'
-            platform: nixos
-          - host: aaron
-            runner: ${{ needs.probe.outputs.runner }}
-            platform: darwin
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
       fail-fast: false
 
     steps:
@@ -69,13 +90,14 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
-      # Self-hosted jobs skip this: tower's post-build hook pushes what it
-      # builds, and the action can't work there anyway — its `cachix use`
-      # needs a nix trusted user, which the runner user deliberately isn't.
+      # Only GitHub-hosted runners push via this action. Self-hosted jobs skip
+      # it: tower's post-build hook pushes what it builds, and the action can't
+      # work there anyway — its `cachix use` needs a nix trusted user, which the
+      # runner user deliberately isn't.
       # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
       # fail the job
       - uses: cachix/cachix-action@v17
-        if: ${{ !contains(matrix.runner, 'self-hosted') }}
+        if: ${{ runner.environment == 'github-hosted' }}
         continue-on-error: true
         with:
           name: soft-nix
