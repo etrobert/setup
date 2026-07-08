@@ -38,6 +38,16 @@ All machines are connected via Tailscale. SSH into any of them by name
 (`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current
 machine.
 
+## Simplicity First
+
+Favor simplicity over completeness — across code, design, CI, tooling, and
+process, not just code. Prefer the simplest solution that solves the problem;
+when fully solving it would take disproportionate complexity, prefer a simpler
+solution that handles the common case (and flag what it leaves out) over a
+complex one that covers everything. Before treating anything as done, ask "can
+this be simpler?" and cut whatever isn't earning its place; prefer a plain
+solution a reader grasps immediately over a clever one.
+
 ## Working Style
 
 Before asking a question, check if the answer is obtainable by reading files,
@@ -95,11 +105,6 @@ linuxPrimitives = /* bash */ ''
 ```
 
 ## Code Style
-
-Default to simple code over feature-rich code. Build the minimal thing that
-solves the problem at hand; additional functionality can always be added later
-when it's actually needed. Question every piece of code you add — ask whether it
-is really necessary to achieve the goal, and drop it if not.
 
 Prefer `kebab-case` for directory names.
 
