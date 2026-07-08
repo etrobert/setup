@@ -16,7 +16,7 @@ concurrency:
 jobs:
   check:
     name: Check
-    runs-on: [self-hosted]
+    runs-on: [self-hosted, Linux]
     permissions:
       contents: read
     steps:
@@ -41,25 +41,53 @@ jobs:
       - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
 
+  probe:
+    name: Pick runner
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      runner: ${{ steps.pick.outputs.runner }}
+    steps:
+      # RUNNER_PROBE_TOKEN: fine-grained PAT with runners read on this
+      # repo — the runners API needs a permission GITHUB_TOKEN cannot be
+      # granted. An invalid token fails the probe (and the build) loudly;
+      # an absent or offline runner falls back to the hosted runner.
+      - id: pick
+        env:
+          GH_TOKEN: ${{ secrets.RUNNER_PROBE_TOKEN }}
+        run: |
+          status=$(gh api "repos/${{ github.repository }}/actions/runners" \
+            --jq '.runners[] | select(.name == "aaron") | .status')
+          if [ "$status" = "online" ]
+          then runner='["self-hosted", "macOS"]'
+          else runner='"macos-latest"'
+          fi
+          echo "aaron status: $status; picked $runner"
+          echo "runner=$runner" >> "$GITHUB_OUTPUT"
+
   build:
     name: Build ${{ matrix.host }}
-    runs-on: ${{ matrix.runner }}
+    needs: probe
+    runs-on: ${{ fromJSON(matrix.runner) }}
     permissions:
       contents: read
     strategy:
+      # runner values are JSON strings (parsed by the fromJSON in runs-on)
+      # because aaron's comes from the probe and job outputs are strings.
       matrix:
         include:
           - host: tower
-            runner: [self-hosted]
+            runner: '["self-hosted", "Linux"]'
             platform: nixos
           - host: leod
-            runner: [self-hosted]
+            runner: '["self-hosted", "Linux"]'
             platform: nixos
           - host: pi
-            runner: [self-hosted]
+            runner: '["self-hosted", "Linux"]'
             platform: nixos
           - host: aaron
-            runner: macos-latest
+            runner: ${{ needs.probe.outputs.runner }}
             platform: darwin
       fail-fast: false
 
@@ -68,10 +96,9 @@ jobs:
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
-      # Self-hosted jobs skip this: tower's cachix-watch-store-agent
-      # (modules/cachix-push.nix) already pushes everything built there, and
-      # the action can't work anyway — its `cachix use` needs a nix
-      # trusted user, which the runner user deliberately isn't.
+      # Self-hosted jobs skip this: tower's post-build hook pushes what it
+      # builds, and the action can't work there anyway — its `cachix use`
+      # needs a nix trusted user, which the runner user deliberately isn't.
       # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
       # fail the job
       - uses: cachix/cachix-action@v17
