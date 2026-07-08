@@ -49,16 +49,20 @@ in
     "raycast"
   ];
 
-  # Determinate Nix manages the daemon and GC; nix-darwin must not conflict.
-  nix.enable = false;
+  nix.settings.trusted-users = [ "@admin" ];
+
+  # Daily, like nix.gc.dates = "daily" on the NixOS hosts (the darwin
+  # default is weekly).
+  nix.gc = {
+    automatic = true;
+    interval = {
+      Hour = 3;
+      Minute = 15;
+    };
+    options = "--delete-older-than 10d";
+  };
 
   environment = {
-    # Determinate Nix ignores nix.settings; it manages /etc/nix/nix.conf itself
-    # and provides /etc/nix/nix.custom.conf for user overrides.
-    etc."nix/nix.custom.conf".text = ''
-      trusted-users = root @admin
-    '';
-
     shells = [ zsh-wrapped ];
 
     systemPackages =
