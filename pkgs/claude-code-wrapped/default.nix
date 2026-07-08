@@ -65,6 +65,7 @@ wrapPackage {
     CLAUDE_CODE_NO_FLICKER = "1";
   }
   // extraEnv;
+  inheritPath = true;
   run = [
     # Mutable path, not a store copy: Claude writes runtime state (sessions,
     # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
