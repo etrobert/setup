@@ -88,7 +88,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      # Self-hosted runners already have Nix; only the hosted fallback needs it.
       - uses: DeterminateSystems/determinate-nix-action@v3
+        if: ${{ runner.environment == 'github-hosted' }}
 
       # Only GitHub-hosted runners push via this action. Self-hosted jobs skip
       # it: tower's post-build hook pushes what it builds, and the action can't
