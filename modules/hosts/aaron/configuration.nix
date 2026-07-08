@@ -15,32 +15,6 @@ let
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
-
-  # Workaround for NixOS/nixpkgs#480849: building llvmPackages_18.compiler-rt
-  # on Darwin fails because Apple SDK 26.4 ships libc++ 21, which dropped the
-  # fallbacks for __builtin_ctzg/__builtin_clzg — builtins that Clang 18 does
-  # not recognize. Mirror the fix from NixOS/nixpkgs#523142 by disabling the
-  # C++ components of compiler-rt 18 here.
-  #
-  # TODO: remove this overlay once nixos-unstable advances past the fix.
-  # Trigger: NixOS/nixpkgs#523142 (or its replacement) is merged AND lands in
-  # nixos-unstable. Verify by deleting the overlay block below and running
-  # `nix build .#darwinConfigurations.aaron.system` — if it succeeds, delete
-  # for good. If it still errors with `__builtin_ctzg`, keep the overlay.
-  compilerRtOverlay = _final: prev: {
-    llvmPackages_18 = prev.llvmPackages_18.overrideScope (
-      _llvmFinal: llvmPrev: {
-        compiler-rt-libc = llvmPrev.compiler-rt-libc.overrideAttrs (old: {
-          cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-            (lib.cmakeBool "COMPILER_RT_BUILD_XRAY" false)
-            (lib.cmakeBool "COMPILER_RT_BUILD_LIBFUZZER" false)
-            (lib.cmakeBool "COMPILER_RT_BUILD_MEMPROF" false)
-            (lib.cmakeBool "COMPILER_RT_BUILD_ORC" false)
-          ];
-        });
-      }
-    );
-  };
 in
 {
   allowedUnfreePackages = [
@@ -90,10 +64,6 @@ in
 
   networking.hostName = "aaron";
   networking.computerName = "aaron";
-
-  nixpkgs.overlays = [
-    compilerRtOverlay
-  ];
 
   system = {
     primaryUser = "soft";
