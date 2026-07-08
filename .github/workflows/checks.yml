@@ -75,8 +75,8 @@ jobs:
   # requires format, eval, and every dynamically-discovered lint leg (the
   # matrix job is failure if any leg fails), so new checks are covered
   # without touching branch protection.
-  all:
-    name: all
+  all-checks:
+    name: all-checks
     needs: [format, eval, discover, lint]
     if: always()
     runs-on: ubuntu-latest
