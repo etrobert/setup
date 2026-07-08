@@ -153,6 +153,7 @@
                   nixfmt
                   yamllint
                   stylua
+                  actionlint
                 ];
               };
 
@@ -178,6 +179,10 @@
 
               stylua = pkgs.runCommand "stylua-check" { nativeBuildInputs = [ pkgs.stylua ]; } ''
                 stylua --check ${self}/pkgs/neovim-wrapped && touch $out
+              '';
+
+              actionlint = pkgs.runCommand "actionlint-check" { nativeBuildInputs = [ pkgs.actionlint ]; } ''
+                actionlint ${self}/.github/workflows/*.yml && touch $out
               '';
             };
 
