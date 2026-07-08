@@ -13,10 +13,22 @@ _: {
       # (e.g. source-tree copies) are never pushed at all.
       pushHook = pkgs.writeShellApplication {
         name = "cachix-post-build-push";
-        runtimeInputs = [ pkgs.cachix ];
+
+        runtimeInputs = [
+          pkgs.cachix
+          pkgs.gnugrep
+        ];
+
         inheritPath = false;
 
         text = ''
+          # Skip non-substitutable paths: they can never be fetched from a cache
+          # (so pushing is useless) and each drags its full closure. Only such
+          # .drvs carry the ("allowSubstitutes","") literal.
+          if grep --quiet '"allowSubstitutes",""' "$DRV_PATH"; then
+            exit 0
+          fi
+
           # $OUT_PATHS is a space-separated list of paths; split it into
           # separate arguments (IFS) without glob-expanding any of them (noglob).
           set -o noglob
