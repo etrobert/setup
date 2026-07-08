@@ -25,7 +25,7 @@ _: {
           # Skip non-substitutable paths: they can never be fetched from a cache
           # (so pushing is useless) and each drags its full closure. Only such
           # .drvs carry the ("allowSubstitutes","") literal.
-          if [ -n "''${DRV_PATH:-}" ] && grep -q '"allowSubstitutes",""' "$DRV_PATH"; then
+          if grep -q '"allowSubstitutes",""' "$DRV_PATH"; then
             exit 0
           fi
 
