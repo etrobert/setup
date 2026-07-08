@@ -62,7 +62,7 @@ jobs:
           darwin=$(nix eval .#darwinConfigurations \
             --apply builtins.attrNames --json)
           # shellcheck disable=SC2016  # $-names are jq variables, not shell
-          matrix=$(nix run nixpkgs#jq -- --compact-output --null-input \
+          matrix=$(jq --compact-output --null-input \
             --argjson nixos "$nixos" \
             --argjson darwin "$darwin" \
             --argjson darwinRunner "$DARWIN_RUNNER" \
