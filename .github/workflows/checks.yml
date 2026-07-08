@@ -36,7 +36,7 @@ jobs:
         run: nix flake check --all-systems --no-build --accept-flake-config
 
   discover:
-    name: Discover
+    name: discover
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read

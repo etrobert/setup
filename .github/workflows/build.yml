@@ -40,7 +40,7 @@ jobs:
           echo "runner=$runner" >> "$GITHUB_OUTPUT"
 
   discover:
-    name: Discover
+    name: discover
     needs: probe
     runs-on: [self-hosted, Linux]
     permissions:
