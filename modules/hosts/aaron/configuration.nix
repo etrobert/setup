@@ -97,9 +97,6 @@ in
   ];
 
   system = {
-    # See the darwin-manual-html workaround note above documentation.doc.enable.
-    tools.darwin-uninstaller.enable = false;
-
     primaryUser = "soft";
 
     activationScripts.postActivation.text = ''
