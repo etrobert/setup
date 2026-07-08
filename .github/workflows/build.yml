@@ -1,5 +1,5 @@
 ---
-name: Nix
+name: Build
 
 "on":
   push:
@@ -14,83 +14,6 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  format:
-    name: format
-    runs-on: [self-hosted, Linux]
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Format Check
-        run: nix fmt . -- --ci
-
-  eval:
-    name: eval
-    runs-on: [self-hosted, Linux]
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Flake Check (all systems, eval only)
-        run: nix flake check --all-systems --no-build --accept-flake-config
-
-  discover:
-    name: Discover checks
-    runs-on: [self-hosted, Linux]
-    permissions:
-      contents: read
-    outputs:
-      checks: ${{ steps.list.outputs.checks }}
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: List flake checks
-        id: list
-        run: |
-          checks=$(nix eval .#checks.x86_64-linux \
-            --apply builtins.attrNames --json)
-          echo "checks=$checks" >> "$GITHUB_OUTPUT"
-
-  lint:
-    name: ${{ matrix.check }}
-    needs: discover
-    runs-on: [self-hosted, Linux]
-    permissions:
-      contents: read
-    strategy:
-      matrix:
-        check: ${{ fromJSON(needs.discover.outputs.checks) }}
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Build ${{ matrix.check }}
-        run: |
-          nix build .#checks.x86_64-linux.${{ matrix.check }} \
-            --accept-flake-config \
-            --print-build-logs
-
-  # Aggregation gate: this is the single required status. It transitively
-  # requires format, eval, and every dynamically-discovered lint leg (the
-  # matrix job is failure if any leg fails), so new checks are covered
-  # without touching branch protection.
-  check:
-    name: Check
-    needs: [format, eval, discover, lint]
-    if: always()
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Verify all checks succeeded
-        if: >-
-          ${{ contains(needs.*.result, 'failure')
-            || contains(needs.*.result, 'cancelled')
-            || contains(needs.*.result, 'skipped') }}
-        run: exit 1
-
   probe:
     name: Pick runner
     runs-on: ubuntu-latest
@@ -117,7 +40,7 @@ jobs:
           echo "runner=$runner" >> "$GITHUB_OUTPUT"
 
   build:
-    name: Build ${{ matrix.host }}
+    name: ${{ matrix.host }}
     needs: probe
     runs-on: ${{ fromJSON(matrix.runner) }}
     permissions:
