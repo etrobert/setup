@@ -2,7 +2,6 @@
   self,
   pkgs,
   lib,
-  nix-darwin,
   ...
 }:
 let
