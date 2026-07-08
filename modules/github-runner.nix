@@ -5,13 +5,19 @@
 # darwin build, with a hosted fallback when the laptop is asleep.
 _: {
   flake.nixosModules.githubRunner =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       services.github-runners = lib.genAttrs [ "tower" "tower-2" "tower-3" "tower-4" ] (_: {
         enable = true;
         url = "https://github.com/etrobert/setup";
         tokenFile = config.age.secrets.github-runner-token.path;
         replace = true;
+        extraPackages = [ pkgs.jq ];
       });
 
       age.secrets.github-runner-token.file = ../secrets/github-runner-token.age;
