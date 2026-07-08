@@ -15,11 +15,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Pinned nixpkgs for darwin packages that fail to build on newer revs.
-    # Update manually when upstream is fixed; excluded from automated updates.
-    # Currently pins bitwarden-desktop, whose 2026.5.0 electron-builder step
-    # fails on darwin with `spawn security ENOENT` (NixOS/nixpkgs#526914).
-    nixpkgs-darwin-pins.url = "github:nixos/nixpkgs/64c08a7ca051951c8eae34e3e3cb1e202fe36786";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";

@@ -9,7 +9,6 @@ let
     home-manager
     agenix
     nix-homebrew
-    nixpkgs-darwin-pins
     ;
 in
 {
@@ -18,7 +17,6 @@ in
       inherit
         self
         agenix
-        nixpkgs-darwin-pins
         nix-darwin
         ;
     };
