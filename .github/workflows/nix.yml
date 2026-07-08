@@ -14,6 +14,28 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+  format:
+    name: format
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Format Check
+        run: nix fmt . -- --ci
+
+  eval:
+    name: eval
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Flake Check (all systems, eval only)
+        run: nix flake check --all-systems --no-build --accept-flake-config
+
   check:
     name: Check
     runs-on: [self-hosted, Linux]
@@ -22,24 +44,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: DeterminateSystems/determinate-nix-action@v3
-        # eval-cores = 1 pins single-threaded evaluation. Determinate Nix's
-        # parallel evaluator (default since the eval-cores default flipped to
-        # all-cores) has concurrency bugs that intermittently SIGSEGV during
-        # `nix flake check --all-systems` — the heaviest eval, evaluating every
-        # output for every system. Drop once the parallel evaluator is fixed.
-        with:
-          extra-conf: |
-            eval-cores = 1
-
-      - name: Format Check
-        run: nix fmt . -- --ci
-
       - name: Flake Check
         run: nix flake check --accept-flake-config
-
-      - name: Flake Check (all systems, eval only)
-        run: nix flake check --all-systems --no-build --accept-flake-config
 
   probe:
     name: Pick runner
