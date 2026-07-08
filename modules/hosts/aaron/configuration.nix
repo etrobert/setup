@@ -96,29 +96,6 @@ in
     compilerRtOverlay
   ];
 
-  # Workaround: nix-darwin's darwin-manual-html builds with
-  # `nixos-render-docs manual html --toc-depth`, but nixos-unstable removed
-  # `--toc-depth` in favour of `--sidebar-depth`, so the HTML manual fails to
-  # build. It is pulled in two ways, both disabled (here and via
-  # system.tools.darwin-uninstaller.enable below):
-  #   - documentation.doc.enable → aaron's own system-path (manualHTML + the
-  #     `darwin-help` command)
-  #   - the darwin-uninstaller embeds a reference system (via a fresh, un-
-  #     overlaid nixpkgs) whose default system-path also builds the manual
-  # Man pages are unaffected.
-  #
-  # The assertion below fails once the upstream fix (nix-darwin/nix-darwin#1818,
-  # tracking issue #1817) lands in the pinned input — then remove both disables
-  # and the guard.
-  documentation.doc.enable = false;
-
-  assertions = [
-    {
-      assertion = lib.hasInfix "--toc-depth" (builtins.readFile "${nix-darwin}/doc/manual/default.nix");
-      message = "nix-darwin's manual no longer uses --toc-depth; remove the documentation.doc.enable and system.tools.darwin-uninstaller.enable workaround and this guard.";
-    }
-  ];
-
   system = {
     # See the darwin-manual-html workaround note above documentation.doc.enable.
     tools.darwin-uninstaller.enable = false;
