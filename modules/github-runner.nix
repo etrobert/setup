@@ -9,7 +9,7 @@ _: {
     {
       services.github-runners =
         let
-          runner-count = 4;
+          runner-count = 6;
           names = map (n: "tower-${toString n}") (lib.range 1 runner-count);
         in
         lib.genAttrs names (_: {
