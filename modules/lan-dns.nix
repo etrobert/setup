@@ -22,15 +22,19 @@ _: {
               "1.1.1.1"
               "9.9.9.9"
             ];
-            host-record = [
-              "test.etiennerobert.com,192.168.0.10"
-              "creatures.etiennerobert.com,192.168.0.10"
-              "files.etiennerobert.com,192.168.0.10"
-              "adele.etiennerobert.com,192.168.0.10"
-              "umami.etiennerobert.com,192.168.0.10"
-              "images.etiennerobert.com,192.168.0.10"
-              "rift.etiennerobert.com,192.168.0.10"
-              "rack.etiennerobert.com,192.168.0.10"
+            # .11 is tower's second address, required for WiFi clients: the
+            # Vodafone Station drops LAN-side traffic from its WLAN to the
+            # port-forward target (.10) on the forwarded ports (80/443), but
+            # the filter is keyed to that target IP, so .11 passes.
+            host-record = map (name: "${name}.etiennerobert.com,192.168.0.11") [
+              "test"
+              "creatures"
+              "files"
+              "adele"
+              "umami"
+              "images"
+              "rift"
+              "rack"
             ];
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
             dhcp-option = [ "option:router,192.168.0.1" ];

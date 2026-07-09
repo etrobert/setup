@@ -113,8 +113,12 @@ the insecure package, the assertion fails and prompts removal.
 
 **Home router:** Vodafone Station Arris CGA6444VF (`192.168.0.1`). WAN IP:
 `91.64.99.245`. No NAT hairpin. DHCP is disabled (pi handles it). Ports 80/443
-are port-forwarded to tower (`.10`). The router **blocks LAN→LAN traffic on
-port-forwarded ports** — WiFi clients cannot reach tower:80/443 directly.
+are port-forwarded to tower (`.10`). The router **drops traffic from WiFi
+clients to the port-forward target IP (`.10`) on the forwarded ports** (80/443).
+The filter is keyed to the target IP, not the port — the same services on
+tower's second address `.11` pass fine, which is what the split-horizon DNS
+exploits. No router setting can change the filter (full firmware audit 2026-07);
+wired clients are unaffected.
 
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
 listening on `end0`, static `.18`). Pi auto-upgrades from main nightly — test
@@ -125,8 +129,17 @@ before merging.
 `modules/hosts/tower/configuration.nix` — not a pi DHCP reservation). Tower's NM
 profile uses pi (`.18`) for DNS so split-horizon resolution works on tower too.
 
-**Split-horizon DNS targets:** `test/creatures/files/adele.etiennerobert.com`.
-Dnsmasq overrides these to **`192.168.0.10` (tower)**.
+**Split-horizon DNS targets:** the eight `*.etiennerobert.com` service names
+(see `modules/lan-dns.nix`). Dnsmasq overrides these to **`192.168.0.11`** —
+tower's second address, which dodges the router's WiFi filter (above). The port
+forwards must keep targeting `.10`; if they're ever changed to `.11` the filter
+moves with them.
+
+**IPv6 is not usable for LAN services:** the Station advertises SLAAC prefixes
+(clients get GUAs) but no default route (router lifetime 0) and there is no
+external IPv6 connectivity. Without a v6 default route, macOS/iOS getaddrinfo
+filters out AAAA answers entirely, so AAAA-based split horizon does not work for
+Apple clients even though on-link IPv6 traffic flows fine.
 
 **Testing the public/external path:** LAN clients resolve these names to tower
 directly (split-horizon) and bypass the port-forward, so they can't exercise the

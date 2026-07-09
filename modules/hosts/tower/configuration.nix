@@ -39,6 +39,14 @@
       ipv4 = {
         method = "manual";
         address1 = "192.168.0.10/24,192.168.0.1";
+
+        # Second address for LAN clients (published by pi's split-horizon
+        # DNS): the Vodafone Station drops LAN-side traffic from WiFi clients
+        # to .10 on the port-forwarded ports (80/443), but the filter is keyed
+        # to the forward's target IP, so the same services on .11 pass. Keep
+        # the port forwards themselves pointing at .10.
+        address2 = "192.168.0.11/24";
+
         dns = "192.168.0.18;";
       };
     };
