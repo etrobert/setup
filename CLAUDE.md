@@ -113,8 +113,7 @@ the insecure package, the assertion fails and prompts removal.
 
 **Home router:** Vodafone Station Arris CGA6444VF (`192.168.0.1`). WAN IP:
 `91.64.99.245`. No NAT hairpin. DHCP is disabled (pi handles it). Ports 80/443
-are port-forwarded to tower (`.10`). The router **blocks LAN→LAN traffic on
-port-forwarded ports** — WiFi clients cannot reach tower:80/443 directly.
+are port-forwarded to tower (`.10`).
 
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
 listening on `end0`, static `.18`). Pi auto-upgrades from main nightly — test
@@ -124,9 +123,6 @@ before merging.
 `.10` (motherboard NIC `enp11s0`, static via NetworkManager in
 `modules/hosts/tower/configuration.nix` — not a pi DHCP reservation). Tower's NM
 profile uses pi (`.18`) for DNS so split-horizon resolution works on tower too.
-
-**Split-horizon DNS targets:** `test/creatures/files/adele.etiennerobert.com`.
-Dnsmasq overrides these to **`192.168.0.10` (tower)**.
 
 **Testing the public/external path:** LAN clients resolve these names to tower
 directly (split-horizon) and bypass the port-forward, so they can't exercise the
