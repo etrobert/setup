@@ -124,12 +124,6 @@ before merging.
 `modules/hosts/tower/configuration.nix` — not a pi DHCP reservation). Tower's NM
 profile uses pi (`.18`) for DNS so split-horizon resolution works on tower too.
 
-**IPv6 is not usable for LAN services:** the Station advertises SLAAC prefixes
-(clients get GUAs) but no default route (router lifetime 0) and there is no
-external IPv6 connectivity. Without a v6 default route, macOS/iOS getaddrinfo
-filters out AAAA answers entirely, so AAAA-based split horizon does not work for
-Apple clients even though on-link IPv6 traffic flows fine.
-
 **Testing the public/external path:** LAN clients resolve these names to tower
 directly (split-horizon) and bypass the port-forward, so they can't exercise the
 real external path. To test as an outside visitor would (public DNS →
