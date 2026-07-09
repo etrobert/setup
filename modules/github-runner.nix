@@ -1,8 +1,3 @@
-# Self-hosted GitHub Actions runners for the etrobert/setup CI.
-# NixOS: four runners so the workflow's self-hosted jobs (check + the
-# three NixOS host builds) can run concurrently; one runner executes
-# one job at a time. Darwin: a single runner on aaron for its own
-# darwin build, with a hosted fallback when the laptop is asleep.
 _: {
   flake.nixosModules.githubRunner =
     {
