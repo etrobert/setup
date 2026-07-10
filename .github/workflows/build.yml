@@ -155,7 +155,9 @@ jobs:
           key="$workdir/key"
           umask 077
           printf '%s\n' "$PI_DEPLOY_SSH_KEY" > "$key"
-          export NIX_SSHOPTS="-i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$workdir/known_hosts"
+          export NIX_SSHOPTS="-i $key -o IdentitiesOnly=yes"
+          NIX_SSHOPTS="$NIX_SSHOPTS -o StrictHostKeyChecking=accept-new"
+          NIX_SSHOPTS="$NIX_SSHOPTS -o UserKnownHostsFile=$workdir/known_hosts"
           nix shell nixpkgs#nixos-rebuild nixpkgs#openssh --command \
             nixos-rebuild switch \
               --flake ".#pi" \
