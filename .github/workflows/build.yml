@@ -130,3 +130,23 @@ jobs:
             || contains(needs.*.result, 'cancelled')
             || contains(needs.*.result, 'skipped') }}
         run: exit 1
+
+  # Fast-forward the `deploy` ref to this commit so pi's comin poller
+  # converges within a minute. Gated on all-builds succeeding, which also
+  # guarantees the aarch64 closure is already in Cachix (pushed by tower's
+  # post-build hook during the build). Main only, and all-builds runs with
+  # if: always(), so require its explicit success.
+  deploy:
+    name: deploy
+    needs: all-builds
+    if: >-
+      ${{ github.ref == 'refs/heads/main'
+        && needs.all-builds.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Fast-forward deploy ref
+        run: git push origin HEAD:deploy

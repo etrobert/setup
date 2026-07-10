@@ -27,17 +27,6 @@
     };
   };
 
-  system.autoUpgrade = {
-    enable = true;
-    flake = "github:etrobert/setup/main#pi";
-    flags = [
-      "--accept-flake-config"
-      "--print-build-logs"
-    ];
-    # dates = "4:40"; # default value
-    randomizedDelaySec = "5min";
-  };
-
   networking.hostName = "pi";
 
   networking.networkmanager = {
@@ -63,6 +52,19 @@
 
   services = {
     tailscale.extraUpFlags = [ "--advertise-exit-node" ];
+
+    # comin polls the CI-gated `deploy` ref (fast-forwarded only after the
+    # all-builds job succeeds) and deploys nixosConfigurations.pi within ~60s.
+    comin = {
+      enable = true;
+      remotes = [
+        {
+          name = "origin";
+          url = "https://github.com/etrobert/setup.git";
+          branches.main.name = "deploy";
+        }
+      ];
+    };
 
     navidrome = {
       enable = true;

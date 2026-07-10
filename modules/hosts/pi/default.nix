@@ -13,6 +13,7 @@
       self.nixosModules.base
       self.nixosModules.lanDns
       inputs.agenix.nixosModules.default
+      inputs.comin.nixosModules.comin
     ];
   };
 }

@@ -64,6 +64,11 @@
       url = "github:ryoppippi/nix-claude-code";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Pull-based GitOps deployer for pi; not packaged in nixpkgs.
+    comin = {
+      url = "github:nlewo/comin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

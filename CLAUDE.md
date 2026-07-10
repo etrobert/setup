@@ -116,8 +116,10 @@ the insecure package, the assertion fails and prompts removal.
 are port-forwarded to tower (`.10`).
 
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
-listening on `end0`, static `.18`). Pi auto-upgrades from main nightly — test
-before merging.
+listening on `end0`, static `.18`). Pi runs comin, which polls the CI-gated
+`deploy` ref (fast-forwarded to a commit only after `all-builds` passes) and
+deploys `nixosConfigurations.pi` within ~60s of a merge to main — test before
+merging.
 
 **Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
 `.10` (motherboard NIC `enp11s0`, static via NetworkManager in
