@@ -298,11 +298,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781882290,
-        "narHash": "sha256-klfpGcbMeloVTEuQfXDRV9khSBRB1wYRqhwDAnbPIWw=",
+        "lastModified": 1783695066,
+        "narHash": "sha256-ymumpr0gcGHXuqiNYvcQqX0FNb8p/SP4coNNYDx1CKA=",
         "owner": "etrobert",
         "repo": "rack",
-        "rev": "5035c6b37dd5173abe2761cbbc15b2443ef294c4",
+        "rev": "6f0bb75898bbd050d925cdf0468e99196ffa5839",
         "type": "github"
       },
       "original": {
