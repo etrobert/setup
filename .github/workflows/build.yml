@@ -130,3 +130,35 @@ jobs:
             || contains(needs.*.result, 'cancelled')
             || contains(needs.*.result, 'skipped') }}
         run: exit 1
+
+  # Deploy the freshly-built, cache-populated pi closure. Gated on all-builds
+  # succeeding (default `needs` semantics), so we never deploy raw main — the
+  # aarch64 closure is already in Cachix, pushed by tower's post-build hook.
+  # The pi-deploy environment restricts PI_DEPLOY_SSH_KEY to the main branch.
+  deploy-pi:
+    name: deploy-pi
+    needs: all-builds
+    if: ${{ github.event_name == 'push' }}
+    runs-on: [self-hosted, Linux]
+    environment: pi-deploy
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Deploy to pi
+        env:
+          PI_DEPLOY_SSH_KEY: ${{ secrets.PI_DEPLOY_SSH_KEY }}
+        run: |
+          workdir=$(mktemp --directory)
+          trap 'rm --recursive --force "$workdir"' EXIT
+          key="$workdir/key"
+          umask 077
+          printf '%s\n' "$PI_DEPLOY_SSH_KEY" > "$key"
+          export NIX_SSHOPTS="-i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=$workdir/known_hosts"
+          nix shell nixpkgs#nixos-rebuild nixpkgs#openssh --command \
+            nixos-rebuild switch \
+              --flake ".#pi" \
+              --target-host root@100.68.23.44 \
+              --accept-flake-config \
+              --print-build-logs

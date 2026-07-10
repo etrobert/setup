@@ -38,6 +38,13 @@
     randomizedDelaySec = "5min";
   };
 
+  # CI deploys to pi via nixos-rebuild --target-host root@pi. The key is pinned
+  # to tower's addresses (Tailscale + LAN) so an exfiltrated key is useless
+  # off tower. Private half lives only at tower:/home/soft/.ssh/pi-deploy.
+  users.users.root.openssh.authorizedKeys.keys = [
+    ''from="100.103.91.42,192.168.0.10" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINhMQOKCOSv2wUSKkWerWUQsj3e+8Ko1zNdm553hkIpM pi-deploy CI''
+  ];
+
   networking.hostName = "pi";
 
   networking.networkmanager = {
