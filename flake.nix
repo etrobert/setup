@@ -93,7 +93,7 @@
           ./modules/file-manager.nix
           ./modules/pimsync.nix
           ./modules/lan-dns.nix
-          ./modules/gated-upgrade.nix
+          ./modules/auto-upgrade.nix
           ./modules/darkman.nix
           ./modules/mpd.nix
           ./modules/hypridle.nix

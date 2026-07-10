@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.gatedUpgrade =
+  flake.nixosModules.autoUpgrade =
     { pkgs, lib, ... }:
     let
       deployGate = pkgs.writeShellApplication {
