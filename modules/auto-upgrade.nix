@@ -29,7 +29,7 @@ _: {
                 echo "deploy $rev already live; skipping"
                 exit 1
               fi
-              echo "$rev" > "$pending_rev"
+              printf '%s\n' "$rev" > "$pending_rev"
               echo "deploy $rev differs from live; upgrading"
               ;;
             record)
