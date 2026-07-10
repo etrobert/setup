@@ -12,6 +12,7 @@
       self.nixosModules.nixosBase
       self.nixosModules.base
       self.nixosModules.lanDns
+      self.nixosModules.gatedUpgrade
       inputs.agenix.nixosModules.default
     ];
   };
