@@ -130,3 +130,16 @@ jobs:
             || contains(needs.*.result, 'cancelled')
             || contains(needs.*.result, 'skipped') }}
         run: exit 1
+
+  deploy:
+    name: deploy
+    needs: all-builds
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Fast-forward deploy ref
+        run: git push origin HEAD:deploy

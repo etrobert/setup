@@ -27,17 +27,6 @@
     };
   };
 
-  system.autoUpgrade = {
-    enable = true;
-    flake = "github:etrobert/setup/main#pi";
-    flags = [
-      "--accept-flake-config"
-      "--print-build-logs"
-    ];
-    # dates = "4:40"; # default value
-    randomizedDelaySec = "5min";
-  };
-
   networking.hostName = "pi";
 
   networking.networkmanager = {
