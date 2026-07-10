@@ -3,7 +3,7 @@ _: {
     { pkgs, lib, ... }:
     let
       deployGate = pkgs.writeShellApplication {
-        name = "pi-deploy-gate";
+        name = "deploy-gate";
 
         runtimeInputs = [
           pkgs.gitMinimal
@@ -38,7 +38,7 @@ _: {
               fi
               ;;
             *)
-              echo "usage: pi-deploy-gate {check|record}" >&2
+              echo "usage: deploy-gate {check|record}" >&2
               exit 2
               ;;
           esac
