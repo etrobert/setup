@@ -116,9 +116,7 @@ the insecure package, the assertion fails and prompts removal.
 are port-forwarded to tower (`.10`).
 
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
-listening on `end0`, static `.18`). Pi auto-upgrades from the `deploy` ref
-(which CI fast-forwards to main once `all-builds` is green), converging within
-minutes of a merge — test before merging.
+listening on `end0`, static `.18`).
 
 **Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
 `.10` (motherboard NIC `enp11s0`, static via NetworkManager in

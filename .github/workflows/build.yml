@@ -131,17 +131,10 @@ jobs:
             || contains(needs.*.result, 'skipped') }}
         run: exit 1
 
-  # Fast-forward the `deploy` ref to this commit so pi's gated autoUpgrade
-  # converges within a minute. Gated on all-builds succeeding, which also
-  # guarantees the aarch64 closure is already in Cachix (pushed by tower's
-  # post-build hook during the build). Main only, and all-builds runs with
-  # if: always(), so require its explicit success.
   deploy:
     name: deploy
     needs: all-builds
-    if: >-
-      ${{ github.ref == 'refs/heads/main'
-        && needs.all-builds.result == 'success' }}
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
