@@ -21,11 +21,6 @@
   # Keep a Claude 5h usage session always ticking over (see modules/claude-warmup.nix).
   services.claude-warmup.enable = true;
 
-  # Remote desktop: stream the running niri session to Moonlight clients
-  # (e.g. aaron) over Tailscale. Capture uses niri's wlr-screencopy, input is
-  # injected via uinput so compositor keybinds work through the stream.
-  # Settings are left to the web UI (https://localhost:47990) so pairing and
-  # tweaking don't require a rebuild.
   services.sunshine = {
     enable = true;
     openFirewall = true;

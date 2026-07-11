@@ -45,6 +45,7 @@ in
         raycast
         defaultbrowser
         ghostty-bin.terminfo
+        moonlight-qt
         nh
         (writeShellApplication {
           # This is necessary because the darwin tailscale module does not include authkey option
@@ -162,7 +163,6 @@ in
     casks = [
       "bambu-studio"
       "claude"
-      "moonlight"
       "sonos"
       "vlc"
       "whatsapp"
