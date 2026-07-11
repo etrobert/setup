@@ -21,6 +21,32 @@
   # Keep a Claude 5h usage session always ticking over (see modules/claude-warmup.nix).
   services.claude-warmup.enable = true;
 
+  # Remote desktop: stream the running niri session to Moonlight clients
+  # (e.g. aaron) over Tailscale. Capture uses niri's wlr-screencopy, input is
+  # injected via uinput so compositor keybinds work through the stream.
+  # Settings are left to the web UI (https://localhost:47990) so pairing and
+  # tweaking don't require a rebuild.
+  services.sunshine.enable = true;
+
+  # Moonlight streaming ports, Tailscale-only. Derived from base port 47989:
+  # https://docs.lizardbyte.dev/projects/sunshine/latest/md_docs_2configuration.html#port
+  networking.firewall.interfaces."tailscale0" = {
+    allowedTCPPorts = [
+      47984
+      47989
+      47990
+      48010
+    ];
+
+    allowedUDPPorts = [
+      47998
+      47999
+      48000
+      48002
+      48010
+    ];
+  };
+
   networking.networkmanager = {
     # Disable WiFi: tower is a wired desktop on the static enp11s0 link below, so
     # WiFi only added a second IP on the same /24. That dual-homing intermittently

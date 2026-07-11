@@ -162,6 +162,7 @@ in
     casks = [
       "bambu-studio"
       "claude"
+      "moonlight"
       "sonos"
       "vlc"
       "whatsapp"
