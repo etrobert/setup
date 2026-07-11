@@ -4,6 +4,14 @@ set -euo pipefail
 
 # Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
+project_dir() {
+  case "$1" in
+  setup) printf '%s' "$HOME/setup" ;;
+  doc) printf '%s' "$HOME/sync/doc" ;;
+  *) printf '%s' "$HOME/work/$1" ;;
+  esac
+}
+
 if [ $# -eq 1 ]; then
   case "$1" in
   -h | --help)
@@ -31,32 +39,23 @@ if [ $# -eq 1 ]; then
     ;;
   esac
 else
-  # shellcheck disable=SC2016
   project=$({
-    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
-    echo "setup"
-    echo "doc"
+    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -printf '%f\t%p\n'
+    printf 'setup\t%s\n' "$(project_dir setup)"
+    printf 'doc\t%s\n' "$(project_dir doc)"
   } | fzf \
-      --preview 'case {} in
-          setup) dir=$HOME/setup ;;
-          doc)   dir=$HOME/sync/doc ;;
-          *)     dir=$HOME/work/{} ;;
-        esac
-        eza --tree --level=2 --color=always "$dir" 2>/dev/null || ls "$dir"' \
-      --preview-window 'right:60%')
+    --delimiter '\t' \
+    --with-nth 1 \
+    --preview 'eza --tree --level=2 --color=always {2} 2>/dev/null || ls {2}' \
+    --preview-window 'right:60%')
+  project=${project%%$'\t'*}
 fi
 
 if [ -z "$project" ]; then
   exit 0
 fi
 
-if [ "$project" = "setup" ]; then
-  project_path=$HOME/setup
-elif [ "$project" = "doc" ]; then
-  project_path=$HOME/sync/doc
-else
-  project_path=$HOME/work/$project
-fi
+project_path=$(project_dir "$project")
 
 if [ ! -d "$project_path" ]; then
   echo "Error: $project_path does not exist" >&2
