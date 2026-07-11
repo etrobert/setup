@@ -35,7 +35,7 @@ gws() {
 }
 
 alias make='make -j8'
-alias watch='watch --interval=1'
+alias watch='watch --color --interval=1'
 
 alias rscp='rsync -p --progress'
 
