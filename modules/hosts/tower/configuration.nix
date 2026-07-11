@@ -26,25 +26,9 @@
   # injected via uinput so compositor keybinds work through the stream.
   # Settings are left to the web UI (https://localhost:47990) so pairing and
   # tweaking don't require a rebuild.
-  services.sunshine.enable = true;
-
-  # Moonlight streaming ports, Tailscale-only. Derived from base port 47989:
-  # https://docs.lizardbyte.dev/projects/sunshine/latest/md_docs_2configuration.html#port
-  networking.firewall.interfaces."tailscale0" = {
-    allowedTCPPorts = [
-      47984
-      47989
-      47990
-      48010
-    ];
-
-    allowedUDPPorts = [
-      47998
-      47999
-      48000
-      48002
-      48010
-    ];
+  services.sunshine = {
+    enable = true;
+    openFirewall = true;
   };
 
   networking.networkmanager = {
