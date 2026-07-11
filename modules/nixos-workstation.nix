@@ -66,6 +66,11 @@ _: {
         # Enable bluetooth
         bluetooth.enable = true;
         bluetooth.powerOnBoot = true;
+
+        # Apple Magic Trackpad/Mouse pair without a classic bond, which BlueZ's
+        # input plugin otherwise rejects ("Rejected connection from !bonded
+        # device"), so no HID device is created.
+        bluetooth.input.General.ClassicBondedOnly = false;
       };
 
       security.rtkit.enable = true;
