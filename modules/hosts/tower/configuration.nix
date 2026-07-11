@@ -24,6 +24,10 @@
   services.sunshine = {
     enable = true;
     openFirewall = true;
+
+    # Declaring settings disables config editing in the web UI (pairing still
+    # happens there). niri implements wlr-screencopy but not the portal.
+    settings.capture = "wlr";
   };
 
   networking.networkmanager = {
