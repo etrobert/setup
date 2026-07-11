@@ -48,6 +48,10 @@ complex one that covers everything. Before treating anything as done, ask "can
 this be simpler?" and cut whatever isn't earning its place; prefer a plain
 solution a reader grasps immediately over a clever one.
 
+## Communication
+
+When you use an acronym for the first time, spell it out.
+
 ## Working Style
 
 Before asking a question, check if the answer is obtainable by reading files,
