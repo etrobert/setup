@@ -73,6 +73,13 @@ _: {
         bluetooth.input.General.ClassicBondedOnly = false;
       };
 
+      # nixos-rebuild switch doesn't restart bluetoothd when only input.conf
+      # changes, so config edits silently don't take effect until a manual
+      # restart. Tie the daemon's restart to the file's store path.
+      systemd.services.bluetooth.restartTriggers = [
+        config.environment.etc."bluetooth/input.conf".source
+      ];
+
       security.rtkit.enable = true;
 
       security.sudo.extraRules = [
