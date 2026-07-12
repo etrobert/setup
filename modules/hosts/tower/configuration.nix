@@ -52,7 +52,8 @@
         };
 
         bridge = {
-          # No redundant links possible, so skip STP's ~15s forwarding delay.
+          # No redundant links possible, so skip STP's ~30s of blocked
+          # forwarding (listening + learning phases) on every activation.
           stp = false;
 
           # Pin the bridge MAC to the motherboard NIC's so the router's ARP
