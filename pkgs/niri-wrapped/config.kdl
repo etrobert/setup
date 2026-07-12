@@ -119,6 +119,18 @@ output "Dell Inc. DELL U3223QE 1GPL9P3" {
     scale 1.5
 }
 
+// tower's spare ASUS PB287Q (4K@30Hz) — dedicated dashboard panel. The huge
+// gap from the Dell's right edge (logical 2560x1440) keeps the cursor off the
+// dashboard: niri only clips pointer motion when an event lands in the void
+// between outputs, so a fast flick can jump a small gap in a single event.
+// Reach the output with focus-monitor-right if ever needed. 2.0 = logical
+// 1920x1080 so the dashboard is readable from a distance.
+output "Ancor Communications Inc ASUS PB287Q 0x00017E37" {
+    mode "3840x2160@30.000"
+    scale 2.0
+    position x=12560 y=0
+}
+
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Layout
@@ -307,6 +319,11 @@ workspace "2"
 workspace "3"
 workspace "4"
 
+// Dashboard kiosk workspace, pinned to tower's ASUS panel.
+workspace "dashboard" {
+    open-on-output "Ancor Communications Inc ASUS PB287Q 0x00017E37"
+}
+
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
 // The path is formatted with strftime(3) to give you the screenshot date and time.
@@ -393,6 +410,13 @@ window-rule {
 window-rule {
     match app-id=r#"^Spotify$"#
     open-on-workspace "4"
+}
+
+// Dashboard kiosk browser (chromium --class=dashboard).
+window-rule {
+    match app-id=r#"^dashboard$"#
+    open-on-workspace "dashboard"
+    open-fullscreen true
 }
 
 // Float the pavucontrol volume control (verified app-id: org.pulseaudio.pavucontrol).
