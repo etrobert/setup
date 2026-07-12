@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ ... }:
+{ lib, pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -24,6 +24,27 @@
   services.sunshine = {
     enable = true;
     openFirewall = true;
+  };
+
+  # Dashboard kiosk on the spare ASUS PB287Q panel: chromium lands on the niri
+  # "dashboard" workspace via its app-id (see pkgs/niri-wrapped/config.kdl).
+  systemd.user.services.dashboard-kiosk = {
+    description = "Dashboard kiosk browser";
+    after = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
+
+    serviceConfig = {
+      ExecStart = lib.concatStringsSep " " [
+        (lib.getExe pkgs.chromium)
+        "--class=dashboard"
+        "--ozone-platform=wayland"
+        "--kiosk"
+        "--user-data-dir=%h/.local/share/dashboard-chromium"
+        "http://tower:8082"
+      ];
+      Restart = "on-failure";
+    };
   };
 
   networking.networkmanager = {
