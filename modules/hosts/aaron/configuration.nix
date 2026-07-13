@@ -2,6 +2,7 @@
   self,
   pkgs,
   lib,
+  nixpkgs-moonlight-pin,
   ...
 }:
 let
@@ -15,8 +16,18 @@ let
 
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zsh-wrapped;
+
+  # See the nixpkgs-moonlight-pin input in flake.nix for why.
+  pinned-moonlight-qt = nixpkgs-moonlight-pin.legacyPackages.${system}.moonlight-qt;
 in
 {
+  assertions = [
+    {
+      assertion = pkgs.moonlight-qt.version == pinned-moonlight-qt.version;
+      message = "nixpkgs moved moonlight-qt past the pin; retest the ld64 SIGTRAP crash and drop the nixpkgs-moonlight-pin input if fixed.";
+    }
+  ];
+
   allowedUnfreePackages = [
     "betterdisplay"
     "raycast"
@@ -45,7 +56,7 @@ in
         raycast
         defaultbrowser
         ghostty-bin.terminfo
-        moonlight-qt
+        pinned-moonlight-qt
         nh
         (writeShellApplication {
           # This is necessary because the darwin tailscale module does not include authkey option

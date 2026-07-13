@@ -15,6 +15,12 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # moonlight-qt only: ld64 crashes (SIGTRAP) linking Qt apps on
+    # aarch64-darwin in nixos-unstable (Hydra broken since 2026-07-08).
+    # Rev-pinned so `nix flake update` leaves it alone; an assertion in
+    # aaron's configuration prompts retesting when nixpkgs bumps moonlight.
+    nixpkgs-moonlight-pin.url = "github:nixos/nixpkgs/d407951447dcd00442e97087bf374aad70c04cea";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
