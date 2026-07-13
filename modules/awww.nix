@@ -29,6 +29,11 @@ _: {
       systemd.user.services = {
         awww-daemon = {
           description = "Animated wallpaper daemon for Wayland";
+
+          # The daemon restores a (re)connected output by exec'ing the awww
+          # client from its per-output cache, so the client must be on PATH.
+          path = [ pkgs.awww ];
+
           after = [ "graphical-session.target" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
