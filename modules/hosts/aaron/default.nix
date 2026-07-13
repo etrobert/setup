@@ -9,7 +9,7 @@ let
     home-manager
     agenix
     nix-homebrew
-    nixpkgs-moonlight-pin
+    nixpkgs-darwin-gui-pin
     ;
 in
 {
@@ -19,7 +19,7 @@ in
         self
         agenix
         nix-darwin
-        nixpkgs-moonlight-pin
+        nixpkgs-darwin-gui-pin
         ;
     };
     modules = [
