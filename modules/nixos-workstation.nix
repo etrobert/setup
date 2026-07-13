@@ -151,7 +151,6 @@ _: {
             bambu-studio
             bemoji
             bibata-cursors
-            bitwarden-desktop
             brightnessctl
             chromium
             cliphist
