@@ -76,7 +76,6 @@ _: {
               libnotify
               nodejs_26 # pinned (not nodejs_latest) so the binary cache stays reliable
               opencode
-              openscad-unstable
               pnpm
               python3
               shellcheck
