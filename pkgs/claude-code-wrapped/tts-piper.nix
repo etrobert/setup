@@ -31,13 +31,20 @@
   fetchurl,
   runCommand,
   piper-tts,
+  python313Packages,
   coreutils,
   pulseaudio,
   writeShellApplication,
 }:
 let
+  # Pinned to Python 3.13: the 3.14 build tooling crashes Apple libffi's
+  # trampoline allocation on macOS 26+ (Assertion failed: (trampoline_handle),
+  # closures.c). Drop the pin once piper builds with the default python3 on
+  # aaron again.
+  piper-tts' = piper-tts.override { python3Packages = python313Packages; };
+
   # Inference-only piper: see header for why the training stack is stripped.
-  piper = piper-tts.overridePythonAttrs (old: {
+  piper = piper-tts'.overridePythonAttrs (old: {
     dependencies = builtins.filter (
       d:
       builtins.any (s: lib.hasInfix s (d.pname or d.name or "")) [
