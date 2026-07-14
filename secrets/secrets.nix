@@ -32,8 +32,8 @@ in
   "github-bot-token.age".publicKeys = allWorkstations;
   "github-runner-token.age".publicKeys = allWorkstations;
   "z-ai-auth-token.age".publicKeys = allWorkstations;
-  "cachix-token.age".publicKeys = allWorkstations;
   "hass-token.age".publicKeys = allWorkstations;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
   "riot-api-key.age".publicKeys = allLinux;
+  "harmonia-signing-key.age".publicKeys = [ tower ];
 }

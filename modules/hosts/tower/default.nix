@@ -35,6 +35,7 @@ in
       self.nixosModules.claudeWarmup
       self.nixosModules.gaming
       self.nixosModules.githubRunner
+      self.nixosModules.harmonia
     ];
   };
 }

@@ -8,7 +8,8 @@ name: Build
     branches: [main]
 
 # Cancel superseded runs per ref when iterating fast, but never on main:
-# every main commit must finish and push to cachix (pi auto-upgrades from it).
+# every main commit must finish so its outputs land in tower's store, where
+# harmonia serves them (pi auto-upgrades and substitutes from there).
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
@@ -92,10 +93,10 @@ jobs:
       - uses: DeterminateSystems/determinate-nix-action@v3
         if: ${{ runner.environment == 'github-hosted' }}
 
-      # Only GitHub-hosted runners push via this action. Self-hosted jobs skip
-      # it: tower's post-build hook pushes what it builds, and the action can't
-      # work there anyway — its `cachix use` needs a nix trusted user, which the
-      # runner user deliberately isn't.
+      # Only GitHub-hosted runners (darwin builds) push to cachix. Self-hosted
+      # jobs skip it: their outputs land in tower's store, served by harmonia,
+      # and the action can't work there anyway — its `cachix use` needs a nix
+      # trusted user, which the runner user deliberately isn't.
       # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
       # fail the job
       - uses: cachix/cachix-action@v17

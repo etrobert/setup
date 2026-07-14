@@ -27,7 +27,6 @@ _: {
         self.nixosModules.mpd
         self.nixosModules.awww
         self.nixosModules.ddcci
-        self.nixosModules.cachix-push
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
