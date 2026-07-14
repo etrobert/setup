@@ -106,7 +106,6 @@
           ./modules/awww.nix
           ./modules/ddcci
           ./modules/album-art-wallpaper.nix
-          ./modules/cachix-push.nix
           ./modules/copilot-api.nix
           ./modules/server.nix
           ./modules/ntfy.nix
