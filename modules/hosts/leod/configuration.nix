@@ -18,12 +18,6 @@
 
   networking.hostName = "leod"; # Define your hostname.
 
-  # Tower's harmonia store cache.
-  nix.settings = {
-    substituters = [ "http://tower:5000" ];
-    trusted-public-keys = [ "tower-harmonia-1:l7mK+LLGUfKUXpHY1IA4edwlNEmjKKsJ0oOi8CWuno8=" ];
-  };
-
   # Tracks battery usage
   services.upower.enable = true;
 
