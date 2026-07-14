@@ -26,7 +26,13 @@ _: {
             # Vodafone Station drops LAN-side traffic from its WLAN to the
             # port-forward target (.10) on the forwarded ports (80/443), but
             # the filter is keyed to that target IP, so .11 passes.
-            host-record = map (name: "${name}.etiennerobert.com,192.168.0.11") [
+            # tower's address is static (not a DHCP reservation), so without a
+            # host-record the name only resolves via stale DHCP leases from
+            # other interfaces that once announced themselves as "tower".
+            host-record = [
+              "tower,192.168.0.10"
+            ]
+            ++ map (name: "${name}.etiennerobert.com,192.168.0.11") [
               "test"
               "creatures"
               "files"
