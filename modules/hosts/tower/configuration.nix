@@ -27,10 +27,12 @@
   };
 
   networking.networkmanager = {
-    # Disable WiFi: tower is a wired desktop on the static enp11s0 link below, so
-    # WiFi only added a second IP on the same /24. That dual-homing intermittently
-    # broke Home Assistant's zeroconf at startup (mDNS multicast ENODEV). See #281.
-    unmanaged = [ "interface-name:wlp12s0" ];
+    # Keep tower single-homed on enp11s0; a second IP on the same /24
+    # intermittently broke Home Assistant's zeroconf startup. See #281.
+    unmanaged = [
+      "interface-name:wlp12s0" # WiFi
+      "mac:c8:4b:d6:ce:4e:78" # monitor's built-in USB ethernet adapter
+    ];
 
     # Static IP on the motherboard NIC so the link survives the monitor (and its
     # USB ethernet adapter) being turned off. DNS points at pi for split-horizon
