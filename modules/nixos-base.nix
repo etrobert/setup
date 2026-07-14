@@ -27,8 +27,8 @@ _: {
 
       nix.settings.trusted-users = [ "@wheel" ];
 
-      # Tower's harmonia store cache. Tower itself also gets this: the
-      # self-queries are cheap localhost 404s, not worth a special case.
+      # Tower also substitutes from its own cache here: the self-queries are
+      # cheap localhost 404s, not worth a special case.
       nix.settings = {
         substituters = [ "http://tower:5000" ];
         trusted-public-keys = [ "tower-harmonia-1:l7mK+LLGUfKUXpHY1IA4edwlNEmjKKsJ0oOi8CWuno8=" ];
