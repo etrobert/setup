@@ -12,7 +12,6 @@ _: {
         settings.priority = 30;
       };
 
-      # Not WAN-reachable: the router only forwards 80/443 to tower.
       networking.firewall.allowedTCPPorts = [ 5000 ];
     };
 }
