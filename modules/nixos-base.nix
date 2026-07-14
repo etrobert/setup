@@ -25,11 +25,11 @@ _: {
 
       console.useXkbConfig = true; # Apply XKB options to the TTY too
 
-      nix.settings.trusted-users = [ "@wheel" ];
-
-      # Tower also substitutes from its own cache here: the self-queries are
-      # cheap localhost 404s, not worth a special case.
       nix.settings = {
+        trusted-users = [ "@wheel" ];
+
+        # Tower also substitutes from its own cache here: the self-queries are
+        # cheap localhost 404s, not worth a special case.
         substituters = [ "http://tower:5000" ];
         trusted-public-keys = [ "tower-harmonia-1:l7mK+LLGUfKUXpHY1IA4edwlNEmjKKsJ0oOi8CWuno8=" ];
       };
