@@ -117,6 +117,7 @@
           ./modules/claude-warmup.nix
           ./modules/gaming.nix
           ./modules/github-runner.nix
+          ./modules/harmonia.nix
           ./pkgs
         ];
 
