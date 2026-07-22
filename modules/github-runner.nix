@@ -18,6 +18,13 @@ _: {
           tokenFile = config.age.secrets.github-runner-token.path;
           replace = true;
           extraPackages = [ pkgs.jq ];
+
+          # The module defaults to Restart=no for persistent runners, so an
+          # OOM-killed runner stays down until manually restarted.
+          serviceOverrides = {
+            Restart = lib.mkForce "on-failure";
+            RestartSec = "10s";
+          };
         });
 
       age.secrets.github-runner-token.file = ../secrets/github-runner-token.age;
