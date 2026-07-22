@@ -158,7 +158,6 @@ _: {
             kdePackages.okular
             grim
             mpv
-            openscad-unstable
             pavucontrol
             playerctl
             slurp
