@@ -19,6 +19,7 @@ vscode-with-extensions.override {
     commandLineArgs = " --user-data-dir=$HOME/setup/pkgs/vscode-wrapped/user-data";
   };
   vscodeExtensions = with vscode-extensions; [
+    anthropic.claude-code
     eamodio.gitlens
     oderwat.indent-rainbow
     pkief.material-icon-theme

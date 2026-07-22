@@ -27,6 +27,9 @@
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { inherit wrapPackage; };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { inherit wrapPackage; };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
+        claude-process-wrapper = pkgs.callPackage ./vscode-wrapped/claude-process-wrapper.nix {
+          inherit self';
+        };
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
           inherit
             claude-code

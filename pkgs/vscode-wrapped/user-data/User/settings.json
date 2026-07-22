@@ -1,6 +1,10 @@
 {
   "window.menuBarVisibility": "toggle",
 
+  // Launch Claude via claude-code-wrapped instead of the extension's bundled
+  // CLI (stable system path on both NixOS and nix-darwin).
+  "claudeCode.claudeProcessWrapper": "/run/current-system/sw/bin/claude-process-wrapper",
+
   "editor.cursorStyle": "underline",
   "editor.cursorBlinking": "solid",
   "editor.rulers": [80],

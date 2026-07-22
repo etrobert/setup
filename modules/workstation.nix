@@ -42,6 +42,7 @@ _: {
               alacritty-wrapped
               neovim-wrapped
               vscode-wrapped
+              claude-process-wrapper
               gen-commit-msg
               git-find-commit
               agents
