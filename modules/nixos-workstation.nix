@@ -32,8 +32,6 @@ _: {
         self.nixosModules.fileManager
       ];
 
-      allowedUnfreePackages = [ "bambu-studio" ];
-
       services = {
         # Firmware updates from LVFS: fwupdmgr refresh / get-updates / update.
         # Lenovo publishes leod's system firmware there; MSI doesn't, so
@@ -147,7 +145,6 @@ _: {
 
           externalPackages = with pkgs; [
             linuxPackages.cpupower
-            bambu-studio
             bemoji
             bibata-cursors
             brightnessctl
