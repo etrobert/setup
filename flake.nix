@@ -143,6 +143,7 @@
                   "cmp-emoji"
                   "copilot.vim"
                   "vscode"
+                  "vscode-extension-anthropic-claude-code"
                   "vscode-extension-ms-vsliveshare-vsliveshare"
                 ];
             };
