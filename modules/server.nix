@@ -17,6 +17,7 @@
           inputs.rift-radar.nixosModules.default
           inputs.rack.nixosModules.default
           inputs.creatures.nixosModules.default
+          inputs.countdown.nixosModules.default
         ];
 
         networking.firewall.allowedTCPPorts = [
@@ -34,6 +35,7 @@
             domains = [
               "test"
               "creatures"
+              "countdown"
               "files"
               "adele"
               "umami"
@@ -107,6 +109,11 @@
           creatures = {
             enable = true;
             hostName = "creatures.etiennerobert.com";
+          };
+
+          countdown = {
+            enable = true;
+            hostName = "countdown.etiennerobert.com";
           };
         };
 

@@ -40,6 +40,26 @@
         "type": "github"
       }
     },
+    "countdown": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784826464,
+        "narHash": "sha256-U0FcQsPPWEzwN344qhuZQmVon/h0NSV7ohChrWyL2M8=",
+        "owner": "etrobert",
+        "repo": "countdown",
+        "rev": "27acac33411d4a26b1ed78770021fe093d196289",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etrobert",
+        "repo": "countdown",
+        "type": "github"
+      }
+    },
     "creatures": {
       "inputs": {
         "nixpkgs": [
@@ -350,6 +370,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "countdown": "countdown",
         "creatures": "creatures",
         "etiennerobert-com": "etiennerobert-com",
         "flake-parts": "flake-parts",

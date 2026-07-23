@@ -29,6 +29,7 @@ _: {
             host-record = map (name: "${name}.etiennerobert.com,192.168.0.11") [
               "test"
               "creatures"
+              "countdown"
               "files"
               "adele"
               "umami"

@@ -31,6 +31,12 @@ _: {
                 siteMonitor = "http://localhost:3000";
               };
             }
+            {
+              "Countdown" = {
+                href = "https://countdown.etiennerobert.com";
+                description = "Static site";
+              };
+            }
           ];
         }
         {
