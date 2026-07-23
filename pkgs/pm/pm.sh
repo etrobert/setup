@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
 # Universal package manager - detects npm/yarn/pnpm and runs appropriate command
 
 detect_package_manager() {
