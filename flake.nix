@@ -55,6 +55,10 @@
       url = "github:etrobert/creatures";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    countdown = {
+      url = "github:etrobert/countdown";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     rift-radar = {
       url = "github:etrobert/rift-radar";
       inputs.nixpkgs.follows = "nixpkgs";
