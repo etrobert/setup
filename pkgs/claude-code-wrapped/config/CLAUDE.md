@@ -121,6 +121,12 @@ definition that spans multiple lines should be set off by a blank line before
 and after it — don't butt a multi-line binding (e.g. `runtimeInputs = [ … ]`)
 directly against an adjacent definition.
 
+In Tailwind, prefer the predefined scale (`text-lg`, `rounded-md`, `p-2.5`) over
+arbitrary values (`text-[1.1rem]`, `rounded-[0.4rem]`), snapping to the nearest
+step rather than preserving an exact number. Reserve `[…]` for values with no
+scale equivalent — custom properties (`rotate-[var(--rot)]`), grid templates,
+property lists.
+
 ## Documentation & Notes
 
 When writing docs, notes, or comments, state only what's true now. Don't record
