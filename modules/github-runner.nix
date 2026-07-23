@@ -11,22 +11,15 @@ _: {
         let
           # tower serves CI for several of etrobert's repos. GitHub user
           # accounts have no org-level runners, so each repo needs its own
-          # registration; one entry per repo, prefix → runner count.
-          reposByRunnerCount = {
-            tower = {
-              repo = "setup";
-              count = 6;
-            };
-            countdown = {
-              repo = "countdown";
-              count = 2;
-            };
+          # registration. Runners are named tower-<repo>-<n>.
+          runnerCountByRepo = {
+            setup = 6;
+            countdown = 2;
           };
 
           mkRunners =
-            prefix:
-            { repo, count }:
-            lib.genAttrs (map (n: "${prefix}-${toString n}") (lib.range 1 count)) (_: {
+            repo: count:
+            lib.genAttrs (map (n: "tower-${repo}-${toString n}") (lib.range 1 count)) (_: {
               enable = true;
               url = "https://github.com/etrobert/${repo}";
               tokenFile = config.age.secrets.github-runner-token.path;
@@ -41,7 +34,7 @@ _: {
               };
             });
         in
-        lib.concatMapAttrs mkRunners reposByRunnerCount;
+        lib.concatMapAttrs mkRunners runnerCountByRepo;
 
       age.secrets.github-runner-token.file = ../secrets/github-runner-token.age;
 
