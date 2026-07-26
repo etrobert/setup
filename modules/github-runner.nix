@@ -14,7 +14,6 @@ _: {
           # registration. Runners are named tower-<repo>-<n>.
           runnerCountByRepo = {
             setup = 6;
-            countdown = 2;
           };
 
           mkRunners =
