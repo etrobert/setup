@@ -21,7 +21,6 @@ let
   pinnedPackages = [
     "audacity"
     "moonlight-qt"
-    "telegram-desktop"
   ];
 
   # Unoverlaid nixpkgs, used by the guard below to detect when a pinned
