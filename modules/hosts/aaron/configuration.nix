@@ -186,8 +186,8 @@ in
   homebrew = {
     enable = true;
     casks = [
-      "bambu-studio"
       "claude"
+      "orcaslicer"
       "sonos"
       "vlc"
       "whatsapp"
