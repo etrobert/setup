@@ -155,6 +155,7 @@ _: {
             kdePackages.okular
             grim
             mpv
+            orca-slicer
             pavucontrol
             playerctl
             slurp
