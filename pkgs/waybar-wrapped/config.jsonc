@@ -25,7 +25,6 @@
     "mpris",
     "pulseaudio",
     "network",
-    "battery",
     "upower",
     "custom/cpu-governor",
     "bluetooth",
@@ -51,21 +50,6 @@
     "exec": "get-weather",
     "interval": 3600,
   },
-  "battery": {
-    "interval": 5,
-    "states": {
-      "warning": 30,
-      "critical": 15,
-    },
-    "format": "{icon}",
-    "format-full": "{icon}",
-    "format-icons": {
-      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-      "default": ["", "", "", "", ""],
-    },
-    "tooltip-format": "{capacity}%\n{timeTo}",
-  },
-  // Running alongside `battery` to compare charging-state update latency.
   "upower": {
     "icon-size": 0,
     "format": "",
