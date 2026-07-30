@@ -102,6 +102,10 @@ in
 
       ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
 
+      # Finder sidebar favorite. No system.defaults option exists: the list is
+      # an LSSharedFileList archive, not a plist key. Idempotent by name.
+      sudo -u soft ${pkgs.mysides}/bin/mysides add "sync" "file:///Users/soft/sync/"
+
       # Set wallpaper
       launchctl asuser "$(id -u soft)" /usr/bin/osascript -e \
         'tell application "Finder" to set desktop picture to POSIX file "${wallpaper}"'
