@@ -69,24 +69,34 @@ any regular cadence. Prune old exports rather than keeping every dated copy.
 There is no scripted export. The existing
 `bank-exports/*_trade-republic_transactions.csv` files were produced by hand.
 
-Don't reach for open banking here, even though Trade Republic does publish a
+**Trade Republic is where roughly 99% of Étienne's day-to-day card spending
+happens.** N26 carries rent, direct debits and income. So for any question about
+spending, Trade Republic is the account that matters, not N26.
+
+Trade Republic publishes a real
 [PSD2 TPP guide](https://assets.traderepublic.com/assets/files/TPP_API_Guide_v2.pdf)
-(v2.1, July 2026) describing a real AIS interface. Three things rule it out:
+(v2.1, July 2026) with an AIS interface, and since its 2023 full banking licence
+it issues individual IBANs with direct debits and standing orders. Whether that
+is reachable is **unresolved**:
 
-- Access needs an **eIDAS QSeal certificate** and a licensed AISP or PISP. That
-  is an institutional requirement, not something an individual obtains.
-- So it is only reachable via an aggregator that has integrated Trade Republic.
-  GoCardless does not appear to list it. Powens does, but Powens is B2B with
-  sales-gated pricing and only a development sandbox for free — there is no
-  self-serve production tier for an individual. Don't go down this road.
-- AIS exposes the **cash account only** — balances and booked transactions. No
-  securities positions and no trades. That is precisely the part of Trade
-  Republic worth having, so even a working connection would miss the point.
+- Direct access needs an **eIDAS QSeal certificate** and a licensed AISP or PISP,
+  which an individual cannot obtain. It has to go through an aggregator.
+- Whether GoCardless lists Trade Republic as an institution is unknown. Third
+  party coverage pages are unreliable here — the one claiming only Powens covers
+  it also claimed Trade Republic had no PSD2 API at all, which its own
+  documentation disproves. Settle it by calling the institutions endpoint
+  (`country=de`), which needs only a free GoCardless account.
+- AIS exposes the cash account only, with no securities positions or trades. For
+  **spending** that is sufficient — card payments debit the cash account — so the
+  limitation does not bite. It only matters for investment tracking.
 
-The existing export is already richer than anything open banking would return:
-it carries `asset_class`, `symbol` (ISIN), `shares`, `price`, `fee` and `tax` for
-trades alongside `counterparty_iban` and `mcc_code` for cash and card movements.
-Keep using it.
+Resolve the coverage question before building anything. If Trade Republic is
+reachable, unattended spending data becomes possible; if it is not, no amount of
+N26 automation substitutes for it.
+
+Keep the manual export regardless for investment detail: it carries
+`asset_class`, `symbol` (ISIN), `shares`, `price`, `fee` and `tax`, which no
+open-banking feed returns.
 
 ## Automating this — read before proposing anything
 
