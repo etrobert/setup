@@ -43,6 +43,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+    # Upstream's default branch is its dev branch; the moving `latest` tag
+    # tracks stable releases and still follows `nix flake update`.
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";

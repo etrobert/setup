@@ -1,4 +1,5 @@
-_: {
+{ inputs, ... }:
+{
   flake.nixosModules.nixosWorkstation =
     {
       self,
@@ -21,6 +22,7 @@ _: {
     in
     {
       imports = [
+        inputs.nix-flatpak.nixosModules.nix-flatpak
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
@@ -38,6 +40,15 @@ _: {
         # tower's BIOS stays manual (M-Flash), but NVMe, UEFI dbx, and
         # peripheral updates still apply.
         fwupd.enable = true;
+
+        # Bazaar's catalog comes from the system's flatpak remotes.
+        flatpak = {
+          enable = true;
+
+          # Unfree in nixpkgs, so uncached and impractical to build locally;
+          # Flathub ships prebuilt binaries.
+          packages = [ "com.bambulab.BambuStudio" ];
+        };
 
         # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
         avahi = {
@@ -145,6 +156,7 @@ _: {
 
           externalPackages = with pkgs; [
             linuxPackages.cpupower
+            bazaar
             bemoji
             bibata-cursors
             brightnessctl
