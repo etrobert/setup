@@ -39,6 +39,11 @@ _: {
         # peripheral updates still apply.
         fwupd.enable = true;
 
+        # Catalog source for Bazaar (app-store browsing). Flatpak installs are
+        # scratch space for trying apps — keepers get promoted to nixpkgs here.
+        # See https://github.com/etrobert/setup/issues/514.
+        flatpak.enable = true;
+
         # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
         avahi = {
           enable = true;
@@ -83,6 +88,17 @@ _: {
         packages = with self.packages.${system}; [
           waybar-wrapped
         ];
+
+        services.flatpak-add-flathub = {
+          wantedBy = [ "multi-user.target" ];
+          after = [ "network-online.target" ];
+          wants = [ "network-online.target" ];
+          path = [ pkgs.flatpak ];
+          serviceConfig.Type = "oneshot";
+          script = /* bash */ ''
+            flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          '';
+        };
 
         user = {
           services = {
@@ -145,6 +161,7 @@ _: {
 
           externalPackages = with pkgs; [
             linuxPackages.cpupower
+            bazaar
             bemoji
             bibata-cursors
             brightnessctl
