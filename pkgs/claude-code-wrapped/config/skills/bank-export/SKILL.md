@@ -76,12 +76,17 @@ Don't reach for open banking here, even though Trade Republic does publish a
 - Access needs an **eIDAS QSeal certificate** and a licensed AISP or PISP. That
   is an institutional requirement, not something an individual obtains.
 - So it is only reachable via an aggregator that has integrated Trade Republic.
-  GoCardless does not appear to list it; Powens is the one that does.
+  GoCardless does not appear to list it. Powens does, but Powens is B2B with
+  sales-gated pricing and only a development sandbox for free — there is no
+  self-serve production tier for an individual. Don't go down this road.
 - AIS exposes the **cash account only** — balances and booked transactions. No
   securities positions and no trades. That is precisely the part of Trade
   Republic worth having, so even a working connection would miss the point.
 
-The manual CSV export stays the right tool for Trade Republic.
+The existing export is already richer than anything open banking would return:
+it carries `asset_class`, `symbol` (ISIN), `shares`, `price`, `fee` and `tax` for
+trades alongside `counterparty_iban` and `mcc_code` for cash and card movements.
+Keep using it.
 
 ## Automating this — read before proposing anything
 
