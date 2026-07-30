@@ -41,16 +41,12 @@
         # peripheral updates still apply.
         fwupd.enable = true;
 
-        # Catalog source for Bazaar (app-store browsing). Ad-hoc flatpak
-        # installs are scratch space for trying apps — keepers get promoted to
-        # nixpkgs here, or declared in packages below when the flatpak build is
-        # the better channel. See https://github.com/etrobert/setup/issues/514.
-        # nix-flatpak initializes the Flathub remote by default.
+        # Bazaar's catalog comes from the system's flatpak remotes.
         flatpak = {
           enable = true;
 
-          # Unfree in nixpkgs (no Hydra cache → local compile); Flathub ships
-          # prebuilt binaries.
+          # Unfree in nixpkgs, so uncached and impractical to build locally;
+          # Flathub ships prebuilt binaries.
           packages = [ "com.bambulab.BambuStudio" ];
         };
 
