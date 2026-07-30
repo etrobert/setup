@@ -99,10 +99,20 @@ Keep using it.
 - **Open banking (PSD2) is the right destination for N26.**
   [GoCardless Bank Account Data](https://developer.gocardless.com/bank-account-data/overview)
   (formerly Nordigen) is free for personal use, supports N26 Germany, and
-  authorizes through N26's own consent screen so no password is shared. Access
-  needs re-consent every 90 days. That trade only pays off above roughly monthly
-  pulls; below that, the browser export is cheaper than maintaining a
-  registration.
+  authorizes through N26's own consent screen so no password is shared.
+
+  Access is not indefinite. EU law requires strong customer authentication for
+  account access periodically —
+  [Commission Delegated Regulation 2022/2360](https://www.projectivegroup.com/psd2-alert-authentication-period-for-account-information-services-extended-to-180-days/)
+  raised that interval from 90 to **180 days** as of July 2023. GoCardless's own
+  documentation still states 90 days of continuous access, so assume 90 and
+  confirm at setup. Either way it is a legal floor, not a tool limitation: no
+  integration can make bank access permanently unattended.
+
 - **The browser route can never be scheduled.** N26's device approval means a
   human is always required, so any request for unattended or cron-driven syncing
   has to go through PSD2, not `export.js`.
+- **Never answer a money question without checking how fresh the data is.** The
+  exports are snapshots and go stale silently. Read the newest file's last row
+  date before reasoning from it, and say so if it predates the period in
+  question.
