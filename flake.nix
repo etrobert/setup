@@ -43,7 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.7.0";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
