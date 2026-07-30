@@ -1,4 +1,5 @@
-_: {
+{ inputs, ... }:
+{
   flake.nixosModules.nixosWorkstation =
     {
       self,
@@ -21,6 +22,7 @@ _: {
     in
     {
       imports = [
+        inputs.nix-flatpak.nixosModules.nix-flatpak
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
@@ -39,10 +41,18 @@ _: {
         # peripheral updates still apply.
         fwupd.enable = true;
 
-        # Catalog source for Bazaar (app-store browsing). Flatpak installs are
-        # scratch space for trying apps — keepers get promoted to nixpkgs here.
-        # See https://github.com/etrobert/setup/issues/514.
-        flatpak.enable = true;
+        # Catalog source for Bazaar (app-store browsing). Ad-hoc flatpak
+        # installs are scratch space for trying apps — keepers get promoted to
+        # nixpkgs here, or declared in packages below when the flatpak build is
+        # the better channel. See https://github.com/etrobert/setup/issues/514.
+        # nix-flatpak initializes the Flathub remote by default.
+        flatpak = {
+          enable = true;
+
+          # Unfree in nixpkgs (no Hydra cache → local compile); Flathub ships
+          # prebuilt binaries.
+          packages = [ "com.bambulab.BambuStudio" ];
+        };
 
         # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
         avahi = {
@@ -88,17 +98,6 @@ _: {
         packages = with self.packages.${system}; [
           waybar-wrapped
         ];
-
-        services.flatpak-add-flathub = {
-          wantedBy = [ "multi-user.target" ];
-          after = [ "network-online.target" ];
-          wants = [ "network-online.target" ];
-          path = [ pkgs.flatpak ];
-          serviceConfig.Type = "oneshot";
-          script = /* bash */ ''
-            flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          '';
-        };
 
         user = {
           services = {
