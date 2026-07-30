@@ -24,6 +24,9 @@ AVGS-Coaching through Agentur für Arbeit. As of mid-2026 receives
 Arbeitslosengeld I (~€2,460/mo) until December 2026. Has AXA private liability
 insurance (Privathaftpflicht).
 
+Rents in Berlin-Neukölln and is a member of the Berliner Mieterverein, so
+tenant-law advice is available for rental disputes.
+
 ## Memory
 
 Do not use the file-based memory system. Instead, write learnings and context
