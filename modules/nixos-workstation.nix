@@ -224,6 +224,31 @@
           # managed by the NixOS programs.hyprlock module.
           package = self.packages.${system}.hyprlock-wrapped;
         };
+
+        # Trial only — a Quickshell-based shell (bar, launcher, notification
+        # centre, lock screen) with a first-class niri backend, to compare
+        # against waybar + fuzzel + mako before deciding whether to build our
+        # own Quickshell config. See etrobert/setup#526.
+        noctalia = {
+          enable = true;
+
+          # Pinned to 4.7.7 rather than the module's default pkgs.noctalia
+          # (5.0.0-beta) because v5 dropped Quickshell: it is a standalone
+          # binary with its QML compiled in, and its closure contains no
+          # quickshell at all. 4.7.7 still runs on quickshell and ships its QML
+          # readable, including the NiriService the trial is meant to evaluate.
+          # Switch to the default if the goal is judging the product rather
+          # than the platform.
+          package = pkgs.noctalia-shell;
+
+          # systemd.enable stays off deliberately: starting it with the session
+          # would draw a second bar on top of waybar. Launch it by hand instead.
+
+          # recommendedServices stays off too. It would enable
+          # power-profiles-daemon, which manages CPU scaling itself and so
+          # fights toggle-cpu-governor's cpupower calls. NetworkManager,
+          # bluetooth and upower are already on.
+        };
       };
 
       home-manager.users.soft = self.homeModules.linux;
