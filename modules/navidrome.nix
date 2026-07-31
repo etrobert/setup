@@ -5,9 +5,6 @@ _: {
       services.navidrome = {
         enable = true;
         settings = {
-          # Upstream defaults to loopback. Navidrome is reached over Tailscale
-          # as tower:4533; 4533 is deliberately absent from the firewall, so
-          # binding every interface does not expose it to the LAN.
           Address = "0.0.0.0";
           MusicFolder = "/home/soft/sync/music";
         };
