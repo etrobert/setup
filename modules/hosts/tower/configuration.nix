@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ ... }:
+{ lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -25,6 +25,20 @@
     enable = true;
     openFirewall = true;
   };
+
+  services.navidrome = {
+    enable = true;
+    settings = {
+      Address = "0.0.0.0";
+      MusicFolder = "/home/soft/sync/music";
+      DataFolder = "/home/soft/.local/share/navidrome";
+    };
+    user = "soft";
+  };
+
+  # MusicFolder and DataFolder both live under /home, which the upstream unit
+  # makes inaccessible.
+  systemd.services.navidrome.serviceConfig.ProtectHome = lib.mkForce "read-only";
 
   networking.networkmanager = {
     # Keep tower single-homed on enp11s0; a second IP on the same /24
