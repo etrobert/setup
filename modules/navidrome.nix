@@ -10,11 +10,6 @@ _: {
         };
       };
 
-      # MusicFolder sits under /home, which upstream's ProtectHome=true makes
-      # inaccessible — shadowing the read-only bind the unit sets up for it.
-      # "tmpfs" is the value systemd.exec(5) documents as still letting
-      # BindReadOnlyPaths show through, and it hides the rest of $HOME by
-      # itself rather than leaning on RootDirectory to have emptied it.
       systemd.services.navidrome.serviceConfig.ProtectHome = lib.mkForce "tmpfs";
     };
 }
