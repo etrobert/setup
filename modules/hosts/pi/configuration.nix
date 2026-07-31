@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -50,21 +46,7 @@
     interface = "end0";
   };
 
-  services = {
-    tailscale.extraUpFlags = [ "--advertise-exit-node" ];
-
-    navidrome = {
-      enable = true;
-      settings = {
-        Address = "0.0.0.0";
-        MusicFolder = "/home/soft/sync/music";
-        DataFolder = "/home/soft/.local/share/navidrome";
-      };
-      user = "soft";
-    };
-  };
-
-  systemd.services.navidrome.serviceConfig.ProtectHome = lib.mkForce "read-only";
+  services.tailscale.extraUpFlags = [ "--advertise-exit-node" ];
 
   system.stateVersion = "25.11";
 }

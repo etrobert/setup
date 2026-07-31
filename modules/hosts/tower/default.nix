@@ -36,6 +36,7 @@ in
       self.nixosModules.gaming
       self.nixosModules.githubRunner
       self.nixosModules.harmonia
+      self.nixosModules.navidrome
     ];
   };
 }

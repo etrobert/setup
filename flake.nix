@@ -124,6 +124,7 @@
           ./modules/gaming.nix
           ./modules/github-runner.nix
           ./modules/harmonia.nix
+          ./modules/navidrome.nix
           ./pkgs
         ];
 
