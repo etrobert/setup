@@ -176,8 +176,22 @@
             wl-clipboard
             wtype
           ];
+
+          # Trial only (#526) — the two other shells worth comparing against
+          # noctalia 4.7.7, which programs.noctalia installs below. None of
+          # these auto-start; run them by hand with waybar stopped.
+          #
+          #   noctalia-shell   noctalia 4.7.7   — runs on quickshell
+          #   noctalia         noctalia 5.0.0-beta — standalone, no quickshell
+          #   dms run          DankMaterialShell — quickshell config, needs
+          #                    quickshell on PATH, hence it being listed here
+          trialShells = with pkgs; [
+            noctalia
+            dms-shell
+            quickshell
+          ];
         in
-        customPackages ++ externalPackages;
+        customPackages ++ externalPackages ++ trialShells;
 
       environment = {
         sessionVariables.BROWSER = "open-url";
