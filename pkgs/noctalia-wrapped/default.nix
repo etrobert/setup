@@ -14,6 +14,10 @@ let
     text = /* toml */ ''
       [bar.main]
       position = "left"
+
+      # awww owns the wallpaper; without this noctalia draws its own on top.
+      [wallpaper]
+      enabled = false
     '';
   };
 in
