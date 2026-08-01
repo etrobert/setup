@@ -1,0 +1,14 @@
+id = "etrobert/weekday"
+name = "Weekday"
+version = "1.0.0"
+plugin_api = 16
+author = "etrobert"
+license = "MIT"
+dependencies = []
+tags = ["clock", "time"]
+icon = "calendar"
+description = "Two-letter day of the week, as the waybar bar had it."
+
+[[widget]]
+id = "bar"
+entry = "bar.luau"

@@ -4,6 +4,11 @@
   writeTextFile,
 }:
 let
+  # A directory of plugins, scanned by a [[plugins.source]] of kind "path"
+  # below. Keeping it a source root rather than symlinking into the data dir
+  # means nothing has to be written to $HOME.
+  plugins = ./plugins;
+
   # noctalia resolves its config directory as $NOCTALIA_CONFIG_HOME/noctalia
   # (src/util/file_utils.h, configDir()), so the store path we point at needs
   # that extra level inside it.
@@ -15,6 +20,16 @@ let
       [theme]
       builtin = "Catppuccin"
 
+      # Plugins are opt-in by id, and declaring a source replaces the default
+      # (which scans the data dir), so nothing outside the store is scanned.
+      [plugins]
+      enabled = [ "etrobert/weekday" ]
+
+      [[plugins.source]]
+      kind = "path"
+      name = "setup"
+      location = "${plugins}"
+
       [location]
       address = "Berlin"
 
@@ -22,7 +37,7 @@ let
       position = "left"
       scale = 1.2
       margin_opposite_edge = 5
-      start = [ "clock", "date" ]
+      start = [ "clock", "etrobert/weekday:bar", "date" ]
       center = []
       end = [
           "media",
