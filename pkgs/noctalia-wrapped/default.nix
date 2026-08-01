@@ -15,6 +15,9 @@ let
       [theme]
       builtin = "Catppuccin"
 
+      [location]
+      address = "Berlin"
+
       [bar.main]
       position = "left"
       scale = 1.2
