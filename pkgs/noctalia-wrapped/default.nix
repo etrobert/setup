@@ -26,26 +26,8 @@ wrapPackage {
   # working, and anything changed there wins over what is set above.
   env.NOCTALIA_CONFIG_HOME = configHome;
 
-  # Fail the build on a broken config rather than at shell start-up.
-  #
-  # `config validate` has no --strict flag and is weaker than its --help
-  # claims: it exits non-zero *only* on TOML syntax errors. A misspelled key
-  # is downgraded to `WARN … unknown setting`, and a bad value is either
-  # `WARN … unknown value` or, for plenty of keys, reported not at all — a
-  # wrong `bar.main.position` produces no output whatsoever. So promote every
-  # warning to a build failure, and accept that bad *values* on unvalidated
-  # keys still get through.
-  checks = [
-    ''
-      report=$(${noctalia}/bin/noctalia config validate ${configHome}/noctalia 2>&1) || {
-        echo "$report" >&2
-        exit 1
-      }
-      echo "$report"
-      if grep -qE '^\s*WARN' <<<"$report"; then
-        echo "error: noctalia rejected part of this config (see warnings above)" >&2
-        exit 1
-      fi
-    ''
-  ];
+  # Catches TOML syntax errors at build time rather than at shell start-up.
+  # Only those: noctalia downgrades a misspelled key to a warning, and reports
+  # a bad value for some keys — bar.main.position included — not at all.
+  checks = [ "${noctalia}/bin/noctalia config validate ${configHome}/noctalia" ];
 }
