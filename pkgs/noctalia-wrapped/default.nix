@@ -47,6 +47,11 @@ let
       [bar.main]
       position = "left"
       scale = 1.2
+
+      # Default 6, which leaves the twelve icons in `end` cramped. There is no
+      # per-section setting — this widens `start` by the same amount, which the
+      # clock stack can afford.
+      widget_spacing = 12
       margin_opposite_edge = 5
 
       # Span the whole edge as waybar did. margin_ends defaults to 180, which
