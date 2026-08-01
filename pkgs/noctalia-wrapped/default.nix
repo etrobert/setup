@@ -22,7 +22,7 @@ let
       position = "left"
       scale = 1.2
       margin_opposite_edge = 5
-      start = [ "clock" ]
+      start = [ "clock", "date" ]
       center = []
       end = [
           "media",
@@ -51,8 +51,10 @@ let
       # is no equivalent here: %a is three letters, and no noctalia bar widget
       # can run a command — text and custom_button both take static strings.
       [widget.clock]
-      vertical_format = "{:%H\n%M\n%S\n%a\n%d\n%m\n%y}"
-      tooltip_format = "{:%A, %B %d, %Y}"
+      vertical_format = "{:%H %M %S}"
+
+      [widget.date]
+      format = "{:%d %m %y}"
 
       [widget.brightness]
       show_label = false
