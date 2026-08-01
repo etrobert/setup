@@ -12,12 +12,42 @@ let
     destination = "/noctalia/config.toml";
 
     text = /* toml */ ''
+      [theme]
+      builtin = "Catppuccin"
+
       [bar.main]
       position = "left"
+      scale = 1.2
+      margin_opposite_edge = 5
+      start = [ "clock" ]
+      center = []
+      end = [
+          "media",
+          "tray",
+          "notifications",
+          "clipboard",
+          "network",
+          "bluetooth",
+          "volume",
+          "brightness",
+          "battery",
+          "control-center",
+          "workspaces",
+          "session"
+      ]
 
       # awww owns the wallpaper; without this noctalia draws its own on top.
       [wallpaper]
       enabled = false
+
+      [widget.brightness]
+      show_label = false
+
+      [widget.network]
+      show_label = false
+
+      [widget.volume]
+      show_label = false
     '';
   };
 in
