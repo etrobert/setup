@@ -97,7 +97,10 @@
 
         user = {
           services = {
-            waybar.wantedBy = [ "graphical-session.target" ];
+            # noctalia owns the bar now (see programs.noctalia below). The unit
+            # stays installed so `systemctl --user start waybar` is still there
+            # as a fallback; it just no longer starts with the session.
+            waybar.wantedBy = lib.mkForce [ ];
 
             # Prevent nixos-rebuild switch from restarting niri mid-session.
             # Without this, switching causes a ghost niri to start (session inactive)
@@ -177,21 +180,8 @@
             wtype
           ];
 
-          # Trial only (#526) — the two other shells worth comparing against
-          # noctalia 4.7.7, which programs.noctalia installs below. None of
-          # these auto-start; run them by hand with waybar stopped.
-          #
-          #   noctalia-shell   noctalia 4.7.7   — runs on quickshell
-          #   noctalia         noctalia 5.0.0-beta — standalone, no quickshell
-          #   dms run          DankMaterialShell — quickshell config, needs
-          #                    quickshell on PATH, hence it being listed here
-          trialShells = with pkgs; [
-            noctalia
-            dms-shell
-            quickshell
-          ];
         in
-        customPackages ++ externalPackages ++ trialShells;
+        customPackages ++ externalPackages;
 
       environment = {
         sessionVariables.BROWSER = "open-url";
@@ -239,26 +229,20 @@
           package = self.packages.${system}.hyprlock-wrapped;
         };
 
-        # Trial only — a Quickshell-based shell (bar, launcher, notification
-        # centre, lock screen) with a first-class niri backend, to compare
-        # against waybar + fuzzel + mako before deciding whether to build our
-        # own Quickshell config. See etrobert/setup#526.
+        # The desktop shell: bar, launcher, notification centre and lock
+        # screen in one. Replaces waybar as the session's bar; mako, fuzzel
+        # and hyprlock stay installed for now and get retired individually
+        # once their noctalia equivalents have been used in anger.
+        #
+        # Uses the module's default package, which is v5 — a native binary
+        # with niri support compiled in (compositors::niri::NiriRuntime,
+        # driven off NIRI_SOCKET). v4 ran on a fork of Quickshell and is a
+        # dead end upstream.
         noctalia = {
           enable = true;
+          systemd.enable = true;
 
-          # Pinned to 4.7.7 rather than the module's default pkgs.noctalia
-          # (5.0.0-beta) because v5 dropped Quickshell: it is a standalone
-          # binary with its QML compiled in, and its closure contains no
-          # quickshell at all. 4.7.7 still runs on quickshell and ships its QML
-          # readable, including the NiriService the trial is meant to evaluate.
-          # Switch to the default if the goal is judging the product rather
-          # than the platform.
-          package = pkgs.noctalia-shell;
-
-          # systemd.enable stays off deliberately: starting it with the session
-          # would draw a second bar on top of waybar. Launch it by hand instead.
-
-          # recommendedServices stays off too. It would enable
+          # recommendedServices stays off: it would enable
           # power-profiles-daemon, which manages CPU scaling itself and so
           # fights toggle-cpu-governor's cpupower calls. NetworkManager,
           # bluetooth and upower are already on.
