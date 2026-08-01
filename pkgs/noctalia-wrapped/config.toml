@@ -1,10 +1,12 @@
 [theme]
 builtin = "Catppuccin"
+community_palette = "Catppuccin Macchiato Pink"
+source = "community"
 
 # Plugins are opt-in by id, and declaring a source replaces the default
 # (which scans the data dir), so nothing outside the store is scanned.
 [plugins]
-enabled = [ "etrobert/weekday" ]
+enabled = ["etrobert/weekday"]
 
 [[plugins.source]]
 kind = "path"
@@ -31,10 +33,9 @@ scale = 1.2
 
 widget_spacing = 12
 margin_opposite_edge = 5
-
-# Span the whole edge as waybar did. margin_ends defaults to 180, which
-# is what leaves the bar floating in the middle.
+margin_edge = 5
 margin_ends = 0
+padding = 12
 
 # Show the wallpaper through the bar instead of the Surface fill. Only
 # half the job: noctalia also asks the compositor to blur behind the bar,
@@ -43,21 +44,21 @@ margin_ends = 0
 background_opacity = 0.0
 shadow = false
 
-start = [ "clock", "etrobert/weekday:bar", "date" ]
+start = ["clock", "etrobert/weekday:bar", "date"]
 center = []
 end = [
-    "media",
-    "tray",
-    "notifications",
-    "clipboard",
-    "network",
-    "bluetooth",
-    "volume",
-    "brightness",
-    "battery",
-    "control-center",
-    "workspaces",
-    "session"
+  "media",
+  "tray",
+  "notifications",
+  "clipboard",
+  "network",
+  "bluetooth",
+  "volume",
+  "brightness",
+  "battery",
+  "control-center",
+  "workspaces",
+  "session",
 ]
 
 # awww owns the wallpaper; without this noctalia draws its own on top.
