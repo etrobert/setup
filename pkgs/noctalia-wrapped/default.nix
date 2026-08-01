@@ -33,6 +33,17 @@ let
       [location]
       address = "Berlin"
 
+      # Attached panels are drawn on the bar's own surface and inherit its
+      # background_opacity (panel_manager.cpp: m_attachedBackgroundOpacity),
+      # so a transparent bar makes the calendar and friends see-through and
+      # unreadable over windows. Floating panels get their own surface, whose
+      # opacity comes from transparency_mode instead — "solid" by default.
+      # launcher, clipboard and polkit already float; these three did not.
+      [shell.panel]
+      control_center_placement = "floating"
+      wallpaper_placement = "floating"
+      session_placement = "floating"
+
       [bar.main]
       position = "left"
       scale = 1.2

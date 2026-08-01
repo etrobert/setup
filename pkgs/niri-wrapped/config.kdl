@@ -372,12 +372,15 @@ layer-rule {
     place-within-backdrop true
 }
 
-// noctalia asks the compositor to blur behind its bar unconditionally —
-// applyBarCompositorBlur() in bar.cpp has no setting to gate it — which shows
-// as a smeared strip even with the bar's own background at zero opacity.
-// Refuse the request so the wallpaper comes through clean.
+// noctalia asks the compositor to blur behind every surface it creates, and
+// nothing gates it: applyBarCompositorBlur() in bar.cpp for the bar, and the
+// setBlurRegion() near the end of panel_manager.cpp for the popups. Its only
+// blur_intensity settings belong to the backdrop and the lock screen. So the
+// bar showed a smeared strip even at zero opacity, and the calendar and other
+// panels came up looking like frosted glass. Refuse the request for all of
+// them — the prefix covers noctalia-bar-*, noctalia-panel* and the rest.
 layer-rule {
-    match namespace="^noctalia-bar-main$"
+    match namespace="^noctalia-"
     background-effect {
         blur false
     }
