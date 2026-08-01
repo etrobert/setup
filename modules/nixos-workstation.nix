@@ -145,7 +145,6 @@
             audio-output-switcher
             toggle-cpu-governor
             waybar-wrapped
-            mako-wrapped
             brightness-control
             volume-control
             birthdays
