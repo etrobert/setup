@@ -43,6 +43,17 @@ let
       [wallpaper]
       enabled = false
 
+      # A vertical bar uses vertical_format, so stack the lines the way waybar
+      # did: hour/minute/second, weekday, day/month/year. \n is escaped by
+      # TOML, not by Nix — an indented Nix string passes the backslash through.
+      #
+      # waybar cut the weekday to two letters via `date +%a | cut -c1-2`. There
+      # is no equivalent here: %a is three letters, and no noctalia bar widget
+      # can run a command — text and custom_button both take static strings.
+      [widget.clock]
+      vertical_format = "{:%H\n%M\n%S\n%a\n%d\n%m\n%y}"
+      tooltip_format = "{:%A, %B %d, %Y}"
+
       [widget.brightness]
       show_label = false
 
