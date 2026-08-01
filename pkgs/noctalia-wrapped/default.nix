@@ -42,6 +42,13 @@ let
       # is what leaves the bar floating in the middle.
       margin_ends = 0
 
+      # Show the wallpaper through the bar instead of the Surface fill. Only
+      # half the job: noctalia also asks the compositor to blur behind the bar,
+      # unconditionally and with no setting to stop it, so niri overrides that
+      # with a layer-rule on the noctalia-bar-main namespace.
+      background_opacity = 0.0
+      shadow = false
+
       start = [ "clock", "etrobert/weekday:bar", "date" ]
       center = []
       end = [

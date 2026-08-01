@@ -372,6 +372,17 @@ layer-rule {
     place-within-backdrop true
 }
 
+// noctalia asks the compositor to blur behind its bar unconditionally —
+// applyBarCompositorBlur() in bar.cpp has no setting to gate it — which shows
+// as a smeared strip even with the bar's own background at zero opacity.
+// Refuse the request so the wallpaper comes through clean.
+layer-rule {
+    match namespace="^noctalia-bar-main$"
+    background-effect {
+        blur false
+    }
+}
+
 // Pin apps to their named workspaces.
 window-rule {
     match app-id=r#"^zen$"#
