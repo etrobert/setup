@@ -37,6 +37,11 @@ let
       position = "left"
       scale = 1.2
       margin_opposite_edge = 5
+
+      # Span the whole edge as waybar did. margin_ends defaults to 180, which
+      # is what leaves the bar floating in the middle.
+      margin_ends = 0
+
       start = [ "clock", "etrobert/weekday:bar", "date" ]
       center = []
       end = [
