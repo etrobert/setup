@@ -86,7 +86,6 @@
       let
         inherit (inputs.nixpkgs) lib;
 
-        # Every .nix file under modules/ is a flake-parts module.
         importTree = path: lib.fileset.toList (lib.fileset.fileFilter (file: file.hasExt "nix") path);
       in
       {
