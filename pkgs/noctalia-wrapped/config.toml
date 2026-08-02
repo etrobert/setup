@@ -40,7 +40,6 @@ padding = 12
 # also asks the compositor to blur behind its surfaces with no setting to
 # stop it, so niri refuses that via a layer-rule on the noctalia- namespaces.
 background_opacity = 0.0
-shadow = false
 
 start = ["clock", "etrobert/weekday:bar", "date"]
 center = []
