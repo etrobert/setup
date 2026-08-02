@@ -14,7 +14,7 @@ in
   flake.nixosConfigurations.leod = nixpkgs.lib.nixosSystem {
     specialArgs = { inherit self agenix; };
     modules = [
-      ./configuration.nix
+      self.nixosModules.leodConfiguration
       self.nixosModules.nixIndex
       home-manager.nixosModules.home-manager
       agenix.nixosModules.default
