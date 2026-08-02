@@ -103,17 +103,6 @@
                 Restart = "on-failure";
               };
             };
-
-            cliphist = {
-              after = [ "graphical-session.target" ];
-              partOf = [ "graphical-session.target" ];
-              wantedBy = [ "graphical-session.target" ];
-
-              serviceConfig = {
-                ExecStart = "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --watch ${lib.getExe pkgs.cliphist} store";
-                Restart = "on-failure";
-              };
-            };
           };
 
           tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
@@ -139,7 +128,6 @@
             bazaar
             bibata-cursors
             chromium
-            cliphist
             ddcutil
             kdePackages.okular
             grim

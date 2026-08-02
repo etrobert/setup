@@ -117,7 +117,6 @@
           inherit self' wrapPackage;
           dev = true;
         };
-        fuzzel-wrapped = pkgs.callPackage ./fuzzel-wrapped { inherit wrapPackage; };
         noctalia-wrapped = pkgs.callPackage ./noctalia-wrapped { inherit wrapPackage; };
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self' wrapPackage; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
