@@ -18,9 +18,6 @@
 
   networking.hostName = "leod"; # Define your hostname.
 
-  # Tracks battery usage
-  services.upower.enable = true;
-
   services.fprintd.enable = true;
 
   hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
