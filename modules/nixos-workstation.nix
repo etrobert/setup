@@ -228,8 +228,6 @@
           enable = true;
           systemd.enable = true;
 
-          # Supplies the baked config via NOCTALIA_CONFIG_HOME; the unit and
-          # package plumbing stay with the NixOS module.
           package = self.packages.${system}.noctalia-wrapped;
 
           # recommendedServices stays off: it would enable
