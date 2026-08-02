@@ -10,7 +10,7 @@ let
   style = if dev then path + "/style.css" else ./style.css;
   nixpkgsDeps = with pkgs; [
     coreutils
-    jq # used by custom/weekday and custom/cpu-governor
+    jq # used by custom/weekday
     gawk # used by custom/cpu-freq
     pavucontrol
     playerctl # used by mpris on-click
@@ -24,8 +24,6 @@ wrapPackage {
   ];
   runtimeInputs = [
     self'.packages.get-weather
-    self'.packages.toggle-cpu-governor
-    self'.packages.setuid-sudo # used to run toggle-cpu-governor
   ]
   ++ nixpkgsDeps;
 
