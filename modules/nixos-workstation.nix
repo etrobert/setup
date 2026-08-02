@@ -137,7 +137,6 @@
           externalPackages = with pkgs; [
             linuxPackages.cpupower
             bazaar
-            bemoji
             bibata-cursors
             chromium
             cliphist
