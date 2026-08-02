@@ -45,7 +45,7 @@ set.
 
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
-(gen-commit-msg, tmux-sessionizer, pm, brightness-control, etc.).
+(gen-commit-msg, tmux-sessionizer, pm, volume-control, etc.).
 
 Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.

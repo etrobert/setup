@@ -111,7 +111,6 @@
           ./modules/mpd.nix
           ./modules/hypridle.nix
           ./modules/awww.nix
-          ./modules/ddcci
           ./modules/album-art-wallpaper.nix
           ./modules/copilot-api.nix
           ./modules/server.nix

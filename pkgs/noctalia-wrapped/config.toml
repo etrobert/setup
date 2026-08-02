@@ -63,6 +63,10 @@ end = [
 [wallpaper]
 enabled = false
 
+# Reaching the monitor over DDC/CI needs hardware.i2c.enable for /dev/i2c-*.
+[brightness]
+enable_ddcutil = true
+
 # Firefox and Zen request timeout=0 for notifications like Google Calendar
 # reminders. allow_permanent = false expires them on the default timeout
 # instead. match is case-insensitive against app name, desktop entry or
