@@ -91,14 +91,8 @@
       ];
 
       systemd = {
-        packages = with self.packages.${system}; [
-          waybar-wrapped
-        ];
-
         user = {
           services = {
-            waybar.wantedBy = [ "graphical-session.target" ];
-
             # Prevent nixos-rebuild switch from restarting niri mid-session.
             # Without this, switching causes a ghost niri to start (session inactive)
             # which then blocks the legitimate niri when you log back in.
@@ -141,8 +135,6 @@
           customPackages = with self.packages.${system}; [
             audio-output-switcher
             toggle-cpu-governor
-            waybar-wrapped
-            mako-wrapped
             brightness-control
             volume-control
             birthdays
@@ -196,11 +188,11 @@
       };
 
       programs = {
-        # GTK apps (waybar, pavucontrol, …) pick their cursor by GSettings
-        # theme *name* and search XCURSOR_PATH for it — they ignore niri's
-        # private cursor config. Point the name at Bibata and put the package
-        # on the system profile (whose share/icons is on the global
-        # XCURSOR_PATH) so every GTK app matches the compositor cursor.
+        # GTK apps (pavucontrol, gnome-power-manager, …) pick their cursor
+        # by GSettings theme *name* and search XCURSOR_PATH for it — they
+        # ignore niri's private cursor config. Point the name at Bibata and
+        # put the package on the system profile (whose share/icons is on the
+        # global XCURSOR_PATH) so every GTK app matches the compositor cursor.
         dconf = {
           enable = true;
           profiles.user.databases = [
@@ -223,6 +215,24 @@
           # Supply the baked config via the wrapper; PAM and the binary remain
           # managed by the NixOS programs.hyprlock module.
           package = self.packages.${system}.hyprlock-wrapped;
+        };
+
+        # The desktop shell: bar, launcher, notification centre and lock
+        # screen in one.
+        #
+        # The module's default package is v5, a native binary with niri
+        # support compiled in (compositors::niri::NiriRuntime, driven off
+        # NIRI_SOCKET).
+        noctalia = {
+          enable = true;
+          systemd.enable = true;
+
+          package = self.packages.${system}.noctalia-wrapped;
+
+          # recommendedServices stays off: it would enable
+          # power-profiles-daemon, which manages CPU scaling itself and so
+          # fights toggle-cpu-governor's cpupower calls. NetworkManager,
+          # bluetooth and upower are already on.
         };
       };
 

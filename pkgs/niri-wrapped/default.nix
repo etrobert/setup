@@ -12,6 +12,7 @@ let
   path = [
     self'.packages.ghostty-wrapped
     self'.packages.fuzzel-wrapped
+    self'.packages.noctalia-wrapped
     self'.packages.volume-control
     self'.packages.brightness-control
     self'.packages.scale-floating-window

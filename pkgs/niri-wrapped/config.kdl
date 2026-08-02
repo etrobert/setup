@@ -372,6 +372,18 @@ layer-rule {
     place-within-backdrop true
 }
 
+// noctalia asks the compositor to blur behind every surface it creates, with
+// nothing to gate it — its only blur_intensity settings belong to the backdrop
+// and the lock screen. Refuse the request so the bar and its panels render
+// against the wallpaper unblurred. The prefix covers noctalia-bar-*,
+// noctalia-panel* and the rest.
+layer-rule {
+    match namespace="^noctalia-"
+    background-effect {
+        blur false
+    }
+}
+
 // Pin apps to their named workspaces.
 window-rule {
     match app-id=r#"^zen$"#
@@ -419,7 +431,7 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     // Using ghostty because of image and emoji support
     Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
-    Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+Space hotkey-overlay-title="Run an Application: noctalia" { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+E hotkey-overlay-title="Pick an Emoji: bemoji" { spawn-sh "BEMOJI_PICKER_CMD='fuzzel --dmenu' bemoji --type"; }
     Mod+Y hotkey-overlay-title="Clipboard History: cliphist" { spawn-sh "selection=$(cliphist list | fuzzel --dmenu) && printf '%s' \"$selection\" | cliphist decode | wl-copy"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
