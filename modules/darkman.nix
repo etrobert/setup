@@ -1,4 +1,30 @@
 _: {
+  perSystem =
+    {
+      pkgs,
+      lib,
+      wrapPackage,
+      ...
+    }:
+    {
+      packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        darkman-wrapped =
+          let
+            config = pkgs.writeTextDir "darkman/config.yaml" /* yaml */ ''
+              lat: 52.5
+              lng: 13.4
+              usegeoclue: true
+            '';
+          in
+          wrapPackage {
+            package = pkgs.darkman;
+            env.XDG_CONFIG_HOME = "${config}";
+            # Fail the build on an invalid config rather than at service start-up.
+            checks = [ "XDG_CONFIG_HOME=${config} $out/bin/darkman check" ];
+          };
+      };
+    };
+
   flake.nixosModules.darkman =
     {
       self,
