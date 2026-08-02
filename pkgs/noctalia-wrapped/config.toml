@@ -83,6 +83,9 @@ format = "{:%d %m %y}"
 [widget.brightness]
 show_label = false
 
+[widget.battery]
+show_label = false
+
 [widget.network]
 show_label = false
 
