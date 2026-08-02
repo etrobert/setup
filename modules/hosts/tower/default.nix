@@ -37,6 +37,7 @@ in
       self.nixosModules.githubRunner
       self.nixosModules.harmonia
       self.nixosModules.navidrome
+      self.nixosModules.homeAssistant
     ];
   };
 }
