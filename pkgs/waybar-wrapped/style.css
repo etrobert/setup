@@ -52,10 +52,6 @@ window#waybar {
 }
 
 /* Individual icon alignment fixes */
-#custom-cpu-governor {
-  margin-left: -2px;
-}
-
 #upower {
   margin-left: 7px;
 }

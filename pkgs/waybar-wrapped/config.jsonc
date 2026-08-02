@@ -26,7 +26,6 @@
     "pulseaudio",
     "network",
     "upower",
-    "custom/cpu-governor",
     "bluetooth",
     "niri/workspaces",
   ],
@@ -65,17 +64,6 @@
       "default": ["", "", ""],
     },
     "on-click": "pavucontrol",
-  },
-  "custom/cpu-governor": {
-    "return-type": "json",
-    "exec": "jq --null-input --compact-output --arg gov \"$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)\" '{ alt: $gov, tooltip: $gov }'",
-    "on-click": "sudo toggle-cpu-governor",
-    "format": "{icon}",
-    "interval": 5,
-    "format-icons": {
-      "powersave": "󰳗", // 󰳗 󰾆
-      "performance": "󰤇", // 󰤇 󰓅
-    },
   },
   "temperature": {
     "rotate": 90,
