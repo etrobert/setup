@@ -16,12 +16,11 @@ location = "@plugins@"
 [location]
 address = "Berlin"
 
-# Attached panels are drawn on the bar's own surface and inherit its
-# background_opacity (panel_manager.cpp: m_attachedBackgroundOpacity),
-# so a transparent bar makes the calendar and friends see-through and
-# unreadable over windows. Floating panels get their own surface, whose
-# opacity comes from transparency_mode instead — "solid" by default.
-# launcher, clipboard and polkit already float; these three did not.
+# Attached panels draw on the bar's own surface and inherit its
+# background_opacity, which a transparent bar makes unreadable over windows.
+# Floating panels get their own surface, taking opacity from
+# transparency_mode — "solid" by default. launcher, clipboard and polkit
+# float already.
 [shell.panel]
 control_center_placement = "floating"
 wallpaper_placement = "floating"
@@ -37,10 +36,9 @@ margin_edge = 5
 margin_ends = 0
 padding = 12
 
-# Show the wallpaper through the bar instead of the Surface fill. Only
-# half the job: noctalia also asks the compositor to blur behind the bar,
-# unconditionally and with no setting to stop it, so niri overrides that
-# with a layer-rule on the noctalia-bar-main namespace.
+# Show the wallpaper through the bar instead of the Surface fill. noctalia
+# also asks the compositor to blur behind its surfaces with no setting to
+# stop it, so niri refuses that via a layer-rule on the noctalia- namespaces.
 background_opacity = 0.0
 shadow = false
 
@@ -65,13 +63,10 @@ end = [
 [wallpaper]
 enabled = false
 
-# Firefox/Zen request timeout=0 (never expire) for notifications like Google
-# Calendar. allow_permanent = false is what mako's ignore-timeout=1 did: a
-# matching filter makes an otherwise-permanent notification expire on the
-# default timeout instead (notification_manager.cpp, "A matching filter with
-# allow_permanent = false expires otherwise-permanent (timeout 0)
-# notifications"). match is case-insensitive against app name, desktop entry
-# or category.
+# Firefox and Zen request timeout=0 for notifications like Google Calendar
+# reminders. allow_permanent = false expires them on the default timeout
+# instead. match is case-insensitive against app name, desktop entry or
+# category.
 [notification.filter.firefox]
 match = "firefox"
 allow_permanent = false
@@ -80,13 +75,8 @@ allow_permanent = false
 match = "zen"
 allow_permanent = false
 
-# A vertical bar uses vertical_format, so stack the lines the way waybar
-# did: hour/minute/second, weekday, day/month/year. \n is escaped by
-# TOML, not by Nix — an indented Nix string passes the backslash through.
-#
-# waybar cut the weekday to two letters via `date +%a | cut -c1-2`. There
-# is no equivalent here: %a is three letters, and no noctalia bar widget
-# can run a command — text and custom_button both take static strings.
+# A vertical bar uses vertical_format. Whitespace-separated tokens each get
+# their own line, giving hour/minute/second stacked.
 [widget.clock]
 vertical_format = "{:%H %M %S}"
 

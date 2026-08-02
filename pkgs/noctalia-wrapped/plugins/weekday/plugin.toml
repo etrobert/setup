@@ -7,7 +7,7 @@ license = "MIT"
 dependencies = []
 tags = ["clock", "time"]
 icon = "calendar"
-description = "Two-letter day of the week, as the waybar bar had it."
+description = "Two-letter day of the week."
 
 [[widget]]
 id = "bar"

@@ -97,9 +97,9 @@
 
         user = {
           services = {
-            # noctalia owns the bar now (see programs.noctalia below). The unit
-            # stays installed so `systemctl --user start waybar` is still there
-            # as a fallback; it just no longer starts with the session.
+            # noctalia provides the bar (see programs.noctalia below). The
+            # unit stays installed so `systemctl --user start waybar` remains
+            # available on demand.
             waybar.wantedBy = lib.mkForce [ ];
 
             # Prevent nixos-rebuild switch from restarting niri mid-session.
@@ -229,14 +229,11 @@
         };
 
         # The desktop shell: bar, launcher, notification centre and lock
-        # screen in one. Replaces waybar as the session's bar; mako, fuzzel
-        # and hyprlock stay installed for now and get retired individually
-        # once their noctalia equivalents have been used in anger.
+        # screen in one.
         #
-        # Uses the module's default package, which is v5 — a native binary
-        # with niri support compiled in (compositors::niri::NiriRuntime,
-        # driven off NIRI_SOCKET). v4 ran on a fork of Quickshell and is a
-        # dead end upstream.
+        # The module's default package is v5, a native binary with niri
+        # support compiled in (compositors::niri::NiriRuntime, driven off
+        # NIRI_SOCKET).
         noctalia = {
           enable = true;
           systemd.enable = true;
