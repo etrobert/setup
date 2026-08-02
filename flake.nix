@@ -107,6 +107,7 @@
           ./modules/pimsync.nix
           ./modules/lan-dns.nix
           ./modules/auto-upgrade.nix
+          ./modules/update-notifier.nix
           ./modules/darkman.nix
           ./modules/mpd.nix
           ./modules/hypridle.nix

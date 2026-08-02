@@ -30,6 +30,7 @@
         self.nixosModules.awww
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop
+        self.nixosModules.updateNotifier
         self.nixosModules.fileManager
       ];
 
