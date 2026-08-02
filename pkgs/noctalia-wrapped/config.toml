@@ -26,6 +26,14 @@ control_center_placement = "floating"
 wallpaper_placement = "floating"
 session_placement = "floating"
 
+[shell.launcher.dmenu.entry.clipboard]
+command = 'printf "Clipboard history\tSearch and paste copied items\n"'
+exec = "noctalia msg panel-open clipboard"
+prefix = "clip"
+label = "Clipboard"
+glyph = "clipboard"
+global = true
+
 [bar.main]
 position = "left"
 scale = 1.2
