@@ -13,23 +13,18 @@
       # Minimal variant: the full one bundles gh, which our wrapper does not
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
-      wrapPackage = pkgs.callPackage ./lib/wrap-package.nix { };
-      ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { inherit wrapPackage; };
-      hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { inherit wrapPackage; };
-      git-wrapped = pkgs.callPackage ./git-wrapped { inherit self' wrapPackage; };
+      ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
+      hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
+      git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
     in
     {
-      # Shared with feature modules that define their own packages
-      # (e.g. modules/darkman.nix).
-      _module.args.wrapPackage = wrapPackage;
-
       packages = {
-        bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs' wrapPackage; };
-        zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs' wrapPackage; };
+        bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
+        zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
-        vim-wrapped = pkgs.callPackage ./vim-wrapped { inherit wrapPackage; };
-        tmux-wrapped = pkgs.callPackage ./tmux-wrapped { inherit wrapPackage; };
-        alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { inherit wrapPackage; };
+        vim-wrapped = pkgs.callPackage ./vim-wrapped { };
+        tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
+        alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
         claude-code-wrapped = pkgs.callPackage ./claude-code-wrapped {
           inherit
@@ -37,7 +32,6 @@
             git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
-            wrapPackage
             ;
         };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
@@ -46,7 +40,6 @@
             git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
-            wrapPackage
             ;
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
@@ -69,7 +62,6 @@
             git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
-            wrapPackage
             ;
           extraEnv = {
             ANTHROPIC_BASE_URL = "http://localhost:4141";
@@ -111,32 +103,30 @@
         finder = pkgs.callPackage ./finder { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {
           ghostty = pkgs.ghostty-bin;
-          inherit wrapPackage;
         };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit self inputs'; };
-        waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self' wrapPackage; };
+        waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self'; };
         waybar-wrapped-dev = pkgs.callPackage ./waybar-wrapped {
-          inherit self' wrapPackage;
+          inherit self';
           dev = true;
         };
-        noctalia-wrapped = pkgs.callPackage ./noctalia-wrapped { inherit wrapPackage; };
-        niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self' wrapPackage; };
+        noctalia-wrapped = pkgs.callPackage ./noctalia-wrapped { };
+        niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
-          inherit self' wrapPackage;
+          inherit self';
           dev = true;
         };
-        hypridle-wrapped = pkgs.callPackage ./hypridle-wrapped { inherit self' wrapPackage; };
-        hyprlock-wrapped = pkgs.callPackage ./hyprlock-wrapped { inherit wrapPackage; };
-        mako-wrapped = pkgs.callPackage ./mako-wrapped { inherit wrapPackage; };
+        hypridle-wrapped = pkgs.callPackage ./hypridle-wrapped { inherit self'; };
+        hyprlock-wrapped = pkgs.callPackage ./hyprlock-wrapped { };
+        mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {
           inherit (pkgs) ghostty;
-          inherit wrapPackage;
         };
       };
     };

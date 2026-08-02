@@ -111,6 +111,21 @@
           {
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
+
+              # wrapPackage (pkgs/lib/wrap-package.nix) as a pkgs attribute, so
+              # callPackage auto-injects it like any builder. The assert fails
+              # evaluation if nixpkgs ever introduces its own wrapPackage,
+              # prompting a rename instead of silently shadowing it.
+              overlays = [
+                (
+                  final: prev:
+                  assert !(prev ? wrapPackage);
+                  {
+                    wrapPackage = final.callPackage ./pkgs/lib/wrap-package.nix { };
+                  }
+                )
+              ];
+
               config.allowUnfreePredicate =
                 pkg:
                 builtins.elem (lib.getName pkg) [
