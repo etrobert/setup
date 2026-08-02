@@ -86,12 +86,7 @@
       let
         inherit (inputs.nixpkgs) lib;
 
-        # Every .nix file under modules/ is a flake-parts module, except the
-        # hosts' configuration.nix and hardware-configuration.nix (plain
-        # NixOS modules), which the filter excludes.
-        isFlakeModule = file: file.hasExt "nix" && !lib.hasSuffix "configuration.nix" file.name;
-
-        importTree = path: lib.fileset.toList (lib.fileset.fileFilter isFlakeModule path);
+        importTree = path: lib.fileset.toList (lib.fileset.fileFilter (file: file.hasExt "nix") path);
       in
       {
         imports = [

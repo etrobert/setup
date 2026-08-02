@@ -23,7 +23,7 @@ in
         ;
     };
     modules = [
-      ./configuration.nix
+      self.darwinModules.aaronConfiguration
       home-manager.darwinModules.home-manager
       agenix.darwinModules.default
       nix-homebrew.darwinModules.nix-homebrew

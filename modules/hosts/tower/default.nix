@@ -19,7 +19,7 @@ in
         ;
     };
     modules = [
-      ./configuration.nix
+      self.nixosModules.towerConfiguration
       self.nixosModules.nixIndex
       home-manager.nixosModules.home-manager
       agenix.nixosModules.default

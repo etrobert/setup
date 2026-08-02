@@ -8,7 +8,7 @@
     specialArgs = { inherit self; };
     system = "aarch64-linux";
     modules = [
-      ./configuration.nix
+      self.nixosModules.piConfiguration
       self.nixosModules.nixosBase
       self.nixosModules.base
       self.nixosModules.lanDns
