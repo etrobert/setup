@@ -137,7 +137,6 @@
           externalPackages = with pkgs; [
             linuxPackages.cpupower
             bazaar
-            bemoji
             bibata-cursors
             chromium
             cliphist
@@ -152,7 +151,6 @@
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
-            wtype
           ];
         in
         customPackages ++ externalPackages;
