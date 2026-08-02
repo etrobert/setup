@@ -168,7 +168,6 @@
             wl-clipboard
             wtype
           ];
-
         in
         customPackages ++ externalPackages;
 
