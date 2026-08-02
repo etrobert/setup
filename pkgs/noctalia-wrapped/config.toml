@@ -65,6 +65,21 @@ end = [
 [wallpaper]
 enabled = false
 
+# Firefox/Zen request timeout=0 (never expire) for notifications like Google
+# Calendar. allow_permanent = false is what mako's ignore-timeout=1 did: a
+# matching filter makes an otherwise-permanent notification expire on the
+# default timeout instead (notification_manager.cpp, "A matching filter with
+# allow_permanent = false expires otherwise-permanent (timeout 0)
+# notifications"). match is case-insensitive against app name, desktop entry
+# or category.
+[notification.filter.firefox]
+match = "firefox"
+allow_permanent = false
+
+[notification.filter.zen]
+match = "zen"
+allow_permanent = false
+
 # A vertical bar uses vertical_format, so stack the lines the way waybar
 # did: hour/minute/second, weekday, day/month/year. \n is escaped by
 # TOML, not by Nix — an indented Nix string passes the backslash through.
