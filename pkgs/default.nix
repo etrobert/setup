@@ -19,6 +19,10 @@
       git-wrapped = pkgs.callPackage ./git-wrapped { inherit self' wrapPackage; };
     in
     {
+      # Shared with feature modules that define their own packages
+      # (e.g. modules/darkman.nix).
+      _module.args.wrapPackage = wrapPackage;
+
       packages = {
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs' wrapPackage; };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs' wrapPackage; };
@@ -123,7 +127,6 @@
           inherit self' wrapPackage;
           dev = true;
         };
-        darkman-wrapped = pkgs.callPackage ./darkman-wrapped { inherit wrapPackage; };
         hypridle-wrapped = pkgs.callPackage ./hypridle-wrapped { inherit self' wrapPackage; };
         hyprlock-wrapped = pkgs.callPackage ./hyprlock-wrapped { inherit wrapPackage; };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { inherit wrapPackage; };
