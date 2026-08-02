@@ -28,7 +28,6 @@
         self.nixosModules.darkman
         self.nixosModules.mpd
         self.nixosModules.awww
-        self.nixosModules.ddcci
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
@@ -74,6 +73,10 @@
         # Enable bluetooth
         bluetooth.enable = true;
         bluetooth.powerOnBoot = true;
+
+        # Grants the seat user an ACL on /dev/i2c-*, which noctalia's ddcutil
+        # brightness backend needs to reach external monitors over DDC/CI.
+        i2c.enable = true;
       };
 
       security.rtkit.enable = true;
@@ -122,7 +125,6 @@
         let
           customPackages = with self.packages.${system}; [
             audio-output-switcher
-            brightness-control
             volume-control
             birthdays
             creme
@@ -138,7 +140,6 @@
             bazaar
             bemoji
             bibata-cursors
-            brightnessctl
             chromium
             cliphist
             ddcutil

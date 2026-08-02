@@ -63,6 +63,11 @@ end = [
 [wallpaper]
 enabled = false
 
+# External monitors expose no kernel backlight, so noctalia talks DDC/CI to them
+# by shelling out to ddcutil. Needs hardware.i2c.enable for /dev/i2c-* access.
+[brightness]
+enable_ddcutil = true
+
 # Firefox and Zen request timeout=0 for notifications like Google Calendar
 # reminders. allow_permanent = false expires them on the default timeout
 # instead. match is case-insensitive against app name, desktop entry or
