@@ -74,8 +74,6 @@ allow_permanent = false
 match = "zen"
 allow_permanent = false
 
-# A vertical bar uses vertical_format. Whitespace-separated tokens each get
-# their own line, giving hour/minute/second stacked.
 [widget.clock]
 vertical_format = "{:%H %M %S}"
 
