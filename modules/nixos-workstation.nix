@@ -78,18 +78,6 @@
 
       security.rtkit.enable = true;
 
-      security.sudo.extraRules = [
-        {
-          groups = [ "wheel" ];
-          commands = [
-            {
-              command = lib.getExe self.packages.${system}.toggle-cpu-governor;
-              options = [ "NOPASSWD" ];
-            }
-          ];
-        }
-      ];
-
       systemd = {
         user = {
           services = {
@@ -134,7 +122,6 @@
         let
           customPackages = with self.packages.${system}; [
             audio-output-switcher
-            toggle-cpu-governor
             brightness-control
             volume-control
             birthdays
@@ -229,10 +216,7 @@
 
           package = self.packages.${system}.noctalia-wrapped;
 
-          # recommendedServices stays off: it would enable
-          # power-profiles-daemon, which manages CPU scaling itself and so
-          # fights toggle-cpu-governor's cpupower calls. NetworkManager,
-          # bluetooth and upower are already on.
+          recommendedServices.enable = true;
         };
       };
 

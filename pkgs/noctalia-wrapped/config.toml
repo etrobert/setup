@@ -53,6 +53,7 @@ end = [
   "volume",
   "brightness",
   "battery",
+  "power_profile",
   "control-center",
   "workspaces",
   "session",
