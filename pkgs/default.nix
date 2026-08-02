@@ -13,7 +13,7 @@
       # Minimal variant: the full one bundles gh, which our wrapper does not
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
-      ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
+      inherit (self'.packages) ntfy-wrapped;
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
       git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
     in
@@ -80,7 +80,7 @@
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
         agents = pkgs.callPackage ./agents { inherit self'; };
-        inherit ntfy-wrapped hass-cli-wrapped git-wrapped;
+        inherit hass-cli-wrapped git-wrapped;
         send-file = pkgs.callPackage ./send-file { inherit ntfy-wrapped; };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };

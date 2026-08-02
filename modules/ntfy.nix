@@ -15,6 +15,19 @@ let
   url = "http://${host}:${toString port}";
 in
 {
+  perSystem =
+    { pkgs, ... }:
+    {
+      # Wraps the ntfy CLI with NTFY_TOPIC pre-set to our self-hosted endpoint
+      # so `ntfy publish "msg"` reaches it without naming the server or topic.
+      packages.ntfy-wrapped = pkgs.wrapPackage {
+        package = pkgs.ntfy-sh;
+        # --set-default, so an NTFY_TOPIC in the environment still wins for
+        # ad-hoc overrides.
+        setDefaults.NTFY_TOPIC = "${url}/${topic}";
+      };
+    };
+
   flake = {
     nixosModules.ntfy = _: {
       services.ntfy-sh = {
