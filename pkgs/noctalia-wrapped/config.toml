@@ -63,8 +63,7 @@ end = [
 [wallpaper]
 enabled = false
 
-# External monitors expose no kernel backlight, so noctalia talks DDC/CI to them
-# by shelling out to ddcutil. Needs hardware.i2c.enable for /dev/i2c-* access.
+# Reaching the monitor over DDC/CI needs hardware.i2c.enable for /dev/i2c-*.
 [brightness]
 enable_ddcutil = true
 
