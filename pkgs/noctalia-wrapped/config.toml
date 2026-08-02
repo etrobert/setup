@@ -55,7 +55,6 @@ end = [
   "media",
   "tray",
   "notifications",
-  "clipboard",
   "network",
   "bluetooth",
   "volume",
