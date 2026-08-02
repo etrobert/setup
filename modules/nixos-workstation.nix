@@ -125,7 +125,6 @@
         let
           customPackages = with self.packages.${system}; [
             audio-output-switcher
-            volume-control
             birthdays
             creme
             lock-suspend

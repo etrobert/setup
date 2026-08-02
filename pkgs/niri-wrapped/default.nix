@@ -13,7 +13,6 @@ let
     self'.packages.ghostty-wrapped
     self'.packages.fuzzel-wrapped
     self'.packages.noctalia-wrapped
-    self'.packages.volume-control
     self'.packages.scale-floating-window
     xwayland-satellite
   ];
