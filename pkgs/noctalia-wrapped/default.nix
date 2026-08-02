@@ -30,7 +30,9 @@ wrapPackage {
 
   env.NOCTALIA_CONFIG_HOME = configHome;
 
-  # The brightness service shells out to ddcutil, and the wrapper clears PATH.
+  # The launcher resolves desktop-entry Exec= against noctalia's own PATH.
+  inheritPath = true;
+
   runtimeInputs = [ fast-ddcutil ];
 
   checks = [ "${noctalia}/bin/noctalia config validate ${configHome}/noctalia" ];
