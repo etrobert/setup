@@ -142,7 +142,6 @@
             chromium
             cliphist
             ddcutil
-            gnome-power-manager # TODO: find a better one
             kdePackages.okular
             grim
             mpv
@@ -175,7 +174,7 @@
       };
 
       programs = {
-        # GTK apps (pavucontrol, gnome-power-manager, …) pick their cursor
+        # GTK apps (pavucontrol, thunar, …) pick their cursor
         # by GSettings theme *name* and search XCURSOR_PATH for it — they
         # ignore niri's private cursor config. Point the name at Bibata and
         # put the package on the system profile (whose share/icons is on the
