@@ -83,49 +83,22 @@
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } (
       { self, ... }:
+      let
+        inherit (inputs.nixpkgs) lib;
+
+        # Every .nix file under modules/ is a flake-parts module, except the
+        # hosts' configuration.nix and hardware-configuration.nix (plain
+        # NixOS modules), which the filter excludes.
+        isFlakeModule = file: file.hasExt "nix" && !lib.hasSuffix "configuration.nix" file.name;
+
+        importTree = path: lib.fileset.toList (lib.fileset.fileFilter isFlakeModule path);
+      in
       {
         imports = [
           inputs.home-manager.flakeModules.home-manager
-          ./modules/hosts/tower
-          ./modules/hosts/aaron
-          ./modules/hosts/leod
-          ./modules/hosts/pi
-          ./modules/home
-          ./modules/home/linux.nix
-          ./modules/home/common.nix
-          ./modules/home/darwin.nix
-          ./modules/home/hypridle.nix
-          ./modules/nix-index.nix
-          ./modules/nixos-workstation.nix
-          ./modules/workstation.nix
-          ./modules/nixos-base.nix
-          ./modules/base.nix
-          ./modules/darwinModules.nix
-          ./modules/unfree.nix
-          ./modules/networkmanager.nix
-          ./modules/file-manager.nix
-          ./modules/pimsync.nix
-          ./modules/lan-dns.nix
-          ./modules/auto-upgrade.nix
-          ./modules/darkman.nix
-          ./modules/mpd.nix
-          ./modules/hypridle.nix
-          ./modules/awww.nix
-          ./modules/album-art-wallpaper.nix
-          ./modules/copilot-api.nix
-          ./modules/server.nix
-          ./modules/ntfy.nix
-          ./modules/ntfy-failure-alerts.nix
-          ./modules/homepage.nix
-          ./modules/cockpit.nix
-          ./modules/umami.nix
-          ./modules/claude-warmup.nix
-          ./modules/gaming.nix
-          ./modules/github-runner.nix
-          ./modules/harmonia.nix
-          ./modules/navidrome.nix
           ./pkgs
-        ];
+        ]
+        ++ importTree ./modules;
 
         systems = [
           "x86_64-linux"
