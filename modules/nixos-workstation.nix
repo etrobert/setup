@@ -151,7 +151,6 @@
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
-            wtype
           ];
         in
         customPackages ++ externalPackages;
