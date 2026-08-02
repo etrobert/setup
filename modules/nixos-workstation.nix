@@ -91,17 +91,8 @@
       ];
 
       systemd = {
-        packages = with self.packages.${system}; [
-          waybar-wrapped
-        ];
-
         user = {
           services = {
-            # noctalia provides the bar (see programs.noctalia below). The
-            # unit stays installed so `systemctl --user start waybar` remains
-            # available on demand.
-            waybar.wantedBy = lib.mkForce [ ];
-
             # Prevent nixos-rebuild switch from restarting niri mid-session.
             # Without this, switching causes a ghost niri to start (session inactive)
             # which then blocks the legitimate niri when you log back in.
@@ -144,7 +135,6 @@
           customPackages = with self.packages.${system}; [
             audio-output-switcher
             toggle-cpu-governor
-            waybar-wrapped
             brightness-control
             volume-control
             birthdays
@@ -199,11 +189,11 @@
       };
 
       programs = {
-        # GTK apps (waybar, pavucontrol, …) pick their cursor by GSettings
-        # theme *name* and search XCURSOR_PATH for it — they ignore niri's
-        # private cursor config. Point the name at Bibata and put the package
-        # on the system profile (whose share/icons is on the global
-        # XCURSOR_PATH) so every GTK app matches the compositor cursor.
+        # GTK apps (pavucontrol, gnome-power-manager, …) pick their cursor
+        # by GSettings theme *name* and search XCURSOR_PATH for it — they
+        # ignore niri's private cursor config. Point the name at Bibata and
+        # put the package on the system profile (whose share/icons is on the
+        # global XCURSOR_PATH) so every GTK app matches the compositor cursor.
         dconf = {
           enable = true;
           profiles.user.databases = [
