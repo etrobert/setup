@@ -147,7 +147,6 @@
             mpv
             orca-slicer
             pavucontrol
-            playerctl
             slurp
             usbutils # provides lsusb
             whatsapp-electron
