@@ -11,7 +11,6 @@ let
 
   path = [
     self'.packages.ghostty-wrapped
-    self'.packages.fuzzel-wrapped
     self'.packages.noctalia-wrapped
     self'.packages.scale-floating-window
     xwayland-satellite
