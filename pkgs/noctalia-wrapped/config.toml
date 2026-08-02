@@ -26,9 +26,6 @@ control_center_placement = "floating"
 wallpaper_placement = "floating"
 session_placement = "floating"
 
-# Clipboard history lives in its own panel, with no launcher provider of its
-# own. A one-line dmenu entry surfaces it as a launcher result, so searching
-# the launcher reaches history the way Mod+Y does.
 [shell.launcher.dmenu.entry.clipboard]
 command = 'printf "Clipboard history\tSearch and paste copied items\n"'
 exec = "noctalia msg panel-open clipboard"
