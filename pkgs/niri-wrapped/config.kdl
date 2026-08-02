@@ -458,8 +458,10 @@ binds {
     XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
     XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
 
-    XF86MonBrightnessUp allow-when-locked=true { spawn "noctalia" "msg" "brightness-up"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down"; }
+    // 10% rather than noctalia's 5% default: held-key repeats above roughly
+    // 10/s get dropped, so travel per press is the only lever that scales.
+    XF86MonBrightnessUp allow-when-locked=true { spawn "noctalia" "msg" "brightness-up" "10"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "noctalia" "msg" "brightness-down" "10"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
