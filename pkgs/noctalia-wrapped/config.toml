@@ -75,6 +75,11 @@ enabled = false
 [brightness]
 enable_ddcutil = true
 
+# Sunrise and sunset are derived from [location] above. The default 6500K day
+# and 4000K night are the temperatures we already ran.
+[nightlight]
+enabled = true
+
 # Firefox and Zen request timeout=0 for notifications like Google Calendar
 # reminders. allow_permanent = false expires them on the default timeout
 # instead. match is case-insensitive against app name, desktop entry or

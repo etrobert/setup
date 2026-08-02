@@ -88,21 +88,6 @@
             # Without this, switching causes a ghost niri to start (session inactive)
             # which then blocks the legitimate niri when you log back in.
             niri.restartIfChanged = false;
-
-            # Night-time color temperature; computes sunrise/sunset from
-            # Berlin coordinates. Temperatures are wlsunset's defaults
-            # (4000K night, 6500K day).
-            wlsunset = {
-              description = "Day/night screen color temperature";
-              after = [ "graphical-session.target" ];
-              partOf = [ "graphical-session.target" ];
-              bindsTo = [ "graphical-session.target" ];
-              wantedBy = [ "graphical-session.target" ];
-              serviceConfig = {
-                ExecStart = "${lib.getExe pkgs.wlsunset} -l 52.5 -L 13.4";
-                Restart = "on-failure";
-              };
-            };
           };
 
           tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
