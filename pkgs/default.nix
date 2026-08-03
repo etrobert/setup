@@ -73,6 +73,7 @@
           };
           binName = "claude-copilot";
         };
+        copilot-api = pkgs.callPackage ./copilot-api { };
         claude-restart-daemon = pkgs.callPackage ./claude-restart-daemon { };
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
@@ -123,6 +124,7 @@
         hypridle-wrapped = pkgs.callPackage ./hypridle-wrapped { inherit self'; };
         hyprlock-wrapped = pkgs.callPackage ./hyprlock-wrapped { };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
+        darkman-wrapped = pkgs.callPackage ./darkman-wrapped { };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
