@@ -3,6 +3,8 @@
 theme = Catppuccin Macchiato
 macos-titlebar-style = hidden
 
+confirm-close-surface = false
+
 # Does not exist on linux
 # command = /opt/homebrew/bin/bash
 
