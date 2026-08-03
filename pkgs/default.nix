@@ -120,8 +120,6 @@
           inherit self';
           dev = true;
         };
-        hypridle-wrapped = pkgs.callPackage ./hypridle-wrapped { inherit self'; };
-        hyprlock-wrapped = pkgs.callPackage ./hyprlock-wrapped { };
         mako-wrapped = pkgs.callPackage ./mako-wrapped { };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
