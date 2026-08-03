@@ -64,8 +64,11 @@ padding = 12
 background_opacity = 0.0
 
 start = ["clock", "etrobert/weekday:bar", "date"]
-center = ["temp", "cpu", "ram"]
+center = []
 end = [
+  "temp",
+  "cpu",
+  "ram",
   "media",
   "tray",
   "notifications",
