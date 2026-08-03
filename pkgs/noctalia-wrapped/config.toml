@@ -131,9 +131,9 @@ up_to_date_color = "on_surface"
 [plugin_settings."avivbintangaringga/nix-monitor"]
 panel_placement = "floating"
 
-# The built-in ram widget shows absolute usage; percent matches temp and cpu.
+# Unitless "9.4" fits the narrow vertical bar.
 [widget.ram]
-stat = "ram_pct"
+label_show_units = false
 
 [widget.cpu]
 show_label = false
