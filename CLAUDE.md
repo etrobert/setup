@@ -26,8 +26,9 @@ agenix (secrets).
 (flake module), `configuration.nix` (host settings), and
 `hardware-configuration.nix` (Linux only).
 
-**Profiles** (`modules/`) — composite modules describing what a host _is_. A
-profile bundles features and may import other profiles:
+**Profiles** (`modules/profiles/`) — composite modules describing what a host
+_is_: a baseline or a role. A profile bundles features and may import other
+profiles:
 
 - `base.nix` — common system config (nix settings, SSH keys, zsh, packages)
   applied to all hosts
@@ -43,10 +44,13 @@ exposing `flake.nixosModules.<name>`. Imported by a host directly, or by a
 profile that bundles it.
 
 A feature must not import another feature. If it needs to, it is a profile —
-move it up to `modules/`. This is what keeps the two directories meaningful.
+move it to `modules/profiles/`. This is what keeps the two directories
+meaningful. The rule is one-directional: importing a sibling makes something a
+profile, but a profile need not import one (`base.nix` and `workstation.nix`
+import no sibling and are profiles by role).
 
-Plumbing modules: `darwinModules.nix` (darwin module-type plumbing),
-`unfree.nix` (`allowedUnfreePackages` option).
+Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
+plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
 
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
@@ -112,10 +116,10 @@ patch), pair it with a guard that fails the build once the workaround stops
 being load-bearing — don't rely on remembering to revisit it. Prefer this
 whenever the "still needed?" condition can be expressed in Nix.
 
-Example: the `electron-39.8.10` permit in `modules/workstation.nix` is paired
-with an assertion that re-evaluates its consumer against a nixpkgs instance
-without the permit (via `builtins.tryEval`); when the consumer no longer pulls
-the insecure package, the assertion fails and prompts removal.
+Example: the `electron-39.8.10` permit in `modules/profiles/workstation.nix` is
+paired with an assertion that re-evaluates its consumer against a nixpkgs
+instance without the permit (via `builtins.tryEval`); when the consumer no
+longer pulls the insecure package, the assertion fails and prompts removal.
 
 ## LAN Networking
 

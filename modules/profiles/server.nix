@@ -117,8 +117,8 @@
           };
         };
 
-        age.secrets.ddclient-password-etiennerobert-com.file = ../secrets/ddclient-password-etiennerobert-com.age;
-        age.secrets.riot-api-key.file = ../secrets/riot-api-key.age;
+        age.secrets.ddclient-password-etiennerobert-com.file = ../../secrets/ddclient-password-etiennerobert-com.age;
+        age.secrets.riot-api-key.file = ../../secrets/riot-api-key.age;
 
         # Filebrowser creates files/dirs via the web UI with modes 0640/0750 (settings.FileMode /
         # settings.DirMode defaults), which grant no world access. Add caddy to the filebrowser

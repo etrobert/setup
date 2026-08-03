@@ -92,25 +92,25 @@ _: {
 
         age.secrets = {
           openai-api-key = {
-            file = ../secrets/openai-api-key.age;
+            file = ../../secrets/openai-api-key.age;
             owner = "soft";
           };
           gemini-api-key = {
-            file = ../secrets/gemini-api-key.age;
+            file = ../../secrets/gemini-api-key.age;
             owner = "soft";
           };
           github-bot-token = {
-            file = ../secrets/github-bot-token.age;
+            file = ../../secrets/github-bot-token.age;
             owner = "soft";
           };
           z-ai-auth-token = {
-            file = ../secrets/z-ai-auth-token.age;
+            file = ../../secrets/z-ai-auth-token.age;
             owner = "soft";
           };
           # Home Assistant long-lived access token, used by Claude Code to
           # query sensor data and call services over the LAN (http://tower:8123).
           hass-token = {
-            file = ../secrets/hass-token.age;
+            file = ../../secrets/hass-token.age;
             owner = "soft";
           };
           # Google Health API OAuth client credentials (the client secret JSON
@@ -118,7 +118,7 @@ _: {
           # / health data. See the `google-health` skill (claude-code-wrapped
           # config) for the access recipe.
           google-health-oauth-client = {
-            file = ../secrets/google-health-oauth-client.age;
+            file = ../../secrets/google-health-oauth-client.age;
             owner = "soft";
           };
         };

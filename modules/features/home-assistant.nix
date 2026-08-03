@@ -234,8 +234,9 @@ _: {
         ];
         # Notification targets. `all_devices` fans a notification out to the
         # phone (Companion app) and the self-hosted ntfy bus, which the desktops
-        # (tower/leod/aaron) subscribe to — see modules/ntfy.nix. Automations
-        # notify `notify.all_devices` so every alert reaches all surfaces.
+        # (tower/leod/aaron) subscribe to — see modules/features/ntfy.nix.
+        # Automations notify `notify.all_devices` so every alert reaches all
+        # surfaces.
         notify = [
           {
             # Publish to the ntfy `home` topic. HA runs on tower alongside the
