@@ -1,0 +1,14 @@
+id = "etrobert/birthdays"
+name = "Birthdays"
+version = "1.0.0"
+plugin_api = 16
+author = "etrobert"
+license = "MIT"
+dependencies = []
+tags = ["calendar", "contacts"]
+icon = "cake"
+description = "Upcoming birthdays from the local contacts."
+
+[[desktop_widget]]
+id = "desktop"
+entry = "desktop.luau"
