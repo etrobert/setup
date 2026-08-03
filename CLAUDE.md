@@ -43,11 +43,9 @@ profiles:
 exposing `flake.nixosModules.<name>`. Imported by a host directly, or by a
 profile that bundles it.
 
-A feature must not import another feature. If it needs to, it is a profile —
-move it to `modules/profiles/`. This is what keeps the two directories
-meaningful. The rule is one-directional: importing a sibling makes something a
-profile, but a profile need not import one (`base.nix` and `workstation.nix`
-import no sibling and are profiles by role).
+A feature must not import another feature — if it needs to, it belongs in
+`profiles/`. Not the converse: `base.nix` and `workstation.nix` import no
+sibling and are profiles by role.
 
 Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
 plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
