@@ -57,6 +57,14 @@
 
           dns = "192.168.0.18;";
         };
+
+        # Privacy extensions exist so client devices can't be tracked across
+        # networks by a MAC-derived address; tower is a fixed server reachable
+        # under stable public names, so they buy nothing. What they cost is a
+        # temporary GUA created and expired on a rolling 24h lifetime, and every
+        # such change makes tailscaled declare a major link change and rewrite
+        # resolver config — which stalls in-flight lookups and starves nsncd.
+        ipv6.ip6-privacy = "0";
       };
     };
 
