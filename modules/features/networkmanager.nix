@@ -59,9 +59,9 @@ _: {
     };
 
     age.secrets = {
-      wifi-soft.file = ../secrets/wifi-soft.age;
-      wifi-iphone-de-zeus.file = ../secrets/wifi-iphone-de-zeus.age;
-      wifi-vinni.file = ../secrets/wifi-vinni.age;
+      wifi-soft.file = ../../secrets/wifi-soft.age;
+      wifi-iphone-de-zeus.file = ../../secrets/wifi-iphone-de-zeus.age;
+      wifi-vinni.file = ../../secrets/wifi-vinni.age;
     };
   };
 }

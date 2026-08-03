@@ -2,7 +2,7 @@ _: {
   flake.nixosModules.harmonia =
     { config, ... }:
     {
-      age.secrets.harmonia-signing-key.file = ../secrets/harmonia-signing-key.age;
+      age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
 
       services.harmonia.cache = {
         enable = true;

@@ -26,7 +26,8 @@ agenix (secrets).
 (flake module), `configuration.nix` (host settings), and
 `hardware-configuration.nix` (Linux only).
 
-**Shared modules** (`modules/`) — the core baseline:
+**Profiles** (`modules/`) — composite modules describing what a host _is_. A
+profile bundles features and may import other profiles:
 
 - `base.nix` — common system config (nix settings, SSH keys, zsh, packages)
   applied to all hosts
@@ -35,13 +36,17 @@ agenix (secrets).
 - `nixos-base.nix` — NixOS system baseline
 - `nixos-workstation.nix` — NixOS desktop: Niri compositor, GDM, Waybar, audio,
   Bluetooth
+- `server.nix` — tower's public-facing sites and services behind Caddy
 
-Opt-in feature modules expose `flake.nixosModules.<name>` and are imported
-per-host as needed: `server.nix`, `home-assistant.nix`, `darkman.nix`,
-`networkmanager.nix`, `pimsync.nix`, `lan-dns.nix`. Plumbing modules:
-`darwinModules.nix` (darwin module-type plumbing), `unfree.nix`
-(`allowedUnfreePackages` option), `nix-index.nix`. See `modules/` for the full
-set.
+**Features** (`modules/features/`) — one self-contained capability per file,
+exposing `flake.nixosModules.<name>`. Imported by a host directly, or by a
+profile that bundles it.
+
+A feature must not import another feature. If it needs to, it is a profile —
+move it up to `modules/`. This is what keeps the two directories meaningful.
+
+Plumbing modules: `darwinModules.nix` (darwin module-type plumbing),
+`unfree.nix` (`allowedUnfreePackages` option).
 
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
@@ -57,9 +62,9 @@ authoritative list.
 ### Caches
 
 Tower serves its store as a signed binary cache via harmonia
-(`http://tower:5000`, `modules/harmonia.nix`); pi and leod substitute from it.
-Personal Cachix `soft-nix.cachix.org` holds the darwin CI builds. Also uses
-`nix-community.cachix.org`.
+(`http://tower:5000`, `modules/features/harmonia.nix`); pi and leod substitute
+from it. Personal Cachix `soft-nix.cachix.org` holds the darwin CI builds. Also
+uses `nix-community.cachix.org`.
 
 ### Development Environment
 
@@ -118,8 +123,8 @@ the insecure package, the assertion fails and prompts removal.
 `91.64.99.245`. No NAT hairpin. DHCP is disabled (pi handles it). Ports 80/443
 are port-forwarded to tower (`.10`).
 
-**LAN DHCP + DNS:** served by `pi` via `dnsmasq` (`modules/lan-dns.nix`,
-listening on `end0`, static `.18`).
+**LAN DHCP + DNS:** served by `pi` via `dnsmasq`
+(`modules/features/lan-dns.nix`, listening on `end0`, static `.18`).
 
 **Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
 `.10` (motherboard NIC `enp11s0`, static via NetworkManager in
@@ -155,8 +160,8 @@ server-side rather than sleeping locally.
 
 ## Home Assistant
 
-HA runs on **`tower:8123`** (`modules/home-assistant.nix`). Access uses a
-long-lived token: agenix secret `hass-token`, decrypted to
+HA runs on **`tower:8123`** (`modules/features/home-assistant.nix`). Access uses
+a long-lived token: agenix secret `hass-token`, decrypted to
 `/run/agenix/hass-token`. The `hass-cli-wrapped` package bakes in
 `HASS_SERVER=http://100.103.91.42:8123` (tower's Tailscale IP, not the `tower`
 hostname) and reads that token at runtime, and is on PATH for both the user's
