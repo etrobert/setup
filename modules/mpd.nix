@@ -71,7 +71,6 @@ _: {
             partOf = [ "graphical-session.target" ];
             bindsTo = [ "graphical-session.target" ];
             wantedBy = [ "graphical-session.target" ];
-            unitConfig.ConditionUser = "!@system";
             serviceConfig = {
               Type = "simple";
               Restart = "on-failure";
