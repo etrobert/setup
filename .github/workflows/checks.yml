@@ -19,7 +19,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Format Check
         run: nix fmt . -- --ci
@@ -30,7 +30,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
@@ -43,7 +43,7 @@ jobs:
     outputs:
       checks: ${{ steps.list.outputs.checks }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: List flake checks
         id: list
@@ -63,7 +63,7 @@ jobs:
         check: ${{ fromJSON(needs.discover.outputs.checks) }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Build ${{ matrix.check }}
         run: |
