@@ -435,7 +435,7 @@ binds {
     // Copies to the clipboard rather than typing, so it needs a paste after.
     Mod+E hotkey-overlay-title="Pick an Emoji: noctalia" { spawn "noctalia" "msg" "panel-open" "launcher" "/emo "; }
     Mod+Y hotkey-overlay-title="Clipboard History: noctalia" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: noctalia" { spawn "noctalia" "msg" "session" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.

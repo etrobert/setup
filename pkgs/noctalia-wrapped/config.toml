@@ -85,6 +85,14 @@ end = [
   "session",
 ]
 
+# No idle suspend to pair with this: the config is shared with tower, which
+# serves Home Assistant and the binary cache and must stay awake. leod still
+# suspends on lid close.
+[idle.behavior.lock]
+enabled = true
+timeout = 300
+action = "lock"
+
 # Showing command output on the lock screen needs a desktop widget, hence a
 # plugin: the built-in label widget takes static text. cx/cy are the widget's
 # centre in logical pixels, sized for tower's 2560x1440; the login panel is
@@ -105,7 +113,7 @@ type = "etrobert/birthdays:desktop"
 cx = 1280.0
 cy = 420.0
 
-# Let the text sit straight on the blurred wallpaper, like hyprlock did.
+# Let the text sit straight on the blurred wallpaper.
 [lockscreen_widgets.widget.birthdays.settings]
 background = false
 

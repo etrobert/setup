@@ -166,13 +166,6 @@
           package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
         };
 
-        hyprlock = {
-          enable = true;
-          # Supply the baked config via the wrapper; PAM and the binary remain
-          # managed by the NixOS programs.hyprlock module.
-          package = self.packages.${system}.hyprlock-wrapped;
-        };
-
         # The desktop shell: bar, launcher, notification centre and lock
         # screen in one.
         #
