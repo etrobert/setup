@@ -6,12 +6,17 @@ source = "community"
 # Plugins are opt-in by id, and declaring a source replaces the default
 # (which scans the data dir), so nothing outside the store is scanned.
 [plugins]
-enabled = ["etrobert/weekday"]
+enabled = ["etrobert/weekday", "noctalia/bitwarden"]
 
 [[plugins.source]]
 kind = "path"
 name = "setup"
 location = "@plugins@"
+
+[[plugins.source]]
+kind = "path"
+name = "official"
+location = "@official-plugins@"
 
 [location]
 address = "Berlin"

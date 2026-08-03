@@ -70,6 +70,10 @@
       url = "github:etrobert/rack";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia-official-plugins = {
+      url = "github:noctalia-dev/official-plugins";
+      flake = false;
+    };
     # Tracks the latest Claude Code release ahead of nixpkgs' packaging cadence
     # (hourly bot, official Anthropic binaries). `nix flake update` keeps it
     # current. Built against our own nixpkgs via the follows below.
