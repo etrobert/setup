@@ -38,7 +38,9 @@ global = true
 position = "left"
 scale = 1.2
 
-widget_spacing = 12
+# 5 + the 2 × 3 × 1.2 ≈ 7px the invisible capsules (below) add per widget
+# keeps the visual gap at the ~12px it was without capsules.
+widget_spacing = 5
 margin_opposite_edge = 5
 margin_edge = 5
 margin_ends = 0
@@ -48,6 +50,15 @@ padding = 12
 # also asks the compositor to blur behind its surfaces with no setting to
 # stop it, so niri refuses that via a layer-rule on the noctalia- namespaces.
 background_opacity = 0.0
+
+# Invisible capsules, kept only for their hover highlight: without a capsule
+# the highlight hugs the glyph's own box (an oval), while a capsule shell is
+# capsule_thickness × bar thickness across (0.76 × 34 ≈ 26px). padding = 3
+# brings the along-bar extent of an icon to ≈26px too (19px glyph + 2 × 3 ×
+# 1.2 scale), so icons get a circular highlight.
+capsule = true
+capsule_opacity = 0.0
+capsule_padding = 3
 
 start = ["clock", "etrobert/weekday:bar", "date"]
 center = []
