@@ -66,9 +66,8 @@ end = [
   "session",
 ]
 
-# awww owns the wallpaper; without this noctalia draws its own on top.
-[wallpaper]
-enabled = false
+[wallpaper.default]
+path = "@wallpaper@"
 
 # Reaching the monitor over DDC/CI needs hardware.i2c.enable for /dev/i2c-*.
 [brightness]

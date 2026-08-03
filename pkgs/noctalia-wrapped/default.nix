@@ -8,10 +8,13 @@
 let
   plugins = ./plugins;
 
+  wallpaper = ../../assets/saint-levant.jpg;
+
   configHome = runCommand "noctalia-config-home" { } ''
     mkdir -p $out/noctalia
     substitute ${./config.toml} $out/noctalia/config.toml \
-      --replace-fail '@plugins@' '${plugins}'
+      --replace-fail '@plugins@' '${plugins}' \
+      --replace-fail '@wallpaper@' '${wallpaper}'
   '';
 
   # Without --skip-ddc-checks, every ddcutil invocation re-runs a full display
