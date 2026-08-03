@@ -64,7 +64,7 @@ padding = 12
 background_opacity = 0.0
 
 start = ["clock", "etrobert/weekday:bar", "date"]
-center = []
+center = ["temp", "cpu", "ram"]
 end = [
   "media",
   "tray",
@@ -127,6 +127,10 @@ up_to_date_color = "on_surface"
 # Panels read entry-level keys like <entry>_placement from plugin_settings.
 [plugin_settings."avivbintangaringga/nix-monitor"]
 panel_placement = "floating"
+
+# The built-in ram widget shows absolute usage; percent matches temp and cpu.
+[widget.ram]
+stat = "ram_pct"
 
 [widget.battery]
 show_label = false
