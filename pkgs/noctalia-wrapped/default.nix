@@ -6,6 +6,7 @@
   coreutils,
   bitwarden-cli,
   official-plugins,
+  community-plugins,
 }:
 let
   plugins = ./plugins;
@@ -17,6 +18,7 @@ let
     substitute ${./config.toml} $out/noctalia/config.toml \
       --replace-fail '@plugins@' '${plugins}' \
       --replace-fail '@official-plugins@' '${official-plugins}' \
+      --replace-fail '@community-plugins@' '${community-plugins}' \
       --replace-fail '@wallpaper@' '${wallpaper}'
   '';
 
