@@ -181,7 +181,5 @@
           recommendedServices.enable = true;
         };
       };
-
-      home-manager.users.soft = self.homeModules.linux;
     };
 }

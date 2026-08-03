@@ -129,11 +129,6 @@ _: {
           enable = true;
           settings.global.hide_env_diff = true;
         };
-
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-        };
       };
 
     darwinModules.workstation = nixosModules.workstation;
