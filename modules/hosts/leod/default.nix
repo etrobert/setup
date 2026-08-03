@@ -15,14 +15,11 @@ in
     specialArgs = { inherit self agenix; };
     modules = [
       self.nixosModules.leodConfiguration
-      self.nixosModules.nixIndex
       home-manager.nixosModules.home-manager
       agenix.nixosModules.default
       self.nixosModules.nixosWorkstation
       self.nixosModules.workstation
       self.nixosModules.nixosBase
-      self.nixosModules.base
-      self.nixosModules.unfree
       self.nixosModules.hypridle
     ];
   };
