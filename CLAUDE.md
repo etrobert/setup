@@ -44,11 +44,12 @@ exposing `flake.nixosModules.<name>`. Imported by a host directly, or by a
 profile that bundles it.
 
 A feature must not import another feature — if it needs to, it belongs in
-`profiles/`. Not the converse: `base.nix` and `workstation.nix` import no
-sibling and are profiles by role.
+`profiles/`. Not the converse: a profile need not import anything to be one —
+`base.nix` imports no sibling file and is a profile by role.
 
 Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
-plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
+plumbing). The `allowedUnfreePackages` option is declared in
+`profiles/base.nix`, which every host gets.
 
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
 zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
