@@ -49,7 +49,7 @@ jobs:
     outputs:
       matrix: ${{ steps.list.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Emit the build matrix from the flake: nixos hosts build on the
       # self-hosted Linux runners, darwin hosts on the runner the probe picked.
@@ -87,7 +87,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Self-hosted runners already have Nix; only the hosted fallback needs it.
       - uses: DeterminateSystems/determinate-nix-action@v3
@@ -140,7 +140,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           # Full history so git can verify the push is a fast-forward
           fetch-depth: 0
