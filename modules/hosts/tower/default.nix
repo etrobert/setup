@@ -31,7 +31,6 @@ in
       self.nixosModules.server
       self.nixosModules.ntfy
       self.nixosModules.homepage
-      self.nixosModules.cockpit
       self.nixosModules.claudeWarmup
       self.nixosModules.gaming
       self.nixosModules.githubRunner
