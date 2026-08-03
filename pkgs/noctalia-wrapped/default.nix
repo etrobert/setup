@@ -4,6 +4,8 @@
   runCommand,
   ddcutil,
   coreutils,
+  bitwarden-cli,
+  official-plugins,
 }:
 let
   plugins = ./plugins;
@@ -14,6 +16,7 @@ let
     mkdir -p $out/noctalia
     substitute ${./config.toml} $out/noctalia/config.toml \
       --replace-fail '@plugins@' '${plugins}' \
+      --replace-fail '@official-plugins@' '${official-plugins}' \
       --replace-fail '@wallpaper@' '${wallpaper}'
   '';
 
@@ -36,7 +39,10 @@ wrapPackage {
   # The launcher resolves desktop-entry Exec= against noctalia's own PATH.
   inheritPath = true;
 
-  runtimeInputs = [ fast-ddcutil ];
+  runtimeInputs = [
+    fast-ddcutil
+    bitwarden-cli
+  ];
 
   checks = [ "${noctalia}/bin/noctalia config validate ${configHome}/noctalia" ];
 }

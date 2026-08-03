@@ -323,6 +323,22 @@
         "type": "github"
       }
     },
+    "noctalia-official-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785642541,
+        "narHash": "sha256-6QDLMbYqlSL643XQk+h8x7ltHPdTIaC4K2AjT8dHuDA=",
+        "owner": "noctalia-dev",
+        "repo": "official-plugins",
+        "rev": "c1369385bd71cfad30614dbc6679eb7df752bc94",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "official-plugins",
+        "type": "github"
+      }
+    },
     "pronto": {
       "inputs": {
         "nixpkgs": [
@@ -398,6 +414,7 @@
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
         "nixpkgs-darwin-gui-pin": "nixpkgs-darwin-gui-pin",
+        "noctalia-official-plugins": "noctalia-official-plugins",
         "pronto": "pronto",
         "rack": "rack",
         "rift-radar": "rift-radar",

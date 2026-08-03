@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, inputs, ... }:
 {
   perSystem =
     {
@@ -111,7 +111,9 @@
           inherit self';
           dev = true;
         };
-        noctalia-wrapped = pkgs.callPackage ./noctalia-wrapped { };
+        noctalia-wrapped = pkgs.callPackage ./noctalia-wrapped {
+          official-plugins = inputs.noctalia-official-plugins;
+        };
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
           inherit self';
