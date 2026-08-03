@@ -237,7 +237,11 @@ _: {
       # Enable Touch ID for sudo
       security.pam.services.sudo_local.touchIdAuth = true;
 
-      home-manager.users.soft = self.homeModules.darwin;
+      home-manager = {
+        useGlobalPkgs = true;
+        useUserPackages = true;
+        users.soft = self.homeModules.darwin;
+      };
 
       # Used for backwards compatibility, please read the changelog before changing.
       # $ darwin-rebuild changelog

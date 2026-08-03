@@ -6,7 +6,6 @@
 let
   inherit (inputs)
     nixpkgs
-    home-manager
     agenix
     ;
 in
@@ -16,7 +15,6 @@ in
     modules = [
       self.nixosModules.leodConfiguration
       self.nixosModules.nixIndex
-      home-manager.nixosModules.home-manager
       agenix.nixosModules.default
       self.nixosModules.nixosWorkstation
       self.nixosModules.workstation
