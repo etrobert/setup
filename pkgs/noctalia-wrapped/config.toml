@@ -7,6 +7,7 @@ source = "community"
 # (which scans the data dir), so nothing outside the store is scanned.
 [plugins]
 enabled = [
+  "etrobert/birthdays",
   "etrobert/weekday",
   "noctalia/bitwarden",
   "avivbintangaringga/nix-monitor",
