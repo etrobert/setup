@@ -84,6 +84,22 @@ config file (e.g. a Neovim plugin's `config.lua`) does not affect the installed
 binary until a system rebuild. To test a change in isolation, run just that
 package from the flake — e.g. `nix run ".#neovim-wrapped" -- <file-or-dir>`.
 
+### Proving a refactor is a no-op
+
+No host config embeds the flake source path, so a host's derivation only changes
+when something it actually uses changes. Comparing `drvPath` before and after is
+therefore a valid no-op check for all four hosts:
+
+```sh
+nix eval --raw ".#darwinConfigurations.aaron.system.drvPath"
+nix eval --raw ".#nixosConfigurations.tower.config.system.build.toplevel.drvPath"
+```
+
+Keep it that way: reference repo files with
+`builtins.path { path = ../…; name = "…"; }`, never `self + /path/to/file`,
+which pins the whole-repo hash into the result. `import (self + /lib/…)` stays
+fine — `import` evaluates the file without embedding its path.
+
 ### neovim-wrapped plugin conventions
 
 Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a
