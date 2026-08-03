@@ -66,6 +66,9 @@ background_opacity = 0.0
 start = ["clock", "etrobert/weekday:bar", "date"]
 center = []
 end = [
+  "temp",
+  "cpu",
+  "ram",
   "media",
   "tray",
   "notifications",
@@ -127,6 +130,10 @@ up_to_date_color = "on_surface"
 # Panels read entry-level keys like <entry>_placement from plugin_settings.
 [plugin_settings."avivbintangaringga/nix-monitor"]
 panel_placement = "floating"
+
+# Unitless "9.4" fits the narrow vertical bar.
+[widget.ram]
+label_show_units = false
 
 [widget.battery]
 show_label = false
