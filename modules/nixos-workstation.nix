@@ -105,6 +105,7 @@
             zen-browser
             ghostty-wrapped
             open-url
+            zapzap-wrapped
           ];
 
           externalPackages = with pkgs; [
@@ -121,7 +122,6 @@
             playerctl
             slurp
             usbutils # provides lsusb
-            whatsapp-electron
             wl-clipboard
           ];
         in
