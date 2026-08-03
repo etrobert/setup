@@ -27,7 +27,6 @@
         self.nixosModules.pimsync
         self.nixosModules.darkman
         self.nixosModules.mpd
-        self.nixosModules.awww
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
