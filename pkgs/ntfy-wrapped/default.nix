@@ -1,6 +1,6 @@
 # Wraps the ntfy CLI with NTFY_TOPIC pre-set to our self-hosted endpoint so
 # `ntfy publish "msg"` reaches it without naming the server or topic.
-# Endpoint mirrors host/port/topic in modules/ntfy.nix.
+# Endpoint mirrors host/port/topic in modules/features/ntfy.nix.
 {
   ntfy-sh,
   wrapPackage,

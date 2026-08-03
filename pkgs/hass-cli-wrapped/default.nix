@@ -3,7 +3,7 @@
 # works in an interactive shell with no manual config. An existing HASS_SERVER
 # or HASS_TOKEN in the environment wins, so ad-hoc overrides still work.
 # Token wiring mirrors pkgs/claude-code-wrapped/default.nix; the secret is
-# declared in modules/workstation.nix and secrets/secrets.nix.
+# declared in modules/profiles/workstation.nix and secrets/secrets.nix.
 {
   home-assistant-cli,
   wrapPackage,

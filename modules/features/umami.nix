@@ -16,6 +16,6 @@ _: {
         };
       };
 
-      age.secrets.umami-app-secret.file = ../secrets/umami-app-secret.age;
+      age.secrets.umami-app-secret.file = ../../secrets/umami-app-secret.age;
     };
 }

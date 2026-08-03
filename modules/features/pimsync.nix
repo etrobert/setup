@@ -42,7 +42,7 @@ _: {
     {
       age.secrets.apple-pimsync-password = {
         owner = "soft";
-        file = ../secrets/apple-pimsync-password.age;
+        file = ../../secrets/apple-pimsync-password.age;
       };
 
       environment.systemPackages = [ pimsync ];

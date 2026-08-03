@@ -35,7 +35,7 @@ _: {
         in
         lib.concatMapAttrs mkRunners runnerCountByRepo;
 
-      age.secrets.github-runner-token.file = ../secrets/github-runner-token.age;
+      age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
 
       # Run aarch64 builds (pi's CI job) via QEMU user emulation.
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
@@ -54,7 +54,7 @@ _: {
       # The runner daemon runs entirely as _github-runner and reads the
       # token itself, so agenix must chown it off the default root:0400.
       age.secrets.github-runner-token = {
-        file = ../secrets/github-runner-token.age;
+        file = ../../secrets/github-runner-token.age;
         owner = "_github-runner";
       };
     };
