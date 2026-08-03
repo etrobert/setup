@@ -155,6 +155,17 @@
           };
 
           services = {
+            # ddclient's ExecStartPre resolves its DynamicUser name through NSS, which only
+            # works while nsncd is up. nsncd kills itself when a nixos-rebuild switch stalls
+            # activation past its handoff timeout, and a switch restarting ddclient in that
+            # window leaves the config unwritten. Retrying rides out the ~3s nsncd restart.
+            # RestartSec must stay well under StartLimitIntervalUSec / StartLimitBurst (10s / 5)
+            # so a genuinely broken ddclient still exhausts the limit and trips OnFailure=.
+            ddclient.serviceConfig = {
+              Restart = "on-failure";
+              RestartSec = 2;
+            };
+
             # Override the filebrowser module's default UMask of 0077, which would strip the group
             # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
             filebrowser.serviceConfig.UMask = lib.mkForce "0022";
