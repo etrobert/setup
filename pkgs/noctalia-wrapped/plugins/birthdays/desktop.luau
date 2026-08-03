@@ -1,9 +1,7 @@
 --!nonstrict
 -- Upcoming birthdays, one line per person, as printed by the `birthdays`
 -- script (pkgs/birthdays). A plugin because the built-in label widget renders
--- static text only. Place it with `noctalia msg lockscreen-widgets-edit` (or
--- the desktop equivalent): that layout lives in noctalia's own state file,
--- which overrides the baked config, so it cannot be declared in config.toml.
+-- static text only; [lockscreen_widgets] in config.toml places it.
 
 local FONT_SIZE = 22
 
