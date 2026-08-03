@@ -14,10 +14,7 @@ _: {
         lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
       );
 
-      wallpaper = builtins.path {
-        path = ../../../assets/saint-levant.jpg;
-        name = "saint-levant.jpg";
-      };
+      wallpaper = ../../../assets/saint-levant.jpg;
 
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) zsh-wrapped;
