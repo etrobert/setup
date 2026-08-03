@@ -49,6 +49,9 @@ _: {
               "sound.target"
             ];
             wantedBy = [ "default.target" ];
+            # Units under /etc/systemd/user start in every user manager, including
+            # greetd's `greeter` (HOME=/var/empty), where StateDirectory= fails.
+            unitConfig.ConditionUser = "!@system";
             serviceConfig = {
               Type = "notify";
               # Create and own ~/.local/state/mpd for the state_file above.
@@ -68,6 +71,7 @@ _: {
             partOf = [ "graphical-session.target" ];
             bindsTo = [ "graphical-session.target" ];
             wantedBy = [ "graphical-session.target" ];
+            unitConfig.ConditionUser = "!@system";
             serviceConfig = {
               Type = "simple";
               Restart = "on-failure";

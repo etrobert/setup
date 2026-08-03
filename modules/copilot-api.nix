@@ -46,6 +46,7 @@ _: {
       systemd.user.services.copilot-api = {
         description = "GitHub Copilot -> Anthropic API proxy for Claude Code";
         wantedBy = [ "default.target" ];
+        unitConfig.ConditionUser = "!@system";
         serviceConfig = {
           ExecStart = "${lib.getExe copilot-api} start --port 4141";
           Restart = "on-failure";

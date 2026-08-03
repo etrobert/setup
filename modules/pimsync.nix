@@ -52,6 +52,7 @@ _: {
         partOf = [ "network-online.target" ];
         after = [ "run-agenix.d.mount" ];
         wantedBy = [ "default.target" ];
+        unitConfig.ConditionUser = "!@system";
         serviceConfig = {
           Type = "simple";
           ExecStart = "${lib.getExe pimsync} -v info daemon";
