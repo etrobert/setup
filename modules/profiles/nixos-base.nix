@@ -42,24 +42,36 @@ _: {
 
       zramSwap.enable = true;
 
-      # systemd-oomd runs by default but acts only on cgroups marked with
-      # ManagedOOM* properties — without these flags it monitors nothing.
-      systemd.oomd = {
-        enableRootSlice = true;
-        enableSystemSlice = true;
-        enableUserSlices = true;
-      };
+      systemd = {
+        # systemd-oomd runs by default but acts only on cgroups marked with
+        # ManagedOOM* properties — without these flags it monitors nothing.
+        oomd = {
+          enableRootSlice = true;
+          enableSystemSlice = true;
+          enableUserSlices = true;
+        };
 
-      # Shorten how long the user systemd manager waits for an unresponsive
-      # user-session process to exit on SIGTERM before SIGKILL (default 90s).
-      # Motivating case: claude-code's background daemon and its bg-spare PTY
-      # hosts don't exit promptly on SIGTERM, so a tmux pane running claude
-      # would stall poweroff for the full 90s. This is general workstation
-      # policy, not a claude-specific patch — system units keep the 90s default
-      # (databases/VMs that need a long graceful flush live there), and any user
-      # unit that genuinely needs longer overrides TimeoutStopSec itself.
-      systemd.user.settings.Manager = {
-        DefaultTimeoutStopSec = "15s";
+        # nsncd hands connections to workers over a zero-capacity rendezvous channel,
+        # so worker_count is the hard concurrency limit — request 9 blocks the acceptor
+        # outright. With the default 8, a brief DNS stall (tailscale rewriting resolver
+        # config on a link change) parks every worker on a hosts lookup, the acceptor
+        # misses NSNCD_HANDOFF_TIMEOUT and nsncd exits by design. That takes NSS down
+        # with it, so DynamicUser services starting in the gap fail to resolve their own
+        # user. 32 matches the highest value used in the wild; the timeout is left alone
+        # since it governs the reaction, not the starvation.
+        services.nscd.environment.NSNCD_WORKER_COUNT = "32";
+
+        # Shorten how long the user systemd manager waits for an unresponsive
+        # user-session process to exit on SIGTERM before SIGKILL (default 90s).
+        # Motivating case: claude-code's background daemon and its bg-spare PTY
+        # hosts don't exit promptly on SIGTERM, so a tmux pane running claude
+        # would stall poweroff for the full 90s. This is general workstation
+        # policy, not a claude-specific patch — system units keep the 90s default
+        # (databases/VMs that need a long graceful flush live there), and any user
+        # unit that genuinely needs longer overrides TimeoutStopSec itself.
+        user.settings.Manager = {
+          DefaultTimeoutStopSec = "15s";
+        };
       };
 
       services = {
