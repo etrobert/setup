@@ -135,9 +135,6 @@ panel_placement = "floating"
 [widget.ram]
 label_show_units = false
 
-[widget.cpu]
-show_label = false
-
 [widget.battery]
 show_label = false
 
