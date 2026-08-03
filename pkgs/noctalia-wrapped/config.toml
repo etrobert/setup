@@ -31,6 +31,9 @@ location = "@community-plugins@"
 [location]
 address = "Berlin"
 
+[shell]
+polkit_agent = true
+
 # Attached panels draw on the bar's own surface and inherit its
 # background_opacity, which a transparent bar makes unreadable over windows.
 # Floating panels get their own surface, taking opacity from
