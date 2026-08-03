@@ -6,7 +6,11 @@ source = "community"
 # Plugins are opt-in by id, and declaring a source replaces the default
 # (which scans the data dir), so nothing outside the store is scanned.
 [plugins]
-enabled = ["etrobert/weekday", "noctalia/bitwarden"]
+enabled = [
+  "etrobert/weekday",
+  "noctalia/bitwarden",
+  "avivbintangaringga/nix-monitor",
+]
 
 [[plugins.source]]
 kind = "path"
@@ -17,6 +21,11 @@ location = "@plugins@"
 kind = "path"
 name = "official"
 location = "@official-plugins@"
+
+[[plugins.source]]
+kind = "path"
+name = "community"
+location = "@community-plugins@"
 
 [location]
 address = "Berlin"
@@ -66,6 +75,7 @@ end = [
   "brightness",
   "battery",
   "power_profile",
+  "avivbintangaringga/nix-monitor:nix-monitor",
   "control-center",
   "workspaces",
   "session",
@@ -103,6 +113,20 @@ format = "{:%d %m %y}"
 
 [widget.brightness]
 show_label = false
+
+# The status text overflows the narrow vertical bar; the glyph alone
+# carries the state, like the other bar widgets with show_label = false.
+[widget."avivbintangaringga/nix-monitor:nix-monitor"]
+show_text = false
+
+# Neutral instead of the default bright green (#57ff57) when up to date;
+# only the update-available state keeps an alert color.
+up_to_date_color = "on_surface"
+
+# Float the panel out of the transparent bar surface (see [shell.panel]).
+# Panels read entry-level keys like <entry>_placement from plugin_settings.
+[plugin_settings."avivbintangaringga/nix-monitor"]
+panel_placement = "floating"
 
 [widget.battery]
 show_label = false

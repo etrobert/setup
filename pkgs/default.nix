@@ -113,6 +113,7 @@
         };
         noctalia-wrapped = pkgs.callPackage ./noctalia-wrapped {
           official-plugins = inputs.noctalia-official-plugins;
+          community-plugins = inputs.noctalia-community-plugins;
         };
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
