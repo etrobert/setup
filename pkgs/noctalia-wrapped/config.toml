@@ -135,6 +135,9 @@ panel_placement = "floating"
 [widget.ram]
 stat = "ram_pct"
 
+[widget.cpu]
+show_label = false
+
 [widget.battery]
 show_label = false
 
