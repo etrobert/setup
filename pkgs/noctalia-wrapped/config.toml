@@ -87,8 +87,8 @@ end = [
 
 # Showing command output on the lock screen needs a desktop widget, hence a
 # plugin: the built-in label widget takes static text. cx/cy are the widget's
-# centre in the output's logical pixels, so each output needs its own entry;
-# the login panel is anchored near the bottom edge, leaving the upper half free.
+# centre in logical pixels, sized for tower's 2560x1440; the login panel is
+# anchored near the bottom edge, leaving the upper half free.
 #
 # noctalia mirrors this section into ~/.local/state/noctalia/settings.toml as
 # soon as it injects its per-output login boxes, and that file overlays the
@@ -97,19 +97,17 @@ end = [
 # settings.toml.
 [lockscreen_widgets]
 enabled = true
-widget_order = ["birthdays_dp1", "birthdays_edp1"]
+widget_order = ["birthdays"]
 
-[lockscreen_widgets.widget.birthdays_dp1]
+# No output: the widget lands on the primary one, whichever host this is.
+[lockscreen_widgets.widget.birthdays]
 type = "etrobert/birthdays:desktop"
-output = "DP-1"
 cx = 1280.0
 cy = 420.0
 
-[lockscreen_widgets.widget.birthdays_edp1]
-type = "etrobert/birthdays:desktop"
-output = "eDP-1"
-cx = 853.0
-cy = 280.0
+# Let the text sit straight on the blurred wallpaper, like hyprlock did.
+[lockscreen_widgets.widget.birthdays.settings]
+background = false
 
 [wallpaper.default]
 path = "@wallpaper@"
