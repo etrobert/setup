@@ -19,7 +19,10 @@ function update()
     rows = {}
 
     for line in string.gmatch(result.stdout, "[^\n]+") do
-      table.insert(rows, ui.label({ text = line, fontSize = FONT_SIZE, color = "on_surface" }))
+      table.insert(
+        rows,
+        ui.label({ text = line, fontSize = FONT_SIZE, fontWeight = "bold", color = "on_surface" })
+      )
     end
 
     render()
