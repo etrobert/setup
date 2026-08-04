@@ -201,7 +201,6 @@
             # last time someone pressed the button.
             appearance = {
               scheme = "Synced";
-              theme_mode = "dark";
               palette = greeterPalette;
 
               wallpaper.path = "${../../assets/saint-levant.jpg}";
