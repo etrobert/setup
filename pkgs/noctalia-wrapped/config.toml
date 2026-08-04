@@ -96,6 +96,16 @@ enabled = true
 timeout = 300
 action = "lock"
 
+# leod's Synaptics Prometheus (06cb:00bd) does not survive suspend — it comes
+# back reporting an unsupported firmware version — and a claimed reader disarms
+# fprintd's 30s idle exit. A verify left in flight across a lid close therefore
+# strands fprintd with an operation it can neither finish nor cancel, so it
+# spins in a nested main loop until SIGKILL. Leaving the sensor unclaimed keeps
+# fprintd disposable, so each use re-enumerates the device. greetd still offers
+# the reader through pam_fprintd.
+[lockscreen]
+fingerprint = false
+
 # Showing command output on the lock screen needs a desktop widget, hence a
 # plugin: the built-in label widget takes static text. cx/cy are the widget's
 # centre in logical pixels, sized for tower's 2560x1440; the login panel is
