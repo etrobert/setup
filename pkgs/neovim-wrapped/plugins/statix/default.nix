@@ -10,7 +10,6 @@ in
   plugins = [
     {
       plugin = statix-compiler;
-      # Note: This shadows local versions of statix, eg. provided by direnv
       extraPackages = [ pkgs.statix ];
     }
   ];
