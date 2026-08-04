@@ -28,6 +28,32 @@ let
 
   botGit = git-wrapped.override { userConfig = ./gitconfig-bot; };
 
+  # Browser access via Microsoft's Playwright MCP server. Headless because
+  # tower (where background jobs run) has no display; --output-dir because
+  # the default drops snapshot files into a .playwright-mcp/ directory inside
+  # whatever project claude runs in.
+  playwrightMcp = pkgs.writeShellApplication {
+    name = "playwright-mcp-headless";
+    runtimeInputs = [ pkgs.playwright-mcp ];
+    inheritPath = false;
+    text = ''
+      exec playwright-mcp --headless --output-dir "''${XDG_CACHE_HOME:-$HOME/.cache}/playwright-mcp" "$@"
+    '';
+  };
+
+  # Baked into the wrapper as --mcp-config=<file> (the equals form: the flag
+  # is variadic, so a space-separated value would swallow subcommand words
+  # like `mcp list`). Merges with servers from other scopes rather than
+  # replacing them.
+  mcpConfig = pkgs.writeText "claude-mcp-config.json" (
+    builtins.toJSON {
+      mcpServers.playwright = {
+        type = "stdio";
+        command = lib.getExe playwrightMcp;
+      };
+    }
+  );
+
   runtimeInputs = [
     statuslineScript
     formatFileScript
@@ -66,6 +92,7 @@ wrapPackage {
   }
   // extraEnv;
   inheritPath = true;
+  flags = [ "--mcp-config=${mcpConfig}" ];
   run = [
     # Mutable path, not a store copy: Claude writes runtime state (sessions,
     # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
