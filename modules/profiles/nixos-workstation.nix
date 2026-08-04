@@ -20,34 +20,25 @@
         };
       };
 
-      # The shell resolves this palette by downloading it from api.noctalia.dev
-      # at run time. The greeter takes the same colours straight from the pinned
-      # repo that API serves, so the login screen matches without a network
-      # round-trip and without anyone clicking Sync Now.
-      paletteName = (lib.importTOML ../../pkgs/noctalia-wrapped/config.toml).theme.community_palette;
+      # The shell downloads this palette from api.noctalia.dev at run time; the
+      # greeter reads the same colours from the pinned repo behind that API.
+      # The two spell their roles differently — mOnSurfaceVariant against
+      # on_surface_variant — and "terminal" holds ANSI colours, not a role.
+      greeterPalette =
+        let
+          name = (lib.importTOML ../../pkgs/noctalia-wrapped/config.toml).theme.community_palette;
 
-      # Same palette, different spelling: noctalia names its roles mPrimary and
-      # mOnSurfaceVariant, the greeter wants primary and on_surface_variant.
-      toGreeterRole =
-        role:
-        lib.toLower (
-          lib.concatImapStrings (
-            i: c:
-            if i == 1 then
-              c
-            else if lib.toUpper c == c then
-              "_${c}"
-            else
-              c
-          ) (lib.stringToCharacters (lib.removePrefix "m" role))
+          upper = lib.stringToCharacters "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+          toRole =
+            role:
+            lib.removePrefix "_" (lib.toLower (builtins.replaceStrings upper (map (c: "_${c}") upper) role));
+        in
+        lib.mapAttrs' (role: lib.nameValuePair (toRole (lib.removePrefix "m" role))) (
+          lib.filterAttrs (
+            role: _: role != "terminal"
+          ) (lib.importJSON "${inputs.noctalia-community-palettes}/${name}/${name}.json").dark
         );
-
-      # "terminal" holds the ANSI colours, which are not a greeter colour role.
-      greeterPalette = lib.mapAttrs' (role: colour: lib.nameValuePair (toGreeterRole role) colour) (
-        lib.filterAttrs (
-          role: _: role != "terminal"
-        ) (lib.importJSON "${inputs.noctalia-community-palettes}/${paletteName}/${paletteName}.json").dark
-      );
     in
     {
       imports = [
