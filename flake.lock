@@ -323,6 +323,22 @@
         "type": "github"
       }
     },
+    "noctalia-community-palettes": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785765199,
+        "narHash": "sha256-Yjd2iHY4uISAF6GSeN1YRT4AlRmlamd1hpHHStcr+4Y=",
+        "owner": "noctalia-dev",
+        "repo": "community-palettes",
+        "rev": "b4c4084593b6b60ffd77b61460d769262fbcdb3c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "community-palettes",
+        "type": "github"
+      }
+    },
     "noctalia-community-plugins": {
       "flake": false,
       "locked": {
@@ -450,6 +466,7 @@
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
         "nixpkgs-darwin-gui-pin": "nixpkgs-darwin-gui-pin",
+        "noctalia-community-palettes": "noctalia-community-palettes",
         "noctalia-community-plugins": "noctalia-community-plugins",
         "noctalia-greeter": "noctalia-greeter",
         "noctalia-official-plugins": "noctalia-official-plugins",

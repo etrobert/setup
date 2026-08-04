@@ -82,6 +82,10 @@
       url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia-community-palettes = {
+      url = "github:noctalia-dev/community-palettes";
+      flake = false;
+    };
     # Tracks the latest Claude Code release ahead of nixpkgs' packaging cadence
     # (hourly bot, official Anthropic binaries). `nix flake update` keeps it
     # current. Built against our own nixpkgs via the follows below.

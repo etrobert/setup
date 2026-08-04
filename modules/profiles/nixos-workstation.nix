@@ -19,6 +19,35 @@
           "media.av1.enabled" = false;
         };
       };
+
+      # The shell resolves this palette by downloading it from api.noctalia.dev
+      # at run time. The greeter takes the same colours straight from the pinned
+      # repo that API serves, so the login screen matches without a network
+      # round-trip and without anyone clicking Sync Now.
+      paletteName = (lib.importTOML ../../pkgs/noctalia-wrapped/config.toml).theme.community_palette;
+
+      # Same palette, different spelling: noctalia names its roles mPrimary and
+      # mOnSurfaceVariant, the greeter wants primary and on_surface_variant.
+      toGreeterRole =
+        role:
+        lib.toLower (
+          lib.concatImapStrings (
+            i: c:
+            if i == 1 then
+              c
+            else if lib.toUpper c == c then
+              "_${c}"
+            else
+              c
+          ) (lib.stringToCharacters (lib.removePrefix "m" role))
+        );
+
+      # "terminal" holds the ANSI colours, which are not a greeter colour role.
+      greeterPalette = lib.mapAttrs' (role: colour: lib.nameValuePair (toGreeterRole role) colour) (
+        lib.filterAttrs (
+          role: _: role != "terminal"
+        ) (lib.importJSON "${inputs.noctalia-community-palettes}/${paletteName}/${paletteName}.json").dark
+      );
     in
     {
       imports = [
@@ -171,16 +200,27 @@
         };
 
         # The login screen, in the shell's visual language. Enables greetd and
-        # points its session at the greeter's own wlroots compositor. Colours
-        # and wallpaper come from Settings -> Security -> Noctalia Greeter ->
-        # Sync Now, which writes state the greeter reads at runtime.
+        # points its session at the greeter's own wlroots compositor.
         noctalia-greeter = {
           enable = true;
 
-          settings.cursor = {
-            theme = "Bibata-Modern-Classic";
-            size = 30;
-            path = "${pkgs.bibata-cursors}/share/icons";
+          settings = {
+            # A complete palette here outranks whatever Sync Now last wrote, so
+            # the login screen is reproducible rather than a leftover of the
+            # last time someone pressed the button.
+            appearance = {
+              scheme = "Synced";
+              theme_mode = "dark";
+              palette = greeterPalette;
+
+              wallpaper.path = "${../../assets/saint-levant.jpg}";
+            };
+
+            cursor = {
+              theme = "Bibata-Modern-Classic";
+              size = 30;
+              path = "${pkgs.bibata-cursors}/share/icons";
+            };
           };
         };
       };
