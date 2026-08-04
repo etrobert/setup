@@ -23,6 +23,7 @@
     {
       imports = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
+        inputs.noctalia-greeter.nixosModules.default
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
@@ -53,18 +54,6 @@
           enable = true;
           nssmdns4 = true;
           openFirewall = true;
-        };
-
-        # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
-        # through a login shell and imports the environment into systemd/D-Bus
-        # itself; bash -l guarantees environment.sessionVariables are loaded.
-        greetd = {
-          enable = true;
-          # Stops boot log lines from drawing over the tuigreet UI: resets the
-          # VT at greeter start, and wires greetd's stdio to tty1 so systemd
-          # counts the console as owned and stops printing status to it.
-          useTextGreeter = true;
-          settings.default_session.command = ''${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
         };
       };
 
@@ -130,6 +119,11 @@
       environment = {
         sessionVariables.BROWSER = "open-url";
 
+        # greetd starts the greeter with an empty environment, so the session
+        # picker only sees /run/current-system/sw/share/wayland-sessions. NixOS
+        # does not link that directory into the system profile by default.
+        pathsToLink = [ "/share/wayland-sessions" ];
+
         etc."xdg/mimeapps.list".text = /* ini */ ''
           [Default Applications]
           x-scheme-handler/sgnl=signal.desktop
@@ -179,6 +173,20 @@
           package = self.packages.${system}.noctalia-wrapped;
 
           recommendedServices.enable = true;
+        };
+
+        # The login screen, in the shell's visual language. Enables greetd and
+        # points its session at the greeter's own wlroots compositor. Colours
+        # and wallpaper come from Settings -> Security -> Noctalia Greeter ->
+        # Sync Now, which writes state the greeter reads at runtime.
+        noctalia-greeter = {
+          enable = true;
+
+          settings.cursor = {
+            theme = "Bibata-Modern-Classic";
+            size = 30;
+            path = "${pkgs.bibata-cursors}/share/icons";
+          };
         };
       };
     };
