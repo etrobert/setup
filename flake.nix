@@ -145,23 +145,10 @@
                 ];
             };
 
-            devShells = {
-              default = pkgs.mkShell {
-                packages = with pkgs; [
-                  statix
-                  deadnix
-                  nixfmt
-                  yamllint
-                  stylua
-                  actionlint
-                ];
-              };
-
-              pimsync = pkgs.mkShell {
-                packages = [
-                  (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
-                ];
-              };
+            devShells.pimsync = pkgs.mkShell {
+              packages = [
+                (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
+              ];
             };
 
             checks = {
