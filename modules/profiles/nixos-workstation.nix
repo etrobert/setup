@@ -198,7 +198,9 @@
           settings = {
             # A complete palette here outranks whatever Sync Now last wrote, so
             # the login screen is reproducible rather than a leftover of the
-            # last time someone pressed the button.
+            # last time someone pressed the button. It also carries the
+            # wallpaper: a builtin scheme calls clearWallpaperDisplay(), so
+            # trading this for scheme = "Catppuccin" loses the wallpaper too.
             appearance = {
               scheme = "Synced";
               palette = greeterPalette;
