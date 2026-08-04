@@ -119,11 +119,6 @@
       environment = {
         sessionVariables.BROWSER = "open-url";
 
-        # greetd starts the greeter with an empty environment, so the session
-        # picker only sees /run/current-system/sw/share/wayland-sessions. NixOS
-        # does not link that directory into the system profile by default.
-        pathsToLink = [ "/share/wayland-sessions" ];
-
         etc."xdg/mimeapps.list".text = /* ini */ ''
           [Default Applications]
           x-scheme-handler/sgnl=signal.desktop
