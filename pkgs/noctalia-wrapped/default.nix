@@ -1,6 +1,7 @@
 {
   wrapPackage,
   noctalia,
+  applyPatches,
   runCommand,
   ddcutil,
   coreutils,
@@ -13,12 +14,23 @@ let
 
   wallpaper = ../../assets/saint-levant.jpg;
 
+  # nix-monitor only re-reads the remote revision, generation list and store
+  # sizes on its poll timers, so a `switch` leaves the widget claiming an
+  # update is available for up to an hour. The patch keys that refresh off the
+  # local revision instead, which the service already polls every 10s.
+  # `patch` fails the build if upstream reworks the same code.
+  patched-community-plugins = applyPatches {
+    name = "noctalia-community-plugins-patched";
+    src = community-plugins;
+    patches = [ ./nix-monitor-recheck-on-generation-change.patch ];
+  };
+
   configHome = runCommand "noctalia-config-home" { } ''
     mkdir -p $out/noctalia
     substitute ${./config.toml} $out/noctalia/config.toml \
       --replace-fail '@plugins@' '${plugins}' \
       --replace-fail '@official-plugins@' '${official-plugins}' \
-      --replace-fail '@community-plugins@' '${community-plugins}' \
+      --replace-fail '@community-plugins@' '${patched-community-plugins}' \
       --replace-fail '@wallpaper@' '${wallpaper}'
   '';
 

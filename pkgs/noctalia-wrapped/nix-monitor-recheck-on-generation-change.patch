@@ -1,0 +1,23 @@
+--- a/nix-monitor/nix_monitor_service.luau
++++ b/nix-monitor/nix_monitor_service.luau
+@@ -87,7 +87,19 @@
+ 	setState("lastLocalCheckTime", os.time())
+ 	noctalia.runAsync(localHashCmd, function(res)
+ 		if res.exitCode == 0 then
+-			setState("localHash", noctalia.string.trim(res.stdout))
++			local hash = noctalia.string.trim(res.stdout)
++			local previous = getState("localHash")
++			setState("localHash", hash)
++
++			-- A switch to a new generation shows up here within 10s. Refresh
++			-- the rest of the state with it, rather than leaving the remote
++			-- hash, generations and sizes stale until the next poll.
++			if previous ~= "n/a" and previous ~= hash then
++				cancelRemoteCheck()
++				checkRemoteHash()
++				checkGenerations()
++				checkSystemStats(true)
++			end
+ 		end
+ 	end)
+ end
