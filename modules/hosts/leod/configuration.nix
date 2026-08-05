@@ -23,6 +23,13 @@
 
       services.fprintd.enable = true;
 
+      # The lock screen drives the reader itself over fprintd's D-Bus API, so
+      # pam_fprintd in the stack it authenticates against only competes for the
+      # sensor: a typed password sits behind pam_fprintd's 30s wait for a finger
+      # before pam_unix ever sees it. nixpkgs strips it from `login` for the
+      # same reason when GDM is the display manager.
+      security.pam.services.login.fprintAuth = false;
+
       # The Synaptics Prometheus (06cb:00bd) does not survive suspend: it comes
       # back reporting an unsupported firmware version, stranding whatever
       # verify the lock screen had in flight. fprintd cannot cancel that one,
