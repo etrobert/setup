@@ -123,7 +123,13 @@ _: {
           };
         };
 
-        fonts.packages = with pkgs; [ nerd-fonts.fira-code ];
+        # Inter for the noctalia lock screen clock: it carries the light weights
+        # the macOS look needs, which the DejaVu that sans-serif resolves to
+        # does not. Installing it does not displace that sans-serif match.
+        fonts.packages = with pkgs; [
+          nerd-fonts.fira-code
+          inter
+        ];
 
         programs.direnv = {
           enable = true;
