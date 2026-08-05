@@ -35,6 +35,7 @@ in
       self.nixosModules.harmonia
       self.nixosModules.navidrome
       self.nixosModules.homeAssistant
+      self.nixosModules.zfs
     ];
   };
 }
