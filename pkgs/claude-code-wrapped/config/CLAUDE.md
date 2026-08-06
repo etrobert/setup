@@ -47,9 +47,20 @@ Favor simplicity over completeness — across code, design, CI, tooling, and
 process, not just code. Prefer the simplest solution that solves the problem;
 when fully solving it would take disproportionate complexity, prefer a simpler
 solution that handles the common case (and flag what it leaves out) over a
-complex one that covers everything. Before treating anything as done, ask "can
-this be simpler?" and cut whatever isn't earning its place; prefer a plain
-solution a reader grasps immediately over a clever one.
+complex one that covers everything. Prefer a plain solution a reader grasps
+immediately over a clever one.
+
+As the final pass before presenting any work — code, config, docs, plans, PRs —
+go element by element (parameter, option, line, section, step) and attempt to
+delete it. Keep an element only when you can state concretely what its removal
+breaks or loses, verified against the authoritative source (the actual default,
+the actual caller, the actual reader's need) rather than from memory. Removal is
+the default; keeping carries the burden of proof.
+
+Wherever defaults, frameworks, or templates are in play, run the reverse check
+too: what behavior arrives that nobody asked for? Override or remove that
+explicitly. A redundant element kept deliberately (e.g. pinning a value against
+upstream drift) needs a comment naming what it guards against.
 
 ## Communication
 
