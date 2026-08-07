@@ -86,18 +86,13 @@
       # z (adjust-if-exists), not d: with nofail mounts, a boot without the
       # pool must not create these paths as plain directories on the root
       # filesystem.
-      systemd.tmpfiles.settings.tank = {
-        "/tank".z = {
-          user = "soft";
-          group = "users";
-          mode = "0755";
-        };
-
-        "/tank/media".z = {
-          user = "soft";
-          group = "users";
-          mode = "0755";
-        };
+      # Requires /tank to stay root-owned (its dataset birth default):
+      # tmpfiles' unsafe-path-transition guard refuses child rules under a
+      # user-owned parent.
+      systemd.tmpfiles.settings.tank."/tank/media".z = {
+        user = "soft";
+        group = "users";
+        mode = "0755";
       };
 
       services = {
