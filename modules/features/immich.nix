@@ -9,6 +9,8 @@ _: {
         host = "0.0.0.0";
         mediaLocation = "/tank/photos";
 
+        environment.IMMICH_LOG_LEVEL = "verbose";
+
         # The default, [ ], sets PrivateDevices=true, which hides /dev/dri from
         # the unit. ffmpeg.accel below then throws before the transcode even
         # starts, with no software fallback, so the two go together.
@@ -17,6 +19,7 @@ _: {
         settings = {
           backup.database.enabled = true;
           ffmpeg.accel = "vaapi";
+          job.metadataExtraction.concurrency = 16;
           newVersionCheck.enabled = false;
           storageTemplate.enabled = true;
         };
