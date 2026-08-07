@@ -65,6 +65,13 @@ _: {
                 siteMonitor = "http://localhost:8123";
               };
             }
+            {
+              "Immich" = {
+                href = "http://tower:2283";
+                description = "Photo library";
+                siteMonitor = "http://localhost:2283";
+              };
+            }
           ];
         }
       ];

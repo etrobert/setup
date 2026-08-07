@@ -75,6 +75,12 @@
               mountOptions = [ "nofail" ];
             };
 
+            photos = {
+              type = "zfs_fs";
+              mountpoint = "/tank/photos";
+              mountOptions = [ "nofail" ];
+            };
+
             postgres = {
               type = "zfs_fs";
               mountpoint = "/var/lib/postgresql";
@@ -99,7 +105,7 @@
       networking.hostId = "6b83a633";
 
       # z (adjust-if-exists), not d: with nofail mounts, a boot without the
-      # pool must not create these paths as plain directories on the root
+      # pool must not create this path as a plain directory on the root
       # filesystem.
       # Requires /tank to stay root-owned (its dataset birth default):
       # tmpfiles' unsafe-path-transition guard refuses child rules under a
