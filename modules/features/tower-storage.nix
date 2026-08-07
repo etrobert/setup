@@ -62,6 +62,11 @@
         };
       };
 
+      # A data pool must never hold up boot: without this, an unimportable or
+      # not-yet-created tank fails local-fs.target and drops tower into
+      # emergency mode, where the locked root account offers no shell.
+      fileSystems."/tank".options = [ "nofail" ];
+
       boot = {
         supportedFilesystems = [ "zfs" ];
         zfs.forceImportRoot = false;
