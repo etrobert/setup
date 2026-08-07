@@ -83,6 +83,23 @@
       # head --bytes 8 /etc/machine-id on tower
       networking.hostId = "6b83a633";
 
+      # z (adjust-if-exists), not d: with nofail mounts, a boot without the
+      # pool must not create these paths as plain directories on the root
+      # filesystem.
+      systemd.tmpfiles.settings.tank = {
+        "/tank".z = {
+          user = "soft";
+          group = "users";
+          mode = "0755";
+        };
+
+        "/tank/media".z = {
+          user = "soft";
+          group = "users";
+          mode = "0755";
+        };
+      };
+
       services = {
         zfs = {
           autoScrub.enable = true;
