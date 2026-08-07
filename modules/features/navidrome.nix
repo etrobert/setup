@@ -6,7 +6,7 @@ _: {
         enable = true;
         settings = {
           Address = "0.0.0.0";
-          MusicFolder = "/home/soft/sync/music";
+          MusicFolder = "/tank/media/music";
         };
       };
 

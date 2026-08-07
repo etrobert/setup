@@ -63,6 +63,15 @@
 
           options.ashift = "12";
           rootFsOptions.atime = "off";
+
+          datasets.media = {
+            type = "zfs_fs";
+            mountpoint = "/tank/media";
+
+            # Not inherited from the zpool-level mountOptions, which only
+            # covers the pool root's own mount.
+            mountOptions = [ "nofail" ];
+          };
         };
       };
 
