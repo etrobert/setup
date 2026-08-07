@@ -11,12 +11,12 @@ _: {
     {
       age.secrets.smb-credentials.file = ../../secrets/smb-credentials.age;
 
+      # smbd listens on every interface; the firewall is what keeps the share
+      # reachable over Tailscale only.
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 445 ];
+
       services.samba = {
         enable = true;
-
-        # Reachability is constrained by `bind interfaces only` below, not by
-        # the firewall.
-        openFirewall = true;
 
         # SMB over TCP 445 only — no NetBIOS name service or NT-domain
         # machinery.
@@ -26,8 +26,6 @@ _: {
         settings = {
           global = {
             "disable netbios" = "yes";
-            interfaces = "lo tailscale0";
-            "bind interfaces only" = "yes";
 
             # Apple SMB extensions for macOS/iOS clients, with Finder
             # metadata stored in xattr streams.
