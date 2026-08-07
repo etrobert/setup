@@ -36,6 +36,7 @@ in
       self.nixosModules.navidrome
       self.nixosModules.homeAssistant
       self.nixosModules.towerStorage
+      self.nixosModules.samba
     ];
   };
 }

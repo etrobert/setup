@@ -36,4 +36,8 @@ in
   "google-health-oauth-client.age".publicKeys = allWorkstations;
   "riot-api-key.age".publicKeys = allLinux;
   "harmonia-signing-key.age".publicKeys = [ tower ];
+  "smb-credentials.age".publicKeys = [
+    tower
+    leod
+  ];
 }
