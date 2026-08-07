@@ -5,7 +5,6 @@
       {
         config,
         pkgs,
-        lib,
         ...
       }:
       let
@@ -13,6 +12,9 @@
       in
       {
         imports = [
+          self.nixosModules.ddclient
+          self.nixosModules.filebrowser
+          self.nixosModules.imgproxy
           self.nixosModules.umami
           inputs.rift-radar.nixosModules.default
           inputs.rack.nixosModules.default
@@ -26,38 +28,6 @@
         ];
 
         services = {
-          ddclient = {
-            enable = true;
-            protocol = "namecheap";
-            server = "dynamicdns.park-your-domain.com";
-            username = "etiennerobert.com";
-            passwordFile = config.age.secrets.ddclient-password-etiennerobert-com.path;
-            domains = [
-              "test"
-              "creatures"
-              "countdown"
-              "files"
-              "adele"
-              "umami"
-              "images"
-              "rift"
-              "rack"
-            ];
-            interval = "5min";
-            usev6 = "no";
-            usev4 = "webv4";
-          };
-
-          filebrowser = {
-            enable = true;
-            settings = {
-              root = "/srv/files/adele";
-              port = 8081;
-              username = "adele";
-              password = "$2a$10$IJiPBcbqVvJnAilE8Gs.uulWMWfq18tOEvlcYqaz8RvWjWP3sgBUK";
-            };
-          };
-
           caddy = {
             enable = true;
             virtualHosts = {
@@ -76,15 +46,6 @@
                 # cheap (304s when unchanged).
                 header Cache-Control "no-cache"
                 file_server browse
-              '';
-              "adele.etiennerobert.com".extraConfig = /* caddy */ ''
-                reverse_proxy localhost:8081
-              '';
-              "umami.etiennerobert.com".extraConfig = /* caddy */ ''
-                reverse_proxy localhost:3001
-              '';
-              "images.etiennerobert.com".extraConfig = /* caddy */ ''
-                reverse_proxy localhost:8889
               '';
             };
           };
@@ -117,13 +78,7 @@
           };
         };
 
-        age.secrets.ddclient-password-etiennerobert-com.file = ../../secrets/ddclient-password-etiennerobert-com.age;
         age.secrets.riot-api-key.file = ../../secrets/riot-api-key.age;
-
-        # Filebrowser creates files/dirs via the web UI with modes 0640/0750 (settings.FileMode /
-        # settings.DirMode defaults), which grant no world access. Add caddy to the filebrowser
-        # group so it can serve uploaded content.
-        users.users.caddy.extraGroups = [ "filebrowser" ];
 
         systemd = {
           # Own /srv/files as soft:users with the setgid bit so it can be populated over
@@ -131,17 +86,11 @@
           # "users" (caddy/imgproxy read via the world r-x bits, so they need no membership).
           # Without this the dir is root:root 0755 — every write needs sudo, and ad-hoc
           # `sudo cp` leaves a mix of root/soft-owned files. The filebrowser-managed
-          # adele/ subtree keeps its own ownership (see the caddy group + UMask overrides).
-          tmpfiles.settings.filebrowser = {
-            "/srv/files".d = {
-              user = "soft";
-              group = "users";
-              mode = "2775";
-            };
-
-            # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700
-            # on every boot, which would block caddy from traversing into the directory.
-            "/srv/files/adele".d.mode = lib.mkForce "0755";
+          # adele/ subtree keeps its own ownership (see modules/features/filebrowser.nix).
+          tmpfiles.settings.filebrowser."/srv/files".d = {
+            user = "soft";
+            group = "users";
+            mode = "2775";
           };
 
           # Auto-expiring drop-zone for files shared over files.etiennerobert.com:
@@ -152,41 +101,6 @@
             group = "users";
             mode = "2775";
             age = "30d";
-          };
-
-          services = {
-            # ddclient's ExecStartPre resolves its DynamicUser name through NSS, which only
-            # works while nsncd is up. nsncd kills itself when a nixos-rebuild switch stalls
-            # activation past its handoff timeout, and a switch restarting ddclient in that
-            # window leaves the config unwritten. Retrying rides out the ~3s nsncd restart.
-            # RestartSec must stay well under StartLimitIntervalUSec / StartLimitBurst (10s / 5)
-            # so a genuinely broken ddclient still exhausts the limit and trips OnFailure=.
-            ddclient.serviceConfig = {
-              Restart = "on-failure";
-              RestartSec = 2;
-            };
-
-            # Override the filebrowser module's default UMask of 0077, which would strip the group
-            # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
-            filebrowser.serviceConfig.UMask = lib.mkForce "0022";
-
-            imgproxy = {
-              description = "imgproxy";
-              wantedBy = [ "multi-user.target" ];
-              after = [ "network.target" ];
-              serviceConfig = {
-                ExecStart = "${pkgs.imgproxy}/bin/imgproxy";
-                Restart = "on-failure";
-                DynamicUser = true;
-                Environment = [
-                  "IMGPROXY_JPEG_PROGRESSIVE=true"
-                  "IMGPROXY_BIND=localhost:8889"
-                  "IMGPROXY_LOCAL_FILESYSTEM_ROOT=/srv/files"
-                  "IMGPROXY_USE_ETAG=true"
-                  "IMGPROXY_ALLOWED_SOURCES=local://"
-                ];
-              };
-            };
           };
         };
       };
