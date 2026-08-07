@@ -37,6 +37,7 @@ in
       self.nixosModules.homeAssistant
       self.nixosModules.towerStorage
       self.nixosModules.samba
+      self.nixosModules.immich
     ];
   };
 }
