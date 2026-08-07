@@ -57,6 +57,10 @@
           type = "zpool";
           mode = "raidz1";
           mountpoint = "/tank";
+
+          # A data pool must not block boot when absent or faulted.
+          mountOptions = [ "nofail" ];
+
           options.ashift = "12";
           rootFsOptions.atime = "off";
         };
