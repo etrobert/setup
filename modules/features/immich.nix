@@ -1,11 +1,7 @@
-# Self-hosted photo and video library, backed by the tank/photos dataset and
-# reachable over Tailscale only.
 _: {
   flake.nixosModules.immich =
     { config, ... }:
     {
-      # immich listens on every interface; the firewall is what keeps it
-      # reachable over Tailscale only.
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.services.immich.port ];
 
       services.immich = {
@@ -22,15 +18,10 @@ _: {
           backup.database.enabled = true;
           ffmpeg.accel = "vaapi";
           newVersionCheck.enabled = false;
-
-          # Turning this on later runs a migration that rewrites the path of
-          # every asset already stored.
           storageTemplate.enabled = true;
         };
       };
 
-      # mediaLocation reaches the unit as an environment variable rather than a
-      # path-taking directive, so systemd derives no mount dependency from it.
       systemd.services.immich-server.unitConfig.RequiresMountsFor = [
         config.services.immich.mediaLocation
       ];
