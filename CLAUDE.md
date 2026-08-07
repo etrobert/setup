@@ -35,8 +35,8 @@ profiles:
 - `workstation.nix` — dev tools and GUI apps (claude-code, VS Code, node, go,
   etc.)
 - `nixos-base.nix` — NixOS system baseline
-- `nixos-workstation.nix` — NixOS desktop: Niri compositor, GDM, Waybar, audio,
-  Bluetooth
+- `nixos-workstation.nix` — NixOS desktop: Niri compositor, greetd/tuigreet
+  greeter, Noctalia shell, audio, Bluetooth
 - `server.nix` — tower's public-facing sites and services behind Caddy
 
 **Features** (`modules/features/`) — one self-contained capability per file,
@@ -51,7 +51,7 @@ Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
 plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
 
 **Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
-zsh-wrapped, tmux-wrapped, waybar-wrapped, etc.) and custom scripts
+zsh-wrapped, tmux-wrapped, noctalia-wrapped, etc.) and custom scripts
 (gen-commit-msg, tmux-sessionizer, pm, audio-output-switcher, etc.).
 
 Shell scripts are packaged with `writeShellApplication` with
@@ -70,7 +70,7 @@ uses `nix-community.cachix.org`.
 
 ### Development Environment
 
-- Window Manager (NixOS): Niri with Waybar
+- Window Manager (NixOS): Niri with the Noctalia shell
 - Editor: Neovim, plugins managed via Nix
 - Version Control: Git
 - Session management: tmux, tmux-sessionizer script
