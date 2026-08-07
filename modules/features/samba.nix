@@ -14,6 +14,10 @@ _: {
       services.samba = {
         enable = true;
 
+        # Reachability is constrained by `bind interfaces only` below, not by
+        # the firewall.
+        openFirewall = true;
+
         # SMB over TCP 445 only — no NetBIOS name service or NT-domain
         # machinery.
         nmbd.enable = false;
@@ -70,7 +74,5 @@ _: {
             ExecStart = lib.getExe smb-passdb;
           };
         };
-
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 445 ];
     };
 }
