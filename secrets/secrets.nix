@@ -36,4 +36,6 @@ in
   "google-health-oauth-client.age".publicKeys = allWorkstations;
   "riot-api-key.age".publicKeys = allLinux;
   "harmonia-signing-key.age".publicKeys = [ tower ];
+  # Not [ tower ]: losing tower must not take the key to its own backups with it.
+  "restic-password.age".publicKeys = allWorkstations;
 }
