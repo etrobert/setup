@@ -39,5 +39,6 @@ in
   "smb-credentials.age".publicKeys = [
     tower
     leod
+    aaron
   ];
 }
