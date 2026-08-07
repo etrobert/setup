@@ -183,3 +183,27 @@ API (`http://<ip>/measures/current`) returns only current values, no history.
 Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`
 files. Open an issue with the full plan body; reference it from PRs that
 implement it.
+
+## Reference configurations
+
+Other people's Nix configs worth reading for examples. Clone into
+`~/.cache/explore/` when consulting them.
+
+- [`surma/nixenv`](https://github.com/surma/nixenv) — one flake covering Darwin,
+  NixOS, Home Manager and Android (nix-on-droid), split into
+  `machines`/`modules`/`profiles`/`packages` with per-platform `load-*.nix`
+  entry points.
+- [`vimjoyer/nixconf`](https://github.com/vimjoyer/nixconf) — flake-parts config
+  with a `wrappedPrograms/` tree, the closest analogue to this repo's
+  `pkgs/*-wrapped` approach. Author of the vimjoyer NixOS video series; the
+  per-topic demo repos under
+  [github.com/vimjoyer](https://github.com/vimjoyer?tab=repositories) (e.g.
+  `modularize-video`, `flake-parts-wrapped-template`) are minimal worked
+  examples.
+- [`Mic92/dotfiles`](https://github.com/Mic92/dotfiles) — nix-community
+  maintainer's NixOS config; a large, actively maintained example of secrets
+  (sops), per-host modules and deployment.
+- [`Goxore/nixconf`](https://github.com/Goxore/nixconf) — Niri desktop config.
+- [`saatvik333/niri-dotfiles`](https://github.com/saatvik333/niri-dotfiles) and
+  [`Kanjurito/dotfiles`](https://github.com/Kanjurito/dotfiles) — Niri/Waybar
+  theming references.
