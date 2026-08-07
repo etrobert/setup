@@ -8,27 +8,6 @@ _: {
       pkgs,
       ...
     }:
-    let
-      # Samba's password database is imperative state; deriving it from the
-      # agenix secret keeps the only manual step at authoring the secret.
-      # The secret is a mount.cifs credentials file (username=/password=
-      # lines), shared with client machines that mount the share.
-      smb-passdb = pkgs.writeShellApplication {
-        name = "smb-passdb";
-
-        runtimeInputs = [
-          config.services.samba.package
-          pkgs.gnused
-        ];
-
-        inheritPath = false;
-
-        text = /* bash */ ''
-          password="$(sed --quiet 's/^password=//p' ${config.age.secrets.smb-credentials.path})"
-          printf '%s\n%s\n' "$password" "$password" | smbpasswd -s -a soft
-        '';
-      };
-    in
     {
       age.secrets.smb-credentials.file = ../../secrets/smb-credentials.age;
 
@@ -59,16 +38,38 @@ _: {
         };
       };
 
-      systemd.services.samba-passdb = {
-        description = "Provision the soft Samba user from the smb-password secret";
-        before = [ "samba-smbd.service" ];
-        requiredBy = [ "samba-smbd.service" ];
+      systemd.services.samba-passdb =
+        let
+          # Samba's password database is imperative state; deriving it from the
+          # agenix secret keeps the only manual step at authoring the secret.
+          # The secret is a mount.cifs credentials file (username=/password=
+          # lines), shared with client machines that mount the share.
+          smb-passdb = pkgs.writeShellApplication {
+            name = "smb-passdb";
 
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = lib.getExe smb-passdb;
+            runtimeInputs = [
+              config.services.samba.package
+              pkgs.gnused
+            ];
+
+            inheritPath = false;
+
+            text = /* bash */ ''
+              password="$(sed --quiet 's/^password=//p' ${config.age.secrets.smb-credentials.path})"
+              printf '%s\n%s\n' "$password" "$password" | smbpasswd -s -a soft
+            '';
+          };
+        in
+        {
+          description = "Provision the soft Samba user from the smb-password secret";
+          before = [ "samba-smbd.service" ];
+          requiredBy = [ "samba-smbd.service" ];
+
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = lib.getExe smb-passdb;
+          };
         };
-      };
 
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 445 ];
     };
