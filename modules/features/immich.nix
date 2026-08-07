@@ -19,7 +19,6 @@ _: {
         settings = {
           backup.database.enabled = true;
           ffmpeg.accel = "vaapi";
-          job.metadataExtraction.concurrency = 16;
           newVersionCheck.enabled = false;
           storageTemplate.enabled = true;
         };
