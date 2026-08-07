@@ -189,21 +189,23 @@ implement it.
 Other people's Nix configs worth reading for examples. Clone into
 `~/.cache/explore/` when consulting them.
 
-- [`surma/nixenv`](https://github.com/surma/nixenv) — one flake covering Darwin,
-  NixOS, Home Manager and Android (nix-on-droid), split into
-  `machines`/`modules`/`profiles`/`packages` with per-platform `load-*.nix`
-  entry points.
-- [`vimjoyer/nixconf`](https://github.com/vimjoyer/nixconf) — flake-parts config
-  with a `wrappedPrograms/` tree, the closest analogue to this repo's
-  `pkgs/*-wrapped` approach. Author of the vimjoyer NixOS video series; the
-  per-topic demo repos under
-  [github.com/vimjoyer](https://github.com/vimjoyer?tab=repositories) (e.g.
-  `modularize-video`, `flake-parts-wrapped-template`) are minimal worked
-  examples.
-- [`Mic92/dotfiles`](https://github.com/Mic92/dotfiles) — nix-community
-  maintainer's NixOS config; a large, actively maintained example of secrets
-  (sops), per-host modules and deployment.
-- [`Goxore/nixconf`](https://github.com/Goxore/nixconf) — Niri desktop config.
-- [`saatvik333/niri-dotfiles`](https://github.com/saatvik333/niri-dotfiles) and
-  [`Kanjurito/dotfiles`](https://github.com/Kanjurito/dotfiles) — Niri/Waybar
-  theming references.
+- [`surma/nixenv`](https://github.com/surma/nixenv) — the closest architectural
+  twin: `modules/features/` one file per capability plus `profiles/` per
+  platform, spanning Darwin, NixOS, Home Manager and Android. Also packages
+  `claude-code` and a Home Assistant CLI. Desktop layer is Hyprland, so it is no
+  guide for the Niri side.
+- [`Goxore/nixconf`](https://github.com/Goxore/nixconf) — flake-parts config
+  whose `wrappedPrograms/` tree is the direct analogue of `pkgs/*-wrapped`,
+  including wrappers for niri, noctalia and neovim. Each wrapper is a module
+  (`flake.wrappers.<name>` importing `wlib.modules.default`) built on
+  [`BirdeeHub/nix-wrapper-modules`](https://github.com/BirdeeHub/nix-wrapper-modules)
+  — a different approach from this repo's hand-rolled `writeShellApplication`
+  wrappers, and worth comparing against.
+  [`vimjoyer/nixconf`](https://github.com/vimjoyer/nixconf) is the same config
+  under the author's YouTube-channel name but lags a few months behind — read
+  `Goxore/nixconf`. His per-topic demo repos (e.g. `modularize-video`,
+  `flake-parts-wrapped-template`) are minimal worked examples.
+- [`Mic92/dotfiles`](https://github.com/Mic92/dotfiles) — same top-level shape
+  as this repo (`darwinModules`/`nixosModules`/`machines`/`pkgs`/`checks`) at a
+  much larger scale, by a nix-community maintainer active on harmonia. Secrets
+  are sops, not agenix, so that part does not transfer.
