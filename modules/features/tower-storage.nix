@@ -3,9 +3,19 @@
 # only creates — after the drives are installed, provision once with:
 #   nix run github:nix-community/disko -- --mode destroy,format,mount \
 #     --flake .#tower
-# To add datasets or change properties later, edit here and re-run
-# `disko --mode format,mount` (non-destructive: creates missing datasets,
-# applies updated properties). Removing datasets is manual `zfs destroy`.
+# To add a dataset on a running host, edit here then run `--mode format`
+# alone, followed by:
+#   systemctl start <escaped-mountpoint>.mount
+#   systemd-tmpfiles --create --prefix=/tank
+#   systemctl start <consumer>.service
+# Never `--mode format,mount` on a running host: mount prefixes every path
+# with --root-mountpoint, so datasets land under /mnt while the real paths
+# keep whatever was already there. Mounting belongs to the fileSystems
+# entries disko generates, which is why format mode uses `zfs create -u`.
+# The tmpfiles step is not optional either: ownership rules only adjust
+# directories that already exist, so they no-op while the dataset is
+# missing, and an unchanged ruleset gives a later rebuild nothing to re-run.
+# Removing datasets is manual `zfs destroy`.
 { inputs, ... }:
 {
   flake.nixosModules.towerStorage =
@@ -88,8 +98,9 @@
 
               # Postgres writes 8 KiB pages, so a large record turns a
               # scattered page update into a copy-on-write rewrite of the whole
-              # record. On this pool's geometry fio measures 4.4x physical
-              # write amplification at 16K against 17.7x at the 128K default.
+              # record. Measured on this pool with fio (8 KiB random rewrite
+              # over 2 GiB): 477 IOPS at 3.1x physical write amplification for
+              # 16K, against 25 IOPS at 21.4x for the 128K default.
               options.recordsize = "16K";
             };
           };
