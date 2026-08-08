@@ -19,7 +19,6 @@ local previous = nil
 noctalia.setUpdateInterval(2000)
 
 barWidget.setVisible(false)
-barWidget.setGlyph("activity")
 
 -- -L resolves the by-id paths the pool was created with down to kernel names,
 -- which is how /proc/diskstats is keyed. Any token naming a block device is a
@@ -114,8 +113,16 @@ function update()
   table.sort(rows)
 
   barWidget.setVisible(true)
-  barWidget.setText(string.format("%.0f", busiest))
   barWidget.setTooltip("tank busy / await\n" .. table.concat(rows, "\n"))
+
+  -- Geometry mirrors the native sysmon gauge on a vertical bar: a horizontal
+  -- track under the glyph, sized round(fontSizeBody * 0.85) by
+  -- max(3, round(fontSizeBody * 0.3)). The host scales these.
+  barWidget.render(ui.column({ align = "center", gap = 2 }, {
+    ui.glyph({ name = "activity" }),
+    ui.progress({ progress = busiest / 100, width = 12, height = 4, radius = 2 }),
+    ui.label({ text = string.format("%.0f", busiest), fontSize = 13 }),
+  }))
 end
 
 update()
