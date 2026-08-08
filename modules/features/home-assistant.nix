@@ -262,6 +262,13 @@ _: {
             ];
           }
         ];
+        # tsnsrv sets X-Forwarded-For unconditionally, which Home Assistant
+        # rejects with a 400 until the proxy is trusted.
+        http = {
+          use_x_forwarded_for = true;
+          trusted_proxies = [ "127.0.0.1" ];
+        };
+
         homeassistant = {
           auth_providers = [
             {
