@@ -262,17 +262,11 @@ _: {
             ];
           }
         ];
-        # The tailnet node (modules/features/tailnet-nodes.nix) proxies from
-        # loopback and sets X-Forwarded-For, which Home Assistant rejects with a
-        # 400 unless the proxy is trusted. Trusting it also restores the real
-        # client address, so trusted_networks below still sees the tailnet peer
-        # rather than ::1.
+        # tsnsrv sets X-Forwarded-For unconditionally, which Home Assistant
+        # rejects with a 400 until the proxy is trusted.
         http = {
           use_x_forwarded_for = true;
-          trusted_proxies = [
-            "::1"
-            "127.0.0.1"
-          ];
+          trusted_proxies = [ "127.0.0.1" ];
         };
 
         homeassistant = {
