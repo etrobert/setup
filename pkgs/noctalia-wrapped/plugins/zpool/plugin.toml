@@ -1,0 +1,14 @@
+id = "etrobert/zpool"
+name = "Zpool"
+version = "1.0.0"
+plugin_api = 16
+author = "etrobert"
+license = "MIT"
+dependencies = []
+tags = ["storage", "zfs"]
+icon = "database"
+description = "ZFS pool usage from zpool list."
+
+[[widget]]
+id = "bar"
+entry = "bar.luau"
