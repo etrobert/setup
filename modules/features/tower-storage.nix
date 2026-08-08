@@ -32,6 +32,26 @@
         '';
       };
 
+      # smartd's mailer hook: a mail-formatted report arrives on stdin
+      # (headers plus a full `smartctl -a` dump — too long for a phone
+      # notification), so it is drained in favor of the one-line fields
+      # smartd puts in the environment.
+      smartd-ntfy = pkgs.writeShellApplication {
+        name = "smartd-ntfy";
+
+        runtimeInputs = [
+          pkgs.coreutils
+          ntfy-wrapped
+        ];
+
+        inheritPath = false;
+
+        text = /* bash */ ''
+          cat > /dev/null
+          ntfy publish --quiet --title "$SMARTD_SUBJECT" "$SMARTD_MESSAGE"
+        '';
+      };
+
       zfsDisk = id: {
         type = "disk";
         device = "/dev/disk/by-id/${id}";
@@ -133,7 +153,22 @@
           };
         };
 
-        smartd.enable = true;
+        smartd = {
+          enable = true;
+
+          notifications = {
+            wall.enable = false;
+
+            mail = {
+              enable = true;
+              mailer = lib.getExe smartd-ntfy;
+            };
+
+            # One test notification per monitored device at service startup,
+            # as a liveness check of the alert path.
+            test = true;
+          };
+        };
 
         sanoid = {
           enable = true;
