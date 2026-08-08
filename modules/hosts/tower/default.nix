@@ -38,7 +38,7 @@ in
       self.nixosModules.towerStorage
       self.nixosModules.samba
       self.nixosModules.immich
-      self.nixosModules.tailnetNodes
+      self.nixosModules.tailnetServices
     ];
   };
 }

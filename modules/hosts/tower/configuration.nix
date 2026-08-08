@@ -32,13 +32,6 @@
     # (see modules/features/claude-warmup.nix).
     services.claude-warmup.enable = true;
 
-    # Reachable on the tailnet as `home/` and `photos/`
-    # (see modules/features/tailnet-nodes.nix).
-    services.tailnetNodes = {
-      home = 8123;
-      photos = 2283;
-    };
-
     services.sunshine = {
       enable = true;
       openFirewall = true;
