@@ -1,0 +1,14 @@
+id = "etrobert/macos-clock"
+name = "macOS Clock"
+version = "1.0.0"
+plugin_api = 16
+author = "etrobert"
+license = "MIT"
+dependencies = []
+tags = ["clock", "time"]
+icon = "clock"
+description = "Date over a large, thin time, in the style of the macOS lock screen."
+
+[[desktop_widget]]
+id = "desktop"
+entry = "desktop.luau"

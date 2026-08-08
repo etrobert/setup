@@ -8,6 +8,7 @@ source = "community"
 [plugins]
 enabled = [
   "etrobert/birthdays",
+  "etrobert/macos-clock",
   "etrobert/weekday",
   "noctalia/bitwarden",
   "avivbintangaringga/nix-monitor",
@@ -108,15 +109,23 @@ action = "lock"
 # settings.toml.
 [lockscreen_widgets]
 enabled = true
-widget_order = ["birthdays"]
+widget_order = ["clock", "birthdays"]
 
 # No output: the widget lands on the primary one, whichever host this is.
+[lockscreen_widgets.widget.clock]
+type = "etrobert/macos-clock:desktop"
+cx = 1280.0
+cy = 250.0
+
+# Let the text sit straight on the blurred wallpaper.
+[lockscreen_widgets.widget.clock.settings]
+background = false
+
 [lockscreen_widgets.widget.birthdays]
 type = "etrobert/birthdays:desktop"
 cx = 1280.0
-cy = 420.0
+cy = 520.0
 
-# Let the text sit straight on the blurred wallpaper.
 [lockscreen_widgets.widget.birthdays.settings]
 background = false
 
