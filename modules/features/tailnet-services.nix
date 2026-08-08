@@ -38,6 +38,16 @@
             toURL = "http://127.0.0.1:2283";
             plaintext = true;
           };
+
+          music = {
+            toURL = "http://127.0.0.1:4533";
+            plaintext = true;
+          };
+
+          ntfy = {
+            toURL = "http://127.0.0.1:2586";
+            plaintext = true;
+          };
         };
       };
     };
