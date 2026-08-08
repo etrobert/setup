@@ -13,6 +13,16 @@
 
     networking.hostName = "tower";
 
+    # Overflow tier beneath zram (priority 5, profiles/nixos-base.nix): zram
+    # keeps the hot pages, this absorbs the cold tail. An unset priority gets a
+    # kernel-assigned negative value, which is below zram's 5.
+    swapDevices = [
+      {
+        device = "/swapfile";
+        size = 32 * 1024;
+      }
+    ];
+
     # Docker daemon, for running containers (e.g. the nixos/nix image to get an
     # interactive Nix environment on machines without Nix).
     virtualisation.docker.enable = true;
