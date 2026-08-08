@@ -116,6 +116,12 @@
         mode = "0755";
       };
 
+      # sanoid's ExecStartPre delegates permissions with `zfs allow`, a sync
+      # task that cannot return until the open txg commits. A write-heavy pool
+      # pushes txg sync past systemd's 90s default, so the unit fails on the
+      # delegation rather than on anything sanoid did.
+      systemd.services.sanoid.serviceConfig.TimeoutStartSec = "15min";
+
       services = {
         zfs = {
           autoScrub.enable = true;
