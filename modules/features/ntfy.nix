@@ -3,7 +3,7 @@
 # - `ntfy` (server): runs ntfy on tower, reachable only over Tailscale (the
 #   port is opened on tailscale0 only — never the LAN or WAN).
 # - `ntfyDesktop` (subscriber): a Linux user service that subscribes to the
-#   topic and surfaces each message as a mako desktop notification.
+#   topic and surfaces each message as a desktop notification.
 #
 # No Home Assistant wiring here — this is just the transport. Test with:
 #   ntfy publish "hello"
