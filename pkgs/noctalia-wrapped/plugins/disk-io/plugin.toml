@@ -1,0 +1,14 @@
+id = "etrobert/disk-io"
+name = "Disk IO"
+version = "1.0.0"
+plugin_api = 16
+author = "etrobert"
+license = "MIT"
+dependencies = []
+tags = ["storage", "zfs"]
+icon = "activity"
+description = "Busy time of the disks backing the tank pool."
+
+[[widget]]
+id = "bar"
+entry = "bar.luau"
