@@ -8,6 +8,7 @@ source = "community"
 [plugins]
 enabled = [
   "etrobert/birthdays",
+  "etrobert/disk-io",
   "etrobert/weekday",
   "noctalia/bitwarden",
   "avivbintangaringga/nix-monitor",
@@ -73,6 +74,7 @@ end = [
   "temp",
   "cpu",
   "ram",
+  "etrobert/disk-io:bar",
   "media",
   "tray",
   "notifications",
