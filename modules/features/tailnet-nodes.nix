@@ -3,9 +3,10 @@
 #
 # Each entry runs its own userspace-networking tailscaled with a private state
 # directory and control socket, joins the tailnet under the given hostname, and
-# proxies `https://<name>.tailcab4c0.ts.net` to a local port with a
-# Tailscale-issued certificate. The names resolve on the tailnet only, at home
-# and away — nothing is published to the LAN or the WAN.
+# proxies to a local port: `http://<name>` for the bare name, and
+# `https://<name>.tailcab4c0.ts.net` with a Tailscale-issued certificate. The
+# names resolve on the tailnet only, at home and away — nothing is published to
+# the LAN or the WAN.
 #
 # Unlike Tailscale Services this needs no tag on the host and no tailnet policy
 # changes: each node is an ordinary device joining with the existing auth key.
@@ -46,6 +47,10 @@ _: {
           ts status >/dev/null 2>&1 \
             || ts up --auth-key "file:${config.age.secrets.tailscale-authkey.path}" --hostname=${node.name}
 
+          # Port 80 is what makes the bare `http://${node.name}` work: no public CA
+          # issues certificates for single-label names, so HTTPS is only valid on
+          # the full MagicDNS name. Both are tailnet-only either way.
+          ts serve --bg --http=80 http://localhost:${toString node.localPort}
           ts serve --bg --https=443 http://localhost:${toString node.localPort}
         '';
     in
