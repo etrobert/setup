@@ -9,6 +9,7 @@ source = "community"
 enabled = [
   "etrobert/birthdays",
   "etrobert/weekday",
+  "etrobert/zpool",
   "noctalia/bitwarden",
   "avivbintangaringga/nix-monitor",
 ]
@@ -73,6 +74,7 @@ end = [
   "temp",
   "cpu",
   "ram",
+  "etrobert/zpool:bar",
   "media",
   "tray",
   "notifications",
