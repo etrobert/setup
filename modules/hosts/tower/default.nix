@@ -37,6 +37,7 @@ in
       self.nixosModules.towerStorage
       self.nixosModules.samba
       self.nixosModules.immich
+      self.nixosModules.prometheusGrafana
       self.nixosModules.tailnetServices
     ];
   };
