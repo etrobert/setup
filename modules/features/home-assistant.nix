@@ -2,9 +2,10 @@ _: {
   flake.nixosModules.homeAssistant = _: {
     hardware.bluetooth.enable = true;
 
+    networking.firewall.allowedTCPPorts = [ 8123 ];
+
     services.home-assistant = {
       enable = true;
-      openFirewall = true;
       extraComponents = [
         "hue"
         "led_ble"
@@ -265,8 +266,6 @@ _: {
         # tsnsrv sets X-Forwarded-For unconditionally, which Home Assistant
         # rejects with a 400 until the proxy is trusted.
         http = {
-          # `openFirewall` reads this, and the module no longer defaults it.
-          server_port = 8123;
           use_x_forwarded_for = true;
           trusted_proxies = [ "127.0.0.1" ];
         };
