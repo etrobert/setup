@@ -2,9 +2,10 @@ _: {
   flake.nixosModules.homeAssistant = _: {
     hardware.bluetooth.enable = true;
 
+    networking.firewall.allowedTCPPorts = [ 8123 ];
+
     services.home-assistant = {
       enable = true;
-      openFirewall = true;
       extraComponents = [
         "hue"
         "led_ble"
