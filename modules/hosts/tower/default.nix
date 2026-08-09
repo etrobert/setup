@@ -38,6 +38,7 @@ in
       self.nixosModules.samba
       self.nixosModules.immich
       self.nixosModules.tailnetServices
+      self.nixosModules.netdata
     ];
   };
 }

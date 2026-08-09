@@ -48,6 +48,11 @@
             toURL = "http://127.0.0.1:2586";
             plaintext = true;
           };
+
+          metrics = {
+            toURL = "http://127.0.0.1:19999";
+            plaintext = true;
+          };
         };
       };
     };
