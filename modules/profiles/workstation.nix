@@ -70,7 +70,6 @@ _: {
               gnumake
               go
               google-chrome
-              home-manager
               hyperfine # Command-line benchmarking tool
               jqp # TUI playground to experiment with jq
               libnotify
