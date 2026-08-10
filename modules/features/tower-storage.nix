@@ -1,11 +1,3 @@
-# tower's redundant data pool: 4x 1TB Crucial BX500 SATA SSDs in ZFS raidz1
-# (~3TB usable, survives any one drive failure), declared with disko. Disko
-# only creates — after the drives are installed, provision once with:
-#   nix run github:nix-community/disko -- --mode destroy,format,mount \
-#     --flake .#tower
-# To add datasets or change properties later, edit here and re-run
-# `disko --mode format,mount` (non-destructive: creates missing datasets,
-# applies updated properties). Removing datasets is manual `zfs destroy`.
 { inputs, ... }:
 {
   flake.nixosModules.towerStorage =
@@ -88,8 +80,7 @@
 
               # Postgres writes 8 KiB pages, so a large record turns a
               # scattered page update into a copy-on-write rewrite of the whole
-              # record. On this pool's geometry fio measures 4.4x physical
-              # write amplification at 16K against 17.7x at the 128K default.
+              # record.
               options.recordsize = "16K";
             };
           };
