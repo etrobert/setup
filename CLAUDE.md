@@ -14,9 +14,7 @@ Personal dotfiles and system configuration repository using Nix flakes for:
 ### Configuration Layout
 
 Program configs live colocated with their wrapper in `pkgs/`. Each `*-wrapped`
-package embeds its config directly and is self-contained. Prefer `-wrapped`
-packages and darwin/NixOS modules over home-manager, which is used only on
-`aaron` for the syncthing user service (nix-darwin has no equivalent).
+package embeds its config directly and is self-contained.
 
 ### Nix Flake Structure
 
