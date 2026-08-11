@@ -1,10 +1,14 @@
 _: {
-  flake.nixosModules.gaming = _: {
-    programs.steam.enable = true;
+  flake.nixosModules.gaming =
+    { pkgs, ... }:
+    {
+      programs.steam.enable = true;
 
-    allowedUnfreePackages = [
-      "steam"
-      "steam-unwrapped"
-    ];
-  };
+      environment.systemPackages = [ pkgs.heroic ];
+
+      allowedUnfreePackages = [
+        "steam"
+        "steam-unwrapped"
+      ];
+    };
 }
