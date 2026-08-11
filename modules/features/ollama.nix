@@ -1,13 +1,12 @@
 _: {
   flake.nixosModules.ollama =
-    { config, ... }:
+    { config, pkgs, ... }:
     {
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.services.ollama.port ];
 
       services.ollama = {
         enable = true;
-        # TODO: Enable when have GPU
-        # package = pkgs.ollama-vulkan;
+        package = pkgs.ollama-vulkan;
 
         host = "0.0.0.0";
 
