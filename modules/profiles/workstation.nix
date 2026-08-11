@@ -58,7 +58,11 @@ _: {
             externalPackages = with pkgs; [
               act
               audacity
-              btop
+
+              # the rocm variant can dlopen ROCm SMI at runtime, which btop
+              # needs to monitor AMD GPUs
+              (if stdenv.hostPlatform.isLinux then btop-rocm else btop)
+
               bun
               discord
               ffmpeg
