@@ -21,13 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # gh is not on the self-hosted runner's PATH; take it from the flake's
-      # own nixpkgs.
-      - name: Put gh on PATH
-        run: |
-          nix build --inputs-from . --no-link --print-out-paths nixpkgs#gh \
-            | sed 's|$|/bin|' >> "$GITHUB_PATH"
-
       # At most one update in flight: while the previous PR is still open (the
       # agent is fixing it, or it is waiting on review) skip this run. The
       # notification doubles as the "update stuck for >12h" alarm.
@@ -45,7 +38,7 @@ jobs:
         env:
           NUMBER: ${{ steps.open.outputs.number }}
         run: |
-          nix run --accept-flake-config .#ntfy-wrapped -- publish --quiet \
+          ntfy publish --quiet \
             --title "Flake update skipped" "PR #$NUMBER still open" || true
 
       - name: Update flake inputs

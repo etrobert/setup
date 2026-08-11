@@ -35,13 +35,6 @@ jobs:
           ref: flake-update
           token: ${{ secrets.BOT_TOKEN }}
 
-      # gh is not on the self-hosted runner's PATH; take it from the flake's
-      # own nixpkgs.
-      - name: Put gh on PATH
-        run: |
-          nix build --inputs-from . --no-link --print-out-paths nixpkgs#gh \
-            | sed 's|$|/bin|' >> "$GITHUB_PATH"
-
       - name: Check the failure is still current
         id: state
         env:
@@ -114,5 +107,4 @@ jobs:
           else
             title="Agent could not fix the flake update"
           fi
-          nix run --accept-flake-config .#ntfy-wrapped -- publish --quiet \
-            --title "$title" "PR #$number: $url" || true
+          ntfy publish --quiet --title "$title" "PR #$number: $url" || true
