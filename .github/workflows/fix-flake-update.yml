@@ -29,11 +29,13 @@ jobs:
       contents: read
 
     steps:
-      # BOT_TOKEN so the fix commit is pushed as etrobert-bot.
+      # No persisted credentials: the workflow token is read-only, and the
+      # push authenticates as etrobert-bot through the runner's
+      # pre-authenticated gh instead.
       - uses: actions/checkout@v7
         with:
           ref: flake-update
-          token: ${{ secrets.BOT_TOKEN }}
+          persist-credentials: false
 
       - name: Configure git identity
         run: |
@@ -43,7 +45,6 @@ jobs:
       - name: Run the fix agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
           # claude-code is unfree, and --inputs-from reuses the flake's own
           # nixpkgs so tower's store already has it.
           NIXPKGS_ALLOW_UNFREE: "1"
@@ -63,7 +64,8 @@ jobs:
           if [ "$(git rev-parse HEAD)" = "$base" ]
           then echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
-            git push origin HEAD:flake-update
+            git -c credential.helper='!gh auth git-credential' \
+              push origin HEAD:flake-update
             echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
 
@@ -71,7 +73,6 @@ jobs:
       # idempotent, so re-running them is free when it did not.
       - name: Re-approve and notify
         env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
           PUSHED: ${{ steps.push.outputs.pushed }}
         run: |
           pr=$(gh pr list --head flake-update --state open \

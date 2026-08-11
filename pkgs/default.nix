@@ -77,6 +77,7 @@
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
+        gh-wrapped = pkgs.callPackage ./gh-wrapped { };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
         agents = pkgs.callPackage ./agents { inherit self'; };
         inherit ntfy-wrapped hass-cli-wrapped git-wrapped;

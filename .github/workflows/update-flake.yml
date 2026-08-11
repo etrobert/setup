@@ -34,12 +34,12 @@ jobs:
           branch: flake-update
           delete-branch: true
 
-      # etrobert authors the PR, so etrobert-bot may approve it; the ruleset
-      # (all-checks, all-builds, one approval) decides when auto-merge fires.
+      # etrobert authors the PR, so etrobert-bot — the runner's gh is
+      # pre-authenticated as it — may approve; the ruleset (all-checks,
+      # all-builds, one approval) decides when auto-merge fires.
       - name: Approve and enable auto-merge
         if: steps.create.outputs.pull-request-number != ''
         env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
           NUMBER: ${{ steps.create.outputs.pull-request-number }}
         run: |
           gh pr review "$NUMBER" --approve
