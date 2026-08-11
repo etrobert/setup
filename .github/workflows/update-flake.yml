@@ -16,38 +16,15 @@ jobs:
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
-      pull-requests: read
 
     steps:
       - uses: actions/checkout@v7
 
-      # At most one update in flight: while the previous PR is still open (the
-      # agent is fixing it, or it is waiting on review) skip this run. The
-      # notification doubles as the "update stuck for >12h" alarm.
-      - name: Look for an open update PR
-        id: open
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          number=$(gh pr list --head flake-update --state open \
-            --json number --jq '.[0].number // empty')
-          echo "number=$number" >> "$GITHUB_OUTPUT"
-
-      - name: Notify skip
-        if: steps.open.outputs.number != ''
-        env:
-          NUMBER: ${{ steps.open.outputs.number }}
-        run: |
-          ntfy publish --quiet \
-            --title "Flake update skipped" "PR #$NUMBER still open" || true
-
       - name: Update flake inputs
-        if: steps.open.outputs.number == ''
         run: nix flake update --accept-flake-config
 
       - name: Create pull request
         id: create
-        if: steps.open.outputs.number == ''
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PAT }}
