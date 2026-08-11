@@ -56,27 +56,8 @@ jobs:
           nix run --inputs-from . nixpkgs#claude-code --impure -- \
             --print --dangerously-skip-permissions "$PROMPT"
 
-      # A no-op when the agent committed nothing.
+      # A no-op when the agent committed nothing. Relies on the approval and
+      # auto-merge from the update workflow surviving the push — the ruleset
+      # must not dismiss stale approvals on push.
       - name: Push the fix
         run: git push origin HEAD:flake-update
-
-      # The push may have dismissed the earlier approval; approving and
-      # enabling auto-merge again are both idempotent.
-      - name: Re-approve and notify
-        env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: |
-          pr=$(gh pr list --head flake-update --state open \
-            --json number,url --jq '.[0] // empty')
-          if [ -z "$pr" ]
-          then
-            echo "No open flake-update PR left; nothing to approve or notify"
-            exit 0
-          fi
-          number=$(jq --raw-output .number <<<"$pr")
-          url=$(jq --raw-output .url <<<"$pr")
-          gh pr review "$number" --approve
-          gh pr merge "$number" --auto --squash
-          ntfy publish --quiet \
-            --title "Fix agent ran on the flake update" \
-            "PR #$number: $url" || true

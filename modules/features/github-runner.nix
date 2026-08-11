@@ -1,7 +1,6 @@
 _: {
   flake.nixosModules.githubRunner =
     {
-      self,
       config,
       lib,
       pkgs,
@@ -10,9 +9,6 @@ _: {
     {
       services.github-runners =
         let
-          inherit (pkgs.stdenv.hostPlatform) system;
-          inherit (self.packages.${system}) ntfy-wrapped;
-
           # tower serves CI for several of etrobert's repos. GitHub user
           # accounts have no org-level runners, so each repo needs its own
           # registration. Runners are named tower-<repo>-<n>.
@@ -28,11 +24,10 @@ _: {
               tokenFile = config.age.secrets.github-runner-token.path;
               replace = true;
 
-              # gh and ntfy for the flake-update pipeline workflows.
+              # gh for the flake-update pipeline workflows.
               extraPackages = [
                 pkgs.jq
                 pkgs.gh
-                ntfy-wrapped
               ];
 
               # The module defaults to Restart=no for persistent runners, so an
