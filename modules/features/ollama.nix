@@ -12,7 +12,10 @@ _: {
 
         environmentVariables.OLLAMA_CONTEXT_LENGTH = "32768";
 
-        loadModels = [ "gpt-oss:20b" ];
+        loadModels = [
+          "gpt-oss:20b"
+          "qwen3-coder:30b"
+        ];
       };
     };
 }
