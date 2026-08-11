@@ -19,7 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # access-tokens: the self-hosted runner's nix has no GitHub credentials,
+      # and unauthenticated api.github.com calls share the household IP's
+      # 60/hour budget. Applies client-side, so no trusted-user requirement.
       - name: Update flake inputs
+        env:
+          NIX_CONFIG: access-tokens = github.com=${{ github.token }}
         run: nix flake update --accept-flake-config
 
       - name: Create pull request
