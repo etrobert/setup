@@ -39,6 +39,7 @@ in
       self.nixosModules.immich
       self.nixosModules.ollama
       self.nixosModules.tailnetServices
+      self.nixosModules.monitorGpuWake
     ];
   };
 }
