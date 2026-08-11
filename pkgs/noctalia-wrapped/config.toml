@@ -172,13 +172,14 @@ panel_placement = "floating"
 [widget.ram]
 label_show_units = false
 
-# cpu, temp and ram are seeded aliases for the sysmon widget; gpu_vram has
-# none, so name it here. On a host with several amdgpu cards it sums the
-# VRAM of every one of them. Its default glyph is the one ram already draws,
-# hence the override; glyph takes any Tabler icon name, not just the aliases.
+# cpu, temp and ram are seeded aliases for the sysmon widget; the VRAM stats
+# have none, so name this one here. On a host with several amdgpu cards it
+# sums the VRAM of every one of them. Its default glyph is the one ram already
+# draws, hence the override; glyph takes any Tabler icon name, not just the
+# aliases.
 [widget.vram]
 type = "sysmon"
-stat = "gpu_vram"
+stat = "gpu_vram_used"
 glyph = "device-desktop"
 label_show_units = false
 

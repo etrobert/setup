@@ -1,0 +1,157 @@
+Add a gpu_vram_used sysmon stat reporting bytes
+
+sysmon reports RAM two ways, ram_used in bytes and ram_pct, and disk four
+ways, but VRAM only as gpu_vram, whose label is hardcoded to a percentage.
+noctalia's own control centre already prints VRAM in GiB via
+formatGpuVramUsed, so the bar widget is the odd one out.
+
+This mirrors the ram_used/ram_pct pairing rather than redefining gpu_vram:
+the new stat shares the same probe, thresholds, gauge ratio, display name and
+glyph, and differs only in formatting the label with formatBinaryBytesAsGib.
+Nothing existing changes behaviour.
+
+diff --git a/assets/translations/en.json b/assets/translations/en.json
+index 19ee1323f..722def37e 100644
+--- a/assets/translations/en.json
++++ b/assets/translations/en.json
+@@ -3187,6 +3187,7 @@
+         "gpu-temp": "GPU Temperature",
+         "gpu-usage": "GPU Usage",
+         "gpu-vram": "GPU VRAM",
++        "gpu-vram-used": "GPU VRAM Used",
+         "graph": "Graph",
+         "graphic": "Graphic",
+         "hidden": "Hidden",
+diff --git a/src/shell/bar/widgets/sysmon_widget.cpp b/src/shell/bar/widgets/sysmon_widget.cpp
+index 514027fda..0d89de9f6 100644
+--- a/src/shell/bar/widgets/sysmon_widget.cpp
++++ b/src/shell/bar/widgets/sysmon_widget.cpp
+@@ -103,7 +103,9 @@ namespace {
+   bool needsCpuTemp(SysmonStat stat) { return stat == SysmonStat::CpuTemp; }
+   bool needsGpuTemp(SysmonStat stat) { return stat == SysmonStat::GpuTemp; }
+   bool needsGpuUsage(SysmonStat stat) { return stat == SysmonStat::GpuUsage; }
+-  bool needsGpuVram(SysmonStat stat) { return stat == SysmonStat::GpuVram; }
++  bool needsGpuVram(SysmonStat stat) {
++    return stat == SysmonStat::GpuVram || stat == SysmonStat::GpuVramUsed;
++  }
+ 
+   bool isDiskStat(SysmonStat stat) {
+     return stat == SysmonStat::DiskUsedPct
+@@ -112,10 +114,11 @@ namespace {
+         || stat == SysmonStat::DiskFree;
+   }
+ 
+-  constexpr std::array<SysmonStat, 14> kTooltipStats{
+-      SysmonStat::CpuUsage,    SysmonStat::CpuTemp,  SysmonStat::GpuTemp, SysmonStat::GpuUsage,    SysmonStat::GpuVram,
+-      SysmonStat::RamUsed,     SysmonStat::RamPct,   SysmonStat::SwapPct, SysmonStat::DiskUsedPct, SysmonStat::DiskUsed,
+-      SysmonStat::DiskFreePct, SysmonStat::DiskFree, SysmonStat::NetRx,   SysmonStat::NetTx,
++  constexpr std::array<SysmonStat, 15> kTooltipStats{
++      SysmonStat::CpuUsage,    SysmonStat::CpuTemp,     SysmonStat::GpuTemp, SysmonStat::GpuUsage,
++      SysmonStat::GpuVram,     SysmonStat::GpuVramUsed, SysmonStat::RamUsed, SysmonStat::RamPct,
++      SysmonStat::SwapPct,     SysmonStat::DiskUsedPct, SysmonStat::DiskUsed,
++      SysmonStat::DiskFreePct, SysmonStat::DiskFree,    SysmonStat::NetRx,   SysmonStat::NetTx,
+   };
+ 
+   [[nodiscard]] double netRxFromStats(const SystemStats& stats, std::string_view interfaceName) {
+@@ -151,6 +154,7 @@ namespace {
+     case SysmonStat::GpuUsage:
+       return i18n::tr("bar.widgets.sysmon.gpu-usage");
+     case SysmonStat::GpuVram:
++    case SysmonStat::GpuVramUsed:
+       return i18n::tr("bar.widgets.sysmon.gpu-vram");
+     case SysmonStat::RamUsed:
+     case SysmonStat::RamPct:
+@@ -398,6 +402,7 @@ std::pair<double, double> SysmonWidget::currentThresholds() const {
+   case SysmonStat::GpuUsage:
+     return {monitorConfig.gpuUsageActivityThreshold, monitorConfig.gpuUsageCriticalThreshold};
+   case SysmonStat::GpuVram:
++  case SysmonStat::GpuVramUsed:
+     return {monitorConfig.gpuVramActivityThreshold, monitorConfig.gpuVramCriticalThreshold};
+   case SysmonStat::RamUsed:
+   case SysmonStat::RamPct:
+@@ -443,6 +448,7 @@ double SysmonWidget::currentGradientValue() {
+   case SysmonStat::GpuUsage:
+     return stats.gpuUsagePercent.value_or(0.0);
+   case SysmonStat::GpuVram:
++  case SysmonStat::GpuVramUsed:
+     if (stats.gpuVramUsedBytes.has_value() && stats.gpuVramTotalBytes.has_value() && *stats.gpuVramTotalBytes > 0) {
+       return 100.0 * static_cast<double>(*stats.gpuVramUsedBytes) / static_cast<double>(*stats.gpuVramTotalBytes);
+     }
+@@ -809,6 +815,7 @@ double SysmonWidget::normalizedFromStats(
+     return 0.0;
+ 
+   case SysmonStat::GpuVram:
++  case SysmonStat::GpuVramUsed:
+     if (stats.gpuVramUsedBytes.has_value() && stats.gpuVramTotalBytes.has_value() && *stats.gpuVramTotalBytes > 0) {
+       return static_cast<double>(*stats.gpuVramUsedBytes) / static_cast<double>(*stats.gpuVramTotalBytes);
+     }
+@@ -943,6 +950,12 @@ std::optional<std::string> SysmonWidget::formatValueFor(SysmonStat stat, const S
+     }
+     return std::nullopt;
+ 
++  case SysmonStat::GpuVramUsed:
++    if (stats.gpuVramUsedBytes.has_value()) {
++      return FormatUnits::formatBinaryBytesAsGib(*stats.gpuVramUsedBytes);
++    }
++    return std::nullopt;
++
+   case SysmonStat::RamUsed:
+     return FormatUnits::formatBinaryMib(stats.ramUsedMb);
+ 
+@@ -991,6 +1004,7 @@ bool SysmonWidget::statAvailableForTooltip(SysmonStat stat, const SystemStats& s
+   case SysmonStat::GpuUsage:
+     return monitorConfig.gpuPollSeconds > 0.0f && stats.gpuUsagePercent.has_value();
+   case SysmonStat::GpuVram:
++  case SysmonStat::GpuVramUsed:
+     return monitorConfig.gpuPollSeconds > 0.0f
+         && stats.gpuVramUsedBytes.has_value()
+         && stats.gpuVramTotalBytes.has_value()
+@@ -1053,6 +1067,7 @@ const char* SysmonWidget::glyphName(SysmonStat stat) {
+   case SysmonStat::GpuUsage:
+     return "gpu-usage";
+   case SysmonStat::GpuVram:
++  case SysmonStat::GpuVramUsed:
+     return "memory";
+   case SysmonStat::RamUsed:
+   case SysmonStat::RamPct:
+diff --git a/src/shell/bar/widgets/sysmon_widget.h b/src/shell/bar/widgets/sysmon_widget.h
+index a1ffcb48b..b38060c54 100644
+--- a/src/shell/bar/widgets/sysmon_widget.h
++++ b/src/shell/bar/widgets/sysmon_widget.h
+@@ -33,6 +33,7 @@ enum class SysmonStat {
+   GpuTemp,
+   GpuUsage,
+   GpuVram,
++  GpuVramUsed,
+   RamUsed,
+   RamPct,
+   SwapPct,
+diff --git a/src/shell/bar/widgets/sysmon_widget_definition.cpp b/src/shell/bar/widgets/sysmon_widget_definition.cpp
+index 4a6554f32..c5a175afe 100644
+--- a/src/shell/bar/widgets/sysmon_widget_definition.cpp
++++ b/src/shell/bar/widgets/sysmon_widget_definition.cpp
+@@ -56,6 +56,11 @@ const noctalia::bar::WidgetDefinition<SysmonWidget::Options, SysmonWidgetDefinit
+                           .configValue = "gpu_vram",
+                           .labelKey = "settings.widgets.options.gpu-vram",
+                       },
++                      {
++                          .value = SysmonStat::GpuVramUsed,
++                          .configValue = "gpu_vram_used",
++                          .labelKey = "settings.widgets.options.gpu-vram-used",
++                      },
+                       {
+                           .value = SysmonStat::RamUsed,
+                           .configValue = "ram_used",
+diff --git a/src/shell/settings/widget_settings_registry.cpp b/src/shell/settings/widget_settings_registry.cpp
+index 818b597e3..74b1c5cb6 100644
+--- a/src/shell/settings/widget_settings_registry.cpp
++++ b/src/shell/settings/widget_settings_registry.cpp
+@@ -232,7 +232,7 @@ namespace settings {
+         if (stat == "gpu_usage") {
+           return "gpu-usage";
+         }
+-        if (stat == "gpu_vram" || stat == "ram_used" || stat == "ram_pct") {
++        if (stat == "gpu_vram" || stat == "gpu_vram_used" || stat == "ram_used" || stat == "ram_pct") {
+           return "memory";
+         }
+         if (stat == "swap_pct"

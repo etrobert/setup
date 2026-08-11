@@ -13,15 +13,18 @@ let
 
   wallpaper = ../../assets/saint-levant.jpg;
 
-  # sysmon can only label VRAM as a percentage, so it reads unlike ram right
-  # next to it on the bar. The guard fires once upstream grows a bytes-valued
-  # VRAM stat, since the patch is then the wrong way to get one.
+  # sysmon labels VRAM only as a percentage, so it reads unlike ram right next
+  # to it on the bar. The patch adds the bytes-valued stat ram already has.
+  #
+  # The guard runs in prePatch because the patch introduces the very string it
+  # looks for: seeing gpu_vram_used in the pristine source means upstream has
+  # shipped its own, and this should go.
   patched-noctalia = noctalia.overrideAttrs (previous: {
-    patches = (previous.patches or [ ]) ++ [ ./vram-gib.patch ];
+    patches = (previous.patches or [ ]) ++ [ ./gpu-vram-used-stat.patch ];
 
-    postPatch = (previous.postPatch or "") + /* bash */ ''
-      if grep -rq 'gpu_vram_used' src/shell/bar/widget_factory.cpp; then
-        echo "noctalia now ships a bytes VRAM stat; drop vram-gib.patch and set stat = \"gpu_vram_used\"" >&2
+    prePatch = (previous.prePatch or "") + /* bash */ ''
+      if grep -q 'gpu_vram_used' src/shell/bar/widgets/sysmon_widget_definition.cpp; then
+        echo "noctalia ships gpu_vram_used now; drop gpu-vram-used-stat.patch" >&2
         exit 1
       fi
     '';
