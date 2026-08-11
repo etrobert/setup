@@ -23,7 +23,12 @@ _: {
               url = "https://github.com/etrobert/${repo}";
               tokenFile = config.age.secrets.github-runner-token.path;
               replace = true;
-              extraPackages = [ pkgs.jq ];
+
+              # gh for the flake-update pipeline workflows.
+              extraPackages = [
+                pkgs.jq
+                pkgs.gh
+              ];
 
               # The module defaults to Restart=no for persistent runners, so an
               # OOM-killed runner stays down until manually restarted.
