@@ -29,11 +29,13 @@ jobs:
       contents: read
 
     steps:
-      # BOT_TOKEN so the fix commit is pushed as etrobert-bot.
+      # PAT — the token that pushes the update branch itself — so the fix
+      # push re-triggers CI; the commit stays authored as etrobert-bot via
+      # the git identity below.
       - uses: actions/checkout@v7
         with:
           ref: flake-update
-          token: ${{ secrets.BOT_TOKEN }}
+          token: ${{ secrets.PAT }}
 
       - name: Configure git identity
         run: |
