@@ -23,21 +23,19 @@ index 19ee1323f..722def37e 100644
          "graphic": "Graphic",
          "hidden": "Hidden",
 diff --git a/src/shell/bar/widgets/sysmon_widget.cpp b/src/shell/bar/widgets/sysmon_widget.cpp
-index 514027fda..0d89de9f6 100644
+index 514027fda..c69888a09 100644
 --- a/src/shell/bar/widgets/sysmon_widget.cpp
 +++ b/src/shell/bar/widgets/sysmon_widget.cpp
-@@ -103,7 +103,9 @@ namespace {
+@@ -103,7 +103,7 @@ namespace {
    bool needsCpuTemp(SysmonStat stat) { return stat == SysmonStat::CpuTemp; }
    bool needsGpuTemp(SysmonStat stat) { return stat == SysmonStat::GpuTemp; }
    bool needsGpuUsage(SysmonStat stat) { return stat == SysmonStat::GpuUsage; }
 -  bool needsGpuVram(SysmonStat stat) { return stat == SysmonStat::GpuVram; }
-+  bool needsGpuVram(SysmonStat stat) {
-+    return stat == SysmonStat::GpuVram || stat == SysmonStat::GpuVramUsed;
-+  }
++  bool needsGpuVram(SysmonStat stat) { return stat == SysmonStat::GpuVram || stat == SysmonStat::GpuVramUsed; }
  
    bool isDiskStat(SysmonStat stat) {
      return stat == SysmonStat::DiskUsedPct
-@@ -112,10 +114,11 @@ namespace {
+@@ -112,10 +112,11 @@ namespace {
          || stat == SysmonStat::DiskFree;
    }
  
@@ -46,14 +44,14 @@ index 514027fda..0d89de9f6 100644
 -      SysmonStat::RamUsed,     SysmonStat::RamPct,   SysmonStat::SwapPct, SysmonStat::DiskUsedPct, SysmonStat::DiskUsed,
 -      SysmonStat::DiskFreePct, SysmonStat::DiskFree, SysmonStat::NetRx,   SysmonStat::NetTx,
 +  constexpr std::array<SysmonStat, 15> kTooltipStats{
-+      SysmonStat::CpuUsage,    SysmonStat::CpuTemp,     SysmonStat::GpuTemp, SysmonStat::GpuUsage,
-+      SysmonStat::GpuVram,     SysmonStat::GpuVramUsed, SysmonStat::RamUsed, SysmonStat::RamPct,
-+      SysmonStat::SwapPct,     SysmonStat::DiskUsedPct, SysmonStat::DiskUsed,
-+      SysmonStat::DiskFreePct, SysmonStat::DiskFree,    SysmonStat::NetRx,   SysmonStat::NetTx,
++      SysmonStat::CpuUsage, SysmonStat::CpuTemp,     SysmonStat::GpuTemp,  SysmonStat::GpuUsage,
++      SysmonStat::GpuVram,  SysmonStat::GpuVramUsed, SysmonStat::RamUsed,  SysmonStat::RamPct,
++      SysmonStat::SwapPct,  SysmonStat::DiskUsedPct, SysmonStat::DiskUsed, SysmonStat::DiskFreePct,
++      SysmonStat::DiskFree, SysmonStat::NetRx,       SysmonStat::NetTx,
    };
  
    [[nodiscard]] double netRxFromStats(const SystemStats& stats, std::string_view interfaceName) {
-@@ -151,6 +154,7 @@ namespace {
+@@ -151,6 +152,7 @@ namespace {
      case SysmonStat::GpuUsage:
        return i18n::tr("bar.widgets.sysmon.gpu-usage");
      case SysmonStat::GpuVram:
@@ -61,7 +59,7 @@ index 514027fda..0d89de9f6 100644
        return i18n::tr("bar.widgets.sysmon.gpu-vram");
      case SysmonStat::RamUsed:
      case SysmonStat::RamPct:
-@@ -398,6 +402,7 @@ std::pair<double, double> SysmonWidget::currentThresholds() const {
+@@ -398,6 +400,7 @@ std::pair<double, double> SysmonWidget::currentThresholds() const {
    case SysmonStat::GpuUsage:
      return {monitorConfig.gpuUsageActivityThreshold, monitorConfig.gpuUsageCriticalThreshold};
    case SysmonStat::GpuVram:
@@ -69,7 +67,7 @@ index 514027fda..0d89de9f6 100644
      return {monitorConfig.gpuVramActivityThreshold, monitorConfig.gpuVramCriticalThreshold};
    case SysmonStat::RamUsed:
    case SysmonStat::RamPct:
-@@ -443,6 +448,7 @@ double SysmonWidget::currentGradientValue() {
+@@ -443,6 +446,7 @@ double SysmonWidget::currentGradientValue() {
    case SysmonStat::GpuUsage:
      return stats.gpuUsagePercent.value_or(0.0);
    case SysmonStat::GpuVram:
@@ -77,7 +75,7 @@ index 514027fda..0d89de9f6 100644
      if (stats.gpuVramUsedBytes.has_value() && stats.gpuVramTotalBytes.has_value() && *stats.gpuVramTotalBytes > 0) {
        return 100.0 * static_cast<double>(*stats.gpuVramUsedBytes) / static_cast<double>(*stats.gpuVramTotalBytes);
      }
-@@ -809,6 +815,7 @@ double SysmonWidget::normalizedFromStats(
+@@ -809,6 +813,7 @@ double SysmonWidget::normalizedFromStats(
      return 0.0;
  
    case SysmonStat::GpuVram:
@@ -85,7 +83,7 @@ index 514027fda..0d89de9f6 100644
      if (stats.gpuVramUsedBytes.has_value() && stats.gpuVramTotalBytes.has_value() && *stats.gpuVramTotalBytes > 0) {
        return static_cast<double>(*stats.gpuVramUsedBytes) / static_cast<double>(*stats.gpuVramTotalBytes);
      }
-@@ -943,6 +950,12 @@ std::optional<std::string> SysmonWidget::formatValueFor(SysmonStat stat, const S
+@@ -943,6 +948,12 @@ std::optional<std::string> SysmonWidget::formatValueFor(SysmonStat stat, const S
      }
      return std::nullopt;
  
@@ -98,7 +96,7 @@ index 514027fda..0d89de9f6 100644
    case SysmonStat::RamUsed:
      return FormatUnits::formatBinaryMib(stats.ramUsedMb);
  
-@@ -991,6 +1004,7 @@ bool SysmonWidget::statAvailableForTooltip(SysmonStat stat, const SystemStats& s
+@@ -991,6 +1002,7 @@ bool SysmonWidget::statAvailableForTooltip(SysmonStat stat, const SystemStats& s
    case SysmonStat::GpuUsage:
      return monitorConfig.gpuPollSeconds > 0.0f && stats.gpuUsagePercent.has_value();
    case SysmonStat::GpuVram:
@@ -106,7 +104,7 @@ index 514027fda..0d89de9f6 100644
      return monitorConfig.gpuPollSeconds > 0.0f
          && stats.gpuVramUsedBytes.has_value()
          && stats.gpuVramTotalBytes.has_value()
-@@ -1053,6 +1067,7 @@ const char* SysmonWidget::glyphName(SysmonStat stat) {
+@@ -1053,6 +1065,7 @@ const char* SysmonWidget::glyphName(SysmonStat stat) {
    case SysmonStat::GpuUsage:
      return "gpu-usage";
    case SysmonStat::GpuVram:
