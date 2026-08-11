@@ -3,8 +3,7 @@ name: Update Flake Inputs
 
 "on":
   schedule:
-    # 06:00 and 18:00 UTC (08:00 and 20:00 Berlin during DST)
-    - cron: "0 6,18 * * *"
+    - cron: "0 * * * *"
   # allow manual trigger
   workflow_dispatch:
 
