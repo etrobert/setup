@@ -1,0 +1,32 @@
+---
+name: Notify Flake Update Merged
+
+"on":
+  pull_request:
+    types: [closed]
+
+jobs:
+  notify:
+    name: Notify
+    if: >-
+      ${{ github.event.pull_request.merged == true
+        && github.event.pull_request.head.ref == 'flake-update' }}
+    # Self-hosted (tower): ntfy is only reachable from the tailnet.
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+
+    steps:
+      # Only here so `nix run .#` resolves. Pinned to main because the default
+      # ref for a closed pull_request, refs/pull/N/merge, no longer exists once
+      # the PR is merged.
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+
+      - name: Notify merge
+        env:
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          nix run --accept-flake-config .#ntfy-wrapped -- publish --quiet \
+            --title "Flake update merged" "PR #$NUMBER" || true

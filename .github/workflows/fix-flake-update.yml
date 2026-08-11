@@ -1,0 +1,118 @@
+---
+name: Fix Flake Update
+
+"on":
+  workflow_run:
+    workflows: [Checks, Build]
+    branches: [flake-update]
+    types: [completed]
+
+# Checks and Build can fail on the same commit; queue the agents rather than
+# letting two of them rewrite the branch at once.
+concurrency:
+  group: fix-flake-update
+
+jobs:
+  fix:
+    name: Fix flake update
+    # head_repository: a fork PR could otherwise name its branch flake-update
+    # and summon the agent, with our secrets, onto the self-hosted runner.
+    if: >-
+      ${{ github.event.workflow_run.conclusion == 'failure'
+        && github.event.workflow_run.head_repository.full_name
+          == github.repository }}
+    # Self-hosted (tower): the agent reproduces failures against the local nix
+    # store, and ntfy is only reachable from the tailnet.
+    runs-on: [self-hosted, Linux]
+    timeout-minutes: 90
+    permissions:
+      contents: read
+
+    steps:
+      # BOT_TOKEN so the fix commit is pushed as etrobert-bot.
+      - uses: actions/checkout@v7
+        with:
+          ref: flake-update
+          token: ${{ secrets.BOT_TOKEN }}
+
+      # gh is not on the self-hosted runner's PATH; take it from the flake's
+      # own nixpkgs.
+      - name: Put gh on PATH
+        run: |
+          nix build --inputs-from . --no-link --print-out-paths nixpkgs#gh \
+            | sed 's|$|/bin|' >> "$GITHUB_PATH"
+
+      - name: Check the failure is still current
+        id: state
+        env:
+          FAILED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          head=$(git rev-parse HEAD)
+          if [ "$head" = "$FAILED_SHA" ]
+          then echo "sha=$head" >> "$GITHUB_OUTPUT"
+          else echo "Branch moved to $head; a fix already landed"
+          fi
+
+      - name: Configure git identity
+        if: steps.state.outputs.sha != ''
+        run: |
+          git config user.name etrobert-bot
+          git config user.email etrobert-bot@users.noreply.github.com
+
+      - name: Run the fix agent
+        if: steps.state.outputs.sha != ''
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          # claude-code is unfree, and --inputs-from reuses the flake's own
+          # nixpkgs so tower's store already has it.
+          NIXPKGS_ALLOW_UNFREE: "1"
+          PROMPT: >-
+            This branch is an automated flake.lock update pull request whose
+            CI failed. Investigate the failure (read the CI logs with gh, or
+            reproduce it with nix), fix the repository so CI passes, and
+            commit the fix with a conventional commit message. Do not push.
+        run: |
+          nix run --inputs-from . nixpkgs#claude-code --impure -- \
+            --print --dangerously-skip-permissions "$PROMPT"
+
+      - name: Push the fix
+        id: push
+        if: steps.state.outputs.sha != ''
+        env:
+          BASE_SHA: ${{ steps.state.outputs.sha }}
+        run: |
+          if [ "$(git rev-parse HEAD)" = "$BASE_SHA" ]
+          then echo "pushed=false" >> "$GITHUB_OUTPUT"
+          else
+            git push origin HEAD:flake-update
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # The push may have dismissed the earlier approval; both commands are
+      # idempotent, so re-running them is free when it did not.
+      - name: Re-approve and notify
+        if: steps.state.outputs.sha != ''
+        env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          PUSHED: ${{ steps.push.outputs.pushed }}
+        run: |
+          pr=$(gh pr list --head flake-update --state open \
+            --json number,url --jq '.[0] // empty')
+          if [ -z "$pr" ]
+          then
+            echo "No open flake-update PR left; nothing to approve or notify"
+            exit 0
+          fi
+          number=$(jq --raw-output .number <<<"$pr")
+          url=$(jq --raw-output .url <<<"$pr")
+          if [ "$PUSHED" = true ]
+          then
+            gh pr review "$number" --approve
+            gh pr merge "$number" --auto --squash
+            title="Agent pushed a flake update fix"
+          else
+            title="Agent could not fix the flake update"
+          fi
+          nix run --accept-flake-config .#ntfy-wrapped -- publish --quiet \
+            --title "$title" "PR #$number: $url" || true

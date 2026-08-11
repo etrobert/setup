@@ -3,28 +3,58 @@ name: Update Flake Inputs
 
 "on":
   schedule:
-    # every Monday at 06:00 UTC (08:00 Berlin during DST)
-    - cron: "0 6 * * 1"
+    # 06:00 and 18:00 UTC (08:00 and 20:00 Berlin during DST)
+    - cron: "0 6,18 * * *"
   # allow manual trigger
   workflow_dispatch:
 
 jobs:
   update:
     name: Update flake.lock
-    runs-on: ubuntu-latest
+    # Self-hosted (tower): nix is preinstalled and ntfy is only reachable from
+    # the tailnet.
+    runs-on: [self-hosted, Linux]
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      pull-requests: read
 
     steps:
       - uses: actions/checkout@v7
 
-      - uses: DeterminateSystems/determinate-nix-action@v3
+      # gh is not on the self-hosted runner's PATH; take it from the flake's
+      # own nixpkgs.
+      - name: Put gh on PATH
+        run: |
+          nix build --inputs-from . --no-link --print-out-paths nixpkgs#gh \
+            | sed 's|$|/bin|' >> "$GITHUB_PATH"
+
+      # At most one update in flight: while the previous PR is still open (the
+      # agent is fixing it, or it is waiting on review) skip this run. The
+      # notification doubles as the "update stuck for >12h" alarm.
+      - name: Look for an open update PR
+        id: open
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh pr list --head flake-update --state open \
+            --json number --jq '.[0].number // empty')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Notify skip
+        if: steps.open.outputs.number != ''
+        env:
+          NUMBER: ${{ steps.open.outputs.number }}
+        run: |
+          nix run --accept-flake-config .#ntfy-wrapped -- publish --quiet \
+            --title "Flake update skipped" "PR #$NUMBER still open" || true
 
       - name: Update flake inputs
+        if: steps.open.outputs.number == ''
         run: nix flake update --accept-flake-config
 
       - name: Create pull request
+        id: create
+        if: steps.open.outputs.number == ''
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PAT }}
@@ -33,3 +63,14 @@ jobs:
           body: Automated flake input update.
           branch: flake-update
           delete-branch: true
+
+      # etrobert authors the PR, so etrobert-bot may approve it; the ruleset
+      # (all-checks, all-builds, one approval) decides when auto-merge fires.
+      - name: Approve and enable auto-merge
+        if: steps.create.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          NUMBER: ${{ steps.create.outputs.pull-request-number }}
+        run: |
+          gh pr review "$NUMBER" --approve
+          gh pr merge "$NUMBER" --auto --squash
