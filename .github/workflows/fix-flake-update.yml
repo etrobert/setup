@@ -47,6 +47,10 @@ jobs:
           # claude-code is unfree, and --inputs-from reuses the flake's own
           # nixpkgs so tower's store already has it.
           NIXPKGS_ALLOW_UNFREE: "1"
+          # Authenticated GitHub fetches for the agent's nix commands; the
+          # anonymous api.github.com budget (60/hour per IP) is shared with
+          # everything else behind the household IP.
+          NIX_CONFIG: access-tokens = github.com=${{ github.token }}
           PROMPT: >-
             This branch is an automated flake.lock update pull request whose
             CI failed. Investigate the failure (read the CI logs with gh, or
