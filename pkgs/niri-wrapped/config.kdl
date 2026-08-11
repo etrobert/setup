@@ -467,6 +467,9 @@ binds {
     // or do a four-finger swipe up on a touchpad.
     Mod+O repeat=false { toggle-overview; }
 
+    // Apple Magic Keyboard F3 (Mission Control), reported by hid-apple as KEY_SCALE.
+    XF86LaunchA repeat=false { toggle-overview; }
+
     Mod+Q repeat=false { close-window; }
 
     Mod+Left  { focus-column-left; }
