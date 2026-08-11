@@ -47,15 +47,15 @@
 
       # Static IP on the motherboard NIC so the link survives the monitor (and its
       # USB ethernet adapter) being turned off. DNS points at pi for split-horizon
-      # resolution of internal *.etiennerobert.com names. Matched by MAC because
-      # PCI renumbering renames the interface across kernel updates.
+      # resolution of internal *.etiennerobert.com names. Matched by MAC so that
+      # an interface rename cannot detach it.
       ensureProfiles.profiles."lan-static" = {
         connection = {
           id = "lan-static";
           type = "ethernet";
         };
 
-        ethernet.mac-address = "34:5A:60:E1:DA:11";
+        ethernet.mac-address = "34:5a:60:e1:da:11";
 
         ipv4 = {
           method = "manual";

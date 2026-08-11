@@ -128,9 +128,12 @@ are port-forwarded to tower (`.10`).
 (`modules/features/lan-dns.nix`, listening on `end0`, static `.18`).
 
 **Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
-`.10` (motherboard NIC `enp11s0`, static via NetworkManager in
+`.10` (motherboard NIC, MAC `34:5a:60:e1:da:11`, static via NetworkManager in
 `modules/hosts/tower/configuration.nix` — not a pi DHCP reservation). Tower's NM
 profile uses pi (`.18`) for DNS so split-horizon resolution works on tower too.
+Match tower's NIC by MAC, never by interface name: PCI renumbering has renamed
+it across a kernel update (`enp11s0` → `enp14s0`), which detached a name-pinned
+profile and dropped tower to DHCP.
 
 **Testing the public/external path:** LAN clients resolve these names to tower
 directly (split-horizon) and bypass the port-forward, so they can't exercise the
