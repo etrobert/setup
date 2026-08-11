@@ -38,7 +38,7 @@ jobs:
       - name: Configure git identity
         run: |
           git config user.name etrobert-bot
-          git config user.email etrobert-bot@users.noreply.github.com
+          git config user.email etiennerobert33+github-bot@gmail.com
 
       - name: Run the fix agent
         env:
