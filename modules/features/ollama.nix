@@ -10,6 +10,8 @@ _: {
 
         host = "0.0.0.0";
 
+        environmentVariables.OLLAMA_CONTEXT_LENGTH = "32768";
+
         loadModels = [ "qwen2.5-coder:14b" ];
       };
     };
