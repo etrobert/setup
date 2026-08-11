@@ -35,25 +35,12 @@ jobs:
           ref: flake-update
           token: ${{ secrets.BOT_TOKEN }}
 
-      - name: Check the failure is still current
-        id: state
-        env:
-          FAILED_SHA: ${{ github.event.workflow_run.head_sha }}
-        run: |
-          head=$(git rev-parse HEAD)
-          if [ "$head" = "$FAILED_SHA" ]
-          then echo "sha=$head" >> "$GITHUB_OUTPUT"
-          else echo "Branch moved to $head; a fix already landed"
-          fi
-
       - name: Configure git identity
-        if: steps.state.outputs.sha != ''
         run: |
           git config user.name etrobert-bot
           git config user.email etrobert-bot@users.noreply.github.com
 
       - name: Run the fix agent
-        if: steps.state.outputs.sha != ''
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
@@ -71,11 +58,9 @@ jobs:
 
       - name: Push the fix
         id: push
-        if: steps.state.outputs.sha != ''
-        env:
-          BASE_SHA: ${{ steps.state.outputs.sha }}
         run: |
-          if [ "$(git rev-parse HEAD)" = "$BASE_SHA" ]
+          base=$(git rev-parse origin/flake-update)
+          if [ "$(git rev-parse HEAD)" = "$base" ]
           then echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
             git push origin HEAD:flake-update
@@ -85,7 +70,6 @@ jobs:
       # The push may have dismissed the earlier approval; both commands are
       # idempotent, so re-running them is free when it did not.
       - name: Re-approve and notify
-        if: steps.state.outputs.sha != ''
         env:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
           PUSHED: ${{ steps.push.outputs.pushed }}
