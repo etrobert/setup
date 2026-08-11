@@ -38,22 +38,25 @@
     };
 
     networking.networkmanager = {
-      # Keep tower single-homed on enp11s0; a second IP on the same /24
-      # intermittently broke Home Assistant's zeroconf startup. See #281.
+      # Keep tower single-homed on the motherboard NIC; a second IP on the same
+      # /24 intermittently broke Home Assistant's zeroconf startup. See #281.
       unmanaged = [
-        "interface-name:wlp12s0" # WiFi
+        "type:wifi"
         "mac:c8:4b:d6:ce:4e:78" # monitor's built-in USB ethernet adapter
       ];
 
       # Static IP on the motherboard NIC so the link survives the monitor (and its
       # USB ethernet adapter) being turned off. DNS points at pi for split-horizon
-      # resolution of internal *.etiennerobert.com names.
-      ensureProfiles.profiles."enp11s0-static" = {
+      # resolution of internal *.etiennerobert.com names. Matched by MAC so that
+      # an interface rename cannot detach it.
+      ensureProfiles.profiles."lan-static" = {
         connection = {
-          id = "enp11s0-static";
+          id = "lan-static";
           type = "ethernet";
-          interface-name = "enp11s0";
         };
+
+        ethernet.mac-address = "34:5a:60:e1:da:11";
+
         ipv4 = {
           method = "manual";
           address1 = "192.168.0.10/24,192.168.0.1";
