@@ -73,7 +73,6 @@ end = [
   "temp",
   "cpu",
   "ram",
-  "gpu",
   "vram",
   "media",
   "tray",
@@ -173,13 +172,9 @@ panel_placement = "floating"
 [widget.ram]
 label_show_units = false
 
-# cpu, temp and ram are seeded aliases for the sysmon widget; the GPU stats
-# have none, so name them here. Where a host has several amdgpu cards, usage
-# reads the first awake one in /sys/class/drm while VRAM sums all of them.
-[widget.gpu]
-type = "sysmon"
-stat = "gpu_usage"
-
+# cpu, temp and ram are seeded aliases for the sysmon widget; gpu_vram has
+# none, so name it here. On a host with several amdgpu cards it sums the
+# VRAM of every one of them.
 [widget.vram]
 type = "sysmon"
 stat = "gpu_vram"
