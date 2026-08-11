@@ -180,6 +180,7 @@ label_show_units = false
 type = "sysmon"
 stat = "gpu_vram"
 glyph = "device-desktop"
+label_show_units = false
 
 [widget.battery]
 show_label = false

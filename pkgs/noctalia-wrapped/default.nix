@@ -13,6 +13,20 @@ let
 
   wallpaper = ../../assets/saint-levant.jpg;
 
+  # sysmon can only label VRAM as a percentage, so it reads unlike ram right
+  # next to it on the bar. The guard fires once upstream grows a bytes-valued
+  # VRAM stat, since the patch is then the wrong way to get one.
+  patched-noctalia = noctalia.overrideAttrs (previous: {
+    patches = (previous.patches or [ ]) ++ [ ./vram-gib.patch ];
+
+    postPatch = (previous.postPatch or "") + /* bash */ ''
+      if grep -rq 'gpu_vram_used' src/shell/bar/widget_factory.cpp; then
+        echo "noctalia now ships a bytes VRAM stat; drop vram-gib.patch and set stat = \"gpu_vram_used\"" >&2
+        exit 1
+      fi
+    '';
+  });
+
   configHome = runCommand "noctalia-config-home" { } ''
     mkdir -p $out/noctalia
     substitute ${./config.toml} $out/noctalia/config.toml \
@@ -34,7 +48,7 @@ let
   };
 in
 wrapPackage {
-  package = noctalia;
+  package = patched-noctalia;
 
   env.NOCTALIA_CONFIG_HOME = configHome;
 
@@ -46,5 +60,5 @@ wrapPackage {
     bitwarden-cli
   ];
 
-  checks = [ "${noctalia}/bin/noctalia config validate ${configHome}/noctalia" ];
+  checks = [ "${patched-noctalia}/bin/noctalia config validate ${configHome}/noctalia" ];
 }

@@ -1,0 +1,26 @@
+Label gpu_vram in GiB rather than as a ratio
+
+sysmon reports ram both ways — ram_used in bytes and ram_pct — and disk four
+ways, but VRAM only as gpu_vram, whose label is hardcoded to a percentage.
+That leaves it the odd one out beside ram on the same bar.
+
+The gauge fill and the gpu_vram_* thresholds read the normalized ratio from
+normalizedFromStats, which this does not touch, so only the label changes —
+giving gpu_vram the shape RamUsed already has.
+
+--- a/src/shell/bar/widgets/sysmon_widget.cpp
++++ b/src/shell/bar/widgets/sysmon_widget.cpp
+@@ -935,11 +935,8 @@
+     return std::nullopt;
+
+   case SysmonStat::GpuVram:
+-    if (stats.gpuVramUsedBytes.has_value() && stats.gpuVramTotalBytes.has_value() && *stats.gpuVramTotalBytes > 0) {
+-      return std::format(
+-          "{:.0f}%",
+-          100.0 * static_cast<double>(*stats.gpuVramUsedBytes) / static_cast<double>(*stats.gpuVramTotalBytes)
+-      );
++    if (stats.gpuVramUsedBytes.has_value()) {
++      return FormatUnits::formatBinaryBytesAsGib(*stats.gpuVramUsedBytes);
+     }
+     return std::nullopt;
+
