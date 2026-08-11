@@ -174,10 +174,12 @@ label_show_units = false
 
 # cpu, temp and ram are seeded aliases for the sysmon widget; gpu_vram has
 # none, so name it here. On a host with several amdgpu cards it sums the
-# VRAM of every one of them.
+# VRAM of every one of them. Its default glyph is the one ram already draws,
+# hence the override; glyph takes any Tabler icon name, not just the aliases.
 [widget.vram]
 type = "sysmon"
 stat = "gpu_vram"
+glyph = "device-desktop"
 
 [widget.battery]
 show_label = false
