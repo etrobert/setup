@@ -29,13 +29,11 @@ jobs:
       contents: read
 
     steps:
-      # No persisted credentials: the workflow token is read-only, and the
-      # push authenticates as etrobert-bot through the runner's
-      # pre-authenticated gh instead.
+      # BOT_TOKEN so the fix commit is pushed as etrobert-bot.
       - uses: actions/checkout@v7
         with:
           ref: flake-update
-          persist-credentials: false
+          token: ${{ secrets.BOT_TOKEN }}
 
       - name: Configure git identity
         run: |
@@ -64,8 +62,7 @@ jobs:
           if [ "$(git rev-parse HEAD)" = "$base" ]
           then echo "pushed=false" >> "$GITHUB_OUTPUT"
           else
-            git -c credential.helper='!gh auth git-credential' \
-              push origin HEAD:flake-update
+            git push origin HEAD:flake-update
             echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
 
