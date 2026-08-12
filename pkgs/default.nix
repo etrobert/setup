@@ -94,6 +94,7 @@
         setuid-sudo = pkgs.callPackage ./setuid-sudo { };
         switch = pkgs.callPackage ./switch.nix { inherit self'; };
         deadnix-errfmt = pkgs.callPackage ./deadnix-errfmt { };
+        pi-wrapped = pkgs.callPackage ./pi-wrapped { };
         firefox-wrapped = pkgs.callPackage ./firefox-wrapped { inherit self; };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {

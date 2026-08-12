@@ -45,6 +45,7 @@ _: {
               gen-commit-msg
               git-find-commit
               agents
+              pi-wrapped
               hass-cli-wrapped
               pm
               pdfshrink
