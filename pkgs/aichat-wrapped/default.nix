@@ -3,24 +3,29 @@
   aichat,
   coreutils,
   lib,
-  wrapPackage,
+  writeShellApplication,
 }:
-wrapPackage {
-  package = aichat;
-  # aichat runs the accepted command by spawning `$SHELL -c`, which needs PATH.
-  inheritPath = true;
+# A script rather than a wrapper: the shim has to be stopped once aichat exits,
+# and `trap … EXIT` is the plainest way to say that. It also rules out `exec`,
+# which would replace the shell that owes us the trap.
+writeShellApplication {
+  name = "aichat";
   runtimeInputs = [ coreutils ];
+  # Unlike most scripts here: aichat runs the accepted command by spawning
+  # `$SHELL -c`, so it needs the caller's PATH rather than a pinned one.
+  inheritPath = true;
+  text = ''
+    # One shim per aichat, started here so claude inherits the caller's
+    # directory and reads that project's CLAUDE.md.
+    dir=$(mktemp --directory)
+    ${lib.getExe aichat-shim} --config "$dir/config.yaml" &
+    shim=$!
+    trap 'kill "$shim" 2>/dev/null || true; rm --recursive --force "$dir"' EXIT INT TERM HUP
 
-  # Start one shim per aichat process, in aichat's own directory, so claude
-  # inherits it and reads that project's CLAUDE.md. The shim picks a free port
-  # and writes the config naming it; `read` waits for that to be on disk.
-  # $$ survives the exec below, so the shim can watch it to know when to stop.
-  run = [
-    ''
-      _aichat_dir=$(mktemp --directory)
-      exec 3< <(${lib.getExe aichat-shim} --parent $$ --config "$_aichat_dir/config.yaml")
-      read -r _ <&3
-      export AICHAT_CONFIG_FILE="$_aichat_dir/config.yaml"
-    ''
-  ];
+    # The shim binds a free port, then writes the config naming it. It is
+    # already listening by the time the file appears.
+    until [ -e "$dir/config.yaml" ]; do sleep 0.02; done
+
+    AICHAT_CONFIG_FILE="$dir/config.yaml" ${lib.getExe aichat} "$@"
+  '';
 }

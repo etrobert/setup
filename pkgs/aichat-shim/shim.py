@@ -3,20 +3,16 @@
 aichat only speaks HTTP, so this translates its request into a Claude Code
 invocation and wraps the reply back into the shape aichat parses.
 
-One shim per aichat process: the wrapper starts it, it binds a free port and
-writes the aichat config naming that port, then exits when its parent does.
-Running per invocation is what makes claude inherit the caller's directory,
-and so pick up the CLAUDE.md of the project the user is standing in.
+One shim per aichat process: aichat-wrapped starts it, it binds a free port
+and writes the aichat config naming that port, and aichat-wrapped kills it on
+the way out. Running per invocation is what makes claude inherit the caller's
+directory, and so pick up the CLAUDE.md of the project the user is in.
 """
 
 import argparse
 import json
 import os
-import shutil
 import subprocess
-import sys
-import threading
-import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # default.nix substitutes a store path here, whose length is not ours to
@@ -112,37 +108,20 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
 
-def exit_with_parent(parent, config):
-    """aichat has no way to tell the shim it is done, so watch for its exit."""
-    while True:
-        try:
-            os.kill(parent, 0)
-        except OSError:
-            shutil.rmtree(os.path.dirname(config), ignore_errors=True)
-            os._exit(0)
-        time.sleep(0.5)
-
-
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--parent", type=int, required=True)
     parser.add_argument("--config", required=True)
     args = parser.parse_args()
 
+    # Binding happens here, so the port is already accepting by the time the
+    # config exists — which is what aichat-wrapped waits on.
     server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
-    port = server.server_address[1]
 
-    with open(args.config, "w") as handle:
-        handle.write(CONFIG.format(port=port))
-
-    watcher = threading.Thread(
-        target=exit_with_parent, args=(args.parent, args.config), daemon=True
-    )
-    watcher.start()
-
-    # Tells the wrapper the config is on disk and the port is accepting.
-    print("ready", flush=True)
-    sys.stdout.close()
+    partial = args.config + ".partial"
+    with open(partial, "w") as handle:
+        handle.write(CONFIG.format(port=server.server_address[1]))
+    # Rename so the waiting script never sees a half-written config.
+    os.replace(partial, args.config)
 
     server.serve_forever()
 
