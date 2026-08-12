@@ -14,8 +14,7 @@
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
 
-      # Our fork, for the `command` client type it adds; also newer than the
-      # release nixpkgs builds, which still wants Enter to pick a -e option.
+      # Our fork (see flake.nix); newer than nixpkgs, which needs Enter for -e.
       aichat = inputs'.aichat.packages.default;
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
