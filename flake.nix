@@ -94,8 +94,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Our fork, for the `command` client type it adds: a client backed by a
-    # local command rather than an HTTP endpoint. Upstream has no such thing.
+    # Our fork, adding the `command` client: backed by a local command.
     aichat = {
       url = "github:etrobert/aichat/command-client";
       inputs.nixpkgs.follows = "nixpkgs";
