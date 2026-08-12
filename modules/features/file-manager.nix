@@ -2,7 +2,9 @@ _: {
   flake.nixosModules.fileManager =
     { pkgs, ... }:
     {
-      # GVFS backs Nautilus's trash and removable-media mounting.
+      # Nautilus's sidebar: the gvfs-daemon backends (smb://, sftp://,
+      # trash://), the volume monitors that surface USB drives and phones,
+      # and gvfs-metadata, which stores per-file emblems and sort order.
       services.gvfs.enable = true;
 
       # Nautilus thumbnails come from gnome-desktop's factory, which runs the
