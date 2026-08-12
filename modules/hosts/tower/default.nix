@@ -38,6 +38,7 @@ in
       self.nixosModules.samba
       self.nixosModules.immich
       self.nixosModules.ollama
+      self.nixosModules.comfyui
       self.nixosModules.openWebui
       self.nixosModules.tailnetServices
     ];
