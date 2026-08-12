@@ -21,6 +21,21 @@ _: {
       # Automatic timezone based on geolocation
       services.automatic-timezoned.enable = true;
 
+      # geoclue 2.8 moved GeoIP into its own [ip] section that the nixpkgs module
+      # never writes, leaving hosts that can't scan wifi with no location source.
+      environment.etc."geoclue/conf.d/ip.conf".text = ''
+        [ip]
+        enable=true
+        method=ichnaea
+      '';
+
+      assertions = [
+        {
+          assertion = !lib.hasInfix "[ip]" config.environment.etc."geoclue/geoclue.conf".text;
+          message = "nixpkgs' geoclue2 module now writes an [ip] section; drop the conf.d drop-in in nixos-base.nix.";
+        }
+      ];
+
       i18n.defaultLocale = "en_US.UTF-8";
 
       console.useXkbConfig = true; # Apply XKB options to the TTY too
