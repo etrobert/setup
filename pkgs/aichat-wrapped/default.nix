@@ -20,30 +20,11 @@ let
 
   # Both backends in one config: `??` takes the default, `???` asks for claude
   # with -m.
-  config =
-    writeText "aichat.yaml" # yaml
-      ''
-        ---
-        model: openai:gpt-5.4-mini
-        clients:
-          - type: openai
-          - type: command
-            name: claude
-            command: ${lib.getExe claude-backend}
-            args:
-              - --print
-              - --model
-              - "{model}"
-              - --strict-mcp-config
-              - --append-system-prompt
-              - "{system}"
-              # Otherwise claude answers agentically: asked to search for TODO it
-              # runs the search rather than handing back the command.
-              - --disallowed-tools
-              - Bash,Read,Write,Edit,Glob,Grep,Task,WebFetch,WebSearch,NotebookEdit
-            models:
-              - name: haiku
-      '';
+  config = writeText "aichat.yaml" (
+    builtins.replaceStrings [ "@claude-backend@" ] [ (lib.getExe claude-backend) ] (
+      builtins.readFile ./config.yaml
+    )
+  );
 in
 wrapPackage {
   package = aichat;
