@@ -13,16 +13,20 @@
       # Minimal variant: the full one bundles gh, which our wrapper does not
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
+
+      # Our fork, for both aichat variants: one build in the store, and one set
+      # of keybindings — upstream's release still wants Enter to pick an option.
+      aichat = inputs'.aichat.packages.default;
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
       git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
     in
     {
       packages = {
-        aichat-wrapped = pkgs.callPackage ./aichat-wrapped { };
+        aichat-wrapped = pkgs.callPackage ./aichat-wrapped { inherit aichat; };
         aichat-claude = pkgs.callPackage ./aichat-claude {
+          inherit aichat;
           inherit (self'.packages) claude-code-wrapped;
-          aichat = inputs'.aichat.packages.default;
         };
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
