@@ -1,0 +1,47 @@
+size=256
+input=
+output=
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --size)
+      size="$2"
+      shift 2
+      ;;
+    --input)
+      input="$2"
+      shift 2
+      ;;
+    --output)
+      output="$2"
+      shift 2
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [ -z "$input" ] || [ -z "$output" ]; then
+  echo "usage: 3mf-thumbnailer --input FILE --output FILE [--size PIXELS]" >&2
+  exit 1
+fi
+
+workdir=$(mktemp --directory)
+trap 'rm --recursive --force "$workdir"' EXIT
+
+# 3MF is an OPC package, so the thumbnail is whatever _rels/.rels relates as
+# one. Splitting on '<' puts each element on its own line for grep.
+target=$(unzip -p "$input" _rels/.rels |
+  tr '<' '\n' |
+  grep 'relationships/metadata/thumbnail' |
+  grep --only-matching 'Target="[^"]*"' |
+  head --lines=1 |
+  cut --delimiter='"' --fields=2 || true)
+
+# Slicers that skip the relationship still write the spec's default path.
+target=${target:-Metadata/thumbnail.png}
+
+unzip -p "$input" "${target#/}" >"$workdir/thumbnail.png"
+magick "$workdir/thumbnail.png" -resize "${size}x${size}>" "$output"

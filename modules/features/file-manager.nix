@@ -1,6 +1,14 @@
 _: {
   flake.nixosModules.fileManager =
-    { pkgs, ... }:
+    {
+      self,
+      pkgs,
+      ...
+    }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (self.packages.${system}) thumbnailer-3mf;
+    in
     {
       # GVFS backs Nautilus's trash and removable-media mounting.
       services.gvfs.enable = true;
@@ -13,6 +21,7 @@ _: {
         pkgs.ffmpegthumbnailer # video
         pkgs.gdk-pixbuf # raster images
         pkgs.librsvg # svg
+        thumbnailer-3mf
       ];
     };
 }
