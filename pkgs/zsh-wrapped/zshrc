@@ -54,6 +54,30 @@ bindkey -M vicmd '^U' vi-kill-line
 
 bindkey "^Y" autosuggest-accept
 
+# Rewrite the current line from a plain-English request into a shell command,
+# leaving it on the prompt to review, edit and accept.
+_aichat_rewrite() {
+  [[ -n $BUFFER ]] || return
+
+  local request=$BUFFER cmd
+
+  BUFFER="$request ⌛"
+  zle -I && zle redisplay
+
+  if cmd=$(aichat -e "$request" 2>/dev/null) && [[ -n $cmd ]]; then
+    BUFFER=$cmd
+  else
+    BUFFER=$request
+  fi
+
+  zle end-of-line
+}
+
+zle -N _aichat_rewrite
+
+bindkey -M viins "^O" _aichat_rewrite
+bindkey -M vicmd "^O" _aichat_rewrite
+
 # Moved here from profile because on darwin profile loads before agenix
 [ -f /run/agenix/openai-api-key ] && export OPENAI_API_KEY="$(cat /run/agenix/openai-api-key)"
 [ -f /run/agenix/gemini-api-key ] && export GEMINI_API_KEY="$(cat /run/agenix/gemini-api-key)"
