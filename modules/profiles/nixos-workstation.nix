@@ -135,6 +135,7 @@
 
         etc."xdg/mimeapps.list".text = /* ini */ ''
           [Default Applications]
+          inode/directory=org.gnome.Nautilus.desktop
           x-scheme-handler/sgnl=signal.desktop
           x-scheme-handler/signalcaptcha=signal.desktop
           text/html=open-url.desktop

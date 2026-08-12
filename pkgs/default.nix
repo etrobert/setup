@@ -124,6 +124,7 @@
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
+        thumbnailer-3mf = pkgs.callPackage ./thumbnailer-3mf { };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {
           inherit (pkgs) ghostty;
