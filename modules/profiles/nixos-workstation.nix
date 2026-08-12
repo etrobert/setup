@@ -109,6 +109,9 @@
 
           externalPackages = with pkgs; [
             linuxPackages.cpupower
+            # GTK falls back to hicolor without this, which ships no folder
+            # icons, so file managers render scaled-up stock bitmaps.
+            adwaita-icon-theme
             bazaar
             bibata-cursors
             chromium
