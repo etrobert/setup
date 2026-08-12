@@ -1,11 +1,11 @@
 ---
-# default.nix substitutes the backend's store path into command below.
+# default.nix substitutes claude's store path into command below.
 model: openai:gpt-5.4-mini
 clients:
   - type: openai
   - type: command
     name: claude
-    command: "@claude-backend@"
+    command: "@claude@"
     args:
       - --print
       - --model
