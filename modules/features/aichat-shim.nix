@@ -4,7 +4,15 @@
 #
 # aichat only speaks HTTP, so pkgs/aichat-shim exposes an OpenAI-compatible
 # endpoint on :4142 that shells out to claude. pkgs/aichat-wrapped points at it.
-_: {
+#
+# Two modules rather than one platform-branching module: deciding a module's
+# attributes from `pkgs` is an infinite recursion, since `pkgs` itself comes
+# from `config`. The workstation profile picks the right one per platform.
+_:
+let
+  description = "claude -p behind an OpenAI-compatible endpoint for aichat";
+in
+{
   flake = {
     nixosModules.aichat-shim =
       {
@@ -13,17 +21,14 @@ _: {
         pkgs,
         ...
       }:
-      let
-        inherit (pkgs.stdenv.hostPlatform) system;
-      in
       {
         systemd.user.services.aichat-shim = {
-          description = "claude -p behind an OpenAI-compatible endpoint for aichat";
+          inherit description;
           wantedBy = [ "default.target" ];
           unitConfig.ConditionUser = "!@system";
 
           serviceConfig = {
-            ExecStart = lib.getExe self.packages.${system}.aichat-shim;
+            ExecStart = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.aichat-shim;
             Restart = "on-failure";
             RestartSec = "30s";
             Slice = "background.slice";
@@ -38,16 +43,13 @@ _: {
         pkgs,
         ...
       }:
-      let
-        inherit (pkgs.stdenv.hostPlatform) system;
-      in
       {
-        launchd.user.agents.aichat-shim = {
-          serviceConfig = {
-            ProgramArguments = [ (lib.getExe self.packages.${system}.aichat-shim) ];
-            KeepAlive = true;
-            RunAtLoad = true;
-          };
+        launchd.user.agents.aichat-shim.serviceConfig = {
+          ProgramArguments = [
+            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.aichat-shim)
+          ];
+          KeepAlive = true;
+          RunAtLoad = true;
         };
       };
   };

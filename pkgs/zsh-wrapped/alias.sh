@@ -71,5 +71,12 @@ alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
 
 alias cly="claude --dangerously-skip-permissions"
 
+# aichat sends no working directory, so pass it along for the shim to run claude
+# in — that is what picks up the CLAUDE.md of the project you are standing in.
+ask-shell-command() {
+  aichat -e "cwd: $PWD
+$*"
+}
+
 # noglob: the request is unquoted, so a `*` or `?` must not be expanded by the shell.
-alias '??'='noglob aichat -e'
+alias '??'='noglob ask-shell-command'
