@@ -48,6 +48,22 @@
             toURL = "http://127.0.0.1:2586";
             plaintext = true;
           };
+
+          chat = {
+            toURL = "http://127.0.0.1:8090";
+            plaintext = true;
+
+            # Open WebUI's websocket upgrade fails on any non-ASCII header
+            # value: websockets >= 16.1 decodes header values as ISO-8859-1,
+            # and uvicorn's sansio websocket path then re-encodes them as
+            # ASCII. The whois headers carry the tailnet display name
+            # ("Étienne Robert"), which trips it. Open WebUI authenticates its
+            # own users and ignores these headers anyway.
+            #
+            # Passed via extraArgs because the tsnsrv NixOS module declares a
+            # `suppressWhois` option but never renders it into the command line.
+            extraArgs = [ "-suppressWhois=true" ];
+          };
         };
       };
     };
