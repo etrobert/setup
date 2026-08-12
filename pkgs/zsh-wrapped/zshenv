@@ -1,12 +1,12 @@
 # Import graphical-session vars (NIRI_SOCKET, ...) from the systemd user
 # manager so shells outside the session (SSH, tmux, cron) can use them.
 if command -v systemctl >/dev/null; then
-  for line in ${(f)"$(systemctl --user show-environment 2>/dev/null)"}; do
+  while IFS= read -r line; do
     case $line in
-      (NIRI_SOCKET=* | WAYLAND_DISPLAY=* | DISPLAY=* | DBUS_SESSION_BUS_ADDRESS=*)
+      NIRI_SOCKET=* | WAYLAND_DISPLAY=* | DISPLAY=* | DBUS_SESSION_BUS_ADDRESS=*)
         [[ -v ${line%%=*} ]] || export "$line"
         ;;
     esac
-  done
+  done < <(systemctl --user show-environment 2>/dev/null)
   unset line
 fi
