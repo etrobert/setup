@@ -70,3 +70,6 @@ alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
 alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
 
 alias cly="claude --dangerously-skip-permissions"
+
+# noglob: the request is unquoted, so a `*` or `?` must not be expanded by the shell.
+alias '??'='noglob aichat -e'
