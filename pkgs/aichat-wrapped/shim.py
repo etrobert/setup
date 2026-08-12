@@ -2,8 +2,14 @@
 
 aichat only speaks HTTP, so this translates its request into a Claude Code
 invocation and wraps the reply back into the shape aichat parses.
+
+One shim per aichat process: aichat-wrapped starts it, it binds a free port
+and writes the aichat config naming that port, and aichat-wrapped kills it on
+the way out. Running per invocation is what makes claude inherit the caller's
+directory, and so pick up the CLAUDE.md of the project the user is in.
 """
 
+import argparse
 import json
 import os
 import subprocess
@@ -13,11 +19,6 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 # control, so this one line opts out of the 79-column limit.
 CLAUDE = "@claude@"  # noqa: E501
 MODEL = "haiku"
-PORT = 4142
-# The `??` alias prefixes the request with this so claude can run in the
-# caller's directory and pick up that project's CLAUDE.md; aichat itself has
-# no way to send a working directory.
-CWD_PREFIX = "cwd: "
 DENIED_TOOLS = ",".join(
     [
         "Bash",
@@ -32,6 +33,16 @@ DENIED_TOOLS = ",".join(
         "NotebookEdit",
     ]
 )
+CONFIG = """---
+model: shim:claude
+clients:
+  - type: openai-compatible
+    name: shim
+    api_base: http://127.0.0.1:{port}/v1
+    api_key: unused
+    models:
+      - name: claude
+"""
 
 
 def strip_fences(text):
@@ -50,18 +61,7 @@ def join_role(messages, role):
     return "\n".join(parts).strip()
 
 
-def split_cwd(prompt):
-    if not prompt.startswith(CWD_PREFIX):
-        return None, prompt
-    first, _, rest = prompt.partition("\n")
-    cwd = first.removeprefix(CWD_PREFIX).strip()
-    if not os.path.isdir(cwd):
-        return None, rest.strip()
-    return cwd, rest.strip()
-
-
 def run_claude(system, prompt):
-    cwd, prompt = split_cwd(prompt)
     argv = [CLAUDE, "--print", "--model", MODEL, "--strict-mcp-config"]
     if system:
         argv += ["--append-system-prompt", system]
@@ -71,12 +71,7 @@ def run_claude(system, prompt):
     # The prompt goes on stdin because --disallowed-tools is variadic and
     # swallows any argument that follows it.
     done = subprocess.run(
-        argv,
-        input=prompt,
-        capture_output=True,
-        text=True,
-        timeout=120,
-        cwd=cwd,
+        argv, input=prompt, capture_output=True, text=True, timeout=120
     )
     if done.returncode != 0:
         raise RuntimeError(done.stderr.strip() or "claude exited non-zero")
@@ -110,7 +105,25 @@ class Handler(BaseHTTPRequestHandler):
         self.respond(200, {"choices": [{"message": message}]})
 
     def log_message(self, fmt, *args):
-        print(fmt % args, flush=True)
+        pass
 
 
-ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", required=True)
+    args = parser.parse_args()
+
+    # Binding happens here, so the port is already accepting by the time the
+    # config exists — which is what aichat-wrapped waits on.
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+
+    partial = args.config + ".partial"
+    with open(partial, "w") as handle:
+        handle.write(CONFIG.format(port=server.server_address[1]))
+    # Rename so the waiting script never sees a half-written config.
+    os.replace(partial, args.config)
+
+    server.serve_forever()
+
+
+main()
