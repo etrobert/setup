@@ -1,9 +1,0 @@
----
-model: claude-code:shim
-clients:
-  - type: openai-compatible
-    name: claude-code
-    api_base: http://127.0.0.1:4142/v1
-    api_key: unused
-    models:
-      - name: shim

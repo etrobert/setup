@@ -28,7 +28,6 @@
         self.nixosModules.darkman
         self.nixosModules.mpd
         self.nixosModules.copilot-api
-        self.nixosModules.aichat-shim
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
       ];

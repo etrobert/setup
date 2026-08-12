@@ -2,22 +2,27 @@
 
 aichat only speaks HTTP, so this translates its request into a Claude Code
 invocation and wraps the reply back into the shape aichat parses.
+
+One shim per aichat process: the wrapper starts it, it binds a free port and
+writes the aichat config naming that port, then exits when its parent does.
+Running per invocation is what makes claude inherit the caller's directory,
+and so pick up the CLAUDE.md of the project the user is standing in.
 """
 
+import argparse
 import json
 import os
+import shutil
 import subprocess
+import sys
+import threading
+import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 # default.nix substitutes a store path here, whose length is not ours to
 # control, so this one line opts out of the 79-column limit.
 CLAUDE = "@claude@"  # noqa: E501
 MODEL = "haiku"
-PORT = 4142
-# The `??` alias prefixes the request with this so claude can run in the
-# caller's directory and pick up that project's CLAUDE.md; aichat itself has
-# no way to send a working directory.
-CWD_PREFIX = "cwd: "
 DENIED_TOOLS = ",".join(
     [
         "Bash",
@@ -32,6 +37,16 @@ DENIED_TOOLS = ",".join(
         "NotebookEdit",
     ]
 )
+CONFIG = """---
+model: shim:claude
+clients:
+  - type: openai-compatible
+    name: shim
+    api_base: http://127.0.0.1:{port}/v1
+    api_key: unused
+    models:
+      - name: claude
+"""
 
 
 def strip_fences(text):
@@ -50,18 +65,7 @@ def join_role(messages, role):
     return "\n".join(parts).strip()
 
 
-def split_cwd(prompt):
-    if not prompt.startswith(CWD_PREFIX):
-        return None, prompt
-    first, _, rest = prompt.partition("\n")
-    cwd = first.removeprefix(CWD_PREFIX).strip()
-    if not os.path.isdir(cwd):
-        return None, rest.strip()
-    return cwd, rest.strip()
-
-
 def run_claude(system, prompt):
-    cwd, prompt = split_cwd(prompt)
     argv = [CLAUDE, "--print", "--model", MODEL, "--strict-mcp-config"]
     if system:
         argv += ["--append-system-prompt", system]
@@ -71,12 +75,7 @@ def run_claude(system, prompt):
     # The prompt goes on stdin because --disallowed-tools is variadic and
     # swallows any argument that follows it.
     done = subprocess.run(
-        argv,
-        input=prompt,
-        capture_output=True,
-        text=True,
-        timeout=120,
-        cwd=cwd,
+        argv, input=prompt, capture_output=True, text=True, timeout=120
     )
     if done.returncode != 0:
         raise RuntimeError(done.stderr.strip() or "claude exited non-zero")
@@ -110,7 +109,42 @@ class Handler(BaseHTTPRequestHandler):
         self.respond(200, {"choices": [{"message": message}]})
 
     def log_message(self, fmt, *args):
-        print(fmt % args, flush=True)
+        pass
 
 
-ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
+def exit_with_parent(parent, config):
+    """aichat has no way to tell the shim it is done, so watch for its exit."""
+    while True:
+        try:
+            os.kill(parent, 0)
+        except OSError:
+            shutil.rmtree(os.path.dirname(config), ignore_errors=True)
+            os._exit(0)
+        time.sleep(0.5)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--parent", type=int, required=True)
+    parser.add_argument("--config", required=True)
+    args = parser.parse_args()
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    port = server.server_address[1]
+
+    with open(args.config, "w") as handle:
+        handle.write(CONFIG.format(port=port))
+
+    watcher = threading.Thread(
+        target=exit_with_parent, args=(args.parent, args.config), daemon=True
+    )
+    watcher.start()
+
+    # Tells the wrapper the config is on disk and the port is accepting.
+    print("ready", flush=True)
+    sys.stdout.close()
+
+    server.serve_forever()
+
+
+main()
