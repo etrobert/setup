@@ -9,12 +9,26 @@ import os
 import subprocess
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-MODEL = "claude-haiku-4-5-20251001"
+MODEL = "haiku"
 PORT = 4142
-# claude discovers CLAUDE.md by walking up from its working directory, so the
-# shim runs from the setup repo: that is where the machine, service and Nix
-# conventions worth applying to a shell command live.
-REPO = os.path.expanduser("~/setup")
+# The `??` alias prefixes the request with this so claude can run in the
+# caller's directory and pick up that project's CLAUDE.md; aichat itself has
+# no way to send a working directory.
+CWD_PREFIX = "cwd: "
+DENIED_TOOLS = ",".join(
+    [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "Task",
+        "WebFetch",
+        "WebSearch",
+        "NotebookEdit",
+    ]
+)
 
 
 def strip_fences(text):
@@ -33,12 +47,34 @@ def join_role(messages, role):
     return "\n".join(parts).strip()
 
 
+def split_cwd(prompt):
+    if not prompt.startswith(CWD_PREFIX):
+        return None, prompt
+    first, _, rest = prompt.partition("\n")
+    cwd = first.removeprefix(CWD_PREFIX).strip()
+    if not os.path.isdir(cwd):
+        return None, rest.strip()
+    return cwd, rest.strip()
+
+
 def run_claude(system, prompt):
+    cwd, prompt = split_cwd(prompt)
     argv = ["claude", "--print", "--model", MODEL, "--strict-mcp-config"]
     if system:
         argv += ["--append-system-prompt", system]
-    argv.append(prompt)
-    done = subprocess.run(argv, capture_output=True, text=True, timeout=120)
+    # Without this claude answers agentically — it will happily run the search
+    # itself rather than hand back the command to run.
+    argv += ["--disallowed-tools", DENIED_TOOLS]
+    # The prompt goes on stdin because --disallowed-tools is variadic and
+    # swallows any argument that follows it.
+    done = subprocess.run(
+        argv,
+        input=prompt,
+        capture_output=True,
+        text=True,
+        timeout=120,
+        cwd=cwd,
+    )
     if done.returncode != 0:
         raise RuntimeError(done.stderr.strip() or "claude exited non-zero")
     return strip_fences(done.stdout)
@@ -73,8 +109,5 @@ class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args):
         print(fmt % args, flush=True)
 
-
-if os.path.isdir(REPO):
-    os.chdir(REPO)
 
 ThreadingHTTPServer(("127.0.0.1", PORT), Handler).serve_forever()
