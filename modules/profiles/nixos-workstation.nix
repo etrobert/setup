@@ -132,6 +132,8 @@
 
         etc."xdg/mimeapps.list".text = /* ini */ ''
           [Default Applications]
+          # inode/* types describe filesystem objects rather than file
+          # contents; inode/directory is what opening a folder resolves to.
           inode/directory=org.gnome.Nautilus.desktop
           x-scheme-handler/sgnl=signal.desktop
           x-scheme-handler/signalcaptcha=signal.desktop
