@@ -35,6 +35,7 @@ let
       path = zshrcFinal;
     }
     {
+      # Sourced by every zsh, even non-interactive ones — unlike .zshrc.
       name = ".zshenv";
       path = ./zshenv;
     }
