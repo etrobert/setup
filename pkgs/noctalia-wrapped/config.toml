@@ -73,6 +73,7 @@ end = [
   "temp",
   "cpu",
   "ram",
+  "vram",
   "media",
   "tray",
   "notifications",
@@ -170,6 +171,11 @@ panel_placement = "floating"
 # Unitless "9.4" fits the narrow vertical bar.
 [widget.ram]
 label_show_units = false
+
+[widget.vram]
+type = "sysmon"
+stat = "gpu_vram"
+glyph = "device-desktop"
 
 [widget.battery]
 show_label = false
