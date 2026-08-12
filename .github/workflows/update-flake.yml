@@ -22,18 +22,29 @@ jobs:
       # access-tokens: the self-hosted runner's nix has no GitHub credentials,
       # and unauthenticated api.github.com calls share the household IP's
       # 60/hour budget. Applies client-side, so no trusted-user requirement.
+      # The log goes to RUNNER_TEMP, not the work tree, so create-pull-request
+      # does not commit it.
       - name: Update flake inputs
+        id: update
         env:
           NIX_CONFIG: access-tokens = github.com=${{ github.token }}
-        run: nix flake update --accept-flake-config
+        run: |
+          nix flake update --accept-flake-config 2>&1 \
+            | tee "$RUNNER_TEMP/update.log"
+          inputs=$(grep --only-matching "Updated input '[^']*'" \
+            "$RUNNER_TEMP/update.log" \
+            | sed "s/Updated input '//; s/'$//" \
+            | paste --serial --delimiters=, || true)
+          echo "title=chore: update flake inputs${inputs:+ (${inputs//,/, })}" \
+            >> "$GITHUB_OUTPUT"
 
       - name: Create pull request
         id: create
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PAT }}
-          commit-message: "chore: update flake inputs"
-          title: "chore: update flake inputs"
+          commit-message: ${{ steps.update.outputs.title }}
+          title: ${{ steps.update.outputs.title }}
           body: Automated flake input update.
           branch: flake-update
           delete-branch: true
