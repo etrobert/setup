@@ -34,6 +34,10 @@ address = "Berlin"
 [shell]
 polkit_agent = true
 
+# Launch apps as their own app-<id>@<uuid>.service units. Otherwise they stay
+# children of noctalia and die whenever a rebuild restarts the shell.
+launch_apps_as_systemd_services = true
+
 # Attached panels draw on the bar's own surface and inherit its
 # background_opacity, which a transparent bar makes unreadable over windows.
 # Floating panels get their own surface, taking opacity from
