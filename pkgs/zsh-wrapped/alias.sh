@@ -71,9 +71,5 @@ alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
 
 alias cly="claude --dangerously-skip-permissions"
 
-# Ask for a shell command in plain English, e.g.
-#   ?? print the running systemd units that start with the letter d
-# aichat prints the command and prompts before running it.  noglob: the request
-# is unquoted, so a `*` or `?` in it must reach aichat rather than being
-# glob-expanded by zsh.
+# noglob: the request is unquoted, so a `*` or `?` must not be expanded by the shell.
 alias '??'='noglob aichat -e'
