@@ -15,6 +15,7 @@
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
+      immich-search = pkgs.callPackage ./immich-search { };
       git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
     in
     {
@@ -32,6 +33,7 @@
             git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
+            immich-search
             ;
         };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
@@ -40,6 +42,7 @@
             git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
+            immich-search
             ;
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
@@ -61,6 +64,7 @@
             git-wrapped
             ntfy-wrapped
             hass-cli-wrapped
+            immich-search
             ;
           extraEnv = {
             ANTHROPIC_BASE_URL = "http://localhost:4141";
@@ -79,7 +83,12 @@
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
         agents = pkgs.callPackage ./agents { inherit self'; };
-        inherit ntfy-wrapped hass-cli-wrapped git-wrapped;
+        inherit
+          ntfy-wrapped
+          hass-cli-wrapped
+          immich-search
+          git-wrapped
+          ;
         send-file = pkgs.callPackage ./send-file { inherit ntfy-wrapped; };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };

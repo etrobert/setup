@@ -177,6 +177,36 @@ recorder keeps more than the dashboard shows — notably `sensor.i_9psl_pm0_3`
 `sensor.i_9psl_voc_index`, and `sensor.i_9psl_nox_index`. The device's own local
 API (`http://<ip>/measures/current`) returns only current values, no history.
 
+## Photos (Immich)
+
+Immich runs on **`tower:2283`** (`modules/features/immich.nix`), with OCR and
+CLIP smart search both enabled. `immich-search` (on PATH for the user's shells
+and Claude Code) queries it, reading the agenix secret `immich-api-key`:
+
+- `immich-search ocr <word>` — photos by their recognized text, printing that
+  text alongside each hit. This is how to answer "what was that wifi password".
+  Matching is fuzzy trigram (`%>>`) and accent-insensitive, so pass single words
+  rather than exact phrases.
+- `immich-search smart <query>` — photos by what they depict, via CLIP.
+- `immich-search read <asset-id>` — all recognized text in one photo.
+
+The upstream `immich-cli` only does `login`/`logout`/`server-info`/`upload`, so
+it is no substitute — hence a script rather than an `immich-cli-wrapped`.
+
+`immich-search` is read-only. Anything else the API offers — creating an album,
+tagging, editing — is a plain `curl` call against `tower:2283` with the same
+key, no new tooling needed. Creating an album from a trip is one request:
+`POST /albums` takes `albumName` and `assetIds` together, so pair it with a
+`POST /search/metadata` filtered by `city` (or `takenAfter`/`takenBefore` when
+the photos carry no GPS).
+
+**API keys are permission-scoped**, so mint the key with `all` unless there is a
+reason not to. Endpoints map to `asset.read` (every `immich-search` subcommand),
+`album.create` (new album), and `albumAsset.create` (adding to an existing one).
+
+OCR runs automatically on new uploads. Backfilling an existing library is a
+manual one-off: Administration → Jobs → OCR → All.
+
 ## Planning future work
 
 Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`

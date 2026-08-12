@@ -5,6 +5,7 @@
   claude-code,
   git-wrapped,
   hass-cli-wrapped,
+  immich-search,
   lib,
   ntfy-wrapped,
   extraEnv ? { },
@@ -35,6 +36,7 @@ let
     sessionHostScript
     speakScript
     hass-cli-wrapped
+    immich-search
     botGit
   ]
   ++ (with pkgs; [

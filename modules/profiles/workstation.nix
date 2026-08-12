@@ -46,6 +46,7 @@ _: {
               git-find-commit
               agents
               hass-cli-wrapped
+              immich-search
               pm
               pdfshrink
               nixplatforms
@@ -114,6 +115,13 @@ _: {
           # query sensor data and call services over the LAN (http://tower:8123).
           hass-token = {
             file = ../../secrets/hass-token.age;
+            owner = "soft";
+          };
+          # Immich API key, used by `immich-search` to find photos by their
+          # recognized text (OCR) or by what they depict (CLIP). Immich requires
+          # authentication even from tower itself, where the server runs.
+          immich-api-key = {
+            file = ../../secrets/immich-api-key.age;
             owner = "soft";
           };
           # Google Health API OAuth client credentials (the client secret JSON
