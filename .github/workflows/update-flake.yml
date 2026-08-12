@@ -3,7 +3,9 @@ name: Update Flake Inputs
 
 "on":
   schedule:
-    - cron: "0 * * * *"
+    # UTC (GitHub's only cron timezone): 09:00-23:00 Berlin under CEST, an
+    # hour earlier under CET. Waking hours only, so tower's fans stay quiet.
+    - cron: "0 7-21 * * *"
   # allow manual trigger
   workflow_dispatch:
 
