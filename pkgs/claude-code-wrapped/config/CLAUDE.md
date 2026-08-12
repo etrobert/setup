@@ -137,12 +137,14 @@ obsolete or superseded information — e.g. after moving a file, just give the n
 path; don't note where it used to live or that an old copy is "superseded." Such
 references are dead text that add noise without value.
 
-Keep code comments minimal. Before keeping a comment, apply two tests: would a
-reader learn this from the setting's own name, its documentation, or LSP hover?
-Does it describe a prior setup, a rejected alternative, or anything no longer in
-the tree? If either is yes, cut it — that reasoning, along with narrative
-context generally (root-cause chains, incident history), belongs in the commit
-or PR.
+Keep code comments minimal and short — one line, two at most. Longer belongs in
+the commit or PR, as does narrative context (root-cause chains, incident
+history). Neighbouring files' comment density is not a justification.
+
+Cut a comment if the name, its docs or LSP hover already say it; if the helper
+being called documents it where that helper is defined; if it describes a prior
+setup, a rejected alternative, or anything no longer in the tree; or if it's a
+file header restating what the file plainly is.
 
 ## Testing
 
