@@ -16,5 +16,5 @@ pkgs.writeShellApplication {
     nix
   ]);
   inheritPath = false;
-  text = "nh ${nhSubcommand} switch ${flakePath}";
+  text = "nh ${nhSubcommand} switch --show-activation-logs ${flakePath}";
 }
