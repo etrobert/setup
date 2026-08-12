@@ -23,6 +23,27 @@
         "type": "github"
       }
     },
+    "aichat": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786571341,
+        "narHash": "sha256-bhPvxRugJB/iHfOAV5/zjiz8+x4jq6V2P8/SsvIEbX4=",
+        "owner": "etrobert",
+        "repo": "aichat",
+        "rev": "3ffd3b6b8f4c2720067b36ffeefd78541b7fa83e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etrobert",
+        "ref": "command-client",
+        "repo": "aichat",
+        "type": "github"
+      }
+    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -471,6 +492,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "aichat": "aichat",
         "countdown": "countdown",
         "creatures": "creatures",
         "disko": "disko",

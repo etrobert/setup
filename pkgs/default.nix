@@ -22,6 +22,7 @@
         aichat-wrapped = pkgs.callPackage ./aichat-wrapped { };
         aichat-claude = pkgs.callPackage ./aichat-claude {
           inherit (self'.packages) claude-code-wrapped;
+          aichat = inputs'.aichat.packages.default;
         };
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };

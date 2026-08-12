@@ -1,38 +1,54 @@
 {
-  callPackage,
-  claude-code-wrapped,
   aichat,
-  coreutils,
+  claude-code-wrapped,
+  gnused,
   lib,
+  wrapPackage,
   writeShellApplication,
+  writeText,
 }:
 let
-  # Only ever started by the script below, so it stays an implementation
-  # detail here rather than a package of its own.
-  aichat-shim = callPackage ./shim.nix { inherit claude-code-wrapped; };
+  # aichat runs whatever the client prints, and claude fences its answer in
+  # markdown about one time in four however the prompt asks it not to.
+  backend = writeShellApplication {
+    name = "aichat-claude-backend";
+    runtimeInputs = [ gnused ];
+    text = ''
+      ${lib.getExe claude-code-wrapped} "$@" | sed '/^```/d'
+    '';
+  };
+
+  config =
+    writeText "aichat-claude.yaml" # yaml
+      ''
+        ---
+        model: claude:haiku
+        clients:
+          - type: command
+            name: claude
+            command: ${lib.getExe backend}
+            args:
+              - --print
+              - --model
+              - "{model}"
+              - --strict-mcp-config
+              - --append-system-prompt
+              - "{system}"
+              # Otherwise claude answers agentically: asked to search for TODO it
+              # runs the search rather than handing back the command.
+              - --disallowed-tools
+              - Bash,Read,Write,Edit,Glob,Grep,Task,WebFetch,WebSearch,NotebookEdit
+            models:
+              - name: haiku
+      '';
 in
-# A script rather than a wrapper: the shim has to be stopped once aichat exits,
-# and `trap … EXIT` is the plainest way to say that. It also rules out `exec`,
-# which would replace the shell that owes us the trap.
-writeShellApplication {
-  name = "aichat-claude";
-  runtimeInputs = [ coreutils ];
+wrapPackage {
+  package = aichat;
+  binName = "aichat-claude";
   # aichat runs the accepted command by spawning `$SHELL -c`, which needs PATH.
   inheritPath = true;
-  text = ''
-    # One shim per aichat, started here so claude inherits the caller's
-    # directory and reads that project's CLAUDE.md.
-    dir=$(mktemp --directory)
-    ${lib.getExe aichat-shim} --config "$dir/config.yaml" &
-    shim=$!
-    # Cleanup first: Ctrl-C reaches the shim too, so by the time the trap runs
-    # the kill often has nothing left to kill.
-    trap 'rm --recursive --force "$dir"; kill "$shim"' EXIT INT TERM HUP
-
-    # The shim binds a free port, then writes the config naming it. It is
-    # already listening by the time the file appears.
-    until [ -e "$dir/config.yaml" ]; do sleep 0.02; done
-
-    AICHAT_CONFIG_FILE="$dir/config.yaml" ${lib.getExe aichat} "$@"
-  '';
+  setDefaults.AICHAT_CONFIG_FILE = "${config}";
+  checks = [
+    "AICHAT_CONFIG_FILE=${config} HOME=$(mktemp -d) ${aichat}/bin/aichat --dry-run -e 'list files' >/dev/null"
+  ];
 }
