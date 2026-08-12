@@ -1,4 +1,21 @@
 ---
+# default.nix substitutes claude's store path into command below.
 model: openai:gpt-5.4-mini
 clients:
   - type: openai
+  - type: command
+    name: claude
+    command: "@claude@"
+    args:
+      - --print
+      - --model
+      - "{model}"
+      - --strict-mcp-config
+      - --append-system-prompt
+      - "{system}"
+      # Otherwise claude answers agentically: asked to search for TODO it
+      # runs the search rather than handing back the command.
+      - --disallowed-tools
+      - Bash,Read,Write,Edit,Glob,Grep,Task,WebFetch,WebSearch,NotebookEdit
+    models:
+      - name: haiku

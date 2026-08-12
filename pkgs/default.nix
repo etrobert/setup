@@ -13,14 +13,17 @@
       # Minimal variant: the full one bundles gh, which our wrapper does not
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
+
+      # Our fork (see flake.nix); newer than nixpkgs, which needs Enter for -e.
+      aichat = inputs'.aichat.packages.default;
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
       git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
     in
     {
       packages = {
-        aichat-wrapped = pkgs.callPackage ./aichat-wrapped { };
-        aichat-claude = pkgs.callPackage ./aichat-claude {
+        aichat-wrapped = pkgs.callPackage ./aichat-wrapped {
+          inherit aichat;
           inherit (self'.packages) claude-code-wrapped;
         };
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };

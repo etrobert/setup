@@ -93,6 +93,12 @@
       url = "github:ryoppippi/nix-claude-code";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Our fork, adding the `command` client: backed by a local command.
+    aichat = {
+      url = "github:etrobert/aichat/command-client";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
