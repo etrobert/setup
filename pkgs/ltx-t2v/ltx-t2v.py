@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Queue an LTX-2.5 text-to-video generation on a running ComfyUI and wait for the result.
 
 Faithful port of the official t2v workflow's two-stage distilled pipeline:
@@ -42,15 +41,14 @@ g = {
  "samp": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler_ancestral"}},
  "noise1": {"class_type": "RandomNoise", "inputs": {"noise_seed": a.seed}},
  "sig1": {"class_type": "ManualSigmas", "inputs": {"sigmas": sig1}},
- "guider1": {"class_type": "LTXVDualCFGGuider", "inputs": {"model": ["unet", 0], "positive": ["cond", 0], "negative": ["cond", 1], "video_cfg": 1, "audio_cfg": 1}},
- "s1": {"class_type": "SamplerCustomAdvanced", "inputs": {"noise": ["noise1", 0], "guider": ["guider1", 0], "sampler": ["samp", 0], "sigmas": ["sig1", 0], "latent_image": ["cat1", 0]}},
+ "guider": {"class_type": "LTXVDualCFGGuider", "inputs": {"model": ["unet", 0], "positive": ["cond", 0], "negative": ["cond", 1], "video_cfg": 1, "audio_cfg": 1}},
+ "s1": {"class_type": "SamplerCustomAdvanced", "inputs": {"noise": ["noise1", 0], "guider": ["guider", 0], "sampler": ["samp", 0], "sigmas": ["sig1", 0], "latent_image": ["cat1", 0]}},
  "sep1": {"class_type": "LTXVSeparateAVLatent", "inputs": {"av_latent": ["s1", 0]}},
  "up": {"class_type": "LTXVLatentUpsampler", "inputs": {"samples": ["sep1", 0], "upscale_model": ["upmodel", 0], "vae": ["vvae", 0]}},
  "cat2": {"class_type": "LTXVConcatAVLatent", "inputs": {"video_latent": ["up", 0], "audio_latent": ["sep1", 1]}},
  "noise2": {"class_type": "RandomNoise", "inputs": {"noise_seed": 42}},
  "sig2": {"class_type": "ManualSigmas", "inputs": {"sigmas": sig2}},
- "guider2": {"class_type": "LTXVDualCFGGuider", "inputs": {"model": ["unet", 0], "positive": ["cond", 0], "negative": ["cond", 1], "video_cfg": 1, "audio_cfg": 1}},
- "s2": {"class_type": "SamplerCustomAdvanced", "inputs": {"noise": ["noise2", 0], "guider": ["guider2", 0], "sampler": ["samp", 0], "sigmas": ["sig2", 0], "latent_image": ["cat2", 0]}},
+ "s2": {"class_type": "SamplerCustomAdvanced", "inputs": {"noise": ["noise2", 0], "guider": ["guider", 0], "sampler": ["samp", 0], "sigmas": ["sig2", 0], "latent_image": ["cat2", 0]}},
  "sep2": {"class_type": "LTXVSeparateAVLatent", "inputs": {"av_latent": ["s2", 0]}},
  "vdec": {"class_type": "VAEDecodeTiled", "inputs": {"samples": ["sep2", 0], "vae": ["vvae", 0], "tile_size": 512, "overlap": 64, "temporal_size": 64, "temporal_overlap": 16}},
  "adec": {"class_type": "LTXVAudioVAEDecode", "inputs": {"samples": ["sep2", 1], "audio_vae": ["avae", 0]}},

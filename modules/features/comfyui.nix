@@ -59,7 +59,6 @@ _: {
         };
 
         preStart = lib.mkAfter ''
-          mkdir -p /var/lib/comfyui/custom_nodes
           ln -sfn ${comfyui-gguf} /var/lib/comfyui/custom_nodes/ComfyUI-GGUF
         '';
       };
