@@ -56,6 +56,9 @@ zsh-wrapped, tmux-wrapped, noctalia-wrapped, etc.) and custom scripts
 Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.
 
+`pkgs/lib/wrap-package.nix` documents its options in its header; don't restate
+them at call sites.
+
 **Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey, API keys,
 Wi-Fi passwords, account passwords, etc.). See `secrets/secrets.nix` for the
 authoritative list.
