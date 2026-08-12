@@ -19,7 +19,8 @@
     in
     {
       packages = {
-        aichat-wrapped = pkgs.callPackage ./aichat-wrapped {
+        aichat-wrapped = pkgs.callPackage ./aichat-wrapped { };
+        aichat-wrapped-claude = pkgs.callPackage ./aichat-wrapped/claude.nix {
           inherit (self'.packages) claude-code-wrapped;
         };
         bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };

@@ -36,6 +36,7 @@ _: {
 
             customPackages = with self.packages.${system}; [
               aichat-wrapped
+              aichat-wrapped-claude
               claude-code-wrapped
               claude-code-wrapped-glm
               claude-restart-daemon

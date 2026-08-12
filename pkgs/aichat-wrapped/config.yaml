@@ -1,0 +1,4 @@
+---
+model: openai:gpt-5.4-mini
+clients:
+  - type: openai

@@ -3,8 +3,8 @@
 aichat only speaks HTTP, so this translates its request into a Claude Code
 invocation and wraps the reply back into the shape aichat parses.
 
-One shim per aichat process: aichat-wrapped starts it, it binds a free port
-and writes the aichat config naming that port, and aichat-wrapped kills it on
+One shim per aichat process: aichat-claude starts it, it binds a free port
+and writes the aichat config naming that port, and aichat-claude kills it on
 the way out. Running per invocation is what makes claude inherit the caller's
 directory, and so pick up the CLAUDE.md of the project the user is in.
 """
