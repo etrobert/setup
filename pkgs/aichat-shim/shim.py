@@ -9,6 +9,9 @@ import os
 import subprocess
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+# default.nix substitutes a store path here, whose length is not ours to
+# control, so this one line opts out of the 79-column limit.
+CLAUDE = "@claude@"  # noqa: E501
 MODEL = "haiku"
 PORT = 4142
 # The `??` alias prefixes the request with this so claude can run in the
@@ -59,7 +62,7 @@ def split_cwd(prompt):
 
 def run_claude(system, prompt):
     cwd, prompt = split_cwd(prompt)
-    argv = ["claude", "--print", "--model", MODEL, "--strict-mcp-config"]
+    argv = [CLAUDE, "--print", "--model", MODEL, "--strict-mcp-config"]
     if system:
         argv += ["--append-system-prompt", system]
     # Without this claude answers agentically — it will happily run the search

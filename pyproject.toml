@@ -1,5 +1,0 @@
-# black defaults to 88 but writePython3Bin's flake8 rejects past 79. Every black
-# instance (the Claude Code format hook, conform.nvim, CI) reads this by walking
-# up from the file, so it is the one place the limit needs stating. See #681.
-[tool.black]
-line-length = 79
