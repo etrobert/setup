@@ -132,6 +132,7 @@
 
         etc."xdg/mimeapps.list".text = /* ini */ ''
           [Default Applications]
+          inode/directory=org.gnome.Nautilus.desktop
           x-scheme-handler/sgnl=signal.desktop
           x-scheme-handler/signalcaptcha=signal.desktop
           text/html=open-url.desktop
@@ -144,7 +145,7 @@
       };
 
       programs = {
-        # GTK apps (pavucontrol, thunar, …) pick their cursor
+        # GTK apps (pavucontrol, nautilus, …) pick their cursor
         # by GSettings theme *name* and search XCURSOR_PATH for it — they
         # ignore niri's private cursor config. Point the name at Bibata and
         # put the package on the system profile (whose share/icons is on the
