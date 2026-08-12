@@ -7,7 +7,7 @@ _: {
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
-      inherit (self.packages.${system}) thumbnailer-3mf;
+      inherit (self.packages.${system}) thumbnailer-3mf thumbnailer-html;
     in
     {
       services = {
@@ -34,6 +34,7 @@ _: {
         pkgs.gdk-pixbuf # raster images
         pkgs.librsvg # svg
         thumbnailer-3mf
+        thumbnailer-html
       ];
     };
 }

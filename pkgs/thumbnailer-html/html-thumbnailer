@@ -1,0 +1,49 @@
+size=256
+input=
+output=
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --size)
+      size="$2"
+      shift 2
+      ;;
+    --input)
+      input="$2"
+      shift 2
+      ;;
+    --output)
+      output="$2"
+      shift 2
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [ -z "$input" ] || [ -z "$output" ]; then
+  echo "usage: html-thumbnailer --input FILE --output FILE [--size PIXELS]" >&2
+  exit 1
+fi
+
+workdir=$(mktemp --directory)
+trap 'rm --recursive --force "$workdir"' EXIT
+
+# This renders untrusted markup, so: keep chromium's sandbox on, resolve every
+# host to nothing so a stray tracking pixel cannot fire, and hand it a
+# throwaway profile rather than the real one. Virtual time lets webfonts and
+# scripted layout settle before the capture without waiting in real time.
+chromium \
+  --headless \
+  --disable-gpu \
+  --hide-scrollbars \
+  --user-data-dir="$workdir/profile" \
+  --host-resolver-rules='MAP * ~NOTFOUND' \
+  --window-size=1200,900 \
+  --virtual-time-budget=2000 \
+  --screenshot="$workdir/page.png" \
+  "$input" >/dev/null 2>&1
+
+magick "$workdir/page.png" -resize "${size}x${size}>" "$output"
