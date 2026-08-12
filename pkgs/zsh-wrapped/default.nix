@@ -34,6 +34,10 @@ let
       name = ".zshrc";
       path = zshrcFinal;
     }
+    {
+      name = ".zshenv";
+      path = ./zshenv;
+    }
   ];
 in
 wrapPackage {
