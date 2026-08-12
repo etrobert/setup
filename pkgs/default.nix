@@ -14,8 +14,8 @@
       # need (it manages PATH and ships its own gitconfig-bot).
       claude-code = inputs'.nix-claude-code.packages.claude-minimal;
 
-      # Our fork, for both aichat variants: one build in the store, and one set
-      # of keybindings — upstream's release still wants Enter to pick an option.
+      # Our fork, for the `command` client type it adds; also newer than the
+      # release nixpkgs builds, which still wants Enter to pick a -e option.
       aichat = inputs'.aichat.packages.default;
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
@@ -23,8 +23,7 @@
     in
     {
       packages = {
-        aichat-wrapped = pkgs.callPackage ./aichat-wrapped { inherit aichat; };
-        aichat-claude = pkgs.callPackage ./aichat-claude {
+        aichat-wrapped = pkgs.callPackage ./aichat-wrapped {
           inherit aichat;
           inherit (self'.packages) claude-code-wrapped;
         };

@@ -74,4 +74,4 @@ alias cly="claude --dangerously-skip-permissions"
 # noglob: the request is unquoted, so a `*` or `?` must not be expanded by the shell.
 alias '??'='noglob aichat -e'
 # Slower, but knows this project's CLAUDE.md.
-alias '???'='noglob aichat-claude -e'
+alias '???'='noglob aichat -e -m claude:haiku'
