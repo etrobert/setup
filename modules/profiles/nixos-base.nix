@@ -12,10 +12,7 @@ _: {
       inherit (self.packages.${system}) zsh-wrapped;
     in
     {
-      imports = with self.nixosModules; [
-        kanata
-        ntfyFailureAlerts
-      ];
+      imports = with self.nixosModules; [ ntfyFailureAlerts ];
 
       system.activationScripts.nixos-symlink.text = /* bash */ ''
         ln --symbolic --force --no-dereference /home/soft/setup /etc/nixos
