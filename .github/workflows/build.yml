@@ -153,11 +153,32 @@ jobs:
             --out-link "$RUNNER_TEMP/tower-main"
           nix run nixpkgs#dix -- "$RUNNER_TEMP/tower-main" \
             "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff.txt"
+          nix run nixpkgs#dix -- --color always "$RUNNER_TEMP/tower-main" \
+            "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff-ansi.txt"
+
+      # GitHub markdown renders neither ANSI nor styled HTML, so the colored
+      # variant ships as a PNG on the public file share (github-runner.nix
+      # provides the writable dir; unique name per attempt because camo
+      # caches).
+      - name: Publish diff image
+        id: image
+        run: |
+          nix run nixpkgs#charm-freeze -- "$RUNNER_TEMP/diff-ansi.txt" \
+            --language ansi --output "$RUNNER_TEMP/closure-diff.png"
+          name="closure-diff-pr$NUMBER-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.png"
+          install --mode 0644 "$RUNNER_TEMP/closure-diff.png" \
+            "/srv/files/ci/$name"
+          echo "url=https://files.etiennerobert.com/ci/$name" \
+            >> "$GITHUB_OUTPUT"
 
       - name: Update PR body
+        env:
+          IMAGE_URL: ${{ steps.image.outputs.url }}
         run: |
           gh pr view "$NUMBER" --json body --jq .body > "$RUNNER_TEMP/body.md"
           {
+            echo "![tower closure diff (vs main)]($IMAGE_URL)"
+            echo
             echo "<details><summary>tower closure diff (vs main)</summary>"
             echo
             echo '```'
