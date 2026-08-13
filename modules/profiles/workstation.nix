@@ -14,6 +14,7 @@ _: {
           "claude-code"
           "cmp-emoji"
           "discord"
+          "discord-unwrapped"
           "github-copilot-cli"
           "google-chrome"
           "spotify"
