@@ -19,10 +19,15 @@ pkgs.writeShellApplication {
         # A stale /mnt/tank CIFS mount freezes PID 1 when the switch re-execs
         # systemd (NixOS/nixpkgs#375376); block only that combination.
         if findmnt --noheadings --types cifs /mnt/tank > /dev/null; then
-          new=$(nix build --no-link --print-out-paths \
+          new_system=$(nix build --no-link --print-out-paths \
             "/home/soft/setup#nixosConfigurations.$(uname --nodename).config.system.build.toplevel")
-          if [ "$(realpath "$new/systemd/lib/systemd/systemd")" != "$(realpath /run/current-system/systemd/lib/systemd/systemd)" ] \
-            || [ "$(realpath "$new/etc/systemd/system.conf")" != "$(realpath /etc/systemd/system.conf)" ]; then
+
+          current_pid1=$(realpath /run/current-system/systemd/lib/systemd/systemd)
+          new_pid1=$(realpath "$new_system/systemd/lib/systemd/systemd")
+          current_conf=$(realpath /etc/systemd/system.conf)
+          new_conf=$(realpath "$new_system/etc/systemd/system.conf")
+
+          if [ "$new_pid1" != "$current_pid1" ] || [ "$new_conf" != "$current_conf" ]; then
             echo "switch: re-execs systemd while /mnt/tank is mounted; unmount first: sudo umount /mnt/tank" >&2
             exit 1
           fi
