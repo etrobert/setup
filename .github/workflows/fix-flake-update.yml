@@ -92,7 +92,7 @@ jobs:
           STATUS: ${{ job.status }}
         run: |
           runs="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs"
-          nix run .#ntfy-wrapped -- publish --quiet \
+          ntfy publish --quiet \
             --title "Flake update fix: $STATUS" \
             --click "$runs/$GITHUB_RUN_ID" \
             "flake-update needs a review before it can merge."
