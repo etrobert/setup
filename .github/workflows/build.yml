@@ -120,9 +120,12 @@ jobs:
   closure-diff:
     name: closure-diff
     needs: build
+    # head repo guard: a fork PR could otherwise name its branch flake-update
+    # and run this job (see fix-flake-update.yml).
     if: >-
       ${{ github.event_name == 'pull_request'
-        && github.head_ref == 'flake-update' }}
+        && github.head_ref == 'flake-update'
+        && github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read

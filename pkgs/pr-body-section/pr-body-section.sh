@@ -5,7 +5,7 @@ content=$(cat)
 
 # Body minus any previous section, with CRs and trailing blanks trimmed so
 # repeated runs converge instead of accumulating separators.
-awk -v start="<!-- $name -->" -v end="<!-- /$name -->" '
+awk --assign start="<!-- $name -->" --assign end="<!-- /$name -->" '
   { sub(/\r$/, "") }
   $0 == start { skip = 1; next }
   $0 == end { skip = 0; next }
