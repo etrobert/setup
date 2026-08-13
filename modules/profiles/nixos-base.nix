@@ -12,7 +12,10 @@ _: {
       inherit (self.packages.${system}) zsh-wrapped;
     in
     {
-      imports = [ self.nixosModules.ntfyFailureAlerts ];
+      imports = with self.nixosModules; [
+        kanata
+        ntfyFailureAlerts
+      ];
 
       system.activationScripts.nixos-symlink.text = /* bash */ ''
         ln --symbolic --force --no-dereference /home/soft/setup /etc/nixos
@@ -75,24 +78,6 @@ _: {
       };
 
       services = {
-        kanata = {
-          enable = true;
-          keyboards.default = {
-            config = /* scheme */ ''
-              (defsrc
-                caps
-                esc
-              )
-
-              (deflayer base
-                (tap-hold-press 0 200 esc lctl)
-                (tap-hold 200 200 esc caps)
-              )
-            '';
-            extraDefCfg = "process-unmapped-keys yes";
-          };
-        };
-
         # Right Alt as a Compose key, so e.g. RAlt e ' types é. niri inherits
         # this via locale1 (its xkb block is empty). terminate:ctrl_alt_bksp is
         # the NixOS default, kept here since setting this replaces it.
