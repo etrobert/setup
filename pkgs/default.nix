@@ -114,6 +114,9 @@
         firefox-wrapped = pkgs.callPackage ./firefox-wrapped { inherit self; };
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+        zen-browser-darwin = pkgs.callPackage ./zen-browser-darwin {
+          inherit (lib.importJSON "${inputs.zen-browser}/sources.json") version;
+        };
         flush-dns = pkgs.callPackage ./flush-dns { };
         resize-window = pkgs.callPackage ./resize-window { };
         finder = pkgs.callPackage ./finder { };

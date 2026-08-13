@@ -10,6 +10,8 @@ _: {
     let
       dockApps = import (self + /lib/dock-apps.nix);
 
+      browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
+
       skhdAppBindings = lib.concatStringsSep "\n" (
         lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
       );
@@ -92,6 +94,7 @@ _: {
             resize-window
             finder
             ghostty-wrapped
+            zen-browser-darwin
           ]);
       };
 
@@ -146,6 +149,8 @@ _: {
           NSGlobalDomain.KeyRepeat = 2;
 
           CustomUserPreferences = {
+            "app.zen-browser.zen" = browserConfig.darwinPreferences;
+
             "com.raycast.macos" = {
               # Cmd + Space
               raycastGlobalHotkey = "Command-49";

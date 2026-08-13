@@ -1,5 +1,5 @@
 { lib }:
-{
+rec {
   renderDefaultPrefs =
     settings:
     lib.concatLines (
@@ -56,5 +56,18 @@
     # right-click menus and extension popups stop opening after a while, until
     # the browser is restarted (https://bugzilla.mozilla.org/show_bug.cgi?id=1849109).
     "widget.wayland.fractional-scale.enabled" = false;
+  };
+
+  # macOS route for the same config: signed app bundles can't take our
+  # policies.json and autoconfig files, but the app's preferences domain can.
+  darwinPreferences = sharedPolicies // {
+    EnterprisePoliciesEnabled = true;
+
+    # zen.* prefs are rejected here — the Preferences policy allowlist covers
+    # browser./media./widget. and friends, but not Zen's own.
+    Preferences = lib.mapAttrs (_: value: {
+      Value = value;
+      Status = "locked";
+    }) sharedSettings;
   };
 }
