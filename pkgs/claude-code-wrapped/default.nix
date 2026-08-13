@@ -35,6 +35,7 @@ let
     sessionHostScript
     speakScript
     hass-cli-wrapped
+    ntfy-wrapped
     botGit
   ]
   ++ (with pkgs; [
