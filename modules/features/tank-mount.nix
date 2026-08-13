@@ -1,5 +1,6 @@
-# tower's tank share, mounted at /mnt/tank on first access so boot never
-# depends on tower being reachable.
+# tower's tank share, mounted at /mnt/tank on first access and unmounted
+# after a minute idle, so neither boot nor suspend depends on tower being
+# reachable.
 _: {
   flake.nixosModules.tankMount =
     { config, ... }:
@@ -14,6 +15,7 @@ _: {
           "credentials=${config.age.secrets.smb-credentials.path}"
           "uid=soft"
           "x-systemd.automount"
+          "x-systemd.idle-timeout=60"
         ];
       };
     };
