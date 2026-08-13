@@ -1,4 +1,11 @@
 { self', pkgs }:
+# The tank guard below works around systemd freezing PID 1 when it re-execs
+# with a stale CIFS mount (NixOS/nixpkgs#375376, systemd/systemd#39354),
+# audited against systemd 261. On the bump past it, re-check those issues:
+# if fixed, drop the guard and this assertion; otherwise raise the bound.
+assert pkgs.lib.assertMsg
+  (!pkgs.stdenv.hostPlatform.isLinux || pkgs.lib.versionOlder pkgs.systemd.version "262")
+  "systemd ${pkgs.systemd.version} exceeds the version the switch tank guard was audited against — see the comment in pkgs/switch.nix";
 pkgs.writeShellApplication {
   name = "switch";
   # nh calls `sudo env nixos-rebuild ...`; all three must be in PATH so nh
