@@ -159,14 +159,10 @@ jobs:
       # GitHub markdown renders neither ANSI nor styled HTML, so the colored
       # variant ships as a PNG on the public file share (github-runner.nix
       # provides the writable dir; unique name per attempt because camo
-      # caches). Skipped gracefully until tower deploys that dir.
+      # caches).
       - name: Publish diff image
         id: image
         run: |
-          if [ ! -w /srv/files/ci ]; then
-            echo "::notice::/srv/files/ci not writable; skipping diff image"
-            exit 0
-          fi
           nix run nixpkgs#charm-freeze -- "$RUNNER_TEMP/diff-ansi.txt" \
             --language ansi --output "$RUNNER_TEMP/closure-diff.png"
           name="closure-diff-pr$NUMBER-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.png"
@@ -181,10 +177,8 @@ jobs:
         run: |
           gh pr view "$NUMBER" --json body --jq .body > "$RUNNER_TEMP/body.md"
           {
-            if [ -n "$IMAGE_URL" ]; then
-              echo "![tower closure diff (vs main)]($IMAGE_URL)"
-              echo
-            fi
+            echo "![tower closure diff (vs main)]($IMAGE_URL)"
+            echo
             echo "<details><summary>tower closure diff (vs main)</summary>"
             echo
             echo '```'
