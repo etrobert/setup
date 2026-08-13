@@ -1,9 +1,9 @@
 { writeShellApplication, python3 }:
 writeShellApplication {
-  name = "ltx-t2v";
+  name = "ltx-video";
   runtimeInputs = [ python3 ];
   inheritPath = false;
   text = ''
-    exec python3 ${./ltx-t2v.py} "$@"
+    exec python3 ${./ltx-video.py} "$@"
   '';
 }

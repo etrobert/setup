@@ -351,6 +351,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-comfyui-pin": {
+      "locked": {
+        "lastModified": 1786544193,
+        "narHash": "sha256-HPUWTmXE5Sce9gSfMurJ7QUIxDKA2aIkWfxudwrYr/A=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ea10848acac7fec65703d2fbe13a81f52be25177",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "ea10848a",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-darwin-gui-pin": {
       "locked": {
         "lastModified": 1783224372,
@@ -505,6 +521,7 @@
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-comfyui-pin": "nixpkgs-comfyui-pin",
         "nixpkgs-darwin-gui-pin": "nixpkgs-darwin-gui-pin",
         "noctalia-community-plugins": "noctalia-community-plugins",
         "noctalia-official-plugins": "noctalia-official-plugins",

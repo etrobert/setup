@@ -91,7 +91,7 @@
         send-file = pkgs.callPackage ./send-file { inherit ntfy-wrapped; };
         pm = pkgs.callPackage ./pm { };
         pdfshrink = pkgs.callPackage ./pdfshrink { };
-        ltx-t2v = pkgs.callPackage ./ltx-t2v { };
+        ltx-video = pkgs.callPackage ./ltx-video { };
         nixplatforms = pkgs.callPackage ./nixplatforms.nix { };
         printline = pkgs.callPackage ./printline.nix { };
         creme = pkgs.callPackage ./creme { };

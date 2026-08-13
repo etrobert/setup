@@ -21,6 +21,12 @@
     # Rev-pinned so `nix flake update` leaves it alone; assertions in aaron's
     # configuration prompt a retest when nixpkgs bumps a pinned package.
     nixpkgs-darwin-gui-pin.url = "github:nixos/nixpkgs/d407951447dcd00442e97087bf374aad70c04cea";
+
+    # ComfyUI 0.32.0 (the first release with LTX-2.5 nodes) is in nixpkgs
+    # master but has not reached nixos-unstable yet. An assertion in
+    # features/comfyui drops this once the channel catches up.
+    nixpkgs-comfyui-pin.url = "github:nixos/nixpkgs/ea10848a";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";

@@ -7,6 +7,7 @@ let
   inherit (inputs)
     nixpkgs
     agenix
+    nixpkgs-comfyui-pin
     ;
 in
 {
@@ -15,6 +16,7 @@ in
       inherit
         self
         agenix
+        nixpkgs-comfyui-pin
         ;
     };
     modules = [
