@@ -62,24 +62,9 @@ jobs:
           nix run .#claude-code-wrapped -- \
             --print --dangerously-skip-permissions "$PROMPT"
 
-      # The update workflow's approval predates the agent's commit, so drop
-      # it — ordered before the push so a green re-run cannot auto-merge an
-      # unreviewed fix. Auto-merge stays armed and fires once a human approves.
-      - name: Dismiss the approval
-        env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: |
-          number=$(gh pr view flake-update --json number --jq .number)
-          pr="repos/$GITHUB_REPOSITORY/pulls/$number"
-          # select(): one approval exists, and re-selecting it makes a second
-          # queued run a no-op rather than a 422 on an already-dismissed one.
-          gh api "$pr/reviews" --jq '.[] | select(.state == "APPROVED") | .id' \
-            | xargs --no-run-if-empty --replace={} \
-              gh api --method PUT --silent "$pr/reviews/{}/dismissals" \
-                --field message="Superseded by the fix agent" \
-                --field event=DISMISS
-
-      # A no-op when the agent committed nothing.
+      # A no-op when the agent committed nothing. Branch protection dismisses
+      # stale approvals on push, so the agent's fix lands unapproved and
+      # auto-merge waits for a human.
       - name: Push the fix
         run: git push origin HEAD:flake-update
 
