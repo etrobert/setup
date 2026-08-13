@@ -32,6 +32,10 @@
         self.nixosModules.fileManager
       ];
 
+      # Drops the NixOS HTML manual (its only visible trace is a launcher entry)
+      # and packages' /share/doc; man pages, `man configuration.nix` included, stay.
+      documentation.doc.enable = false;
+
       services = {
         # Firmware updates from LVFS: fwupdmgr refresh / get-updates / update.
         # Lenovo publishes leod's system firmware there; MSI doesn't, so
