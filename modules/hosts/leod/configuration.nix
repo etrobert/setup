@@ -6,7 +6,7 @@
 
 {
   flake.nixosModules.leodConfiguration =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       imports = [ self.nixosModules.leodHardware ];
 
@@ -37,6 +37,14 @@
       # Noctalia's lock screen drives the reader itself and authenticates against
       # `login`; pam_fprintd there re-claims that device and stalls the password path.
       security.pam.services.login.fprintAuth = false;
+
+      # greetd's stack is only a substack of `login`, so the line above would take
+      # tuigreet's fingerprint login with it. Give greetd its own copy instead.
+      security.pam.services.greetd.rules.auth.fprintd = {
+        order = config.security.pam.services.greetd.rules.auth.login.order - 10;
+        control = "sufficient";
+        modulePath = "${config.services.fprintd.package}/lib/security/pam_fprintd.so";
+      };
 
       hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
