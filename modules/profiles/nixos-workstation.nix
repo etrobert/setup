@@ -32,8 +32,6 @@
         self.nixosModules.fileManager
       ];
 
-      # Drops the NixOS HTML manual (its only visible trace is a launcher entry)
-      # and packages' /share/doc; man pages, `man configuration.nix` included, stay.
       documentation.doc.enable = false;
 
       services = {
