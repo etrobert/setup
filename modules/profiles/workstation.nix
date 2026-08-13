@@ -69,7 +69,6 @@ _: {
               discord
               ffmpeg
               gcc
-              gemini-cli # AI agent that brings the power of Gemini directly into your terminal
               gh
               github-copilot-cli
               # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
