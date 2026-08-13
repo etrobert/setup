@@ -151,9 +151,8 @@ jobs:
             --out-link "$RUNNER_TEMP/tower-pr"
           nix build "./main-baseline#$attr" --accept-flake-config \
             --out-link "$RUNNER_TEMP/tower-main"
-          # Relative paths keep nvd's header lines readable in the PR body.
-          cd "$RUNNER_TEMP"
-          nix run nixpkgs#nvd -- diff tower-main tower-pr > nvd.txt
+          nix run nixpkgs#dix -- "$RUNNER_TEMP/tower-main" \
+            "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff.txt"
 
       - name: Update PR body
         run: |
@@ -162,12 +161,12 @@ jobs:
             echo "<details><summary>tower closure diff (vs main)</summary>"
             echo
             echo '```'
-            cat "$RUNNER_TEMP/nvd.txt"
+            cat "$RUNNER_TEMP/diff.txt"
             echo '```'
             echo
             echo "</details>"
           } | nix run --accept-flake-config .#pr-body-section -- \
-            nvd "$RUNNER_TEMP/body.md" > "$RUNNER_TEMP/new-body.md"
+            closure-diff "$RUNNER_TEMP/body.md" > "$RUNNER_TEMP/new-body.md"
           gh pr edit "$NUMBER" --body-file "$RUNNER_TEMP/new-body.md"
 
   # Aggregation gate: the single required status. It transitively requires every
