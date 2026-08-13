@@ -17,10 +17,15 @@ pkgs.writeShellApplication {
     if pkgs.stdenv.hostPlatform.isLinux then
       /* bash */ ''
         # A stale /mnt/tank CIFS mount freezes PID 1 when the switch re-execs
-        # systemd (NixOS/nixpkgs#375376), so refuse to switch while it's mounted.
+        # systemd (NixOS/nixpkgs#375376); block only that combination.
         if findmnt --noheadings --types cifs /mnt/tank > /dev/null; then
-          echo "switch: /mnt/tank is mounted; unmount first: sudo umount /mnt/tank" >&2
-          exit 1
+          new=$(nix build --no-link --print-out-paths \
+            "/home/soft/setup#nixosConfigurations.$(uname --nodename).config.system.build.toplevel")
+          if [ "$(realpath "$new/systemd/lib/systemd/systemd")" != "$(realpath /run/current-system/systemd/lib/systemd/systemd)" ] \
+            || [ "$(realpath "$new/etc/systemd/system.conf")" != "$(realpath /etc/systemd/system.conf)" ]; then
+            echo "switch: re-execs systemd while /mnt/tank is mounted; unmount first: sudo umount /mnt/tank" >&2
+            exit 1
+          fi
         fi
 
         nh os switch --show-activation-logs /home/soft/setup
