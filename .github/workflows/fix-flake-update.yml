@@ -69,17 +69,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
         run: |
-          number=$(gh pr view flake-update --repo "$GITHUB_REPOSITORY" \
-            --json number --jq .number)
+          number=$(gh pr view flake-update --json number --jq .number)
           pr="repos/$GITHUB_REPOSITORY/pulls/$number"
-          gh api "$pr/reviews" \
-            --jq '.[] | select(.state == "APPROVED") | .id' \
-            | while read -r review; do
-                gh api --method PUT --silent \
-                  "$pr/reviews/$review/dismissals" \
-                  --field message="Dismissed for the fix agent's commit" \
-                  --field event=DISMISS
-              done
+          # select(): one approval exists, and re-selecting it makes a second
+          # queued run a no-op rather than a 422 on an already-dismissed one.
+          gh api "$pr/reviews" --jq '.[] | select(.state == "APPROVED") | .id' \
+            | xargs --no-run-if-empty --replace={} \
+              gh api --method PUT --silent "$pr/reviews/{}/dismissals" \
+                --field message="Superseded by the fix agent" \
+                --field event=DISMISS
 
       # A no-op when the agent committed nothing.
       - name: Push the fix
