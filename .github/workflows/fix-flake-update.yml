@@ -62,8 +62,37 @@ jobs:
           nix run .#claude-code-wrapped -- \
             --print --dangerously-skip-permissions "$PROMPT"
 
-      # A no-op when the agent committed nothing. Relies on the approval and
-      # auto-merge from the update workflow surviving the push — the ruleset
-      # must not dismiss stale approvals on push.
+      # The update workflow's approval predates the agent's commit, so drop
+      # it — ordered before the push so a green re-run cannot auto-merge an
+      # unreviewed fix. Auto-merge stays armed and fires once a human approves.
+      - name: Dismiss the approval
+        env:
+          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: |
+          number=$(gh pr view flake-update --repo "$GITHUB_REPOSITORY" \
+            --json number --jq .number)
+          pr="repos/$GITHUB_REPOSITORY/pulls/$number"
+          gh api "$pr/reviews" \
+            --jq '.[] | select(.state == "APPROVED") | .id' \
+            | while read -r review; do
+                gh api --method PUT --silent \
+                  "$pr/reviews/$review/dismissals" \
+                  --field message="Dismissed for the fix agent's commit" \
+                  --field event=DISMISS
+              done
+
+      # A no-op when the agent committed nothing.
       - name: Push the fix
         run: git push origin HEAD:flake-update
+
+      # always(): a failed agent is the outcome most worth hearing about.
+      - name: Notify
+        if: always()
+        env:
+          STATUS: ${{ job.status }}
+        run: |
+          runs="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs"
+          nix run .#ntfy-wrapped -- publish --quiet \
+            --title "Flake update fix: $STATUS" \
+            --click "$runs/$GITHUB_RUN_ID" \
+            "flake-update needs a review before it can merge."
