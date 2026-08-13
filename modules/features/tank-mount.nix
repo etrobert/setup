@@ -3,8 +3,20 @@
 # reachable.
 _: {
   flake.nixosModules.tankMount =
-    { config, ... }:
+    { config, lib, ... }:
     {
+      # The switch tank guard (pkgs/switch.nix) works around systemd freezing
+      # PID 1 when it re-execs with this mount stale (NixOS/nixpkgs#375376,
+      # systemd/systemd#39354), audited against systemd 261. On the bump past
+      # it, re-check those issues: if fixed, drop the guard and this assertion;
+      # otherwise raise the bound.
+      assertions = [
+        {
+          assertion = lib.versionOlder config.systemd.package.version "262";
+          message = "systemd ${config.systemd.package.version} exceeds the version the switch tank guard was audited against — see the comment in modules/features/tank-mount.nix";
+        }
+      ];
+
       age.secrets.smb-credentials.file = ../../secrets/smb-credentials.age;
 
       fileSystems."/mnt/tank" = {
