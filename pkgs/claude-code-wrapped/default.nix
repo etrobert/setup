@@ -69,14 +69,16 @@ wrapPackage {
   run = [
     # Mutable path, not a store copy: Claude writes runtime state (sessions,
     # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
-    ''export CLAUDE_CONFIG_DIR="$HOME/setup/pkgs/claude-code-wrapped/config"''
+    # An ambient value wins, so CI can point at its own checkout of this config.
+    ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/setup/pkgs/claude-code-wrapped/config}"''
 
     # `$(<file)` builtin, not `cat`: this --run prelude executes before the
     # wrapper prefixes its own PATH, so an external `cat` isn't found when a
     # thin-PATH caller invokes claude (the `agents` launcher is inheritPath=false).
     # Bare assignment, not `export VAR=$(…)`, so `set -e` aborts loudly on an
     # unreadable secret instead of baking in an empty token.
-    ''GITHUB_TOKEN="$(< /run/agenix/github-bot-token)"''
+    # The `:-` default keeps that guard while letting CI pass its own token.
+    ''GITHUB_TOKEN="''${GITHUB_TOKEN:-$(< /run/agenix/github-bot-token)}"''
     "export GITHUB_TOKEN"
   ]
   ++ agenixTokenRun;

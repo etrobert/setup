@@ -35,18 +35,20 @@ jobs:
           ref: flake-update
           token: ${{ secrets.BOT_TOKEN }}
 
-      - name: Configure git identity
-        run: |
-          git config user.name etrobert-bot
-          git config user.email etiennerobert33+github-bot@gmail.com
-
+      # No git identity step: the wrapper's gitconfig-bot already sets
+      # etrobert-bot as the committer and routes pushes over HTTPS.
       - name: Run the fix agent
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           GH_TOKEN: ${{ secrets.BOT_TOKEN }}
-          # claude-code is unfree, and --inputs-from reuses the flake's own
-          # nixpkgs so tower's store already has it.
-          NIXPKGS_ALLOW_UNFREE: "1"
+          # Feeds gitconfig-bot's credential helper, and stands in for the
+          # wrapper's agenix read, which the runner's dynamic user cannot do.
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          # The checkout's own copy, so this config lives in exactly one place.
+          # The wrapper's default is under $HOME, which the runner unit hides
+          # behind ProtectHome.
+          CLAUDE_CONFIG_DIR: >-
+            ${{ github.workspace }}/pkgs/claude-code-wrapped/config
           # Authenticated GitHub fetches for the agent's nix commands; the
           # anonymous api.github.com budget (60/hour per IP) is shared with
           # everything else behind the household IP.
@@ -57,7 +59,7 @@ jobs:
             reproduce it with nix), fix the repository so CI passes, and
             commit the fix with a conventional commit message. Do not push.
         run: |
-          nix run --inputs-from . nixpkgs#claude-code --impure -- \
+          nix run .#claude-code-wrapped -- \
             --print --dangerously-skip-permissions "$PROMPT"
 
       # A no-op when the agent committed nothing. Relies on the approval and
