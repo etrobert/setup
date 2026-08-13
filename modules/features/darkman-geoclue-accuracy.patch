@@ -1,0 +1,30 @@
+--- a/location.go
++++ b/location.go
+@@ -81,7 +81,7 @@
+ // locations, and Geoclient has its own. We act as middleman here since we also
+ // keep the last location cached.
+ func initGeoclue(ctx context.Context, onLocation chan (geoclue.Location)) (client *geoclue.Geoclient, err error) {
+-	client, err = geoclue.NewClient(ctx, "darkman", time.Minute, 40000, 3600*4)
++	client, err = geoclue.NewClient(ctx, "darkman", time.Minute, 40000, 300)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+--- a/geoclue/client.go
++++ b/geoclue/client.go
+@@ -150,6 +150,16 @@
+ 
+ 	obj = conn.Object("org.freedesktop.GeoClue2", clientPath)
+ 	if err = obj.SetProperty(
++		"org.freedesktop.GeoClue2.Client.RequestedAccuracyLevel",
++		// GCLUE_ACCURACY_LEVEL_STREET: below this geoclue withholds the
++		// access-point list and scrambles the result.
++		dbus.MakeVariant(uint32(6)),
++	); err != nil {
++		return nil, fmt.Errorf("setting RequestedAccuracyLevel failed: %v", err)
++	}
++
++	obj = conn.Object("org.freedesktop.GeoClue2", clientPath)
++	if err = obj.SetProperty(
+ 		"org.freedesktop.GeoClue2.Client.DistanceThreshold",
+ 		dbus.MakeVariant(distanceThreshold),
+ 	); err != nil {

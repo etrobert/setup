@@ -10,9 +10,16 @@ _: {
               lng: 13.4
               usegeoclue: true
             '';
+
+            # Upstream requests geoclue's default CITY accuracy, at which geoclue
+            # withholds the access-point list and falls back to IP geolocation —
+            # off by hundreds of km. See darkman-geoclue-accuracy.patch.
+            darkman = pkgs.darkman.overrideAttrs (old: {
+              patches = (old.patches or [ ]) ++ [ ./darkman-geoclue-accuracy.patch ];
+            });
           in
           pkgs.wrapPackage {
-            package = pkgs.darkman;
+            package = darkman;
             env.XDG_CONFIG_HOME = "${config}";
             # Fail the build on an invalid config rather than at service start-up.
             checks = [ "XDG_CONFIG_HOME=${config} $out/bin/darkman check" ];
