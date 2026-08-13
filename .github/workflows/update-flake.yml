@@ -40,6 +40,15 @@ jobs:
           echo "title=chore: update flake inputs${inputs:+ (${inputs//,/, })}" \
             >> "$GITHUB_OUTPUT"
 
+          # The update is uncommitted, so HEAD still holds the old lock.
+          git show HEAD:flake.lock > "$RUNNER_TEMP/flake.lock.old"
+          {
+            echo "body<<EOF"
+            nix run --accept-flake-config .#flake-input-table -- \
+              "$RUNNER_TEMP/flake.lock.old" flake.lock
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create pull request
         id: create
         uses: peter-evans/create-pull-request@v8
@@ -47,7 +56,7 @@ jobs:
           token: ${{ secrets.PAT }}
           commit-message: ${{ steps.update.outputs.title }}
           title: ${{ steps.update.outputs.title }}
-          body: Automated flake input update.
+          body: ${{ steps.update.outputs.body }}
           branch: flake-update
           delete-branch: true
 

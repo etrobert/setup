@@ -86,6 +86,7 @@
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
         agents = pkgs.callPackage ./agents { inherit self'; };
+        flake-input-table = pkgs.callPackage ./flake-input-table { };
         inherit ntfy-wrapped hass-cli-wrapped git-wrapped;
         send-file = pkgs.callPackage ./send-file { inherit ntfy-wrapped; };
         pm = pkgs.callPackage ./pm { };
