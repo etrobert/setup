@@ -34,6 +34,10 @@
 
       powerManagement.resumeCommands = "${pkgs.systemd}/bin/systemctl try-restart fprintd.service";
 
+      # Noctalia's lock screen drives the reader itself and authenticates against
+      # `login`; pam_fprintd there re-claims that device and stalls the password path.
+      security.pam.services.login.fprintAuth = false;
+
       hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
       # This value determines the NixOS release from which the default
