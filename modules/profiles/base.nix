@@ -38,6 +38,7 @@ _: {
           ++ (with pkgs; [
             bat
             coreutils
+            dnsutils # dig, nslookup
             entr
             eza
             fd
