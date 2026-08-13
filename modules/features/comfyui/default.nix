@@ -60,6 +60,11 @@ _: {
 
         preStart = lib.mkAfter ''
           ln -sfn ${comfyui-gguf} /var/lib/comfyui/custom_nodes/ComfyUI-GGUF
+
+          # seed only; users edit their copy from the UI
+          if [[ ! -e /var/lib/comfyui/user/default/workflows/ltx25-t2v-tower.json ]]; then
+            install -Dm644 ${./ltx25-t2v-tower.json} /var/lib/comfyui/user/default/workflows/ltx25-t2v-tower.json
+          fi
         '';
       };
 
