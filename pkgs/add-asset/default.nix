@@ -19,8 +19,8 @@ writeShellApplication {
     coreutils
     curl
   ]
-  ++ lib.optionals stdenv.isDarwin [ pbcopy ]
-  ++ lib.optionals stdenv.isLinux [ wl-clipboard ];
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [ pbcopy ]
+  ++ lib.optionals stdenv.hostPlatform.isLinux [ wl-clipboard ];
   inheritPath = false;
   text = ''
     usage() {

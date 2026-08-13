@@ -1,7 +1,7 @@
 { self', pkgs }:
 let
-  nhSubcommand = if pkgs.stdenv.isLinux then "os" else "darwin";
-  flakePath = if pkgs.stdenv.isLinux then "/home/soft/setup" else "/Users/soft/setup";
+  nhSubcommand = if pkgs.stdenv.hostPlatform.isLinux then "os" else "darwin";
+  flakePath = if pkgs.stdenv.hostPlatform.isLinux then "/home/soft/setup" else "/Users/soft/setup";
 in
 pkgs.writeShellApplication {
   name = "switch";
