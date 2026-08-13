@@ -40,6 +40,37 @@ jobs:
           echo "title=chore: update flake inputs${inputs:+ (${inputs//,/, })}" \
             >> "$GITHUB_OUTPUT"
 
+          # The update is uncommitted, so HEAD still holds the old lock.
+          git show HEAD:flake.lock > "$RUNNER_TEMP/flake.lock.old"
+          {
+            echo "body<<EOF"
+            echo "<!-- inputs -->"
+            echo "| Input | Change |"
+            echo "| --- | --- |"
+            jq --raw-output \
+              --slurpfile old "$RUNNER_TEMP/flake.lock.old" '
+                def locked: . as $lock
+                  | $lock.nodes.root.inputs
+                  | with_entries(select(.value | type == "string"))
+                  | map_values($lock.nodes[.].locked);
+                ($old[0] | locked) as $before
+                | locked
+                | to_entries[]
+                | select($before[.key].rev != .value.rev)
+                | .key as $name
+                | $before[$name].rev as $from
+                | .value as $to
+                | (if $to.type == "github" then
+                     "[`\($from[0:7])` → `\($to.rev[0:7])`]"
+                     + "(https://github.com/\($to.owner)/\($to.repo)"
+                     + "/compare/\($from)...\($to.rev))"
+                   else "`\($from[0:7])` → `\($to.rev[0:7])`"
+                   end) as $change
+                | "| \($name) | \($change) |"
+              ' flake.lock
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create pull request
         id: create
         uses: peter-evans/create-pull-request@v8
@@ -47,7 +78,7 @@ jobs:
           token: ${{ secrets.PAT }}
           commit-message: ${{ steps.update.outputs.title }}
           title: ${{ steps.update.outputs.title }}
-          body: Automated flake input update.
+          body: ${{ steps.update.outputs.body }}
           branch: flake-update
           delete-branch: true
 
