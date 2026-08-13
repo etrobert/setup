@@ -75,7 +75,7 @@ let
   # Referencing paplay by absolute store path pulls PulseAudio into the closure
   # only on Linux; on macOS afplay is a bare string (built into the OS), so the
   # dependency stays off the Darwin closure.
-  player = if stdenv.isDarwin then "/usr/bin/afplay" else "${pulseaudio}/bin/paplay";
+  player = if stdenv.hostPlatform.isDarwin then "/usr/bin/afplay" else "${pulseaudio}/bin/paplay";
 in
 writeShellApplication {
   name = "tts-piper";

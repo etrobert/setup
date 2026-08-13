@@ -9,8 +9,8 @@
       extraPackages =
         with pkgs;
         [ imagemagick ]
-        ++ lib.optionals stdenv.isDarwin [ ghostty-bin ]
-        ++ lib.optionals stdenv.isLinux [ ghostty ];
+        ++ lib.optionals stdenv.hostPlatform.isDarwin [ ghostty-bin ]
+        ++ lib.optionals stdenv.hostPlatform.isLinux [ ghostty ];
     }
   ];
 }

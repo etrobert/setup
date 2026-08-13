@@ -81,8 +81,8 @@ let
 
   path = lib.makeBinPath (
     sharedDeps
-    ++ lib.optionals pkgs.stdenv.isDarwin darwinDeps
-    ++ lib.optionals pkgs.stdenv.isLinux linuxDeps
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin darwinDeps
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux linuxDeps
     ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
   );
 in
