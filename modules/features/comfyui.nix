@@ -11,9 +11,9 @@ _: {
     { pkgs, ... }:
     let
       pkgsWithRocmTorch = pkgs.extend (
-        final: prev: {
+        _final: prev: {
           pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-            (pyfinal: pyprev: {
+            (_pyfinal: pyprev: {
               torch = pyprev.torch.override {
                 rocmSupport = true;
                 cudaSupport = false;
