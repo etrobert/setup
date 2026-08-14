@@ -180,11 +180,13 @@ API (`http://<ip>/measures/current`) returns only current values, no history.
 ## ComfyUI
 
 ComfyUI runs on tower's RX 9070 XT (`modules/features/comfyui.nix`), web UI at
-`comfy/` on the tailnet. Model weights are managed imperatively in
-`/var/lib/comfyui/models/` on tower (currently Z-Image Turbo with its Qwen3-4B
-text encoder and VAE, from `Comfy-Org/z_image_turbo` on Hugging Face); outputs
-land in `/var/lib/comfyui/output/`. The state dir is owned by the `comfyui`
-service user (mode 700), so managing weights or fetching outputs needs sudo.
+`comfy/` on the tailnet. Model weights are declared in the feature as
+hash-pinned `fetchurl` calls and reach ComfyUI via an extra-model-paths config;
+add a model by adding an entry there. For gated Hugging Face repos, download the
+file once with an auth token and run `nix-store --add-fixed sha256 <file>` — the
+entry then resolves without the URL ever being fetched. Outputs land in
+`/var/lib/comfyui/output/`, owned by the `comfyui` service user (mode 700), so
+fetching them needs sudo.
 
 ## Planning future work
 
