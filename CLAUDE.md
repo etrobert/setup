@@ -181,9 +181,10 @@ API (`http://<ip>/measures/current`) returns only current values, no history.
 
 ComfyUI runs on tower's RX 9070 XT (`modules/features/comfyui.nix`), web UI at
 `comfy/` on the tailnet. Model weights are managed imperatively in
-`~soft/.local/share/comfyui/models/` on tower (currently Z-Image Turbo with its
-Qwen3-4B text encoder and VAE, from `Comfy-Org/z_image_turbo` on Hugging Face);
-outputs land in `~soft/.local/share/comfyui/output/`.
+`/var/lib/comfyui/models/` on tower (currently Z-Image Turbo with its Qwen3-4B
+text encoder and VAE, from `Comfy-Org/z_image_turbo` on Hugging Face); outputs
+land in `/var/lib/comfyui/output/`. The state dir is owned by the `comfyui`
+service user (mode 700), so managing weights or fetching outputs needs sudo.
 
 ## Planning future work
 
