@@ -145,25 +145,12 @@ jobs:
           path: main-baseline
 
       - name: Diff tower closures
-        id: diff
         run: |
           attr="nixosConfigurations.tower.config.system.build.toplevel"
           nix build ".#$attr" --accept-flake-config \
             --out-link "$RUNNER_TEMP/tower-pr"
           nix build "./main-baseline#$attr" --accept-flake-config \
             --out-link "$RUNNER_TEMP/tower-main"
-
-          # Some inputs (e.g. a home-manager-only bump) never touch tower's
-          # own closure. dix still prints a zero-diff summary in that case,
-          # but charm-freeze has nothing worth turning into an image, so skip
-          # the remaining steps rather than rendering a no-op diff.
-          if [ "$(readlink -f "$RUNNER_TEMP/tower-pr")" \
-            = "$(readlink -f "$RUNNER_TEMP/tower-main")" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-
           nix run nixpkgs#dix -- "$RUNNER_TEMP/tower-main" \
             "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff.txt"
           nix run nixpkgs#dix -- --color always "$RUNNER_TEMP/tower-main" \
@@ -175,7 +162,6 @@ jobs:
       # caches).
       - name: Publish diff image
         id: image
-        if: steps.diff.outputs.changed == 'true'
         run: |
           nix run nixpkgs#charm-freeze -- "$RUNNER_TEMP/diff-ansi.txt" \
             --language ansi --output "$RUNNER_TEMP/closure-diff.png"
@@ -189,7 +175,6 @@ jobs:
       # previous section in place above the new one. Accepted for simplicity;
       # create-pull-request rewrites the body on every lockfile push anyway.
       - name: Update PR body
-        if: steps.diff.outputs.changed == 'true'
         env:
           IMAGE_URL: ${{ steps.image.outputs.url }}
         run: |
