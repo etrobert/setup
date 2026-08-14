@@ -429,6 +429,26 @@
         "type": "github"
       }
     },
+    "nutricalc": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786703792,
+        "narHash": "sha256-+ePkYBF/ynKCgV3qU6wje5uteUGvfkVH9ts4/ftO7KY=",
+        "owner": "Palomia",
+        "repo": "nutricalc",
+        "rev": "8dcf1400121561ca697578589218c5c2e2f87298",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Palomia",
+        "repo": "nutricalc",
+        "type": "github"
+      }
+    },
     "pronto": {
       "inputs": {
         "nixpkgs": [
@@ -508,6 +528,7 @@
         "nixpkgs-darwin-gui-pin": "nixpkgs-darwin-gui-pin",
         "noctalia-community-plugins": "noctalia-community-plugins",
         "noctalia-official-plugins": "noctalia-official-plugins",
+        "nutricalc": "nutricalc",
         "pronto": "pronto",
         "rack": "rack",
         "rift-radar": "rift-radar",

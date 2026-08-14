@@ -78,6 +78,10 @@
       url = "github:etrobert/rack";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nutricalc = {
+      url = "github:Palomia/nutricalc";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     noctalia-official-plugins = {
       url = "github:noctalia-dev/official-plugins";
       flake = false;

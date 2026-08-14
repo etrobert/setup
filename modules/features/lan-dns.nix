@@ -36,6 +36,7 @@ _: {
               "images"
               "rift"
               "rack"
+              "nutricalc"
             ];
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
             dhcp-option = [ "option:router,192.168.0.1" ];
