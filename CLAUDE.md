@@ -177,6 +177,14 @@ recorder keeps more than the dashboard shows — notably `sensor.i_9psl_pm0_3`
 `sensor.i_9psl_voc_index`, and `sensor.i_9psl_nox_index`. The device's own local
 API (`http://<ip>/measures/current`) returns only current values, no history.
 
+## ComfyUI
+
+ComfyUI runs on tower's RX 9070 XT (`modules/features/comfyui.nix`), web UI at
+`comfy/` on the tailnet. Model weights are managed imperatively in
+`~soft/.local/share/comfyui/models/` on tower (currently Z-Image Turbo with its
+Qwen3-4B text encoder and VAE, from `Comfy-Org/z_image_turbo` on Hugging Face);
+outputs land in `~soft/.local/share/comfyui/output/`.
+
 ## Planning future work
 
 Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`

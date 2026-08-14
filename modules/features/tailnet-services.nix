@@ -49,6 +49,11 @@
             plaintext = true;
           };
 
+          comfy = {
+            toURL = "http://127.0.0.1:8188";
+            plaintext = true;
+          };
+
           chat = {
             toURL = "http://127.0.0.1:8090";
             plaintext = true;
