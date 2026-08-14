@@ -1,9 +1,7 @@
 # Alert on any systemd service failure: a top-level drop-in (service.d/)
 # attaches OnFailure=ntfy-failure@<unit>.service to every system service, and
 # the template posts the failing unit's recent journal to the ntfy topic (via
-# ntfy-wrapped). Delivery is best-effort — no rate limiting and no retry; an
-# undelivered alert only leaves a failed ntfy-failure@ instance
-# (systemctl --failed).
+# ntfy-wrapped). Delivery is best-effort — no rate limiting and no retry.
 _: {
   flake.nixosModules.ntfyFailureAlerts =
     {
@@ -55,6 +53,13 @@ _: {
         '';
 
         serviceConfig.Type = "oneshot";
+
+        # A failed unit stays loaded until reset-failed, and while loaded it
+        # references the unit that triggered it — which pins that unit too, even
+        # under systemd-run --collect. nixos-rebuild runs switch-to-configuration
+        # as a transient unit of fixed name, so one undelivered alert would block
+        # every later rebuild with "unit was already loaded".
+        unitConfig.CollectMode = "inactive-or-failed";
       };
     };
 }
