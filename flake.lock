@@ -436,11 +436,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786712395,
-        "narHash": "sha256-NpB5u2h0wj15TpFAClqT0DzDy2dhrjVkzJ/jTIzOnq8=",
+        "lastModified": 1786736014,
+        "narHash": "sha256-qxv23hr7/LCZxxy5MrxhENPyeDebFmscV9NEZOTTncg=",
         "owner": "Palomia",
         "repo": "nutricalc",
-        "rev": "616835854a938a226860324295e9a5d8af7bb982",
+        "rev": "7ebe1518b20f4fba1268be9790a1be7129abf1e9",
         "type": "github"
       },
       "original": {
