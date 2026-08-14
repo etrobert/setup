@@ -20,6 +20,7 @@
           inputs.rack.nixosModules.default
           inputs.creatures.nixosModules.default
           inputs.countdown.nixosModules.default
+          inputs.nutricalc.nixosModules.default
         ];
 
         networking.firewall.allowedTCPPorts = [
@@ -75,6 +76,14 @@
           countdown = {
             enable = true;
             hostName = "countdown.etiennerobert.com";
+          };
+
+          # A friend's project, hosted here at his request. Unlike the other
+          # sites this input is not ours, so his pushes to main reach tower
+          # through the hourly flake-update PR without review.
+          nutricalc = {
+            enable = true;
+            hostName = "nutricalc.etiennerobert.com";
           };
         };
 

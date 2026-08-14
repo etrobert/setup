@@ -18,6 +18,7 @@ _: {
           "images"
           "rift"
           "rack"
+          "nutricalc"
         ];
         interval = "5min";
         usev6 = "no";
