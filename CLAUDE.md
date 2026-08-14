@@ -154,10 +154,13 @@ unauthenticated.
 
 ## Notifications (ntfy)
 
-`ntfy-wrapped` wraps the ntfy CLI with `NTFY_TOPIC=http://tower:2586/home`
-pre-set. Use `ntfy publish "message"` to send a notification to all
-workstations. Use `--delay 10m` (or `--at 8:30am`) to schedule delivery
-server-side rather than sleeping locally.
+`ntfy-wrapped` wraps the ntfy CLI with
+`NTFY_TOPIC=http://100.103.91.42:2586/home` pre-set — tower's Tailscale IP, not
+the `tower` hostname, because pi resolves through its own dnsmasq (`no-resolv`,
+no MagicDNS) and so cannot resolve `tower`. (`hass-cli-wrapped` below pins an
+IP too, for a different resolver reason.) Use `ntfy publish "message"` to send
+a notification to all workstations. Use `--delay 10m` (or `--at 8:30am`) to
+schedule delivery server-side rather than sleeping locally.
 
 ## Home Assistant
 
