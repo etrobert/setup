@@ -88,6 +88,10 @@ _: {
           authKeyFile = config.age.secrets.tailscale-authkey.path;
           # Let the local user drive tailscale without sudo (e.g. `tailscale file get`).
           extraSetFlags = [ "--operator=soft" ];
+
+          # `tailscale up` resets every non-default pref it does not mention, so
+          # re-auth aborts unless the operator set above is repeated here.
+          extraUpFlags = [ "--operator=soft" ];
         };
 
         syncthing = {
