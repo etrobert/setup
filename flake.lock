@@ -400,11 +400,11 @@
     "noctalia-community-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1786647502,
-        "narHash": "sha256-83IKtNYMYXdV3SAC6z3ZT3/zV+vXzkfVoeRnFdWu6+4=",
+        "lastModified": 1786713047,
+        "narHash": "sha256-RU48+Mc785BBKwR9TPTzN/k6lLxqG1BVMnGG3rFLzeI=",
         "owner": "noctalia-dev",
         "repo": "community-plugins",
-        "rev": "1e08459260063cc896ec30cf39b518d7bee44f87",
+        "rev": "096b4fed98a354ee6a1d9c1041a1a04ef0d4a0e9",
         "type": "github"
       },
       "original": {
@@ -436,11 +436,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786709509,
-        "narHash": "sha256-a8S5y/C6FLE33Cfg1AoQtP0pcocsimDZhg6VyaSfqMc=",
+        "lastModified": 1786712395,
+        "narHash": "sha256-NpB5u2h0wj15TpFAClqT0DzDy2dhrjVkzJ/jTIzOnq8=",
         "owner": "Palomia",
         "repo": "nutricalc",
-        "rev": "1b467a7f8a5def64054560af4e33a53cac0822ef",
+        "rev": "616835854a938a226860324295e9a5d8af7bb982",
         "type": "github"
       },
       "original": {
