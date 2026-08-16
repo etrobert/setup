@@ -54,7 +54,14 @@ _: {
       services.comfyui = {
         enable = true;
         package = pkgsWithRocmTorch.comfyui;
-        extraArgs = [ "--extra-model-paths-config=${modelPathsConfig}" ];
+        extraArgs = [
+          "--extra-model-paths-config=${modelPathsConfig}"
+
+          # ComfyUI >= 0.32 defaults ROCm to torch SDPA attention, which is
+          # numerically broken on RDNA4 (glitched outputs); force the
+          # sub-quadratic backend that older versions used
+          "--use-quad-cross-attention"
+        ];
       };
 
       # Hide the Ryzen iGPU from HIP so ComfyUI only sees the dGPU
