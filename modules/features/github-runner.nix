@@ -36,6 +36,14 @@ _: {
                 Restart = lib.mkForce "on-failure";
                 RestartSec = "10s";
 
+                # The runner's downloaded-actions cache lives under its
+                # RuntimeDirectory (/run), which systemd wipes by default on
+                # every restart. Without this, all 6 runners cold-restarting
+                # together race to redownload the same action tarball from
+                # codeload.github.com on the shared household IP and trip its
+                # anonymous rate limit (429).
+                RuntimeDirectoryPreserve = "restart";
+
                 # Write access to the CI assets dir (below); ProtectSystem=strict
                 # makes the rest of the filesystem read-only regardless of the
                 # group, so the sandbox needs the explicit hole too.
