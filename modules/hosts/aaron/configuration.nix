@@ -72,7 +72,6 @@ _: {
             raycast
             defaultbrowser
             ghostty-bin.terminfo
-            home-manager
             moonlight-qt
             nh
             (writeShellApplication {
