@@ -17,6 +17,7 @@ _: {
           "discord-unwrapped"
           "github-copilot-cli"
           "google-chrome"
+          "slack"
           "spotify"
         ];
 
@@ -84,6 +85,7 @@ _: {
               python3
               shellcheck
               signal-desktop
+              slack
               sox # Voice for claude
               spotify
               telegram-desktop
