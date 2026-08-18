@@ -151,10 +151,15 @@ jobs:
             --out-link "$RUNNER_TEMP/tower-pr"
           nix build "./main-baseline#$attr" --accept-flake-config \
             --out-link "$RUNNER_TEMP/tower-main"
-          nix run nixpkgs#dix -- "$RUNNER_TEMP/tower-main" \
+          # --force-correctness: this runner shares tower's Nix store with
+          # other concurrent jobs, so the SQLite immutable-mode fast path dix
+          # otherwise uses can read a stale/empty snapshot and produce a
+          # blank diff (which then makes charm-freeze fail on empty input).
+          nix run nixpkgs#dix -- --force-correctness "$RUNNER_TEMP/tower-main" \
             "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff.txt"
-          nix run nixpkgs#dix -- --color always "$RUNNER_TEMP/tower-main" \
-            "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff-ansi.txt"
+          nix run nixpkgs#dix -- --force-correctness --color always \
+            "$RUNNER_TEMP/tower-main" "$RUNNER_TEMP/tower-pr" \
+            > "$RUNNER_TEMP/diff-ansi.txt"
 
       # GitHub markdown renders neither ANSI nor styled HTML, so the colored
       # variant ships as a PNG on the public file share (github-runner.nix

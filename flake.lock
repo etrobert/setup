@@ -247,11 +247,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787000722,
-        "narHash": "sha256-HpGirVHmSa7lspKvkzGIqX5rKOd9mE9ushkel0IaVRU=",
+        "lastModified": 1787080210,
+        "narHash": "sha256-iUJGpiab9+YYRvIp5kb6CM2IzdWjRHAOVDHzg0CqIVU=",
         "owner": "ryoppippi",
         "repo": "nix-claude-code",
-        "rev": "3ac526c2197991892599d2e4316a08b80a7a3cab",
+        "rev": "bfc14766a35c800782fafb88c75d3cedccaaaef5",
         "type": "github"
       },
       "original": {
