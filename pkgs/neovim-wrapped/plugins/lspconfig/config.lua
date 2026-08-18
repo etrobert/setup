@@ -98,5 +98,6 @@ vim.lsp.enable({
 	"html",
 	"texlab",
 	"taplo",
+	"dockerls",
 	-- "copilot",
 })

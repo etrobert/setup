@@ -20,6 +20,7 @@
         openscad-lsp
         texlab
         taplo
+        dockerfile-language-server
       ];
     }
   ];
