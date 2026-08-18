@@ -19,9 +19,7 @@ value" not "Wertnachweis"). Does not have a driver's license.
 Uses Home Assistant and prefers local integrations where available. Comfortable
 with kit assembly and DIY hardware.
 
-Currently setting up as a freelancer in Germany — pursuing Gründungszuschuss and
-AVGS-Coaching through Agentur für Arbeit. As of mid-2026 receives
-Arbeitslosengeld I (~€2,460/mo) until December 2026. Has AXA private liability
+Currently setting up as a freelancer in Germany. Has AXA private liability
 insurance (Privathaftpflicht).
 
 Rents in Berlin-Neukölln and is a member of the Berliner Mieterverein, so
