@@ -102,8 +102,9 @@ _: {
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILe8/rx4MPrvwQBU1cy5qkhBgnRALS6Jzc9I20EcBnAx soft@nixos"
         ];
 
-        # Short flags: this also runs on darwin, whose BSD ln lacks --symbolic/--force.
-        system.activationScripts.prettierrc.text = "ln -sf ${prettierrc} ${homeDir}/.prettierrc";
+        # postActivation, not a custom name: nix-darwin only runs activation
+        # scripts from a fixed list. Short flags for BSD ln.
+        system.activationScripts.postActivation.text = "ln -sf ${prettierrc} ${homeDir}/.prettierrc";
       };
 
     darwinModules.base = nixosModules.base;
