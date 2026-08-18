@@ -14,6 +14,7 @@ in
     specialArgs = { inherit self agenix; };
     modules = [
       self.nixosModules.leodConfiguration
+      self.nixosModules.docker
       self.nixosModules.tankMount
       self.nixosModules.nixIndex
       agenix.nixosModules.default
