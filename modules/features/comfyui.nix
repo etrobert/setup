@@ -39,11 +39,18 @@ _: {
 
         "vae/ae.safetensors" =
           zImageTurbo "vae/ae.safetensors" "sha256-r8jignLNFds5GbrNtpGM6cHtIulssSxNXtD7qCNSnjg=";
+
+        # Photorealistic SDXL fine-tune, all-in-one checkpoint (baked VAE/CLIP)
+        "checkpoints/RealVisXL_V5.0_fp16.safetensors" = pkgs.fetchurl {
+          url = "https://huggingface.co/SG161222/RealVisXL_V5.0/resolve/ac93e0dda1f6d448cae19bbfab8c5e720a5e48bc/RealVisXL_V5.0_fp16.safetensors";
+          hash = "sha256-ajWnhVdwrpggo8kx1JZMOBe22ePG+cTau1s6lOVkO4A=";
+        };
       };
 
       modelPathsConfig = (pkgs.formats.yaml { }).generate "extra-model-paths.yaml" {
         nix = {
           base_path = "${modelDir}";
+          checkpoints = "checkpoints";
           diffusion_models = "diffusion_models";
           text_encoders = "text_encoders";
           vae = "vae";
