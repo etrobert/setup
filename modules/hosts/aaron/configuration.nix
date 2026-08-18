@@ -76,6 +76,11 @@ _: {
             linear
             moonlight-qt
             nh
+
+            # nix-darwin has no virtualisation.docker; colima supplies the Linux
+            # VM that the docker client talks to.
+            colima
+            docker-client
             (writeShellApplication {
               # This is necessary because the darwin tailscale module does not include authkey option
               name = "tailscale-up";
