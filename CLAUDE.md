@@ -182,11 +182,12 @@ API (`http://<ip>/measures/current`) returns only current values, no history.
 ComfyUI runs on tower's RX 9070 XT (`modules/features/comfyui.nix`), web UI at
 `comfy/` on the tailnet. Model weights are declared in the feature as
 hash-pinned `fetchurl` calls and reach ComfyUI via an extra-model-paths config;
-add a model by adding an entry there. For gated Hugging Face repos, download the
-file once with an auth token and run `nix-store --add-fixed sha256 <file>` — the
-entry then resolves without the URL ever being fetched. Outputs land in
-`/var/lib/comfyui/output/`, owned by the `comfyui` service user (mode 700), so
-fetching them needs sudo.
+add a model by adding an entry there. For gated downloads (Hugging Face auth,
+Civitai — API key in `~/.civitai-token` on tower, append
+`?token=$(cat ~/.civitai-token)` to the download URL), fetch the file once and
+run `nix-store --add-fixed sha256 <file>` — the entry then resolves without the
+URL ever being fetched. Outputs land in `/var/lib/comfyui/output/`, owned by the
+`comfyui` service user (mode 700), so fetching them needs sudo.
 
 ## Planning future work
 
