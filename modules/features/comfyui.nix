@@ -39,11 +39,20 @@ _: {
 
         "vae/ae.safetensors" =
           zImageTurbo "vae/ae.safetensors" "sha256-r8jignLNFds5GbrNtpGM6cHtIulssSxNXtD7qCNSnjg=";
+
+        # Civitai gates the download: fetch once with
+        # `?token=$(cat ~/.civitai-token)` and seed the store (see CLAUDE.md).
+        "checkpoints/lustifyNSFWCheckpoint_zenithV9.safetensors" = pkgs.fetchurl {
+          name = "lustifyNSFWCheckpoint_zenithV9.safetensors";
+          url = "https://civitai.com/api/download/models/3045803";
+          hash = "sha256-Gjq/C/SBE+teF9L4rgEsW2DLl9gdecTZ5HzVr1bBYvE=";
+        };
       };
 
       modelPathsConfig = (pkgs.formats.yaml { }).generate "extra-model-paths.yaml" {
         nix = {
           base_path = "${modelDir}";
+          checkpoints = "checkpoints";
           diffusion_models = "diffusion_models";
           text_encoders = "text_encoders";
           vae = "vae";
