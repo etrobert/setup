@@ -119,6 +119,16 @@ output "Dell Inc. DELL U3223QE 1GPL9P3" {
     scale 1.5
 }
 
+// leod's Philips 329P1 (4K external), with the laptop panel centered below
+// it: (3072 - 1706) / 2 = 683 logical px.
+output "Philips Consumer Electronics Company PHL 329P1 AU82510000304" {
+    position x=0 y=0
+}
+
+output "eDP-1" {
+    position x=683 y=1728
+}
+
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Layout
