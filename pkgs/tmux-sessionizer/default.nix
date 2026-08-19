@@ -4,6 +4,7 @@
   symlinkJoin,
   coreutils,
   gnused,
+  difftastic,
   eza,
   findutils,
   git,
@@ -16,6 +17,7 @@ let
       gnused
       self'.packages.tmux-wrapped
       self'.packages.fzf-wrapped
+      difftastic
       eza
       findutils
       git
