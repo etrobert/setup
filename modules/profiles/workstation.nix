@@ -40,6 +40,7 @@ _: {
               aichat-wrapped
               claude-code-wrapped
               claude-code-wrapped-glm
+              claude-code-wrapped-work
               claude-restart-daemon
               firefox
               alacritty-wrapped

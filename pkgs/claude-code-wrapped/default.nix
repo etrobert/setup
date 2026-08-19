@@ -12,6 +12,8 @@
   # Name of the installed binary. Variants override this (e.g. "claude-copilot")
   # so they can be installed alongside the base "claude" without colliding.
   binName ? "claude",
+  # When false, git commits as the user and gh uses the stored etrobert login.
+  useBotIdentity ? true,
 }:
 let
   statuslineScript = callPackage ./claude-plan-usage.nix { };
@@ -26,7 +28,8 @@ let
 
   speakScript = callPackage ./speak.nix { inherit ttsBackends; };
 
-  botGit = git-wrapped.override { userConfig = ./gitconfig-bot; };
+  git =
+    if useBotIdentity then git-wrapped.override { userConfig = ./gitconfig-bot; } else git-wrapped;
 
   runtimeInputs = [
     statuslineScript
@@ -35,7 +38,7 @@ let
     sessionHostScript
     speakScript
     hass-cli-wrapped
-    botGit
+    git
   ]
   ++ (with pkgs; [
     coreutils
@@ -71,7 +74,8 @@ wrapPackage {
     # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
     # An ambient value wins, so CI can point at its own checkout of this config.
     ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/setup/pkgs/claude-code-wrapped/config}"''
-
+  ]
+  ++ lib.optionals useBotIdentity [
     # `$(<file)` builtin, not `cat`: this --run prelude executes before the
     # wrapper prefixes its own PATH, so an external `cat` isn't found when a
     # thin-PATH caller invokes claude (the `agents` launcher is inheritPath=false).

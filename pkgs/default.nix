@@ -58,6 +58,17 @@
           readTokenFromAgenix = true;
           binName = "claude-glm";
         };
+        # Acts as the user's own GitHub account (etrobert) instead of the bot.
+        claude-code-wrapped-work = pkgs.callPackage ./claude-code-wrapped {
+          inherit
+            claude-code
+            git-wrapped
+            ntfy-wrapped
+            hass-cli-wrapped
+            ;
+          useBotIdentity = false;
+          binName = "claude-work";
+        };
         # TTS backends for `speak` (stdin -> audio). Selected at runtime via
         # $SPEAK_TTS; each is runnable standalone, e.g. `echo hi | nix run .#tts-say`.
         tts-say = pkgs.callPackage ./claude-code-wrapped/tts-say.nix { };

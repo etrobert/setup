@@ -156,6 +156,10 @@ GitHub operations — never impersonate the user (`etrobert`). If a permission i
 missing (e.g. `etrobert-bot` is not a collaborator on a repo), ask the user to
 grant it rather than attempting to act as them.
 
+Exception: in `claude-work` sessions (the work variant), Claude acts as the
+user's own `etrobert` account — git commits as the user and `gh` uses the stored
+`etrobert` login.
+
 ## Git Workflow
 
 When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
