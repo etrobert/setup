@@ -35,7 +35,8 @@ if [ $# -eq 1 ]; then
   -w | --worktrees)
     worktrees=$(git worktree list)
     selection=$(printf '%s\n' "$worktrees" |
-      fzf --preview 'git -C {1} log --oneline --max-count 15 --color=always' \
+      fzf --preview 'git -C {1} log --oneline --color=always origin/HEAD.. 2>/dev/null |
+          grep . || git -C {1} log --oneline --color=always --max-count 15' \
         --preview-window 'right:60%')
     project_path=${selection%% *}
 
