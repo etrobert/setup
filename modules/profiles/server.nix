@@ -55,7 +55,7 @@
           # Caddy vhost are provided by rift-radar's own nixosModule (imported
           # above); we only supply host-specific config.
           rift-radar = {
-            enable = true;
+            enable = false; # TODO: Re-enable once its on another port as :8080
             hostName = "rift.etiennerobert.com";
             riotKey = config.age.secrets.riot-api-key;
           };
