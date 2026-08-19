@@ -312,10 +312,23 @@ hotkey-overlay {
 prefer-no-csd
 
 // Named workspaces are sticky: they persist when empty and don't reorder.
-workspace "1"
-workspace "2"
-workspace "3"
-workspace "4"
+// Pinned to leod's usual external screen; when it's absent (other monitors,
+// other hosts) they open wherever and move over when it connects.
+workspace "1" {
+    open-on-output "Philips Consumer Electronics Company PHL 329P1 AU82510000304"
+}
+
+workspace "2" {
+    open-on-output "Philips Consumer Electronics Company PHL 329P1 AU82510000304"
+}
+
+workspace "3" {
+    open-on-output "Philips Consumer Electronics Company PHL 329P1 AU82510000304"
+}
+
+workspace "4" {
+    open-on-output "Philips Consumer Electronics Company PHL 329P1 AU82510000304"
+}
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
