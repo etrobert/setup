@@ -46,6 +46,7 @@ _: {
 
       allowedUnfreePackages = [
         "betterdisplay"
+        "linear"
         "raycast"
       ];
 
@@ -72,6 +73,7 @@ _: {
             raycast
             defaultbrowser
             ghostty-bin.terminfo
+            linear
             moonlight-qt
             nh
             (writeShellApplication {
