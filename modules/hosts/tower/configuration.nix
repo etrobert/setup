@@ -23,11 +23,6 @@
       }
     ];
 
-    # Docker daemon, for running containers (e.g. the nixos/nix image to get an
-    # interactive Nix environment on machines without Nix).
-    virtualisation.docker.enable = true;
-    users.users.soft.extraGroups = [ "docker" ];
-
     # Keep a Claude 5h usage session always ticking over
     # (see modules/features/claude-warmup.nix).
     services.claude-warmup.enable = true;
