@@ -8,14 +8,6 @@ project_dir() {
   esac
 }
 
-attach() {
-  if [ -v TMUX ]; then
-    tmux switch-client -t "$1"
-  else
-    tmux attach-session -t "$1"
-  fi
-}
-
 if [ $# -eq 1 ]; then
   case "$1" in
   -h | --help)
@@ -82,15 +74,17 @@ fi
 
 session=${project//./_}
 
-if tmux has-session -t="$session" 2>/dev/null; then
-  attach "$session"
-  exit 0
+if ! tmux has-session -t="$session" 2>/dev/null; then
+  if [ ! -d "$project_path" ]; then
+    echo "Error: $project_path does not exist" >&2
+    exit 1
+  fi
+
+  tmux new-session -d -s "$session" -c "$project_path" -e "TMUX_SESSION_PATH=$project_path"
 fi
 
-if [ ! -d "$project_path" ]; then
-  echo "Error: $project_path does not exist" >&2
-  exit 1
+if [ -v TMUX ]; then
+  tmux switch-client -t "$session"
+else
+  tmux attach-session -t "$session"
 fi
-
-tmux new-session -d -s "$session" -c "$project_path" -e "TMUX_SESSION_PATH=$project_path"
-attach "$session"
