@@ -5,7 +5,6 @@
   coreutils,
   gnused,
   eza,
-  fzf,
   findutils,
   git,
 }:
@@ -16,8 +15,8 @@ let
       coreutils
       gnused
       self'.packages.tmux-wrapped
+      self'.packages.fzf-wrapped
       eza
-      fzf
       findutils
       git
     ];

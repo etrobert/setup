@@ -26,8 +26,15 @@
           inherit aichat;
           inherit (self'.packages) claude-code-wrapped;
         };
-        bash-wrapped = pkgs.callPackage ./bash-wrapped { inherit inputs'; };
-        zsh-wrapped = pkgs.callPackage ./zsh-wrapped { inherit inputs'; };
+        fzf-wrapped = pkgs.callPackage ./fzf-wrapped { };
+        bash-wrapped = pkgs.callPackage ./bash-wrapped {
+          inherit inputs';
+          inherit (self'.packages) fzf-wrapped;
+        };
+        zsh-wrapped = pkgs.callPackage ./zsh-wrapped {
+          inherit inputs';
+          inherit (self'.packages) fzf-wrapped;
+        };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         vim-wrapped = pkgs.callPackage ./vim-wrapped { };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
@@ -84,7 +91,9 @@
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
-        git-find-commit = pkgs.callPackage ./git-find-commit { };
+        git-find-commit = pkgs.callPackage ./git-find-commit {
+          inherit (self'.packages) fzf-wrapped;
+        };
         agents = pkgs.callPackage ./agents { inherit self'; };
         flake-input-table = pkgs.callPackage ./flake-input-table { };
         inherit ntfy-wrapped hass-cli-wrapped git-wrapped;
@@ -128,7 +137,9 @@
           inherit self';
           dev = true;
         };
-        audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
+        audio-output-switcher = pkgs.callPackage ./audio-output-switcher {
+          inherit (self'.packages) fzf-wrapped;
+        };
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };

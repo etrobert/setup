@@ -7,7 +7,7 @@
   linkFarm,
   zsh-autosuggestions,
   zsh-syntax-highlighting,
-  fzf,
+  fzf-wrapped,
   zoxide,
 }:
 let
@@ -22,7 +22,7 @@ let
 
     source ${./alias.sh}
     if [[ $options[zle] = on ]]; then
-      source <(${fzf}/bin/fzf --zsh)
+      source <(${fzf-wrapped}/bin/fzf --zsh)
     fi
     source <(${zoxide}/bin/zoxide init zsh)
     source ${zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh

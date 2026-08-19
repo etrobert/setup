@@ -2,7 +2,7 @@
   writeShellApplication,
   coreutils,
   git,
-  fzf,
+  fzf-wrapped,
   findutils,
 }:
 writeShellApplication {
@@ -10,7 +10,7 @@ writeShellApplication {
   runtimeInputs = [
     coreutils
     git
-    fzf
+    fzf-wrapped
     findutils # xargs
   ];
   inheritPath = false;
