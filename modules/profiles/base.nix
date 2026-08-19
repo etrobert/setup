@@ -28,6 +28,7 @@ _: {
         environment.systemPackages =
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
             bash-wrapped
+            git-worktree-add
             git-wrapped
             ntfy-wrapped
             send-file

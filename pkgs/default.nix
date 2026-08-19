@@ -18,7 +18,7 @@
       aichat = inputs'.aichat.packages.default;
       ntfy-wrapped = pkgs.callPackage ./ntfy-wrapped { };
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
-      git-wrapped = pkgs.callPackage ./git-wrapped { inherit self'; };
+      git-wrapped = pkgs.callPackage ./git-wrapped { };
     in
     {
       packages = {
@@ -85,6 +85,7 @@
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
         git-find-commit = pkgs.callPackage ./git-find-commit { };
+        git-worktree-add = pkgs.callPackage ./git-worktree-add { inherit self'; };
         agents = pkgs.callPackage ./agents { inherit self'; };
         flake-input-table = pkgs.callPackage ./flake-input-table { };
         inherit ntfy-wrapped hass-cli-wrapped git-wrapped;

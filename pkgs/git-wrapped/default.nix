@@ -1,6 +1,5 @@
 {
   pkgs,
-  self',
   wrapPackage,
   userConfig ? ./gitconfig-user,
 }:
@@ -25,16 +24,6 @@ let
     util-linux # column (alias)
   ];
 
-  git-worktree-add = pkgs.writeShellApplication {
-    name = "git-worktree-add";
-    runtimeInputs = with pkgs; [
-      coreutils
-      git
-      self'.packages.tmux-sessionizer
-    ];
-    text = builtins.readFile ./git-worktree-add.sh;
-  };
-
   git-worktree-remove = pkgs.writeShellApplication {
     name = "git-worktree-remove";
     runtimeInputs = with pkgs; [
@@ -56,7 +45,6 @@ in
 wrapPackage {
   package = pkgs.git;
   extraPaths = [
-    git-worktree-add
     git-worktree-remove
   ];
   env = {
