@@ -312,10 +312,13 @@ hotkey-overlay {
 prefer-no-csd
 
 // Named workspaces are sticky: they persist when empty and don't reorder.
+// niri-external-workspaces (below) keeps them on the external display.
 workspace "1"
 workspace "2"
 workspace "3"
 workspace "4"
+
+spawn-at-startup "niri-external-workspaces"
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.

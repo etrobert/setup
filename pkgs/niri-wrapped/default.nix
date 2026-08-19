@@ -13,6 +13,7 @@ let
     self'.packages.ghostty-wrapped
     self'.packages.noctalia-wrapped
     self'.packages.scale-floating-window
+    self'.packages.niri-external-workspaces
     xwayland-satellite
   ];
 in

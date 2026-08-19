@@ -130,6 +130,7 @@
         };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher { };
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
+        niri-external-workspaces = pkgs.callPackage ./niri-external-workspaces { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {

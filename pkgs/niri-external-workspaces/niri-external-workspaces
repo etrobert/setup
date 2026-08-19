@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Keeps named workspaces off the laptop panel: whenever an external output is
+# connected, any named workspace sitting on an eDP-* output is moved there.
+# Numeric workspace names parse as indices in `niri msg --reference`, so moves
+# go through the IPC socket with Id references instead.
+
+move_requests() {
+  jq --raw-output '
+    select(.WorkspacesChanged)
+    | .WorkspacesChanged.workspaces as $ws
+    | ([$ws[].output | select(. != null and (startswith("eDP") | not))] | sort | first) as $target
+    | select($target)
+    | [$ws[] | select(.name != null and .output != null and (.output | startswith("eDP")))]
+    | sort_by(.idx)
+    | .[]
+    | {Action: {MoveWorkspaceToMonitor: {output: $target, reference: {Id: .id}}}}
+    | @json
+  '
+}
+
+niri msg --json event-stream | while read -r event; do
+  move_requests <<<"$event" | while read -r request; do
+    printf '%s\n' "$request" | socat - "UNIX-CONNECT:$NIRI_SOCKET" > /dev/null
+  done
+done
