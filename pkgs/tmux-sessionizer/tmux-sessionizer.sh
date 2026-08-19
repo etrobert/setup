@@ -12,6 +12,8 @@ project_dir() {
   esac
 }
 
+project_path=""
+
 if [ $# -eq 1 ]; then
   case "$1" in
   -h | --help)
@@ -21,6 +23,7 @@ if [ $# -eq 1 ]; then
     echo ""
     echo "OPTIONS:"
     echo "  -e, --existing    Show only existing tmux sessions"
+    echo "  -w, --worktrees   Show git worktrees of the current repository"
     echo "  -h, --help        Show this help message"
     echo ""
     echo "If no PROJECT_NAME is provided, shows a fuzzy finder with:"
@@ -33,6 +36,22 @@ if [ $# -eq 1 ]; then
   -e | --existing)
     project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null |
       fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right:60%')
+    ;;
+  -w | --worktrees)
+    worktrees=$(git worktree list)
+    selection=$(printf '%s\n' "$worktrees" |
+      fzf --preview 'git -C {1} log --oneline --max-count 15 --color=always' \
+        --preview-window 'right:60%')
+    project_path=${selection%% *}
+
+    main_path=${worktrees%%$'\n'*}
+    main_path=${main_path%% *}
+
+    if [ "$project_path" = "$main_path" ]; then
+      project=$(basename "$main_path")
+    else
+      project="$(basename "$main_path")/$(basename "$project_path")"
+    fi
     ;;
   *)
     project=$(echo "$1" | sed 's/\/$//')
@@ -55,21 +74,23 @@ if [ -z "$project" ]; then
   exit 0
 fi
 
-project_path=$(project_dir "$project")
+session=${project//./_}
 
-if [ ! -d "$project_path" ]; then
-  echo "Error: $project_path does not exist" >&2
-  exit 1
-fi
+if ! tmux has-session -t="$session" 2>/dev/null; then
+  if [ -z "$project_path" ]; then
+    project_path=$(project_dir "$project")
+  fi
 
-project=${project//./_}
+  if [ ! -d "$project_path" ]; then
+    echo "Error: $project_path does not exist" >&2
+    exit 1
+  fi
 
-if ! tmux has-session -t="$project" 2>/dev/null; then
-  tmux new-session -d -s "$project" -c "$project_path" -e "TMUX_SESSION_PATH=$project_path"
+  tmux new-session -d -s "$session" -c "$project_path" -e "TMUX_SESSION_PATH=$project_path"
 fi
 
 if [ -v TMUX ]; then
-  tmux switch-client -t "$project"
+  tmux switch-client -t "$session"
 else
-  tmux attach-session -t "$project"
+  tmux attach-session -t "$session"
 fi
