@@ -151,10 +151,8 @@ jobs:
             --out-link "$RUNNER_TEMP/tower-pr"
           nix build "./main-baseline#$attr" --accept-flake-config \
             --out-link "$RUNNER_TEMP/tower-main"
-          # --force-correctness: this runner shares tower's Nix store with
-          # other concurrent jobs, so the SQLite immutable-mode fast path dix
-          # otherwise uses can read a stale/empty snapshot and produce a
-          # blank diff (which then makes charm-freeze fail on empty input).
+          # --force-correctness: other jobs write this store concurrently,
+          # which can make dix's SQLite immutable-mode fast path inaccurate.
           nix run nixpkgs#dix -- --force-correctness "$RUNNER_TEMP/tower-main" \
             "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff.txt"
           nix run nixpkgs#dix -- --force-correctness --color always \
@@ -168,8 +166,12 @@ jobs:
       - name: Publish diff image
         id: image
         run: |
+          # < /dev/null: freeze ignores its file argument and reads stdin
+          # whenever stdin is not a character device, and Actions gives run
+          # steps a pipe — it then dies on the empty stream with "No input".
           nix run nixpkgs#charm-freeze -- "$RUNNER_TEMP/diff-ansi.txt" \
-            --language ansi --output "$RUNNER_TEMP/closure-diff.png"
+            --language ansi --output "$RUNNER_TEMP/closure-diff.png" \
+            < /dev/null
           name="closure-diff-pr$NUMBER-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.png"
           install --mode 0644 "$RUNNER_TEMP/closure-diff.png" \
             "/srv/files/ci/$name"
