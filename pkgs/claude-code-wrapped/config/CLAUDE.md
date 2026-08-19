@@ -173,6 +173,11 @@ Always rebase on origin/main before presenting a PR for review — both on initi
 `gh pr create` and after any follow-up changes before telling the user it's
 ready.
 
+Push a branch under the name it already has. In particular, don't rename a
+worktree's auto-generated `worktree-*` branch to a more conventional one when
+pushing — a local/upstream name mismatch makes `push.default = simple` reject a
+bare `git push`, breaking `git push` and `git please` from that worktree.
+
 Always resolve merge conflicts before reporting the task as done.
 
 To review, use Conventional Comments.
