@@ -16,8 +16,6 @@ attach() {
   fi
 }
 
-project_path=""
-
 if [ $# -eq 1 ]; then
   case "$1" in
   -h | --help)
@@ -40,6 +38,7 @@ if [ $# -eq 1 ]; then
   -e | --existing)
     project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null |
       fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right:60%')
+    project_path=""
     ;;
   -w | --worktrees)
     worktrees=$(git worktree list)
