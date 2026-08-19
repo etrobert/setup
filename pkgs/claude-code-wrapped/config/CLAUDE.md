@@ -156,6 +156,10 @@ GitHub operations — never impersonate the user (`etrobert`). If a permission i
 missing (e.g. `etrobert-bot` is not a collaborator on a repo), ask the user to
 grant it rather than attempting to act as them.
 
+Exception: in work repos (under `~/work/lafraise/`), act as the user's own
+`etrobert` account with their normal identity — the wrapper and gitconfig switch
+this automatically, including commits and pushes.
+
 ## Git Workflow
 
 When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI

@@ -26,7 +26,17 @@ let
 
   speakScript = callPackage ./speak.nix { inherit ttsBackends; };
 
-  botGit = git-wrapped.override { userConfig = ./gitconfig-bot; };
+  workRepoDir = "work/lafraise";
+
+  botGitConfig = pkgs.concatText "gitconfig-bot" [
+    ./gitconfig-bot
+    (pkgs.writeText "gitconfig-work-include" /* gitconfig */ ''
+      [includeIf "gitdir:~/${workRepoDir}/"]
+        path = ${./gitconfig-work}
+    '')
+  ];
+
+  botGit = git-wrapped.override { userConfig = botGitConfig; };
 
   runtimeInputs = [
     statuslineScript
@@ -78,8 +88,17 @@ wrapPackage {
     # Bare assignment, not `export VAR=$(…)`, so `set -e` aborts loudly on an
     # unreadable secret instead of baking in an empty token.
     # The `:-` default keeps that guard while letting CI pass its own token.
-    ''GITHUB_TOKEN="''${GITHUB_TOKEN:-$(< /run/agenix/github-bot-token)}"''
-    "export GITHUB_TOKEN"
+    # In work repos (workRepoDir) the token stays unset so gh falls back to the
+    # user's own stored etrobert login.
+    /* bash */ ''
+      case "$PWD" in
+        "$HOME/${workRepoDir}" | "$HOME/${workRepoDir}"/*) ;;
+        *)
+          GITHUB_TOKEN="''${GITHUB_TOKEN:-$(< /run/agenix/github-bot-token)}"
+          export GITHUB_TOKEN
+          ;;
+      esac
+    ''
   ]
   ++ agenixTokenRun;
   inherit runtimeInputs;

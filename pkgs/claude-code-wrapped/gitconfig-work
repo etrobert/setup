@@ -1,0 +1,8 @@
+# Included over gitconfig-bot for work repos (see botGitConfig in default.nix):
+# act as the user's own account, authenticating HTTPS pushes via gh.
+[user]
+	name = Etienne Robert
+	email = etiennerobert33@gmail.com
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
