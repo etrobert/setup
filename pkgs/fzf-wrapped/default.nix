@@ -2,8 +2,7 @@
 wrapPackage {
   package = fzf;
 
-  # fzf runs preview/execute commands via $SHELL (or sh) found on the caller's
-  # PATH; clearing it (inheritPath = false) breaks every preview.
+  # fzf runs preview/execute commands via $SHELL from the caller's PATH.
   inheritPath = true;
 
   run = [
