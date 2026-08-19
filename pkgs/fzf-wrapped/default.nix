@@ -8,5 +8,7 @@ wrapPackage {
   # PATH; clearing it (inheritPath = false) breaks every preview.
   inheritPath = true;
 
-  prefixSpace.FZF_DEFAULT_OPTS = "--bind ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down";
+  run = [
+    ''export FZF_DEFAULT_OPTS="--bind ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down''${FZF_DEFAULT_OPTS:+ $FZF_DEFAULT_OPTS}"''
+  ];
 }

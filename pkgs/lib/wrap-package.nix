@@ -34,10 +34,6 @@
 #                                         #   colon-prepends onto a (possibly-unset) list
 #                                         #   var at runtime without clobbering (e.g.
 #                                         #   XDG_DATA_DIRS); use --set/env to force instead
-#     prefixSpace    ? {};                 # like prefix, but space-separated — for
-#                                         #   flag-style vars (e.g. FZF_DEFAULT_OPTS)
-#                                         #   where a runtime value should win by
-#                                         #   coming after the baked one
 #     flags          ? [];                 # raw strings; each becomes one --add-flags "…"
 #     checks         ? [];                 # raw shell snippets run at build time before the
 #                                         #   wrapper is generated; a non-zero exit fails the
@@ -83,7 +79,6 @@
   env ? { },
   setDefaults ? { },
   prefix ? { },
-  prefixSpace ? { },
   flags ? [ ],
   run ? [ ],
   runtimeInputs ? [ ],
@@ -123,13 +118,6 @@ let
     ++ lib.mapAttrsToList (
       k: v: "    --prefix ${lib.escapeShellArg k} : ${lib.escapeShellArg v}"
     ) prefix
-    # prefixSpace is emitted as a --run export rather than --prefix ' ':
-    # makeWrapper's --prefix splits and dedupes elements on the separator,
-    # which corrupts flag strings (a runtime "--bind x" would lose its
-    # "--bind" against a baked one).
-    ++ lib.mapAttrsToList (
-      k: v: "    --run ${lib.escapeShellArg "export ${k}=\"${v}\${${k}:+ \$${k}}\""}"
-    ) prefixSpace
     # --add-flags values are inserted *verbatim* into the generated wrapper
     # script (see makeWrapper docs: "ARGS verbatim to the Bash-interpreted
     # invocation").  Double-quoting keeps the value as one shell word during
