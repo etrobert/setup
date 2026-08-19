@@ -13,7 +13,7 @@ _: {
       services.open-webui = {
         enable = true;
 
-        # Not the module's default 8080: rift-radar's backend already holds it.
+        # Not the module's default 8080: the lafraise dev backend binds it.
         port = 8090;
 
         # Defining `environment` at all replaces the module's default, so the

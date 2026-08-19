@@ -55,9 +55,13 @@
           # Caddy vhost are provided by rift-radar's own nixosModule (imported
           # above); we only supply host-specific config.
           rift-radar = {
-            enable = false; # TODO: Re-enable once its on another port as :8080
+            enable = true;
             hostName = "rift.etiennerobert.com";
             riotKey = config.age.secrets.riot-api-key;
+
+            # 8080 is too contended to hold: the lafraise dev backend binds it,
+            # and open-webui already had to move off it.
+            port = 8082;
           };
 
           # The rack.etiennerobert.com Caddy vhost is provided by rack's own
