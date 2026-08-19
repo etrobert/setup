@@ -55,11 +55,13 @@ if [ $# -eq 1 ]; then
     ;;
   *)
     project=$(echo "$1" | sed 's/\/$//')
+    project_path=$(project_dir "$project")
     ;;
   esac
 else
-  project=$({
-    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d -printf '%f\t%p\n'
+  selection=$({
+    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d \
+      ! -name setup ! -name doc -printf '%f\t%p\n'
     printf 'setup\t%s\n' "$(project_dir setup)"
     printf 'doc\t%s\n' "$(project_dir doc)"
   } | fzf \
@@ -67,7 +69,8 @@ else
     --with-nth 1 \
     --preview 'eza --tree --level=2 --color=always {2} 2>/dev/null || ls {2}' \
     --preview-window 'right:60%')
-  project=${project%%$'\t'*}
+  project=${selection%%$'\t'*}
+  project_path=${selection#*$'\t'}
 fi
 
 if [ -z "$project" ]; then
@@ -77,10 +80,6 @@ fi
 session=${project//./_}
 
 if ! tmux has-session -t="$session" 2>/dev/null; then
-  if [ -z "$project_path" ]; then
-    project_path=$(project_dir "$project")
-  fi
-
   if [ ! -d "$project_path" ]; then
     echo "Error: $project_path does not exist" >&2
     exit 1
