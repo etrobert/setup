@@ -28,6 +28,7 @@ _: {
         environment.systemPackages =
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
             bash-wrapped
+            fzf-wrapped
             git-wrapped
             ntfy-wrapped
             send-file
@@ -42,7 +43,6 @@ _: {
             entr
             eza
             fd
-            fzf
             htop
             jq
             magic-wormhole

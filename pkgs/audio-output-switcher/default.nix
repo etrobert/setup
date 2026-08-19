@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, fzf-wrapped, ... }:
 pkgs.writeShellApplication {
   name = "audio-output-switcher";
   runtimeInputs = with pkgs; [
     coreutils # cut
-    fzf
+    fzf-wrapped
     jq
     libnotify
     pipewire # provides pw-dump

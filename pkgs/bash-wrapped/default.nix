@@ -2,7 +2,7 @@
   inputs',
   bash,
   writeText,
-  fzf,
+  fzf-wrapped,
   git,
   wrapPackage,
 }:
@@ -16,7 +16,7 @@ let
 
     PS1='$(${pronto} $?)'
 
-    source <(${fzf}/bin/fzf --bash)
+    source <(${fzf-wrapped}/bin/fzf --bash)
   '';
 
   inputrc = writeText "inputrc" (builtins.readFile ./inputrc);
