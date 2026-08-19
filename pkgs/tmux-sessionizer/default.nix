@@ -7,6 +7,7 @@
   eza,
   fzf,
   findutils,
+  git,
 }:
 let
   script = writeShellApplication {
@@ -18,6 +19,7 @@ let
       eza
       fzf
       findutils
+      git
     ];
     inheritPath = true;
     text = builtins.readFile ./tmux-sessionizer.sh;

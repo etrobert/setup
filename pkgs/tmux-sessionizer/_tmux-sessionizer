@@ -9,6 +9,7 @@ projects=(setup doc)
 _arguments -s \
   '(- *)'{-h,--help}'[show help]' \
   '(-e --existing)'{-e,--existing}'[show only existing tmux sessions]' \
+  '(-w --worktrees)'{-w,--worktrees}'[show git worktrees of the current repository]' \
   ':project:->project'
 
 case $state in
