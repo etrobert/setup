@@ -1,6 +1,4 @@
 { fzf, wrapPackage }:
-# Scroll the preview with ctrl-u/ctrl-d (nvim-style half pages) in every fzf.
-# Prepended, so an FZF_DEFAULT_OPTS set at runtime can still override it.
 wrapPackage {
   package = fzf;
 
