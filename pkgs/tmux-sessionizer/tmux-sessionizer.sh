@@ -1,7 +1,3 @@
-#!/usr/bin/env bash
-
-set -euo pipefail
-
 # Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
 project_dir() {
