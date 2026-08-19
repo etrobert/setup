@@ -26,6 +26,11 @@ _: {
     {
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.services.immich.port ];
 
+      # Immich reaches Postgres over /run/postgresql, so the TCP listener earns
+      # nothing and only collides with the lafraise dev database on 5432.
+      # Disabling because port is used by LaFraise
+      services.postgresql.settings.listen_addresses = lib.mkForce "";
+
       services.immich = {
         enable = true;
         host = "0.0.0.0";
