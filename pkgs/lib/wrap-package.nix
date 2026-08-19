@@ -177,9 +177,13 @@ let
   # have both completed.  Useful for fixups that depend on the wrapper already
   # being in place (e.g. repointing an .app bundle symlink at the new wrapper).
   postWrapScript = lib.concatStringsSep "\n" postWrap;
+
+  # Carry the wrapped package's version in the store name so closure-diff
+  # tools (nvd) show "foo-wrapped 1.2 -> 1.3" instead of "<none>".
+  version = lib.getVersion package;
 in
 symlinkJoin {
-  name = "${binName}-wrapped";
+  name = "${binName}-wrapped${lib.optionalString (version != "") "-${version}"}";
   nativeBuildInputs = [ (if binaryWrapper then makeBinaryWrapper else makeWrapper) ];
   paths = [ package ] ++ extraPaths;
   meta.mainProgram = binName;
