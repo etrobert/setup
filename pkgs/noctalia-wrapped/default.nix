@@ -1,4 +1,5 @@
 {
+  lib,
   wrapPackage,
   noctalia,
   runCommand,
@@ -7,6 +8,9 @@
   bitwarden-cli,
   official-plugins,
   community-plugins,
+  # Hosts whose GPU exposes no VRAM stat (e.g. an i915 iGPU) would render the
+  # widget permanently empty; noctalia has no hide-when-unavailable option.
+  withVramWidget ? true,
 }:
 let
   plugins = ./plugins;
@@ -19,7 +23,8 @@ let
       --replace-fail '@plugins@' '${plugins}' \
       --replace-fail '@official-plugins@' '${official-plugins}' \
       --replace-fail '@community-plugins@' '${community-plugins}' \
-      --replace-fail '@wallpaper@' '${wallpaper}'
+      --replace-fail '@wallpaper@' '${wallpaper}' \
+      --replace-fail '@vram-widget@' '${lib.optionalString withVramWidget ''"vram",''}'
   '';
 
   # Without --skip-ddc-checks, every ddcutil invocation re-runs a full display

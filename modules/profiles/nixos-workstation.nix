@@ -19,6 +19,11 @@
           "media.av1.enabled" = false;
         };
       };
+
+      # leod's iGPU (i915) exposes no VRAM stat, so the widget would sit empty.
+      noctalia-wrapped = self.packages.${system}.noctalia-wrapped.override {
+        withVramWidget = config.networking.hostName != "leod";
+      };
     in
     {
       imports = [
@@ -181,7 +186,7 @@
           enable = true;
           systemd.enable = true;
 
-          package = self.packages.${system}.noctalia-wrapped;
+          package = noctalia-wrapped;
 
           recommendedServices.enable = true;
         };
