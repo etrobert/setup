@@ -4,10 +4,8 @@
   symlinkJoin,
   coreutils,
   gnused,
-  difftastic,
   eza,
   findutils,
-  git,
 }:
 let
   script = writeShellApplication {
@@ -16,11 +14,10 @@ let
       coreutils
       gnused
       self'.packages.tmux-wrapped
+      self'.packages.git-wrapped
       self'.packages.fzf-wrapped
-      difftastic
       eza
       findutils
-      git
     ];
     inheritPath = true;
     text = builtins.readFile ./tmux-sessionizer.sh;

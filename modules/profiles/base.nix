@@ -29,6 +29,7 @@ _: {
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
             bash-wrapped
             fzf-wrapped
+            git-worktree-add
             git-wrapped
             ntfy-wrapped
             send-file
