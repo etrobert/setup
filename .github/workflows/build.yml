@@ -42,7 +42,6 @@ jobs:
 
   discover:
     name: discover
-    needs: probe
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -51,12 +50,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # Emit the build matrix from the flake: nixos hosts build on the
-      # self-hosted Linux runners, darwin hosts on the runner the probe picked.
+      # Emit the build matrix from the flake. Only host and platform: the
+      # runner is resolved in the build job, so this can run alongside probe.
       - name: List host configurations
         id: list
-        env:
-          DARWIN_RUNNER: ${{ needs.probe.outputs.runner }}
         run: |
           nixos=$(nix eval .#nixosConfigurations \
             --apply builtins.attrNames --json)
@@ -66,20 +63,22 @@ jobs:
           matrix=$(jq --compact-output --null-input \
             --argjson nixos "$nixos" \
             --argjson darwin "$darwin" \
-            --argjson darwinRunner "$DARWIN_RUNNER" \
             '{
               include:
-                [$nixos[] | {host: ., platform: "nixos",
-                            runner: ["self-hosted", "Linux"]}]
-              + [$darwin[] | {host: ., platform: "darwin",
-                             runner: $darwinRunner}]
+                [$nixos[] | {host: ., platform: "nixos"}]
+              + [$darwin[] | {host: ., platform: "darwin"}]
             }')
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   build:
     name: ${{ matrix.host }}
-    needs: discover
-    runs-on: ${{ matrix.runner }}
+    needs: [probe, discover]
+    # fromJSON handles both probe shapes: a label array for aaron, a plain
+    # string for the hosted fallback.
+    runs-on: >-
+      ${{ matrix.platform == 'darwin'
+        && fromJSON(needs.probe.outputs.runner)
+        || fromJSON('["self-hosted", "Linux"]') }}
     permissions:
       contents: read
     strategy:
