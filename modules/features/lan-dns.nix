@@ -16,7 +16,9 @@ _: {
           enable = true;
           settings = {
             interface = config.services.lanDns.interface;
-            bind-interfaces = true;
+            # Tolerate the interface having no address yet. bind-interfaces
+            # makes dnsmasq exit instead, which latched it dead on a boot race.
+            bind-dynamic = true;
             no-resolv = true;
             server = [
               "1.1.1.1"
@@ -41,6 +43,13 @@ _: {
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
             dhcp-option = [ "option:router,192.168.0.1" ];
           };
+        };
+
+        # Without this, dnsmasq starts unaddressed and drops SO_BINDTODEVICE on
+        # the DHCP socket for good; bind-dynamic only covers the DNS listeners.
+        systemd.services.dnsmasq = {
+          wants = [ "network-online.target" ];
+          after = [ "network-online.target" ];
         };
 
         networking.firewall.interfaces.${config.services.lanDns.interface} = {
