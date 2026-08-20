@@ -139,13 +139,6 @@ real external path. To test as an outside visitor would (public DNS →
 hotspot — then `ssh aaron` and requests from it resolve to the public IP and
 traverse the real path. Useful for end-to-end latency/throughput measurements.
 
-**IPv6:** The router sends RA with RDNSS pointing to its own GUA
-`2a02:8109:8892:b700:14ea:8aff:febe:9cfd` (which proxies to Vodafone's upstream
-DNS `2a02:8100:c0:241::4:1101`). This RDNSS **cannot be disabled** — the router
-UI has no IPv6 configuration at all (ISP-locked). Pi has **no GUA IPv6** (only
-ULA `fd00::18`). The router's IPv6 DHCP is disabled; pi's dnsmasq handles DHCP
-only over IPv4.
-
 **Vodafone Station API** (for future automation): model CGA6444VF, PHP-based
 REST at `/api/v1/`. All calls require `X-Requested-With: XMLHttpRequest`. Login
 is a two-step PBKDF2 flow — see session transcript for details.
