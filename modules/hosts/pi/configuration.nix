@@ -44,12 +44,18 @@
         };
       };
 
-      services.lanDns = {
-        enable = true;
-        interface = "end0";
-      };
+      services = {
+        lanDns = {
+          enable = true;
+          interface = "end0";
+        };
 
-      services.tailscale.extraUpFlags = [ "--advertise-exit-node" ];
+        tailscale.extraUpFlags = [ "--advertise-exit-node" ];
+
+        # Root lives on the SD card, so cap the journal rather than let it grow
+        # to journald's default ceiling of 10% of the filesystem (~5.9G here).
+        journald.extraConfig = "SystemMaxUse=256M";
+      };
 
       system.stateVersion = "25.11";
     };
