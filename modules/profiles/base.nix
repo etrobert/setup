@@ -91,6 +91,10 @@ _: {
             # Disable system compinit; we call compinit -u in .zshrc to skip
             # insecure directory warnings caused by Nix store paths.
             enableGlobalCompInit = false;
+
+            # Keep in sync with pkgs/zsh-wrapped/zshrc: a shell that never reaches
+            # $ZDOTDIR/.zshrc would otherwise trim ~/.zsh_history to the 2000 default.
+            histSize = 999999999;
           };
         };
 
