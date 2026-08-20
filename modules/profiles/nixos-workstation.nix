@@ -154,10 +154,6 @@
       };
 
       programs = {
-        # Force-installs the Claude in Chrome extension for Claude Code's
-        # browser integration (claude --chrome). The policy lands in
-        # /etc/chromium and /etc/opt/chrome, covering both the chromium
-        # package above and google-chrome from the workstation profile.
         chromium = {
           enable = true;
           extensions = [ "fcoeoabgfenejglbffodgkkbkcdhcgfn" ]; # Claude in Chrome

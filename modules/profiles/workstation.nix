@@ -16,7 +16,6 @@ _: {
           "discord"
           "discord-unwrapped"
           "github-copilot-cli"
-          "google-chrome"
           "notion-app"
           "slack"
           "spotify"
@@ -76,7 +75,6 @@ _: {
               # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
               gnumake
               go
-              google-chrome
               hyperfine # Command-line benchmarking tool
               jqp # TUI playground to experiment with jq
               libnotify
