@@ -11,7 +11,6 @@
       self.nixosModules.piConfiguration
       self.nixosModules.nixosBase
       self.nixosModules.base
-      self.nixosModules.atuinLogin
       self.nixosModules.lanDns
       self.nixosModules.autoUpgrade
       inputs.agenix.nixosModules.default
