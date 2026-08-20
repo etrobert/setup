@@ -1,6 +1,7 @@
 {
   self',
   niri,
+  nirius,
   xwayland-satellite,
   bibata-cursors,
   wrapPackage,
@@ -13,6 +14,7 @@ let
     self'.packages.ghostty-wrapped
     self'.packages.noctalia-wrapped
     self'.packages.scale-floating-window
+    nirius
     xwayland-satellite
   ];
 in
