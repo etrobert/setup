@@ -27,6 +27,7 @@ _: {
 
         environment.systemPackages =
           (with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+            atuin-wrapped
             bash-wrapped
             fzf-wrapped
             git-worktree-add
@@ -38,7 +39,6 @@ _: {
             switch
           ])
           ++ (with pkgs; [
-            atuin
             bat
             coreutils
             dnsutils # dig, nslookup

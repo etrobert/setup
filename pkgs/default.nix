@@ -26,6 +26,7 @@
           inherit aichat;
           inherit (self'.packages) claude-code-wrapped;
         };
+        atuin-wrapped = pkgs.callPackage ./atuin-wrapped { };
         fzf-wrapped = pkgs.callPackage ./fzf-wrapped { };
         bash-wrapped = pkgs.callPackage ./bash-wrapped {
           inherit inputs';
@@ -33,7 +34,7 @@
         };
         zsh-wrapped = pkgs.callPackage ./zsh-wrapped {
           inherit inputs';
-          inherit (self'.packages) fzf-wrapped;
+          inherit (self'.packages) fzf-wrapped atuin-wrapped;
         };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         vim-wrapped = pkgs.callPackage ./vim-wrapped { };
