@@ -316,11 +316,12 @@ hotkey-overlay {
 // After enabling or disabling this, you need to restart the apps for this to take effect.
 prefer-no-csd
 
-// Named workspaces are sticky: they persist when empty and don't reorder.
-workspace "1"
-workspace "2"
-workspace "3"
-workspace "4"
+// Named workspaces are sticky: they persist when empty. Names are non-numeric
+// on purpose -- see the Mod+1..4 binds below.
+workspace "browser"
+workspace "term"
+workspace "chat"
+workspace "media"
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -402,24 +403,24 @@ layer-rule {
 // Pin apps to their named workspaces.
 window-rule {
     match app-id=r#"^zen$"#
-    open-on-workspace "1"
+    open-on-workspace "browser"
 }
 
 window-rule {
     match app-id=r#"^com\.mitchellh\.ghostty$"#
-    open-on-workspace "2"
+    open-on-workspace "term"
 }
 
 window-rule {
     match app-id=r#"^whatsapp-electron$"#
     match app-id=r#"^signal$"#
     match app-id=r#"^org\.telegram\.desktop$"#
-    open-on-workspace "3"
+    open-on-workspace "chat"
 }
 
 window-rule {
     match app-id=r#"^Spotify$"#
-    open-on-workspace "4"
+    open-on-workspace "media"
 }
 
 // Float the pavucontrol volume control (verified app-id: org.pulseaudio.pavucontrol).
@@ -601,19 +602,21 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Mod+1 { focus-workspace 1; }
-    Mod+2 { focus-workspace 2; }
-    Mod+3 { focus-workspace 3; }
-    Mod+4 { focus-workspace 4; }
+    // A quoted argument is a name reference, a bare integer an index reference.
+    // Names keep these bound to the right workspace when outputs come and go.
+    Mod+1 { focus-workspace "browser"; }
+    Mod+2 { focus-workspace "term"; }
+    Mod+3 { focus-workspace "chat"; }
+    Mod+4 { focus-workspace "media"; }
     Mod+5 { focus-workspace 5; }
     Mod+6 { focus-workspace 6; }
     Mod+7 { focus-workspace 7; }
     Mod+8 { focus-workspace 8; }
     Mod+9 { focus-workspace 9; }
-    Mod+Ctrl+1 { move-column-to-workspace 1; }
-    Mod+Ctrl+2 { move-column-to-workspace 2; }
-    Mod+Ctrl+3 { move-column-to-workspace 3; }
-    Mod+Ctrl+4 { move-column-to-workspace 4; }
+    Mod+Ctrl+1 { move-column-to-workspace "browser"; }
+    Mod+Ctrl+2 { move-column-to-workspace "term"; }
+    Mod+Ctrl+3 { move-column-to-workspace "chat"; }
+    Mod+Ctrl+4 { move-column-to-workspace "media"; }
     Mod+Ctrl+5 { move-column-to-workspace 5; }
     Mod+Ctrl+6 { move-column-to-workspace 6; }
     Mod+Ctrl+7 { move-column-to-workspace 7; }
