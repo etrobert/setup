@@ -38,6 +38,19 @@
 
       powerManagement.resumeCommands = "${pkgs.systemd}/bin/systemctl try-restart fprintd.service";
 
+      # pam_fprintd is serial: it holds the prompt for its full timeout — 30s
+      # by default — before the typed password is even considered.
+      security.pam.services = {
+        # Noctalia's lock screen authenticates against the login stack and
+        # drives fprintd over D-Bus alongside its password field, so the module
+        # must not be in it — the same call gdm and plasma6 make in nixpkgs.
+        login.fprintAuth = false;
+
+        sudo.rules.auth.fprintd.settings.timeout = 5;
+        "polkit-1".rules.auth.fprintd.settings.timeout = 5;
+        su.rules.auth.fprintd.settings.timeout = 5;
+      };
+
       hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
       # This value determines the NixOS release from which the default
