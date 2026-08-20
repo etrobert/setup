@@ -160,6 +160,12 @@ terminal theme's 16-color ANSI palette into xterm
 `colour4`/`colour0` render as harsh xterm defaults instead of the real theme
 colors.
 
+Driving that xterm needs two more flags: `-xrm 'xterm*allowSendEvents: true'`,
+since xterm ignores synthetic key events by default, and `xdotool windowfocus`
+rather than `windowactivate`, which needs a window manager Xvfb does not have.
+Screenshots go in `/srv/files/temp` on tower, served at
+`files.etiennerobert.com/temp/` and swept after 30 days.
+
 Each commit should be functional — don't commit broken or speculative states.
 
 Always rebase on origin/main before presenting a PR for review — both on initial
