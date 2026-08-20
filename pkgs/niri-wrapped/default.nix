@@ -18,7 +18,7 @@ let
   nirius-0-9-0 =
     assert lib.assertMsg (lib.versionOlder nirius.version "0.9.0")
       "nixpkgs now has nirius ${nirius.version} — drop the override in pkgs/niri-wrapped/default.nix";
-    nirius.overrideAttrs (old: rec {
+    nirius.overrideAttrs (_: rec {
       version = "0.9.0";
 
       src = fetchFromSourcehut {
