@@ -97,6 +97,11 @@ _: {
             # Keep in sync with pkgs/zsh-wrapped/zshrc: a shell that never reaches
             # $ZDOTDIR/.zshrc would otherwise trim ~/.zsh_history to the 2000 default.
             histSize = 999999999;
+
+            # Same hazard, worse outcome: /etc/zshrc sets SHARE_HISTORY, so any
+            # such shell rewrites ~/.zsh_history on exit — without
+            # EXTENDED_HISTORY that rewrite drops every timestamp.
+            interactiveShellInit = "setopt EXTENDED_HISTORY";
           };
         };
 
