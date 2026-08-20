@@ -13,6 +13,8 @@
 
     networking.hostName = "tower";
 
+    time.timeZone = "Europe/Berlin";
+
     # Overflow tier beneath zram (priority 5, profiles/nixos-base.nix): zram
     # keeps the hot pages, this absorbs the cold tail. An unset priority gets a
     # kernel-assigned negative value, which is below zram's 5.

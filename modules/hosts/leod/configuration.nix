@@ -23,6 +23,10 @@
 
       services.fprintd.enable = true;
 
+      # leod is the only host that travels, so it geolocates its timezone
+      # instead of pinning one. The module sets time.timeZone to null.
+      services.automatic-timezoned.enable = true;
+
       # The Synaptics Prometheus (06cb:00bd) does not survive suspend: it comes
       # back reporting an unsupported firmware version, stranding whatever
       # verify the lock screen had in flight. fprintd cannot cancel that one,

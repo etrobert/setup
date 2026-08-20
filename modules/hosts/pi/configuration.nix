@@ -51,6 +51,8 @@
 
       services.tailscale.extraUpFlags = [ "--advertise-exit-node" ];
 
+      time.timeZone = "Europe/Berlin";
+
       system.stateVersion = "25.11";
     };
 }

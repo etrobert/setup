@@ -21,9 +21,6 @@ _: {
         ln --symbolic --force --no-dereference /home/soft/setup /etc/nixos
       '';
 
-      # Automatic timezone based on geolocation
-      services.automatic-timezoned.enable = true;
-
       i18n.defaultLocale = "en_US.UTF-8";
 
       console.useXkbConfig = true; # Apply XKB options to the TTY too
