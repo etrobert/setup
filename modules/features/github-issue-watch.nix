@@ -27,18 +27,35 @@ in
           /* bash */ ''
             set -u -o pipefail
 
-            check() {
-              local repo="$1" number="$2" note="$3" issue state
-              issue=$(curl --silent --fail --location "https://api.github.com/repos/$repo/issues/$number")
-              state=$(jq --raw-output '.state' <<<"$issue")
+            failed=0
 
-              if [ "$state" = open ]; then
+            check() {
+              local repo="$1" number="$2" note="$3" issue state reason
+              echo "Checking $repo#$number"
+
+              if ! issue=$(curl --silent --fail --show-error --location \
+                "https://api.github.com/repos/$repo/issues/$number"); then
+                echo "$repo#$number: fetch failed" >&2
+                failed=1
                 return
               fi
 
-              jq --raw-output --arg note "$note" \
+              state=$(jq --raw-output '.state' <<<"$issue")
+              reason=$(jq --raw-output '.state_reason // "unknown"' <<<"$issue")
+
+              if [ "$state" != closed ]; then
+                echo "$repo#$number: still $state"
+                return
+              fi
+
+              echo "$repo#$number: closed as $reason, notifying"
+
+              if ! jq --raw-output --arg note "$note" \
                 '"\(.title)\nClosed as \(.state_reason).\n\($note)\n\(.html_url)"' <<<"$issue" |
-                ntfy publish --quiet --title "$repo#$number closed"
+                ntfy publish --quiet --title "$repo#$number closed"; then
+                echo "$repo#$number: notification failed" >&2
+                failed=1
+              fi
             }
 
           ''
@@ -51,7 +68,11 @@ in
                 issue.note
               ]
             }\n"
-          ) issues;
+          ) issues
+          + /* bash */ ''
+
+            exit "$failed"
+          '';
 
         serviceConfig.Type = "oneshot";
       };
