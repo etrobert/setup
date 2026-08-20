@@ -9,6 +9,7 @@
   zsh-syntax-highlighting,
   fzf-wrapped,
   zoxide,
+  atuin,
 }:
 let
   pronto = lib.getExe inputs'.pronto.packages.default;
@@ -22,7 +23,10 @@ let
 
     source ${./alias.sh}
     if [[ $options[zle] = on ]]; then
+      # atuin owns ^R; empty keeps fzf's ^T, alt-c and tab completion.
+      FZF_CTRL_R_COMMAND=""
       source <(${fzf-wrapped}/bin/fzf --zsh)
+      source <(${atuin}/bin/atuin init zsh)
     fi
     source <(${zoxide}/bin/zoxide init zsh)
     source ${zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh

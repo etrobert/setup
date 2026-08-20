@@ -38,6 +38,7 @@ _: {
             switch
           ])
           ++ (with pkgs; [
+            atuin
             bat
             coreutils
             dnsutils # dig, nslookup
