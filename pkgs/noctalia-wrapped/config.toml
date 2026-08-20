@@ -77,7 +77,7 @@ end = [
   "temp",
   "cpu",
   "ram",
-  "vram",
+  @vram-widget@
   "media",
   "tray",
   "notifications",
