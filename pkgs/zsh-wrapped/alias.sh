@@ -75,3 +75,6 @@ alias cly="claude --dangerously-skip-permissions"
 alias '??'='noglob aichat -e'
 # Slower, but knows this project's CLAUDE.md.
 alias '???'='noglob aichat -e -m claude:haiku'
+
+alias pms-front="ALLOWED_DEV_ORIGINS=tower npm run start:dev -w @lafraise/pms-front"
+alias pms-back="LAFRAISE_PMS_BACK_FRONT_URL=http://tower:3200 npm run start:dev -w @lafraise/pms-back"
