@@ -38,8 +38,10 @@ if [ $# -eq 1 ]; then
     main_path=${worktrees%%$'\n'*}
     main_path=${main_path%% *}
 
+    # shellcheck disable=SC2016 # $FZF_PREVIEW_COLUMNS expands in fzf's preview shell
     selection=$(printf '%s\n' "$worktrees" | tail --lines +2 |
-      fzf --preview 'git -C {1} log --oneline --color=always origin/HEAD.. 2>/dev/null |
+      fzf --preview 'DFT_COLOR=always DFT_WIDTH=$FZF_PREVIEW_COLUMNS \
+          git -C {1} dlog --color=always origin/HEAD.. 2>/dev/null |
           grep . || git -C {1} log --oneline --color=always --max-count 15' \
         --preview-window 'right:60%')
     project_path=${selection%% *}
