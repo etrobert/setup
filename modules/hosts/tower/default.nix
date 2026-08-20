@@ -25,6 +25,7 @@ in
       self.nixosModules.workstation
       self.nixosModules.nixosBase
       self.nixosModules.base
+      self.nixosModules.atuinLogin
       self.nixosModules.unfree
       self.nixosModules.server
       self.nixosModules.ntfy
