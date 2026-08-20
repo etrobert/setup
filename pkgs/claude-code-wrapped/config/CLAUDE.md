@@ -149,13 +149,6 @@ file header restating what the file plainly is.
 Before committing, verify the change: typecheck, lint, and run the relevant
 test, build, or manual verification step.
 
-## GitHub Identity
-
-Claude Code has its own GitHub account (`etrobert-bot`) and must use it for all
-GitHub operations — never impersonate the user (`etrobert`). If a permission is
-missing (e.g. `etrobert-bot` is not a collaborator on a repo), ask the user to
-grant it rather than attempting to act as them.
-
 ## Git Workflow
 
 When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
