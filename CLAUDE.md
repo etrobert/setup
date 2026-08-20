@@ -152,6 +152,26 @@ is a two-step PBKDF2 flow — see session transcript for details.
 `api/v1/session/ menu` is the authenticated entry point; `api/v1/login_conf` is
 unauthenticated.
 
+## Shell history (atuin)
+
+`Ctrl-R` opens atuin's TUI. `~/.zsh_history` is still written, but only as the
+fallback that makes reverting cheap.
+
+`zsh-wrapped` sets `FZF_CTRL_R_COMMAND=""` before sourcing `fzf --zsh`, so fzf
+skips defining and binding its own `^R` widget rather than losing the key to
+whichever init happens to be sourced last. Its other widgets each have the same
+`FZF_*_COMMAND` opt-out and are untouched.
+
+nixpkgs' `programs.atuin` is deliberately unused. Its daemon never writes
+`settings.daemon.enabled`, so the client ignores the unit it starts, and its
+socket listens on `%t/atuin/atuin.sock` while the client looks for
+`%t/atuin.sock`; home-manager's module gets both right. Config lives in
+`atuin-wrapped` via `ATUIN_CONFIG_DIR`, which also covers darwin.
+
+Imported history carries `exit = -1` and `cwd = "unknown"` — zsh's history file
+records neither — so the exit column and directory filter mode only mean
+anything for commands run after the switch.
+
 ## Notifications (ntfy)
 
 `ntfy-wrapped` wraps the ntfy CLI with `NTFY_TOPIC=http://tower:2586/home`
