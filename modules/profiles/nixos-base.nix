@@ -13,6 +13,7 @@ _: {
     in
     {
       imports = with self.nixosModules; [
+        atuinLogin
         kanata
         ntfyFailureAlerts
       ];
