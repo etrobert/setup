@@ -59,6 +59,12 @@ _: {
       systemd.services.nixos-upgrade.serviceConfig = {
         StateDirectory = "nixos-upgrade";
         ExecCondition = "${lib.getExe deployGate} check";
+
+        # A failed switch whose ntfy alert also failed stays pinned in memory,
+        # so systemd-run refuses the next run of nixos-rebuild's fixed-name
+        # transient unit: "already loaded or has a fragment file".
+        ExecStartPre = "-${pkgs.systemd}/bin/systemctl reset-failed nixos-rebuild-switch-to-configuration.service";
+
         ExecStartPost = "${lib.getExe deployGate} record";
       };
     };
