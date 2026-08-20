@@ -120,8 +120,13 @@ output "Dell Inc. DELL U3223QE 1GPL9P3" {
 }
 
 // leod's Philips 329P1 (4K external), with the laptop panel centered below
-// it: (3072 - 1706) / 2 = 683 logical px.
+// it: (3072 - 1706) / 2 = 683 logical px. Two units, and niri matches the whole
+// make/model/serial string, so each needs its own block.
 output "Philips Consumer Electronics Company PHL 329P1 AU82510000304" {
+    position x=0 y=0
+}
+
+output "Philips Consumer Electronics Company PHL 329P1 AU82510000012" {
     position x=0 y=0
 }
 
