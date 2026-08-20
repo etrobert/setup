@@ -29,6 +29,7 @@ in
       self.nixosModules.server
       self.nixosModules.ntfy
       self.nixosModules.claudeWarmup
+      self.nixosModules.githubIssueWatch
       self.nixosModules.docker
       self.nixosModules.gaming
       self.nixosModules.githubRunner
