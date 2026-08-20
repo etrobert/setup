@@ -38,6 +38,13 @@
         installation_mode = "force_installed";
         default_area = "menupanel";
       };
+      # Refined GitHub — GitHub UI tweaks; notably tints file-list rows by how
+      # recently each file changed. Individual features toggle in its options.
+      "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = {
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/refined-github-/latest.xpi";
+        installation_mode = "force_installed";
+        default_area = "menupanel";
+      };
       # SponsorBlock — skips in-video sponsor/intro/outro segments on YouTube
       # using crowd-sourced segment data.
       "sponsorBlocker@ajay.app" = {
