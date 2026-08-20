@@ -43,6 +43,7 @@ in
       self.nixosModules.comfyui
       self.nixosModules.openWebui
       self.nixosModules.tailnetServices
+      self.nixosModules.atuinServer
     ];
   };
 }
