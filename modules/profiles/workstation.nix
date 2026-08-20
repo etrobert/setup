@@ -17,6 +17,7 @@ _: {
           "discord-unwrapped"
           "github-copilot-cli"
           "google-chrome"
+          "notion-app"
           "slack"
           "spotify"
         ];
@@ -80,6 +81,11 @@ _: {
               jqp # TUI playground to experiment with jq
               libnotify
               nodejs_26 # pinned (not nodejs_latest) so the binary cache stays reliable
+
+              # Notion ships no official Linux client; notion-electron is the
+              # community Electron wrapper around the web app.
+              (if stdenv.hostPlatform.isDarwin then notion-app else notion-electron)
+
               opencode
               pnpm
               python3
