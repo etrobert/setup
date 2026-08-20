@@ -154,6 +154,15 @@
       };
 
       programs = {
+        # Force-installs the Claude in Chrome extension for Claude Code's
+        # browser integration (claude --chrome). The policy lands in
+        # /etc/chromium and /etc/opt/chrome, covering both the chromium
+        # package above and google-chrome from the workstation profile.
+        chromium = {
+          enable = true;
+          extensions = [ "fcoeoabgfenejglbffodgkkbkcdhcgfn" ]; # Claude in Chrome
+        };
+
         # GTK apps (pavucontrol, nautilus, …) pick their cursor
         # by GSettings theme *name* and search XCURSOR_PATH for it — they
         # ignore niri's private cursor config. Point the name at Bibata and
