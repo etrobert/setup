@@ -8,22 +8,83 @@ project_dir() {
   esac
 }
 
-# Colours what fzf shows: blocked shouts, finished invites, working recedes,
-# agent-less stays at the default. Reads "<name>|<marker> <name>" lines and
-# colours only the second field, so the caller still gets a clean name back.
-color_by_agent_state() {
+# Where the background fan-out leaves PR state, one file per branch so results
+# can be picked up as they land rather than all at once.
+pr_cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/tmux-sessionizer/pr"
+
+# Fetching PR state costs about 700ms per branch, far too slow to open a
+# picker with. Fan out in the background instead: the list renders from
+# whatever is already cached and gains the rest as it arrives.
+# The $N inside the xargs payload are the child shell's positionals, not ours:
+# $1 is the cache dir passed in, $2 and $3 are the worktree and branch xargs
+# appends -- hence single quotes, and hence the waiver.
+# shellcheck disable=SC2016
+refresh_pr_cache() {
+  mkdir --parents "$pr_cache_dir"
+
+  tmux list-sessions -F '#{session_path}' 2>/dev/null |
+    while read -r path; do
+      branch=$(git -C "$path" branch --show-current 2>/dev/null) || continue
+      [ -n "$branch" ] && printf '%s\t%s\n' "$path" "$branch"
+    done |
+    xargs --max-lines=1 --max-procs=8 sh -c '
+      cd "$2" || exit 0
+      gh pr view "$3" --json number,state,statusCheckRollup \
+        > "$1/$(echo "$3" | tr / %).json" 2>/dev/null || true
+    ' sh "$pr_cache_dir"
+}
+
+# "#847 OPEN ✓" -- the mark summarises the check rollup, so a failing branch is
+# visible without opening anything.
+pr_summary() {
+  file="$pr_cache_dir/$(echo "$1" | tr / %).json"
+  [ -r "$file" ] || return 0
+
+  jq --raw-output '
+    (.statusCheckRollup // [] | map(.conclusion // .state)) as $checks
+    | (if ($checks | length) == 0 then ""
+       elif ($checks | any(. == "FAILURE" or . == "TIMED_OUT" or . == "CANCELLED")) then " ✗"
+       elif ($checks | any(. == "PENDING" or . == "IN_PROGRESS")) then " ·"
+       else " ✓" end) as $mark
+    | "#\(.number) \(.state)\($mark)"
+  ' "$file" 2>/dev/null || true
+}
+
+# One row per session: agent marker, name, then PR state once it has arrived.
+# Blocked shouts, finished invites, working recedes, agent-less stays plain.
+# Only the shown field is coloured, so --accept-nth still returns a clean name.
+list_sessions() {
   yellow=$'\e[1;33m'
   green=$'\e[32m'
   dim=$'\e[2m'
   reset=$'\e[0m'
 
-  while IFS='|' read -r name display; do
-    case $display in
-    '!'*) printf '%s|%s%s%s\n' "$name" "$yellow" "$display" "$reset" ;;
-    '✓'*) printf '%s|%s%s%s\n' "$name" "$green" "$display" "$reset" ;;
-    '•'*) printf '%s|%s%s%s\n' "$name" "$dim" "$display" "$reset" ;;
-    *) printf '%s|%s\n' "$name" "$display" ;;
+  names=()
+  markers=()
+  paths=()
+  width=0
+
+  while IFS='|' read -r name marker path; do
+    names+=("$name")
+    markers+=("$marker")
+    paths+=("$path")
+    [ ${#name} -gt "$width" ] && width=${#name}
+  done < <(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}}|#{session_path}' 2>/dev/null)
+
+  for i in "${!names[@]}"; do
+    case ${markers[i]} in
+    '!') color=$yellow ;;
+    '✓') color=$green ;;
+    '•') color=$dim ;;
+    *) color='' ;;
     esac
+
+    branch=$(git -C "${paths[i]}" branch --show-current 2>/dev/null || true)
+    pr=$(pr_summary "$branch")
+
+    printf '%s|%s%1s %-*s%s %s%s%s\n' \
+      "${names[i]}" "$color" "${markers[i]}" "$width" "${names[i]}" "$reset" \
+      "$dim" "$pr" "$reset"
   done
 }
 
@@ -46,17 +107,26 @@ if [ $# -eq 1 ]; then
     echo "If PROJECT_NAME is provided, creates/switches to that session directly."
     exit 0
     ;;
+  --list-sessions)
+    # Internal: how the picker re-renders itself as PR state arrives.
+    list_sessions
+    exit 0
+    ;;
   -e | --existing)
-    # Field 2 is shown (agent marker, then the name), field 1 is the bare name
+    # Field 2 is shown (agent marker, name, PR state), field 1 is the bare name
     # --accept-nth returns. The shown field goes last because a non-final one
     # carries its trailing delimiter into the display, and --delimiter is a
-    # regex, hence the escaped pipe. p1 pads the marker so that sessions
-    # without an agent still line their names up.
-    project=$(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}} #{session_name}' 2>/dev/null |
-      color_by_agent_state |
+    # regex, hence the escaped pipe.
+    #
+    # --id-nth names field 1 as each row's identity, which is what lets --track
+    # keep the cursor on the same session across a reload; without it tracking
+    # is index-based and does not survive one.
+    refresh_pr_cache &
+    project=$(list_sessions |
       fzf --ansi --delimiter '\|' --with-nth 2 --accept-nth 1 \
+        --track --id-nth 1 \
         --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%' \
-        --bind 'every(0.2):refresh-preview')
+        --bind 'every(1):refresh-preview+reload(tmux-sessionizer --list-sessions)')
     project_path=""
     ;;
   -w | --worktrees)

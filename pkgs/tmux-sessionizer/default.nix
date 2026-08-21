@@ -6,13 +6,17 @@
   gnused,
   eza,
   findutils,
+  gh,
+  jq,
 }:
 let
   script = writeShellApplication {
     name = "tmux-sessionizer";
     runtimeInputs = [
       coreutils
+      gh
       gnused
+      jq
       self'.packages.tmux-wrapped
       self'.packages.git-wrapped
       self'.packages.fzf-wrapped
