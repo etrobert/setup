@@ -156,7 +156,11 @@
       programs = {
         chromium = {
           enable = true;
-          extensions = [ "fcoeoabgfenejglbffodgkkbkcdhcgfn" ]; # Claude in Chrome
+
+          extensions = [
+            "fcoeoabgfenejglbffodgkkbkcdhcgfn" # Claude in Chrome
+            "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
+          ];
         };
 
         # GTK apps (pavucontrol, nautilus, …) pick their cursor
