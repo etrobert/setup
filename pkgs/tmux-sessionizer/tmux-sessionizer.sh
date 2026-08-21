@@ -97,11 +97,13 @@ pr_summary() {
 # One row per session: agent marker, name, then PR state once it has arrived.
 # Blocked shouts, finished invites, working recedes, agent-less stays plain.
 # Only the shown field is coloured, so --accept-nth still returns a clean name.
+# dim leads with 0 because it is an attribute, not a colour: on its own it
+# dims whatever foreground the previous segment left set.
 yellow=$'\e[1;33m'
 green=$'\e[32m'
 magenta=$'\e[35m'
 red=$'\e[31m'
-dim=$'\e[2m'
+dim=$'\e[0;2m'
 reset=$'\e[0m'
 
 list_sessions() {
