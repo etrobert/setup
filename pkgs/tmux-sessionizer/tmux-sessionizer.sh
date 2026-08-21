@@ -35,10 +35,8 @@ refresh_pr_cache() {
       gh pr view "$3" --json number,state,isDraft,statusCheckRollup \
         > "$cache.tmp" 2>/dev/null || { rm -f "$cache.tmp"; exit 0; }
 
-      # Most opens fetch what is already cached, and redrawing for that costs a
-      # render and a UI block to show the same rows. Only a changed answer is
-      # worth one.
-      if [ -f "$cache" ] && [ "$(cat "$cache.tmp")" = "$(cat "$cache")" ]; then
+      # Redrawing to show identical rows costs a render and a UI block.
+      if cmp --silent "$cache.tmp" "$cache" 2>/dev/null; then
         rm -f "$cache.tmp"
         exit 0
       fi

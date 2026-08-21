@@ -6,6 +6,7 @@
   gnused,
   eza,
   curl,
+  diffutils,
   findutils,
   gh,
   jq,
@@ -16,6 +17,7 @@ let
     runtimeInputs = [
       coreutils
       curl
+      diffutils
       gh
       gnused
       jq
