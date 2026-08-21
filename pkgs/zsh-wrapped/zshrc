@@ -34,7 +34,7 @@ precmd() {
 }
 
 # -i needed to avoid errors on mac
-# -d is required because ZDOTDIR is a read-only store path, where the default dumpfile can never be cached.
+# -d: ZDOTDIR is a read-only store path; the default dump can't be cached.
 autoload -Uz compinit && compinit -i -d "$HOME/.zcompdump"
 
 autoload -Uz edit-command-line
