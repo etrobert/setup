@@ -29,6 +29,7 @@ let
     name = "git-worktree-remove";
     runtimeInputs = with pkgs; [
       coreutils
+      gh
       git
       tmux
     ];
