@@ -77,7 +77,10 @@ pr_summary() {
   *) check_part="" ;;
   esac
 
-  printf '%s#%s %s%s%s' "$dim" "$number" "$state_part" "$check_part" "$reset"
+  # Close the dim before the glyphs: faint is an attribute, so a later colour
+  # sets the hue but leaves the intensity down, and a failing rollup has to
+  # shout. The number stays dim -- it is a label, not the signal.
+  printf '%s#%s%s %s%s%s' "$dim" "$number" "$reset" "$state_part" "$check_part" "$reset"
 }
 
 # One row per session: agent marker, name, then PR state once it has arrived.
