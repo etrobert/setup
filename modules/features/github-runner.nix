@@ -75,6 +75,8 @@ _: {
         replace = true;
       };
 
+      power.sleep.computer = "never";
+
       # The runner daemon runs entirely as _github-runner and reads the
       # token itself, so agenix must chown it off the default root:0400.
       age.secrets.github-runner-token = {
