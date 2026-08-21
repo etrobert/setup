@@ -14,7 +14,7 @@ _: {
 
         text = ''
           state_dir=/var/lib/nixos-upgrade
-          last_rev="$state_dir/last-deployed-rev"
+          last_rev="$state_dir/last-attempted-rev"
           pending_rev="$state_dir/pending-rev"
           deploy_url=https://github.com/etrobert/setup.git
 
@@ -26,11 +26,11 @@ _: {
                 exit 1
               fi
               if [ -f "$last_rev" ] && [ "$rev" = "$(cat "$last_rev")" ]; then
-                echo "deploy $rev already live; skipping"
+                echo "deploy $rev already attempted; skipping"
                 exit 1
               fi
               printf '%s\n' "$rev" > "$pending_rev"
-              echo "deploy $rev differs from live; upgrading"
+              echo "deploy $rev differs from last attempt; upgrading"
               ;;
             record)
               if [ -f "$pending_rev" ]; then
@@ -65,7 +65,9 @@ _: {
         # transient unit: "already loaded or has a fragment file".
         ExecStartPre = "-${pkgs.systemd}/bin/systemctl reset-failed nixos-rebuild-switch-to-configuration.service";
 
-        ExecStartPost = "${lib.getExe deployGate} record";
+        # On stop rather than on success: a rev that fails to build or switch
+        # must still be recorded, or the gate re-offers it every minute forever.
+        ExecStopPost = "${lib.getExe deployGate} record";
       };
     };
 }
