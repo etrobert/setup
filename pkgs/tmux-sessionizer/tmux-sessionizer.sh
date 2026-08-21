@@ -8,17 +8,19 @@ project_dir() {
   esac
 }
 
-# Colours what fzf shows: blocked shouts, working recedes, finished and
-# agent-less stay at the default. Reads "<name>|<marker> <name>" lines and
+# Colours what fzf shows: blocked shouts, finished invites, working recedes,
+# agent-less stays at the default. Reads "<name>|<marker> <name>" lines and
 # colours only the second field, so the caller still gets a clean name back.
 color_by_agent_state() {
   yellow=$'\e[1;33m'
+  green=$'\e[32m'
   dim=$'\e[2m'
   reset=$'\e[0m'
 
   while IFS='|' read -r name display; do
     case $display in
     '!'*) printf '%s|%s%s%s\n' "$name" "$yellow" "$display" "$reset" ;;
+    '✓'*) printf '%s|%s%s%s\n' "$name" "$green" "$display" "$reset" ;;
     '•'*) printf '%s|%s%s%s\n' "$name" "$dim" "$display" "$reset" ;;
     *) printf '%s|%s\n' "$name" "$display" ;;
     esac
