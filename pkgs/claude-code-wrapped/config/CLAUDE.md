@@ -171,6 +171,23 @@ terminal theme's 16-color ANSI palette into xterm
 `colour4`/`colour0` render as harsh xterm defaults instead of the real theme
 colors.
 
+Attach that screenshot the way the web textarea does — the endpoint behind
+paste-into-comment takes a `gh` token:
+
+```bash
+curl --request POST --header "Authorization: Bearer $(gh auth token)" \
+  --data-binary @shot.png \
+  "https://uploads.github.com/user-attachments/assets?name=shot.png&content_type=image/png&repository_id=$(gh api repos/OWNER/REPO --jq .id)"
+```
+
+Put the returned `github.com/user-attachments/assets/<uuid>` in the PR body. It
+404s on a direct fetch — GitHub mints a short-lived signed URL at render time,
+for anonymous viewers too — so don't take that 404 as a failed upload. The
+endpoint is undocumented and `gh` has no native support; scp to
+`tower:/srv/files/ci/` (served at `files.etiennerobert.com/ci/`) is the
+fallback when a directly-fetchable URL is needed. That directory is public and
+browsable, so keep private content out of anything uploaded there.
+
 Each commit should be functional — don't commit broken or speculative states.
 
 Always rebase on origin/main before presenting a PR for review — both on initial
