@@ -47,16 +47,25 @@ if [ $# -eq 1 ]; then
     exit 0
     ;;
   -e | --existing)
+    # The preview is a real pane, not fzf's: every cursor move respawns it with
+    # a read-only client attached to the highlighted session, so it shows the
+    # session live. $TMUX has to go or tmux refuses to nest the client, so the
+    # socket it names is passed on explicitly.
+    socket=${TMUX%%,*}
+    viewer=$(tmux split-window -h -d -l '60%' -P -F '#{pane_id}' 'sleep infinity')
+    trap 'tmux kill-pane -t "$viewer" 2>/dev/null || true' EXIT
+
     # Field 2 is shown (agent marker, then the name), field 1 is the bare name
     # --accept-nth returns. The shown field goes last because a non-final one
     # carries its trailing delimiter into the display, and --delimiter is a
     # regex, hence the escaped pipe. p1 pads the marker so that sessions
-    # without an agent still line their names up.
-    project=$(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}} #{session_name}' 2>/dev/null |
+    # without an agent still line their names up. Our own session is filtered
+    # out — the viewer would render itself.
+    project=$(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}} #{session_name}' \
+      -f "#{!=:#{session_name},$(tmux display-message -p '#{session_name}')}" 2>/dev/null |
       color_by_agent_state |
       fzf --ansi --delimiter '\|' --with-nth 2 --accept-nth 1 \
-        --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%' \
-        --bind 'every(0.2):refresh-preview')
+        --bind "focus:execute-silent(tmux respawn-pane -k -t $viewer \"TMUX= tmux -S $socket attach -r -t {1}\")")
     project_path=""
     ;;
   -w | --worktrees)
