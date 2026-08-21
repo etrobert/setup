@@ -14,6 +14,11 @@ let
       "exit"
       "duration"
       "time"
+      # Narrower than the default 15: the longest hostname here is "tower".
+      {
+        type = "host";
+        width = 5;
+      }
       "command"
     ];
   };
