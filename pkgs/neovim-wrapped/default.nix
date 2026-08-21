@@ -77,6 +77,8 @@ let
   linuxDeps = with pkgs; [
     wl-clipboard
     coreutils # provides cat for copying
+    # Without it nvim's LSP file-watching fallback walks the whole tree on the main loop.
+    inotify-tools
   ];
 
   path = lib.makeBinPath (
