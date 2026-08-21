@@ -90,6 +90,10 @@ are registered under `checks` in `pkgs/default.nix`. `checks.yml` discovers
 check names from the flake, so a new one becomes its own CI job without
 touching the workflow or branch protection.
 
+Golden outputs live in a sibling `tests/` directory and render escape bytes as
+`<ESC>` so a failing diff stays readable; regenerate them by rerunning the
+command under the same `faketime` clock the check uses.
+
 ### neovim-wrapped plugin conventions
 
 Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a
