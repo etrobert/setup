@@ -204,6 +204,7 @@ _: {
           "sonos"
           "vlc"
           "whatsapp"
+          "zen"
         ];
       };
 
