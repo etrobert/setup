@@ -12,6 +12,7 @@
   st = status
   br = branch
   w = worktree
+  wa = worktree-add
   ds = -c diff.external=difft diff --staged
   ff = merge --ff-only
   vimdiff = difftool --no-prompt --tool=vimdiff
