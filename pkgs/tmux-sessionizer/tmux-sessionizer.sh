@@ -29,36 +29,76 @@ refresh_pr_cache() {
     done |
     xargs --max-lines=1 --max-procs=8 sh -c '
       cd "$2" || exit 0
-      gh pr view "$3" --json number,state,statusCheckRollup \
-        > "$1/$(echo "$3" | tr / %).json" 2>/dev/null || true
+      cache="$1/$(echo "$3" | tr / %).json"
+      # Via a temp file: the redirect alone would leave an empty one behind for
+      # every branch with no PR, which reads as a broken entry rather than none.
+      gh pr view "$3" --json number,state,isDraft,statusCheckRollup \
+        > "$cache.tmp" 2>/dev/null && mv "$cache.tmp" "$cache" || { rm -f "$cache.tmp"; exit 0; }
+      [ -n "${FZF_PORT:-}" ] &&
+        curl --silent --request POST "localhost:$FZF_PORT" \
+          --data "reload(tmux-sessionizer --list-sessions)" >/dev/null
     ' sh "$pr_cache_dir"
 }
 
-# "#847 OPEN ✓" -- the mark summarises the check rollup, so a failing branch is
-# visible without opening anything.
+# Nerd Font glyphs, the same ones workmux picks: nf-oct-git_pull_request and
+# friends for the state, nf-md-check_circle and friends for the check rollup.
+# Written as escapes so the private-use codepoints survive any editor.
+pr_glyph_open=$'\uF407'
+pr_glyph_merged=$'\uF419'
+pr_glyph_closed=$'\uF406'
+pr_glyph_draft=$'\uF177'
+check_glyph_ok=$'\U000F0134'
+check_glyph_fail=$'\U000F0159'
+check_glyph_pending=$'\U000F0520'
+
+# "#847   " -- number, state, and one mark for the whole check rollup, so a
+# failing branch is visible without opening anything.
 pr_summary() {
   file="$pr_cache_dir/$(echo "$1" | tr / %).json"
-  [ -r "$file" ] || return 0
+  [ -s "$file" ] || return 0
 
-  jq --raw-output '
+  fields=$(jq --raw-output '
     (.statusCheckRollup // [] | map(.conclusion // .state)) as $checks
-    | (if ($checks | length) == 0 then ""
-       elif ($checks | any(. == "FAILURE" or . == "TIMED_OUT" or . == "CANCELLED")) then " ✗"
-       elif ($checks | any(. == "PENDING" or . == "IN_PROGRESS")) then " ·"
-       else " ✓" end) as $mark
-    | "#\(.number) \(.state)\($mark)"
-  ' "$file" 2>/dev/null || true
+    | (if ($checks | length) == 0 then "none"
+       elif ($checks | any(. == "FAILURE" or . == "TIMED_OUT" or . == "CANCELLED")) then "fail"
+       elif ($checks | any(. == "PENDING" or . == "IN_PROGRESS")) then "pending"
+       else "ok" end) as $checkState
+    | [(.number | tostring), (if .isDraft then "DRAFT" else .state end), $checkState]
+    | @tsv
+  ' "$file" 2>/dev/null) || return 0
+  [ -n "$fields" ] || return 0
+
+  IFS=$'\t' read -r number state checks <<<"$fields"
+
+  case $state in
+  OPEN) state_part="$green$pr_glyph_open" ;;
+  MERGED) state_part="$magenta$pr_glyph_merged" ;;
+  CLOSED) state_part="$red$pr_glyph_closed" ;;
+  DRAFT) state_part="$dim$pr_glyph_draft" ;;
+  *) state_part="$dim?" ;;
+  esac
+
+  case $checks in
+  ok) check_part=" $green$check_glyph_ok" ;;
+  fail) check_part=" $red$check_glyph_fail" ;;
+  pending) check_part=" $dim$check_glyph_pending" ;;
+  *) check_part="" ;;
+  esac
+
+  printf '%s#%s %s%s%s' "$dim" "$number" "$state_part" "$check_part" "$reset"
 }
 
 # One row per session: agent marker, name, then PR state once it has arrived.
 # Blocked shouts, finished invites, working recedes, agent-less stays plain.
 # Only the shown field is coloured, so --accept-nth still returns a clean name.
-list_sessions() {
-  yellow=$'\e[1;33m'
-  green=$'\e[32m'
-  dim=$'\e[2m'
-  reset=$'\e[0m'
+yellow=$'\e[1;33m'
+green=$'\e[32m'
+magenta=$'\e[35m'
+red=$'\e[31m'
+dim=$'\e[2m'
+reset=$'\e[0m'
 
+list_sessions() {
   names=()
   markers=()
   paths=()
@@ -82,9 +122,8 @@ list_sessions() {
     branch=$(git -C "${paths[i]}" branch --show-current 2>/dev/null || true)
     pr=$(pr_summary "$branch")
 
-    printf '%s|%s%1s %-*s%s %s%s%s\n' \
-      "${names[i]}" "$color" "${markers[i]}" "$width" "${names[i]}" "$reset" \
-      "$dim" "$pr" "$reset"
+    printf '%s|%s%1s %-*s%s %s\n' \
+      "${names[i]}" "$color" "${markers[i]}" "$width" "${names[i]}" "$reset" "$pr"
   done
 }
 
@@ -107,6 +146,11 @@ if [ $# -eq 1 ]; then
     echo "If PROJECT_NAME is provided, creates/switches to that session directly."
     exit 0
     ;;
+  --refresh-pr-cache)
+    # Internal: started by the picker so it inherits $FZF_PORT.
+    refresh_pr_cache
+    exit 0
+    ;;
   --list-sessions)
     # Internal: how the picker re-renders itself as PR state arrives.
     list_sessions
@@ -120,13 +164,15 @@ if [ $# -eq 1 ]; then
     #
     # --id-nth names field 1 as each row's identity, which is what lets --track
     # keep the cursor on the same session across a reload; without it tracking
-    # is index-based and does not survive one.
-    refresh_pr_cache &
+    # is index-based and does not survive one. --listen hands the fetch a port
+    # on $FZF_PORT so it can push a reload the moment a result lands, rather
+    # than us polling for one.
     project=$(list_sessions |
       fzf --ansi --delimiter '\|' --with-nth 2 --accept-nth 1 \
-        --track --id-nth 1 \
+        --track --id-nth 1 --listen \
+        --bind 'start:execute-silent(tmux-sessionizer --refresh-pr-cache &)' \
         --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%' \
-        --bind 'every(1):refresh-preview+reload(tmux-sessionizer --list-sessions)')
+        --bind 'every(0.2):refresh-preview')
     project_path=""
     ;;
   -w | --worktrees)

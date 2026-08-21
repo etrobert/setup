@@ -5,6 +5,7 @@
   coreutils,
   gnused,
   eza,
+  curl,
   findutils,
   gh,
   jq,
@@ -14,6 +15,7 @@ let
     name = "tmux-sessionizer";
     runtimeInputs = [
       coreutils
+      curl
       gh
       gnused
       jq
