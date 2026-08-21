@@ -33,8 +33,8 @@ precmd() {
   unset _cmd_start
 }
 
-# -i avoids insecure-directory errors on mac. -d is required because ZDOTDIR is
-# a read-only store path, where the default dumpfile can never be cached.
+# -i needed to avoid errors on mac
+# -d is required because ZDOTDIR is a read-only store path, where the default dumpfile can never be cached.
 autoload -Uz compinit && compinit -i -d "$HOME/.zcompdump"
 
 autoload -Uz edit-command-line
