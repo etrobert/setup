@@ -33,11 +33,15 @@ refresh_pr_cache() {
       # Via a temp file: the redirect alone would leave an empty one behind for
       # every branch with no PR, which reads as a broken entry rather than none.
       gh pr view "$3" --json number,state,isDraft,statusCheckRollup \
-        > "$cache.tmp" 2>/dev/null && mv "$cache.tmp" "$cache" || { rm -f "$cache.tmp"; exit 0; }
-      [ -n "${FZF_PORT:-}" ] &&
-        curl --silent --request POST "localhost:$FZF_PORT" \
-          --data "reload(tmux-sessionizer --list-sessions)" >/dev/null
+        > "$cache.tmp" 2>/dev/null && mv "$cache.tmp" "$cache" || rm -f "$cache.tmp"
     ' sh "$pr_cache_dir"
+
+  # Once, not per result: a render costs ~100ms at twenty sessions and blocks
+  # the UI while fzf re-finds the tracked row, so one reload per PR would spend
+  # both twenty times over.
+  [ -n "${FZF_PORT:-}" ] &&
+    curl --silent --request POST "localhost:$FZF_PORT" \
+      --data "reload(tmux-sessionizer --list-sessions)" >/dev/null
 }
 
 # Nerd Font glyphs, written as escapes so the private-use codepoints survive any
