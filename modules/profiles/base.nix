@@ -30,12 +30,12 @@ _: {
             atuin-wrapped
             bash-wrapped
             fzf-wrapped
-            git-worktree-add
             git-wrapped
             ntfy-wrapped
             send-file
             tmux-wrapped
             tmux-sessionizer
+            workmux-wrapped
             switch
           ])
           ++ (with pkgs; [

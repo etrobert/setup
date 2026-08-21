@@ -95,7 +95,11 @@
         git-find-commit = pkgs.callPackage ./git-find-commit {
           inherit (self'.packages) fzf-wrapped;
         };
-        git-worktree-add = pkgs.callPackage ./git-worktree-add { inherit self'; };
+        workmux-wrapped = pkgs.callPackage ./workmux-wrapped {
+          inherit inputs';
+          inherit (self'.packages) tmux-wrapped;
+          inherit git-wrapped;
+        };
         agents = pkgs.callPackage ./agents { inherit self'; };
         flake-input-table = pkgs.callPackage ./flake-input-table { };
         inherit ntfy-wrapped hass-cli-wrapped git-wrapped;

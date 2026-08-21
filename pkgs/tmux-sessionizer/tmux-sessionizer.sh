@@ -17,7 +17,6 @@ if [ $# -eq 1 ]; then
     echo ""
     echo "OPTIONS:"
     echo "  -e, --existing    Show only existing tmux sessions"
-    echo "  -w, --worktrees   Show git worktrees of the current repository"
     echo "  -h, --help        Show this help message"
     echo ""
     echo "If no PROJECT_NAME is provided, shows a fuzzy finder with:"
@@ -32,21 +31,6 @@ if [ $# -eq 1 ]; then
       fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right:60%')
     project_path=""
     ;;
-  -w | --worktrees)
-    worktrees=$(git worktree list)
-
-    main_path=${worktrees%%$'\n'*}
-    main_path=${main_path%% *}
-
-    # shellcheck disable=SC2016 # $FZF_PREVIEW_COLUMNS expands in fzf's preview shell
-    selection=$(printf '%s\n' "$worktrees" | tail --lines +2 |
-      fzf --preview 'DFT_COLOR=always DFT_WIDTH=$FZF_PREVIEW_COLUMNS \
-          git -C {1} dlog --color=always origin/HEAD.. 2>/dev/null |
-          grep . || git -C {1} log --oneline --color=always --max-count 15' \
-        --preview-window 'right:60%')
-    project_path=${selection%% *}
-    project="$(basename "$main_path")/$(basename "$project_path")"
-    ;;
   *)
     project=$(echo "$1" | sed 's/\/$//')
     project_path=$(project_dir "$project")
@@ -55,7 +39,7 @@ if [ $# -eq 1 ]; then
 else
   selection=$({
     find "$HOME/work" -mindepth 1 -maxdepth 1 -type d \
-      ! -name setup ! -name doc -printf '%f\t%p\n'
+      ! -name setup ! -name doc ! -name '*__worktrees' -printf '%f\t%p\n'
     printf 'setup\t%s\n' "$(project_dir setup)"
     printf 'doc\t%s\n' "$(project_dir doc)"
   } | fzf \

@@ -82,6 +82,10 @@
       url = "github:Palomia/nutricalc";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    workmux = {
+      url = "github:raine/workmux";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     noctalia-official-plugins = {
       url = "github:noctalia-dev/official-plugins";
       flake = false;

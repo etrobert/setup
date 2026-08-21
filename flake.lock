@@ -533,6 +533,7 @@
         "rack": "rack",
         "rift-radar": "rift-radar",
         "tsnsrv": "tsnsrv",
+        "workmux": "workmux",
         "zen-browser": "zen-browser"
       }
     },
@@ -569,6 +570,26 @@
       "original": {
         "owner": "boinkor-net",
         "repo": "tsnsrv",
+        "type": "github"
+      }
+    },
+    "workmux": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787297297,
+        "narHash": "sha256-yGAhVDgbQBit4RVcFl9kUlqF+0E0rWDjP/UzzLdan/U=",
+        "owner": "raine",
+        "repo": "workmux",
+        "rev": "5c1ca2fce51ff4958c2a877869e15224f84905fb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raine",
+        "repo": "workmux",
         "type": "github"
       }
     },

@@ -1,0 +1,29 @@
+---
+# workmux global config. Read from $XDG_CONFIG_HOME/workmux/config.yaml, which
+# the wrapper points at this file's store directory.
+
+# One tmux session per worktree, matching tmux-sessionizer. tmux-only upstream.
+mode: session
+
+# Upstream prefixes session names with "wm-".
+window_prefix: ""
+
+files:
+  copy:
+    - .env
+    - .tmux.conf
+    - .claude/settings.local.json
+
+# Upstream appends its status marker after the trailing window_end_flag
+# conditional in tmux.conf's window-status-format, which paints the icon
+# outside the tab. tmux.conf places @workmux_status by hand instead.
+status_format: false
+
+status_icons:
+  working: "•"
+  waiting: "!"
+  done: "✓"
+
+# Set explicitly: the first-run wizard otherwise prompts, then warns on every
+# run because it cannot write back to a store-path config.
+nerdfont: false

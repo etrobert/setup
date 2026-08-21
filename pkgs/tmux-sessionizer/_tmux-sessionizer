@@ -4,12 +4,11 @@ local state
 local -a projects
 
 projects=(setup doc)
-[[ -d $HOME/work ]] && projects+=($HOME/work/*(N/:t))
+[[ -d $HOME/work ]] && projects+=($HOME/work/*~*__worktrees(N/:t))
 
 _arguments -s \
   '(- *)'{-h,--help}'[show help]' \
   '(-e --existing)'{-e,--existing}'[show only existing tmux sessions]' \
-  '(-w --worktrees)'{-w,--worktrees}'[show git worktrees of the current repository]' \
   ':project:->project'
 
 case $state in
