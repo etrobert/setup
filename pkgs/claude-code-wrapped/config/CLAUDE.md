@@ -139,10 +139,10 @@ Keep code comments minimal and short — one line, two at most. Longer belongs i
 the commit or PR, as does narrative context (root-cause chains, incident
 history). Neighbouring files' comment density is not a justification.
 
-Cut a comment if the name, its docs or LSP hover already say it; if the helper
-being called documents it where that helper is defined; if it describes a prior
-setup, a rejected alternative, or anything no longer in the tree; or if it's a
-file header restating what the file plainly is.
+Before writing one, cover it: if a reader could recover it from the code — the
+name, the expression below, the message it carries, the helper it calls — cut
+it. Most often that is one narrating work you just did. It earns its place only
+by carrying what the code cannot: why this value, which upstream bug.
 
 ## Testing
 
