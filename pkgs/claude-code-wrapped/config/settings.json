@@ -36,7 +36,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w @agent-status '•' || true"
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @agent-status '•' || true"
           }
         ]
       }
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w @agent-status '•' || true"
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @agent-status '•' || true"
           }
         ]
       }
@@ -56,7 +56,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w @agent-status '!' || true"
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @agent-status '!' || true"
           }
         ]
       }
@@ -66,7 +66,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -w @agent-status '✓' || true"
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @agent-status '✓' || true"
           }
         ]
       }
@@ -76,7 +76,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tmux set-option -uw @agent-status || true"
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -uw -t \"$TMUX_PANE\" @agent-status || true"
           }
         ]
       }
