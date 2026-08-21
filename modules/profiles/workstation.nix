@@ -101,6 +101,14 @@ _: {
           in
           inputPackages ++ customPackages ++ externalPackages;
 
+        # 30 github: inputs against an anonymous 60/hour-per-IP limit, shared by
+        # every machine behind the same WAN address, is one `nix flake update`
+        # away from exhaustion. `!include` is the tolerant form: nix skips it
+        # when agenix has not decrypted yet, rather than failing to start.
+        nix.extraOptions = ''
+          !include /run/agenix/nix-access-tokens
+        '';
+
         age.secrets = {
           openai-api-key = {
             file = ../../secrets/openai-api-key.age;
@@ -110,8 +118,11 @@ _: {
             file = ../../secrets/gemini-api-key.age;
             owner = "soft";
           };
-          github-bot-token = {
-            file = ../../secrets/github-bot-token.age;
+          # A nix.conf fragment rather than a bare token: flake inputs are
+          # fetched client-side, so `soft` must read it, and nix.conf itself is
+          # world-readable.
+          nix-access-tokens = {
+            file = ../../secrets/nix-access-tokens.age;
             owner = "soft";
           };
           z-ai-auth-token = {
