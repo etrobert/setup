@@ -1,0 +1,7 @@
+{
+  "model": { "display_name": "Opus 5" },
+  "context_window": { "used_percentage": 85 },
+  "rate_limits": {
+    "five_hour": { "used_percentage": 55 }
+  }
+}
