@@ -8,6 +8,23 @@ project_dir() {
   esac
 }
 
+# Colours what fzf shows: blocked shouts, working recedes, finished and
+# agent-less stay at the default. Reads "<name>|<marker> <name>" lines and
+# colours only the second field, so the caller still gets a clean name back.
+color_by_agent_state() {
+  yellow=$'\e[1;33m'
+  dim=$'\e[2m'
+  reset=$'\e[0m'
+
+  while IFS='|' read -r name display; do
+    case $display in
+    '!'*) printf '%s|%s%s%s\n' "$name" "$yellow" "$display" "$reset" ;;
+    '•'*) printf '%s|%s%s%s\n' "$name" "$dim" "$display" "$reset" ;;
+    *) printf '%s|%s\n' "$name" "$display" ;;
+    esac
+  done
+}
+
 if [ $# -eq 1 ]; then
   case "$1" in
   -h | --help)
@@ -33,12 +50,8 @@ if [ $# -eq 1 ]; then
     # carries its trailing delimiter into the display, and --delimiter is a
     # regex, hence the escaped pipe. p1 pads the marker so that sessions
     # without an agent still line their names up.
-    # Dim what does not want you (working) and shout what does (blocked); a
-    # finished agent sits between them at the default colour. Only the shown
-    # field is coloured, so --accept-nth still returns a clean name.
     project=$(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}} #{session_name}' 2>/dev/null |
-      sed --expression 's/|\(!.*\)/|\x1b[1;33m\1\x1b[0m/' \
-        --expression 's/|\(•.*\)/|\x1b[2m\1\x1b[0m/' |
+      color_by_agent_state |
       fzf --ansi --delimiter '\|' --with-nth 2 --accept-nth 1 \
         --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%')
     project_path=""
