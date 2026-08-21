@@ -40,16 +40,17 @@ refresh_pr_cache() {
     ' sh "$pr_cache_dir"
 }
 
-# Nerd Font glyphs, the same ones workmux picks: nf-oct-git_pull_request and
-# friends for the state, nf-md-check_circle and friends for the check rollup.
-# Written as escapes so the private-use codepoints survive any editor.
-pr_glyph_open=$'\uF407'
-pr_glyph_merged=$'\uF419'
-pr_glyph_closed=$'\uF406'
-pr_glyph_draft=$'\uF177'
-check_glyph_ok=$'\U000F0134'
-check_glyph_fail=$'\U000F0159'
-check_glyph_pending=$'\U000F0520'
+# Nerd Font glyphs, written as escapes so the private-use codepoints survive any
+# editor. Codepoints checked against the font's own cmap rather than copied from
+# a cheat sheet: several nearby ones are unrelated icons, and a wrong glyph
+# still renders, so it fails silently.
+pr_glyph_open=$'\U000F407'   # oct-git_pull_request
+pr_glyph_merged=$'\U000F419' # oct-git_merge
+pr_glyph_closed=$'\U000F4DC' # oct-git_pull_request_closed
+pr_glyph_draft=$'\U000F4DD'  # oct-git_pull_request_draft
+check_glyph_ok=$'\U000F05E0'      # md-check_circle
+check_glyph_fail=$'\U000F0159'    # md-close_circle
+check_glyph_pending=$'\U000F051F' # md-timer_sand
 
 # "#847   " -- number, state, and one mark for the whole check rollup, so a
 # failing branch is visible without opening anything.
