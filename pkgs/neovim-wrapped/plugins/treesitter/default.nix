@@ -2,43 +2,11 @@
 {
   plugins = [
     {
-      plugin = pkgs.vimPlugins.nvim-treesitter.withPlugins (
-        p:
-        with p;
-        [
-          bash
-          caddy
-          c
-          css
-          diff
-          git_config
-          hyprlang
-          html
-          ini
-          lua
-          luadoc
-          markdown
-          markdown_inline
-          nix
-          toml
-          query
-          ssh_config
-          vim
-          vimdoc
-          javascript
-          typescript
-          json
-          go
-          scheme
-          rust
-          zsh
-          latex
-          jinja
-        ]
-        ++ [ (pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-openscad) ]
-      );
+      plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
       config = builtins.readFile ./config.lua;
     }
+    # Not part of nvim-treesitter's grammar set.
+    { plugin = pkgs.neovimUtils.grammarToPlugin pkgs.tree-sitter-grammars.tree-sitter-openscad; }
     { plugin = pkgs.vimPlugins.nvim-treesitter-textobjects; }
   ];
 }
