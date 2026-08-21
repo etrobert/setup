@@ -106,7 +106,7 @@
         printline = pkgs.callPackage ./printline.nix { };
         creme = pkgs.callPackage ./creme { };
         check-bt-profile = pkgs.callPackage ./check-bt-profile { };
-        tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self'; };
+        tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self' inputs'; };
         get-weather = pkgs.callPackage ./get-weather { };
         ils = pkgs.callPackage ./ils { };
         add-asset = pkgs.callPackage ./add-asset { };
