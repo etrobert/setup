@@ -28,8 +28,15 @@ if [ $# -eq 1 ]; then
     exit 0
     ;;
   -e | --existing)
-    project=$(tmux list-sessions -F "#{session_name}" 2>/dev/null |
-      fzf --preview 'tmux capture-pane -ep -t {}' --preview-window 'right:60%')
+    # Field 2 is what fzf shows: the session's agent state, collapsed from its
+    # windows to the worst of blocked / working / done, then the name. It goes
+    # last because a non-final field carries its trailing delimiter into the
+    # display. Field 1 is the bare name, which --accept-nth returns.
+    # --delimiter is a regex, hence the escaped pipe.
+    marker='#{?#{m:*!*,#{W:#{@agent-status}}},!,#{?#{m:*•*,#{W:#{@agent-status}}},•,#{?#{W:#{@agent-status}},✓, }}}'
+    project=$(tmux list-sessions -F "#{session_name}|$marker #{session_name}" 2>/dev/null |
+      fzf --delimiter '\|' --with-nth 2 --accept-nth 1 \
+        --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%')
     project_path=""
     ;;
   -w | --worktrees)
