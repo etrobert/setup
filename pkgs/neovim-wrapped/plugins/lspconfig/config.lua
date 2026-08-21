@@ -68,6 +68,13 @@ vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
 	orig_inlay_hint_handler(err, result, ctx, config)
 end
 
+-- Upstream counts markdown as an HTML language, for inline `class` attributes.
+vim.lsp.config("tailwindcss", {
+	filetypes = vim.tbl_filter(function(ft)
+		return ft ~= "markdown" and ft ~= "mdx"
+	end, vim.lsp.config.tailwindcss.filetypes),
+})
+
 vim.lsp.config("nixd", {
 	settings = {
 		nixd = {
