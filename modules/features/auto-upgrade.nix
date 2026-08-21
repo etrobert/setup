@@ -54,6 +54,7 @@ _: {
           "--print-build-logs"
         ];
         dates = "*:0/1"; # every minute
+        allowReboot = true;
       };
 
       systemd.services.nixos-upgrade.serviceConfig = {
