@@ -33,8 +33,15 @@ refresh_pr_cache() {
       # Via a temp file: the redirect alone would leave an empty one behind for
       # every branch with no PR, which reads as a broken entry rather than none.
       gh pr view "$3" --json number,state,isDraft,statusCheckRollup \
-        > "$cache.tmp" 2>/dev/null && mv "$cache.tmp" "$cache" ||
-        { rm -f "$cache.tmp"; exit 0; }
+        > "$cache.tmp" 2>/dev/null || { rm -f "$cache.tmp"; exit 0; }
+
+      # Redrawing to show identical rows costs a render and a UI block.
+      if cmp --silent "$cache.tmp" "$cache" 2>/dev/null; then
+        rm -f "$cache.tmp"
+        exit 0
+      fi
+      mv "$cache.tmp" "$cache"
+
       # One reload per PR, so rows fill in as each lookup lands. That is a
       # render apiece -- ~100ms and two subprocesses per session at twenty of
       # them, plus a UI block while fzf re-finds the tracked row. Move this
