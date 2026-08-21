@@ -151,5 +151,15 @@
           inherit (pkgs) ghostty;
         };
       };
+
+      # Behavioural checks. checks.yml discovers them by name, so each one
+      # becomes its own CI job.
+      checks = {
+        claude-plan-usage = pkgs.callPackage ./claude-code-wrapped/claude-plan-usage-test.nix { };
+
+        deploy-gate = pkgs.callPackage ./deploy-gate/deploy-gate-test.nix {
+          inherit (self'.packages) deploy-gate;
+        };
+      };
     };
 }
