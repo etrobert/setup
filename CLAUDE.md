@@ -113,10 +113,10 @@ patch), pair it with a guard that fails the build once the workaround stops
 being load-bearing — don't rely on remembering to revisit it. Prefer this
 whenever the "still needed?" condition can be expressed in Nix.
 
-Example: the `electron-39.8.10` permit in `modules/profiles/workstation.nix` is
-paired with an assertion that re-evaluates its consumer against a nixpkgs
-instance without the permit (via `builtins.tryEval`); when the consumer no
-longer pulls the insecure package, the assertion fails and prompts removal.
+Example: `modules/hosts/aaron/configuration.nix` pins a set of GUI packages to
+an older nixpkgs to dodge an ld64 crash, and asserts each pinned version still
+matches the one a second, unpinned nixpkgs (imported from `pkgs.path`) offers.
+Once nixpkgs moves the package on, the assertion fails and prompts a retest.
 
 ## LAN Networking
 
