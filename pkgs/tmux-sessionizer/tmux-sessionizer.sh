@@ -55,7 +55,8 @@ if [ $# -eq 1 ]; then
     project=$(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}} #{session_name}' 2>/dev/null |
       color_by_agent_state |
       fzf --ansi --delimiter '\|' --with-nth 2 --accept-nth 1 \
-        --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%')
+        --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%' \
+        --bind 'every(0.2):refresh-preview')
     project_path=""
     ;;
   -w | --worktrees)
