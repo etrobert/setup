@@ -54,9 +54,6 @@ _: {
           "--print-build-logs"
         ];
         dates = "*:0/1"; # every minute
-
-        # No rebootWindow: a skipped out-of-window run still exits 0, so the
-        # record below marks the rev done and no later run ever reboots.
         allowReboot = true;
       };
 
