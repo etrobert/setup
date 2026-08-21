@@ -31,8 +31,9 @@ if [ $# -eq 1 ]; then
     # Field 2 is shown (agent marker, then the name), field 1 is the bare name
     # --accept-nth returns. The shown field goes last because a non-final one
     # carries its trailing delimiter into the display, and --delimiter is a
-    # regex, hence the escaped pipe.
-    project=$(tmux list-sessions -F '#{session_name}|#{W:#{@agent-status}} #{session_name}' 2>/dev/null |
+    # regex, hence the escaped pipe. p1 pads the marker so that sessions
+    # without an agent still line their names up.
+    project=$(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}} #{session_name}' 2>/dev/null |
       fzf --delimiter '\|' --with-nth 2 --accept-nth 1 \
         --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%')
     project_path=""
