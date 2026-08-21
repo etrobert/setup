@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# Zen keeps space-routing rules in a per-profile file and gives every space a
+# UUID that only means something on that profile, so the rules in $1 name their
+# space and get resolved here, at launch, against whatever UUIDs this profile has.
+
+set -euo pipefail
+
+rules=$1
+zen_dir="${XDG_CONFIG_HOME:-$HOME/.config}/zen"
+ini="$zen_dir/profiles.ini"
+[[ -f $ini ]] || exit 0
+
+profile=$(awk --field-separator='=' --assign=root="$zen_dir" '
+  $1 == "Path" { path = substr($0, index($0, "=") + 1) }
+  $1 == "IsRelative" { rel = $2 }
+  $1 == "Default" && $2 == "1" { print (rel == "0" ? "" : root "/") path; exit }
+' "$ini")
+
+# A profile Zen has never opened has no spaces to resolve against yet.
+sessions="$profile/zen-sessions.jsonlz4"
+[[ -n $profile && -f $sessions ]] || exit 0
+
+spaces=$(mozlz4a --decompress "$sessions" - |
+  jq '[.spaces[] | { key: .name, value: .uuid }] | from_entries')
+
+jq --argjson spaces "$spaces" --raw-output \
+  '.[] | select($spaces[.space] | not) | "apply-space-routing: no space named \(.space)"' \
+  "$rules" >&2
+
+out="$profile/zen-space-routing.jsonlz4"
+current=$(mozlz4a --decompress "$out" - 2>/dev/null || echo '{}')
+
+# Ours come first so they win the first-match lookup, and carry an "nix-" id so
+# that rebuilding replaces them without touching rules added from Zen's own UI.
+tmp=$(mktemp --tmpdir="$profile" zen-space-routing.XXXXXX)
+trap 'rm --force "$tmp" "$tmp.json"' EXIT
+
+jq --argjson spaces "$spaces" --argjson current "$current" '
+  [ to_entries[]
+    | .key as $index
+    | .value as $rule
+    | select($spaces[$rule.space])
+    | {
+        id: "nix-\($index)",
+        reference: $rule.reference,
+        matchType: $rule.matchType,
+        openIn: $spaces[$rule.space],
+      }
+  ] as $managed
+  | {
+      routes: ($managed + [ $current.routes[]? | select(.id | startswith("nix-") | not) ]),
+      defaultRouteExternal: ($current.defaultRouteExternal // "most-recent-space"),
+    }
+' "$rules" >"$tmp.json"
+
+mozlz4a "$tmp.json" "$tmp"
+mv "$tmp" "$out"

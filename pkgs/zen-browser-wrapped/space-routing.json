@@ -1,0 +1,12 @@
+[
+  {
+    "space": "Space",
+    "matchType": "regex",
+    "reference": "^https?://(www\\.)?github\\.com/etrobert(/|$)"
+  },
+  {
+    "space": "LaFraise",
+    "matchType": "regex",
+    "reference": "^https?://(www\\.)?github\\.com/lafraisepro(/|$)"
+  }
+]
