@@ -64,7 +64,7 @@ pr_summary() {
 
   case $state in
   OPEN) state_part="$green$pr_glyph_open" ;;
-  MERGED) state_part="$magenta$pr_glyph_merged" ;;
+  MERGED) state_part="$mauve$pr_glyph_merged" ;;
   CLOSED) state_part="$red$pr_glyph_closed" ;;
   DRAFT) state_part="$dim$pr_glyph_draft" ;;
   *) state_part="$dim?" ;;
@@ -87,7 +87,10 @@ pr_summary() {
 # dims whatever foreground the previous segment left set.
 yellow=$'\e[1;33m'
 green=$'\e[32m'
-magenta=$'\e[35m'
+# GitHub renders a merged PR purple, and no ANSI slot holds one: Catppuccin
+# maps magenta to pink (#f5bde6). Truecolor is the only way to the theme's
+# actual purple, and tmux passes it through (Tc).
+mauve=$'\e[38;2;198;160;246m' # catppuccin macchiato mauve #c6a0f6
 red=$'\e[31m'
 dim=$'\e[0;2m'
 reset=$'\e[0m'
