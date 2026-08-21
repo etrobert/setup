@@ -6,7 +6,7 @@
 
 {
   flake.nixosModules.leodConfiguration =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       imports = [ self.nixosModules.leodHardware ];
 
@@ -45,6 +45,16 @@
         # drives fprintd over D-Bus alongside its password field, so the module
         # must not be in it — the same call gdm and plasma6 make in nixpkgs.
         login.fprintAuth = false;
+
+        # tuigreet has no D-Bus path of its own, so the greeter — otherwise
+        # nothing but `auth substack login` — carries the module directly
+        # instead of inheriting it.
+        greetd.rules.auth.fprintd = {
+          order = config.security.pam.services.greetd.rules.auth.login.order - 10;
+          control = "sufficient";
+          modulePath = "${config.services.fprintd.package}/lib/security/pam_fprintd.so";
+          settings.timeout = 5;
+        };
 
         sudo.rules.auth.fprintd.settings.timeout = 5;
         "polkit-1".rules.auth.fprintd.settings.timeout = 5;
