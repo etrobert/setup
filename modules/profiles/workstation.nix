@@ -60,6 +60,7 @@ _: {
 
             externalPackages = with pkgs; [
               act
+              ast-grep
               audacity
 
               # the rocm variant can dlopen ROCm SMI at runtime, which btop
