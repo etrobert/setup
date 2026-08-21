@@ -64,7 +64,7 @@ pr_summary() {
 
   case $state in
   OPEN) state_part="$green$pr_glyph_open" ;;
-  MERGED) state_part="$magenta$pr_glyph_merged" ;;
+  MERGED) state_part="$mauve$pr_glyph_merged" ;;
   CLOSED) state_part="$red$pr_glyph_closed" ;;
   DRAFT) state_part="$dim$pr_glyph_draft" ;;
   *) state_part="$dim?" ;;
@@ -77,7 +77,10 @@ pr_summary() {
   *) check_part="" ;;
   esac
 
-  printf '%s#%s %s%s%s' "$dim" "$number" "$state_part" "$check_part" "$reset"
+  # Close the dim before the glyphs: faint is an attribute, so a later colour
+  # sets the hue but leaves the intensity down, and a failing rollup has to
+  # shout. The number stays dim -- it is a label, not the signal.
+  printf '%s#%s%s %s%s%s' "$dim" "$number" "$reset" "$state_part" "$check_part" "$reset"
 }
 
 # One row per session: agent marker, name, then PR state once it has arrived.
@@ -87,7 +90,10 @@ pr_summary() {
 # dims whatever foreground the previous segment left set.
 yellow=$'\e[1;33m'
 green=$'\e[32m'
-magenta=$'\e[35m'
+# GitHub renders a merged PR purple, and no ANSI slot holds one: Catppuccin
+# maps magenta to pink (#f5bde6). Truecolor is the only way to the theme's
+# actual purple, and tmux passes it through (Tc).
+mauve=$'\e[38;2;198;160;246m' # catppuccin macchiato mauve #c6a0f6
 red=$'\e[31m'
 dim=$'\e[0;2m'
 reset=$'\e[0m'
