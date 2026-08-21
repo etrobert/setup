@@ -46,7 +46,7 @@ let
   ])
   ++ ttsBackends;
 
-  # Same treatment as GITHUB_TOKEN below: `$(<file)` builtin so the read doesn't
+  # `$(<file)` builtin so the read doesn't
   # need `cat` on the caller's PATH, and a bare assignment so `set -e` aborts on
   # an unreadable secret instead of baking in an empty token.
   agenixTokenRun = lib.optionals readTokenFromAgenix [
