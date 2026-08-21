@@ -8,7 +8,9 @@
 #   wrapPackage {
 #     package        = pkgs.foo;           # required – base package
 #     name           ? "<mainProgram>-wrapped"; # derivation name
-#     binName        ? package.meta.mainProgram; # optional rename: when this
+#     mainProgram    ? package.meta.mainProgram; # upstream binary name, for
+#                                         #   packages whose meta omits it
+#     binName        ? mainProgram;        # optional rename: when this
 #                                         #   differs from package.meta.mainProgram the
 #                                         #   binary is mv'd to it before wrapping; the
 #                                         #   wrap target and meta.mainProgram both use it.
@@ -71,7 +73,8 @@
 
 {
   package,
-  binName ? package.meta.mainProgram,
+  mainProgram ? package.meta.mainProgram,
+  binName ? mainProgram,
   extraPaths ? [ ],
   inheritPath ? false,
   binaryWrapper ? false,
@@ -88,8 +91,6 @@
   passthru ? { },
 }:
 let
-  mainProgram = package.meta.mainProgram;
-
   # Rename the binary in $out/bin before wrapping when the caller requested a
   # different name (e.g. claude → claude-copilot for alongside-install variants).
   # binName defaults to mainProgram, so this is a no-op unless overridden.

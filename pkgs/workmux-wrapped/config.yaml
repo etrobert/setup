@@ -14,16 +14,22 @@ files:
     - .tmux.conf
     - .claude/settings.local.json
 
-# Upstream appends its status marker after the trailing window_end_flag
-# conditional in tmux.conf's window-status-format, which paints the icon
-# outside the tab. tmux.conf places @workmux_status by hand instead.
+# Whether workmux rewrites tmux's window-status-format at runtime to render its
+# marker in the window tabs. Off because it inserts before #{window_flags} /
+# #{F} and our format has neither, so it appends after the trailing
+# #{?window_end_flag,...} colour transition and paints the icon outside the tab.
+# tmux.conf reads @workmux_status directly instead, and from status-left rather
+# than the tabs, so every session shows and not just the attached one.
 status_format: false
 
+# Pinned rather than left at the emoji defaults because tmux.conf highlights a
+# blocked agent by matching the waiting icon: change these and change it too.
 status_icons:
   working: "•"
   waiting: "!"
   done: "✓"
 
-# Set explicitly: the first-run wizard otherwise prompts, then warns on every
-# run because it cannot write back to a store-path config.
-nerdfont: false
+# Nerd-font glyphs for PR, git and CI status in `workmux list` and the
+# dashboard. Set explicitly: left unset, the first-run wizard prompts and then
+# warns on every run because it cannot write the answer back to a store path.
+nerdfont: true
