@@ -151,5 +151,13 @@
           inherit (pkgs) ghostty;
         };
       };
+
+      # Behavioural checks. checks.yml discovers them by name, so each one
+      # becomes its own CI job.
+      checks = {
+        deploy-gate = pkgs.callPackage ./deploy-gate/deploy-gate-test.nix {
+          inherit (self'.packages) deploy-gate;
+        };
+      };
     };
 }
