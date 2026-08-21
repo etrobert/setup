@@ -83,6 +83,13 @@ config file (e.g. a Neovim plugin's `config.lua`) does not affect the installed
 binary until a system rebuild. To test a change in isolation, run just that
 package from the flake — e.g. `nix run ".#neovim-wrapped" -- <file-or-dir>`.
 
+### Behavioural checks
+
+Checks that run a program live next to it (`pkgs/<name>/<name>-test.nix`) and
+are registered under `checks` in `pkgs/default.nix`. `checks.yml` discovers
+check names from the flake, so a new one becomes its own CI job without
+touching the workflow or branch protection.
+
 ### neovim-wrapped plugin conventions
 
 Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a
