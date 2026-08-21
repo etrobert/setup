@@ -108,6 +108,7 @@
             birthdays
             creme
             lock-suspend
+            linear
             check-bt-profile
             zen-browser
             ghostty-wrapped

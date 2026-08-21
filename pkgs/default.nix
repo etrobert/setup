@@ -145,6 +145,7 @@
         scale-floating-window = pkgs.callPackage ./scale-floating-window { };
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
+        linear = pkgs.callPackage ./linear { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {
           inherit (pkgs) ghostty;
         };
