@@ -22,6 +22,10 @@ _: {
         allowReboot = true;
       };
 
+      # StateDirectory= exports $STATE_DIRECTORY to every Exec* line, including
+      # the ExecCondition and ExecStopPost the gate runs in.
+      systemd.services.nixos-upgrade.environment.DEPLOY_URL = "https://github.com/etrobert/setup.git";
+
       systemd.services.nixos-upgrade.serviceConfig = {
         StateDirectory = "nixos-upgrade";
         ExecCondition = "${lib.getExe deploy-gate} check";

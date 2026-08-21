@@ -1,11 +1,11 @@
-state_dir=/var/lib/nixos-upgrade
-last_rev="$state_dir/last-attempted-rev"
-pending_rev="$state_dir/pending-rev"
-deploy_url=https://github.com/etrobert/setup.git
+# STATE_DIRECTORY and DEPLOY_URL come from the nixos-upgrade unit; no defaults,
+# so set -u fails rather than silently gating on the wrong repo or directory.
+last_rev="$STATE_DIRECTORY/last-attempted-rev"
+pending_rev="$STATE_DIRECTORY/pending-rev"
 
 case "$1" in
   check)
-    rev=$(git ls-remote "$deploy_url" deploy | cut --fields=1)
+    rev=$(git ls-remote "$DEPLOY_URL" deploy | cut --fields=1)
     if [ -z "$rev" ]; then
       echo "could not resolve deploy ref; skipping" >&2
       exit 1
