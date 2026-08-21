@@ -8,48 +8,30 @@ project_dir() {
   esac
 }
 
-# Where the background fan-out leaves PR state, one file per branch so results
-# can be picked up as they land rather than all at once.
-pr_cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/tmux-sessionizer/pr"
-
-# Fetching PR state costs about 700ms per branch, far too slow to open a
+# Fetching PR state costs about 900ms per branch, far too slow to open a
 # picker with. Fan out in the background instead: the list renders from
-# whatever is already cached and gains the rest as it arrives.
-# The $N inside the xargs payload are the child shell's positionals, not ours:
-# $1 is the cache dir passed in, $2 and $3 are the worktree and branch xargs
-# appends -- hence single quotes, and hence the waiver.
+# whatever pronto has already cached and gains the rest as it arrives.
+# pronto owns the cache -- it derives the key from the worktree's remote and
+# branch, and skips the fetch when its entry is still fresh, so fanning out on
+# every open is cheap.
+# The $1 inside the payload is the session path xargs appends, not ours --
+# hence single quotes, and hence the waiver.
 # shellcheck disable=SC2016
 refresh_pr_cache() {
-  mkdir --parents "$pr_cache_dir"
-
   tmux list-sessions -F '#{session_path}' 2>/dev/null |
-    while read -r path; do
-      branch=$(git -C "$path" branch --show-current 2>/dev/null) || continue
-      [ -n "$branch" ] && printf '%s\t%s\n' "$path" "$branch"
-    done |
     xargs --max-lines=1 --max-procs=8 sh -c '
-      cd "$2" || exit 0
-      cache="$1/$(echo "$3" | tr / %).json"
-      # Via a temp file: the redirect alone would leave an empty one behind for
-      # every branch with no PR, which reads as a broken entry rather than none.
-      gh pr view "$3" --json number,state,isDraft,statusCheckRollup \
-        > "$cache.tmp" 2>/dev/null || { rm -f "$cache.tmp"; exit 0; }
+      # Compare what the row would say rather than the cache file: a rollup
+      # gains fresh timestamps on every poll, and redrawing to show identical
+      # rows costs a render and a UI block.
+      before=$(pronto --pr-summary "$1")
+      pronto --pr-refresh "$1"
+      [ "$(pronto --pr-summary "$1")" = "$before" ] && exit 0
 
-      # Redrawing to show identical rows costs a render and a UI block.
-      if cmp --silent "$cache.tmp" "$cache" 2>/dev/null; then
-        rm -f "$cache.tmp"
-        exit 0
-      fi
-      mv "$cache.tmp" "$cache"
-
-      # One reload per PR, so rows fill in as each lookup lands. That is a
-      # render apiece -- ~100ms and two subprocesses per session at twenty of
-      # them, plus a UI block while fzf re-finds the tracked row. Move this
-      # below the xargs to reload once per fan-out instead.
+      # One reload per PR, so rows fill in as each lookup lands.
       [ -n "${FZF_PORT:-}" ] &&
         curl --silent --request POST "localhost:$FZF_PORT" \
           --data "reload(tmux-sessionizer --list-sessions)" >/dev/null
-    ' sh "$pr_cache_dir"
+    ' sh
 }
 
 # Nerd Font glyphs, written as escapes so the private-use codepoints survive any
@@ -65,20 +47,17 @@ check_glyph_fail=$'\U000F0159'    # md-close_circle
 check_glyph_pending=$'\U000F051F' # md-timer_sand
 
 # "#847   " -- number, state, and one mark for the whole check rollup, so a
-# failing branch is visible without opening anything.
+# failing branch is visible without opening anything. pronto reduces the rollup
+# for both of us, so a row and a shell prompt cannot disagree about a PR.
 pr_summary() {
-  file="$pr_cache_dir/$(echo "$1" | tr / %).json"
-  [ -s "$file" ] || return 0
-
-  fields=$(jq --raw-output '
-    (.statusCheckRollup // [] | map(.conclusion // .state)) as $checks
-    | (if ($checks | length) == 0 then "none"
-       elif ($checks | any(. == "FAILURE" or . == "TIMED_OUT" or . == "CANCELLED")) then "fail"
-       elif ($checks | any(. == "PENDING" or . == "IN_PROGRESS")) then "pending"
-       else "ok" end) as $checkState
-    | [(.number | tostring), (if .isDraft then "DRAFT" else .state end), $checkState]
-    | @tsv
-  ' "$file" 2>/dev/null) || return 0
+  # No PR, no repository, no cache yet: pronto prints nothing and exits 0, so
+  # emptiness alone carries "nothing to show". A non-zero exit is a crash, and
+  # errexit will not propagate it out of two nested command substitutions --
+  # nor would stderr be read, with fzf repainting over it. Say it in the row.
+  if ! fields=$(pronto --pr-summary "$1"); then
+    printf '%spronto?%s' "$red" "$reset"
+    return 0
+  fi
   [ -n "$fields" ] || return 0
 
   IFS=$'\t' read -r number state checks <<<"$fields"
@@ -134,8 +113,7 @@ list_sessions() {
     *) color='' ;;
     esac
 
-    branch=$(git -C "${paths[i]}" branch --show-current 2>/dev/null || true)
-    pr=$(pr_summary "$branch")
+    pr=$(pr_summary "${paths[i]}")
 
     printf '%s|%s%1s %-*s%s %s\n' \
       "${names[i]}" "$color" "${markers[i]}" "$width" "${names[i]}" "$reset" "$pr"
