@@ -6,7 +6,30 @@
 
 {
   flake.nixosModules.leodConfiguration =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
+    let
+      lidClosed = pkgs.writeShellScript "lid-closed" ''
+        read -r state < /proc/acpi/button/lid/LID/state && [[ $state == *closed* ]]
+      '';
+
+      # Sits just before pam_fprintd: a closed lid jumps over it, anything else
+      # — including a broken script — falls through to it.
+      fprintdRules = service: {
+        fprintd.settings.timeout = 5;
+
+        lid-guard = {
+          order = config.security.pam.services.${service}.rules.auth.fprintd.order - 10;
+          control = "[success=1 default=ignore]";
+          modulePath = "${pkgs.pam}/lib/security/pam_exec.so";
+
+          args = [
+            "quiet"
+            "quiet_log"
+            "${lidClosed}"
+          ];
+        };
+      };
+    in
     {
       imports = [ self.nixosModules.leodHardware ];
 
@@ -39,16 +62,18 @@
       powerManagement.resumeCommands = "${pkgs.systemd}/bin/systemctl try-restart fprintd.service";
 
       # pam_fprintd is serial: it holds the prompt for its full timeout — 30s
-      # by default — before the typed password is even considered.
+      # by default — before the typed password is even considered. The reader
+      # is under the lid, so with the laptop docked shut that wait buys
+      # nothing; skip the module outright there and cap it at 5s otherwise.
       security.pam.services = {
         # Noctalia's lock screen authenticates against the login stack and
         # drives fprintd over D-Bus alongside its password field, so the module
         # must not be in it — the same call gdm and plasma6 make in nixpkgs.
         login.fprintAuth = false;
 
-        sudo.rules.auth.fprintd.settings.timeout = 5;
-        "polkit-1".rules.auth.fprintd.settings.timeout = 5;
-        su.rules.auth.fprintd.settings.timeout = 5;
+        sudo.rules.auth = fprintdRules "sudo";
+        "polkit-1".rules.auth = fprintdRules "polkit-1";
+        su.rules.auth = fprintdRules "su";
       };
 
       hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
