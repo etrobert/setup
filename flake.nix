@@ -51,6 +51,11 @@
       url = "github:boinkor-net/tsnsrv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    node-exporter-dashboard = {
+      url = "file+https://grafana.com/api/dashboards/1860/revisions/latest/download";
+      flake = false;
+    };
+
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";

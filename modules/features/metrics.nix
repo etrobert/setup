@@ -1,20 +1,14 @@
 # Prometheus scrapes tower's node exporter; Grafana reads it back.
 # Reached on the tailnet as `metrics/` (see tailnet-services.nix).
-_: {
+{ inputs, ... }:
+{
   flake.nixosModules.metrics =
     { config, pkgs, ... }:
     let
-      # https://grafana.com/grafana/dashboards/1860 — pinned to a revision so
-      # the dashboard cannot change under us between rebuilds.
-      nodeExporterFull = pkgs.fetchurl {
-        url = "https://grafana.com/api/dashboards/1860/revisions/45/download";
-        hash = "sha256-GExrdAnzBtp1Ul13cvcZRbEM6iOtFrXXjEaY6g6lGYY=";
-      };
-
       # Grafana provisions from a directory, not a file.
       dashboards = pkgs.runCommand "grafana-dashboards" { } ''
         mkdir $out
-        cp ${nodeExporterFull} $out/node-exporter-full.json
+        cp ${inputs.node-exporter-dashboard} $out/node-exporter-full.json
       '';
     in
     {
