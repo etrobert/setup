@@ -148,6 +148,7 @@ if [ $# -eq 1 ]; then
     echo "Create or switch to tmux sessions for projects."
     echo ""
     echo "OPTIONS:"
+    echo "  -b, --next-blocked  Switch to the next agent waiting on you"
     echo "  -e, --existing    Show only existing tmux sessions"
     echo "  -w, --worktrees   Show git worktrees of the current repository"
     echo "  -h, --help        Show this help message"
@@ -167,6 +168,24 @@ if [ $# -eq 1 ]; then
   --list-sessions)
     # Internal: how the picker re-renders itself as PR state arrives.
     list_sessions
+    exit 0
+    ;;
+  -b | --next-blocked)
+    read -r session window <<<"$(tmux display-message -p '#{session_name} #{window_id}')"
+
+    # Blocked, and not the window we are on. tmux does both tests, so an empty
+    # answer is just that rather than a pipeline that failed.
+    target=$(tmux list-windows -a \
+      -f "#{&&:#{==:#{@agent-status},!},#{!=:#{window_id},$window}}" \
+      -F '#{session_name}:#{window_index}' | head -1)
+    [ -n "$target" ] || exit 0
+
+    # A key binding runs us without a client of its own, so name the one showing
+    # the session we are leaving; switch-client has nothing to move otherwise.
+    client=$(tmux list-clients -t "$session" -F '#{client_name}' | head -1)
+    if [ -n "$client" ]; then
+      tmux switch-client -c "$client" -t "$target"
+    fi
     exit 0
     ;;
   -e | --existing)
