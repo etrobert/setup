@@ -2,7 +2,21 @@
 # Reached on the tailnet as `metrics/` (see tailnet-services.nix).
 _: {
   flake.nixosModules.metrics =
-    { config, ... }:
+    { config, pkgs, ... }:
+    let
+      # https://grafana.com/grafana/dashboards/1860 — pinned to a revision so
+      # the dashboard cannot change under us between rebuilds.
+      nodeExporterFull = pkgs.fetchurl {
+        url = "https://grafana.com/api/dashboards/1860/revisions/45/download";
+        hash = "sha256-GExrdAnzBtp1Ul13cvcZRbEM6iOtFrXXjEaY6g6lGYY=";
+      };
+
+      # Grafana provisions from a directory, not a file.
+      dashboards = pkgs.runCommand "grafana-dashboards" { } ''
+        mkdir $out
+        cp ${nodeExporterFull} $out/node-exporter-full.json
+      '';
+    in
     {
       services = {
         prometheus = {
@@ -47,6 +61,10 @@ _: {
               root_url = "http://metrics/";
             };
           };
+
+          provision.dashboards.settings.providers = [
+            { options.path = dashboards; }
+          ];
 
           provision.datasources.settings.datasources = [
             {
