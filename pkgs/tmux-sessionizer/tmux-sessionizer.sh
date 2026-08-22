@@ -83,6 +83,19 @@ pr_summary() {
   printf '%s#%s%s %s%s%s' "$dim" "$number" "$reset" "$state_part" "$check_part" "$reset"
 }
 
+# Ahead, behind and dirty, rendered by pronto so the row and the prompt cannot
+# drift apart. A directory that is not a repository is empty output and exit 0;
+# a crash is the same story as pr_summary, so say it in the row.
+git_summary() {
+  if ! state=$(pronto --git-summary "$1" 2>/dev/null); then
+    printf '%spronto?%s' "$red" "$reset"
+    return 0
+  fi
+  [ -n "$state" ] || return 0
+
+  printf '%s%s%s' "$dim" "$state" "$reset"
+}
+
 # One row per session: agent marker, name, then PR state once it has arrived.
 # Blocked shouts, finished invites, working recedes, agent-less stays plain.
 # Only the shown field is coloured, so --accept-nth still returns a clean name.
@@ -120,9 +133,10 @@ list_sessions() {
     esac
 
     pr=$(pr_summary "${paths[i]}")
+    git=$(git_summary "${paths[i]}")
 
-    printf '%s|%s%1s %-*s%s %s\n' \
-      "${names[i]}" "$color" "${markers[i]}" "$width" "${names[i]}" "$reset" "$pr"
+    printf '%s|%s%1s %-*s%s %s %s\n' \
+      "${names[i]}" "$color" "${markers[i]}" "$width" "${names[i]}" "$reset" "$pr" "$git"
   done
 }
 
