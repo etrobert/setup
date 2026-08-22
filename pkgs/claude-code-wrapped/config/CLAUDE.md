@@ -133,6 +133,11 @@ definition that spans multiple lines should be set off by a blank line before
 and after it — don't butt a multi-line binding (e.g. `runtimeInputs = [ … ]`)
 directly against an adjacent definition.
 
+Prefer failing loudly. A panic or hard error surfaces a broken assumption when
+it breaks; a fallback defers it into a wrong answer later. Never convert an
+existing `expect`/`panic!`, or any other deliberate hard failure, into a default
+value.
+
 In Tailwind, prefer the predefined scale (`text-lg`, `rounded-md`, `p-2.5`) over
 arbitrary values (`text-[1.1rem]`, `rounded-[0.4rem]`), snapping to the nearest
 step rather than preserving an exact number. Reserve `[…]` for values with no
@@ -184,9 +189,9 @@ Put the returned `github.com/user-attachments/assets/<uuid>` in the PR body. It
 404s on a direct fetch — GitHub mints a short-lived signed URL at render time,
 for anonymous viewers too — so don't take that 404 as a failed upload. The
 endpoint is undocumented and `gh` has no native support; scp to
-`tower:/srv/files/ci/` (served at `files.etiennerobert.com/ci/`) is the
-fallback when a directly-fetchable URL is needed. That directory is public and
-browsable, so keep private content out of anything uploaded there.
+`tower:/srv/files/ci/` (served at `files.etiennerobert.com/ci/`) is the fallback
+when a directly-fetchable URL is needed. That directory is public and browsable,
+so keep private content out of anything uploaded there.
 
 Each commit should be functional — don't commit broken or speculative states.
 
