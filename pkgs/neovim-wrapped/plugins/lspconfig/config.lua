@@ -106,5 +106,5 @@ vim.lsp.enable({
 	"texlab",
 	"taplo",
 	"dockerls",
-	-- "copilot",
+	"copilot",
 })
