@@ -8,6 +8,7 @@
 
       extraPackages = with pkgs; [
         bash-language-server
+        copilot-language-server
         go
         gopls
         lua-language-server
