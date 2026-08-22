@@ -1,8 +1,16 @@
 # Prometheus scrapes tower's node exporter; Grafana reads it back.
 # Reached on the tailnet as `metrics/` (see tailnet-services.nix).
-_: {
+{ inputs, ... }:
+{
   flake.nixosModules.metrics =
-    { config, ... }:
+    { config, pkgs, ... }:
+    let
+      # Grafana provisions from a directory, not a file.
+      dashboards = pkgs.runCommand "grafana-dashboards" { } ''
+        mkdir $out
+        cp ${inputs.node-exporter-dashboard} $out/node-exporter-full.json
+      '';
+    in
     {
       services = {
         prometheus = {
@@ -47,6 +55,10 @@ _: {
               root_url = "http://metrics/";
             };
           };
+
+          provision.dashboards.settings.providers = [
+            { options.path = dashboards; }
+          ];
 
           provision.datasources.settings.datasources = [
             {

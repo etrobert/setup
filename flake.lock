@@ -390,6 +390,18 @@
         "type": "github"
       }
     },
+    "node-exporter-dashboard": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-Nx/Np3qD+DBurlX9/y0PRu4sx6y9/1wcLvXW6xFKjkU=",
+        "type": "file",
+        "url": "https://grafana.com/api/dashboards/1860/revisions/latest/download"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://grafana.com/api/dashboards/1860/revisions/latest/download"
+      }
+    },
     "nutricalc": {
       "inputs": {
         "nixpkgs": [
@@ -489,6 +501,7 @@
         "nixpkgs-darwin-gui-pin": "nixpkgs-darwin-gui-pin",
         "noctalia-community-plugins": "noctalia-community-plugins",
         "noctalia-official-plugins": "noctalia-official-plugins",
+        "node-exporter-dashboard": "node-exporter-dashboard",
         "nutricalc": "nutricalc",
         "pronto": "pronto",
         "rack": "rack",
