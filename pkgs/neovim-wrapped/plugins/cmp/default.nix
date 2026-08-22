@@ -24,9 +24,7 @@ in
       config = builtins.readFile ./config.lua;
     }
     { plugin = pkgs.vimPlugins.cmp-nvim-lsp; }
-    { plugin = pkgs.vimPlugins.cmp-buffer; }
     { plugin = pkgs.vimPlugins.cmp-path; }
-    { plugin = pkgs.vimPlugins.cmp-cmdline; }
     { plugin = pkgs.vimPlugins.cmp_luasnip; }
     { plugin = pkgs.vimPlugins.luasnip; }
     { plugin = pkgs.vimPlugins.cmp-nvim-lsp-signature-help; }
