@@ -36,7 +36,12 @@
     };
     agenix = {
       url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = "nix-darwin";
+        home-manager.follows = "home-manager";
+      };
     };
     disko = {
       url = "github:nix-community/disko";
