@@ -49,6 +49,11 @@
             plaintext = true;
           };
 
+          metrics = {
+            toURL = "http://127.0.0.1:3002";
+            plaintext = true;
+          };
+
           comfy = {
             toURL = "http://127.0.0.1:8188";
             plaintext = true;

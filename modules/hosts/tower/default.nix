@@ -44,6 +44,7 @@ in
       self.nixosModules.openWebui
       self.nixosModules.tailnetServices
       self.nixosModules.atuinServer
+      self.nixosModules.metrics
     ];
   };
 }
