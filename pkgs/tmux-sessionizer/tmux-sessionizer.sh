@@ -148,7 +148,7 @@ if [ $# -eq 1 ]; then
     echo "Create or switch to tmux sessions for projects."
     echo ""
     echo "OPTIONS:"
-    echo "  -b, --next-blocked  Switch to the next agent waiting on you"
+    echo "  -n, --next-waiting  Switch to the next agent blocked or finished"
     echo "  -e, --existing    Show only existing tmux sessions"
     echo "  -w, --worktrees   Show git worktrees of the current repository"
     echo "  -h, --help        Show this help message"
@@ -170,13 +170,16 @@ if [ $# -eq 1 ]; then
     list_sessions
     exit 0
     ;;
-  -b | --next-blocked)
+  -n | --next-waiting)
     read -r session window <<<"$(tmux display-message -p '#{session_name} #{window_id}')"
 
-    # Blocked, and not the window we are on. tmux does both tests, so an empty
-    # answer is just that rather than a pipeline that failed.
+    # Blocked or finished -- the same two the status bar carries, since both
+    # want you and only working does not. Not the window we are on either; tmux
+    # does every test, so an empty answer is just that rather than a pipeline
+    # that failed.
+    wants_you="#{||:#{==:#{@agent-status},!},#{==:#{@agent-status},✓}}"
     target=$(tmux list-windows -a \
-      -f "#{&&:#{==:#{@agent-status},!},#{!=:#{window_id},$window}}" \
+      -f "#{&&:$wants_you,#{!=:#{window_id},$window}}" \
       -F '#{session_name}:#{window_index}' | head -1)
     [ -n "$target" ] || exit 0
 
