@@ -16,13 +16,25 @@
         prometheus = {
           enable = true;
 
-          exporters.node.enable = true;
+          exporters = {
+            node.enable = true;
+
+            # Autodiscovers every disk. Labels drives `sda`-style, matching
+            # node_exporter's, so temperature joins against disk I/O directly.
+            smartctl.enable = true;
+          };
 
           scrapeConfigs = [
             {
               job_name = "node";
               static_configs = [
                 { targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ]; }
+              ];
+            }
+            {
+              job_name = "smartctl";
+              static_configs = [
+                { targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.smartctl.port}" ]; }
               ];
             }
           ];
