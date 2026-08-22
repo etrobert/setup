@@ -16,6 +16,10 @@
         prometheus = {
           enable = true;
 
+          # Drive wear and disk-usage trends are the point of collecting this,
+          # and both move over years. ~2 GB/year at the current 2.4k series.
+          retentionTime = "5y";
+
           exporters = {
             node.enable = true;
 
