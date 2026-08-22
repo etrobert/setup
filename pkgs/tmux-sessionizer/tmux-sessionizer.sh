@@ -148,6 +148,7 @@ if [ $# -eq 1 ]; then
     echo "Create or switch to tmux sessions for projects."
     echo ""
     echo "OPTIONS:"
+    echo "  -b, --next-blocked  Switch to the next agent waiting on you"
     echo "  -e, --existing    Show only existing tmux sessions"
     echo "  -w, --worktrees   Show git worktrees of the current repository"
     echo "  -h, --help        Show this help message"
@@ -167,6 +168,40 @@ if [ $# -eq 1 ]; then
   --list-sessions)
     # Internal: how the picker re-renders itself as PR state arrives.
     list_sessions
+    exit 0
+    ;;
+  -b | --next-blocked)
+    blocked=$(tmux list-windows -a -f '#{==:#{@agent-status},!}' \
+      -F '#{session_name}:#{window_index}')
+    [ -n "$blocked" ] || exit 0
+
+    # The one after wherever we are, so repeated presses walk the queue instead
+    # of bouncing between the same two. Falling off the end wraps, and so does
+    # being somewhere not blocked at all.
+    current=$(tmux display-message -p '#{session_name}:#{window_index}')
+    target=""
+    passed_current=""
+
+    while read -r window; do
+      if [ -n "$passed_current" ]; then
+        target=$window
+        break
+      fi
+      if [ "$window" = "$current" ]; then
+        passed_current=yes
+      fi
+    done <<<"$blocked"
+
+    [ -n "$target" ] || target=$(printf '%s\n' "$blocked" | head -1)
+
+    tmux select-window -t "$target"
+
+    # A key binding runs us without a client of its own, so name the one showing
+    # the session we are leaving; switch-client has nothing to move otherwise.
+    client=$(tmux list-clients -t "${current%%:*}" -F '#{client_name}' | head -1)
+    if [ -n "$client" ]; then
+      tmux switch-client -c "$client" -t "${target%%:*}"
+    fi
     exit 0
     ;;
   -e | --existing)
