@@ -73,7 +73,6 @@ _: {
               gcc
               gh
               github-copilot-cli
-              # ghostty # https://github.com/ghostty-org/ghostty/discussions/4359
               gnumake
               go
               hyperfine # Command-line benchmarking tool
