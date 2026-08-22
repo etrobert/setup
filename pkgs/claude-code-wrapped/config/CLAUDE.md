@@ -133,6 +133,11 @@ definition that spans multiple lines should be set off by a blank line before
 and after it — don't butt a multi-line binding (e.g. `runtimeInputs = [ … ]`)
 directly against an adjacent definition.
 
+Prefer failing loudly. A panic or hard error surfaces a broken assumption when
+it breaks; a fallback defers it into a wrong answer later. Never convert an
+existing `expect`/`panic!`, or any other deliberate hard failure, into a
+default value.
+
 In Tailwind, prefer the predefined scale (`text-lg`, `rounded-md`, `p-2.5`) over
 arbitrary values (`text-[1.1rem]`, `rounded-[0.4rem]`), snapping to the nearest
 step rather than preserving an exact number. Reserve `[…]` for values with no
@@ -208,7 +213,9 @@ without anything to add, say so explicitly.
 
 Preferred merge strategy is squash merge (`--squash`).
 
-Keep PRs small and atomic — one logical change per PR.
+Keep PRs small and atomic — one logical change per PR. Don't tidy adjacent
+code you are only passing by, or restructure for a feature that comes later;
+both bury the change that matters in noise the reviewer has to separate out.
 
 For complex features that naturally split into layers, use stacked PRs: each PR
 builds on the previous one.
