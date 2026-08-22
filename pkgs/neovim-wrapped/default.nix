@@ -24,7 +24,6 @@ let
         ./plugins/nvim-lint
         ./plugins/telescope
         ./plugins/snacks
-        ./plugins/copilot
         ./plugins/gitsigns
         # Disabled because this takes a monstrous amount of ressources
         # ./plugins/workspace-diagnostics

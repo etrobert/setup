@@ -62,13 +62,27 @@ end, { desc = "Diagnostics to quickfix list" })
 
 -- See :help vim.lsp.inline_completion.get()
 vim.keymap.set("i", "<Tab>", function()
-	if not vim.lsp.inline_completion.get() then
+	local applied = vim.lsp.inline_completion.get({
+		on_accept = function(item)
+			if item.range then
+				local sr, sc, er, ec = item.range:to_extmark()
+				local crow, ccol = unpack(vim.api.nvim_win_get_cursor(0))
+				crow = crow - 1
+				-- Stale ranges leave typed characters behind: neovim#36529.
+				if er == crow and ec < ccol then
+					item.range = vim.range.extmark(0, sr, sc, crow, ccol)
+				end
+			end
+			return item
+		end,
+	})
+	if not applied then
 		return "<Tab>"
 	end
 end, {
 	expr = true,
 	replace_keycodes = true,
-	desc = "Get the current inline completion",
+	desc = "Accept the current inline completion",
 })
 
 function CopyFileLine()
