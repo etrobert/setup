@@ -16,7 +16,7 @@ _: {
           enable = true;
           settings = {
             interface = config.services.lanDns.interface;
-            bind-interfaces = true;
+            bind-dynamic = true;
             no-resolv = true;
             server = [
               "1.1.1.1"
