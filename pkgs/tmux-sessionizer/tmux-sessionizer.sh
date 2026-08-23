@@ -12,8 +12,7 @@ project_dir() {
 }
 
 # Every checkout is a worktree, so a bare project name means the one holding the
-# default branch. A directory that is not a project -- doc, a plain directory in
-# ~/work, a repository not converted to the layout -- is itself.
+# default branch. doc and any other plain directory has none, and is itself.
 with_worktree() {
   case "$1" in
   */*) printf '%s' "$1" ;;
