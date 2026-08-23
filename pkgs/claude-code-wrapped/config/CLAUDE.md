@@ -33,8 +33,8 @@ into this global CLAUDE.md or the relevant project's CLAUDE.md.
 ## Machines
 
 Each project is a bare repository and its worktrees side by side, at
-`~/work/<repo>/`: `.bare` plus one directory per worktree, the primary one
-always called `main`. So the paths to work in are `~/work/<repo>/<branch>` --
+`~/work/<repo>/`: `.bare` plus one directory per worktree, each named for the
+branch it holds. So the paths to work in are `~/work/<repo>/<branch>` --
 nothing is checked out at the project root itself.
 
 Clone a project with `git pc <url>`; add a worktree with `git wa <branch>`.

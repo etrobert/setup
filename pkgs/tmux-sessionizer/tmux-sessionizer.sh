@@ -11,14 +11,19 @@ project_dir() {
   esac
 }
 
-# Every checkout is a worktree, so a bare project name means its main one. A
-# directory that has none -- doc, or a plain directory in ~/work -- is itself.
+# Every checkout is a worktree, so a bare project name means the one holding the
+# default branch. Anything without that directory -- doc, a plain directory in
+# ~/work, a repository not converted to the layout -- is itself.
 with_worktree() {
   case "$1" in
   */*) printf '%s' "$1" ;;
   *)
-    if [ -d "$(project_dir "$1")/main" ]; then
-      printf '%s/main' "$1"
+    dir=$(project_dir "$1")
+    branch=$(git -C "$dir" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true)
+    branch=${branch#origin/}
+
+    if [ -n "$branch" ] && [ -d "$dir/$branch" ]; then
+      printf '%s/%s' "$1" "$branch"
     else
       printf '%s' "$1"
     fi

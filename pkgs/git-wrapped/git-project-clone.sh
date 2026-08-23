@@ -31,9 +31,8 @@ git -C "$ROOT" remote add origin "$URL"
 git -C "$ROOT" fetch origin
 
 DEFAULT=$(git -C "$ROOT" symbolic-ref --short refs/remotes/origin/HEAD)
+BRANCH=${DEFAULT#origin/}
 
-# The directory is always main; the branch in it is whatever the remote's HEAD
-# is, so a repository still on master lands in main/ like every other project.
-git -C "$ROOT" worktree add main --track -b "${DEFAULT#origin/}" "$DEFAULT"
+git -C "$ROOT" worktree add "$BRANCH" --track -b "$BRANCH" "$DEFAULT"
 
 echo "Cloned $NAME into $ROOT"
