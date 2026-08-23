@@ -105,27 +105,6 @@ New behavior (autocmds, etc.) belongs in its own dedicated plugin.
 **`config` field is optional** — omit it when the plugin sources itself via
 `plugin/`.
 
-## Project Layout
-
-Every project is a bare repository with its worktrees beside it, so no checkout
-is privileged:
-
-```
-~/work/<repo>/
-  .bare/       the repository
-  .git         file: "gitdir: ./.bare"
-  <branch>/    one directory per worktree, named for the branch it holds
-```
-
-This repo has the same shape, which is why paths into it (the flake in
-`pkgs/switch.nix`, `CLAUDE_CONFIG_DIR`, the `/etc/nixos` and `/etc/nix-darwin`
-symlinks) name `~/work/setup/main`.
-
-tmux session names are `<repo>/<branch>`, the path tail, so stripping
-`~/work/` is the exact inverse of resolving a name. A bare `<repo>` resolves to
-the worktree holding the default branch. Anything reading `git worktree list`
-must drop the `(bare)` line -- it has no checkout.
-
 ## Self-Cleaning Guards
 
 When adding a temporary workaround that should be dropped once an upstream
