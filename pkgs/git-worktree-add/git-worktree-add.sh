@@ -23,9 +23,9 @@ NAME="$(basename "$ROOT")/$BRANCH"
 
 WORKTREE_PATH="$ROOT/$BRANCH"
 
-if git show-ref --verify --quiet "refs/heads/$BRANCH"; then
-  git worktree add "$WORKTREE_PATH" "$BRANCH"
-elif git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
+# A branch that exists only on origin still resolves: worktree add tracks it.
+if git show-ref --verify --quiet "refs/heads/$BRANCH" ||
+  git show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
   git worktree add "$WORKTREE_PATH" "$BRANCH"
 else
   git worktree add "$WORKTREE_PATH" -b "$BRANCH"
