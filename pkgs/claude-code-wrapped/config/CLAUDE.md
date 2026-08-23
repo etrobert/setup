@@ -32,19 +32,7 @@ into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
 ## Machines
 
-Each project is a bare repository and its worktrees side by side, at
-`~/work/<repo>/`: `.bare` holds the repository, a `.git` file points at it, and
-one directory per worktree sits beside them, named for the branch it holds. So
-the paths to work in are `~/work/<repo>/<branch>` -- nothing is checked out at
-the project root, and anything reading `git worktree list` has to drop its
-`(bare)` line, which has no checkout to open. The setup repo is one of these:
-its flake, `CLAUDE_CONFIG_DIR` and the `/etc/nixos` and `/etc/nix-darwin`
-symlinks all name `~/work/setup/main`.
-
-tmux session names are the path tail, `<repo>/<branch>`; a bare `<repo>` means
-the worktree holding the default branch.
-
-Clone a project with `git pc <url>`; add a worktree with `git wa <branch>`.
+Git repos are bare cloned at `~/work/*` with `git-project-clone`.
 
 All machines are connected via Tailscale. SSH into any of them by name
 (`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current
