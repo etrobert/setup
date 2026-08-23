@@ -68,7 +68,7 @@ wrapPackage {
     # Mutable path, not a store copy: Claude writes runtime state (sessions,
     # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
     # An ambient value wins, so CI can point at its own checkout of this config.
-    ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/setup/pkgs/claude-code-wrapped/config}"''
+    ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/work/setup/pkgs/claude-code-wrapped/config}"''
   ]
   ++ agenixTokenRun;
   inherit runtimeInputs;

@@ -1,8 +1,9 @@
 # Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
+# doc is a synced directory rather than a repo, so it is the only project not
+# sitting in ~/work.
 project_dir() {
   case "$1" in
-  setup) printf '%s' "$HOME/setup" ;;
   doc) printf '%s' "$HOME/sync/doc" ;;
   *) printf '%s' "$HOME/work/$1" ;;
   esac
@@ -153,9 +154,8 @@ if [ $# -eq 1 ]; then
     echo "  -w, --worktrees   Show git worktrees of the current repository"
     echo "  -h, --help        Show this help message"
     echo ""
-    echo "If no PROJECT_NAME is provided, shows a fuzzy finder with:"
-    echo "  - Projects from ~/work/"
-    echo "  - setup (this dotfiles repository)"
+    echo "If no PROJECT_NAME is provided, shows a fuzzy finder over the"
+    echo "projects in ~/work/, plus doc."
     echo ""
     echo "If PROJECT_NAME is provided, creates/switches to that session directly."
     exit 0
@@ -232,9 +232,7 @@ if [ $# -eq 1 ]; then
   esac
 else
   selection=$({
-    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d \
-      ! -name setup ! -name doc -printf '%f\t%p\n'
-    printf 'setup\t%s\n' "$(project_dir setup)"
+    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d ! -name doc -printf '%f\t%p\n'
     printf 'doc\t%s\n' "$(project_dir doc)"
   } | fzf \
     --delimiter '\t' \

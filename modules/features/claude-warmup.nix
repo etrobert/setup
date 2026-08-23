@@ -15,7 +15,7 @@
 # reachable on 5h-bound weeks.
 #
 # The warmup runs as `soft` so it picks up the wrapped claude's baked-in
-# CLAUDE_CONFIG_DIR (=$HOME/setup/...) and its auto-refreshing OAuth token — no
+# CLAUDE_CONFIG_DIR (=$HOME/work/setup/...) and its auto-refreshing OAuth token — no
 # credential wiring here. It uses Haiku because the 5h session is shared across
 # all models, so the cheapest model anchors the same window for the least cost
 # against the weekly cap.
