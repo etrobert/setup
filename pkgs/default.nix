@@ -88,7 +88,6 @@
           };
           binName = "claude-copilot";
         };
-        claude-restart-daemon = pkgs.callPackage ./claude-restart-daemon { };
         batr = pkgs.callPackage ./batr.nix { };
         birthdays = pkgs.callPackage ./birthdays { };
         gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
