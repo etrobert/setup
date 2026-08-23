@@ -41,6 +41,16 @@
                 { targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.smartctl.port}" ]; }
               ];
             }
+
+            # Its own health — WAL corruption, failed compactions, on-disk
+            # growth against the 5y retention above — is otherwise readable
+            # only by hand off /metrics, never as history.
+            {
+              job_name = "prometheus";
+              static_configs = [
+                { targets = [ "127.0.0.1:${toString config.services.prometheus.port}" ]; }
+              ];
+            }
           ];
         };
 
