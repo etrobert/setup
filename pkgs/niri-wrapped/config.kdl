@@ -137,6 +137,12 @@ output "eDP-1" {
     position x=683 y=1728
 }
 
+// tower's monitor hangs off the RX 9070 XT but boot_vga is the iGPU, so niri's
+// udev default renders 4K on 2 CUs. Absent on leod, which falls back to default.
+debug {
+    render-drm-device "/dev/dri/by-path/pci-0000:03:00.0-render"
+}
+
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Layout
