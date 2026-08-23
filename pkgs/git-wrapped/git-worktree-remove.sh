@@ -8,9 +8,9 @@ WORKTREE_PATH=$(git -C "${1:-.}" rev-parse --show-toplevel)
 
 # Ask tmux which session sits here rather than deriving the name, so it cannot
 # disagree with whatever tmux-sessionizer called it. No match is empty and exit
-# 0; the tolerated failure is no server at all, which still says so on stderr.
+# 0, so a failure here is a real one -- and it lands before anything is removed.
 SESSION_NAME=$(tmux list-sessions -f "#{==:#{session_path},$WORKTREE_PATH}" \
-  -F '#{session_name}' || true)
+  -F '#{session_name}')
 
 # Remove before killing: when the session is the one we are running in, the
 # kill takes this script down with it.
