@@ -4,6 +4,10 @@ project_dir() {
   case "$1" in
   setup) printf '%s' "$HOME/setup" ;;
   doc) printf '%s' "$HOME/sync/doc" ;;
+  # A name carrying a slash is <repo>/<branch>, the shape both git-worktree-add
+  # and the -w picker produce. Worktrees live outside ~/work so that the project
+  # picker below stays a list of projects.
+  */*) printf '%s' "$HOME/worktrees/$1" ;;
   *) printf '%s' "$HOME/work/$1" ;;
   esac
 }
@@ -158,6 +162,7 @@ if [ $# -eq 1 ]; then
     echo "  - setup (this dotfiles repository)"
     echo ""
     echo "If PROJECT_NAME is provided, creates/switches to that session directly."
+    echo "A <repo>/<branch> name resolves to a worktree in ~/worktrees/."
     exit 0
     ;;
   --refresh-pr-cache)
@@ -223,7 +228,15 @@ if [ $# -eq 1 ]; then
           grep . || git -C {1} log --oneline --color=always --max-count 15' \
         --preview-window 'right:60%')
     project_path=${selection%% *}
-    project="$(basename "$main_path")/$(basename "$project_path")"
+
+    # Under ~/worktrees the path already spells the name, and taking it whole is
+    # what keeps a branch like feat/x one session rather than two -- basename
+    # would drop the feat/ that git-worktree-add put in the path and the name.
+    # Worktrees elsewhere (Claude Code's .claude/worktrees) have no such name.
+    case $project_path in
+    "$HOME/worktrees/"*) project=${project_path#"$HOME/worktrees/"} ;;
+    *) project="$(basename "$main_path")/$(basename "$project_path")" ;;
+    esac
     ;;
   *)
     project=$(echo "$1" | sed 's/\/$//')
