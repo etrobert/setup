@@ -24,10 +24,12 @@ _: {
               tokenFile = config.age.secrets.github-runner-token.path;
               replace = true;
 
-              # gh for the flake-update pipeline workflows.
+              # gh, jq and curl for the flake-update pipeline workflows —
+              # the module's own PATH carries only bash/coreutils/git/tar/gzip.
               extraPackages = [
                 pkgs.jq
                 pkgs.gh
+                pkgs.curl
               ];
 
               # The module defaults to Restart=no for persistent runners, so an
@@ -35,29 +37,10 @@ _: {
               serviceOverrides = {
                 Restart = lib.mkForce "on-failure";
                 RestartSec = "10s";
-
-                # Write access to the CI assets dir (below); ProtectSystem=strict
-                # makes the rest of the filesystem read-only regardless of the
-                # group, so the sandbox needs the explicit hole too.
-                SupplementaryGroups = [ "ci-assets" ];
-                ReadWritePaths = [ "/srv/files/ci" ];
               };
             });
         in
         lib.concatMapAttrs mkRunners runnerCountByRepo;
-
-      # Images for flake-update PR bodies (closure diffs), served publicly as
-      # files.etiennerobert.com/ci/ (vhost in profiles/server.nix). Dedicated
-      # group rather than "users": runners execute fork-PR code and must not
-      # gain write access to the rest of /srv/files. Entries expire like the
-      # temp drop-zone; images in old PRs 404 after that.
-      users.groups.ci-assets = { };
-      systemd.tmpfiles.settings.ci-assets."/srv/files/ci".d = {
-        user = "soft";
-        group = "ci-assets";
-        mode = "2775";
-        age = "90d";
-      };
 
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
 

@@ -189,9 +189,10 @@ Put the returned `github.com/user-attachments/assets/<uuid>` in the PR body. It
 404s on a direct fetch — GitHub mints a short-lived signed URL at render time,
 for anonymous viewers too — so don't take that 404 as a failed upload. The
 endpoint is undocumented and `gh` has no native support; scp to
-`tower:/srv/files/ci/` (served at `files.etiennerobert.com/ci/`) is the fallback
-when a directly-fetchable URL is needed. That directory is public and browsable,
-so keep private content out of anything uploaded there.
+`tower:/srv/files/temp/` (served at `files.etiennerobert.com/temp/`) is the
+fallback when a directly-fetchable URL is needed. That drop-zone is public and
+browsable and expires entries after 30 days, so keep private content out of
+anything uploaded there.
 
 Each commit should be functional — don't commit broken or speculative states.
 
