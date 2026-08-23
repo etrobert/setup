@@ -104,7 +104,7 @@ _: {
         primaryUser = "soft";
 
         activationScripts.postActivation.text = ''
-          ln --symbolic --force --no-dereference /Users/soft/setup /etc/nix-darwin
+          ln --symbolic --force --no-dereference /Users/soft/work/setup /etc/nix-darwin
 
           # Suppress the login MOTD (replaces home-manager home.file.".hushlogin")
           touch /Users/soft/.hushlogin

@@ -3,7 +3,7 @@
 local state
 local -a projects
 
-projects=(setup doc)
+projects=(doc)
 [[ -d $HOME/work ]] && projects+=($HOME/work/*(N/:t))
 
 _arguments -s \

@@ -19,7 +19,7 @@ _: {
       ];
 
       system.activationScripts.nixos-symlink.text = /* bash */ ''
-        ln --symbolic --force --no-dereference /home/soft/setup /etc/nixos
+        ln --symbolic --force --no-dereference /home/soft/work/setup /etc/nixos
       '';
 
       i18n.defaultLocale = "en_US.UTF-8";
@@ -124,7 +124,7 @@ _: {
 
       programs.nh = {
         enable = true;
-        flake = "/home/soft/setup";
+        flake = "/home/soft/work/setup";
       };
     };
 }
