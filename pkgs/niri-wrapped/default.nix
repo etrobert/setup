@@ -11,7 +11,7 @@
   dev ? false,
 }:
 let
-  config = if dev then "/home/soft/work/setup/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
+  config = if dev then "/home/soft/work/setup/main/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
   # toggle-follow-mode --policy needs 0.9.0, not in nixpkgs yet; the assertion
   # fails the build once it is, prompting removal of this override.

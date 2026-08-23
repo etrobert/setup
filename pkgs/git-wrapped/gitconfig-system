@@ -13,6 +13,7 @@
   br = branch
   w = worktree
   wa = worktree-add
+  pc = project-clone
   ds = -c diff.external=difft diff --staged
   ff = merge --ff-only
   vimdiff = difftool --no-prompt --tool=vimdiff
@@ -38,7 +39,7 @@
   falias = "!git alias | fzf | cut -d' ' -f1 | xargs -I {} git {}"
   torelease = log --oneline origin/prod..origin/main
   release = push origin origin/main:prod
-  fw = "!git worktree list | fzf | cut -f 1 -d ' '"
+  fw = "!git worktree list | grep -v '(bare)$' | fzf | cut -f 1 -d ' '"
   fwr = "!f() { worktree=$(git fw) && [ -n \"$worktree\" ] && git worktree remove \"$@\" \"$worktree\"; }; f"
   frev = "!commit=$(git-find-commit) && [ -n \"$commit\" ] && git revert \"$commit\""
   drop = "!git rebase --onto \"$1\"^ \"$1\" #"

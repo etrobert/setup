@@ -7,13 +7,15 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-REPO_NAME=$(basename "$(git remote get-url origin)" .git)
+# The project root holds the bare repo and every worktree beside it, so the
+# common dir's parent is it -- and that holds from inside any worktree.
+ROOT=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
 
 BRANCH="$1"
 
-NAME="$REPO_NAME-$BRANCH"
+NAME="$(basename "$ROOT")/$BRANCH"
 
-WORKTREE_PATH="$HOME/work/$NAME"
+WORKTREE_PATH="$ROOT/$BRANCH"
 
 if git show-ref --verify --quiet "refs/heads/$BRANCH"; then
   git worktree add "$WORKTREE_PATH" "$BRANCH"

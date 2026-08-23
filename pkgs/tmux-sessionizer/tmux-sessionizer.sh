@@ -1,11 +1,21 @@
 # Inspired by https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/scripts/tmux-sessionizer
 
-# doc is a synced directory rather than a repo, so it is the only project not
-# sitting in ~/work.
+# A project is a bare repo and its worktrees, so a name is the path tail:
+# ~/work/<repo>/<branch> <-> <repo>/<branch>, and stripping the prefix is the
+# exact inverse. Nothing is checked out at the project root. doc is a synced
+# directory rather than a repo, so it is the only project not sitting in ~/work.
 project_dir() {
   case "$1" in
   doc) printf '%s' "$HOME/sync/doc" ;;
   *) printf '%s' "$HOME/work/$1" ;;
+  esac
+}
+
+# Every checkout is a worktree, so a bare project name means its main one.
+with_worktree() {
+  case "$1" in
+  doc | */*) printf '%s' "$1" ;;
+  *) printf '%s/main' "$1" ;;
   esac
 }
 
@@ -157,7 +167,8 @@ if [ $# -eq 1 ]; then
     echo "If no PROJECT_NAME is provided, shows a fuzzy finder over the"
     echo "projects in ~/work/, plus doc."
     echo ""
-    echo "If PROJECT_NAME is provided, creates/switches to that session directly."
+    echo "PROJECT_NAME is <repo>/<branch>, naming one worktree of a project."
+    echo "A bare <repo> means its main worktree."
     exit 0
     ;;
   --refresh-pr-cache)
@@ -211,36 +222,36 @@ if [ $# -eq 1 ]; then
     project_path=""
     ;;
   -w | --worktrees)
-    worktrees=$(git worktree list)
-
-    main_path=${worktrees%%$'\n'*}
-    main_path=${main_path%% *}
+    # The bare repo has no checkout to open; every real worktree, main
+    # included, is a peer and belongs in the list.
+    worktrees=$(git worktree list | grep -v '(bare)$')
 
     # shellcheck disable=SC2016 # $FZF_PREVIEW_COLUMNS expands in fzf's preview shell
-    selection=$(printf '%s\n' "$worktrees" | tail --lines +2 |
+    selection=$(printf '%s\n' "$worktrees" |
       fzf --preview 'DFT_COLOR=always DFT_WIDTH=$FZF_PREVIEW_COLUMNS \
           git -C {1} dlog --color=always origin/HEAD.. 2>/dev/null |
           grep . || git -C {1} log --oneline --color=always --max-count 15' \
         --preview-window 'right:60%')
     project_path=${selection%% *}
-    project="$(basename "$main_path")/$(basename "$project_path")"
+    project=${project_path#"$HOME/work/"}
     ;;
   *)
-    project=$(echo "$1" | sed 's/\/$//')
+    project=$(with_worktree "$(echo "$1" | sed 's/\/$//')")
     project_path=$(project_dir "$project")
     ;;
   esac
 else
   selection=$({
-    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d ! -name doc -printf '%f\t%p\n'
-    printf 'doc\t%s\n' "$(project_dir doc)"
+    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d ! -name doc \
+      -printf '%f\t%f/main\t%p/main\n'
+    printf 'doc\tdoc\t%s\n' "$(project_dir doc)"
   } | fzf \
     --delimiter '\t' \
     --with-nth 1 \
-    --preview 'eza --tree --level=2 --color=always {2} 2>/dev/null || ls {2}' \
+    --preview 'eza --tree --level=2 --color=always {3} 2>/dev/null || ls {3}' \
     --preview-window 'right:60%')
-  project=${selection%%$'\t'*}
-  project_path=${selection#*$'\t'}
+  project=$(printf '%s' "$selection" | cut --fields 2)
+  project_path=$(printf '%s' "$selection" | cut --fields 3)
 fi
 
 if [ -z "$project" ]; then

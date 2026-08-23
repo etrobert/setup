@@ -32,7 +32,12 @@ into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
 ## Machines
 
-Git repos are cloned at `~/work/*`.
+Each project is a bare repository and its worktrees side by side, at
+`~/work/<repo>/`: `.bare` plus one directory per worktree, the primary one
+always called `main`. So the paths to work in are `~/work/<repo>/<branch>` --
+nothing is checked out at the project root itself.
+
+Clone a project with `git pc <url>`; add a worktree with `git wa <branch>`.
 
 All machines are connected via Tailscale. SSH into any of them by name
 (`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current

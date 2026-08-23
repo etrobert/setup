@@ -27,12 +27,26 @@ let
 
   git-worktree-remove = pkgs.writeShellApplication {
     name = "git-worktree-remove";
+
     runtimeInputs = with pkgs; [
       coreutils
+      gawk
       git
       tmux
     ];
+
     text = builtins.readFile ./git-worktree-remove.sh;
+  };
+
+  git-project-clone = pkgs.writeShellApplication {
+    name = "git-project-clone";
+
+    runtimeInputs = with pkgs; [
+      coreutils
+      git
+    ];
+
+    text = builtins.readFile ./git-project-clone.sh;
   };
 
   systemConfig = pkgs.concatText "gitconfig-system" [
@@ -46,6 +60,7 @@ in
 wrapPackage {
   package = pkgs.git;
   extraPaths = [
+    git-project-clone
     git-worktree-remove
   ];
   env = {
