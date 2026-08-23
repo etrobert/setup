@@ -3,14 +3,19 @@
 set -euo pipefail
 
 # Resolve to the worktree root before deriving anything from it: the usual call
-# is `git-worktree-remove .` from inside, and tmux reads a bare "." as the
-# session/window separator, i.e. the *current* session.
+# is `git-worktree-remove` from inside the worktree.
 WORKTREE_PATH=$(git -C "${1:-.}" rev-parse --show-toplevel)
 
-SESSION_NAME=$(basename "$WORKTREE_PATH")
+# Ask tmux which session sits here rather than deriving the name, so it cannot
+# disagree with whatever tmux-sessionizer called it. No match is empty and exit
+# 0, so a failure here is a real one -- and it lands before anything is removed.
+SESSION_NAME=$(tmux list-sessions -f "#{==:#{session_path},$WORKTREE_PATH}" \
+  -F '#{session_name}')
 
 # Remove before killing: when the session is the one we are running in, the
 # kill takes this script down with it.
 git -C "$WORKTREE_PATH" worktree remove "$WORKTREE_PATH"
 
-tmux kill-session -t "=$SESSION_NAME" 2>/dev/null || true
+if [ -n "$SESSION_NAME" ]; then
+  tmux kill-session -t "=$SESSION_NAME"
+fi

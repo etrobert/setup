@@ -1,10 +1,13 @@
 #compdef tmux-sessionizer ts
 
 local state
-local -a projects
+local -a projects worktrees
 
-projects=(doc)
-[[ -d $HOME/work ]] && projects+=($HOME/work/*(N/:t))
+# A project name is <repo>/<branch>; a bare <repo> resolves to one of them.
+projects=(doc $HOME/work/*(N/:t))
+
+worktrees=($HOME/work/*/*(N/))
+projects+=(${worktrees#$HOME/work/})
 
 _arguments -s \
   '(- *)'{-h,--help}'[show help]' \

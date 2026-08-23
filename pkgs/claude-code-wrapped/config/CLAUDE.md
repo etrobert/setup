@@ -32,7 +32,7 @@ into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
 ## Machines
 
-Git repos are cloned at `~/work/*`.
+Git repos are bare cloned at `~/work/*` with `git-project-clone`.
 
 All machines are connected via Tailscale. SSH into any of them by name
 (`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current

@@ -26,7 +26,7 @@ pkgs.writeShellApplication {
         # A stale /mnt/tank CIFS mount freezes PID 1 when the switch re-execs
         # systemd (NixOS/nixpkgs#375376); block only that combination.
         if findmnt --noheadings --types cifs /mnt/tank > /dev/null; then
-          config="/home/soft/work/setup#nixosConfigurations.$(uname --nodename).config"
+          config="/home/soft/work/setup/main#nixosConfigurations.$(uname --nodename).config"
 
           current_systemd=$(realpath /run/current-system/systemd)
           new_systemd=$(nix eval --raw "$config.systemd.package.outPath")
@@ -39,8 +39,8 @@ pkgs.writeShellApplication {
           fi
         fi
 
-        nh os switch --show-activation-logs /home/soft/work/setup
+        nh os switch --show-activation-logs /home/soft/work/setup/main
       ''
     else
-      "nh darwin switch --show-activation-logs /Users/soft/work/setup";
+      "nh darwin switch --show-activation-logs /Users/soft/work/setup/main";
 }
