@@ -36,4 +36,7 @@ BRANCH=${DEFAULT#origin/}
 
 git worktree add "$BRANCH" --track -b "$BRANCH" "$DEFAULT"
 
+# init left HEAD at init.defaultBranch, which nothing here ever creates.
+git symbolic-ref HEAD "refs/heads/$BRANCH"
+
 echo "Cloned $NAME into $ROOT"

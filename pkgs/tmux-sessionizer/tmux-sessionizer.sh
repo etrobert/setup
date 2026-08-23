@@ -12,18 +12,17 @@ project_dir() {
 }
 
 # Every checkout is a worktree, so a bare project name means the one holding the
-# default branch. Anything without that directory -- doc, a plain directory in
+# default branch. A directory that is not a project -- doc, a plain directory in
 # ~/work, a repository not converted to the layout -- is itself.
 with_worktree() {
+  dir=$(project_dir "$1")
+
   case "$1" in
   */*) printf '%s' "$1" ;;
   *)
-    dir=$(project_dir "$1")
-    branch=$(git -C "$dir" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || true)
-    branch=${branch#origin/}
-
-    if [ -n "$branch" ] && [ -d "$dir/$branch" ]; then
-      printf '%s/%s' "$1" "$branch"
+    if [ -d "$dir/.bare" ]; then
+      branch=$(git -C "$dir" symbolic-ref --short refs/remotes/origin/HEAD)
+      printf '%s/%s' "$1" "${branch#origin/}"
     else
       printf '%s' "$1"
     fi
