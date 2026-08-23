@@ -3,7 +3,7 @@
 local state
 local -a projects worktrees
 
-# A project name is <repo>/<branch>; the bare <repo> forms resolve to main.
+# A project name is <repo>/<branch>; a bare <repo> resolves to one of them.
 projects=(doc $HOME/work/*(N/:t))
 
 worktrees=($HOME/work/*/*(N/))

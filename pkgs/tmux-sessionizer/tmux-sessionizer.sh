@@ -15,11 +15,11 @@ project_dir() {
 # default branch. A directory that is not a project -- doc, a plain directory in
 # ~/work, a repository not converted to the layout -- is itself.
 with_worktree() {
-  dir=$(project_dir "$1")
-
   case "$1" in
   */*) printf '%s' "$1" ;;
   *)
+    dir=$(project_dir "$1")
+
     if [ -d "$dir/.bare" ]; then
       branch=$(git -C "$dir" symbolic-ref --short refs/remotes/origin/HEAD)
       printf '%s/%s' "$1" "${branch#origin/}"
@@ -179,7 +179,7 @@ if [ $# -eq 1 ]; then
     echo "projects in ~/work/, plus doc."
     echo ""
     echo "PROJECT_NAME is <repo>/<branch>, naming one worktree of a project."
-    echo "A bare <repo> means its main worktree."
+    echo "A bare <repo> means the worktree holding the default branch."
     exit 0
     ;;
   --refresh-pr-cache)
@@ -233,8 +233,8 @@ if [ $# -eq 1 ]; then
     project_path=""
     ;;
   -w | --worktrees)
-    # The bare repo has no checkout to open; every real worktree, main
-    # included, is a peer and belongs in the list.
+    # The bare repo has no checkout to open; every real worktree is a peer
+    # here, so nothing is skipped either.
     worktrees=$(git worktree list | grep -v '(bare)$')
 
     # shellcheck disable=SC2016 # $FZF_PREVIEW_COLUMNS expands in fzf's preview shell
