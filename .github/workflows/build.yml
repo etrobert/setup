@@ -160,11 +160,14 @@ jobs:
             > "$RUNNER_TEMP/diff-ansi.txt"
 
       # GitHub markdown renders neither ANSI nor styled HTML, so the colored
-      # variant ships as a PNG on the public file share (github-runner.nix
-      # provides the writable dir; unique name per attempt because camo
-      # caches).
+      # variant ships as a PNG uploaded to GitHub's own attachment store —
+      # the endpoint behind paste-into-comment in the web UI. Undocumented and
+      # unsupported by gh, but it keeps the image on GitHub rather than on a
+      # public file share, and it never expires.
       - name: Publish diff image
         id: image
+        env:
+          REPOSITORY_ID: ${{ github.event.repository.id }}
         run: |
           # < /dev/null: freeze ignores its file argument and reads stdin
           # whenever stdin is not a character device, and Actions gives run
@@ -172,11 +175,28 @@ jobs:
           nix run nixpkgs#charm-freeze -- "$RUNNER_TEMP/diff-ansi.txt" \
             --language ansi --output "$RUNNER_TEMP/closure-diff.png" \
             < /dev/null
-          name="closure-diff-pr$NUMBER-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.png"
-          install --mode 0644 "$RUNNER_TEMP/closure-diff.png" \
-            "/srv/files/ci/$name"
-          echo "url=https://files.etiennerobert.com/ci/$name" \
-            >> "$GITHUB_OUTPUT"
+          url="https://uploads.github.com/user-attachments/assets"
+          url="$url?name=closure-diff.png&content_type=image/png"
+          url="$url&repository_id=$REPOSITORY_ID"
+          # --fail-with-body so an HTTP error fails the step while still
+          # printing GitHub's explanation; the response is written to a file
+          # rather than piped, because a pipeline would hide curl's exit code.
+          curl --silent --show-error --fail-with-body --request POST \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --data-binary "@$RUNNER_TEMP/closure-diff.png" \
+            --output "$RUNNER_TEMP/upload.json" "$url"
+          # .href is github.com/user-attachments/assets/<uuid>. It 404s on a
+          # direct fetch — GitHub mints a short-lived signed URL at render
+          # time, for anonymous viewers too — so only a rendered markdown
+          # view proves the upload, never a curl of the href.
+          href=$(jq --raw-output '.href // empty' "$RUNNER_TEMP/upload.json")
+          if [ -z "$href" ]
+          then
+            echo "upload returned no href:" >&2
+            cat "$RUNNER_TEMP/upload.json" >&2
+            exit 1
+          fi
+          echo "url=$href" >> "$GITHUB_OUTPUT"
 
       # Append-only: reruns without a body reset (fix-agent pushes) leave the
       # previous section in place above the new one. Accepted for simplicity;
