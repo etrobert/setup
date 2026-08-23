@@ -44,6 +44,12 @@
           ];
         };
 
+        # energy_uj is root-only since PLATYPUS, so the rapl collector fails as
+        # node-exporter. Sysfs attributes take no udev GROUP=/MODE=, hence RUN+=.
+        udev.extraRules = ''
+          SUBSYSTEM=="powercap", ACTION=="add", TEST=="/sys$devpath/energy_uj", RUN+="${pkgs.coreutils}/bin/chgrp node-exporter /sys$devpath/energy_uj", RUN+="${pkgs.coreutils}/bin/chmod g+r /sys$devpath/energy_uj"
+        '';
+
         grafana = {
           enable = true;
 
