@@ -24,6 +24,26 @@
         '';
       };
 
+      # smartd's mail hook: it runs `mailer -i <recipient>` with the message on
+      # stdin, and SMARTD_* is inherited from the notify script that calls it.
+      # head keeps the body under ntfy's 4096-byte limit; the warning comes
+      # first, ahead of the `smartctl -a` dump smartd appends.
+      smartd-ntfy = pkgs.writeShellApplication {
+        name = "smartd-ntfy";
+
+        runtimeInputs = [
+          pkgs.coreutils
+          ntfy-wrapped
+        ];
+
+        inheritPath = false;
+
+        text = /* bash */ ''
+          head --bytes 4000 |
+            ntfy publish --quiet --title "$SMARTD_SUBJECT"
+        '';
+      };
+
       zfsDisk = id: {
         type = "disk";
         device = "/dev/disk/by-id/${id}";
@@ -130,7 +150,17 @@
           };
         };
 
-        smartd.enable = true;
+        smartd = {
+          enable = true;
+
+          # Only `wall` is on by default, which reaches attached ttys and
+          # nothing else, so a prefail warning goes unseen. The mail hook is
+          # the module's only exec path out.
+          notifications.mail = {
+            enable = true;
+            mailer = lib.getExe smartd-ntfy;
+          };
+        };
 
         sanoid = {
           enable = true;
