@@ -2,21 +2,15 @@
 
 set -euo pipefail
 
-if [ $# -eq 0 ]; then
-  echo "Usage: $0 <branch-name>"
-  exit 1
-fi
-
-WORKTREE_PATH="$1"
+# Resolve to the worktree root before deriving anything from it: the usual call
+# is `git-worktree-remove .` from inside, and tmux reads a bare "." as the
+# session/window separator, i.e. the *current* session.
+WORKTREE_PATH=$(git -C "${1:-.}" rev-parse --show-toplevel)
 
 SESSION_NAME=$(basename "$WORKTREE_PATH")
 
-# Kill tmux session if it exists
-if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-  tmux kill-session -t "$SESSION_NAME"
-fi
+# Remove before killing: when the session is the one we are running in, the
+# kill takes this script down with it.
+git -C "$WORKTREE_PATH" worktree remove "$WORKTREE_PATH"
 
-# Remove worktree
-git worktree remove "$WORKTREE_PATH"
-
-echo "Cleaned up $SESSION_NAME"
+tmux kill-session -t "=$SESSION_NAME" 2>/dev/null || true
