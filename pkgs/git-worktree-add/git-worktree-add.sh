@@ -11,6 +11,12 @@ fi
 # common dir's parent is it -- and that holds from inside any worktree.
 ROOT=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")
 
+# Otherwise the worktree would land inside the checkout, silently.
+if [ ! -d "$ROOT/.bare" ]; then
+  echo "$ROOT is not a bare-repo project -- reclone it with git pc" >&2
+  exit 1
+fi
+
 BRANCH="$1"
 
 NAME="$(basename "$ROOT")/$BRANCH"

@@ -119,8 +119,8 @@ is privileged:
 ```
 
 This repo has the same shape, which is why paths into it (the flake in
-`pkgs/switch.nix`, `CLAUDE_CONFIG_DIR`, the `/etc/nixos` symlink) name
-`~/work/setup/main`.
+`pkgs/switch.nix`, `CLAUDE_CONFIG_DIR`, the `/etc/nixos` and `/etc/nix-darwin`
+symlinks) name `~/work/setup/main`.
 
 tmux session names are `<repo>/<branch>`, the path tail, so stripping
 `~/work/` is the exact inverse of resolving a name. Anything reading

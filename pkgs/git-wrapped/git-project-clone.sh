@@ -18,19 +18,22 @@ if [ -e "$ROOT" ]; then
   exit 1
 fi
 
-git clone --bare "$URL" "$ROOT/.bare"
+git init --quiet --bare "$ROOT/.bare"
 
-# Makes the root a repository too, so git works when run from it rather than
-# from a worktree -- git-worktree-add reads the common dir from anywhere.
+# Makes the root a repository too, so plumbing run from it works -- notably
+# git-worktree-add reading the common dir. Anything needing a work tree does not.
 echo "gitdir: ./.bare" >"$ROOT/.git"
 
-# --bare leaves remote.origin.fetch unset, so nothing writes refs/remotes and
-# every later fetch silently updates nothing.
-git -C "$ROOT" config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+# `git clone --bare` would leave remote.origin.fetch unset, so nothing writes
+# refs/remotes and every later fetch silently updates nothing. `remote add`
+# writes it, and keeps refs/heads to the one branch we check out.
+git -C "$ROOT" remote add origin "$URL"
 git -C "$ROOT" fetch origin
+
+DEFAULT=$(git -C "$ROOT" symbolic-ref --short refs/remotes/origin/HEAD)
 
 # The directory is always main; the branch in it is whatever the remote's HEAD
 # is, so a repository still on master lands in main/ like every other project.
-git -C "$ROOT" worktree add main "$(git -C "$ROOT" symbolic-ref --short HEAD)"
+git -C "$ROOT" worktree add main --track -b "${DEFAULT#origin/}" "$DEFAULT"
 
 echo "Cloned $NAME into $ROOT"

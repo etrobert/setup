@@ -11,11 +11,18 @@ project_dir() {
   esac
 }
 
-# Every checkout is a worktree, so a bare project name means its main one.
+# Every checkout is a worktree, so a bare project name means its main one. A
+# directory that has none -- doc, or a plain directory in ~/work -- is itself.
 with_worktree() {
   case "$1" in
-  doc | */*) printf '%s' "$1" ;;
-  *) printf '%s/main' "$1" ;;
+  */*) printf '%s' "$1" ;;
+  *)
+    if [ -d "$(project_dir "$1")/main" ]; then
+      printf '%s/main' "$1"
+    else
+      printf '%s' "$1"
+    fi
+    ;;
   esac
 }
 
@@ -242,16 +249,15 @@ if [ $# -eq 1 ]; then
   esac
 else
   selection=$({
-    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d ! -name doc \
-      -printf '%f\t%f/main\t%p/main\n'
-    printf 'doc\tdoc\t%s\n' "$(project_dir doc)"
+    find "$HOME/work" -mindepth 1 -maxdepth 1 -type d ! -name doc -printf '%f\t%p\n'
+    printf 'doc\t%s\n' "$(project_dir doc)"
   } | fzf \
     --delimiter '\t' \
     --with-nth 1 \
-    --preview 'eza --tree --level=2 --color=always {3} 2>/dev/null || ls {3}' \
+    --preview 'eza --tree --level=2 --color=always {2} 2>/dev/null || ls {2}' \
     --preview-window 'right:60%')
-  project=$(printf '%s' "$selection" | cut --fields 2)
-  project_path=$(printf '%s' "$selection" | cut --fields 3)
+  project=$(with_worktree "${selection%%$'\t'*}")
+  project_path=$(project_dir "$project")
 fi
 
 if [ -z "$project" ]; then

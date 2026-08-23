@@ -30,7 +30,6 @@ let
 
     runtimeInputs = with pkgs; [
       coreutils
-      gawk
       git
       tmux
     ];
