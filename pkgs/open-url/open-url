@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
-# No local Wayland session means this machine is being driven over SSH, so the
-# browser belongs on the client. Its graphical environment lives in the
-# client's systemd --user manager, which `ssh host cmd` does not inherit.
+# The client's graphical environment lives in its systemd --user manager,
+# which `ssh host cmd` does not inherit.
 if [ -z "${WAYLAND_DISPLAY:-}" ]; then
   # tmux refreshes SSH_CONNECTION on every attach; a pane's own copy is only
   # whatever was current when the pane was created.
   if [ -n "${TMUX:-}" ]; then
     connection=$(tmux show-environment SSH_CONNECTION)
     connection=${connection#SSH_CONNECTION=}
+    # tmux prints "-NAME" when the variable was absent from the client env.
+    [ "$connection" != "-SSH_CONNECTION" ] ||
+      { echo "no display and no SSH client: nowhere to open" >&2; exit 1; }
   else
     connection=${SSH_CONNECTION?no display and no SSH client: nowhere to open}
   fi
@@ -16,10 +18,10 @@ if [ -z "${WAYLAND_DISPLAY:-}" ]; then
   # known_hosts is keyed by short name, so the client address alone will not do.
   read -r _ fqdn _ < <(getent hosts "${connection%% *}")
 
-  # The transient unit tears its cgroup down when open-url returns, which
-  # would kill the browser it just backgrounded. KillMode=process spares it.
-  exec ssh "${fqdn%%.*}" systemd-run --user --collect --quiet \
-    -p KillMode=process -- open-url "$@"
+  # ssh joins argv into one string that the remote shell re-parses, so quote it.
+  # KillMode=process spares the browser the transient unit's cgroup teardown.
+  exec ssh -n "${fqdn%%.*}" "$(printf '%q ' systemd-run --user --collect \
+    --quiet -p KillMode=process -- open-url "$@")"
 fi
 
 zen "$@" &
