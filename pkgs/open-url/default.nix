@@ -2,14 +2,21 @@
   writeShellApplication,
   makeDesktopItem,
   symlinkJoin,
+  glibc,
   jq,
+  openssh,
+  tmux,
   self',
 }:
 let
   script = writeShellApplication {
     name = "open-url";
     runtimeInputs = [
+      # `getent` resolves the SSH client address to a name ssh will accept.
+      glibc.getent
       jq
+      openssh
+      tmux
       self'.packages.niri-wrapped
       self'.packages.zen-browser-wrapped
     ];
