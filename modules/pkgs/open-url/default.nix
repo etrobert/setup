@@ -14,7 +14,11 @@
             script = pkgs.writeShellApplication {
               name = "open-url";
               runtimeInputs = [
+                # `getent` resolves the SSH client address to a name ssh will accept.
+                pkgs.glibc.getent
                 pkgs.jq
+                pkgs.openssh
+                pkgs.tmux
                 self'.packages.niri-wrapped
                 self'.packages.zen-browser-wrapped
               ];
