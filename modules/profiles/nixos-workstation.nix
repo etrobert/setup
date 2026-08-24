@@ -87,18 +87,7 @@
 
       security.rtkit.enable = true;
 
-      systemd = {
-        user = {
-          services = {
-            # Prevent nixos-rebuild switch from restarting niri mid-session.
-            # Without this, switching causes a ghost niri to start (session inactive)
-            # which then blocks the legitimate niri when you log back in.
-            niri.restartIfChanged = false;
-          };
-
-          tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
-        };
-      };
+      systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
 
       # NixOS workstation packages
       environment.systemPackages =
