@@ -115,23 +115,32 @@
       # head --bytes 8 /etc/machine-id on tower
       networking.hostId = "6b83a633";
 
-      # z (adjust-if-exists), not d: with nofail mounts, a boot without the
-      # pool must not create this path as a plain directory on the root
-      # filesystem.
-      # Requires /tank to stay root-owned (its dataset birth default):
-      # tmpfiles' unsafe-path-transition guard refuses child rules under a
-      # user-owned parent.
-      systemd.tmpfiles.settings.tank."/tank/media".z = {
-        user = "soft";
-        group = "users";
-        mode = "0755";
-      };
+      systemd = {
+        # z (adjust-if-exists), not d: with nofail mounts, a boot without the
+        # pool must not create this path as a plain directory on the root
+        # filesystem.
+        # Requires /tank to stay root-owned (its dataset birth default):
+        # tmpfiles' unsafe-path-transition guard refuses child rules under a
+        # user-owned parent.
+        tmpfiles.settings.tank."/tank/media".z = {
+          user = "soft";
+          group = "users";
+          mode = "0755";
+        };
 
-      # sanoid's ExecStartPre delegates permissions with `zfs allow`, a sync
-      # task that cannot return until the open txg commits. A write-heavy pool
-      # pushes txg sync past systemd's 90s default, so the unit fails on the
-      # delegation rather than on anything sanoid did.
-      systemd.services.sanoid.serviceConfig.TimeoutStartSec = "15min";
+        services = {
+          # `zfs mount -a` races systemd's fstab units for the disko-managed
+          # datasets, failing the mount unit and every service requiring it.
+          # Masked, not unwanted: zfs-share.service pulls it back in via Wants=.
+          zfs-mount.enable = false;
+
+          # sanoid's ExecStartPre delegates permissions with `zfs allow`, a
+          # sync task that cannot return until the open txg commits. A
+          # write-heavy pool pushes txg sync past systemd's 90s default, so the
+          # unit fails on the delegation rather than on anything sanoid did.
+          sanoid.serviceConfig.TimeoutStartSec = "15min";
+        };
+      };
 
       services = {
         zfs = {
