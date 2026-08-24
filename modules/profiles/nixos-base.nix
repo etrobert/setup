@@ -110,6 +110,10 @@ _: {
       users.users.soft = {
         isNormalUser = true;
         description = "Etienne";
+
+        # Without this, logging out kills every running tmux session.
+        linger = true;
+
         extraGroups = [
           "networkmanager"
           "wheel"
