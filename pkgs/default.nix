@@ -137,10 +137,6 @@
           community-plugins = inputs.noctalia-community-plugins;
         };
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
-        niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
-          inherit self';
-          dev = true;
-        };
         audio-output-switcher = pkgs.callPackage ./audio-output-switcher {
           inherit (self'.packages) fzf-wrapped;
         };

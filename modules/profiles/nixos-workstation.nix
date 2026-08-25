@@ -172,7 +172,7 @@
 
         niri = {
           enable = true;
-          package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
+          package = self.packages.${system}.niri-wrapped;
         };
 
         # The desktop shell: bar, launcher, notification centre and lock

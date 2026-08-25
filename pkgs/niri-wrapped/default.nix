@@ -8,11 +8,8 @@
   xwayland-satellite,
   bibata-cursors,
   wrapPackage,
-  dev ? false,
 }:
 let
-  config = if dev then "/home/soft/work/setup/main/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
-
   # toggle-follow-mode --policy needs 0.9.0, not in nixpkgs yet; the assertion
   # fails the build once it is, prompting removal of this override.
   nirius-0-9-0 =
@@ -45,7 +42,7 @@ let
 in
 wrapPackage {
   package = niri;
-  env.NIRI_CONFIG = "${config}";
+  env.NIRI_CONFIG = "${./config.kdl}";
   prefix.XCURSOR_PATH = "${bibata-cursors}/share/icons";
 
   runtimeInputs = path;
