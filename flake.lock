@@ -328,22 +328,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-darwin-gui-pin": {
-      "locked": {
-        "lastModified": 1783224372,
-        "narHash": "sha256-8i/87eeoqiGE4yOTjwSA3Eh/ziJRQEmd/unYU+K27sk=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "d407951447dcd00442e97087bf374aad70c04cea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "d407951447dcd00442e97087bf374aad70c04cea",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1785031560,
@@ -515,7 +499,6 @@
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-darwin-gui-pin": "nixpkgs-darwin-gui-pin",
         "noctalia-community-plugins": "noctalia-community-plugins",
         "noctalia-official-plugins": "noctalia-official-plugins",
         "node-exporter-dashboard": "node-exporter-dashboard",
