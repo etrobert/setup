@@ -8,8 +8,8 @@ let
     ];
     inheritPath = false;
     text = /* bash */ ''
-      # statix exits 1 on findings, which errexit would turn into a skipped deadnix
-      statix check -o errfmt "$@" || true
+      # 1 is findings (parse errors included, as errfmt records); 2+ is statix itself failing
+      statix check -o errfmt "$@" || [ $? -eq 1 ]
       deadnix-errfmt "$@"
     '';
   };
