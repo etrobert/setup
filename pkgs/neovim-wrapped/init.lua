@@ -8,6 +8,14 @@ vim.g.mapleader = " "
 
 vim.loader.enable()
 
-require("vim._core.ui2").enable({ msg = { targets = "msg" } })
+-- ui2 is private and experimental. wrapNeovimUnstable concatenates every plugin
+-- config into this one init.lua, so an unguarded raise here loses all of them.
+local ui2_ok, ui2_err = pcall(function()
+	require("vim._core.ui2").enable({ msg = { targets = "msg" } })
+end)
+
+if not ui2_ok then
+	vim.notify("vim._core.ui2 failed to enable: " .. ui2_err, vim.log.levels.ERROR)
+end
 
 vim.cmd.packadd("nvim.undotree")
