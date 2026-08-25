@@ -4,7 +4,6 @@ _: {
       self,
       pkgs,
       lib,
-      nixpkgs-darwin-gui-pin,
       ...
     }:
     let
@@ -18,32 +17,8 @@ _: {
 
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) zsh-wrapped;
-
-      # See the nixpkgs-darwin-gui-pin input in flake.nix for why.
-      pinnedPackages = [
-        "audacity"
-        "moonlight-qt"
-      ];
-
-      # Unoverlaid nixpkgs, used by the guard below to detect when a pinned
-      # package moves upstream.
-      unpinnedPkgs = import pkgs.path { inherit system; };
     in
     {
-      nixpkgs.overlays = [
-        (
-          _final: prev:
-          lib.genAttrs pinnedPackages (
-            name: nixpkgs-darwin-gui-pin.legacyPackages.${prev.stdenv.hostPlatform.system}.${name}
-          )
-        )
-      ];
-
-      assertions = map (name: {
-        assertion = unpinnedPkgs.${name}.version == pkgs.${name}.version;
-        message = "nixpkgs moved ${name} past the ld64 pin; retest the SIGTRAP crash and drop it from pinnedPackages in aaron/configuration.nix.";
-      }) pinnedPackages;
-
       allowedUnfreePackages = [
         "betterdisplay"
         "linear"

@@ -113,10 +113,10 @@ patch), pair it with a guard that fails the build once the workaround stops
 being load-bearing — don't rely on remembering to revisit it. Prefer this
 whenever the "still needed?" condition can be expressed in Nix.
 
-Example: `modules/hosts/aaron/configuration.nix` pins a set of GUI packages to
-an older nixpkgs to dodge an ld64 crash, and asserts each pinned version still
-matches the one a second, unpinned nixpkgs (imported from `pkgs.path`) offers.
-Once nixpkgs moves the package on, the assertion fails and prompts a retest.
+Example: `pkgs/niri-wrapped/default.nix` overrides `nirius` to a version newer
+than nixpkgs ships, behind a `lib.assertMsg` on
+`lib.versionOlder nirius.version "0.9.0"`. Once nixpkgs catches up, the
+assertion fails and prompts dropping the override.
 
 ## LAN Networking
 
