@@ -60,13 +60,13 @@ let
     mkdir -p $out
     cp ${
       fetchurl {
-        url = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/ryan/high/en_US-ryan-high.onnx";
+        url = "https://huggingface.co/rhasspy/piper-voices/resolve/39ab474be869e9181350af6a65e4953eef67aaa0/en/en_US/ryan/high/en_US-ryan-high.onnx";
         hash = "sha256-s5kNdgbhg+yNv7pwpGBwdPFi3hoMQS4BgNH/YLsVTso=";
       }
     } $out/en_US-ryan-high.onnx
     cp ${
       fetchurl {
-        url = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/ryan/high/en_US-ryan-high.onnx.json";
+        url = "https://huggingface.co/rhasspy/piper-voices/resolve/39ab474be869e9181350af6a65e4953eef67aaa0/en/en_US/ryan/high/en_US-ryan-high.onnx.json";
         hash = "sha256-xtO5jwgxXLS+vw1J1Q/E/0kbUDxkuUDNPVyihUO0gBE=";
       }
     } $out/en_US-ryan-high.onnx.json
