@@ -37,7 +37,6 @@
           inherit (self'.packages) fzf-wrapped atuin-wrapped;
         };
         neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
-        vim-wrapped = pkgs.callPackage ./vim-wrapped { };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
@@ -109,7 +108,6 @@
         creme = pkgs.callPackage ./creme { };
         check-bt-profile = pkgs.callPackage ./check-bt-profile { };
         tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self' inputs'; };
-        get-weather = pkgs.callPackage ./get-weather { };
         ils = pkgs.callPackage ./ils { };
         add-asset = pkgs.callPackage ./add-asset { };
         setuid-sudo = pkgs.callPackage ./setuid-sudo { };
@@ -127,11 +125,6 @@
       }
       // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit self inputs'; };
-        waybar-wrapped = pkgs.callPackage ./waybar-wrapped { inherit self'; };
-        waybar-wrapped-dev = pkgs.callPackage ./waybar-wrapped {
-          inherit self';
-          dev = true;
-        };
         noctalia-wrapped = pkgs.callPackage ./noctalia-wrapped {
           official-plugins = inputs.noctalia-official-plugins;
           community-plugins = inputs.noctalia-community-plugins;
