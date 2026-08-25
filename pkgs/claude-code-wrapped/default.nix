@@ -20,19 +20,11 @@ let
   rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { ntfy-sh = ntfy-wrapped; };
   sessionHostScript = callPackage ./claude-session-host.nix { };
 
-  ttsBackends = [
-    (callPackage ./tts-say.nix { })
-    (callPackage ./tts-piper.nix { })
-  ];
-
-  speakScript = callPackage ./speak.nix { inherit ttsBackends; };
-
   runtimeInputs = [
     statuslineScript
     formatFileScript
     rateLimitNotifyScript
     sessionHostScript
-    speakScript
     hass-cli-wrapped
     git-wrapped
   ]
@@ -44,8 +36,7 @@ let
     # so it falls back to `rec`/`arecord` on PATH — neither of which we'd
     # otherwise provide.
     sox
-  ])
-  ++ ttsBackends;
+  ]);
 
   # `$(<file)` builtin so the read doesn't
   # need `cat` on the caller's PATH, and a bare assignment so `set -e` aborts on
