@@ -48,6 +48,7 @@
             ntfy-wrapped
             hass-cli-wrapped
             ;
+          inherit (inputs) figma-mcp-plugin;
         };
         claude-code-wrapped-glm = pkgs.callPackage ./claude-code-wrapped {
           inherit
@@ -56,6 +57,7 @@
             ntfy-wrapped
             hass-cli-wrapped
             ;
+          inherit (inputs) figma-mcp-plugin;
           extraEnv = {
             ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
             API_TIMEOUT_MS = "3000000";
@@ -77,6 +79,7 @@
             ntfy-wrapped
             hass-cli-wrapped
             ;
+          inherit (inputs) figma-mcp-plugin;
           extraEnv = {
             ANTHROPIC_BASE_URL = "http://localhost:4141";
             ANTHROPIC_AUTH_TOKEN = "dummy"; # proxy authenticates via GitHub itself
