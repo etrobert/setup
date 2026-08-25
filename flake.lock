@@ -395,11 +395,11 @@
       "locked": {
         "narHash": "sha256-Nx/Np3qD+DBurlX9/y0PRu4sx6y9/1wcLvXW6xFKjkU=",
         "type": "file",
-        "url": "https://grafana.com/api/dashboards/1860/revisions/latest/download"
+        "url": "https://grafana.com/api/dashboards/1860/revisions/45/download"
       },
       "original": {
         "type": "file",
-        "url": "https://grafana.com/api/dashboards/1860/revisions/latest/download"
+        "url": "https://grafana.com/api/dashboards/1860/revisions/45/download"
       }
     },
     "nutricalc": {
