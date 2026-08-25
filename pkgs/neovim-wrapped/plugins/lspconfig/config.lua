@@ -51,8 +51,13 @@ vim.lsp.config("ts_ls", {
 
 local inlay_hint_max_length = 40
 
-local orig_inlay_hint_handler = vim.lsp.handlers["textDocument/inlayHint"]
--- We override the inlay hint handler to filter out hints that are too long
+-- No supported seam filters inlay hints in 0.12; this rides core's
+-- `self.handlers[m] or lsp.handlers[m]` fallthrough, so guard that it survives.
+local orig_inlay_hint_handler = assert(
+	vim.lsp.handlers["textDocument/inlayHint"],
+	"nvim dropped the default inlayHint handler - the ts_ls length filter is dead, rewrite it"
+)
+
 vim.lsp.handlers["textDocument/inlayHint"] = function(err, result, ctx, config)
 	if result then
 		local client = vim.lsp.get_client_by_id(ctx.client_id)
