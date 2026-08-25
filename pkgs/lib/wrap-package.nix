@@ -55,7 +55,7 @@
 #   }
 #
 # The surface grows one conversion at a time: each new wrapped package adds only
-# the option it needs (waybar → flags/runtimeInputs/filesToPatch; ntfy →
+# the option it needs (niri → runtimeInputs/filesToPatch; ntfy →
 # setDefaults; zsh → env/binaryWrapper/inheritArgv0; …).
 #
 # filesToPatch: for each listed file, resolve the symlink to its target, copy
