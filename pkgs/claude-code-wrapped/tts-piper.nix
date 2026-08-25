@@ -9,18 +9,10 @@
 # Uses the nixpkgs `piper-tts` package directly — no wheel hashes to pin or
 # version matrix to maintain.
 #
-# nixpkgs wires piper's full training stack (torch, pytorch-lightning,
-# tensorboard, pysilero-vad) in as runtime `dependencies`, but in piper's own
-# metadata those are all optional extras (`extra == "train"` etc.) — the only
-# core runtime requirements are onnxruntime and pathvalidate. Inference goes
-# through onnxruntime and needs none of the extras, so we strip `dependencies`
-# back to the core requirements, shrinking the closure from ~2.9 GB to ~845 MB.
-# The standard runtime-deps check still passes, since it only enforces the
-# core requires (verified: dropping onnxruntime makes it fail).
-#
-# A side benefit: stripping the training stack also drops `pysilero-vad`, which
-# is marked broken on darwin (`ld: unknown option: --disable-new-dtags`) — so
-# the strip is also what lets the aaron build evaluate at all.
+# Inference goes through onnxruntime, so piper's train/http/alignment extras are
+# all disabled below: that cuts the closure from 2.8 GiB to 1.0 GiB, and drops
+# `pysilero-vad`, which is marked broken on darwin — without that the aaron
+# build doesn't evaluate at all.
 #
 # The voice model itself is not packaged in nixpkgs (only the engine is), so it
 # is fetched below. Unlike a wheel, it is a single immutable artifact: the hash
@@ -37,22 +29,16 @@
   writeShellApplication,
 }:
 let
-  # Pinned to Python 3.13: the 3.14 build tooling crashes Apple libffi's
-  # trampoline allocation on macOS 26+ (Assertion failed: (trampoline_handle),
-  # closures.c). Drop the pin once piper builds with the default python3 on
-  # aaron again.
-  piper-tts' = piper-tts.override { python3Packages = python313Packages; };
-
-  # Inference-only piper: see header for why the training stack is stripped.
-  piper = piper-tts'.overridePythonAttrs (old: {
-    dependencies = builtins.filter (
-      d:
-      builtins.any (s: lib.hasInfix s (d.pname or d.name or "")) [
-        "onnxruntime"
-        "pathvalidate"
-      ]
-    ) (old.dependencies or old.propagatedBuildInputs or [ ]);
-  });
+  piper = piper-tts.override (
+    {
+      withTrain = false;
+      withHTTP = false;
+      withAlignment = false;
+    }
+    # python3 3.14's build tooling crashes Apple libffi's trampoline allocation
+    # on macOS 26+ (Assertion failed: (trampoline_handle), closures.c).
+    // lib.optionalAttrs stdenv.hostPlatform.isDarwin { python3Packages = python313Packages; }
+  );
 
   # Bundle the default voice (model + its config) in one store path so the
   # wrapper can point piper at it.
