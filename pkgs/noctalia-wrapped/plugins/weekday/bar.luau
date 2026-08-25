@@ -11,8 +11,8 @@
 noctalia.setUpdateInterval(60000)
 
 function update()
-  barWidget.setText(string.sub(noctalia.formatTime("%a"), 1, 2))
-  barWidget.setTooltip(noctalia.formatTime("%A"))
+	barWidget.setText(string.sub(noctalia.formatTime("%a"), 1, 2))
+	barWidget.setTooltip(noctalia.formatTime("%A"))
 end
 
 update()
