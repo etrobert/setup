@@ -160,12 +160,8 @@ _: {
               };
             };
 
-            # System default voice for `say` (and Spoken Content) — used by the
-            # claude-speak Stop hook, which calls bare `say` with no -v. The premium
-            # Zoe asset is a one-time GUI download (System Settings → Accessibility →
-            # Spoken Content → Manage Voices); Apple ships no headless installer, so
-            # this selection is reproducible but the asset is not. If absent, `say`
-            # falls back to the default voice rather than erroring.
+            # The premium Zoe asset is a manual GUI download (Apple ships no headless
+            # installer); without it `say` falls back to the default voice.
             "com.apple.Accessibility".SpokenContentDefaultVoiceSelectionsByLanguage = [
               "en"
               {

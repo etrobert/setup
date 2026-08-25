@@ -7,7 +7,6 @@
 #
 #   wrapPackage {
 #     package        = pkgs.foo;           # required – base package
-#     name           ? "<mainProgram>-wrapped"; # derivation name
 #     binName        ? package.meta.mainProgram; # optional rename: when this
 #                                         #   differs from package.meta.mainProgram the
 #                                         #   binary is mv'd to it before wrapping; the
@@ -16,6 +15,9 @@
 #     extraPaths     ? [];                 # additional derivations merged into the
 #                                         #   symlinkJoin paths alongside package
 #                                         #   (e.g. helper scripts to co-install)
+#     inheritPath    ? false;              # keep the ambient PATH and prefix
+#                                         #   runtimeInputs onto it; the default
+#                                         #   clears PATH to exactly runtimeInputs
 #     binaryWrapper  ? false;              # use makeBinaryWrapper instead of makeWrapper;
 #                                         #   produces a compiled binary rather than a shell
 #                                         #   script — required on macOS for .app bundles
@@ -178,8 +180,8 @@ let
   # being in place (e.g. repointing an .app bundle symlink at the new wrapper).
   postWrapScript = lib.concatStringsSep "\n" postWrap;
 
-  # Carry the wrapped package's version in the store name so closure-diff
-  # tools (nvd) show "foo-wrapped 1.2 -> 1.3" instead of "<none>".
+  # Carry the wrapped package's version in the store name so closure-diff tools
+  # show "foo-wrapped 1.2 -> 1.3" instead of "<none>".
   version = lib.getVersion package;
 in
 symlinkJoin {
