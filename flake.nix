@@ -52,7 +52,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     node-exporter-dashboard = {
-      url = "file+https://grafana.com/api/dashboards/1860/revisions/latest/download";
+      url = "file+https://grafana.com/api/dashboards/1860/revisions/45/download";
       flake = false;
     };
 
