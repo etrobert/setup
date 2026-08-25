@@ -11,22 +11,22 @@ noctalia.setUpdateInterval(60000)
 local rows = {}
 
 local function render()
-  desktopWidget.render(ui.column({ gap = 6, align = "center" }, rows))
+	desktopWidget.render(ui.column({ gap = 6, align = "center" }, rows))
 end
 
 function update()
-  noctalia.runAsync("birthdays", function(result)
-    rows = {}
+	noctalia.runAsync("birthdays", function(result)
+		rows = {}
 
-    for line in string.gmatch(result.stdout, "[^\n]+") do
-      table.insert(
-        rows,
-        ui.label({ text = line, fontSize = FONT_SIZE, fontWeight = "bold", color = "on_surface" })
-      )
-    end
+		for line in string.gmatch(result.stdout, "[^\n]+") do
+			table.insert(
+				rows,
+				ui.label({ text = line, fontSize = FONT_SIZE, fontWeight = "bold", color = "on_surface" })
+			)
+		end
 
-    render()
-  end, 5000)
+		render()
+	end, 5000)
 end
 
 render()

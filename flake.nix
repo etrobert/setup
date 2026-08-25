@@ -196,7 +196,7 @@
               '';
 
               stylua = pkgs.runCommand "stylua-check" { nativeBuildInputs = [ pkgs.stylua ]; } ''
-                stylua --check ${self}/pkgs/neovim-wrapped && touch $out
+                stylua --check ${self} && touch $out
               '';
 
               actionlint = pkgs.runCommand "actionlint-check" { nativeBuildInputs = [ pkgs.actionlint ]; } ''
