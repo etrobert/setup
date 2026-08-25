@@ -525,7 +525,7 @@ local function attach_buffer(bufnr)
 		return
 	end
 	vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI" }, {
-		buffer = bufnr,
+		buf = bufnr,
 		callback = function()
 			refresh_buffer(bufnr)
 		end,

@@ -19,18 +19,16 @@ require("gitsigns").setup({
 			end
 		end
 
-		vim.keymap.set("n", "]c", nextHunk, { buffer = bufnr, desc = "Next hunk" })
-		vim.keymap.set("n", "[c", previousHunk, { buffer = bufnr, desc = "Previous hunk" })
+		vim.keymap.set("n", "]c", nextHunk, { buf = bufnr, desc = "Next hunk" })
+		vim.keymap.set("n", "[c", previousHunk, { buf = bufnr, desc = "Previous hunk" })
 
-		vim.keymap.set("n", "<leader>hs", gitsigns.stage_hunk, { buffer = bufnr, desc = "Stage hunk" })
-		vim.keymap.set("n", "<leader>hr", gitsigns.reset_hunk, { buffer = bufnr, desc = "Reset hunk" })
-		vim.keymap.set("n", "<leader>hS", gitsigns.stage_buffer, { buffer = bufnr, desc = "Stage buffer" })
-		vim.keymap.set("n", "<leader>hu", gitsigns.undo_stage_hunk, { buffer = bufnr, desc = "Undo stage hunk" })
-		vim.keymap.set("n", "<leader>hR", gitsigns.reset_buffer, { buffer = bufnr, desc = "Reset buffer" })
-		vim.keymap.set("n", "<leader>hp", gitsigns.preview_hunk, { buffer = bufnr, desc = "Preview hunk" })
-		vim.keymap.set("n", "<leader>hd", gitsigns.diffthis, { buffer = bufnr, desc = "Diff this" })
-
-		vim.keymap.set("n", "<leader>td", gitsigns.toggle_deleted, { buffer = bufnr, desc = "Toggle deleted" })
+		vim.keymap.set("n", "<leader>hs", gitsigns.stage_hunk, { buf = bufnr, desc = "Stage hunk" })
+		vim.keymap.set("n", "<leader>hr", gitsigns.reset_hunk, { buf = bufnr, desc = "Reset hunk" })
+		vim.keymap.set("n", "<leader>hS", gitsigns.stage_buffer, { buf = bufnr, desc = "Stage buffer" })
+		vim.keymap.set("n", "<leader>hR", gitsigns.reset_buffer, { buf = bufnr, desc = "Reset buffer" })
+		vim.keymap.set("n", "<leader>hp", gitsigns.preview_hunk, { buf = bufnr, desc = "Preview hunk" })
+		vim.keymap.set("n", "<leader>hi", gitsigns.preview_hunk_inline, { buf = bufnr, desc = "Preview hunk inline" })
+		vim.keymap.set("n", "<leader>hd", gitsigns.diffthis, { buf = bufnr, desc = "Diff this" })
 
 		vim.keymap.set("n", "<leader>hb", function()
 			local current_base = require("gitsigns.config").config.base
@@ -42,7 +40,7 @@ require("gitsigns").setup({
 				gitsigns.change_base(nil, true)
 				vim.notify("Gitsigns base: HEAD")
 			end
-		end, { buffer = bufnr, desc = "Toggle base (HEAD <-> merge-base)" })
+		end, { buf = bufnr, desc = "Toggle base (HEAD <-> merge-base)" })
 	end,
 })
 
