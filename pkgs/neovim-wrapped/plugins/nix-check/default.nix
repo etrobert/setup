@@ -7,8 +7,9 @@ let
       self'.packages.deadnix-errfmt
     ];
     inheritPath = false;
-    text = ''
-      statix check -o errfmt "$@"
+    text = /* bash */ ''
+      # statix exits 1 on findings, which errexit would turn into a skipped deadnix
+      statix check -o errfmt "$@" || true
       deadnix-errfmt "$@"
     '';
   };
