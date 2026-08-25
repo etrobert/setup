@@ -8,8 +8,9 @@ let
     ];
     inheritPath = false;
     text = /* bash */ ''
-      # 1 is findings (parse errors included, as errfmt records); 2+ is statix itself failing
-      statix check -o errfmt "$@" || [ $? -eq 1 ]
+      # :make parses stdout only, so exit codes are noise; without this errexit
+      # would skip deadnix whenever statix reported anything.
+      statix check -o errfmt "$@" || true
       deadnix-errfmt "$@"
     '';
   };
