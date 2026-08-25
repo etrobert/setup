@@ -3,6 +3,7 @@
   pkgs,
   callPackage,
   claude-code,
+  figma-mcp-plugin,
   git-wrapped,
   hass-cli-wrapped,
   lib,
@@ -64,6 +65,9 @@ wrapPackage {
   }
   // extraEnv;
   inheritPath = true;
+  # Read-only store path: Claude Code loads a --plugin-dir plugin without
+  # writing to it, so no marketplace install (gitignored cache) is needed.
+  flags = [ "--plugin-dir ${figma-mcp-plugin}" ];
   run = [
     # Mutable path, not a store copy: Claude writes runtime state (sessions,
     # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.

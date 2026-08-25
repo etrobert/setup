@@ -108,6 +108,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # The plugin behind figma@claude-plugins-official: Figma's remote MCP
+    # server plus its design-to-code skills. Taken as an input rather than
+    # installed with `claude plugin install`, which writes into a gitignored
+    # cache and so does not reproduce on a new machine.
+    figma-mcp-plugin = {
+      url = "github:figma/mcp-server-guide";
+      flake = false;
+    };
+
     # Our fork, adding the `command` client: backed by a local command.
     aichat = {
       url = "github:etrobert/aichat/command-client";
