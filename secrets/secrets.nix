@@ -29,6 +29,7 @@ in
   # TODO: Restrict to relevant machines
   "ddclient-password-etiennerobert-com.age".publicKeys = allLinux;
   "umami-app-secret.age".publicKeys = allLinux;
+  "adele-filebrowser-password.age".publicKeys = [ tower ];
   "nix-access-tokens.age".publicKeys = allWorkstations;
   "github-runner-token.age".publicKeys = allWorkstations;
   "z-ai-auth-token.age".publicKeys = allWorkstations;
