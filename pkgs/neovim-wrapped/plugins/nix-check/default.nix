@@ -7,8 +7,10 @@ let
       self'.packages.deadnix-errfmt
     ];
     inheritPath = false;
-    text = ''
-      statix check -o errfmt "$@"
+    text = /* bash */ ''
+      # :make parses stdout only, so exit codes are noise; without this errexit
+      # would skip deadnix whenever statix reported anything.
+      statix check -o errfmt "$@" || true
       deadnix-errfmt "$@"
     '';
   };
