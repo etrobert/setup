@@ -110,7 +110,7 @@ Use markdown formatting.
 	})
 
 	vim.api.nvim_create_autocmd("BufWipeout", {
-		buffer = buf,
+		buf = buf,
 		once = true,
 		callback = function()
 			if job then
