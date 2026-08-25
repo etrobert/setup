@@ -25,14 +25,11 @@ let
         ./plugins/telescope
         ./plugins/snacks
         ./plugins/gitsigns
-        # Disabled because this takes a monstrous amount of ressources
-        # ./plugins/workspace-diagnostics
         ./plugins/lspconfig
         ./plugins/harpoon
         ./plugins/cmp
         ./plugins/treesitter
         ./plugins/surround
-        # ./plugins/hardtime
         ./plugins/matchup
         ./plugins/statix
         ./plugins/deadnix
@@ -45,8 +42,6 @@ let
         ./plugins/ask
         ./plugins/ai-rename
         ./plugins/auto-mkdir
-        # TODO: Figure out when to run the banner to make sure it measures the right startup time
-        # ./plugins/startup-banner
         ./plugins/tsc
         ./plugins/spell
       ];

@@ -1,6 +1,3 @@
--- Record startup time as early as possible
-vim.g.start_time = vim.fn.reltime()
-
 -- Set the leader before any plugin config runs so their `<leader>` maps bind to
 -- it. wrapNeovimUnstable emits plugin configs in reverse module-list order, so
 -- a `mapleader` assignment inside a plugin can run after another plugin's maps.
