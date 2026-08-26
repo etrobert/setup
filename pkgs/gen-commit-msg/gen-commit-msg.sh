@@ -64,7 +64,7 @@ RESPONSE=$(curl --silent --write-out "\n%{http_code}" https://api.openai.com/v1/
   --header "Authorization: Bearer $OPENAI_API_KEY" \
   --data "$REQUEST_BODY")
 
-HTTP_CODE=$(echo "$RESPONSE" | tail -n 1)
+HTTP_CODE=$(echo "$RESPONSE" | tail --lines=1)
 RESPONSE_BODY=$(echo "$RESPONSE" | sed '$d')
 
 if [ "$HTTP_CODE" -ne 200 ]; then
@@ -73,7 +73,7 @@ $RESPONSE_BODY"
   exit 1
 fi
 
-MESSAGE=$(echo "$RESPONSE_BODY" | jq -r '.choices[0].message.content')
+MESSAGE=$(echo "$RESPONSE_BODY" | jq --raw-output '.choices[0].message.content')
 
 if [ -z "$MESSAGE" ]; then
   echo "No commit message generated."

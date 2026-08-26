@@ -36,7 +36,7 @@ for file in .env .tmux.conf; do
 done
 
 if [ -f ".claude/settings.local.json" ]; then
-  mkdir -p "$WORKTREE_PATH/.claude"
+  mkdir --parents "$WORKTREE_PATH/.claude"
   cp ".claude/settings.local.json" "$WORKTREE_PATH/.claude/"
 fi
 

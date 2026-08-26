@@ -33,7 +33,7 @@ alias gi='git'
 # git worktree switch: cd into a worktree, fuzzy-picked or matched by arg
 gws() {
   local wt
-  wt=$(git worktree list | grep -v '(bare)$' | fzf --query="${1:-}" --select-1 --exit-0 | cut -d' ' -f1)
+  wt=$(git worktree list | grep --invert-match '(bare)$' | fzf --query="${1:-}" --select-1 --exit-0 | cut --delimiter=' ' --fields=1)
   [ -n "$wt" ] && cd "$wt"
 }
 

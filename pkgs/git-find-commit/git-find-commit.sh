@@ -8,4 +8,4 @@ git log --oneline --color=always --format='%C(red)%h%C(reset) %s' |
     --preview 'echo {} | cut -d" " -f1 | xargs git show --color=always' \
     --preview-window right:60% \
     --header 'Select Commit' |
-  cut -d' ' -f1
+  cut --delimiter=' ' --fields=1

@@ -1,0 +1,25 @@
+---
+id: prefer-long-form-flags
+language: bash
+severity: error
+message: Use the GNU long form of this flag, not the single-letter one.
+note: |
+  The global CLAUDE.md asks for long-form parameters over single-letter ones,
+  and the repo already follows it where someone remembered -- tmux-sessionizer
+  uses `xargs --max-lines=1 --max-procs=8` -- so a short flag here is drift,
+  not disagreement. Every listed command spells out every flag, though a few
+  need more than a one-to-one swap (`cp -p`, `rm -i`, `tail -F`, `cut -F`).
+  `ls` is deliberately absent: `-1 -C -g -l -m -x` have no long form at all,
+  so it would be unfixable noise.
+rule:
+  kind: command
+  all:
+    - has:
+        field: name
+        regex: "^(grep|jq|head|tail|mkdir|sort|cut|wc|cp|rm|sed|uniq|date)$"
+    - has:
+        any:
+          - kind: number
+            regex: "^-[0-9]+$"
+          - kind: word
+            regex: "^-[a-zA-Z][a-zA-Z0-9]*$"

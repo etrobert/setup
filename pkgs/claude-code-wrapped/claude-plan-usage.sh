@@ -50,7 +50,7 @@ pace_segment() {
     fi
     local pace_display
     pace_display=$(echo "scale=2; $pace / 100" | bc)
-    printf '%s' "${color}${label}:${pct_int}% ×${pace_display}${reset} ($(date -d "@$reset_ts" +"$date_fmt"))"
+    printf '%s' "${color}${label}:${pct_int}% ×${pace_display}${reset} ($(date --date="@$reset_ts" +"$date_fmt"))"
   else
     printf '%s' "$(pct_color "$pct_int")${label}:${pct_int}%${reset}"
   fi
