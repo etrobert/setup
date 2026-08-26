@@ -59,10 +59,10 @@ refresh_pr_cache() {
 # editor. Codepoints checked against the font's own cmap rather than copied from
 # a cheat sheet: several nearby ones are unrelated icons, and a wrong glyph
 # still renders, so it fails silently.
-pr_glyph_open=$'\U000F407'   # oct-git_pull_request
-pr_glyph_merged=$'\U000F419' # oct-git_merge
-pr_glyph_closed=$'\U000F4DC' # oct-git_pull_request_closed
-pr_glyph_draft=$'\U000F4DD'  # oct-git_pull_request_draft
+pr_glyph_open=$'\U000F407'        # oct-git_pull_request
+pr_glyph_merged=$'\U000F419'      # oct-git_merge
+pr_glyph_closed=$'\U000F4DC'      # oct-git_pull_request_closed
+pr_glyph_draft=$'\U000F4DD'       # oct-git_pull_request_draft
 check_glyph_ok=$'\U000F05E0'      # md-check_circle
 check_glyph_fail=$'\U000F0159'    # md-close_circle
 check_glyph_pending=$'\U000F051F' # md-timer_sand
