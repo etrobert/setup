@@ -202,6 +202,10 @@
               actionlint = pkgs.runCommand "actionlint-check" { nativeBuildInputs = [ pkgs.actionlint ]; } ''
                 actionlint ${self}/.github/workflows/*.yml && touch $out
               '';
+
+              ast-grep = pkgs.runCommand "ast-grep-check" { nativeBuildInputs = [ pkgs.ast-grep ]; } ''
+                ast-grep scan --rule ${self}/checks/module-body-must-be-function.yml ${self}/modules && touch $out
+              '';
             };
 
             formatter = pkgs.nixfmt-tree;
