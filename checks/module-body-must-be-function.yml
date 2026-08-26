@@ -9,12 +9,15 @@ note: |
   nixd resolves an option's attrpath from the file root, so a bare attrset makes
   it look up `flake.nixosModules.<name>.services.foo` in the options tree and
   find nothing — editor hover goes blank. A lambda restarts the attrpath.
+  `ast-grep scan --update-all` applies the fix; run `nix fmt` afterwards, as the
+  rewrite leaves trailing whitespace on blank lines inside the moved body.
 rule:
-  kind: binding
-  all:
-    - has:
-        field: attrpath
-        regex: '(nixos|darwin)Modules\.'
-    - has:
-        field: expression
-        kind: attrset_expression
+  pattern:
+    context: '{ $ATTRPATH = $BODY; }'
+    selector: binding
+constraints:
+  ATTRPATH:
+    regex: '(nixos|darwin)Modules\.'
+  BODY:
+    kind: attrset_expression
+fix: '$ATTRPATH = _: $BODY;'
