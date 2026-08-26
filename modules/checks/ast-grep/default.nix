@@ -2,16 +2,10 @@
 {
   perSystem =
     { pkgs, ... }:
-    let
-      config = pkgs.writeText "sgconfig.yml" /* yaml */ ''
-        ---
-        ruleDirs:
-          - ${./rules}
-      '';
-    in
     {
       checks.ast-grep = pkgs.runCommand "ast-grep-check" { nativeBuildInputs = [ pkgs.ast-grep ]; } ''
-        ast-grep --config ${config} scan ${self} && touch $out
+        # cd: ast-grep finds sgconfig.yml from the cwd, not from the scanned path.
+        cd ${self} && ast-grep scan && touch $out
       '';
     };
 }
