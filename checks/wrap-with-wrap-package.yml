@@ -1,0 +1,26 @@
+---
+id: wrap-with-wrap-package
+language: nix
+severity: error
+message: >-
+  Hand-rolled symlinkJoin + wrapProgram; use pkgs.wrapPackage instead.
+note: |
+  pkgs.wrapPackage (pkgs/lib/wrap-package.nix, injected as a pkgs attribute by
+  the overlay in flake.nix) already does the symlinkJoin + makeWrapper dance,
+  and adds what a hand-rolled copy forgets: the wrapped package's version in
+  the store name, meta.mainProgram, `--set PATH ''` so the program runs against
+  a known tool set, and the checks/filesToPatch/postWrap hooks.
+  Each wrapProgram argument becomes a named option: --add-flags to `flags`,
+  --set to `env`, --set-default to `setDefaults`, --prefix to `prefix`, PATH
+  additions to `runtimeInputs`.  No autofix: rewriting would mean parsing bash
+  out of a Nix string.
+rule:
+  kind: apply_expression
+  all:
+    - has:
+        field: function
+        regex: 'symlinkJoin$'
+    - has:
+        kind: string_fragment
+        regex: 'wrapProgram'
+        stopBy: end
