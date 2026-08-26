@@ -32,6 +32,7 @@ in
       self.nixosModules.githubIssueWatch
       self.nixosModules.docker
       self.nixosModules.gaming
+      self.nixosModules.plasma
       self.nixosModules.githubRunner
       self.nixosModules.harmonia
       self.nixosModules.navidrome

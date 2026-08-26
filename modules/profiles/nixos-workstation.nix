@@ -20,6 +20,13 @@
         };
       };
 
+      # tuigreet prepends this to the session command, so it has to keep argv
+      # intact — a bare `bash -l -c` would swallow the Exec's arguments as $0.
+      # bash -l guarantees environment.sessionVariables are loaded.
+      loginSession = pkgs.writeShellScript "login-session" ''
+        exec ${pkgs.bash}/bin/bash -l -c 'exec "$@"' bash "$@"
+      '';
+
       # leod's iGPU (i915) exposes no VRAM stat, so the widget would sit empty.
       noctalia-wrapped = self.packages.${system}.noctalia-wrapped.override {
         withVramWidget = config.networking.hostName != "leod";
@@ -62,16 +69,27 @@
           openFirewall = true;
         };
 
-        # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
-        # through a login shell and imports the environment into systemd/D-Bus
-        # itself; bash -l guarantees environment.sessionVariables are loaded.
+        # niri and plasma6 each mkDefault this, which collides once both are
+        # installed. tuigreet ignores it, but the option still has to resolve.
+        displayManager.defaultSession = "niri";
+
+        # tuigreet login prompt on vt1, defaulting to Niri; F3 picks any other
+        # installed session.
         greetd = {
           enable = true;
           # Stops boot log lines from drawing over the tuigreet UI: resets the
           # VT at greeter start, and wires greetd's stdio to tty1 so systemd
           # counts the console as owned and stops printing status to it.
           useTextGreeter = true;
-          settings.default_session.command = ''${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
+          settings.default_session.command = lib.concatStringsSep " " [
+            (lib.getExe pkgs.tuigreet)
+            "--time"
+            "--remember"
+            "--asterisks"
+            "--sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions"
+            "--session-wrapper ${loginSession}"
+            "--cmd niri-session"
+          ];
         };
       };
 
