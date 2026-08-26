@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
 # Find commit hash using fzf with preview
 # Shows commit hash, date, author, and message for easy selection
 

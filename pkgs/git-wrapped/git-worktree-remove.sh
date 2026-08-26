@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
 # Resolve to the worktree root before deriving anything from it: the usual call
 # is `git-worktree-remove` from inside the worktree.
 WORKTREE_PATH=$(git -C "${1:-.}" rev-parse --show-toplevel)
