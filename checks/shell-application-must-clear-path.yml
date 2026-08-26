@@ -1,0 +1,33 @@
+---
+id: shell-application-must-clear-path
+language: nix
+severity: error
+message: >-
+  writeShellApplication must set `inheritPath` explicitly
+  (normally `false`, with explicit `runtimeInputs`).
+note: |
+  nixpkgs defaults `inheritPath ? true`, so leaving it out leaks the caller's
+  ambient PATH into the script: it works on the author's machine, silently
+  resolves a different tool elsewhere, and `runtimeInputs` stops being an
+  honest dependency list. CLAUDE.md asks for `inheritPath = false` with
+  explicit `runtimeInputs`.
+  No autofix on purpose: inserting `inheritPath = false` at a site with no
+  `runtimeInputs` emits `export PATH=""`, which builds green and fails at
+  runtime — shellcheck cannot see a missing binary. Each site needs its
+  dependencies listed by hand.
+rule:
+  kind: attrset_expression
+  inside:
+    kind: apply_expression
+    field: argument
+    has:
+      field: function
+      regex: writeShellApplication$
+  not:
+    has:
+      kind: binding_set
+      has:
+        kind: binding
+        has:
+          field: attrpath
+          regex: ^inheritPath$
