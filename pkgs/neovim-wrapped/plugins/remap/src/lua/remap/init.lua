@@ -90,13 +90,6 @@ vim.api.nvim_create_user_command("CloseFloats", function()
 	end
 end, { desc = "Close all floating windows" })
 
--- Auto-remove trailing whitespace on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-	group = vim.api.nvim_create_augroup("trim-whitespace", { clear = true }),
-	pattern = "*",
-	command = [[%s/\s\+$//e]],
-})
-
 function RenameFile()
 	local old_filename = vim.api.nvim_buf_get_name(0)
 	local new_filename = vim.fn.input("New filename: ", old_filename)
