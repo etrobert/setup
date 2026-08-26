@@ -1,5 +1,7 @@
 {
   ghostty,
+  lib,
+  stdenv,
   wrapPackage,
 }:
 wrapPackage {
@@ -12,6 +14,14 @@ wrapPackage {
   # it must inherit the caller's PATH rather than having it cleared or replaced.
   inheritPath = true;
   flags = [ "--config-file=${./config}" ];
+
+  # Both files launch Ghostty on D-Bus activation and point at the unwrapped
+  # binary; patch them so an activated instance is the wrapper. The macOS
+  # build (ghostty-bin) ships neither.
+  filesToPatch = lib.optionals stdenv.hostPlatform.isLinux [
+    "$out/share/dbus-1/services/com.mitchellh.ghostty.service"
+    "$out/share/systemd/user/app-com.mitchellh.ghostty.service"
+  ];
 
   postWrap = [
     # On macOS, the .app bundle's binary symlinks directly to the unwrapped
