@@ -91,6 +91,7 @@ vim.lsp.config("nixd", {
 })
 
 vim.lsp.enable({
+	"ast_grep",
 	"bashls",
 	"eslint",
 	"tailwindcss",
