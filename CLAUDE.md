@@ -46,6 +46,10 @@ A feature must not import another feature — if it needs to, it belongs in
 `profiles/`. Not the converse: `base.nix` and `workstation.nix` import no
 sibling and are profiles by role.
 
+**Checks** (`modules/checks/`) — a check that needs its own files gets a
+directory here (e.g. `ast-grep/` with its `rules/`). One-liner checks stay
+inline in `flake.nix`.
+
 Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
 plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
 
