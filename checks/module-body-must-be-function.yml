@@ -1,0 +1,20 @@
+---
+id: module-body-must-be-function
+language: nix
+severity: error
+message: >-
+  Module body must be a function (`_:` or `{ pkgs, ... }:`),
+  not a bare attrset.
+note: |
+  nixd resolves an option's attrpath from the file root, so a bare attrset makes
+  it look up `flake.nixosModules.<name>.services.foo` in the options tree and
+  find nothing — editor hover goes blank. A lambda restarts the attrpath.
+rule:
+  kind: binding
+  all:
+    - has:
+        field: attrpath
+        regex: '(nixos|darwin)Modules\.'
+    - has:
+        field: expression
+        kind: attrset_expression
