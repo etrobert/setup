@@ -22,7 +22,7 @@ writeShellApplication {
   ++ lib.optionals stdenv.hostPlatform.isDarwin [ pbcopy ]
   ++ lib.optionals stdenv.hostPlatform.isLinux [ wl-clipboard ];
   inheritPath = false;
-  text = ''
+  text = /* bash */ ''
     usage() {
       echo "Usage: doc-add-image <url>" >&2
       exit 1

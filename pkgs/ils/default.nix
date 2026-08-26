@@ -13,7 +13,7 @@ writeShellApplication {
     tmux
   ];
   inheritPath = false;
-  text = ''
+  text = /* bash */ ''
     # Preview images in a grid in the terminal, with filenames as titles.
     # --pixelation=kitty forces the kitty graphics protocol so previews render
     # inside tmux, which otherwise suppresses graphics protocols (timg falls

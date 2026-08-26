@@ -10,7 +10,7 @@ writeShellApplication {
     systemd
   ];
   inheritPath = false;
-  text = ''
+  text = /* bash */ ''
     loginctl lock-session
     sleep 1
     systemctl suspend

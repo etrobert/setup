@@ -3,7 +3,7 @@ writeShellApplication {
   name = "creme";
   runtimeInputs = [ mpc ];
   inheritPath = false;
-  text = ''
+  text = /* bash */ ''
     song=$(mpc current --format "%file%")
     if [[ -z "$song" ]]; then
       echo "Nothing is currently playing"

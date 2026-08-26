@@ -16,7 +16,7 @@ _: {
           pkgs.bash
         ];
         inheritPath = false;
-        text = ''
+        text = /* bash */ ''
           exec npx -y copilot-api@0.7.0 "$@"
         '';
       };

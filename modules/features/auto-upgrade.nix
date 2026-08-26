@@ -12,7 +12,7 @@ _: {
 
         inheritPath = false;
 
-        text = ''
+        text = /* bash */ ''
           state_dir=/var/lib/nixos-upgrade
           last_rev="$state_dir/last-attempted-rev"
           pending_rev="$state_dir/pending-rev"

@@ -62,7 +62,7 @@ _: {
         age.secrets.tailscale-authkey.file = ../../secrets/tailscale-authkey.age;
 
         programs = {
-          ssh.extraConfig = ''
+          ssh.extraConfig = /* ssh_config */ ''
             Host *
               ServerAliveInterval 10
               ServerAliveCountMax 3

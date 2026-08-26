@@ -5,7 +5,7 @@ symlinkJoin {
     (writeShellApplication {
       name = "finder-hidefiles";
       inheritPath = true;
-      text = ''
+      text = /* bash */ ''
         defaults write com.apple.finder AppleShowAllFiles NO
         killall Finder
       '';
@@ -13,7 +13,7 @@ symlinkJoin {
     (writeShellApplication {
       name = "finder-showfiles";
       inheritPath = true;
-      text = ''
+      text = /* bash */ ''
         defaults write com.apple.finder AppleShowAllFiles YES
         killall Finder
       '';

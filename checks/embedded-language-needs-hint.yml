@@ -1,0 +1,32 @@
+---
+id: embedded-language-needs-hint
+language: nix
+severity: error
+message: Multi-line embedded script has no `/* lang */` hint comment.
+note: |
+  CLAUDE.md asks for a language hint comment before an embedded string so the
+  editor injects that language's syntax highlighting; without it the whole
+  script stays one flat, uncolored string.
+
+  No `fix:` on purpose — an autofix would have to hardcode one language, and
+  stamping `/* bash */` onto a lua or ini body is confidently wrong
+  highlighting, which is worse than none.
+
+  Limitations: this checks that a comment is present, not that it names the
+  right language (`/* TODO */` satisfies it), and any comment between `=` and
+  the string suppresses it. The attrpath list is deliberately narrow; other
+  embedded-language holders (`postBuild`, `skhdConfig`, `nix.extraOptions`,
+  `settings.default_session.command`) are a follow-up.
+rule:
+  pattern:
+    context: '{ $ATTRPATH = $BODY; }'
+    selector: binding
+  not:
+    has:
+      kind: comment
+constraints:
+  ATTRPATH:
+    regex: '(^|\.)(text|script|config|extraConfig)$'
+  BODY:
+    kind: indented_string_expression
+    regex: '\n'

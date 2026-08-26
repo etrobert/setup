@@ -78,7 +78,7 @@ _: {
       system = {
         primaryUser = "soft";
 
-        activationScripts.postActivation.text = ''
+        activationScripts.postActivation.text = /* bash */ ''
           ln --symbolic --force --no-dereference /Users/soft/work/setup/main /etc/nix-darwin
 
           # Suppress the login MOTD (replaces home-manager home.file.".hushlogin")

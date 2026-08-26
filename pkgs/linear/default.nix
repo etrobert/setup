@@ -11,7 +11,7 @@ let
     name = "linear";
     runtimeInputs = [ chromium ];
     inheritPath = false;
-    text = ''
+    text = /* bash */ ''
       exec chromium --app=https://linear.app/ "$@"
     '';
   };

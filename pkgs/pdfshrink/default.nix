@@ -3,7 +3,7 @@ writeShellApplication {
   name = "pdfshrink";
   runtimeInputs = [ ghostscript ];
   inheritPath = false;
-  text = ''
+  text = /* bash */ ''
     if [ "$#" -ne 1 ]; then
       echo "Usage: pdfshrink <input.pdf>"
       exit 1

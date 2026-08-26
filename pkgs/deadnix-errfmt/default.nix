@@ -10,7 +10,7 @@ writeShellApplication {
     jq
   ];
   inheritPath = false;
-  text = ''
+  text = /* bash */ ''
     deadnix --output-format json "$@" | \
       jq -r '.file as $f | .results[] | $f + ">" + (.line|tostring) + ":" + (.column|tostring) + ":W:0:" + .message'
   '';

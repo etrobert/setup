@@ -3,7 +3,7 @@ writeShellApplication {
   name = "nixplatforms";
   runtimeInputs = [ nix ];
   inheritPath = false;
-  text = ''
+  text = /* bash */ ''
     nix eval nixpkgs#"$1".meta.platforms --json
   '';
 }

@@ -18,7 +18,7 @@ _: {
 
         runtimeInputs = [ pkgs.coreutils ];
 
-        text = ''
+        text = /* bash */ ''
           exec timeout --signal=KILL 10m ${lib.getExe pkgs.jellyfin-ffmpeg} "$@"
         '';
       };

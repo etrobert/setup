@@ -2,7 +2,7 @@
 writeShellApplication {
   name = "flush-dns";
   inheritPath = true;
-  text = ''
+  text = /* bash */ ''
     sudo dscacheutil -flushcache
     sudo killall -HUP mDNSResponder
   '';
