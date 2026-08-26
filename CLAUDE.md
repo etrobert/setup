@@ -50,6 +50,10 @@ sibling and are profiles by role.
 directory here (e.g. `ast-grep/` with its `rules/`). One-liner checks stay
 inline in `flake.nix`.
 
+`sgconfig.yml` must stay at the repo root: the check reads it, and the ast-grep
+LSP only attaches to projects that have it there (`root_markers` in
+nvim-lspconfig's `ast_grep`).
+
 Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
 plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
 

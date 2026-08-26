@@ -1,0 +1,3 @@
+---
+ruleDirs:
+  - modules/checks/ast-grep/rules
