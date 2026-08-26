@@ -203,8 +203,9 @@
                 actionlint ${self}/.github/workflows/*.yml && touch $out
               '';
 
+              # ast-grep discovers sgconfig.yml (and its ruleDirs) from the cwd.
               ast-grep = pkgs.runCommand "ast-grep-check" { nativeBuildInputs = [ pkgs.ast-grep ]; } ''
-                ast-grep scan --rule ${self}/checks/module-body-must-be-function.yml ${self}/modules && touch $out
+                cd ${self} && ast-grep scan && touch $out
               '';
             };
 
