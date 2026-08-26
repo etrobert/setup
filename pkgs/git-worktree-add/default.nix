@@ -6,6 +6,7 @@
 }:
 writeShellApplication {
   name = "git-worktree-add";
+  inheritPath = false;
 
   runtimeInputs = [
     coreutils

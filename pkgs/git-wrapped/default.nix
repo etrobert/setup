@@ -4,8 +4,6 @@
   wrapPackage,
   userConfig ? ./gitconfig-user,
 }:
-# TODO: restrict PATH to explicit inputs (inheritPath = false) rather than
-# inheriting the ambient PATH — see discussion on #295.
 let
   deps = with pkgs; [
     # TODO: Fix this
@@ -27,6 +25,7 @@ let
 
   git-worktree-remove = pkgs.writeShellApplication {
     name = "git-worktree-remove";
+    inheritPath = false;
 
     runtimeInputs = with pkgs; [
       coreutils
@@ -39,10 +38,12 @@ let
 
   git-project-clone = pkgs.writeShellApplication {
     name = "git-project-clone";
+    inheritPath = false;
 
     runtimeInputs = with pkgs; [
       coreutils
       git
+      openssh # git fetch over ssh:// shells out to it
     ];
 
     text = builtins.readFile ./git-project-clone.sh;
@@ -67,5 +68,7 @@ wrapPackage {
     GIT_CONFIG_GLOBAL = "${userConfig}";
   };
   runtimeInputs = deps;
+  # Must stay: git resolves core.editor (nvim) and the `sci`/`find` aliases'
+  # helpers off the ambient PATH; deps deliberately omits them.
   inheritPath = true;
 }
