@@ -201,12 +201,12 @@ if [ $# -eq 1 ]; then
     wants_you="#{||:#{==:#{@agent-status},!},#{==:#{@agent-status},✓}}"
     target=$(tmux list-windows -a \
       -f "#{&&:$wants_you,#{!=:#{window_id},$window}}" \
-      -F '#{session_name}:#{window_index}' | head -1)
+      -F '#{session_name}:#{window_index}' | head --lines=1)
     [ -n "$target" ] || exit 0
 
     # A key binding runs us without a client of its own, so name the one showing
     # the session we are leaving; switch-client has nothing to move otherwise.
-    client=$(tmux list-clients -t "$session" -F '#{client_name}' | head -1)
+    client=$(tmux list-clients -t "$session" -F '#{client_name}' | head --lines=1)
     if [ -n "$client" ]; then
       tmux switch-client -c "$client" -t "$target"
     fi
@@ -234,7 +234,7 @@ if [ $# -eq 1 ]; then
   -w | --worktrees)
     # The bare repo has no checkout to open; every real worktree is a peer
     # here, so nothing is skipped either.
-    worktrees=$(git worktree list | grep -v '(bare)$')
+    worktrees=$(git worktree list | grep --invert-match '(bare)$')
 
     # shellcheck disable=SC2016 # $FZF_PREVIEW_COLUMNS expands in fzf's preview shell
     selection=$(printf '%s\n' "$worktrees" |
