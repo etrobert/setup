@@ -3,9 +3,9 @@
   perSystem =
     { pkgs, ... }:
     {
-      # sgconfig.yml stays at the repo root so the ast-grep LSP finds the project.
       checks.ast-grep = pkgs.runCommand "ast-grep-check" { nativeBuildInputs = [ pkgs.ast-grep ]; } ''
-        ast-grep --config ${self}/sgconfig.yml scan ${self} && touch $out
+        # cd: ast-grep finds sgconfig.yml from the cwd, not from the scanned path.
+        cd ${self} && ast-grep scan && touch $out
       '';
     };
 }
