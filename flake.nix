@@ -202,6 +202,12 @@
               actionlint = pkgs.runCommand "actionlint-check" { nativeBuildInputs = [ pkgs.actionlint ]; } ''
                 actionlint ${self}/.github/workflows/*.yml && touch $out
               '';
+
+              # Fails once upstream adds `sh` to ast_grep.filetypes, making the
+              # override in neovim-wrapped's lspconfig plugin dead weight.
+              lspconfig-ast-grep-filetypes = pkgs.runCommand "lspconfig-ast-grep-filetypes-check" { } ''
+                ! grep --quiet "'sh'," ${pkgs.vimPlugins.nvim-lspconfig}/lsp/ast_grep.lua && touch $out
+              '';
             };
 
             formatter = pkgs.nixfmt-tree;
