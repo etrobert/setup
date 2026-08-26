@@ -90,6 +90,12 @@ vim.lsp.config("nixd", {
 	},
 })
 
+-- Upstream's list is ast-grep's language ids, not neovim filetypes: .sh buffers
+-- are `sh`, so shell rules never reached the editor.
+vim.lsp.config("ast_grep", {
+	filetypes = vim.list_extend({ "sh" }, vim.lsp.config.ast_grep.filetypes),
+})
+
 vim.lsp.enable({
 	"ast_grep",
 	"bashls",
