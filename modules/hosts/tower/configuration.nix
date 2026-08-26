@@ -3,7 +3,7 @@
 
 { self, ... }:
 {
-  flake.nixosModules.towerConfiguration = {
+  flake.nixosModules.towerConfiguration = _: {
     imports = [
       self.nixosModules.towerHardware
     ];

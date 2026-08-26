@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.networkmanager = {
+  flake.nixosModules.networkmanager = _: {
     networking.networkmanager = {
       enable = true;
       ensureProfiles = {
