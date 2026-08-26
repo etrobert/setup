@@ -111,12 +111,10 @@
             chromium
             ddcutil
             kdePackages.okular
-            grim
             mpv
             orca-slicer
             pavucontrol
             playerctl
-            slurp
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
