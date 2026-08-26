@@ -137,6 +137,7 @@
         open-url = pkgs.callPackage ./open-url { inherit self'; };
         lock-suspend = pkgs.callPackage ./lock-suspend.nix { };
         linear = pkgs.callPackage ./linear { };
+        pimsync-wrapped = pkgs.callPackage ./pimsync-wrapped { };
         ghostty-wrapped = pkgs.callPackage ./ghostty-wrapped {
           inherit (pkgs) ghostty;
         };
