@@ -7,6 +7,7 @@
       config = builtins.readFile ./config.lua;
 
       extraPackages = with pkgs; [
+        ast-grep
         bash-language-server
         copilot-language-server
         go
