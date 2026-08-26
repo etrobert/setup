@@ -91,5 +91,18 @@
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "git.confirmSync": false
+  "git.confirmSync": false,
+
+  "nix.enableLanguageServer": true,
+  // nixd defaults to stock nixpkgs options via <nixpkgs>; point it at the flake
+  // so this repo's own options (allowedUnfreePackages, features) resolve too.
+  "nix.serverSettings": {
+    "nixd": {
+      "options": {
+        "nixos": {
+          "expr": "(builtins.getFlake \"${workspaceFolder}\").nixosConfigurations.tower.options"
+        }
+      }
+    }
+  }
 }
