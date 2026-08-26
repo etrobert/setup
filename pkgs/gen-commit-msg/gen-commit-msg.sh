@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
 NO_EDIT_GIT_PARAM="--edit"
 case "${1:-}" in
 --no-edit | -n) NO_EDIT_GIT_PARAM= ;;

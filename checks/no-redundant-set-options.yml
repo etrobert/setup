@@ -1,0 +1,35 @@
+---
+id: no-redundant-set-options
+language: bash
+severity: error
+message: >-
+  Redundant `set` — writeShellApplication already sets errexit,
+  nounset and pipefail.
+note: |
+  writeShellApplication's wrapper opens with `set -o errexit`, `set -o nounset`
+  and `set -o pipefail`, then inlines the body verbatim, so a body re-declaring
+  any of them is dead text. Delete the line and the blank line it leaves —
+  nothing in this repo formats shell.
+  No `fix:`: a deletion template leaves runs of blank lines, and `fix:` also
+  turns scan output from source spans into diffs, hiding the reported line.
+  Keying off `language: bash` means any `.sh` in the scan path is checked, not
+  just writeShellApplication bodies. Nothing trips that today, so there is no
+  `files:` scoping — `pkgs/zsh-wrapped/alias.sh` is sourced into interactive
+  zsh rather than wrapped, and carries no `set` line.
+rule:
+  kind: command
+  all:
+    - has:
+        field: name
+        regex: '^set$'
+    - any:
+        - has:
+            kind: word
+            regex: '^-[a-z]*[eu]'
+        - all:
+            - has:
+                kind: word
+                regex: '^-[a-z]*o'
+            - has:
+                kind: word
+                regex: '^(errexit|nounset|pipefail)$'
