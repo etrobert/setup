@@ -117,11 +117,6 @@ patch), pair it with a guard that fails the build once the workaround stops
 being load-bearing — don't rely on remembering to revisit it. Prefer this
 whenever the "still needed?" condition can be expressed in Nix.
 
-Example: `pkgs/niri-wrapped/default.nix` overrides `nirius` to a version newer
-than nixpkgs ships, behind a `lib.assertMsg` on
-`lib.versionOlder nirius.version "0.9.0"`. Once nixpkgs catches up, the
-assertion fails and prompts dropping the override.
-
 ## LAN Networking
 
 **Home router:** Vodafone Station Arris CGA6444VF (`192.168.0.1`). WAN IP:
