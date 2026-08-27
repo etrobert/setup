@@ -12,8 +12,6 @@ _: {
       # IP Camera Lite's built-in defaults; the stream is only reachable over
       # the USB tunnel, so these never leave the machine.
       streamUrl = "http://admin:admin@127.0.0.1:${toString port}/video";
-
-      modprobe = "${pkgs.kmod}/bin/modprobe";
     in
     {
       boot = {
@@ -48,25 +46,21 @@ _: {
         iphone-webcam = {
           description = "Expose the iPhone camera as a V4L2 device";
 
-          requires = [ "iphone-webcam-tunnel.service" ];
-          after = [ "iphone-webcam-tunnel.service" ];
+          requires = [
+            "iphone-webcam-tunnel.service"
+            "modprobe@v4l2loopback.service"
+          ];
+
+          after = [
+            "iphone-webcam-tunnel.service"
+            "modprobe@v4l2loopback.service"
+          ];
 
           serviceConfig = {
-            # Reload so ffmpeg is always the first process to open the device.
-            # A stale exclusive_caps device rejects the next producer with
-            # "VIDIOC_G_FMT: Invalid argument". The `-` tolerates a consumer
-            # still holding it open, where removal legitimately fails.
-            ExecStartPre = [
-              "-${modprobe} -r v4l2loopback"
-              "${modprobe} v4l2loopback"
-            ];
-
             # 720p because Meet caps sending there anyway, and the smaller frame
             # keeps latency down.
             ExecStart = ''
-              ${pkgs.ffmpeg}/bin/ffmpeg -hide_banner -loglevel warning \
-                -fflags nobuffer -flags low_delay \
-                -use_wallclock_as_timestamps 1 \
+              ${pkgs.ffmpeg}/bin/ffmpeg -loglevel warning \
                 -i ${streamUrl} -an \
                 -vf scale=-2:720,format=yuyv422 -r 30 \
                 -f v4l2 /dev/video${toString videoNr}
