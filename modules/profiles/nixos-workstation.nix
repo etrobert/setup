@@ -87,6 +87,14 @@
 
       security.rtkit.enable = true;
 
+      # noctalia, GTK apps and Zen all take their UI face from fontconfig's
+      # "sans-serif", which resolves to DejaVu Sans by default. Noto Sans is
+      # the better face, and naming it keeps every workstation identical.
+      fonts = {
+        packages = [ pkgs.noto-fonts ];
+        fontconfig.defaultFonts.sansSerif = [ "Noto Sans" ];
+      };
+
       systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
 
       # NixOS workstation packages
