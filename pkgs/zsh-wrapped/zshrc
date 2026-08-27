@@ -20,6 +20,8 @@ preexec() {
   if [[ -z $_cmd_start ]]; then
     _cmd_start=$EPOCHREALTIME
   fi
+
+  print -n '\e]133;C\a'
 }
 
 precmd() {
@@ -31,6 +33,52 @@ precmd() {
   # Remove the decimal part to get the elapsed time in milliseconds as an integer
   export LAST_CMD_TIME=${_elapsed%%.*}
   unset _cmd_start
+}
+
+# Prints the previous command's output, taken from the tmux pane between the
+# OSC 133 marks that PS1 and preexec emit.
+lastout() {
+  if [[ -z $TMUX_PANE ]]; then
+    print -u2 'lastout: not inside tmux'
+    return 1
+  fi
+
+  # -F prefixes every line with its flags, P starting a prompt and O the output
+  # of a command. grep keeps only those, so the loop below stays short even with
+  # a full scrollback. -F cannot be combined with -J, which is why the text is
+  # fetched separately at the end.
+  local -a marks
+  marks=("${(@f)$(tmux capture-pane -pF -t "$TMUX_PANE" -S - |
+    grep --line-number '^[A-Z]*[OP][A-Z]* ')}")
+
+  local mark flags
+  local -a prompts outputs
+  for mark in $marks; do
+    flags=${${mark#*:}%% *}
+    [[ $flags == *P* ]] && prompts+=${mark%%:*}
+    [[ $flags == *O* ]] && outputs+=${mark%%:*}
+  done
+
+  # The last command occupies the region between the final two prompts.
+  local first=0 output
+  if (( $#prompts >= 2 )); then
+    for output in $outputs; do
+      if (( output > prompts[-2] && output < prompts[-1] )); then
+        first=$output
+        break
+      fi
+    done
+  fi
+
+  if (( first == 0 )); then
+    print -u2 'lastout: the last command left no output in the scrollback'
+    return 1
+  fi
+
+  # grep counts lines from 1, tmux counts them from 0 at the start of history.
+  tmux capture-pane -pJ -t "$TMUX_PANE" \
+    -S "#{e|-:$((first - 1)),#{history_size}}" \
+    -E "#{e|-:$((prompts[-1] - 2)),#{history_size}}"
 }
 
 # -i needed to avoid errors on mac
