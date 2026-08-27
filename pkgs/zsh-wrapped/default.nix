@@ -18,7 +18,10 @@ let
     source ${./zshrc}
 
     setopt PROMPT_SUBST
-    PS1='$(${pronto} $? --zsh)'
+    # Must live inside PS1: drawing the prompt resets the tmux line flags, so a
+    # mark emitted before it is wiped.
+    _prompt_mark=$'\e]133;A\a'
+    PS1="%{$_prompt_mark%}"'$(${pronto} $? --zsh)'
     RPROMPT='$(${pronto} $? --rprompt --zsh)'
 
     source ${./alias.sh}
