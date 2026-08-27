@@ -58,7 +58,13 @@ wrapPackage {
   inheritPath = true;
   # Read-only store path: Claude Code loads a --plugin-dir plugin without
   # writing to it, so no marketplace install (gitignored cache) is needed.
-  flags = [ "--plugin-dir ${figma-mcp-plugin}" ];
+  flags = [
+    "--plugin-dir ${figma-mcp-plugin}"
+    # Railway's remote MCP server. Carried as a plugin rather than
+    # --mcp-config, whose variadic argument would swallow the user's own
+    # arguments when the wrapper prepends it.
+    "--plugin-dir ${./railway-mcp-plugin}"
+  ];
   run = [
     # Mutable path, not a store copy: Claude writes runtime state (sessions,
     # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
