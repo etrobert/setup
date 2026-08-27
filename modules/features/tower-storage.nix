@@ -110,6 +110,10 @@
       boot = {
         supportedFilesystems = [ "zfs" ];
         zfs.forceImportRoot = false;
+
+        # Unbounded, ARC targets nearly all RAM (29 GB here) and the kernel then
+        # reclaims it back to c_min under app pressure. Bound it so it stays put.
+        kernelParams = [ "zfs.zfs_arc_max=6442450944" ]; # 6 GiB
       };
 
       # head --bytes 8 /etc/machine-id on tower
