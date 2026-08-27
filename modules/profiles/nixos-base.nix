@@ -43,6 +43,10 @@ _: {
 
       zramSwap.enable = true;
 
+      # Swap readahead amortizes disk seeks, which zram does not have. The default
+      # 3 faults 8 pages per swap-in, so 7/8 of the decompression is wasted work.
+      boot.kernel.sysctl."vm.page-cluster" = 0;
+
       systemd = {
         # systemd-oomd runs by default but acts only on cgroups marked with
         # ManagedOOM* properties — without these flags it monitors nothing.
