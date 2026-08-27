@@ -45,6 +45,7 @@ _: {
             entr
             eza
             fd
+            gnugrep # darwin would otherwise fall through to BSD /usr/bin/grep
             htop
             jq
             magic-wormhole
