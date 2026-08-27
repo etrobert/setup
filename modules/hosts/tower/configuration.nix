@@ -15,16 +15,6 @@
 
     time.timeZone = "Europe/Berlin";
 
-    # Overflow tier beneath zram (priority 5, profiles/nixos-base.nix): zram
-    # keeps the hot pages, this absorbs the cold tail. An unset priority gets a
-    # kernel-assigned negative value, which is below zram's 5.
-    swapDevices = [
-      {
-        device = "/swapfile";
-        size = 32 * 1024;
-      }
-    ];
-
     # Keep a Claude 5h usage session always ticking over
     # (see modules/features/claude-warmup.nix).
     services.claude-warmup.enable = true;

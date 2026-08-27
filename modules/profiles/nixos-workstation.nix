@@ -39,6 +39,16 @@
 
       documentation.doc.enable = false;
 
+      # Absorbs the cold tail when zram fills. The tiering rests on two nixpkgs
+      # defaults meeting: zram's priority 5 over the kernel-assigned negative
+      # one a swapDevice gets when priority is unset.
+      swapDevices = [
+        {
+          device = "/swapfile";
+          size = 32 * 1024;
+        }
+      ];
+
       services = {
         # Firmware updates from LVFS: fwupdmgr refresh / get-updates / update.
         # Lenovo publishes leod's system firmware there; MSI doesn't, so
