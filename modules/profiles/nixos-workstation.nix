@@ -39,6 +39,21 @@
 
       documentation.doc.enable = false;
 
+      # Overflow tier beneath zram (priority 5, profiles/nixos-base.nix): zram
+      # keeps the hot pages, this absorbs the cold tail. An unset priority gets a
+      # kernel-assigned negative value, which is below zram's 5.
+      #
+      # Sized for overshoot past zram, not as a fraction of RAM — nothing here
+      # hibernates, and zram already scales with RAM via memoryPercent. Servers
+      # without a desktop workload (pi) get no overflow: swapping an SD card is
+      # worse than the OOM it would postpone.
+      swapDevices = [
+        {
+          device = "/swapfile";
+          size = 16 * 1024;
+        }
+      ];
+
       services = {
         # Firmware updates from LVFS: fwupdmgr refresh / get-updates / update.
         # Lenovo publishes leod's system firmware there; MSI doesn't, so
