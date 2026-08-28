@@ -1,6 +1,11 @@
-{ writeShellApplication, symlinkJoin }:
+{
+  writeShellApplication,
+  symlinkJoin,
+  lib,
+}:
 symlinkJoin {
   name = "finder";
+  meta.platforms = lib.platforms.darwin;
   paths = [
     (writeShellApplication {
       name = "finder-hidefiles";

@@ -1,4 +1,5 @@
 {
+  lib,
   writeShellApplication,
   jq,
   niri,
@@ -6,6 +7,7 @@
 }:
 writeShellApplication {
   name = "scale-floating-window";
+  meta.platforms = lib.platforms.linux;
   runtimeInputs = [
     jq
     niri

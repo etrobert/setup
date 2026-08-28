@@ -27,7 +27,9 @@
       hass-cli-wrapped = pkgs.callPackage ./hass-cli-wrapped { };
     in
     {
-      packages = {
+      # Each package says which platforms it supports; anything that does not
+      # support this one is dropped rather than named here.
+      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
         aichat-wrapped = pkgs.callPackage ./aichat-wrapped {
           inherit aichat;
           inherit (self'.packages) claude-code-wrapped;
@@ -70,14 +72,11 @@
         switch = pkgs.callPackage ./switch.nix { inherit self'; };
         deadnix-errfmt = pkgs.callPackage ./deadnix-errfmt { };
         firefox-wrapped = pkgs.callPackage ./firefox-wrapped { inherit self; };
-      }
-      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+
         flush-dns = pkgs.callPackage ./flush-dns { };
         resize-window = pkgs.callPackage ./resize-window { };
         finder = pkgs.callPackage ./finder { };
-      }
-      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-        zen-browser-wrapped = pkgs.callPackage ./zen-browser-wrapped { inherit self inputs'; };
+
         niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
         niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
           inherit self';

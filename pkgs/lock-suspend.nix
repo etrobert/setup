@@ -1,10 +1,12 @@
 {
+  lib,
   writeShellApplication,
   coreutils,
   systemd,
 }:
 writeShellApplication {
   name = "lock-suspend";
+  meta.platforms = lib.platforms.linux;
   runtimeInputs = [
     coreutils # sleep
     systemd
