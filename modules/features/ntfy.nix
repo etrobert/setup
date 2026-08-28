@@ -57,6 +57,7 @@ in
 
           runtimeInputs = [
             pkgs.curl
+            pkgs.findutils
             pkgs.jq
             pkgs.libnotify
             pkgs.xdg-utils
@@ -70,17 +71,21 @@ in
             # Supplied per message by ntfy; ''${title} has a default below.
             raw=''${raw:?not set by ntfy}
             message=''${message:?not set by ntfy}
+            id=''${id:?not set by ntfy}
 
             url=$(jq --raw-output 'first(.actions[]? | .url) // empty' <<<"$raw")
 
             # notify-send takes a local path, so an attachment has to be
-            # fetched. Written to a fixed path rather than a temp file per
-            # message: the daemon reads the image after we return, so deleting
-            # it would race.
+            # fetched. Named per message, because several can arrive at once
+            # and would otherwise race on one path. The daemon reads the file
+            # after this handler returns, so it cannot be deleted here; stale
+            # ones are pruned instead.
             icon=()
             attachment=$(jq --raw-output '.attachment.url // empty' <<<"$raw")
             if [ -n "$attachment" ]; then
-              photo="''${XDG_RUNTIME_DIR:?}/ntfy-notify-image"
+              runtime=''${XDG_RUNTIME_DIR:?}
+              find "$runtime" -maxdepth 1 -name 'ntfy-notify-*' -mmin +10 -delete
+              photo="$runtime/ntfy-notify-$id"
               if curl --silent --fail --max-time 15 --output "$photo" "$attachment"; then
                 icon=(--icon "$photo")
               fi
