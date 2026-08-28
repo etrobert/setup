@@ -1,0 +1,15 @@
+---
+id: no-behavior-in-catch-all-plugins
+language: lua
+severity: error
+message: >-
+  Autocmd inside a catch-all plugin; give it its own plugin directory.
+note: |
+  CLAUDE.md scopes `set` to vim options and `remap` to keymaps, and says new
+  behaviour belongs in its own plugin. An autocmd buried in either is where
+  nobody will look for it. Move it to `plugins/<what-it-does>/` and register
+  that in `pkgs/neovim-wrapped/default.nix`.
+files:
+  - '**/neovim-wrapped/plugins/{set,remap}/**'
+rule:
+  pattern: vim.api.nvim_create_autocmd($$$)

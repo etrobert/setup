@@ -45,6 +45,8 @@ let
         ./plugins/ask
         ./plugins/ai-rename
         ./plugins/auto-mkdir
+        ./plugins/yank-highlight
+        ./plugins/trim-whitespace
         # TODO: Figure out when to run the banner to make sure it measures the right startup time
         # ./plugins/startup-banner
         ./plugins/tsc
