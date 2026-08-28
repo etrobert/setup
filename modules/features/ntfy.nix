@@ -65,9 +65,9 @@ in
           inheritPath = true;
 
           text = ''
-            # ntfy sets these per message; assigned so shellcheck sees them.
-            raw=''${raw:?}
-            message=''${message:?}
+            # Supplied per message by ntfy; ''${title} has a default below.
+            raw=''${raw:?not set by ntfy}
+            message=''${message:?not set by ntfy}
 
             url=$(jq --raw-output 'first(.actions[]? | .url) // empty' <<<"$raw")
 
