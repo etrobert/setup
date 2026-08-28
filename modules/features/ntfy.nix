@@ -48,9 +48,25 @@ in
       }:
       let
         # Turn an ntfy message into a desktop notification. ntfy passes the
-        # message fields in via the environment when it runs this per message.
+        # message fields in via the environment when it runs this per message,
+        # but only as title/message/priority/tags — a view action or click URL
+        # is reachable only through the raw JSON.
         ntfyNotify = pkgs.writeShellScript "ntfy-notify" ''
-          exec ${pkgs.libnotify}/bin/notify-send -- "''${title:-Notification}" "$message"
+          url=$(${lib.getExe pkgs.jq} --raw-output \
+            'first((.actions // [])[] | select(.action == "view") | .url) // .click // empty' \
+            <<<"$raw")
+
+          if [ -z "$url" ]; then
+            exec ${pkgs.libnotify}/bin/notify-send -- "''${title:-Notification}" "$message"
+          fi
+
+          # --action implies --wait, so this blocks until the notification is
+          # answered; background it, or one left unattended stalls every
+          # message behind it.
+          if [ "$(${pkgs.libnotify}/bin/notify-send --action Open -- \
+            "''${title:-Notification}" "$message")" = 0 ]; then
+            ${pkgs.xdg-utils}/bin/xdg-open "$url"
+          fi &
         '';
       in
       {
