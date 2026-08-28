@@ -36,10 +36,7 @@
           inherit inputs';
           inherit (self'.packages) fzf-wrapped atuin-wrapped;
         };
-        neovim-wrapped = pkgs.callPackage ./neovim-wrapped {
-          inherit self';
-          neovim-unwrapped = inputs'.neovim-nightly.packages.default;
-        };
+        neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
         tmux-wrapped = pkgs.callPackage ./tmux-wrapped { };
         alacritty-wrapped = pkgs.callPackage ./alacritty-wrapped { };
         vscode-wrapped = pkgs.callPackage ./vscode-wrapped { };
