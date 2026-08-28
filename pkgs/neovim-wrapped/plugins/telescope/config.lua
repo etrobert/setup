@@ -1,8 +1,10 @@
-local snacks_image = require("snacks.image")
-
 vim.api.nvim_create_autocmd("User", {
 	pattern = "TelescopePreviewerLoaded",
 	callback = function(args)
+		-- Required here rather than at the top: snacks sets up the global this
+		-- needs, and nothing orders one plugin's config before another's.
+		local snacks_image = require("snacks.image")
+
 		if snacks_image.supports_file(args.data.bufname) then
 			vim.api.nvim_buf_set_name(args.buf, args.data.bufname)
 			snacks_image.buf.attach(args.buf)
