@@ -172,6 +172,7 @@
                   "cmp-emoji"
                   "copilot-language-server"
                   "vscode"
+                  "vscode-extension-anthropic-claude-code"
                   "vscode-extension-ms-vsliveshare-vsliveshare"
                 ];
             };
