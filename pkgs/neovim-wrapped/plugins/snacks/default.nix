@@ -1,6 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
-  plugins = [
+  # telescope's config calls require("snacks.image") when it loads, so Snacks
+  # has to be set up before any other plugin's config runs.
+  plugins = lib.mkBefore [
     {
       plugin = pkgs.vimPlugins.snacks-nvim;
       config = /* lua */ ''
