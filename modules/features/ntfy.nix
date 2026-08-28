@@ -56,6 +56,7 @@ in
           name = "ntfy-notify";
 
           runtimeInputs = [
+            pkgs.curl
             pkgs.jq
             pkgs.libnotify
             pkgs.xdg-utils
@@ -69,17 +70,32 @@ in
             # Supplied per message by ntfy; ''${title} has a default below.
             raw=''${raw:?not set by ntfy}
             message=''${message:?not set by ntfy}
+            id=''${id:?not set by ntfy}
 
             url=$(jq --raw-output 'first(.actions[]? | .url) // empty' <<<"$raw")
 
+            # notify-send takes a local path, so an attachment has to be
+            # fetched. Named per message, because several can arrive at once
+            # and would otherwise race on one path. The daemon reads the file
+            # after this handler returns, so it cannot be deleted here. They
+            # are a few KB in tmpfs, cleared when the session ends.
+            icon=()
+            attachment=$(jq --raw-output '.attachment.url // empty' <<<"$raw")
+            if [ -n "$attachment" ]; then
+              photo="$XDG_RUNTIME_DIR/ntfy-notify-$id"
+              if curl --silent --fail --max-time 15 --output "$photo" "$attachment"; then
+                icon=(--icon "$photo")
+              fi
+            fi
+
             if [ -z "$url" ]; then
-              exec notify-send -- "''${title:-Notification}" "$message"
+              exec notify-send "''${icon[@]}" -- "''${title:-Notification}" "$message"
             fi
 
             # --action implies --wait, so this blocks until the notification is
             # answered; background it, or one left unattended stalls every
             # message behind it.
-            if [ "$(notify-send --action Open -- \
+            if [ "$(notify-send --action Open "''${icon[@]}" -- \
               "''${title:-Notification}" "$message")" = 0 ]; then
               xdg-open "$url"
             fi &
