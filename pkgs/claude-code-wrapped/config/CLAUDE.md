@@ -3,18 +3,13 @@
 ## About the User
 
 Étienne Robert — software engineer with 15 years of experience, and a queer
-creative (dance, sewing, makeup, aerials, and more). Uses Claude for both
-software engineering and non-technical work. Tracks life documentation in
-Markdown files at `~/sync/doc`.
+creative (dance, sewing, makeup, aerials, and more). Uses Claude for software
+engineering and non-technical work. Tracks life documentation in Markdown files
+at `~/sync/doc`.
 
-On the Claude **Max** plan. Has a GitHub Copilot Pro individual subscription
-(annual, ~300 premium requests/month).
+On the Claude Max x20 plan.
 
-Sews decently.
-
-Lives in Berlin but does not speak German. Communicate in English and avoid
-German terms in filenames or output — prefer English equivalents (e.g. "proof of
-value" not "Wertnachweis"). Does not have a driver's license.
+Lives in Berlin but does not speak German. Does not have a driver's license.
 
 Uses Home Assistant and prefers local integrations where available. Comfortable
 with kit assembly and DIY hardware.
@@ -24,11 +19,6 @@ insurance (Privathaftpflicht).
 
 Rents in Berlin-Neukölln and is a member of the Berliner Mieterverein, so
 tenant-law advice is available for rental disputes.
-
-## Memory
-
-Do not use the file-based memory system. Instead, write learnings and context
-into this global CLAUDE.md or the relevant project's CLAUDE.md.
 
 ## Machines
 
@@ -40,30 +30,21 @@ machine.
 
 ## Simplicity First
 
-Favor simplicity over completeness — across code, design, CI, tooling, and
-process, not just code. Prefer the simplest solution that solves the problem;
-when fully solving it would take disproportionate complexity, prefer a simpler
-solution that handles the common case (and flag what it leaves out) over a
-complex one that covers everything. Prefer a plain solution a reader grasps
-immediately over a clever one.
+- Always build simple. We can always add features later.
+- Prefer the simplest solution that solves the problem, the MVP.
+- Being able to read and understand a code at a glance is important to me.
+  - Prefer a plain solution over a clever one.
 
 As the final pass before presenting any work — code, config, docs, plans, PRs —
 go element by element (parameter, option, line, section, step) and attempt to
 delete it. Keep an element only when you can state concretely what its removal
 breaks or loses, verified against the authoritative source (the actual default,
 the actual caller, the actual reader's need) rather than from memory. Removal is
-the default; keeping carries the burden of proof.
+the default.
 
-Wherever defaults, frameworks, or templates are in play, run the reverse check
-too: what behavior arrives that nobody asked for? Override or remove that
-explicitly. A redundant element kept deliberately (e.g. pinning a value against
-upstream drift) needs a comment naming what it guards against.
-
-## Communication
+## Communication & Working Style
 
 When you use an acronym for the first time, spell it out.
-
-## Working Style
 
 Before asking a question, check if the answer is obtainable by reading files,
 running a command, or SSHing into a machine. Only ask when a reasonable
@@ -75,13 +56,11 @@ to compare them.
 ## Research Approach
 
 When investigating how something works, consult both official documentation and
-source/implementation. Don't rely on only one of these.
+source/implementation.
 
 Cite the source for factual claims — name and, where useful, quote or link the
 command, `--help` output, web search result, documentation page (with URL), or
 file the information came from, rather than stating it unsourced.
-
-## Exploring External Code
 
 To understand how a tool or library works, you're encouraged to clone its repo
 and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
@@ -91,11 +70,6 @@ and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
 rather than skipping the step.
-
-To verify a change, either build it (`nix build`) or run it with a test
-parameter (`nix run <program> -- --test-param`) — both are fine. But when
-handing the user a command to execute themselves, prefer the simplest invocation
-(e.g. `nix run` over `nix build` followed by `./result/bin/...`).
 
 ## Nix Style
 
@@ -111,7 +85,7 @@ Avoid `with import <nixpkgs> {}` and `<nixpkgs>` channel lookups in commands —
 use `nixpkgs#` flake refs and `--apply` to transform results.
 
 When embedding another language inside a plain Nix string, add a language hint
-comment so the editor injects syntax highlighting. Example:
+comment so that treesitter understands it. Example:
 
 ```nix
 linuxPrimitives = /* bash */ ''
@@ -123,14 +97,9 @@ linuxPrimitives = /* bash */ ''
 
 Prefer `kebab-case` for directory names.
 
-In shell scripts, prefer long-form parameters over single-letter ones where
-possible (e.g. `--raw-output` over `-r`, `--only-matching` over `-o`).
-
-Separate multi-line definitions/blocks with a blank line. Consecutive
-single-line bindings may be grouped together without blank lines, but a
-definition that spans multiple lines should be set off by a blank line before
-and after it — don't butt a multi-line binding (e.g. `runtimeInputs = [ … ]`)
-directly against an adjacent definition.
+In shell scripts and expressions, prefer long-form parameters over single-letter
+ones where possible (e.g. `--raw-output` over `-r`, `--only-matching` over
+`-o`).
 
 Prefer failing loudly. A panic or hard error surfaces a broken assumption when
 it breaks; a fallback defers it into a wrong answer later. Never convert an
@@ -198,11 +167,6 @@ Always rebase on origin/main before presenting a PR for review — both on initi
 `gh pr create` and after any follow-up changes before telling the user it's
 ready.
 
-Push a branch under the name it already has. In particular, don't rename a
-worktree's auto-generated `worktree-*` branch to a more conventional one when
-pushing — a local/upstream name mismatch makes `push.default = simple` reject a
-bare `git push`, breaking `git push` and `git please` from that worktree.
-
 Always resolve merge conflicts before reporting the task as done.
 
 To review, use Conventional Comments.
@@ -219,14 +183,16 @@ builds on the previous one.
 
 ## CLAUDE.md Maintenance
 
-Only document project-specific conventions and decisions — not general knowledge
-that Claude already knows from training (language semantics, standard tool
-behavior, common patterns). If removing a note wouldn't risk a future mistake
-specific to this project, don't write it.
-
-## Session Reflection
-
-At the end of every session, proactively propose any non-obvious, durable
-learnings worth recording — user facts to the global CLAUDE.md, project
-conventions to the project CLAUDE.md — following the Maintenance guidelines
-above. If the user approves, open a PR per the standard git workflow.
+- User `CLAUDE.md` : Only document conventions, decisions, and preferences
+  specific to **me** and how **I** work.
+- Project `CLAUDE.md` :Only document conventions, decisions, and preferences
+  specific to **this project**.
+- Never document general knowledge that Claude already knows from training
+  (language semantics, standard tool behavior, common patterns) or informations
+  relating to how other projects work (eg. neovim conventions or details on how
+  to use).
+- If removing a note wouldn't risk a future mistake specific to this project,
+  don't write it.
+- At the end of every session, reflect and proactively propose enhancements to
+  the user `CLAUDE.md` and project `CLAUDE.md` following the Maintenance
+  guidelines above.
