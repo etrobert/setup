@@ -13,48 +13,24 @@ _: {
           cfg =
             (lib.evalModules {
               specialArgs = { inherit self' pkgs with-git-wrapped; };
-              modules = [
-                ./module.nix
-                ./plugins/octo
-                ./plugins/fugitive
-                ./plugins/fidget
-                ./plugins/lazydev
-                ./plugins/bufferline
-                ./plugins/spider
-                ./plugins/catppuccin
-                ./plugins/treesj
-                ./plugins/vim-tmux-navigator
-                ./plugins/which-key
-                ./plugins/conform
-                ./plugins/nvim-lint
-                ./plugins/telescope
-                ./plugins/snacks
-                ./plugins/gitsigns
-                # Disabled because this takes a monstrous amount of ressources
-                # ./plugins/workspace-diagnostics
-                ./plugins/lspconfig
-                ./plugins/harpoon
-                ./plugins/cmp
-                ./plugins/treesitter
-                ./plugins/surround
-                # ./plugins/hardtime
-                ./plugins/matchup
-                ./plugins/statix
-                ./plugins/deadnix
-                ./plugins/nix-check
-                ./plugins/statusline
-                ./plugins/remap
-                ./plugins/set
-                ./plugins/bookmarks
-                ./plugins/code-exec
-                ./plugins/ask
-                ./plugins/ai-rename
-                ./plugins/auto-mkdir
-                # TODO: Figure out when to run the banner to make sure it measures the right startup time
-                # ./plugins/startup-banner
-                ./plugins/tsc
-                ./plugins/spell
-              ];
+              # Every directory under plugins/ is one, except those listed as
+              # disabled; adding a plugin means adding a directory.
+              modules =
+                let
+                  disabled = [
+                    "workspace-diagnostics" # takes a monstrous amount of ressources
+                    "hardtime"
+                    # TODO: Figure out when to run the banner to make sure it
+                    # measures the right startup time
+                    "startup-banner"
+                  ];
+                in
+                [ ./module.nix ]
+                ++ lib.pipe ./plugins [
+                  builtins.readDir
+                  (lib.filterAttrs (name: type: type == "directory" && !(builtins.elem name disabled)))
+                  (lib.mapAttrsToList (name: _: ./plugins + "/${name}"))
+                ];
             }).config;
 
           pbcopy = pkgs.runCommandLocal "pbcopy" { } ''
