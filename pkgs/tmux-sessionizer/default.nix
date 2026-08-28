@@ -1,5 +1,7 @@
 {
-  self',
+  fzf-wrapped,
+  git-wrapped,
+  tmux-wrapped,
   inputs',
   writeShellApplication,
   symlinkJoin,
@@ -21,9 +23,9 @@ let
       gh
       gnused
       inputs'.pronto.packages.default
-      self'.packages.tmux-wrapped
-      self'.packages.git-wrapped
-      self'.packages.fzf-wrapped
+      tmux-wrapped
+      git-wrapped
+      fzf-wrapped
       eza
       findutils
     ];

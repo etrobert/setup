@@ -1,10 +1,10 @@
-{ pkgs, self', ... }:
+{ pkgs, deadnix-errfmt, ... }:
 let
   nix-check-errfmt = pkgs.writeShellApplication {
     name = "nix-check-errfmt";
     runtimeInputs = [
       pkgs.statix
-      self'.packages.deadnix-errfmt
+      deadnix-errfmt
     ];
     inheritPath = false;
     text = /* bash */ ''

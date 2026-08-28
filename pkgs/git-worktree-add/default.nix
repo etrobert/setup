@@ -1,5 +1,5 @@
 {
-  self',
+  tmux-sessionizer,
   writeShellApplication,
   coreutils,
   git,
@@ -13,7 +13,7 @@ writeShellApplication {
   runtimeInputs = [
     coreutils
     git
-    self'.packages.tmux-sessionizer
+    tmux-sessionizer
   ];
 
   text = builtins.readFile ./git-worktree-add.sh;

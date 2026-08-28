@@ -1,4 +1,4 @@
-{ self', pkgs }:
+{ setuid-sudo, pkgs }:
 # The tank guard below works around systemd freezing PID 1 when it re-execs
 # with a stale CIFS mount (NixOS/nixpkgs#375376, systemd/systemd#39354),
 # audited against systemd 261. On the bump past it, re-check those issues:
@@ -11,7 +11,7 @@ pkgs.writeShellApplication {
   # nh calls `sudo env nixos-rebuild ...`; all three must be in PATH so nh
   # can resolve them to absolute store paths before invoking sudo
   runtimeInputs = [
-    self'.packages.setuid-sudo
+    setuid-sudo
   ]
   ++ (with pkgs; [
     coreutils

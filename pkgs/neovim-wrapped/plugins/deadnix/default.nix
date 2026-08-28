@@ -1,4 +1,4 @@
-{ pkgs, self', ... }:
+{ pkgs, deadnix-errfmt, ... }:
 let
   deadnix-compiler = pkgs.vimUtils.buildVimPlugin {
     pname = "deadnix-compiler";
@@ -10,7 +10,7 @@ in
   plugins = [
     {
       plugin = deadnix-compiler;
-      extraPackages = [ self'.packages.deadnix-errfmt ];
+      extraPackages = [ deadnix-errfmt ];
     }
   ];
 }

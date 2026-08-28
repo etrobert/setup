@@ -1,10 +1,10 @@
 {
-  self',
+  claude-code-wrapped,
   writeShellApplication,
 }:
 writeShellApplication {
   name = "agents";
-  runtimeInputs = [ self'.packages.claude-code-wrapped ]; # provides `claude`
+  runtimeInputs = [ claude-code-wrapped ]; # provides `claude`
   inheritPath = true;
   text = ''
     # Background agents view scoped to one project: claude agents merges

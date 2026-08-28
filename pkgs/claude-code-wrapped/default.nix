@@ -2,8 +2,8 @@
   wrapPackage,
   pkgs,
   callPackage,
-  claude-code,
-  figma-mcp-plugin,
+  inputs,
+  inputs',
   git-wrapped,
   hass-cli-wrapped,
   lib,
@@ -15,6 +15,13 @@
   binName ? "claude",
 }:
 let
+  # Latest Claude Code, ahead of nixpkgs' cadence (see flake.nix input).
+  # Minimal variant: the full one bundles gh, which our wrapper does not need
+  # (it manages PATH and ships its own gitconfig-bot).
+  claude-code = inputs'.nix-claude-code.packages.claude-minimal;
+
+  inherit (inputs) figma-mcp-plugin;
+
   statuslineScript = callPackage ./claude-plan-usage.nix { };
   formatFileScript = callPackage ./format-file.nix { };
   rateLimitNotifyScript = callPackage ./claude-rate-limit-notify.nix { ntfy-sh = ntfy-wrapped; };

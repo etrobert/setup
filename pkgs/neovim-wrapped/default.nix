@@ -1,6 +1,7 @@
 {
   pkgs,
-  self',
+  git-wrapped,
+  deadnix-errfmt,
   lib,
   neovim-unwrapped,
   with-git-wrapped ? true,
@@ -8,7 +9,14 @@
 let
   cfg =
     (lib.evalModules {
-      specialArgs = { inherit self' pkgs with-git-wrapped; };
+      specialArgs = {
+        inherit
+          pkgs
+          git-wrapped
+          deadnix-errfmt
+          with-git-wrapped
+          ;
+      };
       modules = [
         ./module.nix
         ./plugins/octo

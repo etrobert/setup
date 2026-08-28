@@ -1,5 +1,7 @@
 {
-  self',
+  ghostty-wrapped,
+  noctalia-wrapped,
+  scale-floating-window,
   niri,
   nirius,
   xwayland-satellite,
@@ -11,9 +13,9 @@ let
   config = if dev then "/home/soft/work/setup/main/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
   path = [
-    self'.packages.ghostty-wrapped
-    self'.packages.noctalia-wrapped
-    self'.packages.scale-floating-window
+    ghostty-wrapped
+    noctalia-wrapped
+    scale-floating-window
     nirius
     xwayland-satellite
   ];

@@ -4,15 +4,16 @@
   makeDesktopItem,
   symlinkJoin,
   jq,
-  self',
+  niri-wrapped,
+  zen-browser-wrapped,
 }:
 let
   script = writeShellApplication {
     name = "open-url";
     runtimeInputs = [
       jq
-      self'.packages.niri-wrapped
-      self'.packages.zen-browser-wrapped
+      niri-wrapped
+      zen-browser-wrapped
     ];
     inheritPath = false;
     text = builtins.readFile ./open-url;

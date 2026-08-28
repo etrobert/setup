@@ -1,6 +1,6 @@
 {
   pkgs,
-  self',
+  fzf-wrapped,
   wrapPackage,
   userConfig ? ./gitconfig-user,
 }:
@@ -8,9 +8,9 @@ let
   deps = with pkgs; [
     # TODO: Fix this
     # Removed so that neovim-wrapped is not included on the pi
-    # self'.packages.gen-commit-msg
+    # gen-commit-msg
     difftastic
-    self'.packages.fzf-wrapped
+    fzf-wrapped
 
     # Tools the shell aliases in gitconfig-system call out to. Without these the
     # aliases break when nothing on the ambient PATH provides them (e.g. under a

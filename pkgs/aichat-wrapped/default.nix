@@ -1,6 +1,6 @@
 {
   inputs',
-  self',
+  claude-code-wrapped,
   lib,
   wrapPackage,
   writeText,
@@ -8,9 +8,6 @@
 let
   # Our fork (see flake.nix); newer than nixpkgs, which needs Enter for -e.
   aichat = inputs'.aichat.packages.default;
-
-  # Declares its own wiring, so it is not in the package scope.
-  inherit (self'.packages) claude-code-wrapped;
 
   # Both backends in one config: `??` takes the default, `???` asks for claude
   # with -m.
