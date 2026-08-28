@@ -83,7 +83,16 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
       | (.price.amount.value // 0) as $price
       | ($origins | map({ name, d: km(.lat; .lon; $lat; $lon) }) | min_by(.d)) as $near
       | select($price <= $maxPrice and $near.d <= $maxKm)
-      | [.id, (.title.value | unesc), $price, ($near.d * 10 | round / 10), $near.name,
+      # Straight-line distance understates a real route; 1.3 is the usual
+      # correction. Walking 4.5 km/h, cycling 14 km/h through city traffic.
+      # Times are one-way, as a map app reports them. Walking is shown up to
+      # 20 minutes, roughly 1.15 km as the crow flies: past a 40-minute round
+      # trip nobody walks to collect a second-hand bedside table.
+      | ($near.d * 1.3) as $route
+      | ($route / 4.5 * 60 | round) as $walk
+      | ($route / 14 * 60 | round) as $bike
+      | [.id, (.title.value | unesc), $price,
+         (if $walk <= 20 then "\($walk) min walk" else "\($bike) min bike" end), $near.name,
          first(.link[] | select(.rel == "self-public-website") | .href),
          # teaser is ~4 KB; large and XXL are wasteful for a notification.
          (first(.pictures.picture[]?.link[] | select(.rel == "teaser") | .href) // "")]
@@ -94,7 +103,7 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
   [ -n "$matches" ] && matched=$(grep --count '' <<<"$matches")
   new=0
 
-  while IFS=$'\t' read -r id title price dist where url img; do
+  while IFS=$'\t' read -r id title price trip where url img; do
     [ -n "$id" ] || continue
     grep --quiet --fixed-strings --line-regexp "$id" "$seen" && continue
     new=$((new + 1))
@@ -104,7 +113,7 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
       continue
     fi
 
-    echo "$query: new $id - $title ($price EUR, $dist km from $where)"
+    echo "$query: new $id - $title ($price EUR, $trip from $where)"
 
     # The ntfy clients only preview attachments the server itself hosts; a
     # remote --attach URL renders as a filename. So fetch the photo and
@@ -120,7 +129,7 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
       fi
     fi
 
-    if printf '%s EUR - %s km from %s\n' "$price" "$dist" "$where" |
+    if printf '%s EUR - %s from %s\n' "$price" "$trip" "$where" |
       ntfy publish --quiet --title "$title" \
         --actions "view, Open listing, $url" "${attach[@]}"; then
       echo "$id" >>"$seen"
