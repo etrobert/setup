@@ -1,5 +1,6 @@
 {
   self,
+  inputs,
   lib,
   ...
 }:
@@ -35,51 +36,29 @@ in
       ...
     }:
     let
-      # Packages callPackage cannot assemble on its own, because they take an
-      # argument that is not a nixpkgs attribute. Everything else is discovered.
-      wired = {
-        aichat-wrapped = pkgs.callPackage ./aichat-wrapped {
-          # Our fork (see flake.nix); newer than nixpkgs, which needs Enter for -e.
-          aichat = inputs'.aichat.packages.default;
-          inherit (self'.packages) claude-code-wrapped;
-        };
-        bash-wrapped = pkgs.callPackage ./bash-wrapped {
-          inherit inputs';
-          inherit (self'.packages) fzf-wrapped;
-        };
-        zsh-wrapped = pkgs.callPackage ./zsh-wrapped {
-          inherit inputs';
-          inherit (self'.packages) fzf-wrapped atuin-wrapped;
-        };
-        neovim-wrapped = pkgs.callPackage ./neovim-wrapped { inherit self'; };
-        gen-commit-msg = pkgs.callPackage ./gen-commit-msg { inherit self'; };
-        git-find-commit = pkgs.callPackage ./git-find-commit {
-          inherit (self'.packages) fzf-wrapped;
-        };
-        git-worktree-add = pkgs.callPackage ./git-worktree-add { inherit self'; };
-        agents = pkgs.callPackage ./agents { inherit self'; };
-        send-file = pkgs.callPackage ./send-file { inherit (self'.packages) ntfy-wrapped; };
-        tmux-sessionizer = pkgs.callPackage ./tmux-sessionizer { inherit self' inputs'; };
-        switch = pkgs.callPackage ./switch.nix { inherit self'; };
-        firefox-wrapped = pkgs.callPackage ./firefox-wrapped { inherit self; };
-        niri-wrapped = pkgs.callPackage ./niri-wrapped { inherit self'; };
-        niri-wrapped-dev = pkgs.callPackage ./niri-wrapped {
-          inherit self';
-          dev = true;
-        };
-        audio-output-switcher = pkgs.callPackage ./audio-output-switcher {
-          inherit (self'.packages) fzf-wrapped;
-        };
-        open-url = pkgs.callPackage ./open-url { inherit self'; };
-      };
+      # Our packages get a scope of their own, so one asks for another by name
+      # in its argument list, the way it asks for anything from nixpkgs. The
+      # flake arguments are in scope for the same reason.
+      scope = lib.makeScope pkgs.newScope (
+        final:
+        {
+          inherit
+            self
+            self'
+            inputs
+            inputs'
+            ;
+        }
+        // lib.mapAttrs' (
+          name: _: lib.nameValuePair (packageName name) (final.callPackage (./. + "/${name}") { })
+        ) discoverable
+      );
 
-      discovered = lib.mapAttrs' (
-        name: _: lib.nameValuePair (packageName name) (pkgs.callPackage (./. + "/${name}") { })
-      ) (lib.filterAttrs (name: _: !wired ? ${packageName name}) discoverable);
+      names = lib.mapAttrsToList (name: _: packageName name) discoverable;
     in
     {
       # Each package says which platforms it supports; anything that does not
       # support this one is dropped rather than named here.
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) (discovered // wired);
+      packages = lib.filterAttrs (_: p: !p.meta.unsupported) (lib.getAttrs names scope);
     };
 }
