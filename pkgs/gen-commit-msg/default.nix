@@ -7,7 +7,7 @@ _: {
         runtimeInputs = [
           pkgs.coreutils
           pkgs.curl
-          (self'.packages.neovim-wrapped.override { with-git-wrapped = false; }) # for editing the commit
+          self'.packages.neovim-wrapped-without-git # for editing the commit
           pkgs.git
           pkgs.gnused
           pkgs.jq
