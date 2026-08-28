@@ -1,36 +1,37 @@
-{
-  atuin,
-  wrapPackage,
-  linkFarm,
-  formats,
-}:
-let
-  configFile = (formats.toml { }).generate "atuin-config.toml" {
-    # Self-hosted (modules/features/atuin-server.nix), so sync_protocol = Auto
-    # picks the legacy protocol rather than Hub. Plaintext inside WireGuard.
-    sync_address = "http://tower:8888";
-
-    ui.columns = [
-      "exit"
-      "duration"
-      "time"
-      # Narrower than the default 15: the longest hostname here is "tower".
-      {
-        type = "host";
-        width = 5;
-      }
-      "command"
-    ];
-  };
-
-  configDir = linkFarm "atuin-config" [
+_: {
+  perSystem =
+    { pkgs, ... }:
     {
-      name = "config.toml";
-      path = configFile;
-    }
-  ];
-in
-wrapPackage {
-  package = atuin;
-  setDefaults.ATUIN_CONFIG_DIR = configDir;
+      packages.atuin-wrapped =
+        let
+          configFile = (pkgs.formats.toml { }).generate "atuin-config.toml" {
+            # Self-hosted (modules/features/atuin-server.nix), so sync_protocol = Auto
+            # picks the legacy protocol rather than Hub. Plaintext inside WireGuard.
+            sync_address = "http://tower:8888";
+
+            ui.columns = [
+              "exit"
+              "duration"
+              "time"
+              # Narrower than the default 15: the longest hostname here is "tower".
+              {
+                type = "host";
+                width = 5;
+              }
+              "command"
+            ];
+          };
+
+          configDir = pkgs.linkFarm "atuin-config" [
+            {
+              name = "config.toml";
+              path = configFile;
+            }
+          ];
+        in
+        pkgs.wrapPackage {
+          package = pkgs.atuin;
+          setDefaults.ATUIN_CONFIG_DIR = configDir;
+        };
+    };
 }

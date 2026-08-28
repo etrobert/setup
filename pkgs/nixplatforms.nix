@@ -1,9 +1,14 @@
-{ writeShellApplication, nix }:
-writeShellApplication {
-  name = "nixplatforms";
-  runtimeInputs = [ nix ];
-  inheritPath = false;
-  text = ''
-    nix eval nixpkgs#"$1".meta.platforms --json
-  '';
+_: {
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.nixplatforms = pkgs.writeShellApplication {
+        name = "nixplatforms";
+        runtimeInputs = [ pkgs.nix ];
+        inheritPath = false;
+        text = ''
+          nix eval nixpkgs#"$1".meta.platforms --json
+        '';
+      };
+    };
 }

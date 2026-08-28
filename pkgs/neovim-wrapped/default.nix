@@ -1,103 +1,112 @@
-{
-  pkgs,
-  self',
-  lib,
-  neovim-unwrapped,
-  with-git-wrapped ? true,
-}:
-let
-  cfg =
-    (lib.evalModules {
-      specialArgs = { inherit self' pkgs with-git-wrapped; };
-      modules = [
-        ./module.nix
-        ./plugins/octo
-        ./plugins/fugitive
-        ./plugins/fidget
-        ./plugins/lazydev
-        ./plugins/bufferline
-        ./plugins/spider
-        ./plugins/catppuccin
-        ./plugins/treesj
-        ./plugins/vim-tmux-navigator
-        ./plugins/which-key
-        ./plugins/conform
-        ./plugins/nvim-lint
-        ./plugins/telescope
-        ./plugins/snacks
-        ./plugins/gitsigns
-        # Disabled because this takes a monstrous amount of ressources
-        # ./plugins/workspace-diagnostics
-        ./plugins/lspconfig
-        ./plugins/harpoon
-        ./plugins/cmp
-        ./plugins/treesitter
-        ./plugins/surround
-        # ./plugins/hardtime
-        ./plugins/matchup
-        ./plugins/statix
-        ./plugins/deadnix
-        ./plugins/nix-check
-        ./plugins/statusline
-        ./plugins/remap
-        ./plugins/set
-        ./plugins/bookmarks
-        ./plugins/code-exec
-        ./plugins/ask
-        ./plugins/ai-rename
-        ./plugins/auto-mkdir
-        # TODO: Figure out when to run the banner to make sure it measures the right startup time
-        # ./plugins/startup-banner
-        ./plugins/tsc
-        ./plugins/spell
-      ];
-    }).config;
+_: {
+  perSystem =
+    {
+      pkgs,
+      lib,
+      self',
+      ...
+    }:
+    {
+      packages.neovim-wrapped = lib.makeOverridable (
+        {
+          with-git-wrapped ? true,
+        }:
+        let
+          cfg =
+            (lib.evalModules {
+              specialArgs = { inherit self' pkgs with-git-wrapped; };
+              modules = [
+                ./module.nix
+                ./plugins/octo
+                ./plugins/fugitive
+                ./plugins/fidget
+                ./plugins/lazydev
+                ./plugins/bufferline
+                ./plugins/spider
+                ./plugins/catppuccin
+                ./plugins/treesj
+                ./plugins/vim-tmux-navigator
+                ./plugins/which-key
+                ./plugins/conform
+                ./plugins/nvim-lint
+                ./plugins/telescope
+                ./plugins/snacks
+                ./plugins/gitsigns
+                # Disabled because this takes a monstrous amount of ressources
+                # ./plugins/workspace-diagnostics
+                ./plugins/lspconfig
+                ./plugins/harpoon
+                ./plugins/cmp
+                ./plugins/treesitter
+                ./plugins/surround
+                # ./plugins/hardtime
+                ./plugins/matchup
+                ./plugins/statix
+                ./plugins/deadnix
+                ./plugins/nix-check
+                ./plugins/statusline
+                ./plugins/remap
+                ./plugins/set
+                ./plugins/bookmarks
+                ./plugins/code-exec
+                ./plugins/ask
+                ./plugins/ai-rename
+                ./plugins/auto-mkdir
+                # TODO: Figure out when to run the banner to make sure it measures the right startup time
+                # ./plugins/startup-banner
+                ./plugins/tsc
+                ./plugins/spell
+              ];
+            }).config;
 
-  pbcopy = pkgs.runCommandLocal "pbcopy" { } ''
-    mkdir -p $out/bin
-    ln -s /usr/bin/pbcopy $out/bin/pbcopy
-  '';
+          pbcopy = pkgs.runCommandLocal "pbcopy" { } ''
+            mkdir -p $out/bin
+            ln -s /usr/bin/pbcopy $out/bin/pbcopy
+          '';
 
-  pbpaste = pkgs.runCommandLocal "pbpaste" { } ''
-    mkdir -p $out/bin
-    ln -s /usr/bin/pbpaste $out/bin/pbpaste
-  '';
+          pbpaste = pkgs.runCommandLocal "pbpaste" { } ''
+            mkdir -p $out/bin
+            ln -s /usr/bin/pbpaste $out/bin/pbpaste
+          '';
 
-  sharedDeps = with pkgs; [
-    curl # used in my config
-    cargo
-    rustc
-  ];
+          sharedDeps = with pkgs; [
+            curl # used in my config
+            cargo
+            rustc
+          ];
 
-  darwinDeps = [
-    pbcopy
-    pbpaste
-  ];
+          darwinDeps = [
+            pbcopy
+            pbpaste
+          ];
 
-  linuxDeps = with pkgs; [
-    wl-clipboard
-    coreutils # provides cat for copying
-    # Without it nvim's LSP file-watching fallback walks the whole tree on the main loop.
-    inotify-tools
-  ];
+          linuxDeps = with pkgs; [
+            wl-clipboard
+            coreutils # provides cat for copying
+            # Without it nvim's LSP file-watching fallback walks the whole tree on the main loop.
+            inotify-tools
+          ];
 
-  path = lib.makeBinPath (
-    sharedDeps
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin darwinDeps
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux linuxDeps
-    ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
-  );
-in
-pkgs.wrapNeovimUnstable neovim-unwrapped {
-  plugins = map (plugin: {
-    inherit (plugin) plugin config;
-    type = "lua";
-  }) cfg.plugins;
-  luaRcContent = builtins.readFile ./init.lua;
-  wrapperArgs = [
-    "--prefix"
-    "PATH"
-    ":"
-    (lib.toString path)
-  ];
+          path = lib.makeBinPath (
+            sharedDeps
+            ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin darwinDeps
+            ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux linuxDeps
+            ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
+          );
+        in
+        pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
+          plugins = map (plugin: {
+            inherit (plugin) plugin config;
+            type = "lua";
+          }) cfg.plugins;
+          luaRcContent = builtins.readFile ./init.lua;
+          wrapperArgs = [
+            "--prefix"
+            "PATH"
+            ":"
+            (lib.toString path)
+          ];
+        }
+      ) { };
+    };
 }
