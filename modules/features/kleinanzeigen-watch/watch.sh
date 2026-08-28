@@ -83,7 +83,9 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
       | ($origins | map({ name, d: km(.lat; .lon; $lat; $lon) }) | min_by(.d)) as $near
       | select($price <= $maxPrice and $near.d <= $maxKm)
       | [.id, (.title.value | unesc), $price, ($near.d * 10 | round / 10), $near.name,
-         first(.link[] | select(.rel == "self-public-website") | .href)]
+         first(.link[] | select(.rel == "self-public-website") | .href),
+         # teaser is ~4 KB; large and XXL are wasteful for a notification.
+         (first(.pictures.picture[]?.link[] | select(.rel == "teaser") | .href) // "")]
       | @tsv
     ' <<<"$response")
 
@@ -91,7 +93,7 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
   [ -n "$matches" ] && matched=$(grep --count '' <<<"$matches")
   new=0
 
-  while IFS=$'\t' read -r id title price dist where url; do
+  while IFS=$'\t' read -r id title price dist where url img; do
     [ -n "$id" ] || continue
     grep --quiet --fixed-strings --line-regexp "$id" "$seen" && continue
     new=$((new + 1))
@@ -103,14 +105,30 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
 
     echo "$query: new $id - $title ($price EUR, $dist km from $where)"
 
+    # The ntfy clients only preview attachments the server itself hosts; a
+    # remote --attach URL renders as a filename. So fetch the photo and
+    # upload it. A failed fetch must not cost us the notification.
+    photo=""
+    attach=()
+    if [ -n "$img" ]; then
+      photo=$(mktemp --tmpdir kleinanzeigen-XXXXXXXX.jpg)
+      if curl --silent --fail --max-time 15 --output "$photo" "$img"; then
+        attach=(--file "$photo")
+      else
+        echo "$query: photo fetch failed for $id" >&2
+      fi
+    fi
+
     if printf '%s EUR - %s km from %s\n' "$price" "$dist" "$where" |
       ntfy publish --quiet --title "$title" \
-        --actions "view, Open listing, $url"; then
+        --actions "view, Open listing, $url" "${attach[@]}"; then
       echo "$id" >>"$seen"
     else
       echo "$query: notification failed for $id" >&2
       failed=1
     fi
+
+    [ -n "$photo" ] && rm --force "$photo"
   done <<<"$matches"
 
   echo "$query: $ads ads, $matched matching, $new new"
