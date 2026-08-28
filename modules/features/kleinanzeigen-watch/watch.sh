@@ -30,6 +30,7 @@ seeding=""
 if [ ! -e "$seen" ]; then
   seeding=1
   touch "$seen"
+  echo "first run: recording current matches without notifying"
 fi
 
 failed=0
@@ -51,28 +52,10 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
 
   # 41 newest Berlin ads per query, no paging: at a 15-minute poll a query
   # would have to gain 41 ads in 15 minutes to lose one.
-  total=$((total + $(jq --arg k "$ads_key" '.[$k].value.ad // [] | length' <<<"$response")))
+  ads=$(jq --arg k "$ads_key" '.[$k].value.ad // [] | length' <<<"$response")
+  total=$((total + ads))
 
-  while IFS=$'\t' read -r id title price dist where url; do
-    [ -n "$id" ] || continue
-    grep --quiet --fixed-strings --line-regexp "$id" "$seen" && continue
-
-    if [ -n "$seeding" ]; then
-      echo "$id" >>"$seen"
-      continue
-    fi
-
-    echo "$query: new match $id ($price EUR, $dist km)"
-
-    if printf '%s EUR - %s km from %s\n' "$price" "$dist" "$where" |
-      ntfy publish --quiet --title "$title" \
-        --actions "view, Open listing, $url"; then
-      echo "$id" >>"$seen"
-    else
-      echo "$query: notification failed for $id" >&2
-      failed=1
-    fi
-  done < <(jq --raw-output \
+  matches=$(jq --raw-output \
     --arg k "$ads_key" \
     --argjson origins "$origins" \
     --argjson maxPrice "$maxPrice" \
@@ -103,6 +86,34 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
          first(.link[] | select(.rel == "self-public-website") | .href)]
       | @tsv
     ' <<<"$response")
+
+  matched=0
+  [ -n "$matches" ] && matched=$(grep --count '' <<<"$matches")
+  new=0
+
+  while IFS=$'\t' read -r id title price dist where url; do
+    [ -n "$id" ] || continue
+    grep --quiet --fixed-strings --line-regexp "$id" "$seen" && continue
+    new=$((new + 1))
+
+    if [ -n "$seeding" ]; then
+      echo "$id" >>"$seen"
+      continue
+    fi
+
+    echo "$query: new $id - $title ($price EUR, $dist km from $where)"
+
+    if printf '%s EUR - %s km from %s\n' "$price" "$dist" "$where" |
+      ntfy publish --quiet --title "$title" \
+        --actions "view, Open listing, $url"; then
+      echo "$id" >>"$seen"
+    else
+      echo "$query: notification failed for $id" >&2
+      failed=1
+    fi
+  done <<<"$matches"
+
+  echo "$query: $ads ads, $matched matching, $new new"
 done < <(jq --raw-output '.watches[] | [.query, .maxPrice, .maxKm] | @tsv' "$config")
 
 # Every query coming back empty means the API changed or the app token
