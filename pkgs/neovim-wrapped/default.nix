@@ -50,6 +50,7 @@ let
         # ./plugins/startup-banner
         ./plugins/tsc
         ./plugins/spell
+        ./plugins/comment-block
       ];
     }).config;
 
