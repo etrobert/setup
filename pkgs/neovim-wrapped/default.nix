@@ -6,11 +6,9 @@ _: {
       self',
       ...
     }:
-    {
-      packages.neovim-wrapped = lib.makeOverridable (
-        {
-          with-git-wrapped ? true,
-        }:
+    let
+      makeNeovim =
+        with-git-wrapped:
         let
           cfg =
             (lib.evalModules {
@@ -106,7 +104,15 @@ _: {
             ":"
             (lib.toString path)
           ];
-        }
-      ) { };
+        };
+    in
+    {
+      packages = {
+        neovim-wrapped = makeNeovim true;
+
+        # git-wrapped pulls in gen-commit-msg, which pulls in neovim; this
+        # variant breaks that cycle for gen-commit-msg's own editor.
+        neovim-wrapped-without-git = makeNeovim false;
+      };
     };
 }

@@ -4,7 +4,6 @@ _: {
       {
         self,
         config,
-        lib,
         agenix,
         pkgs,
         ...
@@ -30,11 +29,12 @@ _: {
             # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1
             # streams software-decode and peg the CPU. Disabling it makes sites
             # serve VP9, which this GPU decodes in hardware. Drop when leod goes.
-            firefox = self.packages.${system}.firefox-wrapped.override {
-              extraSettings = lib.optionalAttrs (config.networking.hostName == "leod") {
-                "media.av1.enabled" = false;
-              };
-            };
+            # leod's i915 iGPU cannot decode AV1 in hardware.
+            firefox =
+              if config.networking.hostName == "leod" then
+                self.packages.${system}.firefox-wrapped-no-av1
+              else
+                self.packages.${system}.firefox-wrapped;
 
             customPackages = with self.packages.${system}; [
               aichat-wrapped

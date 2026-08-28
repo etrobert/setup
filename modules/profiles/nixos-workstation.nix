@@ -14,16 +14,20 @@
       # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1 streams
       # software-decode and peg the CPU. Disabling it makes sites serve VP9,
       # which this GPU decodes in hardware. Drop when leod goes.
-      zen-browser = self.packages.${system}.zen-browser-wrapped.override {
-        extraSettings = lib.optionalAttrs (config.networking.hostName == "leod") {
-          "media.av1.enabled" = false;
-        };
-      };
+      # leod's i915 iGPU cannot decode AV1 in hardware and exposes no VRAM stat.
+      onLeod = config.networking.hostName == "leod";
 
-      # leod's iGPU (i915) exposes no VRAM stat, so the widget would sit empty.
-      noctalia-wrapped = self.packages.${system}.noctalia-wrapped.override {
-        withVramWidget = config.networking.hostName != "leod";
-      };
+      zen-browser =
+        if onLeod then
+          self.packages.${system}.zen-browser-wrapped-no-av1
+        else
+          self.packages.${system}.zen-browser-wrapped;
+
+      noctalia-wrapped =
+        if onLeod then
+          self.packages.${system}.noctalia-wrapped-no-vram
+        else
+          self.packages.${system}.noctalia-wrapped;
     in
     {
       imports = [
