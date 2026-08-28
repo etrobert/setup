@@ -49,10 +49,8 @@ in
       let
         # Turn an ntfy message into a desktop notification. ntfy passes the
         # message fields in via the environment when it runs this per message,
-        # but only as title/message/priority/tags — a view action or click URL
-        # is reachable only through the raw JSON.
-        # PATH is inherited, not pinned: xdg-open locates the browser through
-        # the session's PATH, and an empty one leaves it nothing to launch.
+        # but only as title/message/priority/tags — an action's URL is
+        # reachable only through the raw JSON.
         ntfyNotify = pkgs.writeShellApplication {
           name = "ntfy-notify";
 
@@ -62,14 +60,16 @@ in
             pkgs.xdg-utils
           ];
 
+          # Deliberately not false: xdg-open picks the browser out of the
+          # session's PATH, so an empty one leaves it nothing to launch.
+          inheritPath = true;
+
           text = ''
             # Supplied per message by ntfy; ''${title} has a default below.
             raw=''${raw:?not set by ntfy}
             message=''${message:?not set by ntfy}
 
-            url=$(jq --raw-output \
-              'first((.actions // [])[] | select(.action == "view") | .url) // .click // empty' \
-              <<<"$raw")
+            url=$(jq --raw-output 'first(.actions[]? | .url) // empty' <<<"$raw")
 
             if [ -z "$url" ]; then
               exec notify-send -- "''${title:-Notification}" "$message"
