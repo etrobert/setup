@@ -116,6 +116,8 @@
       url = "github:etrobert/aichat/command-client";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs =

@@ -2,6 +2,7 @@
   pkgs,
   self',
   lib,
+  neovim-unwrapped,
   with-git-wrapped ? true,
 }:
 let
@@ -87,7 +88,7 @@ let
     ++ (lib.concatMap (plugin: plugin.extraPackages) cfg.plugins)
   );
 in
-pkgs.wrapNeovimUnstable pkgs.neovim-unwrapped {
+pkgs.wrapNeovimUnstable neovim-unwrapped {
   plugins = map (plugin: {
     inherit (plugin) plugin config;
     type = "lua";
