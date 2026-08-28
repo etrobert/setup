@@ -65,6 +65,10 @@
           packages = [ "com.bambulab.BambuStudio" ];
         };
 
+        # Media keys run bare `playerctl`, which otherwise picks mpd (first
+        # alphabetically) even when stopped; playerctld orders by activity.
+        playerctld.enable = true;
+
         # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
         avahi = {
           enable = true;
@@ -124,7 +128,6 @@
             mpv
             orca-slicer
             pavucontrol
-            playerctl
             usbutils # provides lsusb
             whatsapp-electron
             wl-clipboard
