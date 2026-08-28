@@ -1,31 +1,35 @@
-{
-  inputs',
-  bash,
-  writeText,
-  fzf-wrapped,
-  git,
-  wrapPackage,
-}:
-let
-  pronto = "${inputs'.pronto.packages.default}/bin/pronto";
+_: {
+  perSystem =
+    {
+      pkgs,
+      inputs',
+      self',
+      ...
+    }:
+    {
+      packages.bash-wrapped =
+        let
+          pronto = "${inputs'.pronto.packages.default}/bin/pronto";
 
-  bashrcFinal = writeText "bashrc" /* bash */ ''
-    source ${./bashrc}
+          bashrcFinal = pkgs.writeText "bashrc" /* bash */ ''
+            source ${./bashrc}
 
-    source ${git}/share/git/contrib/completion/git-completion.bash
+            source ${pkgs.git}/share/git/contrib/completion/git-completion.bash
 
-    PS1='$(${pronto} $?)'
+            PS1='$(${pronto} $?)'
 
-    source <(${fzf-wrapped}/bin/fzf --bash)
-  '';
+            source <(${self'.packages.fzf-wrapped}/bin/fzf --bash)
+          '';
 
-  inputrc = writeText "inputrc" (builtins.readFile ./inputrc);
-in
-wrapPackage {
-  package = bash;
-  env.INPUTRC = "${inputrc}";
-  flags = [ "--rcfile ${bashrcFinal}" ];
-  # Fail the build on a syntax error in our bashrc rather than at shell start-up.
-  checks = [ "${bash}/bin/bash -n ${./bashrc}" ];
-  inheritPath = true;
+          inputrc = pkgs.writeText "inputrc" (builtins.readFile ./inputrc);
+        in
+        pkgs.wrapPackage {
+          package = pkgs.bash;
+          env.INPUTRC = "${inputrc}";
+          flags = [ "--rcfile ${bashrcFinal}" ];
+          # Fail the build on a syntax error in our bashrc rather than at shell start-up.
+          checks = [ "${pkgs.bash}/bin/bash -n ${./bashrc}" ];
+          inheritPath = true;
+        };
+    };
 }

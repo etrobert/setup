@@ -1,22 +1,29 @@
-{ writeScriptBin, lib }:
-lib.addMetaAttrs { platforms = lib.platforms.darwin; } (
-  writeScriptBin "resize-window" ''
-    #!/usr/bin/osascript
+_: {
+  perSystem =
+    { pkgs, lib, ... }:
+    {
+      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+        resize-window = lib.addMetaAttrs { platforms = lib.platforms.darwin; } (
+          pkgs.writeScriptBin "resize-window" ''
+            #!/usr/bin/osascript
 
-    on run argv
-        if (count of argv) is not 2 then
-            return
-        end if
+            on run argv
+                if (count of argv) is not 2 then
+                    return
+                end if
 
-        set newWidth to item 1 of argv
-        set newHeight to item 2 of argv
+                set newWidth to item 1 of argv
+                set newHeight to item 2 of argv
 
-        tell application "System Events"
-            set frontmostApplication to first application process whose frontmost is true
-            tell frontmostApplication
-                set size of window 1 to {newWidth as integer, newHeight as integer}
-            end tell
-        end tell
-    end run
-  ''
-)
+                tell application "System Events"
+                    set frontmostApplication to first application process whose frontmost is true
+                    tell frontmostApplication
+                        set size of window 1 to {newWidth as integer, newHeight as integer}
+                    end tell
+                end tell
+            end run
+          ''
+        );
+      };
+    };
+}

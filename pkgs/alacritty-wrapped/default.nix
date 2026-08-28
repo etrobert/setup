@@ -1,36 +1,38 @@
-{
-  alacritty,
-  writeText,
-  wrapPackage,
-}:
-let
-  configFile = writeText "alacritty.toml" /* toml */ ''
-    [env]
-    TERM = "xterm-256color"
+_: {
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.alacritty-wrapped =
+        let
+          configFile = pkgs.writeText "alacritty.toml" /* toml */ ''
+            [env]
+            TERM = "xterm-256color"
 
-    [window]
-    padding.x = 10
-    padding.y = 10
-    dimensions.columns = 0
-    dimensions.lines = 0
+            [window]
+            padding.x = 10
+            padding.y = 10
+            dimensions.columns = 0
+            dimensions.lines = 0
 
-    decorations = "Buttonless"
+            decorations = "Buttonless"
 
-    opacity = 1
-    blur = true
+            opacity = 1
+            blur = true
 
-    option_as_alt = "Both"
+            option_as_alt = "Both"
 
-    [font]
-    normal.family = "FiraCode Nerd Font"
-    size = 13
+            [font]
+            normal.family = "FiraCode Nerd Font"
+            size = 13
 
-    [general]
-    import = [ "${./catppuccin-macchiato.toml}" ]
-  '';
-in
-wrapPackage {
-  package = alacritty;
-  flags = [ "--config-file ${configFile}" ];
-  inheritPath = true;
+            [general]
+            import = [ "${./catppuccin-macchiato.toml}" ]
+          '';
+        in
+        pkgs.wrapPackage {
+          package = pkgs.alacritty;
+          flags = [ "--config-file ${configFile}" ];
+          inheritPath = true;
+        };
+    };
 }

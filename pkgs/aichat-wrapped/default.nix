@@ -1,32 +1,38 @@
-{
-  inputs',
-  self',
-  lib,
-  wrapPackage,
-  writeText,
-}:
-let
-  # Our fork (see flake.nix); newer than nixpkgs, which needs Enter for -e.
-  aichat = inputs'.aichat.packages.default;
+_: {
+  perSystem =
+    {
+      pkgs,
+      lib,
+      inputs',
+      self',
+      ...
+    }:
+    {
+      packages.aichat-wrapped =
+        let
+          # Our fork (see flake.nix); newer than nixpkgs, which needs Enter for -e.
+          aichat = inputs'.aichat.packages.default;
 
-  # Declares its own wiring, so it is not in the package scope.
-  inherit (self'.packages) claude-code-wrapped;
+          # Declares its own wiring, so it is not in the package scope.
+          inherit (self'.packages) claude-code-wrapped;
 
-  # Both backends in one config: `??` takes the default, `???` asks for claude
-  # with -m.
-  config = writeText "aichat.yaml" (
-    builtins.replaceStrings [ "@claude@" ] [ (lib.getExe claude-code-wrapped) ] (
-      builtins.readFile ./config.yaml
-    )
-  );
-in
-wrapPackage {
-  package = aichat;
-  # aichat runs the accepted command by spawning `$SHELL -c`, which needs PATH.
-  inheritPath = true;
-  setDefaults.AICHAT_CONFIG_FILE = "${config}";
-  # --dry-run fails the build on wrong config
-  checks = [
-    "AICHAT_CONFIG_FILE=${config} HOME=$(mktemp -d) ${aichat}/bin/aichat --dry-run -e 'list files' >/dev/null"
-  ];
+          # Both backends in one config: `??` takes the default, `???` asks for claude
+          # with -m.
+          config = pkgs.writeText "aichat.yaml" (
+            builtins.replaceStrings [ "@claude@" ] [ (lib.getExe claude-code-wrapped) ] (
+              builtins.readFile ./config.yaml
+            )
+          );
+        in
+        pkgs.wrapPackage {
+          package = aichat;
+          # aichat runs the accepted command by spawning `$SHELL -c`, which needs PATH.
+          inheritPath = true;
+          setDefaults.AICHAT_CONFIG_FILE = "${config}";
+          # --dry-run fails the build on wrong config
+          checks = [
+            "AICHAT_CONFIG_FILE=${config} HOME=$(mktemp -d) ${aichat}/bin/aichat --dry-run -e 'list files' >/dev/null"
+          ];
+        };
+    };
 }
