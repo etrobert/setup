@@ -1,16 +1,7 @@
-{
-  writeShellApplication,
-  pulseaudio,
-  gnugrep,
-  gawk,
-}:
-writeShellApplication {
-  name = "check-bt-profile";
-  runtimeInputs = [
-    pulseaudio
-    gnugrep
-    gawk
-  ];
-  inheritPath = false;
-  text = builtins.readFile ./check-bt-profile;
+_: {
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.check-bt-profile = pkgs.callPackage ./package.nix { };
+    };
 }

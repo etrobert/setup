@@ -1,41 +1,7 @@
-{
-  pimsync,
-  coreutils,
-  writeText,
-  wrapPackage,
-}:
-let
-  configFile = writeText "pimsync.conf" ''
-    status_path "~/.local/share/pimsync/status/"
-
-    storage contacts_icloud {
-      type carddav
-      url https://contacts.icloud.com
-      username etiennerobert33@gmail.com
-      interval 30
-      password {
-        cmd cat /run/agenix/apple-pimsync-password
-      }
-    }
-
-    storage contacts_local {
-      type vdir/vcard
-      path ~/.local/share/contacts/
-      fileext vcf
-      interval 30
-    }
-
-    pair contacts {
-      storage_a contacts_local
-      storage_b contacts_icloud
-      collections all
-    }
-  '';
-in
-wrapPackage {
-  package = pimsync;
-  flags = [ "-c ${configFile}" ];
-  # The config's `password { cmd cat … }` is spawned via execvp, so cat has to
-  # be on the wrapper's PATH.
-  runtimeInputs = [ coreutils ];
+_: {
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.pimsync-wrapped = pkgs.callPackage ./package.nix { };
+    };
 }

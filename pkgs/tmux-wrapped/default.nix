@@ -1,9 +1,7 @@
-{
-  tmux,
-  wrapPackage,
-}:
-wrapPackage {
-  package = tmux;
-  flags = [ "-f ${./tmux.conf}" ];
-  inheritPath = true;
+_: {
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.tmux-wrapped = pkgs.callPackage ./package.nix { };
+    };
 }
