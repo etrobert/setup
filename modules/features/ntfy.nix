@@ -48,10 +48,42 @@ in
       }:
       let
         # Turn an ntfy message into a desktop notification. ntfy passes the
-        # message fields in via the environment when it runs this per message.
-        ntfyNotify = pkgs.writeShellScript "ntfy-notify" ''
-          exec ${pkgs.libnotify}/bin/notify-send -- "''${title:-Notification}" "$message"
-        '';
+        # message fields in via the environment when it runs this per message,
+        # but only as title/message/priority/tags — an action's URL is
+        # reachable only through the raw JSON.
+        ntfyNotify = pkgs.writeShellApplication {
+          name = "ntfy-notify";
+
+          runtimeInputs = [
+            pkgs.jq
+            pkgs.libnotify
+            pkgs.xdg-utils
+          ];
+
+          # Deliberately not false: xdg-open picks the browser out of the
+          # session's PATH, so an empty one leaves it nothing to launch.
+          inheritPath = true;
+
+          text = ''
+            # Supplied per message by ntfy; ''${title} has a default below.
+            raw=''${raw:?not set by ntfy}
+            message=''${message:?not set by ntfy}
+
+            url=$(jq --raw-output 'first(.actions[]? | .url) // empty' <<<"$raw")
+
+            if [ -z "$url" ]; then
+              exec notify-send -- "''${title:-Notification}" "$message"
+            fi
+
+            # --action implies --wait, so this blocks until the notification is
+            # answered; background it, or one left unattended stalls every
+            # message behind it.
+            if [ "$(notify-send --action Open -- \
+              "''${title:-Notification}" "$message")" = 0 ]; then
+              xdg-open "$url"
+            fi &
+          '';
+        };
       in
       {
         # The interactive ntfy CLI (with endpoint pre-set) comes from
@@ -63,7 +95,7 @@ in
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {
-            ExecStart = "${lib.getExe pkgs.ntfy-sh} subscribe ${url}/${topic} ${ntfyNotify}";
+            ExecStart = "${lib.getExe pkgs.ntfy-sh} subscribe ${url}/${topic} ${lib.getExe ntfyNotify}";
             Restart = "always";
             RestartSec = 10;
           };
