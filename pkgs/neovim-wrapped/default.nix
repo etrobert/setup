@@ -81,6 +81,22 @@ let
     inotify-tools
   ];
 
+  # Carries the fix for neovim/neovim#36529, written against neovim master so it
+  # can be offered upstream as-is. `--fuzz=0` makes the build fail as soon as
+  # upstream touches `Completor:show()`, prompting a recheck of whether the patches
+  # are still needed.
+  neovim-unwrapped = pkgs.neovim-unwrapped.overrideAttrs (old: {
+    patches = (old.patches or [ ]) ++ [
+      ./patches/0001-fix-lsp-drop-inline-completion-candidates-contradict.patch
+      ./patches/0002-fix-lsp-advance-inline-completion-range-over-matchin.patch
+    ];
+
+    patchFlags = [
+      "-p1"
+      "--fuzz=0"
+    ];
+  });
+
   path = lib.makeBinPath (
     sharedDeps
     ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin darwinDeps
