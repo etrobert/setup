@@ -39,8 +39,8 @@ pkgs.writeShellApplication {
           fi
         fi
 
-        nh os switch --show-activation-logs /home/soft/work/setup/main
+        nh os switch --show-activation-logs --print-build-logs /home/soft/work/setup/main
       ''
     else
-      "nh darwin switch --show-activation-logs /Users/soft/work/setup/main";
+      "nh darwin switch --show-activation-logs --print-build-logs /Users/soft/work/setup/main";
 }
