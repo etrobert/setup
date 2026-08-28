@@ -153,11 +153,13 @@
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
 
-              # wrapPackage (pkgs/lib/wrap-package.nix) as a pkgs attribute, so
-              # callPackage auto-injects it like any builder. The assert fails
-              # evaluation if nixpkgs ever introduces its own wrapPackage,
-              # prompting a rename instead of silently shadowing it.
               overlays = [
+                inputs.neovim-nightly.overlays.default
+
+                # wrapPackage (pkgs/lib/wrap-package.nix) as a pkgs attribute, so
+                # callPackage auto-injects it like any builder. The assert fails
+                # evaluation if nixpkgs ever introduces its own wrapPackage,
+                # prompting a rename instead of silently shadowing it.
                 (
                   final: prev:
                   assert !(prev ? wrapPackage);

@@ -49,12 +49,12 @@ vim.opt.cursorline = true
 -- Decrease update time
 vim.o.updatetime = 250
 
--- Highlight when yanking text
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking text",
-	group = vim.api.nvim_create_augroup("yank-highlight", { clear = true }),
+-- Highlight when yanking or putting text
+vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
+	desc = "Highlight when yanking or putting text",
+	group = vim.api.nvim_create_augroup("hl-op", { clear = true }),
 	callback = function()
-		vim.hl.on_yank({ higroup = "Visual", timeout = 300 })
+		vim.hl.hl_op({ higroup = "Visual", timeout = 300 })
 	end,
 })
 
