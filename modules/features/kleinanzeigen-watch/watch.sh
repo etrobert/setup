@@ -50,8 +50,9 @@ while IFS=$'\t' read -r query maxPrice maxKm; do
     continue
   fi
 
-  # 41 newest Berlin ads per query, no paging: at a 15-minute poll a query
-  # would have to gain 41 ads in 15 minutes to lose one.
+  # 41 newest Berlin ads per query, no paging: at a 5-minute poll a query
+  # would have to gain 41 ads in 5 minutes to lose one. The busiest thing
+  # measured, a bare "fahrrad" in Berlin, turns over 41 in 26 minutes.
   ads=$(jq --arg k "$ads_key" '.[$k].value.ad // [] | length' <<<"$response")
   total=$((total + ads))
 

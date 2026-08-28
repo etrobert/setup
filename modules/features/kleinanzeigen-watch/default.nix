@@ -57,7 +57,7 @@
           wantedBy = [ "timers.target" ];
 
           timerConfig = {
-            OnCalendar = "*:0/15";
+            OnCalendar = "*:0/5";
             Persistent = true;
           };
         };
