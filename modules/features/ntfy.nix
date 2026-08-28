@@ -56,6 +56,7 @@ in
           name = "ntfy-notify";
 
           runtimeInputs = [
+            pkgs.curl
             pkgs.jq
             pkgs.libnotify
             pkgs.xdg-utils
@@ -72,14 +73,27 @@ in
 
             url=$(jq --raw-output 'first(.actions[]? | .url) // empty' <<<"$raw")
 
+            # notify-send takes a local path, so an attachment has to be
+            # fetched. Written to a fixed path rather than a temp file per
+            # message: the daemon reads the image after we return, so deleting
+            # it would race.
+            icon=()
+            attachment=$(jq --raw-output '.attachment.url // empty' <<<"$raw")
+            if [ -n "$attachment" ]; then
+              photo="''${XDG_RUNTIME_DIR:?}/ntfy-notify-image"
+              if curl --silent --fail --max-time 15 --output "$photo" "$attachment"; then
+                icon=(--icon "$photo")
+              fi
+            fi
+
             if [ -z "$url" ]; then
-              exec notify-send -- "''${title:-Notification}" "$message"
+              exec notify-send "''${icon[@]}" -- "''${title:-Notification}" "$message"
             fi
 
             # --action implies --wait, so this blocks until the notification is
             # answered; background it, or one left unattended stalls every
             # message behind it.
-            if [ "$(notify-send --action Open -- \
+            if [ "$(notify-send --action Open "''${icon[@]}" -- \
               "''${title:-Notification}" "$message")" = 0 ]; then
               xdg-open "$url"
             fi &
