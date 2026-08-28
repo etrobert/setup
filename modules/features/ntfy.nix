@@ -42,6 +42,7 @@ in
 
     nixosModules.ntfyDesktop =
       {
+        config,
         pkgs,
         lib,
         ...
@@ -60,8 +61,8 @@ in
             pkgs.xdg-utils
           ];
 
-          # Deliberately not false: xdg-open picks the browser out of the
-          # session's PATH, so an empty one leaves it nothing to launch.
+          # Deliberately not false: xdg-open resolves the browser through
+          # PATH, which the unit supplies below.
           inheritPath = true;
 
           text = ''
@@ -91,6 +92,11 @@ in
 
         systemd.user.services.ntfy-notify = {
           description = "Desktop notifications from ntfy";
+
+          # xdg-open only hands the URL over; it needs a browser on PATH to
+          # hand it to, and the user manager's default PATH has none.
+          path = [ config.system.path ];
+
           after = [ "graphical-session.target" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
