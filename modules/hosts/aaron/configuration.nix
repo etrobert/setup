@@ -173,6 +173,7 @@ _: {
         enable = true;
         casks = [
           "claude"
+          "helium-browser"
           "orcaslicer"
           "sonos"
           "vlc"
