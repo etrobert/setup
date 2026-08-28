@@ -51,23 +51,39 @@ in
         # message fields in via the environment when it runs this per message,
         # but only as title/message/priority/tags — a view action or click URL
         # is reachable only through the raw JSON.
-        ntfyNotify = pkgs.writeShellScript "ntfy-notify" ''
-          url=$(${lib.getExe pkgs.jq} --raw-output \
-            'first((.actions // [])[] | select(.action == "view") | .url) // .click // empty' \
-            <<<"$raw")
+        # PATH is inherited, not pinned: xdg-open locates the browser through
+        # the session's PATH, and an empty one leaves it nothing to launch.
+        ntfyNotify = pkgs.writeShellApplication {
+          name = "ntfy-notify";
 
-          if [ -z "$url" ]; then
-            exec ${pkgs.libnotify}/bin/notify-send -- "''${title:-Notification}" "$message"
-          fi
+          runtimeInputs = [
+            pkgs.jq
+            pkgs.libnotify
+            pkgs.xdg-utils
+          ];
 
-          # --action implies --wait, so this blocks until the notification is
-          # answered; background it, or one left unattended stalls every
-          # message behind it.
-          if [ "$(${pkgs.libnotify}/bin/notify-send --action Open -- \
-            "''${title:-Notification}" "$message")" = 0 ]; then
-            ${pkgs.xdg-utils}/bin/xdg-open "$url"
-          fi &
-        '';
+          text = ''
+            # Supplied per message by ntfy; ''${title} has a default below.
+            raw=''${raw:?not set by ntfy}
+            message=''${message:?not set by ntfy}
+
+            url=$(jq --raw-output \
+              'first((.actions // [])[] | select(.action == "view") | .url) // .click // empty' \
+              <<<"$raw")
+
+            if [ -z "$url" ]; then
+              exec notify-send -- "''${title:-Notification}" "$message"
+            fi
+
+            # --action implies --wait, so this blocks until the notification is
+            # answered; background it, or one left unattended stalls every
+            # message behind it.
+            if [ "$(notify-send --action Open -- \
+              "''${title:-Notification}" "$message")" = 0 ]; then
+              xdg-open "$url"
+            fi &
+          '';
+        };
       in
       {
         # The interactive ntfy CLI (with endpoint pre-set) comes from
@@ -79,7 +95,7 @@ in
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
           serviceConfig = {
-            ExecStart = "${lib.getExe pkgs.ntfy-sh} subscribe ${url}/${topic} ${ntfyNotify}";
+            ExecStart = "${lib.getExe pkgs.ntfy-sh} subscribe ${url}/${topic} ${lib.getExe ntfyNotify}";
             Restart = "always";
             RestartSec = 10;
           };
