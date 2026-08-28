@@ -1,4 +1,5 @@
-_: {
+{ self, ... }:
+{
   perSystem =
     {
       pkgs,
@@ -6,17 +7,8 @@ _: {
       self',
       ...
     }:
-    let
-      inherit (pkgs)
-        niri
-        nirius
-        xwayland-satellite
-        bibata-cursors
-        wrapPackage
-        ;
-    in
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) rec {
+      packages = self.lib.onlySupported rec {
         niri-wrapped = lib.makeOverridable (
           {
             dev ? false,
@@ -28,23 +20,23 @@ _: {
               self'.packages.ghostty-wrapped
               self'.packages.noctalia-wrapped
               self'.packages.scale-floating-window
-              nirius
-              xwayland-satellite
+              pkgs.nirius
+              pkgs.xwayland-satellite
             ];
           in
-          wrapPackage {
-            package = niri;
+          pkgs.wrapPackage {
+            package = pkgs.niri;
             env.NIRI_CONFIG = "${config}";
-            prefix.XCURSOR_PATH = "${bibata-cursors}/share/icons";
+            prefix.XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons";
 
             runtimeInputs = path;
             inheritPath = true;
             # niri.service points at the unwrapped binary; patch it to use the wrapper.
             filesToPatch = [ "$out/share/systemd/user/niri.service" ];
             # Fail the build on an invalid config rather than at compositor start-up.
-            checks = [ "${niri}/bin/niri validate --config ${./config.kdl}" ];
+            checks = [ "${pkgs.niri}/bin/niri validate --config ${./config.kdl}" ];
             # Required for niri to register as a session with the display manager.
-            passthru.providedSessions = niri.passthru.providedSessions;
+            passthru.providedSessions = pkgs.niri.passthru.providedSessions;
           }
         ) { };
         niri-wrapped-dev = niri-wrapped.override { dev = true; };

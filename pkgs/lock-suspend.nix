@@ -1,8 +1,13 @@
-_: {
+{ self, ... }:
+{
   perSystem =
-    { pkgs, lib, ... }:
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      packages = self.lib.onlySupported {
         lock-suspend = pkgs.writeShellApplication {
           name = "lock-suspend";
           meta.platforms = lib.platforms.linux;

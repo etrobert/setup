@@ -1,8 +1,13 @@
-_: {
+{ self, ... }:
+{
   perSystem =
-    { pkgs, lib, ... }:
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      packages = self.lib.onlySupported {
         finder = pkgs.symlinkJoin {
           name = "finder";
           meta.platforms = lib.platforms.darwin;

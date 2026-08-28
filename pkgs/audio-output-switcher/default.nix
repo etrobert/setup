@@ -1,13 +1,13 @@
-_: {
+{ self, ... }:
+{
   perSystem =
     {
       pkgs,
-      lib,
       self',
       ...
     }:
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+      packages = self.lib.onlySupported {
         audio-output-switcher = pkgs.writeShellApplication {
           name = "audio-output-switcher";
           meta.platforms = pkgs.lib.platforms.linux;

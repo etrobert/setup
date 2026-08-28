@@ -1,10 +1,16 @@
-_: {
+{ self, ... }:
+{
   perSystem =
-    { pkgs, lib, ... }:
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
-        linear = # Linear ships desktop apps for macOS and Windows only, so run the web app in
-          # a Chromium app window.
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      packages = self.lib.onlySupported {
+        # Linear ships desktop apps for macOS and Windows only, so run the web app in
+        # a Chromium app window.
+        linear =
           let
             script = pkgs.writeShellApplication {
               name = "linear";

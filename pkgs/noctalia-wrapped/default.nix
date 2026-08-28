@@ -1,21 +1,17 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 {
   perSystem =
-    { pkgs, lib, ... }:
+    {
+      pkgs,
+      lib,
+      ...
+    }:
     let
-      inherit (pkgs)
-        wrapPackage
-        noctalia
-        runCommand
-        ddcutil
-        coreutils
-        bitwarden-cli
-        ;
       official-plugins = inputs.noctalia-official-plugins;
       community-plugins = inputs.noctalia-community-plugins;
     in
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+      packages = self.lib.onlySupported {
         noctalia-wrapped = lib.makeOverridable (
           {
             # Hosts whose GPU exposes no VRAM stat (e.g. an i915 iGPU) would render
@@ -27,7 +23,7 @@
 
             wallpaper = ../../assets/saint-levant.jpg;
 
-            configHome = runCommand "noctalia-config-home" { } ''
+            configHome = pkgs.runCommand "noctalia-config-home" { } ''
               mkdir -p $out/noctalia
               substitute ${./config.toml} $out/noctalia/config.toml \
                 --replace-fail '@plugins@' '${plugins}' \
@@ -40,16 +36,16 @@
             # Without --skip-ddc-checks, every ddcutil invocation re-runs a full display
             # detect, which dominates a brightness change: 0.50s vs 0.05s on the U3223QE.
             # noctalia builds its ddcutil argv in C++, so the flag is injected via PATH.
-            fast-ddcutil = wrapPackage {
-              package = ddcutil;
+            fast-ddcutil = pkgs.wrapPackage {
+              package = pkgs.ddcutil;
               flags = [ "--skip-ddc-checks" ];
 
               # ddcutil shells out to uname; wrapPackage otherwise leaves it an empty PATH.
-              runtimeInputs = [ coreutils ];
+              runtimeInputs = [ pkgs.coreutils ];
             };
           in
-          wrapPackage {
-            package = noctalia;
+          pkgs.wrapPackage {
+            package = pkgs.noctalia;
 
             env.NOCTALIA_CONFIG_HOME = configHome;
 
@@ -58,10 +54,10 @@
 
             runtimeInputs = [
               fast-ddcutil
-              bitwarden-cli
+              pkgs.bitwarden-cli
             ];
 
-            checks = [ "${noctalia}/bin/noctalia config validate ${configHome}/noctalia" ];
+            checks = [ "${pkgs.noctalia}/bin/noctalia config validate ${configHome}/noctalia" ];
           }
         ) { };
       };

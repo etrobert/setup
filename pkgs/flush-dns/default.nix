@@ -1,8 +1,13 @@
-_: {
+{ self, ... }:
+{
   perSystem =
-    { pkgs, lib, ... }:
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      packages = self.lib.onlySupported {
         flush-dns = pkgs.writeShellApplication {
           name = "flush-dns";
           meta.platforms = lib.platforms.darwin;

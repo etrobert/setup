@@ -1,8 +1,13 @@
-_: {
+{ self, ... }:
+{
   perSystem =
-    { pkgs, lib, ... }:
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+      pkgs,
+      lib,
+      ...
+    }:
+    {
+      packages = self.lib.onlySupported {
         resize-window = lib.addMetaAttrs { platforms = lib.platforms.darwin; } (
           pkgs.writeScriptBin "resize-window" ''
             #!/usr/bin/osascript

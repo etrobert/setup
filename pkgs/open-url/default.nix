@@ -1,4 +1,5 @@
-_: {
+{ self, ... }:
+{
   perSystem =
     {
       pkgs,
@@ -7,7 +8,7 @@ _: {
       ...
     }:
     {
-      packages = lib.filterAttrs (_: p: !p.meta.unsupported) {
+      packages = self.lib.onlySupported {
         open-url =
           let
             script = pkgs.writeShellApplication {
