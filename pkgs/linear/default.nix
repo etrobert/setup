@@ -1,4 +1,5 @@
 {
+  lib,
   writeShellApplication,
   makeDesktopItem,
   symlinkJoin,
@@ -27,6 +28,7 @@ let
   };
 in
 symlinkJoin {
+  meta.platforms = lib.platforms.linux;
   name = "linear";
   paths = [
     script

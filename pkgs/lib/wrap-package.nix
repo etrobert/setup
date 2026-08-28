@@ -188,7 +188,12 @@ symlinkJoin {
   name = "${binName}-wrapped${lib.optionalString (version != "") "-${version}"}";
   nativeBuildInputs = [ (if binaryWrapper then makeBinaryWrapper else makeWrapper) ];
   paths = [ package ] ++ extraPaths;
-  meta.mainProgram = binName;
+  # A wrapper runs wherever what it wraps runs, and the flake filters its
+  # package list on this.
+  meta = {
+    mainProgram = binName;
+    inherit (package.meta) platforms;
+  };
   inherit passthru;
   postBuild = ''
     ${checkScript}
