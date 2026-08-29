@@ -82,6 +82,10 @@
       url = "github:etrobert/rack";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dispatch = {
+      url = "github:etrobert/dispatch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nutricalc = {
       url = "github:Palomia/nutricalc";
       inputs.nixpkgs.follows = "nixpkgs";
