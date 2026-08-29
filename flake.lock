@@ -125,6 +125,26 @@
         "type": "github"
       }
     },
+    "dispatch": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788027794,
+        "narHash": "sha256-OWKafuROjnJBtS+vQixDSa35BUtz2e+CGh5oFQixEeE=",
+        "owner": "etrobert",
+        "repo": "dispatch",
+        "rev": "7cb7c7dcaad372b646788381edc0fe71d24714cb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etrobert",
+        "repo": "dispatch",
+        "type": "github"
+      }
+    },
     "etiennerobert-com": {
       "inputs": {
         "nixpkgs": [
@@ -562,6 +582,7 @@
         "countdown": "countdown",
         "creatures": "creatures",
         "disko": "disko",
+        "dispatch": "dispatch",
         "etiennerobert-com": "etiennerobert-com",
         "figma-mcp-plugin": "figma-mcp-plugin",
         "flake-parts": "flake-parts",
