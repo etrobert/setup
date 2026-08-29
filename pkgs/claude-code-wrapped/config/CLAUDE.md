@@ -112,6 +112,15 @@ step rather than preserving an exact number. Reserve `[…]` for values with no
 scale equivalent — custom properties (`rotate-[var(--rot)]`), grid templates,
 property lists.
 
+## File Edits
+
+Use the Write/Edit tools for source files rather than Bash heredocs or `sed -i`,
+including in bypass-permissions mode where the default guidance prefers Bash.
+The `PostToolUse` hook running `format-file` matches only
+`Edit|Write|MultiEdit`, so Bash writes skip formatting entirely, and Write's
+refusal to overwrite an unread file is the only guard against clobbering hand
+edits made between steps.
+
 ## Documentation & Notes
 
 When writing docs, notes, or comments, state only what's true now. Don't record
