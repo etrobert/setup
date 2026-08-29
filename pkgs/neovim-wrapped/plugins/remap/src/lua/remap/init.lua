@@ -110,3 +110,7 @@ function RenameFile()
 end
 
 vim.api.nvim_create_user_command("RenameFile", RenameFile, {})
+
+vim.keymap.set("n", "<leader>ti", function()
+	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+end, { desc = "Toggle inlay hints" })
