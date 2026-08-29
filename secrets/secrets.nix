@@ -39,6 +39,7 @@ in
   "riot-api-key.age".publicKeys = allLinux;
   "harmonia-signing-key.age".publicKeys = [ tower ];
   "dispatch-claude-token.age".publicKeys = [ tower ];
+  "dispatch-github-token.age".publicKeys = [ tower ];
   "smb-credentials.age".publicKeys = [
     tower
     leod
