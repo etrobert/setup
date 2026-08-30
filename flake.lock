@@ -454,11 +454,11 @@
     "noctalia-community-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1788052964,
-        "narHash": "sha256-bWaFmnTZlb7RI629PgxfDcvQVbnGhZgtxXqmupVRZTc=",
+        "lastModified": 1788111477,
+        "narHash": "sha256-HFF212SWe/ill6WccwnRWMXxrIht+Gxf0Ro3ApbGUO4=",
         "owner": "noctalia-dev",
         "repo": "community-plugins",
-        "rev": "ba7430f126d9a8ac141551a1f7c345d08bbb5a00",
+        "rev": "c78b06eb7ba5cd2ca367affb926658328c84661f",
         "type": "github"
       },
       "original": {
