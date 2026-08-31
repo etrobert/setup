@@ -3,7 +3,6 @@ _: {
     nixosModules.workstation =
       {
         self,
-        config,
         agenix,
         pkgs,
         ...
@@ -26,21 +25,10 @@ _: {
 
             inputPackages = [ agenix.packages.${system}.default ];
 
-            # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1
-            # streams software-decode and peg the CPU. Disabling it makes sites
-            # serve VP9, which this GPU decodes in hardware. Drop when leod goes.
-            # leod's i915 iGPU cannot decode AV1 in hardware.
-            firefox =
-              if config.networking.hostName == "leod" then
-                self.packages.${system}.firefox-wrapped-no-av1
-              else
-                self.packages.${system}.firefox-wrapped;
-
             customPackages = with self.packages.${system}; [
               aichat-wrapped
               claude-code-wrapped
               claude-code-wrapped-glm
-              firefox
               alacritty-wrapped
               neovim-wrapped
               vscode-wrapped

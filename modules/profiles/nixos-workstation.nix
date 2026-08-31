@@ -17,6 +17,16 @@
       # leod's i915 iGPU cannot decode AV1 in hardware and exposes no VRAM stat.
       onLeod = config.networking.hostName == "leod";
 
+      # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1
+      # streams software-decode and peg the CPU. Disabling it makes sites
+      # serve VP9, which this GPU decodes in hardware. Drop when leod goes.
+      # leod's i915 iGPU cannot decode AV1 in hardware.
+      firefox =
+        if onLeod then
+          self.packages.${system}.firefox-wrapped-no-av1
+        else
+          self.packages.${system}.firefox-wrapped;
+
       zen-browser =
         if onLeod then
           self.packages.${system}.zen-browser-wrapped-no-av1
@@ -117,7 +127,6 @@
             lock-suspend
             linear
             check-bt-profile
-            zen-browser
             ghostty-wrapped
             open-url
           ];
@@ -136,8 +145,13 @@
             whatsapp-electron
             wl-clipboard
           ];
+
+          otherPackages = [
+            zen-browser
+            firefox
+          ];
         in
-        customPackages ++ externalPackages;
+        customPackages ++ externalPackages ++ otherPackages;
 
       environment = {
         sessionVariables.BROWSER = "open-url";
