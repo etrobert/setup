@@ -1,7 +1,7 @@
 [
   {
-    name = "Firefox";
-    path = "/Applications/Nix Apps/Firefox.app";
+    name = "Zen";
+    path = "/Applications/Zen.app";
   }
   {
     name = "Ghostty";
