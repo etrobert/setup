@@ -53,6 +53,11 @@ investigation wouldn't yield the answer.
 Don't be afraid to make multiple different implementations of the same feature
 to compare them.
 
+Always spell out links. Don't use
+[the repo](https://www.github.com/etrobert/setup) but use
+<https://www.github.com/etrobert/setup>. I am often working over ssh and
+clicking the links open on the wrong machine.
+
 ## Research Approach
 
 When investigating how something works, consult both official documentation and
