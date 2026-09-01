@@ -168,11 +168,11 @@
     "figma-mcp-plugin": {
       "flake": false,
       "locked": {
-        "lastModified": 1787233503,
-        "narHash": "sha256-uSDR8pjwnFMSMUKY/HWHWhbbWuZ4buWss86Gq5GOYqk=",
+        "lastModified": 1788286974,
+        "narHash": "sha256-781WwB5795TQ9N+uKLr4DW9Pa5qRgYjRVce0NUHx9Tk=",
         "owner": "figma",
         "repo": "mcp-server-guide",
-        "rev": "7f6562c4900fafb46e5e8fd3cc8ced954779bab3",
+        "rev": "ae7e5e5f80da20f1dd7445e0c6ae5ac58a5b0bce",
         "type": "github"
       },
       "original": {
@@ -301,11 +301,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788199306,
-        "narHash": "sha256-/8oL8PCN/MB0+JVBfjYTEDy5+tLux579pATfsnCgdWM=",
+        "lastModified": 1788285722,
+        "narHash": "sha256-ajI1NYZXSVetwkvY9NRbH05gDKMgYlbHhIQM/6xcqeY=",
         "owner": "ryoppippi",
         "repo": "nix-claude-code",
-        "rev": "66c06c10ac580d80d80252ef5efcad02c1d7022a",
+        "rev": "bf77c630c8ede47fe01a2bb40fc72b1085e47869",
         "type": "github"
       },
       "original": {
