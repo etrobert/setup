@@ -423,10 +423,10 @@ window-rule {
     open-on-workspace "1"
 }
 
-window-rule {
-    match app-id=r#"^com\.mitchellh\.ghostty$"#
-    open-on-workspace "2"
-}
+// window-rule {
+//     match app-id=r#"^com\.mitchellh\.ghostty$"#
+//     open-on-workspace "2"
+// }
 
 window-rule {
     match app-id=r#"^whatsapp-electron$"#
