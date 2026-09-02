@@ -13,9 +13,6 @@ _: {
         }:
         let
           deps = with pkgs; [
-            # TODO: Fix this
-            # Removed so that neovim-wrapped is not included on the pi
-            # self'.packages.gen-commit-msg
             difftastic
             self'.packages.fzf-wrapped
 
