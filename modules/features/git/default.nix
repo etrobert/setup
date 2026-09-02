@@ -71,7 +71,7 @@
                 '')
               ];
             in
-            pkgs.wrapPackage {
+            self.lib.wrapPackage pkgs {
               package = pkgs.git;
               extraPaths = [
                 git-project-clone

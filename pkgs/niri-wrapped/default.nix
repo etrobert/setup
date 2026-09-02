@@ -1,7 +1,11 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, self', ... }:
+    {
+      pkgs,
+      self',
+      ...
+    }:
     {
       packages =
         let
@@ -20,7 +24,7 @@
                 pkgs.xwayland-satellite
               ];
             in
-            pkgs.wrapPackage {
+            self.lib.wrapPackage pkgs {
               package = pkgs.niri;
               env.NIRI_CONFIG = "${config}";
               prefix.XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons";

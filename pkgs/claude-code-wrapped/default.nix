@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 {
   perSystem =
     {
@@ -59,7 +59,7 @@
             "export ANTHROPIC_AUTH_TOKEN"
           ];
         in
-        pkgs.wrapPackage {
+        self.lib.wrapPackage pkgs {
           package = claude-code;
           # Variants (e.g. claude-glm, claude-copilot) get renamed before wrapping;
           # the default "claude" matches the package's mainProgram, so it's a no-op.
