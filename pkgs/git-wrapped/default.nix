@@ -94,27 +94,35 @@
         };
     };
 
-  # wrapperModules, not nixosModules: flake-parts stamps a class on those, and
-  # the base profile that imports this is evaluated as both nixos and darwin.
-  flake.wrapperModules.git =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
+  # Defined once and exported to both classes, as modules/unfree.nix does:
+  # flake-parts stamps a class on each, and git is imported by nixos-base and
+  # by aaron.
+  flake =
     let
-      inherit (pkgs.stdenv.hostPlatform) system;
-      inherit (self.packages.${system}) git-wrapped git-wrapped-full;
+      gitModule =
+        {
+          config,
+          pkgs,
+          lib,
+          ...
+        }:
+        let
+          inherit (pkgs.stdenv.hostPlatform) system;
+          inherit (self.packages.${system}) git-wrapped git-wrapped-full;
+        in
+        {
+          options.wrappers.git = {
+            genCommitMsg = lib.mkEnableOption "the `git sci` helper, which adds neovim-wrapped (~3.7 GiB) to git's closure";
+
+            wrapper = lib.mkOption {
+              type = lib.types.package;
+              default = if config.wrappers.git.genCommitMsg then git-wrapped-full else git-wrapped;
+            };
+          };
+        };
     in
     {
-      options.wrappers.git = {
-        genCommitMsg = lib.mkEnableOption "the `git sci` helper, which adds neovim-wrapped (~3.7 GiB) to git's closure";
-
-        wrapper = lib.mkOption {
-          type = lib.types.package;
-          default = if config.wrappers.git.genCommitMsg then git-wrapped-full else git-wrapped;
-        };
-      };
+      nixosModules.git = gitModule;
+      darwinModules.git = gitModule;
     };
 }

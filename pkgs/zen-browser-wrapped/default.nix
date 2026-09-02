@@ -35,7 +35,7 @@
       };
     };
 
-  flake.nixosModules.zenBrowser =
+  flake.nixosModules.zen-browser =
     {
       config,
       pkgs,

@@ -34,6 +34,7 @@ in
       }
       self.darwinModules.workstation
       self.darwinModules.base
+      self.darwinModules.git
       self.darwinModules.unfree
       self.darwinModules.nixIndex
       self.darwinModules.ntfyDesktop
