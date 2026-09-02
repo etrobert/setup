@@ -11,37 +11,28 @@
     let
       inherit (pkgs.stdenv.hostPlatform) system;
 
-      # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1 streams
-      # software-decode and peg the CPU. Disabling it makes sites serve VP9,
-      # which this GPU decodes in hardware. Drop when leod goes.
-      # leod's i915 iGPU cannot decode AV1 in hardware and exposes no VRAM stat.
-      onLeod = config.networking.hostName == "leod";
-
-      # leod's Intel UHD 620 can't hardware-decode AV1, so YouTube's AV1
-      # streams software-decode and peg the CPU. Disabling it makes sites
-      # serve VP9, which this GPU decodes in hardware. Drop when leod goes.
-      # leod's i915 iGPU cannot decode AV1 in hardware.
       firefox =
-        if onLeod then
-          self.packages.${system}.firefox-wrapped-no-av1
+        if config.gpu.hasAv1Decode then
+          self.packages.${system}.firefox-wrapped
         else
-          self.packages.${system}.firefox-wrapped;
+          self.packages.${system}.firefox-wrapped-no-av1;
 
       zen-browser =
-        if onLeod then
-          self.packages.${system}.zen-browser-wrapped-no-av1
+        if config.gpu.hasAv1Decode then
+          self.packages.${system}.zen-browser-wrapped
         else
-          self.packages.${system}.zen-browser-wrapped;
+          self.packages.${system}.zen-browser-wrapped-no-av1;
 
       noctalia-wrapped =
-        if onLeod then
-          self.packages.${system}.noctalia-wrapped-no-vram
+        if config.gpu.hasVramStat then
+          self.packages.${system}.noctalia-wrapped
         else
-          self.packages.${system}.noctalia-wrapped;
+          self.packages.${system}.noctalia-wrapped-no-vram;
     in
     {
       imports = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
+        self.nixosModules.gpu
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman

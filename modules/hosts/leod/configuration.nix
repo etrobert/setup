@@ -21,6 +21,12 @@
 
       networking.hostName = "leod"; # Define your hostname.
 
+      # Intel UHD 620 (i915).
+      gpu = {
+        hasAv1Decode = false;
+        hasVramStat = false;
+      };
+
       services.fprintd.enable = true;
 
       # leod is the only host that travels, so it geolocates its timezone
