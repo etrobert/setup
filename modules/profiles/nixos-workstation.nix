@@ -113,7 +113,24 @@
         i2c.enable = true;
       };
 
-      security.rtkit.enable = true;
+      security = {
+        rtkit.enable = true;
+
+        sudo.extraRules = [
+          {
+            users = [ "soft" ];
+            commands = [
+              {
+                # Not ${pkgs.dmidecode}/bin: sudo canonicalizes the parent
+                # directory before matching (1.9.14+), so a store path never
+                # matches what PATH resolves.
+                command = "/run/current-system/sw/bin/dmidecode";
+                options = [ "NOPASSWD" ];
+              }
+            ];
+          }
+        ];
+      };
 
       systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
 
@@ -137,6 +154,7 @@
             bibata-cursors
             chromium
             ddcutil
+            dmidecode
             kdePackages.okular
             mpv
             orca-slicer
