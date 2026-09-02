@@ -3,36 +3,20 @@
   flake.nixosModules.nixosWorkstation =
     {
       self,
-      config,
       pkgs,
       lib,
       ...
     }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
-
-      firefox =
-        if config.gpu.hasAv1Decode then
-          self.packages.${system}.firefox-wrapped
-        else
-          self.packages.${system}.firefox-wrapped-no-av1;
-
-      zen-browser =
-        if config.gpu.hasAv1Decode then
-          self.packages.${system}.zen-browser-wrapped
-        else
-          self.packages.${system}.zen-browser-wrapped-no-av1;
-
-      noctalia-wrapped =
-        if config.gpu.hasVramStat then
-          self.packages.${system}.noctalia-wrapped
-        else
-          self.packages.${system}.noctalia-wrapped-no-vram;
     in
     {
       imports = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
         self.nixosModules.gpu
+        self.nixosModules.firefox
+        self.nixosModules.zenBrowser
+        self.nixosModules.noctalia
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
@@ -145,13 +129,8 @@
             whatsapp-electron
             wl-clipboard
           ];
-
-          otherPackages = [
-            zen-browser
-            firefox
-          ];
         in
-        customPackages ++ externalPackages ++ otherPackages;
+        customPackages ++ externalPackages;
 
       environment = {
         sessionVariables.BROWSER = "open-url";
@@ -213,8 +192,6 @@
         noctalia = {
           enable = true;
           systemd.enable = true;
-
-          package = noctalia-wrapped;
 
           recommendedServices.enable = true;
         };

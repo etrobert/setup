@@ -21,4 +21,16 @@
         firefox-wrapped-no-av1 = makeFirefox { "media.av1.enabled" = false; };
       };
     };
+
+  flake.nixosModules.firefox =
+    { config, pkgs, ... }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (self.packages.${system}) firefox-wrapped firefox-wrapped-no-av1;
+    in
+    {
+      environment.systemPackages = [
+        (if config.gpu.hasAv1Decode then firefox-wrapped else firefox-wrapped-no-av1)
+      ];
+    };
 }

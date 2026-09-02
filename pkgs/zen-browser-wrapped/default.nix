@@ -34,4 +34,16 @@
         zen-browser-wrapped-no-av1 = makeZen { "media.av1.enabled" = false; };
       };
     };
+
+  flake.nixosModules.zenBrowser =
+    { config, pkgs, ... }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (self.packages.${system}) zen-browser-wrapped zen-browser-wrapped-no-av1;
+    in
+    {
+      environment.systemPackages = [
+        (if config.gpu.hasAv1Decode then zen-browser-wrapped else zen-browser-wrapped-no-av1)
+      ];
+    };
 }

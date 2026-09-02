@@ -63,4 +63,15 @@
         noctalia-wrapped-no-vram = makeNoctalia false;
       };
     };
+
+  flake.nixosModules.noctalia =
+    { config, pkgs, ... }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (self.packages.${system}) noctalia-wrapped noctalia-wrapped-no-vram;
+    in
+    {
+      programs.noctalia.package =
+        if config.gpu.hasVramStat then noctalia-wrapped else noctalia-wrapped-no-vram;
+    };
 }
