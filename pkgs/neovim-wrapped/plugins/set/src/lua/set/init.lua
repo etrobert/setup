@@ -72,6 +72,8 @@ vim.lsp.codelens.enable(true)
 vim.lsp.inlay_hint.enable(true)
 
 vim.o.winborder = "rounded"
+-- The completion menu is not a float, so 'winborder' does not reach it.
+vim.o.pumborder = "rounded"
 
 -- Hide . and .. in netrw
 vim.g.netrw_list_hide = "^\\.\\.\\?/$"
