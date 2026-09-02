@@ -3,6 +3,7 @@
   flake.nixosModules.nixosWorkstation =
     {
       self,
+      config,
       pkgs,
       lib,
       ...
@@ -128,8 +129,13 @@
             whatsapp-electron
             wl-clipboard
           ];
+
+          otherPackages = with config.wrappers; [
+            zen-browser
+            firefox
+          ];
         in
-        customPackages ++ externalPackages;
+        customPackages ++ externalPackages ++ otherPackages;
 
       environment = {
         sessionVariables.BROWSER = "open-url";
@@ -191,6 +197,8 @@
         noctalia = {
           enable = true;
           systemd.enable = true;
+
+          package = config.wrappers.noctalia;
 
           recommendedServices.enable = true;
         };

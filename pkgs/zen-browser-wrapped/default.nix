@@ -36,14 +36,20 @@
     };
 
   flake.nixosModules.zenBrowser =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) zen-browser-wrapped zen-browser-wrapped-no-av1;
     in
     {
-      environment.systemPackages = [
-        (if config.gpu.hasAv1Decode then zen-browser-wrapped else zen-browser-wrapped-no-av1)
-      ];
+      options.wrappers.zen-browser = lib.mkOption {
+        type = lib.types.package;
+        default = if config.gpu.hasAv1Decode then zen-browser-wrapped else zen-browser-wrapped-no-av1;
+      };
     };
 }

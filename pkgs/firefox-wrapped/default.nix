@@ -23,14 +23,20 @@
     };
 
   flake.nixosModules.firefox =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) firefox-wrapped firefox-wrapped-no-av1;
     in
     {
-      environment.systemPackages = [
-        (if config.gpu.hasAv1Decode then firefox-wrapped else firefox-wrapped-no-av1)
-      ];
+      options.wrappers.firefox = lib.mkOption {
+        type = lib.types.package;
+        default = if config.gpu.hasAv1Decode then firefox-wrapped else firefox-wrapped-no-av1;
+      };
     };
 }
