@@ -130,9 +130,9 @@
             wl-clipboard
           ];
 
-          otherPackages = with config.wrappers; [
-            zen-browser
-            firefox
+          otherPackages = [
+            config.wrappers.zen-browser.wrapper
+            config.wrappers.firefox.wrapper
           ];
         in
         customPackages ++ externalPackages ++ otherPackages;
@@ -198,7 +198,7 @@
           enable = true;
           systemd.enable = true;
 
-          package = config.wrappers.noctalia;
+          package = config.wrappers.noctalia.wrapper;
 
           recommendedServices.enable = true;
         };

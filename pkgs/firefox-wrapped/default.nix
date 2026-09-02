@@ -34,7 +34,7 @@
       inherit (self.packages.${system}) firefox-wrapped firefox-wrapped-no-av1;
     in
     {
-      options.wrappers.firefox = lib.mkOption {
+      options.wrappers.firefox.wrapper = lib.mkOption {
         type = lib.types.package;
         default = if config.gpu.hasAv1Decode then firefox-wrapped else firefox-wrapped-no-av1;
       };
