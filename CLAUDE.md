@@ -87,6 +87,30 @@ config file (e.g. a Neovim plugin's `config.lua`) does not affect the installed
 binary until a system rebuild. To test a change in isolation, run just that
 package from the flake — e.g. `nix run ".#neovim-wrapped" -- <file-or-dir>`.
 
+### Per-host wrapper configuration
+
+`perSystem.packages.<name>` is keyed by system, so tower and leod — both
+x86_64-linux — cannot get different builds from it. A wrapper that must vary per
+host declares an option instead:
+
+- A wrapper gets a module **only if it varies per host**. Otherwise it stays a
+  plain `perSystem.packages.<name>`; most do.
+- Export `flake.nixosModules.<name>`. A wrapper imported from a profile shared
+  with darwin (`base.nix`) defines the module in a `let` and exports it as both
+  `nixosModules` and `darwinModules` — flake-parts stamps a class on each, so
+  one value cannot serve both. `git-wrapped` is the only such case.
+- The option is `wrappers.<name>.wrapper`, holding the package this host's
+  config calls for. Wrapper-specific knobs are siblings
+  (`wrappers.git.genCommitMsg`). Named after the package minus `-wrapped`.
+- A trait read by more than one wrapper gets its own module — `gpu.hasAv1Decode`
+  serves firefox and zen. A trait read by one lives in that wrapper's option.
+- The module exposes; the consumer places. A wrapper module never writes
+  `environment.systemPackages`. (Feature modules that own a service, like
+  `darkman`, do install their own package — that is a different thing.)
+
+Verify any change here by comparing `config.system.build.toplevel.drvPath`
+against `main` for every host: these are refactors and should be no-ops.
+
 ### neovim-wrapped plugin conventions
 
 Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a

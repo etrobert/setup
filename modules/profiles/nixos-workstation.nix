@@ -15,7 +15,7 @@
       imports = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
         self.nixosModules.firefox
-        self.nixosModules.zenBrowser
+        self.nixosModules.zen-browser
         self.nixosModules.noctalia
         self.nixosModules.networkmanager
         self.nixosModules.pimsync

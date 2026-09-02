@@ -13,8 +13,6 @@ _: {
         prettierrc = pkgs.writeText "prettierrc.json" (builtins.toJSON { proseWrap = "always"; });
       in
       {
-        imports = [ self.wrapperModules.git ];
-
         nix.settings = {
           experimental-features = [
             "nix-command"
