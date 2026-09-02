@@ -76,7 +76,7 @@
       inherit (self.packages.${system}) noctalia-wrapped noctalia-wrapped-no-vram;
     in
     {
-      options.wrappers.noctalia = lib.mkOption {
+      options.wrappers.noctalia.wrapper = lib.mkOption {
         type = lib.types.package;
         default = if config.gpu.hasVramStat then noctalia-wrapped else noctalia-wrapped-no-vram;
       };

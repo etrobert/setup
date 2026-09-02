@@ -47,7 +47,7 @@
       inherit (self.packages.${system}) zen-browser-wrapped zen-browser-wrapped-no-av1;
     in
     {
-      options.wrappers.zen-browser = lib.mkOption {
+      options.wrappers.zen-browser.wrapper = lib.mkOption {
         type = lib.types.package;
         default = if config.gpu.hasAv1Decode then zen-browser-wrapped else zen-browser-wrapped-no-av1;
       };
