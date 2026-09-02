@@ -111,14 +111,11 @@
           inherit (self.packages.${system}) git-wrapped git-wrapped-full;
         in
         {
-          options.wrappers.git = {
-            genCommitMsg = lib.mkEnableOption "the `git sci` helper, which adds neovim-wrapped (~3.7 GiB) to git's closure";
+          options.wrappers.git.genCommitMsg = lib.mkEnableOption "the `git sci` helper, which adds neovim-wrapped (~3.7 GiB) to git's closure";
 
-            wrapper = lib.mkOption {
-              type = lib.types.package;
-              default = if config.wrappers.git.genCommitMsg then git-wrapped-full else git-wrapped;
-            };
-          };
+          config.environment.systemPackages = [
+            (if config.wrappers.git.genCommitMsg then git-wrapped-full else git-wrapped)
+          ];
         };
     in
     {
