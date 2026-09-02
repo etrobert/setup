@@ -3,7 +3,6 @@
   flake.nixosModules.nixosWorkstation =
     {
       self,
-      config,
       pkgs,
       lib,
       ...

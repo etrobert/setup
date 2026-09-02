@@ -3,7 +3,6 @@ _: {
     nixosModules.base =
       {
         self,
-        config,
         pkgs,
         ...
       }:
@@ -42,7 +41,6 @@ _: {
             tmux-sessionizer
             switch
           ])
-          ++ [ config.wrappers.git.wrapper ]
           ++ (with pkgs; [
             bat
             coreutils
