@@ -1,12 +1,12 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
+      config,
       pkgs,
       ...
     }:
     {
-      packages.fzf-wrapped = self.lib.wrapPackage pkgs {
+      packages.fzf-wrapped = config.lib.wrapPackage {
         package = pkgs.fzf;
 
         # fzf runs preview/execute commands via $SHELL from the caller's PATH.

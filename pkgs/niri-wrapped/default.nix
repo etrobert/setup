@@ -2,6 +2,7 @@
 {
   perSystem =
     {
+      config,
       pkgs,
       self',
       ...
@@ -14,7 +15,8 @@
               dev ? false,
             }:
             let
-              config = if dev then "/home/soft/work/setup/main/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
+              configFile =
+                if dev then "/home/soft/work/setup/main/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
               path = [
                 self'.packages.ghostty-wrapped
@@ -24,9 +26,9 @@
                 pkgs.xwayland-satellite
               ];
             in
-            self.lib.wrapPackage pkgs {
+            config.lib.wrapPackage {
               package = pkgs.niri;
-              env.NIRI_CONFIG = "${config}";
+              env.NIRI_CONFIG = "${configFile}";
               prefix.XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons";
 
               runtimeInputs = path;

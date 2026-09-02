@@ -1,7 +1,7 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
+      config,
       pkgs,
       lib,
       ...
@@ -11,7 +11,7 @@
       ghostty = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
     in
     {
-      packages.ghostty-wrapped = self.lib.wrapPackage pkgs {
+      packages.ghostty-wrapped = config.lib.wrapPackage {
         package = ghostty;
         # makeBinaryWrapper produces a compiled binary rather than a shell script.
         # macOS refuses to launch shell scripts as .app bundle executables

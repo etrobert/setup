@@ -1,12 +1,12 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
+      config,
       pkgs,
       ...
     }:
     {
-      packages.tmux-wrapped = self.lib.wrapPackage pkgs {
+      packages.tmux-wrapped = config.lib.wrapPackage {
         package = pkgs.tmux;
         flags = [ "-f ${./tmux.conf}" ];
         inheritPath = true;

@@ -1,7 +1,7 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
+      config,
       pkgs,
       lib,
       inputs',
@@ -19,20 +19,20 @@
 
           # Both backends in one config: `??` takes the default, `???` asks for claude
           # with -m.
-          config = pkgs.writeText "aichat.yaml" (
+          configFile = pkgs.writeText "aichat.yaml" (
             builtins.replaceStrings [ "@claude@" ] [ (lib.getExe claude-code-wrapped) ] (
               builtins.readFile ./config.yaml
             )
           );
         in
-        self.lib.wrapPackage pkgs {
+        config.lib.wrapPackage {
           package = aichat;
           # aichat runs the accepted command by spawning `$SHELL -c`, which needs PATH.
           inheritPath = true;
-          setDefaults.AICHAT_CONFIG_FILE = "${config}";
+          setDefaults.AICHAT_CONFIG_FILE = "${configFile}";
           # --dry-run fails the build on wrong config
           checks = [
-            "AICHAT_CONFIG_FILE=${config} HOME=$(mktemp -d) ${aichat}/bin/aichat --dry-run -e 'list files' >/dev/null"
+            "AICHAT_CONFIG_FILE=${configFile} HOME=$(mktemp -d) ${aichat}/bin/aichat --dry-run -e 'list files' >/dev/null"
           ];
         };
     };

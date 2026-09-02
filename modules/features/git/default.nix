@@ -2,6 +2,7 @@
 {
   perSystem =
     {
+      config,
       pkgs,
       lib,
       self',
@@ -71,7 +72,7 @@
                 '')
               ];
             in
-            self.lib.wrapPackage pkgs {
+            config.lib.wrapPackage {
               package = pkgs.git;
               extraPaths = [
                 git-project-clone
