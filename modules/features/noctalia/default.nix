@@ -15,7 +15,7 @@
         let
           plugins = ./plugins;
 
-          wallpaper = ../../assets/saint-levant.jpg;
+          wallpaper = ../../../assets/saint-levant.jpg;
 
           configHome = pkgs.runCommand "noctalia-config-home" { } ''
             mkdir -p $out/noctalia
@@ -64,21 +64,23 @@
       };
     };
 
+  # The desktop shell: bar, launcher, notification centre and lock screen in one.
   flake.nixosModules.noctalia =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
+    { config, pkgs, ... }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) noctalia-wrapped noctalia-wrapped-no-vram;
     in
     {
-      options.wrappers.noctalia.wrapper = lib.mkOption {
-        type = lib.types.package;
-        default = if config.gpu.hasVramStat then noctalia-wrapped else noctalia-wrapped-no-vram;
+      programs.noctalia = {
+        enable = true;
+        systemd.enable = true;
+
+        # The module's default package is v5, a native binary with niri support
+        # compiled in (compositors::niri::NiriRuntime, driven off NIRI_SOCKET).
+        package = if config.gpu.hasVramStat then noctalia-wrapped else noctalia-wrapped-no-vram;
+
+        recommendedServices.enable = true;
       };
     };
 }
