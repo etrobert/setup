@@ -90,26 +90,31 @@ package from the flake — e.g. `nix run ".#neovim-wrapped" -- <file-or-dir>`.
 ### Per-host wrapper configuration
 
 `perSystem.packages.<name>` is keyed by system, so tower and leod — both
-x86_64-linux — cannot get different builds from it. A wrapper that must vary per
-host declares an option instead:
+x86_64-linux — cannot get different builds from it. A package that must differ
+per host becomes a feature under `modules/features/`, alongside `darkman`:
 
-- A wrapper gets a module **only if it varies per host**. Otherwise it stays a
-  plain `perSystem.packages.<name>`; most do.
-- Export `flake.nixosModules.<name>`. A wrapper imported from a profile shared
-  with darwin (`base.nix`) defines the module in a `let` and exports it as both
-  `nixosModules` and `darwinModules` — flake-parts stamps a class on each, so
-  one value cannot serve both. `git-wrapped` is the only such case.
-- The option is `wrappers.<name>.wrapper`, holding the package this host's
-  config calls for. Wrapper-specific knobs are siblings
-  (`wrappers.git.genCommitMsg`). Named after the package minus `-wrapped`.
-- A trait read by more than one wrapper gets its own module — `gpu.hasAv1Decode`
-  serves firefox and zen. A trait read by one lives in that wrapper's option.
-- The module exposes; the consumer places. A wrapper module never writes
-  `environment.systemPackages`. (Feature modules that own a service, like
-  `darkman`, do install their own package — that is a different thing.)
+- The file owns both halves: `perSystem.packages.<name>-wrapped` (every variant,
+  so each stays a `nix build .#` target) and `flake.nixosModules.<name>`.
+- `flake.nixosModules.<name>` **is the feature "this host has \<name\>"**, not a
+  handle on a package. It installs what it owns — `environment.systemPackages`,
+  or `programs.<name>.package` where the consuming module has one — choosing the
+  variant from the host's config. Importing it is what enables it; there is no
+  separate `enable`.
+- A wrapper only becomes a feature if it varies per host, or already owns
+  services or config like `darkman`. Everything else stays a plain
+  `perSystem.packages.<name>` under `pkgs/`; most do.
+- Host-facing knobs are options the feature declares:
+  `wrappers.git.genCommitMsg`, `wrappers.niri.liveConfig`. A knob read by more
+  than one feature gets its own module instead — `gpu.hasAv1Decode` serves
+  firefox and zen.
+- A feature imported from a profile shared with darwin (`base.nix`) defines its
+  module in a `let` and exports it as both `nixosModules` and `darwinModules`;
+  flake-parts stamps a class on each, so one value cannot serve both. `git` is
+  the only such case.
 
-Verify any change here by comparing `config.system.build.toplevel.drvPath`
-against `main` for every host: these are refactors and should be no-ops.
+Moving a package into a feature reorders `environment.systemPackages`, so the
+host toplevel hash changes while nothing rebuilds. Check that with a closure
+diff: only `system-path`, `etc`, `activate` and unit derivations should differ.
 
 ### neovim-wrapped plugin conventions
 

@@ -130,10 +130,7 @@
             wl-clipboard
           ];
 
-          otherPackages = [
-            config.wrappers.zen-browser.wrapper
-            config.wrappers.firefox.wrapper
-          ];
+          otherPackages = [ config.wrappers.zen-browser.wrapper ];
         in
         customPackages ++ externalPackages ++ otherPackages;
 
