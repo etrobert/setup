@@ -322,6 +322,9 @@ layout {
 // Moves windows in follow-mode along when switching workspaces (Mod+G).
 spawn-at-startup "niriusd"
 
+// Keeps the named workspaces below on the physically largest screen.
+spawn-at-startup "niri-pin-workspaces"
+
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
     // skip-at-startup
