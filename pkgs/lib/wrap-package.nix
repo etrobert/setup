@@ -120,12 +120,11 @@ let
     ++ lib.mapAttrsToList (
       k: v: "    --prefix ${lib.escapeShellArg k} : ${lib.escapeShellArg v}"
     ) prefix
-    # --add-flags values are inserted *verbatim* into the generated wrapper
-    # script (see makeWrapper docs: "ARGS verbatim to the Bash-interpreted
-    # invocation").  Double-quoting keeps the value as one shell word during
-    # the wrapProgram call; bash processes any quoting inside the value when
-    # the wrapper actually runs.
-    ++ map (f: "    " + ''--add-flags "${f}"'') flags
+    # escapeShellArg, not double quotes: the build shell would expand a `$` in
+    # the value, baking `$HOME` in as /homeless-shelter.  makeWrapper writes the
+    # value into the wrapper's script text (make-wrapper.sh:201), so it still
+    # word-splits at runtime — which `flags = [ "-f ${./tmux.conf}" ]` relies on.
+    ++ map (f: "    --add-flags " + lib.escapeShellArg f) flags
     # --run: a command the wrapper runs before exec'ing the binary.  The snippet
     # is single-quoted so the build shell passes it to makeWrapper verbatim; any
     # $VAR / $(…) inside it is expanded only when the wrapper actually runs.
