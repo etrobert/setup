@@ -130,9 +130,8 @@
             wl-clipboard
           ];
 
-          otherPackages = [ config.wrappers.zen-browser.wrapper ];
         in
-        customPackages ++ externalPackages ++ otherPackages;
+        customPackages ++ externalPackages;
 
       environment = {
         sessionVariables.BROWSER = "open-url";
