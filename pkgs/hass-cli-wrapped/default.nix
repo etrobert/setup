@@ -12,7 +12,14 @@ _: {
         # --set-default so an existing HASS_SERVER still wins.
         setDefaults.HASS_SERVER = "http://100.103.91.42:8123";
         # Read the long-lived token at runtime, unless HASS_TOKEN is already set.
-        run = [ ''export HASS_TOKEN="''${HASS_TOKEN:-$(cat /run/agenix/hass-token)}"'' ];
+        # `$(<file)` builtin so the read doesn't need `cat` on the caller's PATH
+        # (`run` snippets execute before the wrapper's own PATH line), and a bare
+        # assignment so `set -e` aborts on an unreadable secret — `export VAR=$(…)`
+        # returns the export's status, masking the failure and baking in an empty token.
+        run = [
+          ''HASS_TOKEN="''${HASS_TOKEN:-$(< /run/agenix/hass-token)}"''
+          "export HASS_TOKEN"
+        ];
       };
     };
 }
