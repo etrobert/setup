@@ -116,20 +116,9 @@
       security = {
         rtkit.enable = true;
 
-        sudo.extraRules = [
-          {
-            users = [ "soft" ];
-            commands = [
-              {
-                # Not ${pkgs.dmidecode}/bin: sudo canonicalizes the parent
-                # directory before matching (1.9.14+), so a store path never
-                # matches what PATH resolves.
-                command = "/run/current-system/sw/bin/dmidecode";
-                options = [ "NOPASSWD" ];
-              }
-            ];
-          }
-        ];
+        # soft is in the docker group with a rootful daemon, so the password
+        # gates nothing an attacker can't walk around.
+        sudo.wheelNeedsPassword = false;
       };
 
       systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
