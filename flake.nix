@@ -177,7 +177,6 @@
                 pkg:
                 builtins.elem (lib.getName pkg) [
                   "claude-code"
-                  "cmp-emoji"
                   "copilot-language-server"
                   "vscode"
                   "vscode-extension-ms-vsliveshare-vsliveshare"

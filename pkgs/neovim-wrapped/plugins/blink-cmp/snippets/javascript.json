@@ -1,0 +1,10 @@
+{
+  "useEffect log": {
+    "prefix": "uel",
+    "body": [
+      "useEffect(() => {",
+      "  console.log('${1:variable} changed:', $1);",
+      "}, [$1]);"
+    ]
+  }
+}
