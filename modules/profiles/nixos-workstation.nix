@@ -185,20 +185,6 @@
           package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
         };
 
-        # The desktop shell: bar, launcher, notification centre and lock
-        # screen in one.
-        #
-        # The module's default package is v5, a native binary with niri
-        # support compiled in (compositors::niri::NiriRuntime, driven off
-        # NIRI_SOCKET).
-        noctalia = {
-          enable = true;
-          systemd.enable = true;
-
-          package = config.wrappers.noctalia.wrapper;
-
-          recommendedServices.enable = true;
-        };
       };
     };
 }
