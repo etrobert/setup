@@ -3,22 +3,20 @@
   perSystem =
     { pkgs, lib, ... }:
     let
-      browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
-
-      makeFirefox =
-        extraSettings:
-        pkgs.wrapFirefox pkgs.firefox-unwrapped {
-          extraPrefs = browserConfig.renderDefaultPrefs (browserConfig.sharedSettings // extraSettings);
-          extraPolicies = browserConfig.sharedPolicies;
-        };
+      build =
+        av1:
+        (lib.evalModules {
+          modules = [
+            ./module.nix
+            { inherit av1; }
+          ];
+          specialArgs = { inherit pkgs self; };
+        }).config.wrapper;
     in
     {
       packages = {
-        firefox-wrapped = makeFirefox { };
-
-        # Hardware AV1 decode is broken on the i915 iGPU; software decode of the
-        # same streams pins the CPU, so turn AV1 off there instead.
-        firefox-wrapped-no-av1 = makeFirefox { "media.av1.enabled" = false; };
+        firefox-wrapped = build true;
+        firefox-wrapped-no-av1 = build false;
       };
     };
 
@@ -29,14 +27,15 @@
       lib,
       ...
     }:
-    let
-      inherit (pkgs.stdenv.hostPlatform) system;
-      inherit (self.packages.${system}) firefox-wrapped firefox-wrapped-no-av1;
-    in
     {
-      options.wrappers.firefox.wrapper = lib.mkOption {
-        type = lib.types.package;
-        default = if config.gpu.hasAv1Decode then firefox-wrapped else firefox-wrapped-no-av1;
+      options.wrappers.firefox = lib.mkOption {
+        type = lib.types.submoduleWith {
+          modules = [ ./module.nix ];
+          specialArgs = { inherit pkgs self; };
+        };
+        default = { };
       };
+
+      config.wrappers.firefox.av1 = lib.mkDefault config.gpu.hasAv1Decode;
     };
 }
