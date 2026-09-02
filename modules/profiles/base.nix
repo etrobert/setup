@@ -1,13 +1,20 @@
 _: {
   flake = rec {
     nixosModules.base =
-      { self, pkgs, ... }:
+      {
+        self,
+        config,
+        pkgs,
+        ...
+      }:
       let
         homeDir = if pkgs.stdenv.hostPlatform.isDarwin then "/Users/soft" else "/home/soft";
 
         prettierrc = pkgs.writeText "prettierrc.json" (builtins.toJSON { proseWrap = "always"; });
       in
       {
+        imports = [ self.wrapperModules.git ];
+
         nix.settings = {
           experimental-features = [
             "nix-command"
@@ -31,13 +38,13 @@ _: {
             bash-wrapped
             fzf-wrapped
             git-worktree-add
-            git-wrapped
             ntfy-wrapped
             send-file
             tmux-wrapped
             tmux-sessionizer
             switch
           ])
+          ++ [ config.wrappers.git.wrapper ]
           ++ (with pkgs; [
             bat
             coreutils

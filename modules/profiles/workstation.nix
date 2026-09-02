@@ -8,6 +8,9 @@ _: {
         ...
       }:
       {
+        # Workstations have neovim-wrapped anyway, so `git sci` costs them nothing.
+        wrappers.git.genCommitMsg = true;
+
         allowedUnfreePackages = [
           "claude-code"
           "discord"
