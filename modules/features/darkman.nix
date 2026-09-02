@@ -1,21 +1,26 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     {
       packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         darkman-wrapped =
           let
-            config = pkgs.writeTextDir "darkman/config.yaml" /* yaml */ ''
+            configDir = pkgs.writeTextDir "darkman/config.yaml" /* yaml */ ''
               lat: 52.5
               lng: 13.4
             '';
           in
-          pkgs.wrapPackage {
+          config.lib.wrapPackage {
             package = pkgs.darkman;
-            env.XDG_CONFIG_HOME = "${config}";
+            env.XDG_CONFIG_HOME = "${configDir}";
             # Fail the build on an invalid config rather than at service start-up.
-            checks = [ "XDG_CONFIG_HOME=${config} $out/bin/darkman check" ];
+            checks = [ "XDG_CONFIG_HOME=${configDir} $out/bin/darkman check" ];
           };
       };
     };

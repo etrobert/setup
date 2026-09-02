@@ -1,6 +1,10 @@
 _: {
   perSystem =
-    { pkgs, ... }:
+    {
+      config,
+      pkgs,
+      ...
+    }:
     {
       packages.alacritty-wrapped =
         let
@@ -29,7 +33,7 @@ _: {
             import = [ "${./catppuccin-macchiato.toml}" ]
           '';
         in
-        pkgs.wrapPackage {
+        config.lib.wrapPackage {
           package = pkgs.alacritty;
           flags = [ "--config-file ${configFile}" ];
           inheritPath = true;
