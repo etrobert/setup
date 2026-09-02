@@ -15,6 +15,7 @@
       imports = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
         self.nixosModules.firefox
+        self.nixosModules.niri
         self.nixosModules.zen-browser
         self.nixosModules.noctalia
         self.nixosModules.networkmanager
@@ -25,6 +26,10 @@
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
       ];
+
+      # Every workstation has the repo checked out at /home/soft/work/setup/main,
+      # so niri reads its config from there and a reload picks up edits.
+      wrappers.niri.liveConfig = true;
 
       documentation.doc.enable = false;
 
@@ -185,7 +190,7 @@
 
         niri = {
           enable = true;
-          package = self.packages.${system}.niri-wrapped-dev; # TODO: Move out of dev
+          package = config.wrappers.niri.wrapper;
         };
 
         # The desktop shell: bar, launcher, notification centre and lock

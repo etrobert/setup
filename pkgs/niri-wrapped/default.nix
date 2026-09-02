@@ -40,4 +40,30 @@
           niri-wrapped-dev = makeNiriWrapped { dev = true; };
         };
     };
+
+  flake.nixosModules.niri =
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (self.packages.${system}) niri-wrapped niri-wrapped-dev;
+    in
+    {
+      options.wrappers.niri = {
+        liveConfig = lib.mkEnableOption ''
+          reading config.kdl from the working copy at /home/soft/work/setup/main
+          instead of the store, so edits apply on reload without a rebuild. niri
+          falls back to its built-in defaults if that path is absent
+        '';
+
+        wrapper = lib.mkOption {
+          type = lib.types.package;
+          default = if config.wrappers.niri.liveConfig then niri-wrapped-dev else niri-wrapped;
+        };
+      };
+    };
 }
