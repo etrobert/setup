@@ -142,6 +142,8 @@
             orca-slicer
             pavucontrol
             usbutils # provides lsusb
+            # Drag-and-drop monitor layout over wlr-output-management
+            wdisplays
             whatsapp-electron
             wl-clipboard
           ];
