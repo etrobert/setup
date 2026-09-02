@@ -13,7 +13,6 @@
     {
       imports = [
         inputs.nix-flatpak.nixosModules.nix-flatpak
-        self.nixosModules.gpu
         self.nixosModules.firefox
         self.nixosModules.zenBrowser
         self.nixosModules.noctalia

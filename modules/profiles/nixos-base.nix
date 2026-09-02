@@ -14,6 +14,7 @@ _: {
     {
       imports = with self.nixosModules; [
         atuinLogin
+        gpu
         kanata
         ntfyFailureAlerts
       ];
