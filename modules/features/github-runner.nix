@@ -70,6 +70,10 @@ _: {
           # eligible for those jobs and fail them on colleagues' pull requests;
           # without them it answers only to `runs-on: [nix]`.
           settings = {
+            # A fine-grained PAT carries exactly one resource owner, so this
+            # cannot share the token the etrobert runners use.
+            tokenFile = config.age.secrets.lafraise-runner-token.path;
+
             noDefaultLabels = true;
             extraLabels = [ "nix" ];
           };
@@ -89,6 +93,7 @@ _: {
       };
 
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
+      age.secrets.lafraise-runner-token.file = ../../secrets/lafraise-runner-token.age;
 
       # Run aarch64 builds (pi's CI job) via QEMU user emulation.
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
