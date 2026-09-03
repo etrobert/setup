@@ -15,9 +15,19 @@
               lat: 52.5
               lng: 13.4
             '';
+
+            # geoclue drops an update unless it clears the distance AND time
+            # thresholds, so darkman's 4h one pins the location for 4h however
+            # far the host has moved. Let distance alone decide.
+            darkman = pkgs.darkman.overrideAttrs (old: {
+              postPatch = (old.postPatch or "") + ''
+                substituteInPlace location.go \
+                  --replace-fail 'time.Minute, 40000, 3600*4' 'time.Minute, 40000, 0'
+              '';
+            });
           in
           config.lib.wrapPackage {
-            package = pkgs.darkman;
+            package = darkman;
             env.XDG_CONFIG_HOME = "${configDir}";
             # Fail the build on an invalid config rather than at service start-up.
             checks = [ "XDG_CONFIG_HOME=${configDir} $out/bin/darkman check" ];
