@@ -112,16 +112,14 @@ cursor {
     position x=1280 y=0
 }
 
-// The Dell U3223QE (4K), used on both tower and leod. scale 1.5 -> logical
-// 2560x1440; position centers it above leod's panel: 683 + (1706 - 2560) / 2.
+// The externals, all 4K at scale 1.25 -> logical 3072x1728, centered above
+// leod's panel: 683 + (1706 - 3072) / 2 = 0. niri matches the whole
+// make/model/serial, so one block per unit.
 output "Dell Inc. DELL U3223QE 1GPL9P3" {
     scale 1.25
-    position x=256 y=288
+    position x=0 y=0
 }
 
-// leod's Philips 329P1 (4K), scale 1.25 -> logical 3072x1728, centered above the
-// panel. Three units, and niri matches the whole make/model/serial, so one
-// block each.
 output "Philips Consumer Electronics Company PHL 329P1 AU82510000304" {
     scale 1.25
     position x=0 y=0

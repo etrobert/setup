@@ -103,8 +103,14 @@ action = "lock"
 
 # Showing command output on the lock screen needs a desktop widget, hence a
 # plugin: the built-in label widget takes static text. cx/cy are the widget's
-# centre in logical pixels, sized for tower's 2560x1440; the login panel is
-# anchored near the bottom edge, leaving the upper half free.
+# centre, read against the 3072x1728 placement_* frame below rather than the
+# real output: noctalia rescales both by output/placement, so one set of numbers
+# serves every screen. The login panel is anchored near the bottom edge by
+# noctalia itself, leaving the upper half free.
+#
+# box_* has no such frame — it is absolute logical px, scaled only by the global
+# accessibility.ui_scale — so the boxes run proportionally larger on a smaller
+# screen.
 #
 # noctalia mirrors this section into ~/.local/state/noctalia/settings.toml as
 # soon as it injects its per-output login boxes, and that file overlays the
@@ -118,8 +124,10 @@ widget_order = ["date", "clock", "birthdays"]
 # No output: the widgets land on the primary one, whichever host this is.
 [lockscreen_widgets.widget.date]
 type = "clock"
-cx = 1280.0
-cy = 130.0
+cx = 1536.0
+cy = 156.0
+placement_width = 3072.0
+placement_height = 1728.0
 box_width = 380.0
 box_height = 42.0
 
@@ -133,8 +141,10 @@ format = "{:%A, %-d %B}"
 # font, nowhere near the wall-clock size this wants.
 [lockscreen_widgets.widget.clock]
 type = "clock"
-cx = 1280.0
-cy = 270.0
+cx = 1536.0
+cy = 324.0
+placement_width = 3072.0
+placement_height = 1728.0
 box_width = 600.0
 box_height = 230.0
 
@@ -145,8 +155,10 @@ format = "{:%H:%M}"
 
 [lockscreen_widgets.widget.birthdays]
 type = "etrobert/birthdays:desktop"
-cx = 1280.0
-cy = 450.0
+cx = 1536.0
+cy = 540.0
+placement_width = 3072.0
+placement_height = 1728.0
 
 [lockscreen_widgets.widget.birthdays.settings]
 background = false
