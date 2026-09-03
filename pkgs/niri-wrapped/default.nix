@@ -19,6 +19,7 @@
                 if dev then "/home/soft/work/setup/main/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
               path = [
+                self'.packages.float-on-title
                 self'.packages.ghostty-wrapped
                 self'.packages.noctalia-wrapped
                 self'.packages.scale-floating-window
