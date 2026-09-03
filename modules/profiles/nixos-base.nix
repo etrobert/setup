@@ -105,6 +105,10 @@ _: {
 
       };
 
+      # openFirewall defaults true, which opens 22 on every interface.
+      services.openssh.openFirewall = false;
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 22 ];
+
       environment.shells = [ zsh-wrapped ];
 
       users.mutableUsers = false;
