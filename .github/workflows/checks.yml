@@ -35,10 +35,12 @@ jobs:
       - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
 
-  dead-code:
-    name: dead-code
-    # Self-hosted: the sweep evaluates every host once per declared module, so
-    # it wants tower's warm eval cache and cores.
+  # Two jobs rather than two steps: tower registers six runners for this repo,
+  # so the checks overlap instead of adding up.
+  dead-modules:
+    name: dead-modules
+    # Self-hosted: evaluates every host once per declared module, so it wants
+    # tower's warm eval cache and cores.
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -47,6 +49,14 @@ jobs:
 
       - name: Flake modules no host imports
         run: nix run --accept-flake-config .#nix-dead-sweep
+
+  dead-packages:
+    name: dead-packages
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
 
       - name: Packages in no system derivation
         run: nix run --accept-flake-config .#nix-dead-packages
@@ -93,7 +103,7 @@ jobs:
   # without touching branch protection.
   all-checks:
     name: all-checks
-    needs: [format, eval, dead-code, discover, lint]
+    needs: [format, eval, dead-modules, dead-packages, discover, lint]
     if: always()
     runs-on: ubuntu-latest
     permissions:
