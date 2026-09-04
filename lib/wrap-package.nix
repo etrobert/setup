@@ -98,9 +98,37 @@ let
   renameScript =
     if binName != mainProgram then "mv $out/bin/${mainProgram} $out/bin/${binName}" else "";
 
-  # wrapProgram's arguments.  __structuredAttrs hands this list to the builder
-  # as a bash array, so the values never meet a shell parser and nothing here
-  # needs quoting.
+  # Each attribute contributes `<flag> <name> <value>` to the argument list, and
+  # --prefix a separator between the last two.
+  argsFor =
+    flag: attrs:
+    lib.concatLists (
+      lib.mapAttrsToList (k: v: [
+        flag
+        k
+        v
+      ]) attrs
+    );
+  prefixArgs =
+    attrs:
+    lib.concatLists (
+      lib.mapAttrsToList (k: v: [
+        "--prefix"
+        k
+        ":"
+        v
+      ]) attrs
+    );
+  # Each element contributes `<flag> <value>`.
+  eachArg =
+    flag: values:
+    lib.concatMap (v: [
+      flag
+      v
+    ]) values;
+
+  # __structuredAttrs hands this list to the builder as a bash array, so the
+  # values never meet a shell parser and nothing here needs quoting.
   wrapArgs =
     # --inherit-argv0: preserve argv[0] across exec so the login-shell dash
     # (e.g. `-zsh`) survives the wrapper exec.  A shell-script wrapper loses it
@@ -109,70 +137,38 @@ let
     lib.optional inheritArgv0 "--inherit-argv0"
     # --set: force a value into the environment the wrapped program sees,
     # overriding whatever was present at launch.
-    ++ lib.concatLists (
-      lib.mapAttrsToList (k: v: [
-        "--set"
-        k
-        v
-      ]) env
-    )
+    ++ argsFor "--set" env
     # --set-default: bake in a value the wrapped program uses unless the same
     # variable is already present in the environment at runtime.
-    ++ lib.concatLists (
-      lib.mapAttrsToList (k: v: [
-        "--set-default"
-        k
-        v
-      ]) setDefaults
-    )
+    ++ argsFor "--set-default" setDefaults
     # --prefix: colon-prepend a value onto a (possibly-unset) list-style variable
     # at runtime without clobbering existing entries — the right tool for
     # XDG_DATA_DIRS/-style paths (unlike --set, which forces a literal value).
-    ++ lib.concatLists (
-      lib.mapAttrsToList (k: v: [
-        "--prefix"
-        k
-        ":"
-        v
-      ]) prefix
-    )
+    ++ prefixArgs prefix
     # makeWrapper writes the value into the wrapper's script text
     # (make-wrapper.sh:201), so it still word-splits at runtime — which
     # `flags = [ "-f ${./tmux.conf}" ]` relies on.
-    ++ lib.concatMap (f: [
-      "--add-flags"
-      f
-    ]) flags
+    ++ eachArg "--add-flags" flags
     # --run: a command the wrapper runs before exec'ing the binary.  Any
     # $VAR / $(…) inside it is expanded when the wrapper runs, not now.
-    ++ lib.concatMap (r: [
-      "--run"
-      r
-    ]) run
+    ++ eachArg "--run" run
     ++ (
       let
-        path = lib.makeBinPath runtimeInputs;
+        path = {
+          PATH = lib.makeBinPath runtimeInputs;
+        };
       in
       if !inheritPath then
         # --set PATH '' deliberately clears PATH so the wrapped program runs
         # against a known tool set (controlled execution environment) — emitted
         # even when runtimeInputs is empty.
-        [
-          "--set"
-          "PATH"
-          path
-        ]
+        argsFor "--set" path
       else
         # inheritPath=true: only prefix when there is something to add.  An
         # empty --prefix value would prepend a leading colon (empty PATH element
         # = CWD) under makeBinaryWrapper rather than being a no-op — a silent
         # security regression — so omit the arguments entirely instead.
-        lib.optionals (runtimeInputs != [ ]) [
-          "--prefix"
-          "PATH"
-          ":"
-          path
-        ]
+        lib.optionals (runtimeInputs != [ ]) (prefixArgs path)
     );
 
   wrapCall = ''wrapProgram $out/bin/${binName} "''${wrapArgs[@]}"'';
