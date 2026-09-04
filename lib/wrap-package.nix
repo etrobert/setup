@@ -98,8 +98,8 @@ let
   renameScript =
     if binName != mainProgram then "mv $out/bin/${mainProgram} $out/bin/${binName}" else "";
 
-  # Build the wrapProgram argument lines.  Each element of `lines` is one
-  # continuation line (the line-continuation backslash is added by the join).
+  # Build the wrapProgram arguments.  Each element of `lines` becomes one line
+  # of a bash array literal, where newlines already separate the elements.
   lines =
     # --inherit-argv0: preserve argv[0] across exec so the login-shell dash
     # (e.g. `-zsh`) survives the wrapper exec.  A shell-script wrapper loses it
@@ -148,9 +148,14 @@ let
         lib.optional (runtimeInputs != [ ]) "    --prefix PATH : ${path}"
     );
 
-  wrapCall =
-    "wrapProgram $out/bin/${binName}"
-    + (if lines == [ ] then "" else " \\\n" + lib.concatStringsSep " \\\n" lines);
+  # A bash array rather than one long continued command: inside ( ) a newline
+  # separates elements, so no line-continuation backslashes are needed.
+  wrapCall = ''
+    wrapArgs=(
+    ${lib.concatStringsSep "\n" lines}
+    )
+    wrapProgram $out/bin/${binName} "''${wrapArgs[@]}"
+  '';
 
   # filesToPatch: rewrite each listed file's reference to the original package
   # store path so it points at $out instead.  The files are symlinks (from
