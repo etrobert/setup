@@ -26,6 +26,10 @@
     let
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) float-on-title;
+
+      # Indented so Nix leaves the backslashes alone; systemd eats one of each
+      # pair, leaving the \( the regex wants.
+      titleRegex = ''^Extension: \\(Bitwarden Password Manager\\)'';
     in
     {
       systemd.user.services.float-on-title = {
@@ -35,12 +39,11 @@
         wantedBy = [ "graphical-session.target" ];
 
         serviceConfig = {
-          # systemd resolves a slash-less ExecStart against /usr/bin, not PATH,
-          # and eats single backslashes — hence the store path and the doubling.
+          # systemd resolves a slash-less ExecStart against /usr/bin, not PATH.
           ExecStart = lib.concatStringsSep " " [
             (lib.getExe float-on-title)
             "'^(firefox|zen)$'"
-            "'^Extension: \\\\(Bitwarden Password Manager\\\\)'"
+            "'${titleRegex}'"
           ];
           Restart = "on-failure";
         };
