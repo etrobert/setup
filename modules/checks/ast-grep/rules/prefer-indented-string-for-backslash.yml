@@ -1,0 +1,19 @@
+---
+id: prefer-indented-string-for-backslash
+language: nix
+severity: error
+message: >-
+  This `""` string escapes a character an indented `''` string writes as itself.
+note: |
+  A backslash in a `""` string has to be doubled to survive, so a regex reads
+  `"\\(x\\)"` — every backslash said twice. An indented `''` string does no
+  escape processing: `\` and `"` mean themselves, so it is written the way a
+  regex is written, `''\(x\)''`.
+  Only those two are worth moving for. `''` still needs `''\n` for a newline
+  and `''$` before a brace, so a string built around those gains nothing.
+rule:
+  kind: string_expression
+  has:
+    kind: escape_sequence
+    regex: '^\\[\\"]$'
+    stopBy: end
