@@ -10,7 +10,12 @@ cd "$(git rev-parse --show-toplevel)"
 scratch=$(mktemp --directory)
 worktree=$scratch/tree
 trap 'git worktree remove --force "$worktree" 2>/dev/null; rm --recursive --force "$scratch"' EXIT
-git worktree add --detach --quiet "$worktree" HEAD
+# Sweep the working tree, so an import commented out but not yet committed
+# counts. `git stash create` snapshots tracked changes into a commit without
+# pushing onto the stash stack, which is shared with every other worktree. It
+# prints nothing when the tree is clean, as in CI.
+snapshot=$(git stash create)
+git worktree add --detach --quiet "$worktree" "${snapshot:-HEAD}"
 cd "$worktree"
 
 # Tracked, because flakes ignore untracked files. Added once; later iterations
