@@ -101,23 +101,23 @@ let
   # To have [ "--set" k v ] on its own line
   /*nixfmt:disable*/
 
-  wrapArgs =
+  wrapArgs = lib.concatLists (
 
     # --inherit-argv0: preserve argv[0] across exec so the login-shell dash
     # (e.g. `-zsh`) survives the wrapper exec.  A shell-script wrapper loses it
     # to the shebang re-exec, demoting login shells to non-login (issue #225).
     # Only makeBinaryWrapper supports this flag.
-    lib.optional inheritArgv0 "--inherit-argv0"
+    lib.optional inheritArgv0 [ "--inherit-argv0" ]
 
-    ++ lib.concatLists (lib.mapAttrsToList (k: v: [ "--set" k v ]) env)
+    ++ lib.mapAttrsToList (k: v: [ "--set" k v ]) env
 
-    ++ lib.concatLists (lib.mapAttrsToList (k: v: [ "--set-default" k v ]) setDefaults)
+    ++ lib.mapAttrsToList (k: v: [ "--set-default" k v ]) setDefaults
 
-    ++ lib.concatLists (lib.mapAttrsToList (k: v: [ "--prefix" k ":" v ]) prefix)
+    ++ lib.mapAttrsToList (k: v: [ "--prefix" k ":" v ]) prefix
 
-    ++ lib.concatMap (f: [ "--add-flags" f ]) flags
+    ++ map (f: [ "--add-flags" f ]) flags
 
-    ++ lib.concatMap (r: [ "--run" r ]) run
+    ++ map (r: [ "--run" r ]) run
 
     ++ (
       let
@@ -127,14 +127,15 @@ let
         # --set PATH '' deliberately clears PATH so the wrapped program runs
         # against a known tool set (controlled execution environment) — emitted
         # even when runtimeInputs is empty.
-        [ "--set" "PATH" path ]
+        [ [ "--set" "PATH" path ] ]
       else
         # inheritPath=true: only prefix when there is something to add.  An
         # empty --prefix value would prepend a leading colon (empty PATH element
         # = CWD) under makeBinaryWrapper rather than being a no-op — a silent
         # security regression — so omit the arguments entirely instead.
-        lib.optionals (runtimeInputs != [ ]) [ "--prefix" "PATH" ":" path ]
-    );
+        lib.optional (runtimeInputs != [ ]) [ "--prefix" "PATH" ":" path ]
+    )
+  );
 
   /*nixfmt:enable*/
 
