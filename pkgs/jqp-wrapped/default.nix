@@ -13,8 +13,6 @@ _: {
         # (atotto/clipboard), so a cleared PATH would break ctrl-y.
         inheritPath = true;
 
-        # Without it the dark-background default is chroma's `vim` style, whose
-        # LiteralString is #cd0000 — every JSON string renders red.
         flags = [ "--theme catppuccin-macchiato" ];
       };
     };
