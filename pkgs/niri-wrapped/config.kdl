@@ -388,6 +388,16 @@ window-rule {
     block-out-from "screen-capture"
 }
 
+// Bitwarden's popouts (2FA, passkeys, the pop-out button) are separate browser
+// windows. 480x630 is the size Bitwarden asks for; niri only honours max-height
+// when it equals min-height.
+window-rule {
+    match app-id=r#"^(firefox|zen)$"# title=r#"^Extension: \(Bitwarden Password Manager\)"#
+    max-width 480
+    min-height 630
+    max-height 630
+}
+
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 window-rule {
