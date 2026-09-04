@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 app_id=$1
 title=$2
 

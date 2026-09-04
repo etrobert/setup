@@ -16,7 +16,7 @@
             niri
           ];
           inheritPath = false;
-          text = builtins.readFile ./float-on-title;
+          text = builtins.readFile ./float-on-title.sh;
         };
       };
     };
