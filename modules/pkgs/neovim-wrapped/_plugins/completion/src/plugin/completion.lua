@@ -39,8 +39,6 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 	end,
 })
 
-vim.keymap.set("i", "<C-Space>", "<C-x><C-o>", { desc = "Trigger the completion menu" })
-
 -- <Tab> accepts inline completion, so snippets jump on <C-l>/<C-h>.
 vim.keymap.set({ "i", "s" }, "<C-l>", function()
 	vim.snippet.jump(1)
