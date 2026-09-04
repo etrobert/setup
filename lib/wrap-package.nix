@@ -98,64 +98,48 @@ let
   renameScript =
     if binName != mainProgram then "mv $out/bin/${mainProgram} $out/bin/${binName}" else "";
 
-  # Build the wrapProgram arguments.  Each element of `lines` becomes one line
-  # of a bash array literal, where newlines already separate the elements.
-  lines =
+  # To have [ "--set" k v ] on its own line
+  /*nixfmt:disable*/
+
+  wrapArgs = lib.concatLists (
+
     # --inherit-argv0: preserve argv[0] across exec so the login-shell dash
     # (e.g. `-zsh`) survives the wrapper exec.  A shell-script wrapper loses it
     # to the shebang re-exec, demoting login shells to non-login (issue #225).
     # Only makeBinaryWrapper supports this flag.
-    lib.optional inheritArgv0 "    --inherit-argv0"
-    # --set: force a value into the environment the wrapped program sees,
-    # overriding whatever was present at launch.
-    ++ lib.mapAttrsToList (k: v: "    --set ${lib.escapeShellArg k} ${lib.escapeShellArg v}") env
-    # --set-default: bake in a value the wrapped program uses unless the same
-    # variable is already present in the environment at runtime.
-    ++ lib.mapAttrsToList (
-      k: v: "    --set-default ${lib.escapeShellArg k} ${lib.escapeShellArg v}"
-    ) setDefaults
-    # --prefix: colon-prepend a value onto a (possibly-unset) list-style variable
-    # at runtime without clobbering existing entries — the right tool for
-    # XDG_DATA_DIRS/-style paths (unlike --set, which forces a literal value).
-    ++ lib.mapAttrsToList (
-      k: v: "    --prefix ${lib.escapeShellArg k} : ${lib.escapeShellArg v}"
-    ) prefix
-    # escapeShellArg, not double quotes: the build shell would expand a `$` in
-    # the value, baking `$HOME` in as /homeless-shelter.  makeWrapper writes the
-    # value into the wrapper's script text (make-wrapper.sh:201), so it still
-    # word-splits at runtime — which `flags = [ "-f ${./tmux.conf}" ]` relies on.
-    ++ map (f: "    --add-flags " + lib.escapeShellArg f) flags
-    # --run: a command the wrapper runs before exec'ing the binary.  The snippet
-    # is single-quoted so the build shell passes it to makeWrapper verbatim; any
-    # $VAR / $(…) inside it is expanded only when the wrapper actually runs.
-    ++ map (r: "    --run ${lib.escapeShellArg r}") run
-    # PATH manipulation.  escapeShellArg keeps the value a properly quoted
-    # argument in both the shell and binary wrapper cases.
+    lib.optional inheritArgv0 [ "--inherit-argv0" ]
+
+    ++ lib.mapAttrsToList (k: v: [ "--set" k v ]) env
+
+    ++ lib.mapAttrsToList (k: v: [ "--set-default" k v ]) setDefaults
+
+    ++ lib.mapAttrsToList (k: v: [ "--prefix" k ":" v ]) prefix
+
+    ++ map (f: [ "--add-flags" f ]) flags
+
+    ++ map (r: [ "--run" r ]) run
+
     ++ (
       let
-        path = lib.escapeShellArg (lib.makeBinPath runtimeInputs);
+        path = lib.makeBinPath runtimeInputs;
       in
       if !inheritPath then
         # --set PATH '' deliberately clears PATH so the wrapped program runs
         # against a known tool set (controlled execution environment) — emitted
         # even when runtimeInputs is empty.
-        [ "    --set PATH ${path}" ]
+        [ [ "--set" "PATH" path ] ]
       else
         # inheritPath=true: only prefix when there is something to add.  An
         # empty --prefix value would prepend a leading colon (empty PATH element
         # = CWD) under makeBinaryWrapper rather than being a no-op — a silent
-        # security regression — so omit the line entirely instead.
-        lib.optional (runtimeInputs != [ ]) "    --prefix PATH : ${path}"
-    );
-
-  # A bash array rather than one long continued command: inside ( ) a newline
-  # separates elements, so no line-continuation backslashes are needed.
-  wrapCall = ''
-    wrapArgs=(
-    ${lib.concatStringsSep "\n" lines}
+        # security regression — so omit the arguments entirely instead.
+        lib.optional (runtimeInputs != [ ]) [ "--prefix" "PATH" ":" path ]
     )
-    wrapProgram $out/bin/${binName} "''${wrapArgs[@]}"
-  '';
+  );
+
+  /*nixfmt:enable*/
+
+  wrapCall = ''wrapProgram $out/bin/${binName} "''${wrapArgs[@]}"'';
 
   # filesToPatch: rewrite each listed file's reference to the original package
   # store path so it points at $out instead.  The files are symlinks (from
@@ -189,6 +173,10 @@ let
   version = lib.getVersion package;
 in
 symlinkJoin {
+  # Turns the wrapArgs list into a bash array in the builder instead of a
+  # space-joined string, which is what lets the arguments skip shell quoting.
+  __structuredAttrs = true;
+  inherit wrapArgs;
   name = "${binName}-wrapped${lib.optionalString (version != "") "-${version}"}";
   nativeBuildInputs = [ (if binaryWrapper then makeBinaryWrapper else makeWrapper) ];
   paths = [ package ] ++ extraPaths;
