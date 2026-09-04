@@ -4,11 +4,11 @@ _: {
     {
       packages.nix-dead-sweep = pkgs.writeShellApplication {
         name = "nix-dead-sweep";
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.git
-          pkgs.jq
-          pkgs.nix
+        runtimeInputs = with pkgs; [
+          coreutils
+          git
+          jq
+          nix
         ];
         inheritPath = false;
         text = builtins.readFile ./nix-dead-sweep.sh;
