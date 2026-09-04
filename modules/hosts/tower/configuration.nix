@@ -20,7 +20,7 @@
     services.claude-warmup.enable = true;
 
     services.sunshine = {
-      enable = true;
+      enable = false;
       openFirewall = true;
     };
 
