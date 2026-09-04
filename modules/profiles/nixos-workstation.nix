@@ -19,6 +19,7 @@
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
         self.nixosModules.darkman
+        self.nixosModules.float-on-title
         self.nixosModules.mpd
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop

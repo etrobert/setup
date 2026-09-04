@@ -320,10 +320,6 @@ layout {
 // Moves windows in follow-mode along when switching workspaces (Mod+G).
 spawn-at-startup "niriusd"
 
-// Bitwarden's popouts only get their title after niri has resolved
-// open-floating, so float them from the event stream instead.
-spawn-at-startup "float-on-title" r#"^(firefox|zen)$"# r#"^Extension: \(Bitwarden Password Manager\)"#
-
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
     // skip-at-startup
