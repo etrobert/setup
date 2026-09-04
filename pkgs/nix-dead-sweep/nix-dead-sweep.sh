@@ -24,9 +24,11 @@ probe=modules/zz-nix-dead-sweep.nix
 echo '_: { }' >"$probe"
 git add "$probe"
 
+# warn-dirty off: the probe file below makes this worktree dirty by design, and
+# the warning otherwise reads in CI as if the checkout were unclean.
 names() {
-  nix eval --json --accept-flake-config ".#$1Modules" --apply builtins.attrNames |
-    jq --raw-output '.[]'
+  nix eval --json --accept-flake-config --option warn-dirty false "$1" \
+    --apply builtins.attrNames | jq --raw-output '.[]'
 }
 
 # stateVersion forces the whole module list without building a system, so an
@@ -37,10 +39,8 @@ evaluates() {
     ".#$1Configurations.$2.config.system.stateVersion" >/dev/null 2>&1
 }
 
-mapfile -t nixos_hosts < <(nix eval --json --accept-flake-config \
-  .#nixosConfigurations --apply builtins.attrNames | jq --raw-output '.[]')
-mapfile -t darwin_hosts < <(nix eval --json --accept-flake-config \
-  .#darwinConfigurations --apply builtins.attrNames | jq --raw-output '.[]')
+mapfile -t nixos_hosts < <(names .#nixosConfigurations)
+mapfile -t darwin_hosts < <(names .#darwinConfigurations)
 
 # Without this a host broken at HEAD would make every module look imported and
 # the sweep would report nothing at all.
@@ -67,7 +67,7 @@ for kind in nixos darwin; do
     hosts=("${darwin_hosts[@]}")
   fi
 
-  for name in $(names "$kind"); do
+  for name in $(names ".#${kind}Modules"); do
     printf '{ lib, ... }: { flake.%sModules.%s = lib.mkForce (throw "unused"); }\n' \
       "$kind" "$name" >"$probe"
 
