@@ -98,34 +98,27 @@ let
   renameScript =
     if binName != mainProgram then "mv $out/bin/${mainProgram} $out/bin/${binName}" else "";
 
-  # __structuredAttrs hands this list to the builder as a bash array, so the
-  # values never meet a shell parser and nothing here needs quoting.  The
-  # directives keep each option on one line; nixfmt would otherwise put every
-  # element of `[ "--set" k v ]` on its own.
+  # To have [ "--set" k v ] on its own line
   /*nixfmt:disable*/
+
   wrapArgs =
+
     # --inherit-argv0: preserve argv[0] across exec so the login-shell dash
     # (e.g. `-zsh`) survives the wrapper exec.  A shell-script wrapper loses it
     # to the shebang re-exec, demoting login shells to non-login (issue #225).
     # Only makeBinaryWrapper supports this flag.
     lib.optional inheritArgv0 "--inherit-argv0"
-    # --set: force a value into the environment the wrapped program sees,
-    # overriding whatever was present at launch.
+
     ++ lib.concatLists (lib.mapAttrsToList (k: v: [ "--set" k v ]) env)
-    # --set-default: bake in a value the wrapped program uses unless the same
-    # variable is already present in the environment at runtime.
+
     ++ lib.concatLists (lib.mapAttrsToList (k: v: [ "--set-default" k v ]) setDefaults)
-    # --prefix: colon-prepend a value onto a (possibly-unset) list-style variable
-    # at runtime without clobbering existing entries — the right tool for
-    # XDG_DATA_DIRS/-style paths (unlike --set, which forces a literal value).
+
     ++ lib.concatLists (lib.mapAttrsToList (k: v: [ "--prefix" k ":" v ]) prefix)
-    # makeWrapper writes the value into the wrapper's script text
-    # (make-wrapper.sh:201), so it still word-splits at runtime — which
-    # `flags = [ "-f ${./tmux.conf}" ]` relies on.
+
     ++ lib.concatMap (f: [ "--add-flags" f ]) flags
-    # --run: a command the wrapper runs before exec'ing the binary.  Any
-    # $VAR / $(…) inside it is expanded when the wrapper runs, not now.
+
     ++ lib.concatMap (r: [ "--run" r ]) run
+
     ++ (
       let
         path = lib.makeBinPath runtimeInputs;
@@ -142,6 +135,7 @@ let
         # security regression — so omit the arguments entirely instead.
         lib.optionals (runtimeInputs != [ ]) [ "--prefix" "PATH" ":" path ]
     );
+
   /*nixfmt:enable*/
 
   wrapCall = ''wrapProgram $out/bin/${binName} "''${wrapArgs[@]}"'';
