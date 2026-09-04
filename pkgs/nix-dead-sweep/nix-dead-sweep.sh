@@ -1,98 +1,68 @@
-# Finds flake modules that no host imports.
+# Flags declared flake modules that no host imports.
 #
-# Poisons each declared flake.{nixos,darwin}Modules.<name> with a throw in turn
-# and evaluates every host: a host importing it fails, and if none fail the
-# module is unused. Being evaluation-based it sees through indirection a grep
-# cannot follow, such as `imports = with self.nixosModules; [ ... ]`.
+# Reads each host's module graph — the tree of modules that took part in
+# evaluation — and matches the provenance flake-parts stamps onto every node it
+# contributes: "<flake source>/flake.nix#nixosModules.<name>". Nothing is
+# poisoned, mutated or evaluated twice, so this reads the working tree directly.
 
 cd "$(git rev-parse --show-toplevel)"
 
 scratch=$(mktemp --directory)
-worktree=$scratch/tree
-trap 'git worktree remove --force "$worktree" 2>/dev/null; rm --recursive --force "$scratch"' EXIT
-# Sweep the working tree, so an import commented out but not yet committed
-# counts. `git stash create` snapshots tracked changes into a commit without
-# pushing onto the stash stack, which is shared with every other worktree. It
-# prints nothing when the tree is clean, as in CI.
-snapshot=$(git stash create)
-git worktree add --detach --quiet "$worktree" "${snapshot:-HEAD}"
-cd "$worktree"
+trap 'rm --recursive --force "$scratch"' EXIT
 
-# Tracked, because flakes ignore untracked files. Added once; later iterations
-# overwrite it and the dirty tree is picked up.
-probe=modules/zz-nix-dead-sweep.nix
-echo '_: { }' >"$probe"
-git add "$probe"
-
-# warn-dirty off: the probe file below makes this worktree dirty by design, and
-# the warning otherwise reads in CI as if the checkout were unclean.
-names() {
-  nix eval --json --accept-flake-config --option warn-dirty false "$1" \
-    --apply builtins.attrNames | jq --raw-output '.[]'
+attrs() {
+  nix eval --json --accept-flake-config ".#$1" --apply builtins.attrNames |
+    jq --raw-output '.[]'
 }
 
-# stateVersion forces the whole module list without building a system, so an
-# imported poison throws in ~300ms rather than ~6s.
-evaluates() {
-  # --json, not --raw: stateVersion is a string on NixOS but an integer on darwin.
-  nix eval --json --accept-flake-config \
-    ".#$1Configurations.$2.config.system.stateVersion" >/dev/null 2>&1
-}
+# Anchored to this flake's own source path: input flakes stamp their modules the
+# same way, and at least one exports a `nixosModules.default` that would
+# otherwise be counted as ours.
+root=$(nix flake metadata --json | jq --raw-output .path)
+graph='
+  g:
+  let
+    walk =
+      n:
+      [ (builtins.unsafeDiscardStringContext (toString n.file)) ]
+      ++ builtins.concatLists (map walk (n.imports or [ ]));
+    stamped = builtins.filter (m: m != null) (
+      map (builtins.match "@ROOT@/flake\\.nix#((nixos|darwin)Modules\\..+)") (
+        builtins.concatLists (map walk (builtins.filter (n: !n.disabled) g))
+      )
+    );
+  in
+  builtins.attrNames (builtins.groupBy builtins.head stamped)
+'
 
-mapfile -t nixos_hosts < <(names .#nixosConfigurations)
-mapfile -t darwin_hosts < <(names .#darwinConfigurations)
-
-# Without this a host broken at HEAD would make every module look imported and
-# the sweep would report nothing at all.
-for host in "${nixos_hosts[@]}"; do
-  evaluates nixos "$host" ||
-    {
-      echo "$host does not evaluate at HEAD — fix that first" >&2
+: > "$scratch/used"
+for output in nixosConfigurations darwinConfigurations; do
+  for host in $(attrs "$output"); do
+    mapfile -t found < <(
+      nix eval --json --accept-flake-config ".#$output.$host.graph" \
+        --apply "${graph//@ROOT@/$root}" | jq --raw-output '.[]'
+    )
+    # The stamp is a flake-parts convention, not a guarantee. Were the format to
+    # change, the match would return nothing and every module would look unused,
+    # so an empty host is a broken sweep rather than a finding.
+    if [ ${#found[@]} -eq 0 ]; then
+      echo "$host: no modules matched — has the flake-parts provenance stamp changed?" >&2
       exit 2
-    }
-done
-for host in "${darwin_hosts[@]}"; do
-  evaluates darwin "$host" ||
-    {
-      echo "$host does not evaluate at HEAD — fix that first" >&2
-      exit 2
-    }
-done
-
-unused=()
-for kind in nixos darwin; do
-  if [ "$kind" = nixos ]; then
-    hosts=("${nixos_hosts[@]}")
-  else
-    hosts=("${darwin_hosts[@]}")
-  fi
-
-  for name in $(names ".#${kind}Modules"); do
-    printf '{ lib, ... }: { flake.%sModules.%s = lib.mkForce (throw "unused"); }\n' \
-      "$kind" "$name" >"$probe"
-
-    imported=false
-    for host in "${hosts[@]}"; do
-      evaluates "$kind" "$host" || {
-        imported=true
-        break
-      }
-    done
-
-    if [ "$imported" = true ]; then
-      printf '  imported  %sModules.%s\n' "$kind" "$name" >&2
-    else
-      printf '  UNUSED    %sModules.%s\n' "$kind" "$name" >&2
-      unused+=("${kind}Modules.$name")
     fi
+    printf '  %-6s %s modules\n' "$host" "${#found[@]}" >&2
+    printf '%s\n' "${found[@]}" >> "$scratch/used"
   done
 done
 
+sort --unique "$scratch/used" --output "$scratch/used"
+{ attrs nixosModules | sed 's/^/nixosModules./'
+  attrs darwinModules | sed 's/^/darwinModules./'; } | sort --unique > "$scratch/declared"
+comm -23 "$scratch/declared" "$scratch/used" > "$scratch/unused"
+
 echo
-if [ ${#unused[@]} -eq 0 ]; then
-  echo "every declared module is imported by a host."
-else
+if [ -s "$scratch/unused" ]; then
   echo "unused — no host imports these:"
-  printf '  %s\n' "${unused[@]}"
+  sed 's/^/  /' "$scratch/unused"
   exit 1
 fi
+echo "every declared module is imported by a host."

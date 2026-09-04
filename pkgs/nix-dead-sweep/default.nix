@@ -7,6 +7,7 @@ _: {
         runtimeInputs = with pkgs; [
           coreutils
           git
+          gnused
           jq
           nix
         ];
