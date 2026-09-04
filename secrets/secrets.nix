@@ -31,6 +31,9 @@ in
   "umami-app-secret.age".publicKeys = allLinux;
   "nix-access-tokens.age".publicKeys = allWorkstations;
   "github-runner-token.age".publicKeys = allWorkstations;
+  # Fine-grained tokens carry one resource owner, so lafraise-pro/app cannot
+  # share the one above. Only tower registers a runner against it.
+  "lafraise-runner-token.age".publicKeys = [ tower ];
   "z-ai-auth-token.age".publicKeys = allWorkstations;
   "hass-token.age".publicKeys = allWorkstations;
   "atuin-key.age".publicKeys = allMachines;
