@@ -39,6 +39,17 @@ vim.api.nvim_create_autocmd("InsertCharPre", {
 	end,
 })
 
+-- Upstream leaves the documentation float borderless (neovim#38248). It is built
+-- with autocmds blocked, so a redraw callback is the only hook that ever sees it.
+vim.api.nvim_set_decoration_provider(vim.api.nvim_create_namespace("completion-border"), {
+	on_start = function()
+		local win = vim.fn.complete_info({ "selected" }).preview_winid
+		if win then
+			vim.api.nvim_win_set_config(win, { border = vim.o.winborder })
+		end
+	end,
+})
+
 -- <Tab> accepts inline completion, so snippets jump on <C-l>/<C-h>.
 vim.keymap.set({ "i", "s" }, "<C-l>", function()
 	vim.snippet.jump(1)

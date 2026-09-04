@@ -204,6 +204,13 @@
               lspconfig-ast-grep-filetypes = pkgs.runCommand "lspconfig-ast-grep-filetypes-check" { } ''
                 ! grep --quiet "'sh'," ${pkgs.vimPlugins.nvim-lspconfig}/lsp/ast_grep.lua && touch $out
               '';
+
+              # Fails once upstream lands 'completepopup', which borders the
+              # documentation float itself, retiring the completion plugin's shim.
+              neovim-completepopup = pkgs.runCommand "neovim-completepopup-check" { } ''
+                ${pkgs.neovim-unwrapped}/bin/nvim --headless \
+                  -c 'if exists("+completepopup") | cquit | endif' -c quit && touch $out
+              '';
             };
 
             formatter = pkgs.nixfmt-tree;
