@@ -45,6 +45,7 @@ _: {
               printline
               add-asset
               ils
+              jqp-wrapped
             ];
 
             externalPackages = with pkgs; [
@@ -65,7 +66,6 @@ _: {
               gnumake
               go
               hyperfine # Command-line benchmarking tool
-              jqp # TUI playground to experiment with jq
               libnotify
               nodejs_26 # pinned (not nodejs_latest) so the binary cache stays reliable
 
