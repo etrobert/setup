@@ -11,9 +11,37 @@ note: |
   regex is written, `''\(x\)''`.
   Only those two are worth moving for. `''` still needs `''\n` for a newline
   and `''$` before a brace, so a string built around those gains nothing.
+  The three excludes are what keeps `--update-all` honest, since each would
+  change the string's value: another escape would lose its backslash to the
+  unescaping, a leading space would be eaten by the indentation strip, and a
+  literal `''` would end the string early.
 rule:
-  kind: string_expression
-  has:
-    kind: escape_sequence
-    regex: '^\\[\\"]$'
-    stopBy: end
+  all:
+    - pattern: $S
+    - kind: string_expression
+    - has:
+        kind: escape_sequence
+        regex: '^\\[\\"]$'
+        stopBy: end
+    - not:
+        has:
+          kind: escape_sequence
+          not:
+            regex: '^\\[\\"]$'
+          stopBy: end
+    - not:
+        regex: '^"\s'
+    - not:
+        regex: "''"
+transform:
+  INNER:
+    substring:
+      source: $S
+      startChar: 1
+      endChar: -1
+  BODY:
+    replace:
+      source: $INNER
+      replace: '\\(.)'
+      by: "$1"
+fix: "''$BODY''"
