@@ -11,7 +11,6 @@ cd "$(git rev-parse --show-toplevel)"
 allow=(
   flake-input-table # .github/workflows/update-flake.yml
   nix-dead-packages # .github/workflows/checks.yml
-  nix-dead-sweep    # .github/workflows/checks.yml
 )
 
 scratch=$(mktemp --directory)
@@ -50,6 +49,9 @@ comm -23 "$scratch/all" "$scratch/used" >"$scratch/unused"
 printf '%s\n' "${allow[@]}" | sort --unique >"$scratch/allow"
 comm -23 "$scratch/unused" "$scratch/allow" >"$scratch/flagged"
 comm -12 "$scratch/used" "$scratch/allow" >"$scratch/stale"
+# Deleting a package would otherwise leave its allowlist entry behind unnoticed,
+# since a name that is in neither `used` nor `unused` matches nothing above.
+comm -23 "$scratch/allow" "$scratch/all" >"$scratch/gone"
 
 status=0
 
@@ -62,6 +64,12 @@ fi
 if [ -s "$scratch/stale" ]; then
   echo "allowlisted but now installed — drop from the allowlist:"
   awk '{ print "  " $0 }' "$scratch/stale"
+  status=1
+fi
+
+if [ -s "$scratch/gone" ]; then
+  echo "allowlisted but no such package — drop from the allowlist:"
+  awk '{ print "  " $0 }' "$scratch/gone"
   status=1
 fi
 
