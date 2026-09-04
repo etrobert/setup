@@ -15,8 +15,6 @@
 
     time.timeZone = "Europe/Berlin";
 
-    # Keep a Claude 5h usage session always ticking over
-    # (see modules/features/claude-warmup.nix).
     services.claude-warmup.enable = true;
 
     services.sunshine = {
