@@ -48,6 +48,9 @@ jobs:
       - name: Flake modules no host imports
         run: nix run --accept-flake-config .#nix-dead-sweep
 
+      - name: Packages in no system derivation
+        run: nix run --accept-flake-config .#nix-dead-packages
+
   discover:
     name: discover
     runs-on: [self-hosted, Linux]
