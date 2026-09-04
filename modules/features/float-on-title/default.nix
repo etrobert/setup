@@ -22,7 +22,12 @@
     };
 
   flake.nixosModules.float-on-title =
-    { lib, pkgs, ... }:
+    {
+      lib,
+      pkgs,
+      utils,
+      ...
+    }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) float-on-title;
@@ -35,12 +40,12 @@
         wantedBy = [ "graphical-session.target" ];
 
         serviceConfig = {
-          # systemd resolves a slash-less ExecStart against /usr/bin, not PATH,
-          # and eats single backslashes — hence the store path and the doubling.
-          ExecStart = lib.concatStringsSep " " [
+          # Indented string so Nix leaves the backslash alone; escaping it for
+          # systemd is escapeSystemdExecArgs' job.
+          ExecStart = utils.escapeSystemdExecArgs [
             (lib.getExe float-on-title)
-            "'^(firefox|zen)$'"
-            "'^Extension: \\\\(Bitwarden Password Manager\\\\)'"
+            "^(firefox|zen)$"
+            ''^Extension: \(Bitwarden Password Manager\)''
           ];
           Restart = "on-failure";
         };
