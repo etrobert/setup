@@ -1,6 +1,7 @@
 .direnv
 .DS_Store
 result
+result-*
 **/.claude/settings.local.json
 **/.claude/worktrees
 **/.claude/scheduled_tasks.lock
