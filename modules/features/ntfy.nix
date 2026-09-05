@@ -96,11 +96,15 @@ in
               exec notify-send "''${icon[@]}" -- "''${title:-Notification}" "$message"
             fi
 
+            # The `default` action is the one the daemon fires on a click on
+            # the notification itself, so the link opens without a button hunt;
+            # notify-send prints the invoked action's name.
+            #
             # --action implies --wait, so this blocks until the notification is
             # answered; background it, or one left unattended stalls every
             # message behind it.
-            if [ "$(notify-send --action Open "''${icon[@]}" -- \
-              "''${title:-Notification}" "$message")" = 0 ]; then
+            if [ "$(notify-send --action default=Open "''${icon[@]}" -- \
+              "''${title:-Notification}" "$message")" = default ]; then
               xdg-open "$url"
             fi &
           '';
