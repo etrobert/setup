@@ -100,13 +100,19 @@ in
             # the notification itself, so the link opens without a button hunt;
             # notify-send prints the invoked action's name.
             #
-            # --action implies --wait, so this blocks until the notification is
-            # answered; background it, or one left unattended stalls every
-            # message behind it.
-            if [ "$(notify-send --action default=Open "''${icon[@]}" -- \
-              "''${title:-Notification}" "$message")" = default ]; then
-              xdg-open "$url"
-            fi &
+            # --action implies --wait: this blocks until the notification is
+            # answered, so it runs in the background, or one left unattended
+            # would stall every message behind it.
+            open_on_click() {
+              local action
+              # errexit ends the subshell on a failed notify-send: nothing opens.
+              action=$(notify-send --action default=Open "''${icon[@]}" -- \
+                "''${title:-Notification}" "$message")
+              if [ "$action" = default ]; then
+                xdg-open "$url"
+              fi
+            }
+            open_on_click &
           '';
         };
       in
