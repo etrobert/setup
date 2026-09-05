@@ -25,6 +25,10 @@ _: {
         AUTH_PROXY_HEADER = "X-Tailscale-User-LoginName-Localpart";
         AUTH_PROXY_USER_CREATION = 1;
 
+        # Miniflux refuses to start with AUTH_PROXY_HEADER unless the header is
+        # only honoured from named networks. tsnsrv dials from loopback.
+        TRUSTED_REVERSE_PROXY_NETWORKS = "127.0.0.1/32";
+
         # The upstream module defaults this on and then demands an
         # adminCredentialsFile; the proxy-created user is all there is.
         CREATE_ADMIN = false;
