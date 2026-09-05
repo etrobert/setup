@@ -63,7 +63,7 @@
             # rotating the key once the DB holds secrets has no supported path.
             security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
 
-            # The tailnet is the boundary, as it is for comfy/.
+            # The tailnet is the boundary.
             "auth.anonymous" = {
               enabled = true;
 

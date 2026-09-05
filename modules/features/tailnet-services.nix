@@ -31,13 +31,6 @@
           authKeyPath = config.age.secrets.tailscale-authkey.path;
           listenAddr = ":80";
         };
-
-        # comfyui.nix is gone until the ROCm torch build works again (#1073);
-        # its name waits here, and moves into that feature when it returns.
-        services.comfy = {
-          toURL = "http://127.0.0.1:8188";
-          plaintext = true;
-        };
       };
     };
 }
