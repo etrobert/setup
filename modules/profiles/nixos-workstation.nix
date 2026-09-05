@@ -164,6 +164,7 @@
           extensions = [
             "fcoeoabgfenejglbffodgkkbkcdhcgfn" # Claude in Chrome
             "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
+            "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
           ];
         };
 
