@@ -105,9 +105,9 @@ in
             # would stall every message behind it.
             open_on_click() {
               local action
-              # The output decides, not the exit status.
+              # errexit ends the subshell on a failed notify-send: nothing opens.
               action=$(notify-send --action default=Open "''${icon[@]}" -- \
-                "''${title:-Notification}" "$message") || true
+                "''${title:-Notification}" "$message")
               if [ "$action" = default ]; then
                 xdg-open "$url"
               fi
