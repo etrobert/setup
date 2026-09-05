@@ -33,6 +33,12 @@ _: {
           # The upstream module defaults this on and then demands an
           # adminCredentialsFile; the proxy-created user is all there is.
           CREATE_ADMIN = false;
+
+          # Split-horizon DNS puts every etiennerobert.com name, and ntfy on
+          # tower, on the LAN, which Miniflux's SSRF guard refuses by default.
+          # Only this user adds feeds, so there is nothing for it to protect.
+          FETCHER_ALLOW_PRIVATE_NETWORKS = 1;
+          INTEGRATION_ALLOW_PRIVATE_NETWORKS = 1;
         };
       };
 
