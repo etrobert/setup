@@ -24,6 +24,7 @@
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
+        self.nixosModules.gnome
       ];
 
       documentation.doc.enable = false;
@@ -65,16 +66,22 @@
           openFirewall = true;
         };
 
-        # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
-        # through a login shell and imports the environment into systemd/D-Bus
-        # itself; bash -l guarantees environment.sessionVariables are loaded.
+        # tuigreet login prompt on vt1. --cmd is the default pick, F3 lists the
+        # registered sessions, and --remember-session keeps the last one. The
+        # bash -l wrapper guarantees environment.sessionVariables are loaded.
         greetd = {
           enable = true;
           # Stops boot log lines from drawing over the tuigreet UI: resets the
           # VT at greeter start, and wires greetd's stdio to tty1 so systemd
           # counts the console as owned and stops printing status to it.
           useTextGreeter = true;
-          settings.default_session.command = ''${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
+          settings.default_session.command = lib.concatStringsSep " " [
+            (lib.getExe pkgs.tuigreet)
+            "--time --remember --remember-session --asterisks"
+            "--cmd niri-session"
+            "--sessions ${config.services.displayManager.sessionData.desktops}/share/wayland-sessions"
+            ''--session-wrapper "${pkgs.bash}/bin/bash -l -c"''
+          ];
         };
       };
 
@@ -97,6 +104,10 @@
       };
 
       systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
+
+      # Noctalia is niri's shell — keep its bar off the other sessions. niri
+      # imports XDG_CURRENT_DESKTOP before it releases graphical-session.target.
+      systemd.user.services.noctalia.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
 
       # NixOS workstation packages
       environment.systemPackages =
