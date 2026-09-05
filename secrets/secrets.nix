@@ -29,6 +29,7 @@ in
   # TODO: Restrict to relevant machines
   "ddclient-password-etiennerobert-com.age".publicKeys = allLinux;
   "umami-app-secret.age".publicKeys = allLinux;
+  "adele-filebrowser-password.age".publicKeys = [ tower ];
   "nix-access-tokens.age".publicKeys = allWorkstations;
   "github-runner-token.age".publicKeys = allWorkstations;
   # Fine-grained tokens carry one resource owner, so lafraise-pro/app cannot
