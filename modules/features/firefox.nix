@@ -8,7 +8,16 @@
       makeFirefox =
         extraSettings:
         pkgs.wrapFirefox pkgs.firefox-unwrapped {
-          extraPrefs = browserConfig.renderDefaultPrefs (browserConfig.sharedSettings // extraSettings);
+          extraPrefs = browserConfig.renderDefaultPrefs (
+            browserConfig.sharedSettings
+            # The redesigned sidebar: launcher strip plus panels. Vertical tabs
+            # are what keep the strip permanently visible.
+            // {
+              "sidebar.revamp" = true;
+              "sidebar.verticalTabs" = true;
+            }
+            // extraSettings
+          );
           extraPolicies = browserConfig.sharedPolicies;
         };
     in
