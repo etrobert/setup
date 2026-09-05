@@ -20,6 +20,7 @@
 
               path = [
                 self'.packages.ghostty-wrapped
+                self'.packages.niri-pin-workspaces
                 self'.packages.noctalia-wrapped
                 self'.packages.scale-floating-window
                 pkgs.nirius
