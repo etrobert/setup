@@ -9,27 +9,26 @@
 # tower itself. The Fever and Google Reader endpoints keep their own credentials,
 # set per user under Settings > Integrations.
 _: {
-  flake.nixosModules.miniflux =
-    _: {
-      services.miniflux = {
-        enable = true;
+  flake.nixosModules.miniflux = _: {
+    services.miniflux = {
+      enable = true;
 
-        config = {
-          # Loopback only, for tsnsrv. 8080, the upstream default, is taken by
-          # the lafraise dev backend.
-          LISTEN_ADDR = "127.0.0.1:8085";
+      config = {
+        # Loopback only, for tsnsrv. 8080, the upstream default, is taken by
+        # the lafraise dev backend.
+        LISTEN_ADDR = "127.0.0.1:8085";
 
-          # Absolute links (feed icons, the Fever and Google Reader endpoints
-          # handed to phone apps) are built from this, not the request host.
-          BASE_URL = "http://feeds";
+        # Absolute links (feed icons, the Fever and Google Reader endpoints
+        # handed to phone apps) are built from this, not the request host.
+        BASE_URL = "http://feeds";
 
-          AUTH_PROXY_HEADER = "X-Tailscale-User-LoginName-Localpart";
-          AUTH_PROXY_USER_CREATION = 1;
+        AUTH_PROXY_HEADER = "X-Tailscale-User-LoginName-Localpart";
+        AUTH_PROXY_USER_CREATION = 1;
 
-          # The upstream module defaults this on and then demands an
-          # adminCredentialsFile; the proxy-created user is all there is.
-          CREATE_ADMIN = false;
-        };
+        # The upstream module defaults this on and then demands an
+        # adminCredentialsFile; the proxy-created user is all there is.
+        CREATE_ADMIN = false;
       };
     };
+  };
 }
