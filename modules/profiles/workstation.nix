@@ -66,6 +66,7 @@ _: {
               gnumake
               go
               hyperfine # Command-line benchmarking tool
+              jnv # jq TUI with filter completion, which jqp lacks
               libnotify
               nodejs_26 # pinned (not nodejs_latest) so the binary cache stays reliable
 
