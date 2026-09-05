@@ -293,7 +293,6 @@ in
 
     services.tsnsrv.services.home = {
       toURL = "http://127.0.0.1:${toString port}";
-      plaintext = true;
     };
   };
 }

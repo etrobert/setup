@@ -14,7 +14,6 @@ _: {
 
       services.tsnsrv.services.music = {
         toURL = "http://127.0.0.1:${toString config.services.navidrome.settings.Port}";
-        plaintext = true;
       };
     };
 }
