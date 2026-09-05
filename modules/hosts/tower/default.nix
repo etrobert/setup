@@ -46,6 +46,7 @@ in
       self.nixosModules.atuinServer
       self.nixosModules.metrics
       self.nixosModules.dispatch
+      self.nixosModules.miniflux
     ];
   };
 }
