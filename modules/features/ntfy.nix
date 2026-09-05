@@ -39,7 +39,6 @@ in
       # (no auth), which is acceptable for personal use.
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ port ];
 
-      # `ntfy/` on the tailnet; tailnet-services.nix owns the tsnsrv defaults.
       services.tsnsrv.services.ntfy = {
         toURL = "http://127.0.0.1:${toString port}";
         plaintext = true;

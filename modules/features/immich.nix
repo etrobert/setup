@@ -52,7 +52,6 @@ _: {
           };
         };
 
-        # `photos/` on the tailnet; tailnet-services.nix owns the tsnsrv defaults.
         tsnsrv.services.photos = {
           toURL = "http://127.0.0.1:${toString config.services.immich.port}";
           plaintext = true;

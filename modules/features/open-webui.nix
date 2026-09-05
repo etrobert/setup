@@ -31,7 +31,6 @@ _: {
         };
       };
 
-      # tailnet-services.nix owns the tsnsrv defaults.
       services.tsnsrv.services.chat = {
         toURL = "http://127.0.0.1:${toString config.services.open-webui.port}";
         plaintext = true;

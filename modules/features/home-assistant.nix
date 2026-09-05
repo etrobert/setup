@@ -291,7 +291,6 @@ in
       };
     };
 
-    # `home/` on the tailnet; tailnet-services.nix owns the tsnsrv defaults.
     services.tsnsrv.services.home = {
       toURL = "http://127.0.0.1:${toString port}";
       plaintext = true;
