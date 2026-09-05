@@ -15,14 +15,6 @@ setup:
 
 then can do `sudo darwin-rebuild switch`
 
-### Manual steps
-
-- **Download the premium "Zoe" voice** (System Settings → Accessibility → Spoken
-  Content → System Voice → Manage Voices → English (US) → Zoe (Premium)). The
-  config selects this voice as the system default for Spoken Content and bare
-  `say`, but Apple ships no headless installer for the asset. If it isn't
-  downloaded, `say` silently falls back to the default robotic voice.
-
 ## Nix in docker
 
 Run nix commands in a docker container without installing Nix on your host
