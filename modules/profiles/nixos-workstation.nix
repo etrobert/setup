@@ -156,6 +156,11 @@
         chromium = {
           enable = true;
 
+          # Chromium ignores the search-provider URLs unless Enabled is set.
+          defaultSearchProviderEnabled = true;
+          defaultSearchProviderSearchURL = "https://duckduckgo.com/?q={searchTerms}";
+          defaultSearchProviderSuggestURL = "https://duckduckgo.com/ac/?q={searchTerms}&type=list";
+
           extensions = [
             "fcoeoabgfenejglbffodgkkbkcdhcgfn" # Claude in Chrome
             "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
