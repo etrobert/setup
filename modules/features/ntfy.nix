@@ -74,7 +74,9 @@ in
             message=''${message:?not set by ntfy}
             id=''${id:?not set by ntfy}
 
-            url=$(jq --raw-output 'first(.actions[]? | .url) // empty' <<<"$raw")
+            # An action's URL, else the message's click URL: Miniflux's pushes
+            # and `ntfy publish --click` carry the latter.
+            url=$(jq --raw-output 'first(.actions[]? | .url) // .click // empty' <<<"$raw")
 
             # notify-send takes a local path, so an attachment has to be
             # fetched. Named per message, because several can arrive at once
