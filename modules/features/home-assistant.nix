@@ -1,8 +1,12 @@
-_: {
+_:
+let
+  port = 8123;
+in
+{
   flake.nixosModules.homeAssistant = _: {
     hardware.bluetooth.enable = true;
 
-    networking.firewall.allowedTCPPorts = [ 8123 ];
+    networking.firewall.allowedTCPPorts = [ port ];
 
     services.home-assistant = {
       enable = true;
@@ -285,6 +289,12 @@ _: {
           ];
         };
       };
+    };
+
+    # `home/` on the tailnet; tailnet-services.nix owns the tsnsrv defaults.
+    services.tsnsrv.services.home = {
+      toURL = "http://127.0.0.1:${toString port}";
+      plaintext = true;
     };
   };
 }

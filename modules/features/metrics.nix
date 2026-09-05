@@ -1,5 +1,5 @@
 # Prometheus scrapes tower's node exporter; Grafana reads it back.
-# Reached on the tailnet as `metrics/` (see tailnet-services.nix).
+# Reached on the tailnet as `metrics/` through tsnsrv.
 { inputs, ... }:
 {
   flake.nixosModules.metrics =
@@ -94,6 +94,12 @@
               isDefault = true;
             }
           ];
+        };
+
+        # tailnet-services.nix owns the tsnsrv defaults.
+        tsnsrv.services.metrics = {
+          toURL = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
+          plaintext = true;
         };
       };
     };

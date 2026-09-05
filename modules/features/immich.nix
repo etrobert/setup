@@ -57,5 +57,11 @@ _: {
         # fluent-ffmpeg prefers this over the ffmpeg it finds on PATH.
         environment.FFMPEG_PATH = lib.getExe ffmpeg-timeboxed;
       };
+
+      # `photos/` on the tailnet; tailnet-services.nix owns the tsnsrv defaults.
+      services.tsnsrv.services.photos = {
+        toURL = "http://127.0.0.1:${toString config.services.immich.port}";
+        plaintext = true;
+      };
     };
 }
