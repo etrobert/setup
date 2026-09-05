@@ -105,8 +105,9 @@ in
             # would stall every message behind it.
             open_on_click() {
               local action
+              # The output decides, not the exit status.
               action=$(notify-send --action default=Open "''${icon[@]}" -- \
-                "''${title:-Notification}" "$message") || return
+                "''${title:-Notification}" "$message") || true
               if [ "$action" = default ]; then
                 xdg-open "$url"
               fi
