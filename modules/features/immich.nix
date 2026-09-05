@@ -26,28 +26,35 @@ _: {
     {
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.services.immich.port ];
 
-      # Immich reaches Postgres over /run/postgresql, so the TCP listener earns
-      # nothing and only collides with the lafraise dev database on 5432.
-      # Disabling because port is used by LaFraise
-      services.postgresql.settings.listen_addresses = lib.mkForce "";
+      services = {
+        # Immich reaches Postgres over /run/postgresql, so the TCP listener earns
+        # nothing and only collides with the lafraise dev database on 5432.
+        # Disabling because port is used by LaFraise
+        postgresql.settings.listen_addresses = lib.mkForce "";
 
-      services.immich = {
-        enable = true;
-        host = "0.0.0.0";
-        mediaLocation = "/tank/photos";
+        immich = {
+          enable = true;
+          host = "0.0.0.0";
+          mediaLocation = "/tank/photos";
 
-        environment.IMMICH_LOG_LEVEL = "verbose";
+          environment.IMMICH_LOG_LEVEL = "verbose";
 
-        # The default, [ ], sets PrivateDevices=true, which hides /dev/dri from
-        # the unit. ffmpeg.accel below then throws before the transcode even
-        # starts, with no software fallback, so the two go together.
-        accelerationDevices = [ "/dev/dri/renderD128" ];
+          # The default, [ ], sets PrivateDevices=true, which hides /dev/dri from
+          # the unit. ffmpeg.accel below then throws before the transcode even
+          # starts, with no software fallback, so the two go together.
+          accelerationDevices = [ "/dev/dri/renderD128" ];
 
-        settings = {
-          backup.database.enabled = true;
-          ffmpeg.accel = "vaapi";
-          newVersionCheck.enabled = false;
-          storageTemplate.enabled = true;
+          settings = {
+            backup.database.enabled = true;
+            ffmpeg.accel = "vaapi";
+            newVersionCheck.enabled = false;
+            storageTemplate.enabled = true;
+          };
+        };
+
+        tsnsrv.services.photos = {
+          toURL = "http://127.0.0.1:${toString config.services.immich.port}";
+          plaintext = true;
         };
       };
 

@@ -1,5 +1,5 @@
 # Prometheus scrapes tower's node exporter; Grafana reads it back.
-# Reached on the tailnet as `metrics/` (see tailnet-services.nix).
+# Reached on the tailnet as `metrics/` through tsnsrv.
 { inputs, ... }:
 {
   flake.nixosModules.metrics =
@@ -63,7 +63,7 @@
             # rotating the key once the DB holds secrets has no supported path.
             security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
 
-            # The tailnet is the boundary, as it is for comfy/.
+            # The tailnet is the boundary.
             "auth.anonymous" = {
               enabled = true;
 
@@ -94,6 +94,11 @@
               isDefault = true;
             }
           ];
+        };
+
+        tsnsrv.services.metrics = {
+          toURL = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
+          plaintext = true;
         };
       };
     };
