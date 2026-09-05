@@ -59,6 +59,11 @@
             plaintext = true;
           };
 
+          feeds = {
+            toURL = "http://127.0.0.1:8085";
+            plaintext = true;
+          };
+
           chat = {
             toURL = "http://127.0.0.1:8090";
             plaintext = true;
