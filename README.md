@@ -14,12 +14,3 @@ setup:
 `sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake /Users/soft/work/setup/main#aaron`
 
 then can do `sudo darwin-rebuild switch`
-
-## Nix in docker
-
-Run nix commands in a docker container without installing Nix on your host
-machine:
-
-```sh
-docker run -it -e NIX_CONFIG="experimental-features = nix-command flakes" nixos/nix nix run nixpkgs#hello
-```
