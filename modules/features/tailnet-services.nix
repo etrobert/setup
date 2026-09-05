@@ -13,16 +13,23 @@
 #
 # This module owns tsnsrv itself and its defaults. Each name is declared by the
 # feature it belongs to, next to the listener it points at
-# (`services.tsnsrv.services.<name>`). `plaintext` has no defaults entry, so
-# every service sets it.
+# (`services.tsnsrv.services.<name>`).
 { inputs, ... }:
 {
   flake.nixosModules.tailnetServices =
-    { config, ... }:
+    { config, lib, ... }:
     {
       imports = [ inputs.tsnsrv.nixosModules.default ];
 
-      services.tsnsrv = {
+      # Every name is plain HTTP (see above), but tsnsrv's `defaults` has no
+      # entry for it. Declaring the option again merges this submodule into
+      # tsnsrv's own, so each service inherits the default instead of
+      # repeating it.
+      options.services.tsnsrv.services = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.submodule { config.plaintext = lib.mkDefault true; });
+      };
+
+      config.services.tsnsrv = {
         enable = true;
 
         # systemd reads the credential as root before dropping to the unit's

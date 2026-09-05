@@ -33,7 +33,6 @@ _: {
 
       services.tsnsrv.services.chat = {
         toURL = "http://127.0.0.1:${toString config.services.open-webui.port}";
-        plaintext = true;
 
         # Open WebUI's websocket upgrade fails on any non-ASCII header value:
         # websockets >= 16.1 decodes header values as ISO-8859-1, and uvicorn's

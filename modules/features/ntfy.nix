@@ -39,10 +39,7 @@ in
       # (no auth), which is acceptable for personal use.
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ port ];
 
-      services.tsnsrv.services.ntfy = {
-        toURL = "http://127.0.0.1:${toString port}";
-        plaintext = true;
-      };
+      services.tsnsrv.services.ntfy.toURL = "http://127.0.0.1:${toString port}";
     };
 
     nixosModules.ntfyDesktop =

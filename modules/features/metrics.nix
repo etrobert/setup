@@ -96,10 +96,7 @@
           ];
         };
 
-        tsnsrv.services.metrics = {
-          toURL = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
-          plaintext = true;
-        };
+        tsnsrv.services.metrics.toURL = "http://127.0.0.1:${toString config.services.grafana.settings.server.http_port}";
       };
     };
 }
