@@ -21,25 +21,50 @@ names() {
     jq --raw-output '.[]'
 }
 
-echo "collecting host system closures..." >&2
+# Every eval below is independent and nix is single-threaded, so running them
+# together costs the slowest rather than the sum. eval-cache off because
+# concurrent processes otherwise contend on its SQLite file, and each is a
+# different attribute so none of them would hit the cache anyway.
+echo "collecting host system closures and package derivations..." >&2
+
+pids=()
 for output in nixosConfigurations darwinConfigurations; do
   for host in $(names ".#$output"); do
-    drv=$(nix eval --raw --accept-flake-config \
-      ".#$output.$host.config.system.build.toplevel.drvPath")
-    nix-store --query --requisites "$drv"
+    {
+      drv=$(nix eval --raw --accept-flake-config --option eval-cache false \
+        ".#$output.$host.config.system.build.toplevel.drvPath")
+      nix-store --query --requisites "$drv"
+    } >"$scratch/closure.$host" &
+    pids+=($!)
   done
-done | sort --unique >"$scratch/closure"
+done
 
 # tryEval so a package that cannot evaluate for one system does not abort the
 # run; a package that evaluates for no system has no drv line and is reported.
-echo "collecting package derivations..." >&2
-for system in $(names .#packages); do
-  nix eval --json --accept-flake-config ".#packages.$system" --apply \
-    'ps: builtins.mapAttrs (
-       _: p: let r = builtins.tryEval (p.drvPath or null); in if r.success then r.value else null
-     ) ps' |
-    jq --raw-output 'to_entries[] | select(.value != null) | "\(.key) \(.value)"'
-done | sort --unique >"$scratch/packages"
+{
+  nix eval --json --accept-flake-config --option eval-cache false .#packages --apply \
+    'ss: builtins.mapAttrs (
+       _: ps: builtins.mapAttrs (
+         _: p: let r = builtins.tryEval (p.drvPath or null); in if r.success then r.value else null
+       ) ps
+     ) ss' |
+    jq --raw-output 'to_entries[] | .value | to_entries[]
+                     | select(.value != null) | "\(.key) \(.value)"'
+} >"$scratch/packages" &
+pids+=($!)
+
+for pid in "${pids[@]}"; do wait "$pid"; done
+
+# A host whose eval failed would contribute nothing and make every package look
+# unreferenced, so an empty closure is a broken run rather than a finding.
+for file in "$scratch"/closure.*; do
+  if [ ! -s "$file" ]; then
+    echo "empty system closure for ${file##*closure.} — did its evaluation fail?" >&2
+    exit 2
+  fi
+done
+cat "$scratch"/closure.* | sort --unique >"$scratch/closure"
+sort --unique "$scratch/packages" --output "$scratch/packages"
 
 cut --delimiter=' ' --fields=1 "$scratch/packages" | sort --unique >"$scratch/all"
 awk 'NR == FNR { closure[$0]; next } ($2 in closure) { print $1 }' \
