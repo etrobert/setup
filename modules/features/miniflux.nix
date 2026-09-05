@@ -36,8 +36,7 @@ _: {
         };
       };
 
-      services.tsnsrv.services.feeds = {
-        toURL = "http://${config.services.miniflux.config.LISTEN_ADDR}";
-      };
+      services.tsnsrv.services.feeds.toURL =
+        "http://${config.services.miniflux.config.LISTEN_ADDR}";
     };
 }

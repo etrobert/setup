@@ -291,8 +291,6 @@ in
       };
     };
 
-    services.tsnsrv.services.home = {
-      toURL = "http://127.0.0.1:${toString port}";
-    };
+    services.tsnsrv.services.home.toURL = "http://127.0.0.1:${toString port}";
   };
 }

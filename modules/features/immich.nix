@@ -52,9 +52,7 @@ _: {
           };
         };
 
-        tsnsrv.services.photos = {
-          toURL = "http://127.0.0.1:${toString config.services.immich.port}";
-        };
+        tsnsrv.services.photos.toURL = "http://127.0.0.1:${toString config.services.immich.port}";
       };
 
       systemd.services.immich-server = {
