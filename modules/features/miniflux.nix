@@ -35,12 +35,11 @@ _: {
           CREATE_ADMIN = false;
         };
       };
-    };
 
-    # tailnet-services.nix owns the tsnsrv defaults (auth key, listen address).
-    services.tsnsrv.services.feeds = {
-      toURL = "http://${config.services.miniflux.config.LISTEN_ADDR}";
-      plaintext = true;
+      # tailnet-services.nix owns the tsnsrv defaults (auth key, listen address).
+      services.tsnsrv.services.feeds = {
+        toURL = "http://${config.services.miniflux.config.LISTEN_ADDR}";
+        plaintext = true;
+      };
     };
-  };
 }
