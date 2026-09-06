@@ -14,8 +14,8 @@ note: |
   turns scan output from source spans into diffs, hiding the reported line.
   Keying off `language: bash` means any `.sh` in the scan path is checked, not
   just writeShellApplication bodies. Nothing trips that today, so there is no
-  `files:` scoping — `pkgs/zsh-wrapped/alias.sh` is sourced into interactive
-  zsh rather than wrapped, and carries no `set` line.
+  `files:` scoping — `modules/pkgs/zsh-wrapped/alias.sh` is sourced into
+  interactive zsh rather than wrapped, and carries no `set` line.
 rule:
   kind: command
   all:

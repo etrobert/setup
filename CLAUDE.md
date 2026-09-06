@@ -13,8 +13,8 @@ Personal dotfiles and system configuration repository using Nix flakes for:
 
 ### Configuration Layout
 
-Program configs live colocated with their wrapper in `pkgs/`. Each `*-wrapped`
-package embeds its config directly and is self-contained.
+Program configs live colocated with their wrapper in `modules/pkgs/`. Each
+`*-wrapped` package embeds its config directly and is self-contained.
 
 ### Nix Flake Structure
 
@@ -53,9 +53,17 @@ inline in `flake.nix`.
 Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
 plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
 
-**Custom packages** (`pkgs/`): wrapped tool configurations (neovim-wrapped,
-zsh-wrapped, tmux-wrapped, noctalia-wrapped, etc.) and custom scripts
-(gen-commit-msg, tmux-sessionizer, pm, audio-output-switcher, etc.).
+**Custom packages** (`modules/pkgs/`): wrapped tool configurations (zsh-wrapped,
+tmux-wrapped, noctalia-wrapped, etc.) and custom scripts (gen-commit-msg,
+tmux-sessionizer, pm, audio-output-switcher, etc.). Each is a directory whose
+`default.nix` is picked up by the `importTree ./modules` in `flake.nix`, so
+adding a package means adding a directory.
+
+`pkgs/` holds the two that carry extra `.nix` files besides their `default.nix`
+— `neovim-wrapped` (its `module.nix` and `plugins/` tree) and
+`claude-code-wrapped` (its `callPackage` scripts). `importTree` imports every
+`.nix` it finds as a flake module, which those files are not, so they keep the
+explicit importer in `pkgs/default.nix`.
 
 Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.
@@ -102,7 +110,7 @@ per host becomes a feature under `modules/features/`, alongside `darkman`:
   separate `enable`.
 - A wrapper only becomes a feature if it varies per host, or already owns
   services or config like `darkman`. Everything else stays a plain
-  `perSystem.packages.<name>` under `pkgs/`; most do.
+  `perSystem.packages.<name>` under `modules/pkgs/`; most do.
 - Host-facing knobs are options the feature declares:
   `wrappers.git.genCommitMsg`, `wrappers.niri.liveConfig`. A knob read by more
   than one feature gets its own module instead — `gpu.hasAv1Decode` serves
@@ -227,8 +235,8 @@ Other people's Nix configs worth reading for examples. Clone into
   `claude-code` and a Home Assistant CLI. Desktop layer is Hyprland, so it is no
   guide for the Niri side.
 - [`Goxore/nixconf`](https://github.com/Goxore/nixconf) — flake-parts config
-  whose `wrappedPrograms/` tree is the direct analogue of `pkgs/*-wrapped`,
-  including wrappers for niri, noctalia and neovim. Each wrapper is a module
+  whose `wrappedPrograms/` tree is the direct analogue of `*-wrapped`, including
+  wrappers for niri, noctalia and neovim. Each wrapper is a module
   (`flake.wrappers.<name>` importing `wlib.modules.default`) built on
   [`BirdeeHub/nix-wrapper-modules`](https://github.com/BirdeeHub/nix-wrapper-modules)
   — a different approach from this repo's hand-rolled `writeShellApplication`

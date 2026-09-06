@@ -98,8 +98,9 @@ _: {
             # insecure directory warnings caused by Nix store paths.
             enableGlobalCompInit = false;
 
-            # Keep in sync with pkgs/zsh-wrapped/zshrc: a shell that never reaches
-            # $ZDOTDIR/.zshrc would otherwise trim ~/.zsh_history to the 2000 default.
+            # Keep in sync with modules/pkgs/zsh-wrapped/zshrc: a shell that
+            # never reaches $ZDOTDIR/.zshrc would otherwise trim ~/.zsh_history
+            # to the 2000 default.
             histSize = 999999999;
 
             # Same hazard, worse outcome: /etc/zshrc sets SHARE_HISTORY, so any
