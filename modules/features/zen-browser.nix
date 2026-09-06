@@ -18,6 +18,9 @@
             // {
               "zen.theme.content-element-separation" = 4;
               "zen.theme.border-radius" = 12;
+              # Zen's own Sync engine for the sidebar (spaces, folders, pinned
+              # tabs, essentials). Ships disabled; unpinned tabs stay local.
+              "services.sync.engine.spaces" = true;
             }
             // extraSettings
           );
