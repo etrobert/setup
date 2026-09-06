@@ -140,10 +140,7 @@
           );
       in
       {
-        imports = [
-          inputs.home-manager.flakeModules.home-manager
-        ]
-        ++ importTree ./modules;
+        imports = importTree ./modules;
 
         systems = [
           "x86_64-linux"
