@@ -59,12 +59,6 @@ tmux-sessionizer, pm, audio-output-switcher, etc.). Each is a directory whose
 `default.nix` is picked up by the `importTree ./modules` in `flake.nix`, so
 adding a package means adding a directory.
 
-`pkgs/` holds the two that carry extra `.nix` files besides their `default.nix`
-— `neovim-wrapped` (its `module.nix` and `plugins/` tree) and
-`claude-code-wrapped` (its `callPackage` scripts). `importTree` imports every
-`.nix` it finds as a flake module, which those files are not, so they keep the
-explicit importer in `pkgs/default.nix`.
-
 Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.
 
