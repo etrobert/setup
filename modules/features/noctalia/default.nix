@@ -1,12 +1,7 @@
 { self, inputs, ... }:
 {
   perSystem =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
+    { pkgs, lib, ... }:
     let
       official-plugins = inputs.noctalia-official-plugins;
       community-plugins = inputs.noctalia-community-plugins;
@@ -31,7 +26,7 @@
           # Without --skip-ddc-checks, every ddcutil invocation re-runs a full display
           # detect, which dominates a brightness change: 0.50s vs 0.05s on the U3223QE.
           # noctalia builds its ddcutil argv in C++, so the flag is injected via PATH.
-          fast-ddcutil = config.lib.wrapPackage {
+          fast-ddcutil = self.lib.wrapPackage pkgs {
             package = pkgs.ddcutil;
             flags = [ "--skip-ddc-checks" ];
 
@@ -39,7 +34,7 @@
             runtimeInputs = [ pkgs.coreutils ];
           };
         in
-        config.lib.wrapPackage {
+        self.lib.wrapPackage pkgs {
           package = pkgs.noctalia;
 
           env.NOCTALIA_CONFIG_HOME = configHome;

@@ -1,12 +1,7 @@
 { self, ... }:
 {
   perSystem =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
+    { pkgs, lib, ... }:
     {
       packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         darkman-wrapped =
@@ -26,7 +21,7 @@
               '';
             });
           in
-          config.lib.wrapPackage {
+          self.lib.wrapPackage pkgs {
             package = darkman;
             env.XDG_CONFIG_HOME = "${configDir}";
             # Fail the build on an invalid config rather than at service start-up.
