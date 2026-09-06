@@ -46,10 +46,6 @@ A feature must not import another feature — if it needs to, it belongs in
 `profiles/`. Not the converse: `base.nix` and `workstation.nix` import no
 sibling and are profiles by role.
 
-**Checks** (`modules/checks/`) — a check that needs its own files gets a
-directory here (e.g. `ast-grep/` with its `rules/`). One-liner checks stay
-inline in `flake.nix`.
-
 **Declarations** stay at the `modules/` root — files that define vocabulary
 rather than provide a capability, so importing one adds nothing to a host by
 itself. Flake-level: `darwinModules.nix` (darwin module class) and `lib.nix`

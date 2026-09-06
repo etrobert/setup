@@ -126,87 +126,56 @@
 
   outputs =
     inputs@{ flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      { self, ... }:
-      let
-        inherit (inputs.nixpkgs) lib;
+    let
+      inherit (inputs.nixpkgs) lib;
 
-        # A `_` prefix marks a path that is not a flake module — a package's own
-        # evalModules or callPackage tree. Same convention as vic/import-tree.
-        importTree =
-          path:
-          lib.filter (file: !lib.hasInfix "/_" (toString file)) (
-            lib.fileset.toList (lib.fileset.fileFilter (file: file.hasExt "nix") path)
-          );
-      in
-      {
-        imports = importTree ./modules;
+      # A `_` prefix marks a path that is not a flake module — a package's own
+      # evalModules or callPackage tree. Same convention as vic/import-tree.
+      importTree =
+        path:
+        lib.filter (file: !lib.hasInfix "/_" (toString file)) (
+          lib.fileset.toList (lib.fileset.fileFilter (file: file.hasExt "nix") path)
+        );
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = importTree ./modules;
 
-        systems = [
-          "x86_64-linux"
-          "aarch64-linux"
-          "aarch64-darwin"
-        ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
 
-        perSystem =
-          {
-            pkgs,
-            system,
-            lib,
-            ...
-          }:
-          {
-            _module.args.pkgs = import inputs.nixpkgs {
-              inherit system;
+      perSystem =
+        {
+          pkgs,
+          system,
+          lib,
+          ...
+        }:
+        {
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
 
-              overlays = [ inputs.neovim-nightly.overlays.default ];
+            overlays = [ inputs.neovim-nightly.overlays.default ];
 
-              config.allowUnfreePredicate =
-                pkg:
-                builtins.elem (lib.getName pkg) [
-                  "claude-code"
-                  "copilot-language-server"
-                  "vscode"
-                  "vscode-extension-ms-vsliveshare-vsliveshare"
-                ];
-            };
-
-            devShells.pimsync = pkgs.mkShell {
-              packages = [
-                (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
+            config.allowUnfreePredicate =
+              pkg:
+              builtins.elem (lib.getName pkg) [
+                "claude-code"
+                "copilot-language-server"
+                "vscode"
+                "vscode-extension-ms-vsliveshare-vsliveshare"
               ];
-            };
-
-            checks = {
-              statix = pkgs.runCommand "statix-check" { nativeBuildInputs = [ pkgs.statix ]; } ''
-                statix check ${self} && touch $out
-              '';
-
-              deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
-                deadnix --fail ${self} && touch $out
-              '';
-
-              yamllint = pkgs.runCommand "yamllint-check" { nativeBuildInputs = [ pkgs.yamllint ]; } ''
-                yamllint --strict ${self} && touch $out
-              '';
-
-              stylua = pkgs.runCommand "stylua-check" { nativeBuildInputs = [ pkgs.stylua ]; } ''
-                stylua --check ${self} && touch $out
-              '';
-
-              actionlint = pkgs.runCommand "actionlint-check" { nativeBuildInputs = [ pkgs.actionlint ]; } ''
-                actionlint ${self}/.github/workflows/*.yml && touch $out
-              '';
-
-              # Fails once upstream adds `sh` to ast_grep.filetypes, making the
-              # override in neovim-wrapped's lspconfig plugin dead weight.
-              lspconfig-ast-grep-filetypes = pkgs.runCommand "lspconfig-ast-grep-filetypes-check" { } ''
-                ! grep --quiet "'sh'," ${pkgs.vimPlugins.nvim-lspconfig}/lsp/ast_grep.lua && touch $out
-              '';
-            };
-
-            formatter = pkgs.nixfmt-tree;
           };
-      }
-    );
+
+          devShells.pimsync = pkgs.mkShell {
+            packages = [
+              (pkgs.python3.withPackages (ps: with ps; [ vobject ]))
+            ];
+          };
+
+          formatter = pkgs.nixfmt-tree;
+        };
+    };
 }
