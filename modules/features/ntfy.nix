@@ -140,7 +140,7 @@ in
 
     # macOS counterpart of ntfyDesktop: a launchd user agent that subscribes to
     # the same topic and posts each message to Notification Center via osascript
-    # (matching pkgs/claude-code-wrapped/claude-rate-limit-notify.nix).
+    # (matching modules/pkgs/claude-code-wrapped/_scripts/claude-rate-limit-notify.nix).
     darwinModules.ntfyDesktop =
       { lib, pkgs, ... }:
       let

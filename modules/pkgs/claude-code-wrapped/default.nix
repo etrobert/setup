@@ -26,12 +26,12 @@
           binName ? "claude",
         }:
         let
-          statuslineScript = pkgs.callPackage ./claude-plan-usage.nix { };
-          formatFileScript = pkgs.callPackage ./format-file.nix { };
-          rateLimitNotifyScript = pkgs.callPackage ./claude-rate-limit-notify.nix {
+          statuslineScript = pkgs.callPackage ./_scripts/claude-plan-usage.nix { };
+          formatFileScript = pkgs.callPackage ./_scripts/format-file.nix { };
+          rateLimitNotifyScript = pkgs.callPackage ./_scripts/claude-rate-limit-notify.nix {
             ntfy-sh = self'.packages.ntfy-wrapped;
           };
-          sessionHostScript = pkgs.callPackage ./claude-session-host.nix { };
+          sessionHostScript = pkgs.callPackage ./_scripts/claude-session-host.nix { };
 
           runtimeInputs = [
             statuslineScript
@@ -83,7 +83,7 @@
             # Mutable path, not a store copy: Claude writes runtime state (sessions,
             # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
             # An ambient value wins, so CI can point at its own checkout of this config.
-            ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/work/setup/main/pkgs/claude-code-wrapped/config}"''
+            ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/work/setup/main/modules/pkgs/claude-code-wrapped/config}"''
           ]
           ++ agenixTokenRun;
           inherit runtimeInputs;

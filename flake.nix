@@ -142,7 +142,6 @@
       {
         imports = [
           inputs.home-manager.flakeModules.home-manager
-          ./pkgs
         ]
         ++ importTree ./modules;
 
