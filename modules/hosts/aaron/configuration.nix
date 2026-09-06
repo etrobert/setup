@@ -7,7 +7,7 @@ _: {
       ...
     }:
     let
-      dockApps = import (self + /lib/dock-apps.nix);
+      dockApps = import ./_dock-apps.nix;
 
       skhdAppBindings = lib.concatStringsSep "\n" (
         lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
