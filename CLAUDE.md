@@ -50,8 +50,11 @@ sibling and are profiles by role.
 directory here (e.g. `ast-grep/` with its `rules/`). One-liner checks stay
 inline in `flake.nix`.
 
-Plumbing stays at the `modules/` root: `darwinModules.nix` (darwin module-type
-plumbing) and `unfree.nix` (`allowedUnfreePackages` option).
+**Declarations** stay at the `modules/` root — files that define vocabulary
+rather than provide a capability, so importing one adds nothing to a host by
+itself. Flake-level: `darwinModules.nix` (darwin module class) and `lib.nix`
+(`flake.lib`). Host-level: `gpu.nix` (hardware traits) and `unfree.nix`
+(`allowedUnfreePackages`).
 
 **Custom packages** (`modules/pkgs/`): wrapped tool configurations (zsh-wrapped,
 tmux-wrapped, noctalia-wrapped, etc.) and custom scripts (gen-commit-msg,
@@ -112,8 +115,8 @@ per host becomes a feature under `modules/features/`, alongside `darkman`:
   `perSystem.packages.<name>` under `modules/pkgs/`; most do.
 - Host-facing knobs are options the feature declares:
   `wrappers.git.genCommitMsg`, `wrappers.niri.liveConfig`. A knob read by more
-  than one feature gets its own module instead — `gpu.hasAv1Decode` serves
-  firefox and zen.
+  than one feature becomes a declaration at the `modules/` root instead —
+  `gpu.hasAv1Decode` serves firefox and zen.
 - A feature imported from a profile shared with darwin (`base.nix`) defines its
   module in a `let` and exports it as both `nixosModules` and `darwinModules`;
   flake-parts stamps a class on each, so one value cannot serve both. `git` is
