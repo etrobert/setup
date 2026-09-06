@@ -1,7 +1,7 @@
-_: {
+{ self, ... }:
+{
   perSystem =
     {
-      config,
       pkgs,
       inputs',
       self',
@@ -24,7 +24,7 @@ _: {
 
           inputrc = pkgs.writeText "inputrc" (builtins.readFile ./inputrc);
         in
-        config.lib.wrapPackage {
+        self.lib.wrapPackage pkgs {
           package = pkgs.bash;
           env.INPUTRC = "${inputrc}";
           flags = [ "--rcfile ${bashrcFinal}" ];

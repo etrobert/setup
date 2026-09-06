@@ -1,12 +1,9 @@
-_: {
+{ self, ... }:
+{
   perSystem =
+    { pkgs, ... }:
     {
-      config,
-      pkgs,
-      ...
-    }:
-    {
-      packages.ntfy-wrapped = config.lib.wrapPackage {
+      packages.ntfy-wrapped = self.lib.wrapPackage pkgs {
         package = pkgs.ntfy-sh;
         # --set-default, so an NTFY_TOPIC in the environment still wins for ad-hoc
         # overrides.
