@@ -165,6 +165,9 @@ test, build, or manual verification step.
 
 ## Git Workflow
 
+Any change I ask for in a repository ends in a pull request — commit, push and
+open it without being asked.
+
 When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
 output), include a screenshot in the PR description.
 
