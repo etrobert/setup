@@ -59,6 +59,10 @@ tmux-sessionizer, pm, audio-output-switcher, etc.). Each is a directory whose
 `default.nix` is picked up by the `importTree ./modules` in `flake.nix`, so
 adding a package means adding a directory.
 
+`importTree` imports every `.nix` it finds as a flake module, so a package's own
+`evalModules` or `callPackage` files must be hidden from it: a `_` anywhere in
+the path excludes it, as in `neovim-wrapped/_plugins/`.
+
 Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.
 
@@ -120,8 +124,11 @@ diff: only `system-path`, `etc`, `activate` and unit derivations should differ.
 
 ### neovim-wrapped plugin conventions
 
-Each plugin is a directory under `pkgs/neovim-wrapped/plugins/` with a
-`default.nix`. Plugins are registered in `pkgs/neovim-wrapped/default.nix`.
+Each plugin is a directory under `modules/pkgs/neovim-wrapped/_plugins/` with a
+`default.nix`. Plugins are registered in
+`modules/pkgs/neovim-wrapped/default.nix`. The `_` prefix keeps them out of
+`importTree` — they are modules of neovim's own `evalModules`, not flake
+modules.
 
 **Existing catch-all plugins** — do not add unrelated code to these:
 

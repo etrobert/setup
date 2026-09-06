@@ -131,7 +131,13 @@
       let
         inherit (inputs.nixpkgs) lib;
 
-        importTree = path: lib.fileset.toList (lib.fileset.fileFilter (file: file.hasExt "nix") path);
+        # A `_` prefix marks a path that is not a flake module — a package's own
+        # evalModules or callPackage tree. Same convention as vic/import-tree.
+        importTree =
+          path:
+          lib.filter (file: !lib.hasInfix "/_" (toString file)) (
+            lib.fileset.toList (lib.fileset.fileFilter (file: file.hasExt "nix") path)
+          );
       in
       {
         imports = [
