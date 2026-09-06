@@ -1,9 +1,9 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     let
-      browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
+      inherit (self.lib) browserConfig;
 
       makeFirefox =
         extraSettings:

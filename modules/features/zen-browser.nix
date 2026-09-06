@@ -8,7 +8,7 @@
       ...
     }:
     let
-      browserConfig = import (self + /lib/browser-config.nix) { inherit lib; };
+      inherit (self.lib) browserConfig;
 
       makeZen =
         extraSettings:
