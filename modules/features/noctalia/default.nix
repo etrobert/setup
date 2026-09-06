@@ -13,7 +13,7 @@ let
     let
       plugins = ./plugins;
 
-      wallpaper = ../../../assets/saint-levant.jpg;
+      wallpaper = ./saint-levant.jpg;
 
       configHome = pkgs.runCommand "noctalia-config-home" { } ''
         mkdir -p $out/noctalia
