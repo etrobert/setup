@@ -100,7 +100,7 @@ _: {
           dataDir = "/home/soft";
           openDefaultPorts = true;
           guiAddress = "0.0.0.0:8384";
-          settings = import (self + /lib/syncthing-settings.nix) { dataDir = "/home/soft"; };
+          settings = self.lib.syncthingSettings { dataDir = "/home/soft"; };
         };
 
       };
