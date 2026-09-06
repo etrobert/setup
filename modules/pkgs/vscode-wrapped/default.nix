@@ -14,7 +14,7 @@ _: {
         # ~/work/setup/main is the main worktree on both Linux and macOS, mirroring how
         # claude-code-wrapped points CLAUDE_CONFIG_DIR at $HOME/work/setup/main.
         vscode = pkgs.vscode.override {
-          commandLineArgs = " --user-data-dir=$HOME/work/setup/main/pkgs/vscode-wrapped/user-data";
+          commandLineArgs = " --user-data-dir=$HOME/work/setup/main/modules/pkgs/vscode-wrapped/user-data";
         };
         vscodeExtensions = with pkgs.vscode-extensions; [
           eamodio.gitlens

@@ -16,7 +16,7 @@
             }:
             let
               configFile =
-                if dev then "/home/soft/work/setup/main/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
+                if dev then "/home/soft/work/setup/main/modules/pkgs/niri-wrapped/config.kdl" else ./config.kdl;
 
               path = [
                 self'.packages.ghostty-wrapped
