@@ -45,6 +45,14 @@
         installation_mode = "force_installed";
         default_area = "menupanel";
       };
+      # Tab Wrangler — closes unpinned tabs left idle past a timeout and keeps
+      # them in a restorable list. Timeout and exemptions are profile settings,
+      # not policy; set them in its options page on each machine.
+      "{81b74d53-9416-4fb3-afa2-ab46684b253b}" = {
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabwrangler/latest.xpi";
+        installation_mode = "force_installed";
+        default_area = "menupanel";
+      };
       # SponsorBlock — skips in-video sponsor/intro/outro segments on YouTube
       # using crowd-sourced segment data.
       "sponsorBlocker@ajay.app" = {
