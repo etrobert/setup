@@ -25,11 +25,11 @@ _: {
                     "startup-banner"
                   ];
                 in
-                [ ./module.nix ]
-                ++ lib.pipe ./plugins [
+                [ ./_module.nix ]
+                ++ lib.pipe ./_plugins [
                   builtins.readDir
                   (lib.filterAttrs (name: type: type == "directory" && !(builtins.elem name disabled)))
-                  (lib.mapAttrsToList (name: _: ./plugins + "/${name}"))
+                  (lib.mapAttrsToList (name: _: ./_plugins + "/${name}"))
                 ];
             }).config;
 
