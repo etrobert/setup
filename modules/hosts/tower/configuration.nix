@@ -17,6 +17,8 @@
 
     services.claude-warmup.enable = true;
 
+    wrappers.noctalia.idleLock = false;
+
     services.sunshine = {
       enable = false;
       openFirewall = true;
