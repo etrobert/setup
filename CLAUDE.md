@@ -60,8 +60,9 @@ tmux-sessionizer, pm, audio-output-switcher, etc.). Each is a directory whose
 adding a package means adding a directory.
 
 `importTree` imports every `.nix` it finds as a flake module, so a package's own
-`evalModules` or `callPackage` files must be hidden from it: a `_` anywhere in
-the path excludes it, as in `neovim-wrapped/_plugins/`.
+`evalModules` or `callPackage` files must be hidden from it: a path component
+starting with `_` excludes it, as in `neovim-wrapped/_plugins/` and
+`claude-code-wrapped/_scripts/`.
 
 Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.
