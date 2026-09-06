@@ -162,10 +162,7 @@
             _module.args.pkgs = import inputs.nixpkgs {
               inherit system;
 
-              overlays = [
-                inputs.neovim-nightly.overlays.default
-
-              ];
+              overlays = [ inputs.neovim-nightly.overlays.default ];
 
               config.allowUnfreePredicate =
                 pkg:
