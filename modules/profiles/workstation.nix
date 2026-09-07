@@ -138,7 +138,11 @@ _: {
 
         programs.direnv = {
           enable = true;
-          settings.global.hide_env_diff = true;
+          settings = {
+            global.hide_env_diff = true;
+            # Trusted upfront so fresh lafraise worktrees skip `direnv allow`.
+            whitelist.prefix = [ "~/work/lafraise" ];
+          };
         };
       };
 
