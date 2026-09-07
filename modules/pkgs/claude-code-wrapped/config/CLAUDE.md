@@ -214,6 +214,20 @@ Keep PRs small and atomic — one logical change per PR.
 For complex features that naturally split into layers, use stacked PRs: each PR
 builds on the previous one.
 
+## Contributing to Other Repos
+
+When contributing to a repo that isn't mine, derive its conventions from the
+repo itself:
+
+- Read their `README.md` and `CONTRIBUTING.md`
+- Derive their commit style from their previous commits
+- Read their PR template
+- Derive PR description style from previously merged PRs
+- Avoid prose (commit messages, PR descriptions) longer than is typical for
+  their repo
+
+Also run checks with the invocation the repo's CI uses.
+
 ## CLAUDE.md Maintenance
 
 - User `CLAUDE.md` : Only document conventions, decisions, and preferences
