@@ -38,6 +38,12 @@
                 try_files {path} /index.html
                 file_server
               '';
+              "draw.etiennerobert.com".extraConfig = /* caddy */ ''
+                root * ${self.packages.${system}.excalidraw}
+                encode zstd gzip
+                try_files {path} /index.html
+                file_server
+              '';
               "files.etiennerobert.com".extraConfig = /* caddy */ ''
                 root * /srv/files
                 header Access-Control-Allow-Origin *

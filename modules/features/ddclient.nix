@@ -12,6 +12,7 @@ _: {
           "test"
           "creatures"
           "countdown"
+          "draw"
           "files"
           "adele"
           "umami"
