@@ -227,8 +227,7 @@ if [ $# -eq 1 ]; then
       fzf --ansi --delimiter '\|' --with-nth 2 --accept-nth 1 \
         --track --id-nth 1 --listen \
         --bind 'start:execute-silent(tmux-sessionizer --refresh-pr-cache &)' \
-        --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%' \
-        --bind 'every(0.2):refresh-preview')
+        --preview 'tmux capture-pane -ep -t {1}' --preview-window 'right:60%')
     project_path=""
     ;;
   -w | --worktrees)
