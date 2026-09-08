@@ -31,7 +31,8 @@ jobs:
       # Most bumps don't: docs, tests, or the plugins nobody here enables. A
       # drvPath is a hash of everything the system depends on, so comparing
       # them before and after is exact, and eval-only. The lock is restored
-      # otherwise, so there is nothing to commit.
+      # otherwise, so there is nothing to commit, and the bumps it would have
+      # carried go to the job summary.
       - name: Update flake inputs
         id: update
         env:
@@ -48,29 +49,31 @@ jobs:
 
           nix flake update --accept-flake-config 2>&1 \
             | tee "$RUNNER_TEMP/update.log"
-
-          after=$(toplevels)
-          if [ "$after" = "$before" ]; then
-            echo "No host changed; dropping the update."
-            git checkout -- flake.lock
-            exit 0
-          fi
-
           inputs=$(grep --only-matching "Updated input '[^']*'" \
             "$RUNNER_TEMP/update.log" \
             | sed "s/Updated input '//; s/'$//" \
             | paste --serial --delimiters=, || true)
-          echo "title=chore: update flake inputs${inputs:+ (${inputs//,/, })}" \
-            >> "$GITHUB_OUTPUT"
+          if [ -z "$inputs" ]; then
+            echo "Every input is up to date."
+            exit 0
+          fi
 
           # The update is uncommitted, so HEAD still holds the old lock.
           git show HEAD:flake.lock > "$RUNNER_TEMP/flake.lock.old"
-          {
-            echo "body<<EOF"
-            nix run --accept-flake-config .#flake-input-table -- \
-              "$RUNNER_TEMP/flake.lock.old" flake.lock
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          table=$(nix run --accept-flake-config .#flake-input-table -- \
+            "$RUNNER_TEMP/flake.lock.old" flake.lock)
+
+          after=$(toplevels)
+          if [ "$after" = "$before" ]; then
+            echo "No host changed; dropping: ${inputs//,/, }"
+            printf '## Dropped\n\n%s\n' "$table" >> "$GITHUB_STEP_SUMMARY"
+            git checkout -- flake.lock
+            exit 0
+          fi
+
+          echo "title=chore: update flake inputs (${inputs//,/, })" \
+            >> "$GITHUB_OUTPUT"
+          printf 'body<<EOF\n%s\nEOF\n' "$table" >> "$GITHUB_OUTPUT"
 
       - name: Create pull request
         id: create
