@@ -26,13 +26,36 @@ jobs:
       # 60/hour budget. Applies client-side, so no trusted-user requirement.
       # The log goes to RUNNER_TEMP, not the work tree, so create-pull-request
       # does not commit it.
+      #
+      # An update is kept only if it changes some host's toplevel derivation.
+      # Most bumps don't: docs, tests, or the plugins nobody here enables. A
+      # drvPath is a hash of everything the system depends on, so comparing
+      # them before and after is exact, and eval-only. The lock is restored
+      # otherwise, so there is nothing to commit.
       - name: Update flake inputs
         id: update
         env:
           NIX_CONFIG: access-tokens = github.com=${{ github.token }}
         run: |
+          toplevels() {
+            for kind in nixos darwin; do
+              nix eval ".#${kind}Configurations" --accept-flake-config --json \
+                --apply 'hosts: builtins.mapAttrs
+                  (_: host: host.config.system.build.toplevel.drvPath) hosts'
+            done
+          }
+          before=$(toplevels)
+
           nix flake update --accept-flake-config 2>&1 \
             | tee "$RUNNER_TEMP/update.log"
+
+          after=$(toplevels)
+          if [ "$after" = "$before" ]; then
+            echo "No host changed; dropping the update."
+            git checkout -- flake.lock
+            exit 0
+          fi
+
           inputs=$(grep --only-matching "Updated input '[^']*'" \
             "$RUNNER_TEMP/update.log" \
             | sed "s/Updated input '//; s/'$//" \

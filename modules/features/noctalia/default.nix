@@ -1,8 +1,5 @@
 { self, inputs, ... }:
 let
-  official-plugins = inputs.noctalia-official-plugins;
-  community-plugins = inputs.noctalia-community-plugins;
-
   makeNoctalia =
     {
       pkgs,
@@ -12,6 +9,29 @@ let
     }:
     let
       plugins = ./plugins;
+
+      # A path source is scanned for plugin directories, so pointing it at an
+      # input hands noctalia the whole checkout: the store path then moves on
+      # every upstream commit, to any of the hundred-odd plugins, and the
+      # shell rebuilds although nothing it loads changed. Keep only the
+      # plugins config.toml enables; the result is content-addressed, so it
+      # only moves when one of them does.
+      pluginSource =
+        name: plugins:
+        let
+          root = toString inputs.${name};
+          missing = builtins.filter (plugin: !builtins.pathExists "${root}/${plugin}") plugins;
+        in
+        assert lib.assertMsg (missing == [ ]) "${name}: ${toString missing} missing upstream";
+        builtins.path {
+          inherit name;
+          path = root;
+          filter = path: _type: dirOf path != root || builtins.elem (baseNameOf path) plugins;
+        };
+
+      # The directory of each id that config.toml enables from that source.
+      official-plugins = pluginSource "noctalia-official-plugins" [ "bitwarden" ];
+      community-plugins = pluginSource "noctalia-community-plugins" [ "nix-monitor" ];
 
       wallpaper = ./saint-levant.jpg;
 
