@@ -168,11 +168,11 @@
     "figma-mcp-plugin": {
       "flake": false,
       "locked": {
-        "lastModified": 1788286974,
-        "narHash": "sha256-781WwB5795TQ9N+uKLr4DW9Pa5qRgYjRVce0NUHx9Tk=",
+        "lastModified": 1788874510,
+        "narHash": "sha256-4R53t7udi7gyJyV1cQoV4R2+4x3XRCTwoCAVhygGwA0=",
         "owner": "figma",
         "repo": "mcp-server-guide",
-        "rev": "ae7e5e5f80da20f1dd7445e0c6ae5ac58a5b0bce",
+        "rev": "f74a51c9aaec87a2e65c9121753b63fb42203d96",
         "type": "github"
       },
       "original": {
@@ -454,11 +454,11 @@
     "noctalia-community-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1788815744,
-        "narHash": "sha256-Hgvh2lSlNs5H/FTc+MSi/48p23Zyd2zufu/eR8j5xg4=",
+        "lastModified": 1788868123,
+        "narHash": "sha256-aZ/i8Z0pIC+SyOmR8fF8LIlxpNuSYDncJCkZWfNHjJQ=",
         "owner": "noctalia-dev",
         "repo": "community-plugins",
-        "rev": "ec870897b83fd1d36b63128fd65e32202f39a087",
+        "rev": "689133e874f7f10807193eb8db4153d5bc32a973",
         "type": "github"
       },
       "original": {
