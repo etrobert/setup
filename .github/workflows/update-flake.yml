@@ -24,8 +24,6 @@ jobs:
       # access-tokens: the self-hosted runner's nix has no GitHub credentials,
       # and unauthenticated api.github.com calls share the household IP's
       # 60/hour budget. Applies client-side, so no trusted-user requirement.
-      # The log goes to RUNNER_TEMP, not the work tree, so create-pull-request
-      # does not commit it.
       #
       # An update is kept only if it changes some host's toplevel derivation.
       # Most bumps don't: docs, tests, or the plugins nobody here enables. A
@@ -47,21 +45,25 @@ jobs:
           }
           before=$(toplevels)
 
-          nix flake update --accept-flake-config 2>&1 \
-            | tee "$RUNNER_TEMP/update.log"
-          inputs=$(grep --only-matching "Updated input '[^']*'" \
-            "$RUNNER_TEMP/update.log" \
-            | sed "s/Updated input '//; s/'$//" \
-            | paste --serial --delimiters=, || true)
+          # The old lock goes to RUNNER_TEMP, not the work tree, so
+          # create-pull-request does not commit it.
+          old_lock="$RUNNER_TEMP/flake.lock.old"
+          git show HEAD:flake.lock > "$old_lock"
+          nix flake update --accept-flake-config
+
+          # The direct inputs whose locked rev moved, read off the lock files.
+          inputs=$(jq --raw-output --slurpfile old "$old_lock" '
+            . as $new | .nodes.root.inputs | to_entries[]
+            | select(.value | type == "string")
+            | select($old[0].nodes[.value].locked.rev
+                     != $new.nodes[.value].locked.rev)
+            | .key' flake.lock | paste --serial --delimiters=,)
           if [ -z "$inputs" ]; then
             echo "Every input is up to date."
             exit 0
           fi
-
-          # The update is uncommitted, so HEAD still holds the old lock.
-          git show HEAD:flake.lock > "$RUNNER_TEMP/flake.lock.old"
           table=$(nix run --accept-flake-config .#flake-input-table -- \
-            "$RUNNER_TEMP/flake.lock.old" flake.lock)
+            "$old_lock" flake.lock)
 
           after=$(toplevels)
           if [ "$after" = "$before" ]; then
