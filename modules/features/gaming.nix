@@ -10,7 +10,6 @@ _: {
       ];
 
       allowedUnfreePackages = [
-        "ankama-launcher"
         "steam"
         "steam-unwrapped"
       ];
