@@ -12,19 +12,19 @@
       # ships the next one this stops fetching until both are bumped.
       packages = self.lib.onlySupported {
         ankama-launcher =
-          assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version "3.15.4")
-            "nixpkgs ankama-launcher reached ${pkgs.ankama-launcher.version} — drop modules/pkgs/ankama-launcher and install pkgs.ankama-launcher instead";
           let
             pname = "ankama-launcher";
-            version = "3.15.4";
+            version = "3.15.5";
 
             src = pkgs.fetchurl {
               url = "https://launcher.cdn.ankama.com/installers/production/Ankama%20Launcher-Setup-x86_64.AppImage";
-              hash = "sha256-ATkC9Sv4c+cZL8L+6+t2+gXmvyglImOjbSRnd3NFqrk=";
+              hash = "sha256-6q0kAFXtrnud8rvxN6o6mIiwklzjZYAopf1MlS3ODbU=";
             };
 
             appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
           in
+          assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version version)
+            "nixpkgs ankama-launcher reached ${pkgs.ankama-launcher.version} — drop modules/pkgs/ankama-launcher and install pkgs.ankama-launcher instead";
           pkgs.appimageTools.wrapType2 {
             inherit pname version src;
             extraPkgs = pkgs: [ pkgs.wine ];
