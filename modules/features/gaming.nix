@@ -1,6 +1,7 @@
-_: {
+{ self, ... }:
+{
   flake.nixosModules.gaming =
-    { self, pkgs, ... }:
+    { pkgs, ... }:
     {
       programs.steam.enable = true;
 
