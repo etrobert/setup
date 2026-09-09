@@ -32,6 +32,7 @@ in
       self.nixosModules.githubIssueWatch
       self.nixosModules.kleinanzeigenWatch
       self.nixosModules.docker
+      self.nixosModules.virtualbox
       self.nixosModules.gaming
       self.nixosModules.githubRunner
       self.nixosModules.harmonia
