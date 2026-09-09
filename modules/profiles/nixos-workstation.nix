@@ -24,6 +24,7 @@
         self.nixosModules.copilot-api
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
+        self.nixosModules.virtualbox
       ];
 
       documentation.doc.enable = false;
