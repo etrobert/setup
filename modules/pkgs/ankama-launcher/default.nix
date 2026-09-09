@@ -3,14 +3,17 @@
   perSystem =
     { pkgs, lib, ... }:
     {
-      # Vendored from nixpkgs, which is stuck on 3.14.14: it pins the AppImage
-      # through a Wayback Machine snapshot and Ankama's CDN now blocks the
-      # archiver (NixOS/nixpkgs#474164). Running a launcher older than what
-      # Ankama serves makes its auto-updater fire, and it cannot rewrite an
-      # AppImage that is an extracted store path: it raises "APPIMAGE env is
-      # not defined" and logs a fatal unhandled rejection. The URL carries no
-      # version, so `hash` is what pins the release: when Ankama ships the next
-      # one this stops fetching until both are bumped.
+      # Vendored because nixpkgs is behind at 3.14.14. Running a launcher older
+      # than what Ankama serves makes its auto-updater fire, and it cannot
+      # rewrite an AppImage that is an extracted store path: it raises
+      # "APPIMAGE env is not defined" and logs a fatal unhandled rejection.
+      #
+      # The URL carries no version and always serves the current release, so
+      # `hash` stops matching once Ankama ships one. That is deliberate: this
+      # package must track their latest anyway, and a hash mismatch says so at
+      # the moment it becomes true. nixpkgs pins a Wayback snapshot instead
+      # because its users have cold stores; here that would only buy a build
+      # of a release the launcher already refuses to run.
       packages = self.lib.onlySupported {
         ankama-launcher =
           let
