@@ -33,6 +33,7 @@ in
       self.nixosModules.kleinanzeigenWatch
       self.nixosModules.docker
       self.nixosModules.gaming
+      self.nixosModules.xwaylandClientList
       self.nixosModules.githubRunner
       self.nixosModules.harmonia
       self.nixosModules.navidrome

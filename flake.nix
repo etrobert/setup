@@ -162,6 +162,7 @@
             config.allowUnfreePredicate =
               pkg:
               builtins.elem (lib.getName pkg) [
+                "ankama-launcher"
                 "claude-code"
                 "copilot-language-server"
                 "vscode"

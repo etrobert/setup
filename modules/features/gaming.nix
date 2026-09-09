@@ -1,10 +1,14 @@
-_: {
+{ self, ... }:
+{
   flake.nixosModules.gaming =
     { pkgs, ... }:
     {
       programs.steam.enable = true;
 
-      environment.systemPackages = [ pkgs.heroic ];
+      environment.systemPackages = [
+        pkgs.heroic
+        self.packages.${pkgs.stdenv.hostPlatform.system}.ankama-launcher
+      ];
 
       allowedUnfreePackages = [
         "steam"
