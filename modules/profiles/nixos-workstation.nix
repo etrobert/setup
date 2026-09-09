@@ -120,6 +120,7 @@
             chromium
             ddcutil
             dmidecode
+            freerdp # provides wlfreerdp
             kdePackages.okular
             mpv
             orca-slicer
