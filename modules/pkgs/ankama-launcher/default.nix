@@ -29,11 +29,21 @@
             inherit pname version src;
             extraPkgs = pkgs: [ pkgs.wine ];
 
-            extraInstallCommands = ''
-              install -m 444 -D ${appimageContents}/zaap.desktop $out/share/applications/ankama-launcher.desktop
-              sed -i 's/.*Exec.*/Exec=ankama-launcher/' $out/share/applications/ankama-launcher.desktop
-              install -m 444 -D ${appimageContents}/zaap.png $out/share/icons/hicolor/256x256/apps/zaap.png
-            '';
+            extraInstallCommands = # bash
+              ''
+                # The URL carries no version, so `version` is only a claim about
+                # whatever `hash` pinned; the AppImage itself states the truth.
+                archive_version=$(grep --only-matching --perl-regexp \
+                  '(?<=X-AppImage-Version=).*' ${appimageContents}/zaap.desktop)
+                if [[ "$archive_version" != "${version}"* ]]; then
+                  echo "version is ${version} but the AppImage is $archive_version"
+                  exit 1
+                fi
+
+                install -m 444 -D ${appimageContents}/zaap.desktop $out/share/applications/ankama-launcher.desktop
+                sed -i 's/.*Exec.*/Exec=ankama-launcher/' $out/share/applications/ankama-launcher.desktop
+                install -m 444 -D ${appimageContents}/zaap.png $out/share/icons/hicolor/256x256/apps/zaap.png
+              '';
 
             meta = {
               license = lib.licenses.unfree;
