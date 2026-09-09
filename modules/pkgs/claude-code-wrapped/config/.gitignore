@@ -23,4 +23,6 @@ shell-snapshots/
 jobs/
 tasks/
 projects/*/?*-?*-?*-?*-?*/
+projects/*/memory/
+feedback/
 chrome/chrome-native-host
