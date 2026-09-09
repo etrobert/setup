@@ -46,8 +46,11 @@
               '';
 
             meta = {
+              description = "Ankama Launcher";
+              homepage = "https://www.ankama.com/en/launcher";
               license = lib.licenses.unfree;
               mainProgram = "ankama-launcher";
+              sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
               platforms = [ "x86_64-linux" ];
             };
           };
