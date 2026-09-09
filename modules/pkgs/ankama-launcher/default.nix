@@ -6,10 +6,11 @@
       # Vendored from nixpkgs, which is stuck on 3.14.14: it pins the AppImage
       # through a Wayback Machine snapshot and Ankama's CDN now blocks the
       # archiver (NixOS/nixpkgs#474164). Running a launcher older than what
-      # Ankama serves makes its auto-updater fire, and self-update cannot work
-      # from the store — startup dies on "APPIMAGE env is not defined". The URL
-      # carries no version, so `hash` is what pins the release: when Ankama
-      # ships the next one this stops fetching until both are bumped.
+      # Ankama serves makes its auto-updater fire, and it cannot rewrite an
+      # AppImage that is an extracted store path: it raises "APPIMAGE env is
+      # not defined" and logs a fatal unhandled rejection. The URL carries no
+      # version, so `hash` is what pins the release: when Ankama ships the next
+      # one this stops fetching until both are bumped.
       packages = self.lib.onlySupported {
         ankama-launcher =
           let
