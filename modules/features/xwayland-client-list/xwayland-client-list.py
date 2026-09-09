@@ -11,7 +11,7 @@ Listing every window carrying a _NET_WM_PID is enough for that lookup.
 
 import time
 
-from Xlib import X, display
+from Xlib import X, display, error
 
 INTERVAL = 1.0
 
@@ -21,11 +21,12 @@ def clients(root, pid_atom):
     stack = list(root.query_tree().children)
     while stack:
         win = stack.pop()
+        # A window can go away mid-walk; anything else should reach systemd.
         try:
             stack.extend(win.query_tree().children)
             if win.get_full_property(pid_atom, X.AnyPropertyType):
                 found.append(win.id)
-        except Exception:
+        except error.BadWindow:
             continue
     return found
 
