@@ -168,11 +168,11 @@
     "figma-mcp-plugin": {
       "flake": false,
       "locked": {
-        "lastModified": 1788874510,
-        "narHash": "sha256-4R53t7udi7gyJyV1cQoV4R2+4x3XRCTwoCAVhygGwA0=",
+        "lastModified": 1789043730,
+        "narHash": "sha256-sLkV9mJ/OH9bfZ3FFHn0v6W2j7qU1xQXuff7WGdJeZk=",
         "owner": "figma",
         "repo": "mcp-server-guide",
-        "rev": "f74a51c9aaec87a2e65c9121753b63fb42203d96",
+        "rev": "a5e7e047692969537e5f44ea12f8f2270078bda3",
         "type": "github"
       },
       "original": {
