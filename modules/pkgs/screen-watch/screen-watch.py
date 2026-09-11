@@ -65,13 +65,13 @@ def shrink(image, factor):
 
 
 def best_match(frame, template):
-    """(score, top-left corner, size) of the best match over all scales."""
+    """(score, scale, top-left corner, size) of the best match over all scales."""
     matches = []
     for scale in SCALES:
         scaled = shrink(template, FRAME_SCALE * scale)
         result = cv2.matchTemplate(frame, scaled, cv2.TM_CCOEFF_NORMED)
         _, score, _, corner = cv2.minMaxLoc(result)
-        matches.append((score, corner, scaled.shape[1::-1]))
+        matches.append((score, scale, corner, scaled.shape[1::-1]))
     return max(matches)
 
 
@@ -115,9 +115,9 @@ def main():
 
         start = time.time()
         frame = capture(output)
-        score, corner, size = best_match(frame, template)
+        score, scale, corner, size = best_match(frame, template)
         now = time.time()
-        print(f"{score:.2f} in {now - start:.2f}s", flush=True)
+        print(f"score={score:.2f} scale={scale} time={now - start:.2f}s", flush=True)
         if score >= THRESHOLD:
             last_seen = now
             if armed:
