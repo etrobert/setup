@@ -89,9 +89,10 @@ def main():
             time.sleep(POLL_HIDDEN)
             continue
 
+        start = time.time()
         score = best_score(capture(output), template)
-        print(f"{score:.2f}", flush=True)
         now = time.time()
+        print(f"{score:.2f} in {now - start:.2f}s", flush=True)
         if score >= THRESHOLD:
             last_seen = now
             if armed:
