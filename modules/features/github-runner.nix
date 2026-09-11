@@ -57,6 +57,11 @@ _: {
           count = 6;
         }
         // mkRunners {
+          owner = "etrobert";
+          repo = "event-sourcing-demo";
+          count = 1;
+        }
+        // mkRunners {
           owner = "lafraise-pro";
           repo = "app";
 
