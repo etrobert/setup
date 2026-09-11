@@ -163,6 +163,10 @@ background = false
 [wallpaper.default]
 path = "@wallpaper@"
 
+# Also chirps on volume changes; there is no separate switch for that.
+[audio]
+enable_sounds = true
+
 # Reaching the monitor over DDC/CI needs hardware.i2c.enable for /dev/i2c-*.
 [brightness]
 enable_ddcutil = true
