@@ -65,13 +65,37 @@ def shrink(image, factor):
     return cv2.resize(image, None, fx=factor, fy=factor, interpolation=cv2.INTER_AREA)
 
 
-def best_score(frame, template):
-    scores = []
+def best_match(frame, template):
+    """(score, top-left corner, size) of the best match over all scales."""
+    matches = []
     for scale in SCALES:
         scaled = shrink(template, FRAME_SCALE * scale)
         result = cv2.matchTemplate(frame, scaled, cv2.TM_CCOEFF_NORMED)
-        scores.append(cv2.minMaxLoc(result)[1])
-    return max(scores)
+        _, score, _, corner = cv2.minMaxLoc(result)
+        matches.append((score, corner, scaled.shape[1::-1]))
+    return max(matches)
+
+
+def notify(title, score, frame, corner, size):
+    """Attach the frame, match boxed, so the hit can be placed afterwards."""
+    x, y = corner
+    w, h = size
+    cv2.rectangle(frame, (x - 20, y - 20), (x + w + 20, y + h + 20), (0, 0, 255), 3)
+    _, jpeg = cv2.imencode(".jpg", frame)
+    subprocess.run(
+        [
+            "ntfy",
+            "publish",
+            "--quiet",
+            "--title",
+            title,
+            "--file=-",
+            "--filename=frame.jpg",
+            f"score {score:.2f}",
+        ],
+        input=jpeg.tobytes(),
+        check=True,
+    )
 
 
 def main():
@@ -89,24 +113,15 @@ def main():
             continue
 
         start = time.time()
-        score = best_score(capture(output), template)
+        frame = capture(output)
+        score, corner, size = best_match(frame, template)
         now = time.time()
         print(f"{score:.2f} in {now - start:.2f}s", flush=True)
         if score >= THRESHOLD:
             last_seen = now
             if armed:
                 armed = False
-                subprocess.run(
-                    [
-                        "ntfy",
-                        "publish",
-                        "--quiet",
-                        "--title",
-                        config["title"],
-                        f"score {score:.2f}",
-                    ],
-                    check=True,
-                )
+                notify(config["title"], score, frame, corner, size)
         elif now - last_seen > REARM_AFTER:
             armed = True
 
