@@ -54,6 +54,9 @@
 #                                         #   .app bundle symlink at the new wrapper binary)
 #     passthru       ? {};                 # forwarded to the derivation's passthru
 #                                         #   (e.g. niri's providedSessions)
+#     platforms      ? package.meta.platforms; # meta.platforms of the wrapper;
+#                                         #   for a package that declares none,
+#                                         #   such as a writers.* script
 #   }
 #
 # The surface grows one conversion at a time: each new wrapped package adds only
@@ -88,6 +91,7 @@
   checks ? [ ],
   postWrap ? [ ],
   passthru ? { },
+  platforms ? package.meta.platforms,
 }:
 let
   mainProgram = package.meta.mainProgram;
@@ -184,7 +188,7 @@ symlinkJoin {
   # package list on this.
   meta = {
     mainProgram = binName;
-    inherit (package.meta) platforms;
+    inherit platforms;
   };
   inherit passthru;
   postBuild = ''

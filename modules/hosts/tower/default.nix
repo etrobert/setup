@@ -35,6 +35,7 @@ in
       self.nixosModules.gaming
       self.nixosModules.fn-keys-on-focus
       self.nixosModules.xwaylandClientList
+      self.nixosModules.screenWatch
       self.nixosModules.githubRunner
       self.nixosModules.harmonia
       self.nixosModules.navidrome
