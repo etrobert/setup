@@ -12,6 +12,7 @@
         serviceConfig = {
           ExecStart = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.screen-watch;
           Restart = "on-failure";
+          RestartSec = 10;
         };
       };
     };
