@@ -89,6 +89,8 @@ in
               photo="$XDG_RUNTIME_DIR/ntfy-notify-$id"
               if curl --silent --fail --max-time 15 --output "$photo" "$attachment"; then
                 icon=(--icon "$photo")
+                # The icon is too small to read; a click opens it full size.
+                url=''${url:-$photo}
               fi
             fi
 
