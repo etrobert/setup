@@ -22,9 +22,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-CONFIG_DIR = (
-    Path(os.environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser() / "screen-watch"
-)
+CONFIG_DIR = Path("~/.config/screen-watch").expanduser()
 # Matching runs on a half-resolution frame: 7 scales in 0.7 s instead of 3 s.
 FRAME_SCALE = 0.5
 SCALES = [0.7, 0.8, 0.9, 1.0, 1.15, 1.3, 1.5]
