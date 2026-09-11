@@ -34,6 +34,7 @@ in
       self.nixosModules.docker
       self.nixosModules.gaming
       self.nixosModules.xwaylandClientList
+      self.nixosModules.screenWatch
       self.nixosModules.githubRunner
       self.nixosModules.harmonia
       self.nixosModules.navidrome
