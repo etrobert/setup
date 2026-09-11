@@ -5,7 +5,7 @@ Reads ~/.config/screen-watch/config.json:
     {"app_id": "Foo", "template": "foo.png", "title": "Foo spotted"}
 
 `template` is relative to the config directory. While a window with that
-app id is on an active workspace, its output is captured once a second and
+app id is on an active workspace, its output is captured back to back and
 searched for the template at several scales, since a game scales its world
 with the window. A hit notifies once, then re-arms after the template has
 been gone for a few seconds.
@@ -30,7 +30,6 @@ FRAME_SCALE = 0.5
 SCALES = [0.7, 0.8, 0.9, 1.0, 1.15, 1.3, 1.5]
 # Positives score 0.8-1.0 at the right scale, negatives peak around 0.55.
 THRESHOLD = 0.7
-POLL_VISIBLE = 1
 POLL_HIDDEN = 10
 REARM_AFTER = 3
 
@@ -110,7 +109,6 @@ def main():
                 )
         elif now - last_seen > REARM_AFTER:
             armed = True
-        time.sleep(POLL_VISIBLE)
 
 
 main()
