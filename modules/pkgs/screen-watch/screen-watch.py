@@ -54,10 +54,11 @@ def visible_output(app_id):
 
 
 def capture(output):
-    png = subprocess.run(
-        ["grim", "-o", output, "-"], check=True, capture_output=True
+    # PPM: raw pixels, so no codec on either side.
+    ppm = subprocess.run(
+        ["grim", "-t", "ppm", "-o", output, "-"], check=True, capture_output=True
     ).stdout
-    frame = cv2.imdecode(np.frombuffer(png, np.uint8), cv2.IMREAD_COLOR)
+    frame = cv2.imdecode(np.frombuffer(ppm, np.uint8), cv2.IMREAD_COLOR)
     return shrink(frame, FRAME_SCALE)
 
 
@@ -109,6 +110,8 @@ def main():
     while True:
         output = visible_output(config["app_id"])
         if output is None:
+            # Out of sight counts as gone.
+            armed = True
             time.sleep(POLL_HIDDEN)
             continue
 
