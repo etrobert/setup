@@ -23,9 +23,11 @@ import cv2
 import numpy as np
 
 CONFIG_DIR = Path("~/.config/screen-watch").expanduser()
-# Matching runs on a half-resolution frame: 7 scales in 0.7 s instead of 3 s.
+# Matching runs on a half-resolution frame: 4 scales in 0.4 s instead of 2 s.
 FRAME_SCALE = 0.5
-SCALES = [0.7, 0.8, 0.9, 1.0, 1.15, 1.3, 1.5]
+# Hits land on 1.0 (tiled window) and 1.15 (near fullscreen); one step of
+# margin each side.
+SCALES = [0.9, 1.0, 1.15, 1.3]
 # Positives score 0.8-1.0 at the right scale, negatives peak around 0.55.
 THRESHOLD = 0.7
 POLL_HIDDEN = 10
@@ -105,8 +107,12 @@ def main():
 
     armed = True
     last_seen = 0.0
+    watching = object()  # unlike None, so the first state is logged too
     while True:
         output = visible_output(config["app_id"])
+        if output != watching:
+            watching = output
+            print(f"watching={output or 'nothing'}", flush=True)
         if output is None:
             # Out of sight counts as gone.
             armed = True
