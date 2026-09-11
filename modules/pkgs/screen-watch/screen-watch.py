@@ -105,8 +105,12 @@ def main():
 
     armed = True
     last_seen = 0.0
+    watching = object()  # unlike None, so the first state is logged too
     while True:
         output = visible_output(config["app_id"])
+        if output != watching:
+            watching = output
+            print(f"watching={output or 'nothing'}", flush=True)
         if output is None:
             # Out of sight counts as gone.
             armed = True
