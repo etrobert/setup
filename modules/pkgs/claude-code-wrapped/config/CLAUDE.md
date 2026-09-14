@@ -47,6 +47,9 @@ the default.
 
 When you use an acronym for the first time, spell it out.
 
+When asked a question about work in progress (a PR, a design), answer and
+offer options; change the code only once one is picked.
+
 Before asking a question, check if the answer is obtainable by reading files,
 running a command, or SSHing into a machine. Only ask when a reasonable
 investigation wouldn't yield the answer.
