@@ -8,6 +8,7 @@
           name = "ocr-region";
           meta.platforms = lib.platforms.linux;
           runtimeInputs = with pkgs; [
+            coreutils # wl-copy execs cat
             grim
             libnotify
             slurp
