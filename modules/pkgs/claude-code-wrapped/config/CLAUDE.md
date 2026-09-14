@@ -48,8 +48,7 @@ the default.
 When you use an acronym for the first time, spell it out.
 
 Align on what to build before building. A question — "would it be possible to do
-it this way?" — is a question, not a request to build: answer and offer options;
-change the code only once one is picked.
+it this way?" — is a question, not a request to build: answer and offer options.
 
 Before asking a question, check if the answer is obtainable by reading files,
 running a command, or SSHing into a machine. Only ask when a reasonable
