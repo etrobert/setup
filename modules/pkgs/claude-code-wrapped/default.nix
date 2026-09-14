@@ -66,7 +66,7 @@
           inherit binName;
           env = {
             CLAUDE_CODE_NO_FLICKER = "1";
-            # Env rather than settings.json: also covers dispatch's own CLAUDE_CONFIG_DIR.
+            # Env rather than settings.json: covers dispatch's own CLAUDE_CONFIG_DIR.
             CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1";
           }
           // extraEnv;

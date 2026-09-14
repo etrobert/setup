@@ -204,8 +204,7 @@ Always rebase on origin/main before presenting a PR for review — both on initi
 `gh pr create` and after any follow-up changes before telling the user it's
 ready.
 
-Don't force-push a PR branch — make new commits instead, so every earlier CI run
-stays visible. Amending is the one exception.
+Don't force-push — make new commits instead. Amending is the one exception.
 
 Always resolve merge conflicts before reporting the task as done.
 
@@ -235,8 +234,7 @@ repo itself:
 
 Also run checks with the invocation the repo's CI uses.
 
-Don't push or open the PR until I've said yes to the commit message, the PR body
-and the code — the push-without-asking rule in Git Workflow doesn't apply here.
+Don't push until I've said yes to the commit message, the PR body and the code.
 
 ## CLAUDE.md Maintenance
 
@@ -253,8 +251,4 @@ and the code — the push-without-asking rule in Git Workflow doesn't apply here
 - At the end of every session, reflect and proactively propose enhancements to
   the user `CLAUDE.md` and project `CLAUDE.md` following the Maintenance
   guidelines above.
-- Never save to auto memory. To remember something, PR it into a `CLAUDE.md`:
-  how I work goes in this file, facts about a repo go in that repo's
-  `CLAUDE.md`. When I correct you, or you rediscover something that cost real
-  time and isn't derivable from the repo, propose the change in the same reply —
-  "remember X" is the yes.
+- Never save to auto memory. To remember something, PR it into a `CLAUDE.md`.
