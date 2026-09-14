@@ -75,12 +75,10 @@ To understand how a tool or library works, you're encouraged to clone its repo
 and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
 (create it if needed).
 
-Before proposing anything, survey what others actually do — upstream issues
-first, then their configs — and report the distribution rather than one agreeing
-example:
+Before proposing anything, survey what others actually do, and report the
+distribution rather than one agreeing example:
 
 ```bash
-gh search issues '<symptom>' --repo <owner/repo>
 gh search code '<distinctive-token>' --extension <ext> --limit 100 \
   --json repository,path,textMatches
 ```
