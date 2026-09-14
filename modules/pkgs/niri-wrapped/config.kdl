@@ -743,8 +743,8 @@ binds {
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
-    Shift+Print hotkey-overlay-title="Copy Text from Screen Region: ocr-region" { spawn "ocr-region"; }
     Mod+P { screenshot; }
+    Mod+Ctrl+P hotkey-overlay-title="Copy Text from Screen Region: ocr-region" { spawn "ocr-region"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
