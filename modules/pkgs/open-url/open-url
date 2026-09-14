@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-zen "$@" &
-disown
-
-window_id=$(niri msg --json windows | jq --raw-output '[.[] | select(.app_id == "zen")] | sort_by(.focus_timestamp.secs) | last | .id // empty')
-[ -n "$window_id" ] && niri msg action focus-window --id "$window_id"
+# niri mints an activation token for what it spawns, so Zen gets focus; a
+# plain launch from another app only marks the window urgent.
+exec niri msg action spawn -- "$(command -v zen)" "$@"
