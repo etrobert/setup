@@ -75,11 +75,15 @@ To understand how a tool or library works, you're encouraged to clone its repo
 and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
 (create it if needed).
 
-When picking a convention with no objectively right answer (a keybinding, a
-default, a naming scheme), survey what others actually do before deciding, and
-report the distribution rather than one agreeing example:
+Before proposing anything — a fix as much as a convention with no objectively
+right answer (a keybinding, a default, a naming scheme) — survey what others
+actually do, and report the distribution rather than one agreeing example.
+Understanding the mechanism is not a licence to design a fix from it: search the
+symptom first, in upstream issues and PRs, then the module's own options, then
+other people's configs.
 
 ```bash
+gh search issues '<symptom>' --repo <owner/repo>
 gh search code '<distinctive-token>' --extension <ext> --limit 100 \
   --json repository,path,textMatches
 ```
