@@ -45,6 +45,21 @@ _: {
 
       zramSwap.enable = true;
 
+      # resolvconf's libc_restart hook bounces nscd on every resolv.conf write to
+      # flush glibc nscd's hosts cache. nsncd has no cache and glibc reloads
+      # resolv.conf itself, so on a switch the hook fires once per interface and
+      # trips StartLimitBurst, leaving NSS down for DynamicUser services.
+      # Drop once nixpkgs gates the hook on !enableNsncd.
+      networking.resolvconf.extraConfig = "libc_restart=''";
+      assertions = [
+        {
+          assertion =
+            lib.hasInfix "libc_restart='/run/current-system"
+              config.environment.etc."resolvconf.conf".text;
+          message = "nixpkgs no longer restarts nscd from resolvconf — drop the libc_restart override in modules/profiles/nixos-base.nix";
+        }
+      ];
+
       systemd = {
         # systemd-oomd runs by default but acts only on cgroups marked with
         # ManagedOOM* properties — without these flags it monitors nothing.
