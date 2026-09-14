@@ -154,6 +154,8 @@
         '';
       };
 
+      xdg.portal.xdgOpenUsePortal = true;
+
       programs = {
         chromium = {
           enable = true;
