@@ -81,6 +81,7 @@ distribution rather than one agreeing example:
 ```bash
 gh search code '<distinctive-token>' --extension <ext> --limit 100 \
   --json repository,path,textMatches
+gh search issues '<symptom>' --repo <owner/repo>
 ```
 
 Filter out comment lines and count unique repos, not matches — upstream default
