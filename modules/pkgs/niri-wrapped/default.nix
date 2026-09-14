@@ -16,6 +16,7 @@
               path = [
                 self'.packages.ghostty-wrapped
                 self'.packages.noctalia-wrapped
+                self'.packages.ocr-region
                 self'.packages.scale-floating-window
                 pkgs.nirius
                 pkgs.xwayland-satellite
