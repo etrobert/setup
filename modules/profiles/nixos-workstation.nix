@@ -136,8 +136,6 @@
         customPackages ++ externalPackages;
 
       environment = {
-        sessionVariables.BROWSER = "open-url";
-
         etc."xdg/mimeapps.list".text = /* ini */ ''
           [Default Applications]
           # inode/* types describe filesystem objects rather than file
