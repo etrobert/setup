@@ -9,8 +9,11 @@
           meta.platforms = lib.platforms.linux;
           runtimeInputs = with pkgs; [
             coreutils # wl-copy execs cat
+            coreutils # wl-copy execs cat
+            grim
             grim
             libnotify
+            slurp
             slurp
             (tesseract.override {
               enableLanguages = [
