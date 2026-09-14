@@ -154,6 +154,10 @@
         '';
       };
 
+      # FHS sandboxes (AppImages, Steam) replace /etc, hiding the list above;
+      # their xdg-open then falls back to the first handler in mimeinfo.cache.
+      xdg.portal.xdgOpenUsePortal = true;
+
       programs = {
         chromium = {
           enable = true;
