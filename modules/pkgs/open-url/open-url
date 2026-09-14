@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# niri mints an activation token for what it spawns, so Zen gets focus; a
-# plain launch from another app only marks the window urgent.
-exec niri msg action spawn -- "$(command -v zen)" "$@"
