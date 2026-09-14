@@ -22,7 +22,7 @@
             wl-clipboard
           ];
           inheritPath = false;
-          text = builtins.readFile ./ocr-region;
+          text = builtins.readFile ./ocr-region.sh;
         };
       };
     };
