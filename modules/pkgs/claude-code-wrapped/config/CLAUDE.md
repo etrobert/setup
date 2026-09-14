@@ -47,8 +47,9 @@ the default.
 
 When you use an acronym for the first time, spell it out.
 
-When asked a question about work in progress (a PR, a design), answer and offer
-options; change the code only once one is picked.
+Align on what to build before building. A question — "would it be possible to do
+it this way?" — is a question, not a request to build: answer and offer options;
+change the code only once one is picked.
 
 Before asking a question, check if the answer is obtainable by reading files,
 running a command, or SSHing into a machine. Only ask when a reasonable
@@ -233,8 +234,6 @@ repo itself:
   their repo
 
 Also run checks with the invocation the repo's CI uses.
-
-Don't push until I've said yes to the commit message, the PR body and the code.
 
 ## CLAUDE.md Maintenance
 
