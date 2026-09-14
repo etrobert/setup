@@ -75,13 +75,13 @@ To understand how a tool or library works, you're encouraged to clone its repo
 and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
 (create it if needed).
 
-When picking a convention with no objectively right answer (a keybinding, a
-default, a naming scheme), survey what others actually do before deciding, and
-report the distribution rather than one agreeing example:
+Before proposing anything, survey what others actually do, and report the
+distribution rather than one agreeing example:
 
 ```bash
 gh search code '<distinctive-token>' --extension <ext> --limit 100 \
   --json repository,path,textMatches
+gh search issues '<symptom>' --repo <owner/repo>
 ```
 
 Filter out comment lines and count unique repos, not matches — upstream default
