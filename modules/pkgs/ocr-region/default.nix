@@ -15,8 +15,8 @@
             (tesseract.override {
               enableLanguages = [
                 "eng"
-                "deu"
                 "fra"
+                "deu"
               ];
             })
             wl-clipboard
