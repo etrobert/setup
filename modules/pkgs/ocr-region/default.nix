@@ -15,6 +15,7 @@
               enableLanguages = [
                 "eng"
                 "deu"
+                "fra"
               ];
             })
             wl-clipboard
