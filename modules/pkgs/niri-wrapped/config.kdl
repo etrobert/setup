@@ -112,35 +112,6 @@ cursor {
     position x=1280 y=0
 }
 
-// The externals, all 4K at scale 1.25 -> logical 3072x1728, centered above
-// leod's panel: 683 + (1706 - 3072) / 2 = 0. niri matches the whole
-// make/model/serial, so one block per unit.
-output "Dell Inc. DELL U3223QE 1GPL9P3" {
-    scale 1.25
-    position x=0 y=0
-}
-
-output "Philips Consumer Electronics Company PHL 329P1 AU82510000304" {
-    scale 1.25
-    position x=0 y=0
-}
-
-output "Philips Consumer Electronics Company PHL 329P1 AU82510000012" {
-    scale 1.25
-    position x=0 y=0
-}
-
-output "Philips Consumer Electronics Company PHL 329P1 AU82510000017" {
-    scale 1.25
-    position x=0 y=0
-}
-
-// Anchor for the externals above: each is placed so its bottom edge meets the
-// top edge of this panel, which is what lets the cursor cross between them.
-output "eDP-1" {
-    position x=683 y=1728
-}
-
 // tower's monitor hangs off the RX 9070 XT but boot_vga is the iGPU, so niri's
 // udev default renders 4K on 2 CUs. Absent on leod, which falls back to default.
 debug {
