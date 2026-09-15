@@ -64,10 +64,7 @@ _: {
         // mkRunners {
           owner = "lafraise-pro";
           repo = "app";
-
-          # One rather than six: a pms-front check unpacks a 2.6 GB workspace
-          # and runs 3489 tests.
-          count = 1;
+          count = 6;
 
           # GitHub stamps `self-hosted`, `Linux` and `X64` onto every runner it
           # registers, and lafraise-pro/app already runs its CI on the
