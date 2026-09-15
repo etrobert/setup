@@ -17,6 +17,7 @@ in
       self.nixosModules.docker
       self.nixosModules.tankMount
       self.nixosModules.nixIndex
+      self.nixosModules.ankamaLauncher
       agenix.nixosModules.default
       self.nixosModules.nixosWorkstation
       self.nixosModules.workstation
