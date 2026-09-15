@@ -28,7 +28,7 @@
             appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
           in
           assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version version)
-            "nixpkgs ankama-launcher reached ${pkgs.ankama-launcher.version} — drop modules/pkgs/ankama-launcher and install pkgs.ankama-launcher instead";
+            "nixpkgs ankama-launcher reached ${pkgs.ankama-launcher.version} — drop the vendored package in modules/features/ankama-launcher and install pkgs.ankama-launcher instead";
           pkgs.appimageTools.wrapType2 {
             inherit pname version src;
             extraPkgs = pkgs: [ pkgs.wine ];
@@ -59,5 +59,16 @@
             };
           };
       };
+    };
+
+  flake.nixosModules.ankamaLauncher =
+    { pkgs, ... }:
+    {
+      # Dofus 3 aborts on startup without it.
+      imports = [ self.nixosModules.xwaylandClientList ];
+
+      environment.systemPackages = [
+        self.packages.${pkgs.stdenv.hostPlatform.system}.ankama-launcher
+      ];
     };
 }

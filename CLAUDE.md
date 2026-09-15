@@ -27,24 +27,14 @@ agenix (secrets).
 
 **Profiles** (`modules/profiles/`) — composite modules describing what a host
 _is_: a baseline or a role. A profile bundles features and may import other
-profiles:
-
-- `base.nix` — common system config (nix settings, SSH keys, zsh, packages)
-  applied to all hosts
-- `workstation.nix` — dev tools and GUI apps (claude-code, VS Code, node, go,
-  etc.)
-- `nixos-base.nix` — NixOS system baseline
-- `nixos-workstation.nix` — NixOS desktop: Niri compositor, greetd/tuigreet
-  greeter, Noctalia shell, audio, Bluetooth
-- `server.nix` — tower's public-facing sites and services behind Caddy
+profiles.
 
 **Features** (`modules/features/`) — one self-contained capability per file,
 exposing `flake.nixosModules.<name>`. Imported by a host directly, or by a
 profile that bundles it.
 
-A feature must not import another feature — if it needs to, it belongs in
-`profiles/`. Not the converse: `base.nix` and `workstation.nix` import no
-sibling and are profiles by role.
+A feature imports another feature only when it does not work without it.
+Bundling things that merely go together belongs in `profiles/`.
 
 **Declarations** stay at the `modules/` root — files that define vocabulary
 rather than provide a capability, so importing one adds nothing to a host by
