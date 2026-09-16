@@ -94,13 +94,10 @@ _: {
         age = "90d";
       };
 
-      # Every CI job builds through the one daemon; this caps the box at
-      # 16 build threads however many jobs run at once (load hit 185 on 16
-      # cores when eight nix-fast-build jobs overlapped).
-      nix.settings = {
-        max-jobs = 8;
-        cores = 2;
-      };
+      # Per build. A single tsc or next build otherwise takes every thread;
+      # how many builds run at once is the runner count times the workflow's
+      # --max-jobs, since max-jobs binds per client, not per daemon.
+      nix.settings.cores = 2;
 
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
       age.secrets.lafraise-runner-token.file = ../../secrets/lafraise-runner-token.age;
