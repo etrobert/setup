@@ -96,6 +96,11 @@ _: {
         age = "90d";
       };
 
+      # Per build. A single tsc or next build otherwise takes every thread;
+      # how many builds run at once is the runner count times the workflow's
+      # --max-jobs, since max-jobs binds per client, not per daemon.
+      nix.settings.cores = 2;
+
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
       age.secrets.lafraise-runner-token.file = ../../secrets/lafraise-runner-token.age;
 
