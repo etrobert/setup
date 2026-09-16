@@ -101,6 +101,15 @@ _: {
       # --max-jobs, since max-jobs binds per client, not per daemon.
       nix.settings.cores = 2;
 
+      # Every check writes ~3 GB of node_modules it never reads again; on the
+      # NVMe eight of them at once pinned it (65% iowait), in RAM the same
+      # install ran 4.8 s against 13.1 s. Sized for four builds at a time on
+      # this 60 GB workstation; a build over the cap fails, it does not spill.
+      boot.tmp = {
+        useTmpfs = true;
+        tmpfsSize = "12G";
+      };
+
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
       age.secrets.lafraise-runner-token.file = ../../secrets/lafraise-runner-token.age;
 
