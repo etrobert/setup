@@ -64,9 +64,10 @@ _: {
         // mkRunners {
           owner = "lafraise-pro";
           repo = "app";
-          # Times nix-fast-build's --max-jobs 4 in the app's workflow: eight
-          # node_modules writes at once is what the disk sustains.
-          count = 2;
+          # One job's --max-jobs is the only bound the box has, and branches
+          # carry their own workflow: one unit keeps the worst case (8 × 3 GB)
+          # inside the 24 GB build tmpfs.
+          count = 1;
 
           # GitHub stamps `self-hosted`, `Linux` and `X64` onto every runner it
           # registers, and lafraise-pro/app already runs its CI on the
@@ -104,12 +105,13 @@ _: {
       # Every check writes ~3 GB of node_modules it never reads again; on the
       # NVMe eight of them at once pinned it (65% iowait), in RAM the same
       # install ran 4.8 s against 13.1 s. Nix 2.30+ builds under
-      # /nix/var/nix/builds, not /tmp. Sized for four builds at a time on this
-      # 60 GB workstation; a build over the cap fails, it does not spill.
+      # /nix/var/nix/builds, not /tmp. A sandbox reaches 3 GB (hcp-web's); four
+      # at a time on this
+      # 60 GB workstation. Over the cap a build fails, it does not spill.
       fileSystems."/nix/var/nix/builds" = {
         fsType = "tmpfs";
         options = [
-          "size=12G"
+          "size=24G"
           "mode=0755"
         ];
       };
