@@ -64,7 +64,9 @@ _: {
         // mkRunners {
           owner = "lafraise-pro";
           repo = "app";
-          count = 6;
+          # Times nix-fast-build's --max-jobs 4 in the app's workflow: eight
+          # node_modules writes at once is what the disk sustains.
+          count = 2;
 
           # GitHub stamps `self-hosted`, `Linux` and `X64` onto every runner it
           # registers, and lafraise-pro/app already runs its CI on the
