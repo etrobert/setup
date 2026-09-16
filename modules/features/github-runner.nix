@@ -104,12 +104,13 @@ _: {
       # Every check writes ~3 GB of node_modules it never reads again; on the
       # NVMe eight of them at once pinned it (65% iowait), in RAM the same
       # install ran 4.8 s against 13.1 s. Nix 2.30+ builds under
-      # /nix/var/nix/builds, not /tmp. Sized for four builds at a time on this
-      # 60 GB workstation; a build over the cap fails, it does not spill.
+      # /nix/var/nix/builds, not /tmp. A sandbox reaches 3 GB (hcp-web's); four
+      # at a time on this 60 GB workstation. Over the cap a build fails, it
+      # does not spill.
       fileSystems."/nix/var/nix/builds" = {
         fsType = "tmpfs";
         options = [
-          "size=12G"
+          "size=20G"
           "mode=0755"
         ];
       };
