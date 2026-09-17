@@ -42,7 +42,8 @@ _: {
           # The default, [ ], sets PrivateDevices=true, which hides /dev/dri from
           # the unit. ffmpeg.accel below then throws before the transcode even
           # starts, with no software fallback, so the two go together.
-          accelerationDevices = [ "/dev/dri/renderD128" ];
+          # The iGPU: always on, so a transcode never wakes the dGPU out of BACO.
+          accelerationDevices = [ "/dev/dri/by-path/pci-0000:12:00.0-render" ];
 
           settings = {
             backup.database.enabled = true;
