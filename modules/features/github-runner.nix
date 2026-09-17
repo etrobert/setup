@@ -60,28 +60,6 @@ _: {
           owner = "etrobert";
           repo = "event-sourcing-demo";
           count = 1;
-        }
-        // mkRunners {
-          owner = "lafraise-pro";
-          repo = "app";
-          # One job's --max-jobs is the only bound the box has, and branches
-          # carry their own workflow: one unit keeps the worst case (8 × 3 GB)
-          # inside the 24 GB build tmpfs.
-          count = 1;
-
-          # GitHub stamps `self-hosted`, `Linux` and `X64` onto every runner it
-          # registers, and lafraise-pro/app already runs its CI on the
-          # organisation's runners. Keeping those labels would make this one
-          # eligible for those jobs and fail them on colleagues' pull requests;
-          # without them it answers only to `runs-on: [nix]`.
-          settings = {
-            # A fine-grained PAT carries exactly one resource owner, so this
-            # cannot share the token the etrobert runners use.
-            tokenFile = config.age.secrets.lafraise-runner-token.path;
-
-            noDefaultLabels = true;
-            extraLabels = [ "nix" ];
-          };
         };
 
       # Images for flake-update PR bodies (closure diffs), served publicly as
@@ -97,27 +75,7 @@ _: {
         age = "90d";
       };
 
-      # Per build. A single tsc or next build otherwise takes every thread;
-      # how many builds run at once is the runner count times the workflow's
-      # --max-jobs, since max-jobs binds per client, not per daemon.
-      nix.settings.cores = 2;
-
-      # Every check writes ~3 GB of node_modules it never reads again; on the
-      # NVMe eight of them at once pinned it (65% iowait), in RAM the same
-      # install ran 4.8 s against 13.1 s. Nix 2.30+ builds under
-      # /nix/var/nix/builds, not /tmp. A sandbox reaches 3 GB (hcp-web's); four
-      # at a time on this
-      # 60 GB workstation. Over the cap a build fails, it does not spill.
-      fileSystems."/nix/var/nix/builds" = {
-        fsType = "tmpfs";
-        options = [
-          "size=24G"
-          "mode=0755"
-        ];
-      };
-
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
-      age.secrets.lafraise-runner-token.file = ../../secrets/lafraise-runner-token.age;
 
       # Run aarch64 builds (pi's CI job) via QEMU user emulation.
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
