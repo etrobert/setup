@@ -1,18 +1,20 @@
 _: {
   flake.nixosModules.jitsiMeet = _: {
-    services.jitsi-meet = {
-      enable = true;
-      hostName = "meet.etiennerobert.com";
-      caddy.enable = true;
-      nginx.enable = false;
+    services = {
+      jitsi-meet = {
+        enable = true;
+        hostName = "meet.etiennerobert.com";
+        caddy.enable = true;
+        nginx.enable = false;
+      };
+
+      # Media port (UDP 10000) and its TCP 4443 fallback. Both still need
+      # forwarding on the Vodafone Station; only 80/443 are forwarded today.
+      jitsi-videobridge.openFirewall = true;
+
+      # Jicofo's REST server defaults to 8888, which atuin-server already holds.
+      jicofo.config.jicofo.rest.port = 8890;
     };
-
-    # Media port (UDP 10000) and its TCP 4443 fallback. Both still need
-    # forwarding on the Vodafone Station; only 80/443 are forwarded today.
-    services.jitsi-videobridge.openFirewall = true;
-
-    # Jicofo's REST server defaults to 8888, which atuin-server already holds.
-    services.jicofo.config.jicofo.rest.port = 8890;
 
     # jitsi-meet inherits this marking from olm, which it uses only for the
     # opt-in E2EE feature. Pinned to the version so a bump fails the build and
