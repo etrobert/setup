@@ -1,7 +1,7 @@
 # Taken from nixos-generate-config runs on OVH VPSes (e.g.
 # github:ironm00n/yakery hosts/ovh-vps1-1); regenerate on the box once it exists.
 _: {
-  flake.nixosModules.ovhHardware =
+  flake.nixosModules.charonHardware =
     { lib, modulesPath, ... }:
     {
       imports = [

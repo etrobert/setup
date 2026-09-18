@@ -8,7 +8,7 @@ Personal dotfiles and system configuration repository using Nix flakes for:
 - tower: AMD Ryzen 9700X Desktop — home server and workstation (NixOS)
 - leod: Lenovo ThinkPad X1 Carbon 7th Gen (NixOS/Windows)
 - pi: Raspberry Pi 4 Model B (Rev 1.1) (NixOS)
-- ovh: OVH VPS-2 in Gravelines — download hub, installed with nixos-anywhere
+- charon: OVH VPS-1 in Strasbourg — download hub, installed with nixos-anywhere
   (NixOS)
 
 ## Architecture

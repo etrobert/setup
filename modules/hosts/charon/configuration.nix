@@ -1,9 +1,9 @@
 { self, inputs, ... }:
 
 {
-  flake.nixosModules.ovhConfiguration = {
+  flake.nixosModules.charonConfiguration = {
     imports = [
-      self.nixosModules.ovhHardware
+      self.nixosModules.charonHardware
       inputs.disko.nixosModules.disko
     ];
 
@@ -45,7 +45,7 @@
       };
     };
 
-    networking.hostName = "ovh";
+    networking.hostName = "charon";
 
     time.timeZone = "Europe/Berlin";
 
