@@ -25,6 +25,7 @@
         self.nixosModules.ntfyDesktop
         self.nixosModules.fileManager
         self.nixosModules.virtualbox
+        self.nixosModules.syncthing
       ];
 
       documentation.doc.enable = false;
