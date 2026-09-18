@@ -7,31 +7,16 @@
       inputs.disko.nixosModules.disko
     ];
 
-    # Hybrid BIOS/UEFI: the EF02 partition serves legacy boot, the ESP serves
-    # UEFI, so the image boots whichever mode OVH's KVM uses.
-    boot.loader.grub = {
-      efiSupport = true;
-      efiInstallAsRemovable = true;
-    };
-
+    # OVH VPSes boot legacy BIOS (UEFI exists only on their FreeBSD-UEFI image):
+    # https://github.com/ovh/infrastructure-roadmap/issues/377
     disko.devices.disk.main = {
       device = "/dev/sda";
-      type = "disk";
       content = {
         type = "gpt";
         partitions = {
           boot = {
             size = "1M";
             type = "EF02";
-          };
-          esp = {
-            size = "512M";
-            type = "EF00";
-            content = {
-              type = "filesystem";
-              format = "vfat";
-              mountpoint = "/boot";
-            };
           };
           root = {
             size = "100%";
