@@ -2,8 +2,10 @@
 
 {
   flake.nixosModules.charonConfiguration =
-    { modulesPath, ... }:
+    { pkgs, modulesPath, ... }:
     {
+      environment.systemPackages = [ pkgs.ghostty.terminfo ];
+
       imports = [
         (modulesPath + "/profiles/qemu-guest.nix")
         inputs.disko.nixosModules.disko
