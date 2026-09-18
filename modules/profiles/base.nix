@@ -4,6 +4,7 @@ _: {
       {
         self,
         pkgs,
+        lib,
         ...
       }:
       let
@@ -55,6 +56,10 @@ _: {
             ripgrep
             wget
             zoxide
+
+            # Backs the EDITOR below on every host. lowPrio so workstations'
+            # neovim-wrapped, which also ships bin/nvim, wins the collision.
+            (lib.lowPrio neovim)
           ]);
 
         # Set EDITOR via environment.variables (not zsh's login-only .zprofile)

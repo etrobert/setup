@@ -4,10 +4,7 @@
   flake.nixosModules.piConfiguration =
     { pkgs, ... }:
     {
-      environment.systemPackages = with pkgs; [
-        ghostty.terminfo
-        neovim
-      ];
+      environment.systemPackages = [ pkgs.ghostty.terminfo ];
 
       imports = [
         self.nixosModules.piHardware
