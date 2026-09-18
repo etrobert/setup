@@ -72,13 +72,17 @@ _: {
 
         programs = {
           ssh.extraConfig = ''
+            # Only where we git push from an SSH session: a forwarded agent
+            # lets root on that host sign as us for as long as we're connected.
+            Host tower leod
+              ForwardAgent yes
+
             Host *
               ServerAliveInterval 10
               ServerAliveCountMax 3
               ControlMaster auto
               ControlPersist 3600
               ControlPath ~/.ssh/ctrl-%r@%h:%p
-              ForwardAgent yes
               AddKeysToAgent yes
           '';
 
