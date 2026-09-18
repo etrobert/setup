@@ -1,6 +1,11 @@
 _: {
   flake.nixosModules.autoUpgrade =
-    { pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       deployGate = pkgs.writeShellApplication {
         name = "deploy-gate";
@@ -48,7 +53,7 @@ _: {
     {
       system.autoUpgrade = {
         enable = true;
-        flake = "github:etrobert/setup/deploy#pi";
+        flake = "github:etrobert/setup/deploy#${config.networking.hostName}";
         flags = [
           "--accept-flake-config"
           "--print-build-logs"
