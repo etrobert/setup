@@ -1,4 +1,5 @@
-_: {
+{ self, ... }:
+{
   flake.nixosModules.lanDns =
     { config, lib, ... }:
     {
@@ -22,24 +23,14 @@ _: {
               "1.1.1.1"
               "9.9.9.9"
             ];
-            # .11 is tower's second address, required for WiFi clients: the
-            # Vodafone Station drops LAN-side traffic from its WLAN to the
-            # port-forward target (.10) on the forwarded ports (80/443), but
-            # the filter is keyed to that target IP, so .11 passes.
-            host-record = map (name: "${name}.etiennerobert.com,192.168.0.11") [
-              "test"
-              "creatures"
-              "countdown"
-              "draw"
-              "files"
-              "adele"
-              "umami"
-              "images"
-              "meet"
-              "rift"
-              "rack"
-              "nutricalc"
-            ];
+            # Every site tower's Caddy serves. .11 is tower's second address,
+            # required for WiFi clients: the Vodafone Station drops LAN-side
+            # traffic from its WLAN to the port-forward target (.10) on the
+            # forwarded ports (80/443), but the filter is keyed to that target
+            # IP, so .11 passes.
+            host-record = map (name: "${name},192.168.0.11") (
+              builtins.attrNames self.nixosConfigurations.tower.config.services.caddy.virtualHosts
+            );
             dhcp-range = "192.168.0.50,192.168.0.250,12h";
             dhcp-option = [ "option:router,192.168.0.1" ];
           };
