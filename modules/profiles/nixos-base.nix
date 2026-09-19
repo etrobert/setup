@@ -121,8 +121,17 @@ _: {
 
       };
 
-      # openFirewall defaults true, which opens 22 on every interface.
-      services.openssh.openFirewall = false;
+      services.openssh = {
+        # openFirewall defaults true, which opens 22 on every interface.
+        openFirewall = false;
+
+        # Keys only. Both default to true; the second is PAM's password prompt
+        # through keyboard-interactive.
+        settings = {
+          PasswordAuthentication = false;
+          KbdInteractiveAuthentication = false;
+        };
+      };
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 22 ];
 
       environment.shells = [ zsh-wrapped ];
