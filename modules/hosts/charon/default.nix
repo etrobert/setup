@@ -12,6 +12,7 @@
       self.nixosModules.nixosBase
       self.nixosModules.base
       self.nixosModules.autoUpgrade
+      self.nixosModules.transmission
       inputs.agenix.nixosModules.default
     ];
   };
