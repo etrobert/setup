@@ -242,7 +242,6 @@ _: {
 
             services.syncthing = {
               enable = true;
-              guiAddress = "0.0.0.0:8384";
               settings = self.lib.syncthingSettings { dataDir = config.home.homeDirectory; };
             };
           };
