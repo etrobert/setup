@@ -85,6 +85,7 @@
               type = "zfs_fs";
               mountpoint = "/tank/media";
               mountOptions = [ "nofail" ];
+              options.recordsize = "1M";
             };
 
             photos = {
