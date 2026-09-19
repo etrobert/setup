@@ -14,7 +14,6 @@
           inputs.rift-radar.nixosModules.default
           inputs.rack.nixosModules.default
           inputs.creatures.nixosModules.default
-          inputs.nutricalc.nixosModules.default
         ];
 
         services = {
@@ -55,14 +54,6 @@
           creatures = {
             enable = true;
             hostName = "creatures.etiennerobert.com";
-          };
-
-          # A friend's project, hosted here at his request. Unlike the other
-          # sites this input is not ours, so his pushes to main reach tower
-          # through the hourly flake-update PR without review.
-          nutricalc = {
-            enable = true;
-            hostName = "nutricalc.etiennerobert.com";
           };
         };
 
