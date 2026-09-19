@@ -10,6 +10,17 @@ _: {
     let
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) zsh-wrapped;
+
+      tailscaleFlags = [
+        # Let the local user drive tailscale without sudo (e.g. `tailscale file get`).
+        "--operator=soft"
+
+        # `on` jumps to ts-input ahead of nixos-fw and accepts everything on
+        # tailscale0, so the interfaces.tailscale0 allow-lists never applied.
+        # Taildrop is unaffected: tailscaled serves the peer API in its own
+        # netstack before packets reach the tun device.
+        "--netfilter-mode=nodivert"
+      ];
     in
     {
       imports = with self.nixosModules; [
@@ -101,12 +112,11 @@ _: {
         tailscale = {
           enable = true;
           authKeyFile = config.age.secrets.tailscale-authkey.path;
-          # Let the local user drive tailscale without sudo (e.g. `tailscale file get`).
-          extraSetFlags = [ "--operator=soft" ];
+          extraSetFlags = tailscaleFlags;
 
           # `tailscale up` resets every non-default pref it does not mention, so
-          # re-auth aborts unless the operator set above is repeated here.
-          extraUpFlags = [ "--operator=soft" ];
+          # re-auth aborts unless the flags set above are repeated here.
+          extraUpFlags = tailscaleFlags;
         };
 
       };

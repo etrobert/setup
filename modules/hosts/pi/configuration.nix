@@ -15,12 +15,6 @@
         loader.grub.enable = false;
         # Enables the generation of /boot/extlinux/extlinux.conf
         loader.generic-extlinux-compatible.enable = true;
-
-        # Enable IP forwarding required for Tailscale exit node.
-        kernel.sysctl = {
-          "net.ipv4.ip_forward" = 1;
-          "net.ipv6.conf.all.forwarding" = 1;
-        };
       };
 
       networking.hostName = "pi";
@@ -45,8 +39,6 @@
         enable = true;
         interface = "end0";
       };
-
-      services.tailscale.extraUpFlags = [ "--advertise-exit-node" ];
 
       time.timeZone = "Europe/Berlin";
 
