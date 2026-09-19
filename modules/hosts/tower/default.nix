@@ -49,6 +49,7 @@ in
       self.nixosModules.metrics
       self.nixosModules.dispatch
       self.nixosModules.miniflux
+      self.nixosModules.torrentPull
     ];
   };
 }
