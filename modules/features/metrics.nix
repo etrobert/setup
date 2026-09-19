@@ -1,6 +1,6 @@
 # Prometheus scrapes tower's node exporter; Grafana reads it back.
 # Reached on the tailnet as `metrics/` through tsnsrv.
-{ self, inputs, ... }:
+{ inputs, ... }:
 {
   flake.nixosModules.metrics =
     { config, pkgs, ... }:
@@ -20,22 +20,20 @@
           # and both move over years. ~2 GB/year at the current 2.4k series.
           retentionTime = "5y";
 
-          exporters = {
-            node.enable = true;
-
-            # Autodiscovers every disk. Labels drives `sda`-style, matching
-            # node_exporter's, so temperature joins against disk I/O directly.
-            smartctl.enable = true;
-          };
+          # Autodiscovers every disk. Labels drives `sda`-style, matching
+          # node_exporter's, so temperature joins against disk I/O directly.
+          exporters.smartctl.enable = true;
 
           scrapeConfigs = [
             {
               job_name = "node";
               static_configs = [
                 {
-                  targets = [
-                    "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
-                    "charon:${toString self.nixosConfigurations.charon.config.services.prometheus.exporters.node.port}"
+                  # Every host importing nodeExporter, on its default port.
+                  targets = map (host: "${host}:9100") [
+                    "tower"
+                    "charon"
+                    "pi"
                   ];
                 }
               ];
