@@ -86,7 +86,7 @@ _: {
           # Suppress the login MOTD (replaces home-manager home.file.".hushlogin")
           touch /Users/soft/.hushlogin
 
-          ${pkgs.defaultbrowser}/bin/defaultbrowser firefox
+          ${pkgs.defaultbrowser}/bin/defaultbrowser zen
 
           # Finder sidebar favorite. No system.defaults option exists: the list is
           # an LSSharedFileList archive, not a plist key. Idempotent by name.
