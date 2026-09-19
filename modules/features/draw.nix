@@ -7,8 +7,6 @@
       inherit (pkgs.stdenv.hostPlatform) system;
     in
     {
-      imports = [ self.nixosModules.caddy ];
-
       services.caddy.virtualHosts."draw.etiennerobert.com".extraConfig = /* caddy */ ''
         root * ${self.packages.${system}.excalidraw}
         encode zstd gzip
