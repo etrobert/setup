@@ -48,25 +48,19 @@ in
         enable = true;
 
         # A VPS has no NAT: incoming peers land directly, so the port is
-        # public on purpose. The RPC/web UI stays on the tailnet.
+        # public on purpose. The RPC/web UI stays on loopback, behind tsnsrv.
         openPeerPorts = true;
 
-        settings = {
-          rpc-bind-address = "0.0.0.0";
-          # Only tailscale0 reaches 9091 (below), so the IP whitelist would
-          # just restate the firewall; its syntax has no CIDR anyway.
-          rpc-whitelist-enabled = false;
-          rpc-host-whitelist = "charon";
-        };
+        # The Host header tsnsrv forwards is the tailnet name.
+        settings.rpc-host-whitelist = "torrents";
       };
+
+      services.tsnsrv.services.torrents.toURL =
+        "http://127.0.0.1:${toString config.services.transmission.settings.rpc-port}";
 
       # /var/lib/transmission is 750: the group is how tower's pull reads
       # Downloads/.
       users.users.soft.extraGroups = [ config.services.transmission.group ];
-
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
-        config.services.transmission.settings.rpc-port
-      ];
 
       systemd.services.transmission-reaper = {
         description = "Remove torrents that met the seeding rule";
