@@ -51,8 +51,14 @@ in
         # public on purpose. The RPC/web UI stays on loopback, behind tsnsrv.
         openPeerPorts = true;
 
-        # The Host header tsnsrv forwards is the tailnet name.
-        settings.rpc-host-whitelist = "torrents";
+        settings = {
+          # The Host header tsnsrv forwards is the tailnet name.
+          rpc-host-whitelist = "torrents";
+
+          # The module's separate bind mount makes every completion a full
+          # copy instead of a rename.
+          incomplete-dir-enabled = false;
+        };
       };
 
       services.tsnsrv.services.torrents.toURL =
