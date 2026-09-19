@@ -26,9 +26,9 @@ in
 {
   "openai-api-key.age".publicKeys = allMachines;
   "gemini-api-key.age".publicKeys = allMachines;
-  "wifi-soft.age".publicKeys = allLinux;
-  "wifi-iphone-de-zeus.age".publicKeys = allLinux;
-  "wifi-vinni.age".publicKeys = allLinux;
+  "wifi-soft.age".publicKeys = allLinuxWorkstations;
+  "wifi-iphone-de-zeus.age".publicKeys = allLinuxWorkstations;
+  "wifi-vinni.age".publicKeys = allLinuxWorkstations;
   "tailscale-authkey.age".publicKeys = allMachines;
   "apple-pimsync-password.age".publicKeys = allLinuxWorkstations;
   "soft-password.age".publicKeys = allLinux;
