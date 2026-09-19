@@ -56,4 +56,45 @@ _: {
         };
       };
     };
+
+  # Same login at every session start; a user agent already runs as soft with
+  # its $HOME, and there is no failure-alert hook to satisfy on darwin.
+  flake.darwinModules.atuinLogin =
+    {
+      self,
+      config,
+      pkgs,
+      ...
+    }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (self.packages.${system}) atuin-wrapped;
+    in
+    {
+      age.secrets = {
+        atuin-key = {
+          file = ../../secrets/atuin-key.age;
+          owner = "soft";
+        };
+        atuin-password = {
+          file = ../../secrets/atuin-password.age;
+          owner = "soft";
+        };
+      };
+
+      launchd.user.agents.atuin-login = {
+        # The agent's PATH is only this list: cat has to be brought along.
+        path = [
+          atuin-wrapped
+          pkgs.coreutils
+        ];
+        script = ''
+          exec atuin login \
+            --username soft \
+            --password "$(cat ${config.age.secrets.atuin-password.path})" \
+            --key "$(cat ${config.age.secrets.atuin-key.path})"
+        '';
+        serviceConfig.RunAtLoad = true;
+      };
+    };
 }
