@@ -33,12 +33,6 @@
           caddy = {
             enable = true;
             virtualHosts = {
-              "test.etiennerobert.com".extraConfig = /* caddy */ ''
-                root * ${inputs.etiennerobert-com.packages.${system}.default}
-                encode zstd gzip
-                try_files {path} /index.html
-                file_server
-              '';
               "draw.etiennerobert.com".extraConfig = /* caddy */ ''
                 root * ${self.packages.${system}.excalidraw}
                 encode zstd gzip

@@ -9,7 +9,6 @@ _: {
         username = "etiennerobert.com";
         passwordFile = config.age.secrets.ddclient-password-etiennerobert-com.path;
         domains = [
-          "test"
           "creatures"
           "countdown"
           "draw"
