@@ -16,11 +16,11 @@ in
             rsync
           ];
 
-          # --chmod: --archive would copy Downloads' 750 onto the landing
-          # zone, which jellyfin must read. ControlMaster: ProtectSystem=strict
-          # leaves nowhere for a control socket.
+          # --chmod: jellyfin must read the result
+          # ControlMaster: no writable home here
           script = /* bash */ ''
-            rsync --archive --partial --chmod=Do+rx --rsh 'ssh -o ControlMaster=no' \
+            rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
+              --rsh 'ssh -o ControlMaster=no' \
               charon:/var/lib/transmission/Downloads/ ${landing}/
           '';
 
