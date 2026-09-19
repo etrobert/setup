@@ -1,28 +1,27 @@
 # Copies charon's finished torrents into tank, then removes from charon the
 # ones that have met c411's seeding rule (72 h or ratio 1.0 per torrent,
-# https://c411.org/wiki/ratio-seedtime). Runs as soft: the key charon accepts
-# and the owner of the landing zone.
+# https://c411.org/wiki/ratio-seedtime).
 let
   landing = "/tank/media/torrents";
   seedSeconds = 72 * 3600;
 in
 {
   flake.nixosModules.torrentPull =
-    { pkgs, ... }:
-    {
-      systemd.services.torrent-pull = {
-        description = "Pull finished torrents from charon";
+    { pkgs, lib, ... }:
+    let
+      torrent-pull = pkgs.writeShellApplication {
+        name = "torrent-pull";
 
-        path = with pkgs; [
+        runtimeInputs = with pkgs; [
           jq
           openssh
           rsync
           transmission_4
         ];
 
-        script = /* bash */ ''
-          set -u -o pipefail
+        inheritPath = false;
 
+        text = /* bash */ ''
           # ProtectSystem=strict leaves nowhere for a control socket.
           rsync --archive --partial --rsh 'ssh -o ControlMaster=no' \
             charon:/var/lib/transmission/Downloads/ ${landing}/
@@ -38,9 +37,16 @@ in
               transmission-remote charon -t "$hash" --remove-and-delete
             done
         '';
+      };
+    in
+    {
+      systemd.services.torrent-pull = {
+        description = "Pull finished torrents from charon";
 
         serviceConfig = {
           Type = "oneshot";
+          ExecStart = lib.getExe torrent-pull;
+          # soft: the key charon accepts, and the owner of the landing zone.
           User = "soft";
           Environment = "HOME=/home/soft";
           ProtectSystem = "strict";
