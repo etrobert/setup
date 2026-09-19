@@ -10,9 +10,6 @@ _: {
         openPeerPorts = true;
 
         settings = {
-          download-dir = "/srv/downloads/completed";
-          incomplete-dir = "/srv/downloads/incomplete";
-
           rpc-bind-address = "0.0.0.0";
           # Only tailscale0 reaches 9091 (below), so the IP whitelist would
           # just restate the firewall; its syntax has no CIDR anyway.
@@ -20,6 +17,10 @@ _: {
           rpc-host-whitelist = "charon";
         };
       };
+
+      # /var/lib/transmission is 750: the group is how tower's pull reads
+      # Downloads/.
+      users.users.soft.extraGroups = [ config.services.transmission.group ];
 
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
         config.services.transmission.settings.rpc-port
