@@ -19,6 +19,7 @@
       self.nixosModules.draw
       self.nixosModules.countdown
       self.nixosModules.nutricalc
+      self.nixosModules.creatures
       self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];

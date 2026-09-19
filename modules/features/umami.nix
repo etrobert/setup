@@ -12,13 +12,11 @@ _: {
             # keeps the value out of the world-readable Nix store.
             APP_SECRET_FILE = config.age.secrets.umami-app-secret.path;
             DISABLE_TELEMETRY = true;
-            # creatures already occupies port 3000 on tower.
-            PORT = 3001;
           };
         };
 
         caddy.virtualHosts."umami.etiennerobert.com".extraConfig = /* caddy */ ''
-          reverse_proxy localhost:3001
+          reverse_proxy localhost:${toString config.services.umami.settings.PORT}
         '';
       };
 
