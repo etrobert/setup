@@ -16,9 +16,11 @@ in
             rsync
           ];
 
-          # ProtectSystem=strict leaves nowhere for a control socket.
+          # --chmod: --archive would copy Downloads' 750 onto the landing
+          # zone, which jellyfin must read. ControlMaster: ProtectSystem=strict
+          # leaves nowhere for a control socket.
           script = /* bash */ ''
-            rsync --archive --partial --rsh 'ssh -o ControlMaster=no' \
+            rsync --archive --partial --chmod=Do+rx --rsh 'ssh -o ControlMaster=no' \
               charon:/var/lib/transmission/Downloads/ ${landing}/
           '';
 
@@ -36,13 +38,6 @@ in
           description = "Schedule the torrent pull";
           wantedBy = [ "timers.target" ];
           timerConfig.OnCalendar = "*:0/15";
-        };
-
-        # World-readable so jellyfin can serve it; rsync creates the rest 755.
-        tmpfiles.settings.torrent-pull.${landing}.z = {
-          user = "soft";
-          group = "users";
-          mode = "0755";
         };
       };
     };
