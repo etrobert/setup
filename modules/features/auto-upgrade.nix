@@ -54,6 +54,8 @@ _: {
       system.autoUpgrade = {
         enable = true;
         flake = "github:etrobert/setup/deploy#${config.networking.hostName}";
+        # --upgrade only updates channels; nixos-rebuild warns on every run.
+        upgrade = false;
         flags = [
           "--accept-flake-config"
           "--print-build-logs"
