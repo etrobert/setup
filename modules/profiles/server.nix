@@ -13,7 +13,6 @@
           self.nixosModules.umami
           inputs.rift-radar.nixosModules.default
           inputs.rack.nixosModules.default
-          inputs.creatures.nixosModules.default
         ];
 
         services = {
@@ -49,11 +48,6 @@
           rack = {
             enable = true;
             hostName = "rack.etiennerobert.com";
-          };
-
-          creatures = {
-            enable = true;
-            hostName = "creatures.etiennerobert.com";
           };
         };
 
