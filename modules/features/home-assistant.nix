@@ -275,13 +275,14 @@ in
         };
 
         homeassistant = {
+          # Passwordless from the flat only; the tailnet may hold nodes that
+          # are not ours (#1200), and `home/` forwards the client IP through.
           auth_providers = [
             {
               type = "trusted_networks";
               trusted_networks = [
                 "127.0.0.1/32"
                 "192.168.0.0/24"
-                "100.64.0.0/10"
               ];
               allow_bypass_login = true;
             }
