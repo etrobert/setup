@@ -50,6 +50,7 @@ in
       self.nixosModules.dispatch
       self.nixosModules.miniflux
       self.nixosModules.torrentPull
+      self.nixosModules.jellyfin
     ];
   };
 }

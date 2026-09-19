@@ -21,6 +21,7 @@ _: {
           "rift"
           "rack"
           "nutricalc"
+          "watch"
         ];
         interval = "5min";
         usev6 = "no";
