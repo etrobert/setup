@@ -10,9 +10,26 @@
     let
       inherit (self.lib) browserConfig;
 
+      # nixpkgs renamed the wrapper's passthru flags (ffmpegSupport → withFFmpeg,
+      # gssSupport → withGSSAPI); the zen flake still sets the old names, so
+      # wrapFirefox leaves libavcodec off LD_LIBRARY_PATH and H.264/AAC are gone.
+      # Drop once youwen5/zen-browser-flake#19 is fixed; the assertion fires then.
+      zen-browser-unwrapped =
+        let
+          upstream = inputs'.zen-browser.packages.zen-browser-unwrapped;
+        in
+        assert lib.assertMsg (!(upstream.passthru ? withFFmpeg))
+          "zen-browser-flake now sets withFFmpeg itself — drop the override in modules/features/zen-browser.nix";
+        upstream.overrideAttrs (old: {
+          passthru = old.passthru // {
+            withFFmpeg = true;
+            withGSSAPI = true;
+          };
+        });
+
       makeZen =
         extraSettings:
-        pkgs.wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
+        pkgs.wrapFirefox zen-browser-unwrapped {
           extraPrefs = browserConfig.renderDefaultPrefs (
             browserConfig.sharedSettings
             // {
