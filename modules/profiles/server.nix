@@ -5,6 +5,7 @@
       { config, ... }:
       {
         imports = [
+          self.nixosModules.caddy
           self.nixosModules.ddclient
           self.nixosModules.filebrowser
           self.nixosModules.imgproxy
@@ -17,26 +18,18 @@
           inputs.nutricalc.nixosModules.default
         ];
 
-        networking.firewall.allowedTCPPorts = [
-          80
-          443
-        ];
-
         services = {
-          caddy = {
-            enable = true;
-            virtualHosts = {
-              "files.etiennerobert.com".extraConfig = /* caddy */ ''
-                root * /srv/files
-                header Access-Control-Allow-Origin *
-                # Metadata here (info.toml, dir listings) is hand-edited live and
-                # must take effect without a rebuild. Force revalidation so the
-                # browser's heuristic cache can't serve stale data; ETag keeps it
-                # cheap (304s when unchanged).
-                header Cache-Control "no-cache"
-                file_server browse
-              '';
-            };
+          caddy.virtualHosts = {
+            "files.etiennerobert.com".extraConfig = /* caddy */ ''
+              root * /srv/files
+              header Access-Control-Allow-Origin *
+              # Metadata here (info.toml, dir listings) is hand-edited live and
+              # must take effect without a rebuild. Force revalidation so the
+              # browser's heuristic cache can't serve stale data; ETag keeps it
+              # cheap (304s when unchanged).
+              header Cache-Control "no-cache"
+              file_server browse
+            '';
           };
 
           # Redis cache, backend systemd unit and the rift.etiennerobert.com
