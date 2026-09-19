@@ -99,6 +99,10 @@ _: {
               hostNames = [ "aaron" ];
               publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
             };
+            charon = {
+              hostNames = [ "charon" ];
+              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjmj/dwNIYcHnshGmTzVXIBqHCWeOXmgmNbEuLWWsK/";
+            };
           };
 
           zsh = {

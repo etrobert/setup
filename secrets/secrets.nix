@@ -4,6 +4,7 @@ let
   leod = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgObi3D4k+OGPizrmEnHVKRcl6tuMsrAyP54LL6SVRi";
   aaron = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
   pi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
+  charon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjmj/dwNIYcHnshGmTzVXIBqHCWeOXmgmNbEuLWWsK/";
 
   allLinux = [
     tower
@@ -23,9 +24,9 @@ in
   "wifi-soft.age".publicKeys = allLinux;
   "wifi-iphone-de-zeus.age".publicKeys = allLinux;
   "wifi-vinni.age".publicKeys = allLinux;
-  "tailscale-authkey.age".publicKeys = allMachines;
+  "tailscale-authkey.age".publicKeys = allMachines ++ [ charon ];
   "apple-pimsync-password.age".publicKeys = allLinux; # TODO: Restrict to linux workstations
-  "soft-password.age".publicKeys = allLinux;
+  "soft-password.age".publicKeys = allLinux ++ [ charon ];
   # TODO: Restrict to relevant machines
   "ddclient-password-etiennerobert-com.age".publicKeys = allLinux;
   "umami-app-secret.age".publicKeys = allLinux;
