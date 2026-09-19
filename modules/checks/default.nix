@@ -21,6 +21,20 @@
         actionlint ${self}/.github/workflows/*.yml && touch $out
       '';
 
+      # Bare nvim, not neovim-wrapped: a plugin's tests should fail on the
+      # plugin, not on the rest of the config.
+      neovim-plugins = pkgs.runCommand "neovim-plugins-check" { nativeBuildInputs = [ pkgs.neovim ]; } ''
+        plugins=${self}/modules/pkgs/neovim-wrapped/_plugins
+        for test in $plugins/*/test.lua; do
+          echo "== $(basename $(dirname $test))"
+          nvim --headless -u NONE \
+            --cmd "set rtp+=${self}/modules/pkgs/neovim-wrapped/tests" \
+            --cmd "set rtp+=$(dirname $test)/src" \
+            -l $test
+        done
+        touch $out
+      '';
+
       # Fails once upstream adds `sh` to ast_grep.filetypes, making the
       # override in neovim-wrapped's lspconfig plugin dead weight.
       lspconfig-ast-grep-filetypes = pkgs.runCommand "lspconfig-ast-grep-filetypes-check" { } ''
