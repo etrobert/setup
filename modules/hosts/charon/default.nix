@@ -17,6 +17,7 @@
       self.nixosModules.nodeExporter
       self.nixosModules.caddy
       self.nixosModules.draw
+      self.nixosModules.countdown
       self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];
