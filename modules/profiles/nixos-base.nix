@@ -24,7 +24,6 @@ _: {
     in
     {
       imports = with self.nixosModules; [
-        atuinLogin
         git
         gpu
         kanata

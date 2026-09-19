@@ -26,6 +26,7 @@
         self.nixosModules.fileManager
         self.nixosModules.virtualbox
         self.nixosModules.syncthing
+        self.nixosModules.atuinLogin
       ];
 
       documentation.doc.enable = false;

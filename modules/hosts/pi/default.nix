@@ -13,6 +13,7 @@
       self.nixosModules.base
       self.nixosModules.lanDns
       self.nixosModules.syncthing
+      self.nixosModules.atuinLogin
       self.nixosModules.autoUpgrade
       inputs.agenix.nixosModules.default
     ];
