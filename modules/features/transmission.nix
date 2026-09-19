@@ -52,11 +52,9 @@ in
         openPeerPorts = true;
 
         settings = {
-          # The Host header tsnsrv forwards is the tailnet name.
           rpc-host-whitelist = "torrents";
 
-          # The module's separate bind mount makes every completion a full
-          # copy instead of a rename.
+          # separate bind mount makes completion a copy instead of a rename
           incomplete-dir-enabled = false;
         };
       };

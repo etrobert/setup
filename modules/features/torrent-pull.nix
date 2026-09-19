@@ -16,8 +16,8 @@ in
             rsync
           ];
 
-          # .part: still downloading. chmod: --archive copies Downloads' 750 and
-          # jellyfin must read the result. ControlMaster: no writable home here.
+          # --chmod: jellyfin must read the result
+          # ControlMaster: no writable home here
           script = /* bash */ ''
             rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
               --rsh 'ssh -o ControlMaster=no' \
