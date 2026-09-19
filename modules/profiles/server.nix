@@ -14,7 +14,6 @@
           inputs.rift-radar.nixosModules.default
           inputs.rack.nixosModules.default
           inputs.creatures.nixosModules.default
-          inputs.countdown.nixosModules.default
           inputs.nutricalc.nixosModules.default
         ];
 
@@ -56,11 +55,6 @@
           creatures = {
             enable = true;
             hostName = "creatures.etiennerobert.com";
-          };
-
-          countdown = {
-            enable = true;
-            hostName = "countdown.etiennerobert.com";
           };
 
           # A friend's project, hosted here at his request. Unlike the other
