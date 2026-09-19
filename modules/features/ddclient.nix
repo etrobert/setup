@@ -1,27 +1,18 @@
-_: {
+let
+  zone = "etiennerobert.com";
+in
+{
   flake.nixosModules.ddclient =
-    { config, ... }:
+    { config, lib, ... }:
     {
       services.ddclient = {
         enable = true;
         protocol = "namecheap";
         server = "dynamicdns.park-your-domain.com";
-        username = "etiennerobert.com";
+        username = zone;
         passwordFile = config.age.secrets.ddclient-password-etiennerobert-com.path;
-        domains = [
-          "creatures"
-          "countdown"
-          "draw"
-          "files"
-          "adele"
-          "umami"
-          "images"
-          "meet"
-          "rift"
-          "rack"
-          "nutricalc"
-          "watch"
-        ];
+        # Every site Caddy serves; Namecheap wants the host without the zone.
+        domains = map (lib.removeSuffix ".${zone}") (builtins.attrNames config.services.caddy.virtualHosts);
         interval = "5min";
         usev6 = "no";
         usev4 = "webv4";
