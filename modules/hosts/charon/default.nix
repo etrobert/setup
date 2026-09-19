@@ -15,6 +15,7 @@
       self.nixosModules.tailnetServices
       self.nixosModules.transmission
       self.nixosModules.nodeExporter
+      self.nixosModules.draw
       inputs.agenix.nixosModules.default
     ];
   };

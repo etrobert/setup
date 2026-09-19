@@ -2,14 +2,7 @@
 {
   flake = {
     nixosModules.server =
-      {
-        config,
-        pkgs,
-        ...
-      }:
-      let
-        inherit (pkgs.stdenv.hostPlatform) system;
-      in
+      { config, ... }:
       {
         imports = [
           self.nixosModules.ddclient
@@ -33,12 +26,6 @@
           caddy = {
             enable = true;
             virtualHosts = {
-              "draw.etiennerobert.com".extraConfig = /* caddy */ ''
-                root * ${self.packages.${system}.excalidraw}
-                encode zstd gzip
-                try_files {path} /index.html
-                file_server
-              '';
               "files.etiennerobert.com".extraConfig = /* caddy */ ''
                 root * /srv/files
                 header Access-Control-Allow-Origin *
