@@ -12,7 +12,7 @@ _: {
       packages.copilot-api = pkgs.writeShellApplication {
         name = "copilot-api";
         runtimeInputs = [
-          pkgs.nodejs_26
+          pkgs.nodejs
           pkgs.bash
         ];
         inheritPath = false;
