@@ -39,6 +39,7 @@ in
       self.darwinModules.nixIndex
       self.darwinModules.ntfyDesktop
       self.darwinModules.githubRunner
+      self.darwinModules.atuinLogin
     ];
   };
 }
