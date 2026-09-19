@@ -135,6 +135,8 @@ _: {
 
       environment.shells = [ zsh-wrapped ];
 
+      security.sudo.wheelNeedsPassword = false;
+
       users.mutableUsers = false;
 
       users.users.soft = {

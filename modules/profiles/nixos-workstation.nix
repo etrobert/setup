@@ -91,13 +91,7 @@
         i2c.enable = true;
       };
 
-      security = {
-        rtkit.enable = true;
-
-        # soft is in the docker group with a rootful daemon, so the password
-        # gates nothing an attacker can't walk around.
-        sudo.wheelNeedsPassword = false;
-      };
+      security.rtkit.enable = true;
 
       systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
 
