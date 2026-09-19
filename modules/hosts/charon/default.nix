@@ -16,6 +16,7 @@
       self.nixosModules.transmission
       self.nixosModules.nodeExporter
       self.nixosModules.draw
+      self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];
   };

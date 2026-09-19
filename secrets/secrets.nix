@@ -39,7 +39,10 @@ in
   "tailscale-authkey.age".publicKeys = allMachines;
   "apple-pimsync-password.age".publicKeys = allLinuxWorkstations;
   "soft-password.age".publicKeys = allLinux;
-  "ddclient-password-etiennerobert-com.age".publicKeys = [ tower ];
+  "ddclient-password-etiennerobert-com.age".publicKeys = [
+    tower
+    charon
+  ];
   "umami-app-secret.age".publicKeys = [ tower ];
   "nix-access-tokens.age".publicKeys = allWorkstations;
   "github-runner-token.age".publicKeys = allWorkstations;
