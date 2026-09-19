@@ -68,7 +68,7 @@ _: {
               hyperfine # Command-line benchmarking tool
               jnv # jq TUI with filter completion, which jqp lacks
               libnotify
-              nodejs # the LTS, not nodejs_latest, so the binary cache stays reliable on darwin
+              nodejs
 
               # Notion ships no official Linux client; notion-electron is the
               # community Electron wrapper around the web app.
