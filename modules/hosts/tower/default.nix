@@ -47,6 +47,7 @@ in
       self.nixosModules.tailnetServices
       self.nixosModules.atuinServer
       self.nixosModules.metrics
+      self.nixosModules.nodeExporter
       self.nixosModules.dispatch
       self.nixosModules.miniflux
       self.nixosModules.torrentPull

@@ -12,6 +12,7 @@
       self.nixosModules.nixosBase
       self.nixosModules.base
       self.nixosModules.lanDns
+      self.nixosModules.nodeExporter
       self.nixosModules.syncthing
       self.nixosModules.atuinLogin
       self.nixosModules.autoUpgrade
