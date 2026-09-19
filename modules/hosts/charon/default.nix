@@ -14,6 +14,7 @@
       self.nixosModules.autoUpgrade
       self.nixosModules.tailnetServices
       self.nixosModules.transmission
+      self.nixosModules.nodeExporter
       inputs.agenix.nixosModules.default
     ];
   };

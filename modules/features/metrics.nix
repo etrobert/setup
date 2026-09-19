@@ -1,6 +1,6 @@
 # Prometheus scrapes tower's node exporter; Grafana reads it back.
 # Reached on the tailnet as `metrics/` through tsnsrv.
-{ inputs, ... }:
+{ self, inputs, ... }:
 {
   flake.nixosModules.metrics =
     { config, pkgs, ... }:
@@ -32,7 +32,12 @@
             {
               job_name = "node";
               static_configs = [
-                { targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.node.port}" ]; }
+                {
+                  targets = [
+                    "127.0.0.1:${toString config.services.prometheus.exporters.node.port}"
+                    "charon:${toString self.nixosConfigurations.charon.config.services.prometheus.exporters.node.port}"
+                  ];
+                }
               ];
             }
             {
