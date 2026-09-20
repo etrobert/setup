@@ -54,7 +54,7 @@ in
   "atuin-key.age".publicKeys = allOwned;
   "atuin-password.age".publicKeys = allOwned;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
-  "riot-api-key.age".publicKeys = [ tower ];
+  "riot-api-key.age".publicKeys = [ charon ];
   "harmonia-signing-key.age".publicKeys = [ tower ];
   "dispatch-claude-token.age".publicKeys = [ tower ];
   "dispatch-github-token.age".publicKeys = [ tower ];
