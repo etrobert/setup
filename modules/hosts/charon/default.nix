@@ -23,6 +23,7 @@
       self.nixosModules.riftRadar
       self.nixosModules.umami
       self.nixosModules.atuinServer
+      self.nixosModules.atuinLogin
       self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];
