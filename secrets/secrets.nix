@@ -22,13 +22,6 @@ let
     aaron
   ];
   allMachines = allLinux ++ [ aaron ];
-  # Hardware we hold; charon is rented.
-  allOwned = [
-    tower
-    leod
-    pi
-    aaron
-  ];
 in
 {
   "openai-api-key.age".publicKeys = allWorkstations;
@@ -51,8 +44,8 @@ in
   "lafraise-runner-token.age".publicKeys = [ tower ];
   "z-ai-auth-token.age".publicKeys = allWorkstations;
   "hass-token.age".publicKeys = allWorkstations;
-  "atuin-key.age".publicKeys = allOwned;
-  "atuin-password.age".publicKeys = allOwned;
+  "atuin-key.age".publicKeys = allMachines;
+  "atuin-password.age".publicKeys = allMachines;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
   "riot-api-key.age".publicKeys = [ charon ];
   "harmonia-signing-key.age".publicKeys = [ tower ];
