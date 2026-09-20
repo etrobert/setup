@@ -79,6 +79,21 @@ function M.execute_code_block()
 	M.execute_by_language(block.code, block.language)
 end
 
+-- Execute the whole buffer
+function M.execute_buffer()
+	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+	M.execute_by_language(table.concat(lines, "\n"), vim.bo.filetype)
+end
+
+-- Markdown: code block under the cursor; anything else: the whole buffer
+function M.execute()
+	if vim.bo.filetype == "markdown" then
+		M.execute_code_block()
+	else
+		M.execute_buffer()
+	end
+end
+
 -- Execute visual selection
 function M.execute_visual_selection()
 	local code = M.get_visual_selection()
@@ -118,7 +133,7 @@ function M.execute_by_language(code, language)
 end
 
 function M.setup()
-	vim.keymap.set("n", "<leader>ex", M.execute_code_block, { desc = "Execute code block" })
+	vim.keymap.set("n", "<leader>ex", M.execute, { desc = "Execute code block or buffer" })
 
 	-- Use the ":lua …<CR>" command form rather than a direct callback: the marks
 	-- '< / '> are only updated when visual mode exits, and the ":" exits it first.
