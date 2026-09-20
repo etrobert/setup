@@ -94,6 +94,12 @@
               mountOptions = [ "nofail" ];
             };
 
+            public = {
+              type = "zfs_fs";
+              mountpoint = "/tank/public";
+              mountOptions = [ "nofail" ];
+            };
+
             postgres = {
               type = "zfs_fs";
               mountpoint = "/var/lib/postgresql";

@@ -15,7 +15,7 @@
       services = {
         caddy.virtualHosts = {
           "files.etiennerobert.com".extraConfig = /* caddy */ ''
-            root * /srv/files
+            root * /tank/public
             header Access-Control-Allow-Origin *
             # Metadata here (info.toml, dir listings) is hand-edited live and
             # must take effect without a rebuild. Force revalidation so the
@@ -35,23 +35,17 @@
         };
       };
 
-      systemd = {
-        # Own /srv/files as soft:users with the setgid bit so it can be populated over
-        # plain SSH/scp without sudo, and so new entries consistently inherit group
-        # "users" (caddy/imgproxy read via the world r-x bits, so they need no membership).
-        # Without this the dir is root:root 0755 — every write needs sudo, and ad-hoc
-        # `sudo cp` leaves a mix of root/soft-owned files. The filebrowser-managed
-        # adele/ subtree keeps its own ownership (see modules/features/filebrowser.nix).
-        tmpfiles.settings.filebrowser."/srv/files".d = {
+      systemd.tmpfiles.settings.public = {
+        # setgid so scp'd files inherit "users"; caddy/imgproxy read via o+rx.
+        # z/e, never d: a boot without the pool must not create this on the root fs.
+        "/tank/public".z = {
           user = "soft";
           group = "users";
           mode = "2775";
         };
 
-        # Auto-expiring drop-zone for files shared over files.etiennerobert.com:
-        # tmpfiles-clean removes anything left untouched (atime) for 30 days.
-        # 2775/users mirror /srv/files so drops stay readable by caddy/imgproxy.
-        tmpfiles.settings.share-temp."/srv/files/temp".d = {
+        # Drop-zone: expires 30 days after the last write (atime is off on tank).
+        "/tank/public/temp".e = {
           user = "soft";
           group = "users";
           mode = "2775";

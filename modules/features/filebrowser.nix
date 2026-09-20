@@ -6,7 +6,7 @@ _: {
         filebrowser = {
           enable = true;
           settings = {
-            root = "/srv/files/adele";
+            root = "/tank/public/adele";
             port = 8081;
             username = "adele";
             password = "$2a$10$IJiPBcbqVvJnAilE8Gs.uulWMWfq18tOEvlcYqaz8RvWjWP3sgBUK";
@@ -24,9 +24,10 @@ _: {
       users.users.caddy.extraGroups = [ "filebrowser" ];
 
       systemd = {
-        # Override the filebrowser module's tmpfiles rule which resets /srv/files/adele to 0700
-        # on every boot, which would block caddy from traversing into the directory.
-        tmpfiles.settings.filebrowser."/srv/files/adele".d.mode = lib.mkForce "0755";
+        # The module's d rule resets the root to 0700 on every boot, which would
+        # block caddy from traversing it; e rather than d so a boot without the
+        # pool does not create it on the root fs.
+        tmpfiles.settings.filebrowser."/tank/public/adele" = lib.mkForce { e.mode = "0755"; };
 
         # Override the filebrowser module's default UMask of 0077, which would strip the group
         # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
