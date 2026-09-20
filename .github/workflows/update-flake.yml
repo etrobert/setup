@@ -88,13 +88,9 @@ jobs:
           branch: flake-update
           delete-branch: true
 
-      # etrobert authors the PR, so etrobert-bot may approve it; the ruleset
-      # (all-checks, all-builds, one approval) decides when auto-merge fires.
-      - name: Approve and enable auto-merge
+      - name: Enable auto-merge
         if: steps.create.outputs.pull-request-number != ''
         env:
-          GH_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT }}
           NUMBER: ${{ steps.create.outputs.pull-request-number }}
-        run: |
-          gh pr review "$NUMBER" --approve
-          gh pr merge "$NUMBER" --auto --squash
+        run: gh pr merge "$NUMBER" --auto --squash
