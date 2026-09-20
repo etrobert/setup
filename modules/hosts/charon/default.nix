@@ -22,6 +22,7 @@
       self.nixosModules.creatures
       self.nixosModules.riftRadar
       self.nixosModules.umami
+      self.nixosModules.atuinServer
       self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];

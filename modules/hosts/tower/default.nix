@@ -45,7 +45,6 @@ in
       self.nixosModules.ollama
       self.nixosModules.openWebui
       self.nixosModules.tailnetServices
-      self.nixosModules.atuinServer
       self.nixosModules.metrics
       self.nixosModules.nodeExporter
       self.nixosModules.dispatch
