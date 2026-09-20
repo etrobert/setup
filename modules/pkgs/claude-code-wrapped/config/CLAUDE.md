@@ -153,11 +153,31 @@ obsolete or superseded information — e.g. after moving a file, just give the n
 path; don't note where it used to live or that an old copy is "superseded." Such
 references are dead text that add noise without value.
 
-Keep code comments minimal and short — one line, two at most. Longer belongs in
-the commit or PR, as does narrative context (root-cause chains, incident
-history). Neighbouring files' comment density is not a justification.
+- Code comments should not be longer than one line per topic
+- Two topics should be split into two lines
 
-Before writing one, cover it: if a reader could recover it from the code — the
+```bash
+# Good
+
+# --chmod: jellyfin must read the result
+# ControlMaster: no writable home here
+rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
+  --rsh 'ssh -o ControlMaster=no' \
+  charon:/var/lib/transmission/Downloads/ ${landing}/
+
+# Bad
+
+# chmod because jellyfin must read the result Control Master no writable home here
+rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
+  --rsh 'ssh -o ControlMaster=no' \
+  charon:/var/lib/transmission/Downloads/ ${landing}/
+```
+
+Longer comments don't belong in the code. They belong in the commit or PR, as
+does narrative context (root-cause chains, incident history). Neighbouring
+files' comment density is not a justification.
+
+Before writing one, check: if a reader could recover it from the code — the
 name, the expression below, the message it carries, the helper it calls, the LSP
 hover (an option's description, a docstring) — cut it. Most often that is one
 narrating work you just did. It earns its place only by carrying what the code
