@@ -9,6 +9,7 @@
             # Self-hosted (modules/features/atuin-server.nix), so sync_protocol = Auto
             # picks the legacy protocol rather than Hub. Plaintext inside WireGuard.
             sync_address = "http://charon:8888";
+            sync_frequency = "0";
 
             ui.columns = [
               "exit"
