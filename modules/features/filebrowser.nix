@@ -24,10 +24,9 @@ _: {
       users.users.caddy.extraGroups = [ "filebrowser" ];
 
       systemd = {
-        # The module's d rule resets the root to 0700 on every boot, which would
-        # block caddy from traversing it; e rather than d so a boot without the
-        # pool does not create it on the root fs.
-        tmpfiles.settings.filebrowser."/tank/public/adele" = lib.mkForce { e.mode = "0755"; };
+        # The module's d would reset the root to 0700 (blocking caddy); any rule
+        # here trips tmpfiles' unsafe-path-transition guard under soft's parent.
+        tmpfiles.settings.filebrowser."/tank/public/adele" = lib.mkForce { };
 
         # Override the filebrowser module's default UMask of 0077, which would strip the group
         # bits from filebrowser's 0640/0750 creation modes (giving 0600/0700) and block caddy.
