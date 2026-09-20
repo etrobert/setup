@@ -8,7 +8,6 @@
         self.nixosModules.filebrowser
         self.nixosModules.imgproxy
         self.nixosModules.jitsiMeet
-        self.nixosModules.umami
         inputs.rack.nixosModules.default
       ];
 
