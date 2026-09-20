@@ -15,34 +15,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  probe:
-    name: Pick runner
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    outputs:
-      runner: ${{ steps.pick.outputs.runner }}
-    steps:
-      # RUNNER_PROBE_TOKEN: fine-grained PAT with runners read on this
-      # repo — the runners API needs a permission GITHUB_TOKEN cannot be
-      # granted. An invalid token fails the probe (and the build) loudly;
-      # an absent or offline runner falls back to the hosted runner.
-      - id: pick
-        env:
-          GH_TOKEN: ${{ secrets.RUNNER_PROBE_TOKEN }}
-        run: |
-          status=$(gh api "repos/${{ github.repository }}/actions/runners" \
-            --jq '.runners[] | select(.name == "aaron") | .status')
-          if [ "$status" = "online" ]
-          then runner='["self-hosted", "macOS"]'
-          else runner='"macos-latest"'
-          fi
-          echo "aaron status: $status; picked $runner"
-          echo "runner=$runner" >> "$GITHUB_OUTPUT"
-
   discover:
     name: discover
-    needs: probe
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -51,35 +25,23 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # Emit the build matrix from the flake: nixos hosts build on the
-      # self-hosted Linux runners, darwin hosts on the runner the probe picked.
+      # NixOS hosts only: the darwin build needs a macOS runner and was most
+      # of the run's wall clock, for a machine that is rarely used.
       - name: List host configurations
         id: list
-        env:
-          DARWIN_RUNNER: ${{ needs.probe.outputs.runner }}
         run: |
           nixos=$(nix eval .#nixosConfigurations \
-            --apply builtins.attrNames --json)
-          darwin=$(nix eval .#darwinConfigurations \
             --apply builtins.attrNames --json)
           # shellcheck disable=SC2016  # $-names are jq variables, not shell
           matrix=$(jq --compact-output --null-input \
             --argjson nixos "$nixos" \
-            --argjson darwin "$darwin" \
-            --argjson darwinRunner "$DARWIN_RUNNER" \
-            '{
-              include:
-                [$nixos[] | {host: ., platform: "nixos",
-                            runner: ["self-hosted", "Linux"]}]
-              + [$darwin[] | {host: ., platform: "darwin",
-                             runner: $darwinRunner}]
-            }')
+            '{include: [$nixos[] | {host: .}]}')
           echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
   build:
     name: ${{ matrix.host }}
     needs: discover
-    runs-on: ${{ matrix.runner }}
+    runs-on: [self-hosted, Linux]
     permissions:
       contents: read
     strategy:
@@ -89,26 +51,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # Self-hosted runners already have Nix; only the hosted fallback needs it.
-      - uses: DeterminateSystems/determinate-nix-action@v3
-        if: ${{ runner.environment == 'github-hosted' }}
-
-      # Only GitHub-hosted runners (darwin builds) push to cachix. Self-hosted
-      # jobs skip it: their outputs land in tower's store, served by harmonia,
-      # and the action can't work there anyway — its `cachix use` needs a nix
-      # trusted user, which the runner user deliberately isn't.
-      # continue-on-error: cache push failures (e.g. cachix 502s) shouldn't
-      # fail the job
-      - uses: cachix/cachix-action@v17
-        if: ${{ runner.environment == 'github-hosted' }}
-        continue-on-error: true
-        with:
-          name: soft-nix
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
       - name: Build ${{ matrix.host }}
         run: |
-          attr="${{ matrix.platform }}Configurations.${{ matrix.host }}"
+          attr="nixosConfigurations.${{ matrix.host }}"
           nix build ".#$attr.config.system.build.toplevel" \
             --accept-flake-config \
             --print-build-logs \
@@ -205,7 +150,7 @@ jobs:
   # fails), so new hosts are covered without touching branch protection.
   all-builds:
     name: all-builds
-    needs: [discover, probe, build]
+    needs: [discover, build]
     if: always()
     runs-on: ubuntu-latest
     permissions:

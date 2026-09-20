@@ -64,9 +64,7 @@ authoritative list.
 ### Caches
 
 Tower serves its store as a signed binary cache via harmonia
-(`http://tower:5000`, `modules/features/harmonia.nix`); pi and leod substitute
-from it. Personal Cachix `soft-nix.cachix.org` holds the darwin CI builds. Also
-uses `nix-community.cachix.org`.
+(`http://tower:5000`, `modules/features/harmonia.nix`).
 
 ### Development Environment
 
