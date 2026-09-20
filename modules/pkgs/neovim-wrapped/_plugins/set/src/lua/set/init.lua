@@ -18,6 +18,8 @@ vim.opt.expandtab = true
 
 vim.opt.swapfile = false
 vim.opt.backup = false
+-- "auto" may rename on write, which breaks inotify file watchers (node --watch)
+vim.opt.backupcopy = "yes"
 vim.opt.undodir = os.getenv("HOME") .. "/.nvim/undodir"
 vim.opt.undofile = true
 
