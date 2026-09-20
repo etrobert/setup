@@ -21,6 +21,7 @@
       self.nixosModules.nutricalc
       self.nixosModules.creatures
       self.nixosModules.riftRadar
+      self.nixosModules.umami
       self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];
