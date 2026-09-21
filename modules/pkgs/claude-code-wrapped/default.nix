@@ -3,7 +3,6 @@
   perSystem =
     {
       pkgs,
-      lib,
       self',
       inputs',
       ...
@@ -19,7 +18,6 @@
       makeClaudeCode =
         {
           extraEnv ? { },
-          readTokenFromAgenix ? false,
           # Name of the installed binary. Variants override this (e.g.
           # "claude-copilot") so they can be installed alongside the base
           # "claude" without colliding.
@@ -50,18 +48,10 @@
             # otherwise provide.
             sox
           ]);
-
-          # `$(<file)` builtin so the read doesn't
-          # need `cat` on the caller's PATH, and a bare assignment so `set -e` aborts on
-          # an unreadable secret instead of baking in an empty token.
-          agenixTokenRun = lib.optionals readTokenFromAgenix [
-            ''ANTHROPIC_AUTH_TOKEN="$(< /run/agenix/z-ai-auth-token)"''
-            "export ANTHROPIC_AUTH_TOKEN"
-          ];
         in
         self.lib.wrapPackage pkgs {
           package = claude-code;
-          # Variants (e.g. claude-glm, claude-copilot) get renamed before wrapping;
+          # Variants (e.g. claude-copilot) get renamed before wrapping;
           # the default "claude" matches the package's mainProgram, so it's a no-op.
           inherit binName;
           env = {
@@ -86,26 +76,13 @@
             # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
             # An ambient value wins, so CI can point at its own checkout of this config.
             ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/work/setup/main/modules/pkgs/claude-code-wrapped/config}"''
-          ]
-          ++ agenixTokenRun;
+          ];
           inherit runtimeInputs;
         };
     in
     {
       packages = {
         claude-code-wrapped = makeClaudeCode { };
-
-        claude-code-wrapped-glm = makeClaudeCode {
-          extraEnv = {
-            ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
-            API_TIMEOUT_MS = "3000000";
-            ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-4.5-air";
-            ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.1";
-            ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.1";
-          };
-          readTokenFromAgenix = true;
-          binName = "claude-glm";
-        };
 
         claude-code-wrapped-copilot = makeClaudeCode {
           extraEnv = {

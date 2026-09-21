@@ -30,7 +30,6 @@ _: {
             customPackages = with self.packages.${system}; [
               aichat-wrapped
               claude-code-wrapped
-              claude-code-wrapped-glm
               alacritty-wrapped
               neovim-wrapped
               vscode-wrapped
@@ -112,10 +111,6 @@ _: {
           # world-readable.
           nix-access-tokens = {
             file = ../../secrets/nix-access-tokens.age;
-            owner = "soft";
-          };
-          z-ai-auth-token = {
-            file = ../../secrets/z-ai-auth-token.age;
             owner = "soft";
           };
           # Home Assistant long-lived access token, used by Claude Code to
