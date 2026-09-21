@@ -14,7 +14,8 @@ allow=(
 )
 
 scratch=$(mktemp --directory)
-trap 'rm --recursive --force "$scratch"' EXIT
+# kill: an evaluation that failed early must not leave the others running.
+trap 'kill $(jobs -p) 2>/dev/null; rm --recursive --force "$scratch"' EXIT
 
 names() {
   nix eval --json --accept-flake-config "$1" --apply builtins.attrNames |
@@ -23,13 +24,15 @@ names() {
 
 # Every evaluation runs concurrently: each host instantiates its own nixpkgs,
 # so there is nothing to share and the run is bounded by the slowest one.
+# --no-eval-cache: concurrent writers to the cache trip SQLITE_BUSY, which nix
+# logs as an error and ignores; the cache holds nothing for these paths anyway.
 mkdir "$scratch/toplevels" "$scratch/packages.d"
 pids=()
 
 echo "collecting host system closures..." >&2
 for output in nixosConfigurations darwinConfigurations; do
   for host in $(names ".#$output"); do
-    nix eval --raw --accept-flake-config \
+    nix eval --raw --accept-flake-config --no-eval-cache \
       ".#$output.$host.config.system.build.toplevel.drvPath" \
       >"$scratch/toplevels/$output.$host" &
     pids+=($!)
@@ -40,7 +43,7 @@ done
 # run; a package that evaluates for no system has no drv line and is reported.
 echo "collecting package derivations..." >&2
 for system in $(names .#packages); do
-  nix eval --json --accept-flake-config ".#packages.$system" --apply \
+  nix eval --json --accept-flake-config --no-eval-cache ".#packages.$system" --apply \
     'ps: builtins.mapAttrs (
        _: p: let r = builtins.tryEval (p.drvPath or null); in if r.success then r.value else null
      ) ps' |
