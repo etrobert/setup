@@ -15,7 +15,8 @@ allow=(
 
 scratch=$(mktemp --directory)
 # kill: an evaluation that failed early must not leave the others running.
-trap 'kill $(jobs -p) 2>/dev/null; rm --recursive --force "$scratch"' EXIT
+# || true: with no jobs left, bare kill exits 2 and would become our status.
+trap 'kill $(jobs -p) 2>/dev/null || true; rm --recursive --force "$scratch"' EXIT
 
 names() {
   nix eval --json --accept-flake-config "$1" --apply builtins.attrNames |
