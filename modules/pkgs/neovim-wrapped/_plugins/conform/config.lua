@@ -18,6 +18,7 @@ require("conform").setup({
 		rust = { "rustfmt" },
 		python = { "isort", "black" },
 		nix = { "nixfmt" },
+		nu = { "nufmt" },
 	},
 	format_on_save = {
 		timeout_ms = 1000,
