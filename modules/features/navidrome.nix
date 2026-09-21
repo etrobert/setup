@@ -4,10 +4,7 @@ _: {
     {
       services.navidrome = {
         enable = true;
-        settings = {
-          Address = "0.0.0.0";
-          MusicFolder = "/tank/media/music";
-        };
+        settings.MusicFolder = "/tank/media/music";
       };
 
       # The sandbox binds MusicFolder at start; before the mount that is an empty dir.
