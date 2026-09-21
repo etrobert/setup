@@ -24,7 +24,9 @@
           binName ? "claude",
         }:
         let
-          statuslineScript = pkgs.callPackage ./_scripts/claude-plan-usage.nix { };
+          statuslineScript = pkgs.callPackage ./_scripts/claude-plan-usage {
+            bun2nix = inputs'.bun2nix.packages.bun2nix;
+          };
           formatFileScript = pkgs.callPackage ./_scripts/format-file.nix { };
           rateLimitNotifyScript = pkgs.callPackage ./_scripts/claude-rate-limit-notify.nix {
             ntfy-sh = self'.packages.ntfy-wrapped;

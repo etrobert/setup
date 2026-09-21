@@ -100,6 +100,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Bun packages from bun.lock, for the TypeScript scripts under modules/pkgs.
+    bun2nix = {
+      url = "github:nix-community/bun2nix/2.1.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # The plugin behind figma@claude-plugins-official: Figma's remote MCP
     # server plus its design-to-code skills. Taken as an input rather than
     # installed with `claude plugin install`, which writes into a gitignored

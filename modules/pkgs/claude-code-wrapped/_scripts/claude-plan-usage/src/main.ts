@@ -1,13 +1,19 @@
 import { $ } from "bun";
+import { z } from "zod";
 
 // The fields read from the statusline payload; every branch of `rate_limits`
 // and `used_percentage` may be absent per the docs, nothing else is optional.
-type Window = { used_percentage?: number | null; resets_at?: number | null };
-type Input = {
-  model: { display_name: string };
-  context_window: { used_percentage?: number | null };
-  rate_limits?: { five_hour?: Window; seven_day?: Window };
-};
+const Window = z.object({
+  used_percentage: z.number().nullish(),
+  resets_at: z.number().nullish(),
+});
+const Input = z.object({
+  model: z.object({ display_name: z.string() }),
+  context_window: z.object({ used_percentage: z.number().nullish() }),
+  rate_limits: z
+    .object({ five_hour: Window.optional(), seven_day: Window.optional() })
+    .optional(),
+});
 
 const ansi = {
   red: "\x1b[31m",
@@ -40,7 +46,7 @@ function limitSegment(
   return `${color}${label}:${pct}% ×${pace.toFixed(2)}${ansi.reset} (${formatReset(reset)})`;
 }
 
-const input: Input = await Bun.stdin.json();
+const input = Input.parse(await Bun.stdin.json());
 
 const model = `[${input.model.display_name}]`;
 
