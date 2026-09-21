@@ -1,18 +1,20 @@
-_: {
+{ self, ... }:
+{
   perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
-      packages.nix-dead-packages = pkgs.writeShellApplication {
-        name = "nix-dead-packages";
+      packages.nix-dead-packages = self.lib.wrapPackage pkgs {
+        package = pkgs.writers.writeRustBin "nix-dead-packages" {
+          rustcArgs = [
+            "--edition"
+            "2021"
+          ];
+        } ./nix-dead-packages.rs;
         runtimeInputs = with pkgs; [
-          coreutils
-          gawk
           git
-          jq
           nix
         ];
-        inheritPath = false;
-        text = builtins.readFile ./nix-dead-packages.sh;
+        platforms = lib.platforms.all;
       };
     };
 }
