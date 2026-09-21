@@ -19,7 +19,7 @@
         vscode-langservers-extracted
         rust-analyzer
         nixd
-        nushell # `nu --lsp`
+        nushell
         openscad-lsp
         texlab
         taplo
