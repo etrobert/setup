@@ -8,5 +8,8 @@ _: {
         reverse_proxy localhost:8096
       '';
     };
+
+    # Libraries live under /tank/media; a scan before the mount marks them missing.
+    systemd.services.jellyfin.unitConfig.RequiresMountsFor = [ "/tank/media" ];
   };
 }
