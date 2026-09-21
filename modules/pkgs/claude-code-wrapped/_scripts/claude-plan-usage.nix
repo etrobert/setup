@@ -1,27 +1,30 @@
 {
-  bc,
-  coreutils,
+  bun,
   git,
-  jq,
-  writeShellApplication,
+  lib,
+  makeWrapper,
+  stdenvNoCC,
 }:
-let
-  windowProgressScript = writeShellApplication {
-    name = "window-progress";
-    runtimeInputs = [ coreutils ];
-    inheritPath = false;
-    text = builtins.readFile ./window-progress.sh;
-  };
-in
-writeShellApplication {
+stdenvNoCC.mkDerivation {
   name = "claude-plan-usage";
-  runtimeInputs = [
-    bc
-    coreutils
-    git
-    jq
-    windowProgressScript
+  src = ./claude-plan-usage.ts;
+  dontUnpack = true;
+  nativeBuildInputs = [
+    bun
+    makeWrapper
   ];
-  inheritPath = false;
-  text = builtins.readFile ./claude-plan-usage.sh;
+
+  # --compile: run from a store path, bun would otherwise walk up looking for
+  # a package.json and list all of /nix/store on every start (~150 ms)
+  buildPhase = ''
+    bun build --compile $src --outfile claude-plan-usage
+  '';
+
+  # strip would remove the ELF sections the script is embedded in
+  dontStrip = true;
+
+  installPhase = ''
+    install -D claude-plan-usage $out/bin/claude-plan-usage
+    wrapProgram $out/bin/claude-plan-usage --set PATH ${lib.makeBinPath [ git ]}
+  '';
 }
