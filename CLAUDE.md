@@ -208,6 +208,14 @@ run `nix-store --add-fixed sha256 <file>` — the entry then resolves without th
 URL ever being fetched. Outputs land in `/var/lib/comfyui/output/`, owned by the
 `comfyui` service user (mode 700), so fetching them needs sudo.
 
+## Music library
+
+`/tank/media/music/<origin>/…` — `bandcamp`, `torrents`, `yt-dlp` — is what
+Navidrome serves; `playlists/` and the beets catalogue (`.beets/`) sit beside
+them. Torrents land in `/tank/media/torrents/` and are copied in with
+`beet import --set source=torrents <dir>` (`beets-wrapped`, tower only); the
+landing copy stays until charon has finished seeding.
+
 ## Planning future work
 
 Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`
