@@ -12,6 +12,7 @@
         shfmt
         rustfmt
         nixfmt
+        nufmt
       ];
     }
   ];

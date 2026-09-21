@@ -107,6 +107,7 @@ vim.lsp.enable({
 	"lua_ls",
 	"marksman",
 	"nixd",
+	"nushell",
 	"openscad_lsp",
 	"cssls",
 	"html",
