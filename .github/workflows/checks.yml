@@ -46,49 +46,23 @@ jobs:
       - name: Packages in no system derivation
         run: nix run --accept-flake-config .#nix-dead-packages
 
-  discover:
-    name: discover
-    runs-on: [self-hosted, Linux]
-    permissions:
-      contents: read
-    outputs:
-      checks: ${{ steps.list.outputs.checks }}
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: List flake checks
-        id: list
-        run: |
-          checks=$(nix eval .#checks.x86_64-linux \
-            --apply builtins.attrNames --json)
-          echo "checks=$checks" >> "$GITHUB_OUTPUT"
-
   lint:
-    name: ${{ matrix.check }}
-    needs: discover
+    name: lint
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
-    strategy:
-      matrix:
-        check: ${{ fromJSON(needs.discover.outputs.checks) }}
-      fail-fast: false
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build ${{ matrix.check }}
-        run: |
-          nix build .#checks.x86_64-linux.${{ matrix.check }} \
-            --accept-flake-config \
-            --print-build-logs
+      - name: Build flake checks
+        run: nix run nixpkgs#nix-fast-build -- --flake .#checks.x86_64-linux
 
   # Aggregation gate: this is the single required status. It transitively
-  # requires format, eval, and every dynamically-discovered lint leg (the
-  # matrix job is failure if any leg fails), so new checks are covered
-  # without touching branch protection.
+  # requires every job above, so new checks are covered without touching
+  # branch protection.
   all-checks:
     name: all-checks
-    needs: [format, eval, dead-packages, discover, lint]
+    needs: [format, eval, dead-packages, lint]
     if: always()
     runs-on: ubuntu-latest
     permissions:
