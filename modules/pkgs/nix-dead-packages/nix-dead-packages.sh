@@ -16,30 +16,36 @@ allow=(
 scratch=$(mktemp --directory)
 trap 'rm --recursive --force "$scratch"' EXIT
 
-names() {
-  nix eval --json --accept-flake-config "$1" --apply builtins.attrNames |
-    jq --raw-output '.[]'
-}
+# One JSON line per attribute; an attribute that fails to evaluate carries
+# `error` instead of `drvPath` and does not abort the run.
+# --select: a host is not a derivation, so map it to its toplevel
+# --force-recurse: the per-system package sets lack recurseForDerivations
+# --workers: one per host plus one; more only slow the longest host's eval
+echo "evaluating host toplevels and packages..." >&2
+nix-eval-jobs --accept-flake-config --flake . --force-recurse --workers 6 \
+  --select '
+    flake:
+    let
+      toplevel = builtins.mapAttrs (_: host: host.config.system.build.toplevel);
+    in
+    {
+      hosts = toplevel flake.outputs.nixosConfigurations // toplevel flake.outputs.darwinConfigurations;
+      packages = flake.outputs.packages;
+    }
+  ' >"$scratch/jobs"
 
-echo "collecting host system closures..." >&2
-for output in nixosConfigurations darwinConfigurations; do
-  for host in $(names ".#$output"); do
-    drv=$(nix eval --raw --accept-flake-config \
-      ".#$output.$host.config.system.build.toplevel.drvPath")
-    nix-store --query --requisites "$drv"
-  done
-done | sort --unique >"$scratch/closure"
+jq --raw-output 'select(.attrPath[0] == "hosts" and .error) | "host \(.attrPath[1]) failed to evaluate:\n\(.error)"' \
+  "$scratch/jobs" >"$scratch/host-errors"
+if [ -s "$scratch/host-errors" ]; then
+  cat "$scratch/host-errors" >&2
+  exit 1
+fi
 
-# tryEval so a package that cannot evaluate for one system does not abort the
-# run; a package that evaluates for no system has no drv line and is reported.
-echo "collecting package derivations..." >&2
-for system in $(names .#packages); do
-  nix eval --json --accept-flake-config ".#packages.$system" --apply \
-    'ps: builtins.mapAttrs (
-       _: p: let r = builtins.tryEval (p.drvPath or null); in if r.success then r.value else null
-     ) ps' |
-    jq --raw-output 'to_entries[] | select(.value != null) | "\(.key) \(.value)"'
-done | sort --unique >"$scratch/packages"
+jq --raw-output 'select(.attrPath[0] == "hosts") | .drvPath' "$scratch/jobs" |
+  xargs nix-store --query --requisites | sort --unique >"$scratch/closure"
+
+jq --raw-output 'select(.attrPath[0] == "packages" and .drvPath) | "\(.attrPath[2]) \(.drvPath)"' \
+  "$scratch/jobs" | sort --unique >"$scratch/packages"
 
 cut --delimiter=' ' --fields=1 "$scratch/packages" | sort --unique >"$scratch/all"
 awk 'NR == FNR { closure[$0]; next } ($2 in closure) { print $1 }' \
