@@ -1,0 +1,14 @@
+/home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/deps/serde-7704f91b77ee5eae.d: /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/build/serde-6035bcb596c24885/out/private.rs
+
+/home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/deps/libserde-7704f91b77ee5eae.rlib: /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/build/serde-6035bcb596c24885/out/private.rs
+
+/home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/deps/libserde-7704f91b77ee5eae.rmeta: /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/build/serde-6035bcb596c24885/out/private.rs
+
+/home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs:
+/home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs:
+/home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs:
+/home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:
+/home/soft/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs:
+/home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/build/serde-6035bcb596c24885/out/private.rs:
+
+# env-dep:OUT_DIR=/home/soft/work/setup/remember-displays/modules/pkgs/save-displays-rs/target/debug/build/serde-6035bcb596c24885/out

@@ -29,21 +29,24 @@ jq '{"eDP-1": .["eDP-1"], "DP-2": (.["DP-1"] | .make = "Acme" | .model = "XYZ" |
   <(docked) >"$fixture" # a hotdesk screen
 save
 
-saved=$home/.local/state/niri/outputs.json
-niri validate --config "$home/.local/state/niri/outputs.kdl"
+layout=$home/.local/state/niri/outputs.kdl
+niri validate --config "$layout"
+
+# The block for one screen, which is what niri matches and every
+# implementation writes, whatever it keeps alongside.
+block() { awk -v id="output \"$1\" {" '$0 == id, /^}/' "$layout"; }
 
 for screen in "LG Display 0x05EE Unknown" \
   "Philips Consumer Electronics Company PHL 329P1 AU82510000017" \
   "Acme XYZ 123"; do
-  jq --exit-status --arg screen "$screen" 'has($screen)' "$saved" >/dev/null ||
-    {
-      echo "lost $screen"
-      exit 1
-    }
+  block "$screen" | grep --quiet . || {
+    echo "lost $screen"
+    exit 1
+  }
 done
 
-jq --exit-status '.["Philips Consumer Electronics Company PHL 329P1 AU82510000017"]
-  | .x == 93 and .y == 0' "$saved" >/dev/null ||
+block "Philips Consumer Electronics Company PHL 329P1 AU82510000017" |
+  grep --quiet 'position x=93 y=0' ||
   {
     echo "the unplugged Philips moved"
     exit 1
