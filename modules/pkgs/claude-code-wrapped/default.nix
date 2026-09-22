@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   perSystem =
     {
@@ -8,8 +8,6 @@
       ...
     }:
     let
-      inherit (inputs) figma-mcp-plugin;
-
       # Latest Claude Code, ahead of nixpkgs' cadence (see flake.nix input).
       # Minimal variant: the full one bundles gh, which our wrapper does not
       # need (it manages PATH and ships its own gitconfig-bot).
@@ -64,7 +62,6 @@
           # Read-only store path: Claude Code loads a --plugin-dir plugin without
           # writing to it, so no marketplace install (gitignored cache) is needed.
           flags = [
-            "--plugin-dir ${figma-mcp-plugin}"
             # Remote MCP servers, carried as plugins rather than --mcp-config, whose
             # variadic argument would swallow the user's own arguments when the
             # wrapper prepends it.

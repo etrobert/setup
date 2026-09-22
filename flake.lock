@@ -145,22 +145,6 @@
         "type": "github"
       }
     },
-    "figma-mcp-plugin": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1790072656,
-        "narHash": "sha256-Ri3XjKiECFjZiCrEF5zCAjfDoSB4j9k2AuJtM1UQKes=",
-        "owner": "figma",
-        "repo": "mcp-server-guide",
-        "rev": "172920731eedf414e9b22ae60017d9a5b6c9f81f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "figma",
-        "repo": "mcp-server-guide",
-        "type": "github"
-      }
-    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -563,7 +547,6 @@
         "creatures": "creatures",
         "disko": "disko",
         "dispatch": "dispatch",
-        "figma-mcp-plugin": "figma-mcp-plugin",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "neovim-nightly": "neovim-nightly",
