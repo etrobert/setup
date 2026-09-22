@@ -110,7 +110,7 @@ jobs:
         id: image
         env:
           # The attachment endpoint rejects GITHUB_TOKEN (404); it takes a PAT.
-          ATTACHMENT_TOKEN: ${{ secrets.ATTACHMENT_TOKEN }}
+          ATTACHMENT_TOKEN: ${{ secrets.PAT }}
         run: |
           # < /dev/null: freeze ignores its file argument and reads stdin
           # whenever stdin is not a character device, and Actions gives run
