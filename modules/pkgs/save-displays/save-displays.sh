@@ -27,6 +27,7 @@ niri msg --json outputs | jq --argjson saved "$(cat "$store" 2>/dev/null || echo
     }
   ] | from_entries)
 ' >"$store.new"
+# A redirect truncates before jq runs, losing every screen on a failure.
 mv "$store.new" "$store"
 
 # @json quotes the name: an unescaped quote in an EDID string would take the
