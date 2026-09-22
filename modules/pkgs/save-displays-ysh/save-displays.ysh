@@ -1,0 +1,60 @@
+var state = "$[ENV.HOME]/.local/state/niri"
+var store = "$state/outputs.json"
+var layout = "$state/outputs.kdl"
+
+mkdir --parents $state
+
+# Screens that are unplugged keep their entry: that is the whole point, and a
+# wlr-output-management apply drops them from niri's own copy (niri#676).
+var saved = {}
+if test -f $store {
+  json read (&saved) < $store
+}
+
+niri msg --json outputs | json read (&connected)
+
+for name, out in (connected) {
+  # An interlaced mode leaves a screen that is on with no mode to name.
+  if (out.logical === null or out.current_mode === null) {
+    continue
+  }
+
+  var id = name
+  if (out.make !== "Unknown" or out.model !== "Unknown" or out.serial !== null) {
+    var serial = out.serial if out.serial !== null else "Unknown"
+    setvar id = "$[out.make] $[out.model] $serial"
+  }
+
+  var transform = out.logical.transform.lower()
+  if (transform ~ / %start 'flipped' <capture d+> /) {
+    setvar transform = "flipped-$[_group(1)]"
+  }
+
+  var mode = out.modes[out.current_mode]
+  setvar saved[id] = {
+    mode: "$[mode.width]x$[mode.height]@$[mode.refresh_rate / 1000]",
+    scale: out.logical.scale,
+    transform: transform,
+    x: out.logical.x,
+    y: out.logical.y,
+  }
+}
+
+json write (saved) > "$store.new"
+mv "$store.new" $store
+
+# toJson quotes the name: an unescaped quote in an EDID string would take the
+# whole niri config down with it, not just this file.
+var lines = []
+for id, screen in (saved) {
+  call lines->append("output $[toJson(id)] {")
+  call lines->append("    mode $[toJson(screen.mode)]")
+  call lines->append("    scale $[screen.scale]")
+  call lines->append("    transform $[toJson(screen.transform)]")
+  call lines->append("    position x=$[screen.x] y=$[screen.y]")
+  call lines->append("}")
+}
+write -- @lines > "$layout.new"
+# niri polls this file every 500ms, so swap it in one step rather than letting
+# it read a half-written config.
+mv "$layout.new" $layout
