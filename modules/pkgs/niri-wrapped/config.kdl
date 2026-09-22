@@ -75,6 +75,10 @@ cursor {
     xcursor-size 30
 }
 
+// Screen layouts written by save-displays, keyed on make, model and serial.
+// Mutable per-machine state, so it lives outside the store this config is in.
+include optional=true "~/.local/state/niri/outputs.kdl"
+
 // You can configure outputs by their name, which you can find
 // by running `niri msg outputs` while inside a niri instance.
 // The built-in laptop monitor is usually called "eDP-1".
