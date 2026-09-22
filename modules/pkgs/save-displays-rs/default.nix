@@ -17,17 +17,12 @@
           };
           cargoLock.lockFile = ./Cargo.lock;
 
-          # Build against the IPC types of the niri that is actually installed,
-          # rather than whatever crates.io version Cargo.toml names: the
-          # compositor and its client then cannot disagree. cargo re-resolves
-          # this offline because a path dependency needs no network.
-          postPatch = ''
-            cat >>Cargo.toml <<EOF
-
-            [patch.crates-io]
-            niri-ipc = { path = "${pkgs.niri.src}/niri-ipc" }
-            EOF
-          '';
+          # niri-ipc comes from the niri that is actually installed, so the
+          # compositor and its client cannot disagree about the protocol.
+          # Cargo.toml points at ./niri, which is this symlink here and in a
+          # checkout; the whole tree, because niri-ipc inherits from its
+          # workspace root.
+          postPatch = "ln --symbolic ${pkgs.niri.src} niri";
 
           meta.platforms = lib.platforms.linux;
         };
