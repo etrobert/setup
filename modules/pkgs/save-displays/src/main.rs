@@ -71,8 +71,9 @@ fn names(node: &KdlNode, id: &str) -> bool {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let layout = Path::new(&std::env::var("HOME")?).join(".local/state/niri/outputs.kdl");
-    fs::create_dir_all(layout.parent().unwrap())?;
+    let state = Path::new(&std::env::var("HOME")?).join(".local/state/niri");
+    let layout = state.join("outputs.kdl");
+    fs::create_dir_all(&state)?;
 
     // Screens that are unplugged keep their block: that is the whole point, and
     // a wlr-output-management apply drops them from niri's own copy (niri#676).
