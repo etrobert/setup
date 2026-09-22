@@ -122,7 +122,10 @@ jobs:
           url=$(curl --fail-with-body --silent --show-error --request POST \
             --header "Authorization: Bearer $ATTACHMENT_TOKEN" \
             --data-binary "@$RUNNER_TEMP/closure-diff.png" \
-            "https://uploads.github.com/user-attachments/assets?name=closure-diff.png&content_type=image/png&repository_id=$GITHUB_REPOSITORY_ID" \
+            --url-query name=closure-diff.png \
+            --url-query content_type=image/png \
+            --url-query "repository_id=$GITHUB_REPOSITORY_ID" \
+            https://uploads.github.com/user-attachments/assets \
             | jq --raw-output --exit-status .url)
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
