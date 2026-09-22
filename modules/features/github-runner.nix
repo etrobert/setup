@@ -25,12 +25,6 @@ _: {
             serviceOverrides = {
               Restart = lib.mkForce "on-failure";
               RestartSec = "10s";
-
-              # Write access to the CI assets dir (below); ProtectSystem=strict
-              # makes the rest of the filesystem read-only regardless of the
-              # group, so the sandbox needs the explicit hole too.
-              SupplementaryGroups = [ "ci-assets" ];
-              ReadWritePaths = [ "/tank/public/ci" ];
             };
           };
 
@@ -61,19 +55,6 @@ _: {
           repo = "event-sourcing-demo";
           count = 1;
         };
-
-      # Images for flake-update PR bodies (closure diffs), served publicly as
-      # files.etiennerobert.com/ci/ (vhost in profiles/server.nix). Dedicated
-      # group rather than "users": runners execute fork-PR code and must not
-      # gain write access to the rest of /tank/public. Entries expire like the
-      # temp drop-zone; images in old PRs 404 after that.
-      users.groups.ci-assets = { };
-      systemd.tmpfiles.settings.ci-assets."/tank/public/ci".e = {
-        user = "soft";
-        group = "ci-assets";
-        mode = "2775";
-        age = "90d";
-      };
 
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
 

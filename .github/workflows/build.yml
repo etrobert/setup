@@ -105,11 +105,12 @@ jobs:
             > "$RUNNER_TEMP/diff-ansi.txt"
 
       # GitHub markdown renders neither ANSI nor styled HTML, so the colored
-      # variant ships as a PNG on the public file share (github-runner.nix
-      # provides the writable dir; unique name per attempt because camo
-      # caches).
+      # variant ships as a PNG PR attachment.
       - name: Publish diff image
         id: image
+        env:
+          # The attachment endpoint rejects GITHUB_TOKEN (404); it takes a PAT.
+          ATTACHMENT_TOKEN: ${{ secrets.ATTACHMENT_TOKEN }}
         run: |
           # < /dev/null: freeze ignores its file argument and reads stdin
           # whenever stdin is not a character device, and Actions gives run
@@ -117,11 +118,13 @@ jobs:
           nix run nixpkgs#charm-freeze -- "$RUNNER_TEMP/diff-ansi.txt" \
             --language ansi --output "$RUNNER_TEMP/closure-diff.png" \
             < /dev/null
-          name="closure-diff-pr$NUMBER-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.png"
-          install --mode 0644 "$RUNNER_TEMP/closure-diff.png" \
-            "/srv/files/ci/$name"
-          echo "url=https://files.etiennerobert.com/ci/$name" \
-            >> "$GITHUB_OUTPUT"
+          # Undocumented endpoint behind the web editor's image paste.
+          url=$(curl --fail-with-body --silent --show-error --request POST \
+            --header "Authorization: Bearer $ATTACHMENT_TOKEN" \
+            --data-binary "@$RUNNER_TEMP/closure-diff.png" \
+            "https://uploads.github.com/user-attachments/assets?name=closure-diff.png&content_type=image/png&repository_id=$GITHUB_REPOSITORY_ID" \
+            | jq --raw-output --exit-status .url)
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
       # Append-only: reruns without a body reset (fix-agent pushes) leave the
       # previous section in place above the new one. Accepted for simplicity;
