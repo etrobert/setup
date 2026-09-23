@@ -15,6 +15,10 @@ in
       systemd.services.github-issue-watch = {
         description = "Notify when a watched upstream GitHub issue closes";
 
+        # Persistent=true fires the missed run at boot, before DNS resolves.
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+
         path = [
           pkgs.curl
           pkgs.jq

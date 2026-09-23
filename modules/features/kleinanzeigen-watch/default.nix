@@ -36,6 +36,10 @@
         services.kleinanzeigen-watch = {
           description = "Notify about new Kleinanzeigen listings matching the watch list";
 
+          # Persistent=true fires the missed run at boot, before DNS resolves.
+          after = [ "network-online.target" ];
+          wants = [ "network-online.target" ];
+
           serviceConfig = {
             Type = "oneshot";
             StateDirectory = "kleinanzeigen-watch";
