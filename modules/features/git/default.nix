@@ -37,14 +37,34 @@
                 ]
                 ++ lib.optional genCommitMsg self'.packages.gen-commit-msg;
 
+              systemConfig = pkgs.concatText "gitconfig-system" [
+                ./gitconfig-system
+                (pkgs.writeText "gitconfig-system-excludes" /* gitconfig */ ''
+                  [core]
+                    excludesFile = ${./gitignore-global}
+                '')
+              ];
+
+              git = self.lib.wrapPackage pkgs {
+                package = pkgs.git;
+                env = {
+                  GIT_CONFIG_SYSTEM = "${systemConfig}";
+                  GIT_CONFIG_GLOBAL = "${userConfig}";
+                };
+                runtimeInputs = deps;
+                # Must stay: git resolves core.editor (nvim) and the `sci`/`find` aliases'
+                # helpers off the ambient PATH; deps deliberately omits them.
+                inheritPath = true;
+              };
+
               git-worktree-remove = pkgs.writeShellApplication {
                 name = "git-worktree-remove";
                 inheritPath = false;
 
-                runtimeInputs = with pkgs; [
-                  coreutils
+                runtimeInputs = [
+                  pkgs.coreutils
                   git
-                  tmux
+                  pkgs.tmux
                 ];
 
                 text = builtins.readFile ./git-worktree-remove.sh;
@@ -54,37 +74,22 @@
                 name = "git-project-clone";
                 inheritPath = false;
 
-                runtimeInputs = with pkgs; [
-                  coreutils
+                runtimeInputs = [
+                  pkgs.coreutils
                   git
-                  openssh # git fetch over ssh:// shells out to it
+                  pkgs.openssh # git fetch over ssh:// shells out to it
                 ];
 
                 text = builtins.readFile ./git-project-clone.sh;
               };
-
-              systemConfig = pkgs.concatText "gitconfig-system" [
-                ./gitconfig-system
-                (pkgs.writeText "gitconfig-system-excludes" /* gitconfig */ ''
-                  [core]
-                    excludesFile = ${./gitignore-global}
-                '')
-              ];
             in
-            self.lib.wrapPackage pkgs {
-              package = pkgs.git;
-              extraPaths = [
+            pkgs.symlinkJoin {
+              inherit (git) name meta;
+              paths = [
+                git
                 git-project-clone
                 git-worktree-remove
               ];
-              env = {
-                GIT_CONFIG_SYSTEM = "${systemConfig}";
-                GIT_CONFIG_GLOBAL = "${userConfig}";
-              };
-              runtimeInputs = deps;
-              # Must stay: git resolves core.editor (nvim) and the `sci`/`find` aliases'
-              # helpers off the ambient PATH; deps deliberately omits them.
-              inheritPath = true;
             }
           );
         in
