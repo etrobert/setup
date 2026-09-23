@@ -119,7 +119,8 @@ jobs:
             --language ansi --output "$RUNNER_TEMP/closure-diff.png" \
             < /dev/null
           # Undocumented endpoint behind the web editor's image paste.
-          url=$(curl --fail-with-body --silent --show-error --request POST \
+          url=$(nix run nixpkgs#curl -- \
+            --fail-with-body --silent --show-error --request POST \
             --header "Authorization: Bearer $ATTACHMENT_TOKEN" \
             --data-binary "@$RUNNER_TEMP/closure-diff.png" \
             --url-query name=closure-diff.png \
