@@ -22,9 +22,14 @@ _: {
 
             # The module defaults to Restart=no for persistent runners, so an
             # OOM-killed runner stays down until manually restarted.
+            # Back off to hourly: a runner that can never start (a sandbox
+            # referencing a missing path, say) otherwise retries every 10s
+            # forever, and each failure fires an ntfy alert.
             serviceOverrides = {
               Restart = lib.mkForce "on-failure";
               RestartSec = "10s";
+              RestartSteps = 5;
+              RestartMaxDelaySec = "1h";
             };
           };
 
