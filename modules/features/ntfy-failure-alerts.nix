@@ -42,6 +42,12 @@ _: {
 
       systemd.services."ntfy-failure@" = {
         description = "ntfy alert for failed unit %i";
+
+        # A unit failing before the network is up would otherwise alert into a
+        # server that is not listening yet, failing the alert too.
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+
         scriptArgs = "%i";
         path = [ ntfy-wrapped ];
 
