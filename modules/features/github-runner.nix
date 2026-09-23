@@ -19,13 +19,6 @@ _: {
               pkgs.jq
               pkgs.gh
             ];
-
-            # The module defaults to Restart=no for persistent runners, so an
-            # OOM-killed runner stays down until manually restarted.
-            serviceOverrides = {
-              Restart = lib.mkForce "on-failure";
-              RestartSec = "10s";
-            };
           };
 
           # tower serves CI for several repos. Neither user accounts nor the
