@@ -31,8 +31,18 @@ def main [...terms: string] {
 
     if ($results | is-empty) { error make --unspanned {msg: "no results"} }
 
+    # A title too long for the terminal makes input list drop the whole column.
+    # math max 0: a negative bound would count from the end of the title.
+    let room = [
+        ((term size).columns - 50)
+        0
+    ] | math max
+
     # --index so the table can omit the link; nushell renders size and date itself.
-    let n = $results | select seeds size published title | input list --fuzzy --index
+    let n = $results
+    | select seeds size published title
+    | update title {|r| $r.title | str substring ..$room}
+    | input list --fuzzy --index
 
     if $n != null { transmission-remote torrents:80 --add ($results | get $n | get link) }
 }
