@@ -4,7 +4,12 @@ _: {
     {
       services.navidrome = {
         enable = true;
-        settings.MusicFolder = "/tank/media/music";
+        settings = {
+          MusicFolder = "/tank/media/music";
+          # Deleted files linger forever otherwise. Not "always": an incremental
+          # scan of an unmounted library would purge everything.
+          Scanner.PurgeMissing = "full";
+        };
       };
 
       # The sandbox binds MusicFolder at start; before the mount that is an empty dir.
