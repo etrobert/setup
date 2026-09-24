@@ -224,12 +224,13 @@ Each commit should be functional — don't commit broken or speculative states.
 
 Always rebase on origin/main before presenting a PR for review — both on initial
 `gh pr create` and after any follow-up changes before telling the user it's
-ready.
+ready. Rebase rather than merge origin/main into the branch.
 
 After creating or pushing to a PR, watch its CI to completion
 (`gh pr checks --watch`) and fix any failure before telling the user it's ready.
 
-Don't force-push — make new commits instead. Amending is the one exception.
+Don't force-push — make new commits instead. Amending and rebasing are the
+exceptions; push those with `--force-with-lease`.
 
 Always resolve merge conflicts before reporting the task as done.
 
