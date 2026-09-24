@@ -144,3 +144,5 @@ gitignore
 FloCode
 cybersigilisme
 Ratboi
+eslint
+vitest
