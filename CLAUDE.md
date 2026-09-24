@@ -210,6 +210,9 @@ URL ever being fetched. Outputs land in `/var/lib/comfyui/output/`, owned by the
 
 ## Music library
 
+`c411 <terms>` searches the tracker's Torznab API and hands the chosen release
+to transmission on charon (API key: agenix `c411-api-key`, Torznab/RSS scope).
+
 `/tank/media/music/<origin>/…` — `bandcamp`, `torrents`, `yt-dlp` — is what
 Navidrome serves; `playlists/` and the beets catalogue (`.beets/`) sit beside
 them. Torrents land in `/tank/media/torrents/` and are copied in with
