@@ -1,5 +1,5 @@
 # Search c411's Torznab API and hand a release to transmission on charon.
-def main [...terms: string] {
+def search [category: string, terms: list<string>] {
     let key = open --raw /run/agenix/c411-api-key | str trim
     let url = {
         scheme: https
@@ -8,8 +8,8 @@ def main [...terms: string] {
         # cat does the filtering; t is required but inert (t=search is the same).
         params: {
             apikey: $key
-            t: "music"
-            cat: "3010"
+            t: "search"
+            cat: $category
             limit: 100
             q: ($terms | str join " ")
         }
@@ -46,3 +46,9 @@ def main [...terms: string] {
 
     if $n != null { transmission-remote torrents:80 --add ($results | get $n | get link) }
 }
+
+def "main music" [...terms: string] { search 3010 $terms }
+def "main movies" [...terms: string] { search 2000 $terms }
+def "main tv" [...terms: string] { search 5000 $terms }
+
+def main [] { print "Usage: c411 (music | movies | tv) <search terms>" }
