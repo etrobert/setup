@@ -19,8 +19,11 @@ def main [...terms: string] {
 
   if ($results | is-empty) { error make --unspanned {msg: "no results"} }
 
-  let choice = ($results | input list --fuzzy
-    --display {|r| $"(($r.seeds | fill --width 4 --alignment r)) seeds  (($r.size | fill --width 9 --alignment r))  ($r.title)"})
+  let choice = ($results | input list --fuzzy --display {|r|
+    let seeds = ($"($r.seeds)" | fill --width 4 --alignment r)
+    let size = ($"($r.size)" | fill --width 9 --alignment r)
+    $"($seeds) seeds  ($size)  ($r.title)"
+  })
 
   if $choice != null { transmission-remote torrents:80 --add $choice.link }
 }
