@@ -5,6 +5,7 @@ def main [...terms: string] {
         scheme: https
         host: "c411.org"
         path: "/api/torznab"
+        # cat does the filtering; t is required but inert (t=search is the same).
         params: {
             apikey: $key
             t: "music"
