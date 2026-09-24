@@ -161,7 +161,7 @@ list_sessions() {
   done
 }
 
-if [ $# -eq 1 ]; then
+if [ $# -ge 1 ]; then
   case "$1" in
   -h | --help)
     echo "Usage: tmux-sessionizer [OPTIONS] [PROJECT_NAME]"
@@ -169,7 +169,7 @@ if [ $# -eq 1 ]; then
     echo "Create or switch to tmux sessions for projects."
     echo ""
     echo "OPTIONS:"
-    echo "  -n, --next-waiting  Switch to the next agent blocked or finished"
+    echo "  -n, --next-waiting CLIENT  Switch CLIENT to the next agent blocked or finished"
     echo "  -e, --existing    Show only existing tmux sessions"
     echo "  -w, --worktrees   Show git worktrees of the current repository"
     echo "  -h, --help        Show this help message"
@@ -192,7 +192,10 @@ if [ $# -eq 1 ]; then
     exit 0
     ;;
   -n | --next-waiting)
-    read -r session window <<<"$(tmux display-message -p '#{session_name} #{window_id}')"
+    # A key binding runs us without a client of its own, so it passes the one
+    # that pressed the key; several can show the same session.
+    client=$2
+    window=$(tmux display-message -p -c "$client" '#{window_id}')
 
     # Blocked or finished -- the same two the status bar carries, since both
     # want you and only working does not. Not the window we are on either; tmux
@@ -204,12 +207,7 @@ if [ $# -eq 1 ]; then
       -F '#{session_name}:#{window_index}' | head --lines=1)
     [ -n "$target" ] || exit 0
 
-    # A key binding runs us without a client of its own, so name the one showing
-    # the session we are leaving; switch-client has nothing to move otherwise.
-    client=$(tmux list-clients -t "$session" -F '#{client_name}' | head --lines=1)
-    if [ -n "$client" ]; then
-      tmux switch-client -c "$client" -t "$target"
-    fi
+    tmux switch-client -c "$client" -t "$target"
     exit 0
     ;;
   -e | --existing)
