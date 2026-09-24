@@ -10,7 +10,15 @@
         self.nixosModules.towerHardware
       ];
 
-      environment.systemPackages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.beets-wrapped ];
+      environment.systemPackages = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
+        beets-wrapped
+        c411
+      ];
+
+      age.secrets.c411-api-key = {
+        file = ../../../secrets/c411-api-key.age;
+        owner = "soft";
+      };
 
       boot.loader.systemd-boot.enable = true;
       boot.loader.efi.canTouchEfiVariables = true;
