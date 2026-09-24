@@ -9,7 +9,7 @@ def main [...terms: string] {
              params: {apikey: $key, t: "music", cat: "3010", limit: 100, q: ($terms | str join " ")}} | url join
 
   let results = (http get $url
-    | get content | where tag == channel | get 0.content | where tag == item
+    | get content.0.content | where tag == item
     | each {|item|
         let f = $item.content
         {
