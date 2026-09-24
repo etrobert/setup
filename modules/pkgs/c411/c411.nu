@@ -32,9 +32,10 @@ def main [...terms: string] {
     if ($results | is-empty) { error make --unspanned {msg: "no results"} }
 
     # A title too long for the terminal makes input list drop the whole column.
+    # math max 0: a negative bound would count from the end of the title.
     let room = [
         ((term size).columns - 50)
-        40
+        0
     ] | math max
 
     # --index so the table can omit the link; nushell renders size and date itself.
