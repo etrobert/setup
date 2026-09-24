@@ -206,7 +206,9 @@ if [ $# -eq 1 ]; then
 
     # A key binding runs us without a client of its own, so name the one showing
     # the session we are leaving; switch-client has nothing to move otherwise.
-    client=$(tmux list-clients -t "$session" -F '#{client_name}' | head --lines=1)
+    # Several can show it: the one that just pressed the key is the most recent.
+    client=$(tmux list-clients -t "$session" -F '#{client_activity} #{client_name}' |
+      sort --numeric-sort --reverse | head --lines=1 | cut --delimiter=' ' --fields=2)
     if [ -n "$client" ]; then
       tmux switch-client -c "$client" -t "$target"
     fi
