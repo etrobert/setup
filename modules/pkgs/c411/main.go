@@ -65,7 +65,7 @@ func main() {
 		fmt.Fprintf(&menu, "%d\t%4s seeds\t%s\t%s\n", n, it.seeders(), gigabytes(it.Size), it.Title)
 	}
 
-	picked := exec.Command("fzf", "--delimiter=\t", "--with-nth=2..")
+	picked := exec.Command("fzf", "--delimiter=\t", "--with-nth=2..", "--height=40%", "--reverse")
 	picked.Stdin = strings.NewReader(menu.String())
 	picked.Stderr = os.Stderr
 	choice, err := picked.Output()
