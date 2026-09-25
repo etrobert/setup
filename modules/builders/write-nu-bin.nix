@@ -7,7 +7,7 @@
 # nu-check parses without executing.
 _: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       legacyPackages.writers.writeNuBin =
         name: args:
@@ -15,7 +15,9 @@ _: {
           args
           // {
             check = pkgs.writeShellScript "nu-check" ''
-              exec ${pkgs.lib.getExe pkgs.nushell} --no-config-file --commands "nu-check --debug '$1'"
+              set -e
+              ${lib.getExe pkgs.nushell} --no-config-file --commands "nu-check --debug '$1'"
+              ${lib.optionalString (args ? check) ''${args.check} "$1"''}
             '';
           }
         );
