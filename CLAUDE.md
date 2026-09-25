@@ -43,6 +43,13 @@ itself. Flake-level: `darwinModules.nix` (darwin module class) and `lib.nix`
 (`flake.lib`). Host-level: `gpu.nix` (hardware traits) and `unfree.nix`
 (`allowedUnfreePackages`).
 
+**Builders** (`modules/builders/`) — functions that produce derivations, such as
+`wrapPackage` and our checked `writeNuBin`. A flake's `packages` output must be
+a flat set of derivations, so a function cannot live there; these go under
+`legacyPackages.<system>`, where nixpkgs keeps its own builders. `perSystem`
+callers reach them as `self'.legacyPackages.<name>`, host modules as
+`self.legacyPackages.${system}.<name>`.
+
 **Custom packages** (`modules/pkgs/`): wrapped tool configurations (zsh-wrapped,
 tmux-wrapped, noctalia-wrapped, etc.) and custom scripts (gen-commit-msg,
 tmux-sessionizer, pm, audio-output-switcher, etc.). Each is a directory whose

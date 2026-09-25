@@ -1,16 +1,17 @@
 { self, inputs, ... }:
 let
-  # wrapPackage is passed in rather than reached for: this is called both from
-  # perSystem and from the host module, which resolve it differently.
   makeNoctalia =
     {
       pkgs,
       lib,
-      wrapPackage,
       vramWidget,
       idleLock,
     }:
     let
+      # Called from perSystem and from the host module, so take the system from
+      # the pkgs both of them already pass rather than from the caller.
+      inherit (self.legacyPackages.${pkgs.stdenv.hostPlatform.system}) wrapPackage;
+
       plugins = ./plugins;
 
       # A path source is scanned for plugin directories, so pointing it at an
@@ -82,17 +83,11 @@ let
 in
 {
   perSystem =
-    {
-      pkgs,
-      lib,
-      self',
-      ...
-    }:
+    { pkgs, lib, ... }:
     {
       packages = self.lib.onlySupported {
         noctalia-wrapped = makeNoctalia {
           inherit pkgs lib;
-          inherit (self'.legacyPackages) wrapPackage;
           vramWidget = true;
           idleLock = true;
         };
@@ -107,9 +102,6 @@ in
       lib,
       ...
     }:
-    let
-      inherit (pkgs.stdenv.hostPlatform) system;
-    in
     {
       options.wrappers.noctalia.idleLock = lib.mkOption {
         type = lib.types.bool;
@@ -129,7 +121,6 @@ in
         # compiled in (compositors::niri::NiriRuntime, driven off NIRI_SOCKET).
         package = makeNoctalia {
           inherit pkgs lib;
-          inherit (self.legacyPackages.${system}) wrapPackage;
           vramWidget = config.gpu.hasVramStat;
           idleLock = config.wrappers.noctalia.idleLock;
         };
