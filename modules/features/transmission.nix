@@ -66,6 +66,15 @@ in
       # Downloads/.
       users.users.soft.extraGroups = [ config.services.transmission.group ];
 
+      # c411 sends music here; tower's pull reads it even before a music
+      # torrent has created it.
+      systemd.tmpfiles.settings.transmission-music."${config.services.transmission.settings.download-dir}/music".d =
+        {
+          user = config.services.transmission.user;
+          group = config.services.transmission.group;
+          mode = "0750";
+        };
+
       systemd.services.transmission-reaper = {
         description = "Remove torrents that met the seeding rule";
         after = [ "transmission.service" ];
