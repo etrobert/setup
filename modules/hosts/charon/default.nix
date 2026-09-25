@@ -15,6 +15,7 @@
       self.nixosModules.tailnetServices
       self.nixosModules.transmission
       self.nixosModules.nodeExporter
+      self.nixosModules.metrics
       self.nixosModules.caddy
       self.nixosModules.draw
       self.nixosModules.countdown
