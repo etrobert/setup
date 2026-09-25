@@ -7,11 +7,12 @@ current=$STATE_DIRECTORY/current
 # 24sk40-v1.
 plans='^[0-9]+sk'
 
-# Below 4 TB there is nothing worth moving the library onto.
-min_disk_gb=4000
+# Total across the disks, not each one: 4x2000sa holds more than 2x4000sa.
+min_storage_gb=4000
 
-# Berlin latency rules out bhs, sgp and syd.
-datacenters='["fra","gra","lon","rbx","sbg","waw"]'
+# France only. Frankfurt, London and Warsaw are left out deliberately, and
+# Paris never appears in the Kimsufi feed.
+datacenters='["gra","rbx","sbg"]'
 
 # "unknown" is a placeholder rather than a stock level, and sits for months on
 # plans that never restock. comingSoon is not orderable either.
@@ -33,13 +34,16 @@ fi
 
 jq --raw-output \
   --arg plans "$plans" \
-  --argjson min "$min_disk_gb" \
+  --argjson min "$min_storage_gb" \
   --argjson datacenters "$datacenters" \
   --argjson unorderable "$unorderable" '
     .[]
     | select(.planCode | test($plans))
-    # storage reads like softraid-2x4000sa or softraid-2x960nvme-2x6000sa.
-    | select([.storage | scan("x([0-9]+)sa")] | flatten | map(tonumber) | max >= $min)
+    # storage reads like softraid-4x2000sa or softraid-2x960nvme-2x6000sa. Only
+    # the spinning disks count; the NVMe pair in a mixed config is the system
+    # disk, not library space.
+    | select([.storage | scan("([0-9]+)x([0-9]+)sa")]
+        | map((.[0] | tonumber) * (.[1] | tonumber)) | add >= $min)
     | .planCode as $plan
     | .storage as $storage
     # One row per full spec, so --unique below folds the RAM variants of the
