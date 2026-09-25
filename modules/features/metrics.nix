@@ -1,5 +1,4 @@
 # Prometheus scrapes every host's exporters; Grafana reads it back.
-# Runs on charon: always on, so pi and charon keep history while tower is off.
 # Reached on the tailnet as `metrics/` through tsnsrv.
 { inputs, ... }:
 {
