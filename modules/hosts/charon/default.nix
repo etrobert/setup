@@ -16,6 +16,7 @@
       self.nixosModules.transmission
       self.nixosModules.nodeExporter
       self.nixosModules.metrics
+      self.nixosModules.ntfy
       self.nixosModules.caddy
       self.nixosModules.draw
       self.nixosModules.countdown

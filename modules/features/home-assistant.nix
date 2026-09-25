@@ -244,13 +244,12 @@ in
         # surfaces.
         notify = [
           {
-            # Publish to the ntfy `home` topic. HA runs on tower alongside the
-            # ntfy server, so it posts to localhost. POST_JSON to the ntfy root
-            # URL sends `{message, title, topic}` — ntfy's JSON publish format —
-            # so this works as a real notify service and can join a group below.
+            # Publish to the ntfy `home` topic. POST_JSON to the ntfy root URL
+            # sends `{message, title, topic}` — ntfy's JSON publish format — so
+            # this works as a real notify service and can join a group below.
             platform = "rest";
             name = "ntfy_home";
-            resource = "http://localhost:2586";
+            resource = "http://ntfy";
             method = "POST_JSON";
             message_param_name = "message";
             title_param_name = "title";

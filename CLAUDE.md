@@ -173,10 +173,10 @@ unauthenticated.
 
 ## Notifications (ntfy)
 
-`ntfy-wrapped` wraps the ntfy CLI with `NTFY_TOPIC=http://tower:2586/home`
-pre-set. Use `ntfy publish "message"` to send a notification to all
-workstations. Use `--delay 10m` (or `--at 8:30am`) to schedule delivery
-server-side rather than sleeping locally.
+`ntfy-wrapped` wraps the ntfy CLI with `NTFY_TOPIC=http://ntfy/home` pre-set.
+Use `ntfy publish "message"` to send a notification to all workstations. Use
+`--delay 10m` (or `--at 8:30am`) to schedule delivery server-side rather than
+sleeping locally.
 
 ## Home Assistant
 

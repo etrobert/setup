@@ -1,7 +1,7 @@
 # Self-hosted ntfy notification bus.
 #
-# - `ntfy` (server): runs ntfy on tower, reachable only over Tailscale (the
-#   port is opened on tailscale0 only — never the LAN or WAN).
+# - `ntfy` (server): runs ntfy, reachable only over Tailscale as `ntfy/`
+#   through tsnsrv — never the LAN or WAN.
 # - `ntfyDesktop` (subscriber): a Linux user service that subscribes to the
 #   topic and surfaces each message as a desktop notification.
 #
@@ -9,10 +9,9 @@
 #   ntfy publish "hello"
 _:
 let
-  host = "tower";
   port = 2586;
   topic = "home";
-  url = "http://${host}:${toString port}";
+  url = "http://ntfy";
 in
 {
   flake = {
@@ -35,10 +34,8 @@ in
         };
       };
 
-      # Expose ntfy to the tailnet only. Within the tailnet topics are open
-      # (no auth), which is acceptable for personal use.
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ port ];
-
+      # Within the tailnet topics are open (no auth), which is acceptable for
+      # personal use.
       services.tsnsrv.services.ntfy.toURL = "http://127.0.0.1:${toString port}";
     };
 
