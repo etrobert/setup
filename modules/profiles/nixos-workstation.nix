@@ -164,6 +164,7 @@
             "fcoeoabgfenejglbffodgkkbkcdhcgfn" # Claude in Chrome
             "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
             "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
+            "khncfooichmfjbepaaaebmommgaepoid" # Unhook
           ];
         };
 
