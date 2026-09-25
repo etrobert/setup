@@ -45,7 +45,7 @@
                 '')
               ];
 
-              git = self.lib.wrapPackage pkgs {
+              git = self'.legacyPackages.wrapPackage {
                 package = pkgs.git;
                 env = {
                   GIT_CONFIG_SYSTEM = "${systemConfig}";

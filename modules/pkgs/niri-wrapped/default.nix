@@ -22,7 +22,7 @@
                 pkgs.xwayland-satellite
               ];
             in
-            self.lib.wrapPackage pkgs {
+            self'.legacyPackages.wrapPackage {
               package = pkgs.niri;
               env.NIRI_CONFIG = "${configFile}";
               prefix.XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons";

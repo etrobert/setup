@@ -1,7 +1,6 @@
-{ self, ... }:
-{
+_: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, self', ... }:
     {
       packages.alacritty-wrapped =
         let
@@ -30,7 +29,7 @@
             import = [ "${./catppuccin-macchiato.toml}" ]
           '';
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = pkgs.alacritty;
           flags = [ "--config-file ${configFile}" ];
           inheritPath = true;

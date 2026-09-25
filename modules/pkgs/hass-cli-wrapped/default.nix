@@ -1,9 +1,8 @@
-{ self, ... }:
-{
+_: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, self', ... }:
     {
-      packages.hass-cli-wrapped = self.lib.wrapPackage pkgs {
+      packages.hass-cli-wrapped = self'.legacyPackages.wrapPackage {
         package = pkgs.home-assistant-cli;
         # tower's Tailscale IP rather than the `tower` hostname: hass-cli is built on
         # aiohttp, whose closure includes aiodns, so aiohttp resolves names via c-ares

@@ -1,7 +1,6 @@
-{ self, ... }:
-{
+_: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, self', ... }:
     {
       packages.beets-wrapped =
         let
@@ -36,7 +35,7 @@
             }
           ];
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = pkgs.beets;
           setDefaults.BEETSDIR = configDir;
         };

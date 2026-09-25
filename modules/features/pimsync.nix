@@ -1,7 +1,6 @@
-{ self, ... }:
-{
+_: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, self', ... }:
     {
       packages.pimsync-wrapped =
         let
@@ -32,7 +31,7 @@
             }
           '';
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = pkgs.pimsync;
           flags = [ "-c ${configFile}" ];
           # The config's `password { cmd cat … }` is spawned via execvp, so cat has to

@@ -1,7 +1,6 @@
-{ self, ... }:
-{
+_: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, self', ... }:
     {
       packages.atuin-wrapped =
         let
@@ -31,7 +30,7 @@
             }
           ];
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = pkgs.atuin;
           setDefaults.ATUIN_CONFIG_DIR = configDir;
         };

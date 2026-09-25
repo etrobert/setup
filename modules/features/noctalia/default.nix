@@ -8,6 +8,10 @@ let
       idleLock,
     }:
     let
+      # Called from perSystem and from the host module, so take the system from
+      # the pkgs both of them already pass rather than from the caller.
+      inherit (self.legacyPackages.${pkgs.stdenv.hostPlatform.system}) wrapPackage;
+
       plugins = ./plugins;
 
       # A path source is scanned for plugin directories, so pointing it at an
@@ -53,7 +57,7 @@ let
       # Without --skip-ddc-checks, every ddcutil invocation re-runs a full display
       # detect, which dominates a brightness change: 0.50s vs 0.05s on the U3223QE.
       # noctalia builds its ddcutil argv in C++, so the flag is injected via PATH.
-      fast-ddcutil = self.lib.wrapPackage pkgs {
+      fast-ddcutil = wrapPackage {
         package = pkgs.ddcutil;
         flags = [ "--skip-ddc-checks" ];
 
@@ -61,7 +65,7 @@ let
         runtimeInputs = [ pkgs.coreutils ];
       };
     in
-    self.lib.wrapPackage pkgs {
+    wrapPackage {
       package = pkgs.noctalia;
 
       env.NOCTALIA_CONFIG_HOME = configHome;

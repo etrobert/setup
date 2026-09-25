@@ -1,8 +1,7 @@
-# Our own script writers, exposed the way nixpkgs exposes its own: under
-# `legacyPackages.<system>.writers`, so `.#writers.writeNuBin` resolves here the
-# same way `nixpkgs#writers.writeNuBin` resolves there.
+# Under `legacyPackages.<system>.writers`, so `.#writers.writeNuBin` resolves
+# here the same way `nixpkgs#writers.writeNuBin` resolves there.
 #
-# writeNuBin: nixpkgs' accepts a `check` but, unlike its writeFish, defaults it
+# nixpkgs' writeNuBin accepts a `check` but, unlike its writeFish, defaults it
 # to none — so a parse error builds clean and surfaces only when the script next
 # runs, which for a timer means a notification that silently never arrives.
 # nu-check parses without executing.
