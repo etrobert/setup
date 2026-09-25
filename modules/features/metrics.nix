@@ -38,7 +38,6 @@
             {
               job_name = "smartctl";
               static_configs = [
-                # tower imports smartctlExporter, on its default port.
                 { targets = [ "tower:9633" ]; }
               ];
             }
