@@ -1,4 +1,4 @@
-# Scraped by charon's Prometheus over the tailnet (metrics.nix).
+# Scraped by Prometheus over the tailnet (metrics.nix).
 _: {
   flake.nixosModules.smartctlExporter =
     { config, ... }:
