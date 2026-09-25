@@ -1,8 +1,13 @@
 _: {
   perSystem =
-    { pkgs, lib, ... }:
     {
-      packages.c411 = pkgs.writers.writeNuBin "c411" {
+      pkgs,
+      lib,
+      self',
+      ...
+    }:
+    {
+      packages.c411 = self'.legacyPackages.writers.writeNuBin "c411" {
         makeWrapperArgs = [
           "--prefix"
           "PATH"
