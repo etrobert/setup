@@ -1,4 +1,5 @@
-# Prometheus scrapes tower's node exporter; Grafana reads it back.
+# Prometheus scrapes every host's exporters; Grafana reads it back.
+# Runs on charon: always on, so pi and charon keep history while tower is off.
 # Reached on the tailnet as `metrics/` through tsnsrv.
 { inputs, ... }:
 {
@@ -20,10 +21,6 @@
           # and both move over years. ~2 GB/year at the current 2.4k series.
           retentionTime = "5y";
 
-          # Autodiscovers every disk. Labels drives `sda`-style, matching
-          # node_exporter's, so temperature joins against disk I/O directly.
-          exporters.smartctl.enable = true;
-
           scrapeConfigs = [
             {
               job_name = "node";
@@ -41,7 +38,8 @@
             {
               job_name = "smartctl";
               static_configs = [
-                { targets = [ "127.0.0.1:${toString config.services.prometheus.exporters.smartctl.port}" ]; }
+                # tower imports smartctlExporter, on its default port.
+                { targets = [ "tower:9633" ]; }
               ];
             }
 

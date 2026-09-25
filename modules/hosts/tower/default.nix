@@ -45,8 +45,8 @@ in
       self.nixosModules.ollama
       self.nixosModules.openWebui
       self.nixosModules.tailnetServices
-      self.nixosModules.metrics
       self.nixosModules.nodeExporter
+      self.nixosModules.smartctlExporter
       self.nixosModules.dispatch
       self.nixosModules.miniflux
       self.nixosModules.torrentPull
