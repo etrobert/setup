@@ -66,30 +66,32 @@ in
       # Downloads/.
       users.users.soft.extraGroups = [ config.services.transmission.group ];
 
-      # c411 sends music here; tower's pull reads it even before a music
-      # torrent has created it.
-      systemd.tmpfiles.settings.transmission-music."${config.services.transmission.settings.download-dir}/music".d =
-        {
-          user = config.services.transmission.user;
-          group = config.services.transmission.group;
-          mode = "0750";
+      systemd = {
+        # c411 sends music here; tower's pull reads it even before a music
+        # torrent has created it.
+        tmpfiles.settings.transmission-music."${config.services.transmission.settings.download-dir}/music".d =
+          {
+            user = config.services.transmission.user;
+            group = config.services.transmission.group;
+            mode = "0750";
+          };
+
+        services.transmission-reaper = {
+          description = "Remove torrents that met the seeding rule";
+          after = [ "transmission.service" ];
+
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = lib.getExe transmission-reaper;
+            DynamicUser = true;
+          };
         };
 
-      systemd.services.transmission-reaper = {
-        description = "Remove torrents that met the seeding rule";
-        after = [ "transmission.service" ];
-
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = lib.getExe transmission-reaper;
-          DynamicUser = true;
+        timers.transmission-reaper = {
+          description = "Schedule the transmission reaper";
+          wantedBy = [ "timers.target" ];
+          timerConfig.OnCalendar = "hourly";
         };
-      };
-
-      systemd.timers.transmission-reaper = {
-        description = "Schedule the transmission reaper";
-        wantedBy = [ "timers.target" ];
-        timerConfig.OnCalendar = "hourly";
       };
     };
 }
