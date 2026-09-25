@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
       pkgs,
@@ -24,7 +23,7 @@
 
           inputrc = pkgs.writeText "inputrc" (builtins.readFile ./inputrc);
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = pkgs.bash;
           env.INPUTRC = "${inputrc}";
           flags = [ "--rcfile ${bashrcFinal}" ];

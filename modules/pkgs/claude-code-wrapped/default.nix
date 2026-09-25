@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
       pkgs,
@@ -47,7 +46,7 @@
             sox
           ]);
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = claude-code;
           # Variants (e.g. claude-copilot) get renamed before wrapping;
           # the default "claude" matches the package's mainProgram, so it's a no-op.

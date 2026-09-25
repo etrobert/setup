@@ -11,7 +11,7 @@
     }:
     {
       packages = self.lib.onlySupported {
-        screen-watch = self.lib.wrapPackage pkgs {
+        screen-watch = self'.legacyPackages.wrapPackage {
           package = pkgs.writers.writePython3Bin "screen-watch" {
             libraries = with pkgs.python3Packages; [
               numpy

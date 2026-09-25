@@ -1,13 +1,17 @@
-{ self, ... }:
-{
+_: {
   perSystem =
-    { pkgs, lib, ... }:
+    {
+      pkgs,
+      lib,
+      self',
+      ...
+    }:
     let
       # nixpkgs' ghostty is Linux-only; darwin gets the upstream binary.
       ghostty = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
     in
     {
-      packages.ghostty-wrapped = self.lib.wrapPackage pkgs {
+      packages.ghostty-wrapped = self'.legacyPackages.wrapPackage {
         package = ghostty;
         # makeBinaryWrapper produces a compiled binary rather than a shell script.
         # macOS refuses to launch shell scripts as .app bundle executables

@@ -1,9 +1,12 @@
 { self, inputs, ... }:
 let
+  # wrapPackage is passed in rather than reached for: this is called both from
+  # perSystem and from the host module, which resolve it differently.
   makeNoctalia =
     {
       pkgs,
       lib,
+      wrapPackage,
       vramWidget,
       idleLock,
     }:
@@ -53,7 +56,7 @@ let
       # Without --skip-ddc-checks, every ddcutil invocation re-runs a full display
       # detect, which dominates a brightness change: 0.50s vs 0.05s on the U3223QE.
       # noctalia builds its ddcutil argv in C++, so the flag is injected via PATH.
-      fast-ddcutil = self.lib.wrapPackage pkgs {
+      fast-ddcutil = wrapPackage {
         package = pkgs.ddcutil;
         flags = [ "--skip-ddc-checks" ];
 
@@ -61,7 +64,7 @@ let
         runtimeInputs = [ pkgs.coreutils ];
       };
     in
-    self.lib.wrapPackage pkgs {
+    wrapPackage {
       package = pkgs.noctalia;
 
       env.NOCTALIA_CONFIG_HOME = configHome;
@@ -79,11 +82,17 @@ let
 in
 {
   perSystem =
-    { pkgs, lib, ... }:
+    {
+      pkgs,
+      lib,
+      self',
+      ...
+    }:
     {
       packages = self.lib.onlySupported {
         noctalia-wrapped = makeNoctalia {
           inherit pkgs lib;
+          inherit (self'.legacyPackages) wrapPackage;
           vramWidget = true;
           idleLock = true;
         };
@@ -98,6 +107,9 @@ in
       lib,
       ...
     }:
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+    in
     {
       options.wrappers.noctalia.idleLock = lib.mkOption {
         type = lib.types.bool;
@@ -117,6 +129,7 @@ in
         # compiled in (compositors::niri::NiriRuntime, driven off NIRI_SOCKET).
         package = makeNoctalia {
           inherit pkgs lib;
+          inherit (self.legacyPackages.${system}) wrapPackage;
           vramWidget = config.gpu.hasVramStat;
           idleLock = config.wrappers.noctalia.idleLock;
         };

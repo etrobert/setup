@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
       pkgs,
@@ -47,7 +46,7 @@
             }
           ];
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = pkgs.zsh;
           # makeBinaryWrapper is required: it supports --inherit-argv0, which the
           # shell-script makeWrapper does not.

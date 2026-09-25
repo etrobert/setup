@@ -1,9 +1,8 @@
-{ self, ... }:
-{
+_: {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, self', ... }:
     {
-      packages.jqp-wrapped = self.lib.wrapPackage pkgs {
+      packages.jqp-wrapped = self'.legacyPackages.wrapPackage {
         package = pkgs.jqp;
 
         # jqp copies the query/results by shelling out to wl-copy or pbcopy

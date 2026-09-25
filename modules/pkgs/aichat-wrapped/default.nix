@@ -1,5 +1,4 @@
-{ self, ... }:
-{
+_: {
   perSystem =
     {
       pkgs,
@@ -25,7 +24,7 @@
             )
           );
         in
-        self.lib.wrapPackage pkgs {
+        self'.legacyPackages.wrapPackage {
           package = aichat;
           # aichat runs the accepted command by spawning `$SHELL -c`, which needs PATH.
           inheritPath = true;
