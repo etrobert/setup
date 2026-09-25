@@ -121,6 +121,7 @@
             mpv
             orca-slicer
             pavucontrol
+            supersonic # navidrome client
             usbutils # provides lsusb
             # Drag-and-drop monitor layout over wlr-output-management
             wdisplays
