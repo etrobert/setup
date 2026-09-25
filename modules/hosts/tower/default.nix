@@ -51,6 +51,7 @@ in
       self.nixosModules.miniflux
       self.nixosModules.torrentPull
       self.nixosModules.jellyfin
+      self.nixosModules.monitorGpuWake
     ];
   };
 }
