@@ -143,7 +143,7 @@
                     uid = "ntfy";
                     type = "webhook";
                     # ntfy's built-in template turns Grafana's payload into a title and message.
-                    settings.url = "http://tower:2586/home?template=grafana";
+                    settings.url = "http://ntfy/home?template=grafana";
                   }
                 ];
               }
