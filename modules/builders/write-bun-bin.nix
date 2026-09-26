@@ -1,5 +1,3 @@
-# Bun runs any file as TypeScript, but `bun build` parses it as TypeScript
-# only under a .ts name.
 _: {
   perSystem =
     { pkgs, lib, ... }:
@@ -8,10 +6,8 @@ _: {
         name:
         pkgs.writers.makeScriptWriter {
           interpreter = lib.getExe pkgs.bun;
-          check = pkgs.writeShellScript "bun-check" ''
-            cp "$1" "$TMPDIR/script.ts"
-            ${lib.getExe pkgs.bun} build --no-bundle "$TMPDIR/script.ts" > /dev/null
-          '';
+          # ":ts" maps the empty extension, which the script's /bin/<name> has.
+          check = "${lib.getExe pkgs.bun} build --no-bundle --loader :ts";
         } "/bin/${name}";
     };
 }
