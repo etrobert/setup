@@ -14,32 +14,55 @@ allow=(
 )
 
 scratch=$(mktemp --directory)
-trap 'rm --recursive --force "$scratch"' EXIT
+# kill: an evaluation that failed early must not leave the others running.
+# || true: with no jobs left, bare kill exits 2 and would become our status.
+trap 'kill $(jobs -p) 2>/dev/null || true; rm --recursive --force "$scratch"' EXIT
 
 names() {
   nix eval --json --accept-flake-config "$1" --apply builtins.attrNames |
     jq --raw-output '.[]'
 }
 
+# Every evaluation runs concurrently: each host instantiates its own nixpkgs,
+# so there is nothing to share and the run is bounded by the slowest one.
+# --no-eval-cache: concurrent writers to the cache trip SQLITE_BUSY, which nix
+# logs as an error and ignores; the cache holds nothing for these paths anyway.
+mkdir "$scratch/toplevels" "$scratch/packages.d"
+pids=()
+
 echo "collecting host system closures..." >&2
 for output in nixosConfigurations darwinConfigurations; do
   for host in $(names ".#$output"); do
-    drv=$(nix eval --raw --accept-flake-config \
-      ".#$output.$host.config.system.build.toplevel.drvPath")
-    nix-store --query --requisites "$drv"
+    nix eval --raw --accept-flake-config --no-eval-cache \
+      ".#$output.$host.config.system.build.toplevel.drvPath" \
+      >"$scratch/toplevels/$output.$host" &
+    pids+=($!)
   done
-done | sort --unique >"$scratch/closure"
+done
 
 # tryEval so a package that cannot evaluate for one system does not abort the
 # run; a package that evaluates for no system has no drv line and is reported.
 echo "collecting package derivations..." >&2
 for system in $(names .#packages); do
-  nix eval --json --accept-flake-config ".#packages.$system" --apply \
+  nix eval --json --accept-flake-config --no-eval-cache ".#packages.$system" --apply \
     'ps: builtins.mapAttrs (
        _: p: let r = builtins.tryEval (p.drvPath or null); in if r.success then r.value else null
      ) ps' |
-    jq --raw-output 'to_entries[] | select(.value != null) | "\(.key) \(.value)"'
-done | sort --unique >"$scratch/packages"
+    jq --raw-output 'to_entries[] | select(.value != null) | "\(.key) \(.value)"' \
+      >"$scratch/packages.d/$system" &
+  pids+=($!)
+done
+
+# Per pid: a bare `wait` discards the exit status of a failed evaluation.
+for pid in "${pids[@]}"; do
+  wait "$pid"
+done
+
+for toplevel in "$scratch/toplevels"/*; do
+  nix-store --query --requisites "$(cat "$toplevel")"
+done | sort --unique >"$scratch/closure"
+
+sort --unique "$scratch/packages.d"/* >"$scratch/packages"
 
 cut --delimiter=' ' --fields=1 "$scratch/packages" | sort --unique >"$scratch/all"
 awk 'NR == FNR { closure[$0]; next } ($2 in closure) { print $1 }' \
