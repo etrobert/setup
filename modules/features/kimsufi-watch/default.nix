@@ -25,7 +25,7 @@
       };
     };
 
-  flake.nixosModules.kimsufiWatch =
+  flake.nixosModules.kimsufi-watch =
     { pkgs, lib, ... }:
     {
       systemd = {

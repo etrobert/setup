@@ -2,7 +2,7 @@
 # to the tailnet as `chat/` through tsnsrv. It listens on localhost only —
 # tsnsrv is the sole way in.
 _: {
-  flake.nixosModules.openWebui =
+  flake.nixosModules.open-webui =
     { config, ... }:
     {
       # nixpkgs marks Open WebUI non-free over its MIT -> modified-BSD-3

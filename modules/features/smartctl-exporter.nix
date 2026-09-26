@@ -1,6 +1,6 @@
 # Scraped by Prometheus over the tailnet (metrics.nix).
 _: {
-  flake.nixosModules.smartctlExporter =
+  flake.nixosModules.smartctl-exporter =
     { config, ... }:
     {
       # Autodiscovers every disk. Labels drives `sda`-style, matching

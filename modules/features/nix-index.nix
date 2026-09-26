@@ -15,12 +15,12 @@ let
     };
 in
 {
-  flake.nixosModules.nixIndex.imports = [
+  flake.nixosModules.nix-index.imports = [
     inputs.nix-index-database.nixosModules.default
     commonConfig
   ];
 
-  flake.darwinModules.nixIndex.imports = [
+  flake.darwinModules.nix-index.imports = [
     inputs.nix-index-database.darwinModules.default
     commonConfig
   ];

@@ -1,5 +1,5 @@
 _: {
-  flake.darwinModules.aaronConfiguration =
+  flake.darwinModules.aaron-configuration =
     {
       self,
       pkgs,

@@ -4,7 +4,7 @@ let
   landing = "/tank/media/torrents";
 in
 {
-  flake.nixosModules.torrentPull =
+  flake.nixosModules.torrent-pull =
     { pkgs, ... }:
     {
       systemd = {

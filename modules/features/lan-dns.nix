@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.nixosModules.lanDns =
+  flake.nixosModules.lan-dns =
     { config, lib, ... }:
     {
       options.services.lanDns = {

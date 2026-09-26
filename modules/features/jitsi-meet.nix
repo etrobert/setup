@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.jitsiMeet = _: {
+  flake.nixosModules.jitsi-meet = _: {
     services = {
       jitsi-meet = {
         enable = true;

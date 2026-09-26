@@ -29,7 +29,7 @@
       };
     };
 
-  flake.nixosModules.kleinanzeigenWatch =
+  flake.nixosModules.kleinanzeigen-watch =
     { pkgs, lib, ... }:
     {
       systemd = {

@@ -5,10 +5,10 @@
 { self, ... }:
 
 {
-  flake.nixosModules.leodConfiguration =
+  flake.nixosModules.leod-configuration =
     { pkgs, ... }:
     {
-      imports = [ self.nixosModules.leodHardware ];
+      imports = [ self.nixosModules.leod-hardware ];
 
       boot.kernelParams = [ "mem_sleep_default=deep" ];
 

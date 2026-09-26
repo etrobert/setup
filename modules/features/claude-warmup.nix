@@ -24,7 +24,7 @@
 # weekly is the binding limit, the extra warmups are pure waste — disable then.
 { self, ... }:
 {
-  flake.nixosModules.claudeWarmup =
+  flake.nixosModules.claude-warmup =
     {
       config,
       pkgs,

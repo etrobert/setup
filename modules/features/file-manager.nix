@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.fileManager =
+  flake.nixosModules.file-manager =
     { pkgs, ... }:
     {
       # Nautilus's sidebar: the gvfs-daemon backends (smb://, sftp://,

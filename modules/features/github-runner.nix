@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.githubRunner =
+  flake.nixosModules.github-runner =
     {
       config,
       lib,
@@ -55,7 +55,7 @@ _: {
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
     };
 
-  flake.darwinModules.githubRunner =
+  flake.darwinModules.github-runner =
     { config, ... }:
     {
       services.github-runners.aaron = {

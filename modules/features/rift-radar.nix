@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.nixosModules.riftRadar =
+  flake.nixosModules.rift-radar =
     { config, ... }:
     {
       imports = [ inputs.rift-radar.nixosModules.default ];

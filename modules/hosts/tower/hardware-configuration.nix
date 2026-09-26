@@ -2,7 +2,7 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 _: {
-  flake.nixosModules.towerHardware =
+  flake.nixosModules.tower-hardware =
     {
       config,
       lib,

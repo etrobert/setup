@@ -1,7 +1,7 @@
 { inputs, ... }:
 
 {
-  flake.nixosModules.charonConfiguration =
+  flake.nixosModules.charon-configuration =
     { pkgs, modulesPath, ... }:
     {
       environment.systemPackages = [ pkgs.ghostty.terminfo ];

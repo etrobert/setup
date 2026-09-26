@@ -16,7 +16,7 @@
 # (`services.tsnsrv.services.<name>`).
 { inputs, ... }:
 {
-  flake.nixosModules.tailnetServices =
+  flake.nixosModules.tailnet-services =
     { config, lib, ... }:
     {
       imports = [ inputs.tsnsrv.nixosModules.default ];

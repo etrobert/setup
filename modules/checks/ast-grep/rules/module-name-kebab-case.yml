@@ -1,0 +1,18 @@
+---
+id: module-name-kebab-case
+language: nix
+severity: error
+message: Name nixosModules and darwinModules in kebab-case.
+note: |
+  Kebab-case is what the flakes we import use (home-manager, nix-flatpak,
+  nix-index) and what our packages use, so a feature shares its package's name.
+rule:
+  pattern:
+    context: "{ $ATTRPATH = $BODY; }"
+    selector: binding
+constraints:
+  ATTRPATH:
+    all:
+      - regex: '(nixos|darwin)Modules\.'
+      - not:
+          regex: '(nixos|darwin)Modules\.[a-z0-9]+(-[a-z0-9]+)*($|\.)'

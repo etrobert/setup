@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.nixosBase =
+  flake.nixosModules.nixos-base =
     {
       self,
       lib,
@@ -27,7 +27,7 @@ _: {
         git
         gpu
         kanata
-        ntfyFailureAlerts
+        ntfy-failure-alerts
       ];
 
       system.activationScripts.nixos-symlink.text = /* bash */ ''

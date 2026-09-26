@@ -7,7 +7,7 @@
         self.nixosModules.ddclient
         self.nixosModules.filebrowser
         self.nixosModules.imgproxy
-        self.nixosModules.jitsiMeet
+        self.nixosModules.jitsi-meet
         inputs.rack.nixosModules.default
       ];
 

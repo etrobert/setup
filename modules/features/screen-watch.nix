@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.nixosModules.screenWatch =
+  flake.nixosModules.screen-watch =
     { pkgs, lib, ... }:
     {
       systemd.user.services.screen-watch = {

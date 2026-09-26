@@ -2,7 +2,7 @@
 # after a minute idle, so neither boot nor suspend depends on tower being
 # reachable.
 _: {
-  flake.nixosModules.tankMount =
+  flake.nixosModules.tank-mount =
     { config, ... }:
     {
       age.secrets.smb-credentials.file = ../../secrets/smb-credentials.age;

@@ -1,13 +1,13 @@
 { self, ... }:
 
 {
-  flake.nixosModules.piConfiguration =
+  flake.nixosModules.pi-configuration =
     { pkgs, ... }:
     {
       environment.systemPackages = [ pkgs.ghostty.terminfo ];
 
       imports = [
-        self.nixosModules.piHardware
+        self.nixosModules.pi-hardware
       ];
 
       # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)

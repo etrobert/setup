@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.atuinServer =
+  flake.nixosModules.atuin-server =
     { config, ... }:
     {
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.services.atuin.port ];
