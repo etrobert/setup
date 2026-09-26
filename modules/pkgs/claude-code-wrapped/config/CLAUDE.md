@@ -35,6 +35,7 @@ machine.
 - Prefer the simplest solution that solves the problem, the MVP.
 - Being able to read and understand a code at a glance is important to me.
   - Prefer a plain solution over a clever one.
+- Prefer the right fix over a hack that makes it work now.
 
 As the final pass before presenting any work — code, config, docs, plans, PRs —
 go element by element (parameter, option, line, section, step) and attempt to
