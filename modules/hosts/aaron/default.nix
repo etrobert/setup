@@ -21,7 +21,7 @@ in
         ;
     };
     modules = [
-      self.darwinModules.aaronConfiguration
+      self.darwinModules.aaron-configuration
       home-manager.darwinModules.home-manager
       agenix.darwinModules.default
       nix-homebrew.darwinModules.nix-homebrew
@@ -36,10 +36,10 @@ in
       self.darwinModules.base
       self.darwinModules.git
       self.darwinModules.unfree
-      self.darwinModules.nixIndex
-      self.darwinModules.ntfyDesktop
-      self.darwinModules.githubRunner
-      self.darwinModules.atuinLogin
+      self.darwinModules.nix-index
+      self.darwinModules.ntfy-desktop
+      self.darwinModules.github-runner
+      self.darwinModules.atuin-login
     ];
   };
 }

@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.nixosModules.nixosWorkstation =
+  flake.nixosModules.nixos-workstation =
     {
       self,
       pkgs,
@@ -22,11 +22,11 @@
         self.nixosModules.float-on-title
         self.nixosModules.mpd
         self.nixosModules.copilot-api
-        self.nixosModules.ntfyDesktop
-        self.nixosModules.fileManager
+        self.nixosModules.ntfy-desktop
+        self.nixosModules.file-manager
         self.nixosModules.virtualbox
         self.nixosModules.syncthing
-        self.nixosModules.atuinLogin
+        self.nixosModules.atuin-login
       ];
 
       documentation.doc.enable = false;

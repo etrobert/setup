@@ -25,7 +25,7 @@
               job_name = "node";
               static_configs = [
                 {
-                  # Every host importing nodeExporter, on its default port.
+                  # Every host importing node-exporter, on its default port.
                   targets = map (host: "${host}:9100") [
                     "tower"
                     "charon"

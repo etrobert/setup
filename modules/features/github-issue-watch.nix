@@ -9,7 +9,7 @@ let
   ];
 in
 {
-  flake.nixosModules.githubIssueWatch =
+  flake.nixosModules.github-issue-watch =
     { pkgs, lib, ... }:
     {
       systemd.services.github-issue-watch = {

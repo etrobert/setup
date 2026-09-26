@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.monitorGpuWake =
+  flake.nixosModules.monitor-gpu-wake =
     let
       # RX 9070 XT; PCI addresses are stable across boots, DRM card numbers are not
       gpu = "0000:03:00.0";

@@ -9,7 +9,7 @@
 # OnFailure via /etc/systemd/system/service.d/ and never sees user units. A
 # machine that silently stops syncing is the failure this is guarding against.
 _: {
-  flake.nixosModules.atuinLogin =
+  flake.nixosModules.atuin-login =
     {
       self,
       config,
@@ -59,7 +59,7 @@ _: {
 
   # Same login at every session start; a user agent already runs as soft with
   # its $HOME, and there is no failure-alert hook to satisfy on darwin.
-  flake.darwinModules.atuinLogin =
+  flake.darwinModules.atuin-login =
     {
       self,
       config,

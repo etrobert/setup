@@ -8,23 +8,23 @@
     specialArgs = { inherit self; };
     system = "x86_64-linux";
     modules = [
-      self.nixosModules.charonConfiguration
-      self.nixosModules.nixosBase
+      self.nixosModules.charon-configuration
+      self.nixosModules.nixos-base
       self.nixosModules.base
-      self.nixosModules.autoUpgrade
-      self.nixosModules.tailnetServices
+      self.nixosModules.auto-upgrade
+      self.nixosModules.tailnet-services
       self.nixosModules.transmission
-      self.nixosModules.nodeExporter
+      self.nixosModules.node-exporter
       self.nixosModules.metrics
       self.nixosModules.caddy
       self.nixosModules.draw
       self.nixosModules.countdown
       self.nixosModules.nutricalc
       self.nixosModules.creatures
-      self.nixosModules.riftRadar
+      self.nixosModules.rift-radar
       self.nixosModules.umami
-      self.nixosModules.atuinServer
-      self.nixosModules.atuinLogin
+      self.nixosModules.atuin-server
+      self.nixosModules.atuin-login
       self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];

@@ -3,7 +3,7 @@
   flake.nixosModules.gaming =
     { pkgs, ... }:
     {
-      imports = [ self.nixosModules.ankamaLauncher ];
+      imports = [ self.nixosModules.ankama-launcher ];
 
       programs.steam.enable = true;
 

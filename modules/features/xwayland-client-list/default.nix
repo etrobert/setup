@@ -8,7 +8,7 @@
       } (builtins.readFile ./xwayland-client-list.py);
     };
 
-  flake.nixosModules.xwaylandClientList =
+  flake.nixosModules.xwayland-client-list =
     { pkgs, lib, ... }:
     let
       inherit (pkgs.stdenv.hostPlatform) system;

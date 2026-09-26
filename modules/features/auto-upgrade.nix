@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.autoUpgrade =
+  flake.nixosModules.auto-upgrade =
     {
       config,
       pkgs,

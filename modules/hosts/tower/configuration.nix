@@ -3,11 +3,11 @@
 
 { self, ... }:
 {
-  flake.nixosModules.towerConfiguration =
+  flake.nixosModules.tower-configuration =
     { pkgs, ... }:
     {
       imports = [
-        self.nixosModules.towerHardware
+        self.nixosModules.tower-hardware
       ];
 
       environment.systemPackages = with self.packages.${pkgs.stdenv.hostPlatform.system}; [

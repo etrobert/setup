@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.nixosModules.towerStorage =
+  flake.nixosModules.tower-storage =
     {
       self,
       lib,

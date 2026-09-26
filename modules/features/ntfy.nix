@@ -2,7 +2,7 @@
 #
 # - `ntfy` (server): runs ntfy on tower, reachable only over Tailscale (the
 #   port is opened on tailscale0 only — never the LAN or WAN).
-# - `ntfyDesktop` (subscriber): a Linux user service that subscribes to the
+# - `ntfy-desktop` (subscriber): a Linux user service that subscribes to the
 #   topic and surfaces each message as a desktop notification.
 #
 # No Home Assistant wiring here — this is just the transport. Test with:
@@ -42,7 +42,7 @@ in
       services.tsnsrv.services.ntfy.toURL = "http://127.0.0.1:${toString port}";
     };
 
-    nixosModules.ntfyDesktop =
+    nixosModules.ntfy-desktop =
       {
         config,
         pkgs,
@@ -140,10 +140,10 @@ in
         };
       };
 
-    # macOS counterpart of ntfyDesktop: a launchd user agent that subscribes to
+    # macOS counterpart of ntfy-desktop: a launchd user agent that subscribes to
     # the same topic and posts each message to Notification Center via osascript
     # (matching modules/pkgs/claude-code-wrapped/_scripts/claude-rate-limit-notify.nix).
-    darwinModules.ntfyDesktop =
+    darwinModules.ntfy-desktop =
       { lib, pkgs, ... }:
       let
         ntfyNotify = pkgs.writeShellScript "ntfy-notify" ''

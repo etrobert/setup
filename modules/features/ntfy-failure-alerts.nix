@@ -5,7 +5,7 @@
 # undelivered alert only leaves a failed ntfy-failure@ instance
 # (systemctl --failed).
 _: {
-  flake.nixosModules.ntfyFailureAlerts =
+  flake.nixosModules.ntfy-failure-alerts =
     {
       self,
       config,

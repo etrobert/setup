@@ -18,41 +18,41 @@ in
         ;
     };
     modules = [
-      self.nixosModules.towerConfiguration
-      self.nixosModules.nixIndex
+      self.nixosModules.tower-configuration
+      self.nixosModules.nix-index
       agenix.nixosModules.default
-      self.nixosModules.nixosWorkstation
+      self.nixosModules.nixos-workstation
       self.nixosModules.workstation
-      self.nixosModules.nixosBase
+      self.nixosModules.nixos-base
       self.nixosModules.base
       self.nixosModules.unfree
       self.nixosModules.server
       self.nixosModules.ntfy
-      self.nixosModules.claudeWarmup
-      self.nixosModules.githubIssueWatch
-      self.nixosModules.kleinanzeigenWatch
-      self.nixosModules.kimsufiWatch
+      self.nixosModules.claude-warmup
+      self.nixosModules.github-issue-watch
+      self.nixosModules.kleinanzeigen-watch
+      self.nixosModules.kimsufi-watch
       self.nixosModules.docker
       self.nixosModules.gaming
       self.nixosModules.fn-keys-on-focus
-      self.nixosModules.screenWatch
-      self.nixosModules.githubRunner
+      self.nixosModules.screen-watch
+      self.nixosModules.github-runner
       self.nixosModules.harmonia
       self.nixosModules.navidrome
-      self.nixosModules.homeAssistant
-      self.nixosModules.towerStorage
+      self.nixosModules.home-assistant
+      self.nixosModules.tower-storage
       self.nixosModules.samba
       self.nixosModules.immich
       self.nixosModules.ollama
-      self.nixosModules.openWebui
-      self.nixosModules.tailnetServices
-      self.nixosModules.nodeExporter
-      self.nixosModules.smartctlExporter
+      self.nixosModules.open-webui
+      self.nixosModules.tailnet-services
+      self.nixosModules.node-exporter
+      self.nixosModules.smartctl-exporter
       self.nixosModules.dispatch
       self.nixosModules.miniflux
-      self.nixosModules.torrentPull
+      self.nixosModules.torrent-pull
       self.nixosModules.jellyfin
-      self.nixosModules.monitorGpuWake
+      self.nixosModules.monitor-gpu-wake
     ];
   };
 }

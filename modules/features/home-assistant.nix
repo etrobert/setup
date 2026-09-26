@@ -3,7 +3,7 @@ let
   port = 8123;
 in
 {
-  flake.nixosModules.homeAssistant = _: {
+  flake.nixosModules.home-assistant = _: {
     hardware.bluetooth.enable = true;
 
     networking.firewall.allowedTCPPorts = [ port ];

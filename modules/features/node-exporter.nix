@@ -1,6 +1,6 @@
 # Scraped by Prometheus over the tailnet (metrics.nix).
 _: {
-  flake.nixosModules.nodeExporter =
+  flake.nixosModules.node-exporter =
     { config, ... }:
     {
       services.prometheus.exporters.node = {
