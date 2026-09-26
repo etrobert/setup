@@ -1,18 +1,21 @@
-_: {
+{ self, ... }:
+{
   perSystem =
     { pkgs, ... }:
     {
-      packages.nix-dead-packages = pkgs.writeShellApplication {
-        name = "nix-dead-packages";
+      packages.nix-dead-packages = self.lib.wrapPackage pkgs {
+        package = pkgs.buildGoModule {
+          pname = "nix-dead-packages";
+          version = "0";
+          src = ./.;
+          # No dependencies, so nothing to vendor.
+          vendorHash = null;
+          meta.mainProgram = "nix-dead-packages";
+        };
         runtimeInputs = with pkgs; [
-          coreutils
-          gawk
           git
-          jq
           nix
         ];
-        inheritPath = false;
-        text = builtins.readFile ./nix-dead-packages.sh;
       };
     };
 }
