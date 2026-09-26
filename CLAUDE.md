@@ -39,9 +39,9 @@ Bundling things that merely go together belongs in `profiles/`.
 
 **Declarations** stay at the `modules/` root — files that define vocabulary
 rather than provide a capability, so importing one adds nothing to a host by
-itself. Flake-level: `darwinModules.nix` (darwin module class) and `lib.nix`
-(`flake.lib`). Host-level: `gpu.nix` (hardware traits) and `unfree.nix`
-(`allowedUnfreePackages`).
+itself. Flake-level: `darwinModules.nix` (darwin module class), `lib.nix`
+(`flake.lib`) and `writers.nix` (`legacyPackages.writers`). Host-level:
+`gpu.nix` (hardware traits) and `unfree.nix` (`allowedUnfreePackages`).
 
 **Builders** (`modules/builders/`) — functions that produce derivations, such as
 `wrapPackage` and our checked `writeNuBin`. A flake's `packages` output must be
