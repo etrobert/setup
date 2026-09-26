@@ -32,8 +32,8 @@
       wrappers.noctalia.idleLock = false;
 
       autoBrightness = {
-        day = 70;
-        night = 20;
+        day = 100;
+        night = 0;
       };
 
       services.sunshine = {
