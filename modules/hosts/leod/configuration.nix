@@ -27,6 +27,11 @@
         hasVramStat = false;
       };
 
+      autoBrightness = {
+        day = 100;
+        night = 30;
+      };
+
       services.fprintd.enable = true;
 
       # leod is the only host that travels, so it geolocates its timezone
