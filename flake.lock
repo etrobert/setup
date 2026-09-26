@@ -10,15 +10,14 @@
         ],
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "systems": "systems"
+        ]
       },
       "locked": {
-        "lastModified": 1770165109,
-        "narHash": "sha256-9VnK6Oqai65puVJ4WYtCTvlJeXxMzAp/69HhQuTdl/I=",
+        "lastModified": 1790428743,
+        "narHash": "sha256-jecbAHUkcpJ2Vh5alHwN26zjfm98z1m/4+qpniXUnn0=",
         "owner": "ryantm",
         "repo": "agenix",
-        "rev": "b027ee29d959fda4b60b57566d64c98a202e0feb",
+        "rev": "35ec68a750c8b55632d18490563db40935eeb59c",
         "type": "github"
       },
       "original": {
@@ -418,11 +417,11 @@
     "noctalia-community-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1790381159,
-        "narHash": "sha256-Ii5N7VRlVdbcbmLvTn9z8+BwhZX2mJZ5LptdDHRfhtM=",
+        "lastModified": 1790428790,
+        "narHash": "sha256-pS+XSN8oYLK5b5ICjYm8iTambT+89ulRjgTcYHhtdWk=",
         "owner": "noctalia-dev",
         "repo": "community-plugins",
-        "rev": "f8a29282af82c6f385df98621740245e11c6900e",
+        "rev": "8954b95ed2819fea924f662464e7b9c3a981e59c",
         "type": "github"
       },
       "original": {
@@ -434,11 +433,11 @@
     "noctalia-official-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1790080799,
-        "narHash": "sha256-D3KIaKkicssbVM8lLXBNTKhsXArXBr55NVZJ+a5Inc8=",
+        "lastModified": 1790428823,
+        "narHash": "sha256-OyBRu2ucyG58j053eqYefw75HElxbMN4OEvg7x6Lujc=",
         "owner": "noctalia-dev",
         "repo": "official-plugins",
-        "rev": "f36c62aae9bb5d7aa463730139aa19c569a355f3",
+        "rev": "97f012fa679eef95e580155c58621a3ba14533b7",
         "type": "github"
       },
       "original": {
@@ -565,21 +564,6 @@
         "rift-radar": "rift-radar",
         "tsnsrv": "tsnsrv",
         "zen-browser": "zen-browser"
-      }
-    },
-    "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
       }
     },
     "tsnsrv": {
