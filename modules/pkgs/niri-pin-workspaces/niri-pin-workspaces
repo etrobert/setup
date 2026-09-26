@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+main_output() {
+  niri msg --json outputs |
+    jq --raw-output --exit-status \
+      '[.[] | select(.physical_size)] | max_by(.physical_size[0] * .physical_size[1]) | .name'
+}
+
+move_workspace() {
+  # niri's CLI reads a numeric --reference as an index, and the workspaces are
+  # named "1".."4", so address them by id over the raw IPC socket instead.
+  printf '{"Action":{"MoveWorkspaceToMonitor":{"output":"%s","reference":{"Id":%s}}}}' "$2" "$1" |
+    socat - UNIX-CONNECT:"$NIRI_SOCKET" |
+    grep --quiet '^{"Ok"'
+}
+
+pin_named_workspaces() {
+  local target
+  target=$(main_output)
+
+  local id
+  while read -r id; do
+    move_workspace "$id" "$target"
+  done < <(niri msg --json workspaces |
+    jq --raw-output --arg target "$target" '.[] | select(.name and .output != $target) | .id')
+}
+
+# niri emits no output-connected event, but hotplugging reassigns workspaces.
+# Reacting only to a changed output set leaves deliberate moves alone.
+outputs=
+
+niri msg --json event-stream |
+  jq --raw-output --unbuffered \
+    'select(.WorkspacesChanged) | [.WorkspacesChanged.workspaces[].output] | unique | join(" ")' |
+  while read -r current; do
+    if [ "$current" != "$outputs" ]; then
+      outputs=$current
+      pin_named_workspaces
+    fi
+  done
