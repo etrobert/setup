@@ -1,7 +1,9 @@
 # Copies charon's finished torrents into tank. charon removes them itself
 # once seeded enough (see transmission.nix), so this only ever copies.
 let
-  landing = "/tank/media/torrents";
+  video = "/tank/media/torrents";
+  # Apart from video: the video landing zone is jellyfin's library.
+  music = "/tank/media/torrents-music";
 in
 {
   flake.nixosModules.torrentPull =
@@ -19,9 +21,13 @@ in
           # --chmod: jellyfin must read the result
           # ControlMaster: no writable home here
           script = /* bash */ ''
-            rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
-              --rsh 'ssh -o ControlMaster=no' \
-              charon:/var/lib/transmission/Downloads/ ${landing}/
+            pull() {
+              rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
+                --rsh 'ssh -o ControlMaster=no' "$@"
+            }
+
+            pull --exclude='/music/' charon:/var/lib/transmission/Downloads/ ${video}/
+            pull charon:/var/lib/transmission/Downloads/music/ ${music}/
           '';
 
           serviceConfig = {
@@ -30,7 +36,10 @@ in
             User = "soft";
             Environment = "HOME=/home/soft";
             ProtectSystem = "strict";
-            ReadWritePaths = [ landing ];
+            ReadWritePaths = [
+              video
+              music
+            ];
           };
         };
 

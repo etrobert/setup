@@ -1,14 +1,14 @@
 # Search c411's Torznab API and hand a release to transmission on charon.
-def search [category: string, terms: list<string>] {
+def search [category: string, subdir: string, terms: list<string>] {
     let key = open --raw /run/agenix/c411-api-key | str trim
     let url = {
         scheme: https
-        host: "c411.org"
+        host: "c411.org", 
         path: "/api/torznab"
         # cat does the filtering; t is required but inert (t=search is the same).
         params: {
             apikey: $key
-            t: "search"
+            t: "search", 
             cat: $category
             limit: 100
             q: ($terms | str join " ")
@@ -44,11 +44,15 @@ def search [category: string, terms: list<string>] {
     | update title {|r| $r.title | str substring ..$room}
     | input list --fuzzy --index
 
-    if $n != null { transmission-remote torrents:80 --add ($results | get $n | get link) }
+    # Music lands apart from video: jellyfin's library is the video landing zone.
+    if $n != null {
+        let link = $results | get $n | get link
+        transmission-remote torrents:80 --add $link --download-dir $"/var/lib/transmission/Downloads/($subdir)"
+    }
 }
 
-def "main music" [...terms: string] { search 3010 $terms }
-def "main movies" [...terms: string] { search 2000 $terms }
-def "main tv" [...terms: string] { search 5000 $terms }
+def "main music" [...terms: string] { search 3010 music $terms }
+def "main movies" [...terms: string] { search 2000 "" $terms }
+def "main tv" [...terms: string] { search 5000 "" $terms }
 
 def main [] { print "Usage: c411 (music | movies | tv) <search terms>" }
