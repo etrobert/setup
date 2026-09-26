@@ -31,6 +31,11 @@
 
       wrappers.noctalia.idleLock = false;
 
+      autoBrightness = {
+        day = 70;
+        night = 20;
+      };
+
       services.sunshine = {
         enable = false;
         openFirewall = true;
