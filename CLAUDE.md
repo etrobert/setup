@@ -118,31 +118,6 @@ Moving a package into a feature reorders `environment.systemPackages`, so the
 host toplevel hash changes while nothing rebuilds. Check that with a closure
 diff: only `system-path`, `etc`, `activate` and unit derivations should differ.
 
-### neovim-wrapped plugin conventions
-
-Each plugin is a directory under `modules/pkgs/neovim-wrapped/_plugins/` with a
-`default.nix`. Plugins are registered in
-`modules/pkgs/neovim-wrapped/default.nix`. The `_` prefix keeps them out of
-`importTree` — they are modules of neovim's own `evalModules`, not flake
-modules.
-
-**Existing catch-all plugins** — do not add unrelated code to these:
-
-- `set` — vim options only (`vim.opt.*`, `vim.o.*`)
-- `remap` — keymaps only (`vim.keymap.set`, `vim.api.nvim_create_user_command`)
-
-New behavior (autocmds, etc.) belongs in its own dedicated plugin.
-
-**Custom vs external plugins:**
-
-- External: `plugin = pkgs.vimPlugins.foo;` with a `config` string calling
-  `setup()`
-- Custom (local Lua):
-  `plugin = pkgs.vimUtils.buildVimPlugin { name = "..."; src = ./src; };`
-
-**`config` field is optional** — omit it when the plugin sources itself via
-`plugin/`.
-
 ## Self-Cleaning Guards
 
 When adding a temporary workaround that should be dropped once an upstream
