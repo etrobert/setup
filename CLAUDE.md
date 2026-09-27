@@ -160,14 +160,6 @@ pre-set. Use `ntfy publish "message"` to send a notification to all
 workstations. Use `--delay 10m` (or `--at 8:30am`) to schedule delivery
 server-side rather than sleeping locally.
 
-## Music library
-
-`/tank/media/music/<origin>/…` — `bandcamp`, `torrents`, `yt-dlp` — is what
-Navidrome serves; `playlists/` and the beets catalogue (`.beets/`) sit beside
-them. Torrents land in `/tank/media/torrents/` and are copied in with
-`beet import --set source=torrents <dir>` (`beets-wrapped`, tower only); the
-landing copy stays until charon has finished seeding.
-
 ## Planning future work
 
 Plans are tracked as GitHub issues on `etrobert/setup`, not as local `.md`
