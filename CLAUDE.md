@@ -160,23 +160,13 @@ pre-set. Use `ntfy publish "message"` to send a notification to all
 workstations. Use `--delay 10m` (or `--at 8:30am`) to schedule delivery
 server-side rather than sleeping locally.
 
-## Home Assistant
+## Music library
 
-HA runs on **`tower:8123`** (`modules/features/home-assistant.nix`). Access uses
-a long-lived token: agenix secret `hass-token`, decrypted to
-`/run/agenix/hass-token`. The `hass-cli-wrapped` package bakes in
-`HASS_SERVER=http://100.103.91.42:8123` (tower's Tailscale IP, not the `tower`
-hostname) and reads that token at runtime, and is on PATH for both the user's
-shells and Claude Code. The IP is deliberate: `hass-cli` resolves names via
-aiohttp/aiodns (c-ares), which ignores macOS scoped DNS / Tailscale MagicDNS, so
-the `tower` hostname fails to resolve on `aaron`. `curl` (below) uses
-`getaddrinfo`, so `tower:8123` is fine there.
-
-**AirGradient ONE** (living room) entities are prefixed `sensor.i_9psl_*`. The
-recorder keeps more than the dashboard shows — notably `sensor.i_9psl_pm0_3`
-(0.3 µm particle _count_, the best fine-particle signal),
-`sensor.i_9psl_voc_index`, and `sensor.i_9psl_nox_index`. The device's own local
-API (`http://<ip>/measures/current`) returns only current values, no history.
+`/tank/media/music/<origin>/…` — `bandcamp`, `torrents`, `yt-dlp` — is what
+Navidrome serves; `playlists/` and the beets catalogue (`.beets/`) sit beside
+them. Torrents land in `/tank/media/torrents/` and are copied in with
+`beet import --set source=torrents <dir>` (`beets-wrapped`, tower only); the
+landing copy stays until charon has finished seeding.
 
 ## Planning future work
 
