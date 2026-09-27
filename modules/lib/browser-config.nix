@@ -17,6 +17,10 @@
       SearchEngines = {
         Default = "DuckDuckGo";
       };
+      # Replaces uBlock's "My filters" at every launch; dashboard edits are lost.
+      "3rdparty".Extensions."uBlock0@raymondhill.net".toOverwrite.filters = [
+        "example.com##*:style(filter: none !important; backdrop-filter: none !important)"
+      ];
       ExtensionSettings = {
         "uBlock0@raymondhill.net" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
