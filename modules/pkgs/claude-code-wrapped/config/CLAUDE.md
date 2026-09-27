@@ -31,10 +31,8 @@ machine.
 
 ## Simplicity First
 
-- Always build simple. We can always add features later.
-- Prefer the simplest solution that solves the problem, the MVP.
-- Being able to read and understand a code at a glance is important to me.
-  - Prefer a plain solution over a clever one.
+Build the simplest solution that solves the problem (the MVP); features can come
+later. Prefer a plain solution over a clever one: code must read at a glance.
 
 As the final pass before presenting any work — code, config, docs, plans, PRs —
 go element by element (parameter, option, line, section, step) and attempt to
@@ -57,10 +55,8 @@ investigation wouldn't yield the answer.
 Don't be afraid to make multiple different implementations of the same feature
 to compare them.
 
-Always spell out links. Don't use
-[the repo](https://www.github.com/etrobert/setup) but use
-<https://www.github.com/etrobert/setup>. I am often working over ssh and
-clicking the links open on the wrong machine.
+Always spell out links (`<https://…>`, not `[text](https://…)`): I often work
+over ssh, where clicking opens them on the wrong machine.
 
 ## Research Approach
 
@@ -92,21 +88,12 @@ Prefer flake-native Nix over legacy invocations. Examples:
 - `nix shell nixpkgs#foo` over `nix-shell -p foo`
 - `nix build .#pkg` over `nix-build`
 
-Avoid `with import <nixpkgs> {}` and `<nixpkgs>` channel lookups in commands —
-use `nixpkgs#` flake refs and `--apply` to transform results.
-
 Avoid overlays. Expose packages and modules as flake outputs with flake-parts,
 and reference them through `self.` (e.g. `self.nixosModules.foo`) or `self'.`
 (e.g. `self'.packages.foo`).
 
 When embedding another language inside a plain Nix string, add a language hint
-comment so that treesitter understands it. Example:
-
-```nix
-linuxPrimitives = /* bash */ ''
-  notify() { notify-send "$1" "$2"; }
-'';
-```
+comment (`/* bash */ ''…''`) so that treesitter understands it.
 
 ## Code Style
 
@@ -130,11 +117,8 @@ property lists.
 ## File Edits
 
 Use the Write/Edit tools for source files rather than Bash heredocs or `sed -i`,
-including in bypass-permissions mode where the default guidance prefers Bash.
-The `PostToolUse` hook running `format-file` matches only
-`Edit|Write|MultiEdit`, so Bash writes skip formatting entirely, and Write's
-refusal to overwrite an unread file is the only guard against clobbering hand
-edits made between steps.
+including in bypass-permissions mode: the `format-file` hook runs only on
+Edit/Write, and Write refuses to clobber a file edited since it was read.
 
 ## Documentation & Notes
 
@@ -145,23 +129,6 @@ references are dead text that add noise without value.
 
 - Code comments should not be longer than one line per topic
 - Two topics should be split into two lines
-
-```bash
-# Good
-
-# --chmod: jellyfin must read the result
-# ControlMaster: no writable home here
-rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
-  --rsh 'ssh -o ControlMaster=no' \
-  charon:/var/lib/transmission/Downloads/ ${landing}/
-
-# Bad
-
-# chmod because jellyfin must read the result Control Master no writable home here
-rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
-  --rsh 'ssh -o ControlMaster=no' \
-  charon:/var/lib/transmission/Downloads/ ${landing}/
-```
 
 Longer comments don't belong in the code. They belong in the commit or PR, as
 does narrative context (root-cause chains, incident history). Neighbouring
@@ -214,16 +181,10 @@ builds on the previous one.
 
 ## CLAUDE.md Maintenance
 
-- User `CLAUDE.md` : Only document conventions, decisions, and preferences
-  specific to **me** and how **I** work.
-- Project `CLAUDE.md` :Only document conventions, decisions, and preferences
-  specific to **this project**.
-- Never document general knowledge that Claude already knows from training
-  (language semantics, standard tool behavior, common patterns) or informations
-  relating to how other projects work (eg. neovim conventions or details on how
-  to use).
-- If removing a note wouldn't risk a future mistake specific to this project,
-  don't write it.
+- Document only conventions, decisions, and preferences specific to **me** (user
+  `CLAUDE.md`) or to **this project** (project `CLAUDE.md`) — never general
+  knowledge Claude has from training, or how other projects work.
+- If removing a note wouldn't risk a future mistake, don't write it.
 - At the end of every session, reflect and proactively propose enhancements to
   the user `CLAUDE.md` and project `CLAUDE.md` following the Maintenance
   guidelines above.
