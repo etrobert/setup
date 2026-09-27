@@ -5,7 +5,7 @@
   perSystem =
     { pkgs, ... }:
     {
-      checks.doc-length = pkgs.runCommand "doc-length-check" { } /* bash */ ''
+      checks.agent-instructions-length = pkgs.runCommand "agent-instructions-length-check" { } /* bash */ ''
         status=0
         check() {
           for file in $(find ${self} -name "$1"); do
@@ -17,6 +17,7 @@
           done
         }
         check CLAUDE.md 200
+        check AGENTS.md 200
         check SKILL.md 500
         [ "$status" -eq 0 ] && touch $out
       '';
