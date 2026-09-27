@@ -19,7 +19,7 @@
       };
       # Replaces uBlock's "My filters" at every launch; dashboard edits are lost.
       "3rdparty".Extensions."uBlock0@raymondhill.net".toOverwrite.filters = [
-        "example.com##*:style(filter: none !important; backdrop-filter: none !important)"
+        "theblowers.com##*:style(filter: none !important; backdrop-filter: none !important)"
       ];
       ExtensionSettings = {
         "uBlock0@raymondhill.net" = {
