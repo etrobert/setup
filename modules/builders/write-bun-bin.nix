@@ -8,20 +8,21 @@ _: {
           # A directory with the package.json and package-lock.json of the script's imports
           npmRoot ? null,
         }:
-        pkgs.writers.makeScriptWriter {
-          interpreter = lib.getExe pkgs.bun;
-          # ":ts" maps the empty extension, which the script's /bin/<name> has.
-          check = "${lib.getExe pkgs.bun} build --no-bundle --loader :ts";
-          makeWrapperArgs = lib.optionals (npmRoot != null) [
-            "--set"
-            "NODE_PATH"
-            "${
-              pkgs.importNpmLock.buildNodeModules {
-                inherit npmRoot;
-                inherit (pkgs) nodejs;
-              }
-            }/node_modules"
-          ];
-        } "/bin/${name}";
+        script:
+        let
+          nodeModules = pkgs.importNpmLock.buildNodeModules {
+            inherit npmRoot;
+            inherit (pkgs) nodejs;
+          };
+          # Fails the build on a syntax error or an unresolved import
+          bundle = pkgs.runCommand "${name}.js" { } /* bash */ ''
+            ${lib.optionalString (npmRoot != null) "export NODE_PATH=${nodeModules}/node_modules"}
+            ${lib.getExe pkgs.bun} build --target bun --outfile $out ${pkgs.writeText "${name}.ts" script}
+          '';
+        in
+        # Read from stdin: Bun lists all of /nix/store when a script's path is in it, oven-sh/bun#32389
+        pkgs.writeShellScriptBin name /* bash */ ''
+          exec ${lib.getExe pkgs.bun} run - "$@" < ${bundle}
+        '';
     };
 }
