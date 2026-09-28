@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "bin": {
-    "auto-brightness": "auto-brightness.js"
+    "auto-brightness": "dist/auto-brightness.js"
   },
   "scripts": {
     "build": "tsc"
