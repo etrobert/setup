@@ -231,15 +231,17 @@ if [ $# -ge 1 ]; then
   -w | --worktrees)
     # The bare repo has no checkout to open; every real worktree is a peer
     # here, so nothing is skipped either.
-    worktrees=$(git worktree list | grep --invert-match '(bare)$')
+    # Shown by folder name: branches are often detached, and a path is too wide.
+    worktrees=$(git worktree list | grep --invert-match '(bare)$' |
+      while read -r path _; do printf '%s\t%s\n' "${path##*/}" "$path"; done)
 
     # shellcheck disable=SC2016 # $FZF_PREVIEW_COLUMNS expands in fzf's preview shell
-    selection=$(printf '%s\n' "$worktrees" |
-      fzf --preview 'DFT_COLOR=always DFT_WIDTH=$FZF_PREVIEW_COLUMNS \
-          git -C {1} dlog --color=always origin/HEAD.. 2>/dev/null |
-          grep . || git -C {1} log --oneline --color=always --max-count 15' \
+    project_path=$(printf '%s\n' "$worktrees" |
+      fzf --delimiter '\t' --with-nth 1 --accept-nth 2 \
+        --preview 'DFT_COLOR=always DFT_WIDTH=$FZF_PREVIEW_COLUMNS \
+          git -C {2} dlog --color=always origin/HEAD.. 2>/dev/null |
+          grep . || git -C {2} log --oneline --color=always --max-count 15' \
         --preview-window 'right:60%')
-    project_path=${selection%% *}
     project=${project_path#"$HOME/work/"}
     ;;
   *)
