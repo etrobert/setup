@@ -75,21 +75,7 @@ To understand how a tool or library works, you're encouraged to clone its repo
 and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
 (create it if needed).
 
-Before proposing anything, survey what others actually do, and report the
-distribution rather than one agreeing example:
-
-```bash
-gh search code '<distinctive-token>' --extension <ext> --limit 100 \
-  --json repository,path,textMatches
-gh search issues '<symptom>' --repo <owner/repo>
-```
-
-Filter out comment lines and count unique repos, not matches — upstream default
-configs are copied verbatim everywhere, so most raw hits are someone's
-commented-out example, not a choice anyone made.
-
-The count is evidence, not a verdict. One config I already trust — the tool's
-own author, a repo listed as a reference — outweighs many I don't.
+Before proposing anything, survey what others actually do.
 
 ## Running Packages
 
