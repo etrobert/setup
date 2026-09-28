@@ -8,11 +8,22 @@ _: {
           runtimeInputs ? [ ],
         }:
         script:
+        let
+          # modules/, above every script, so editors find the types and node_modules
+          npmRoot = lib.fileset.toSource {
+            root = ../..;
+            fileset = lib.fileset.unions [
+              ../../package.json
+              ../../package-lock.json
+              ../../tsconfig.json
+            ];
+          };
+        in
         pkgs.buildNpmPackage {
           inherit name;
           # package.json lists the dependencies of every script
-          src = ./.;
-          npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
+          src = npmRoot;
+          npmDeps = pkgs.importNpmLock { inherit npmRoot; };
           npmConfigHook = pkgs.importNpmLock.npmConfigHook;
           # From nixpkgs: npm's typescript and esbuild would fetch a binary for every platform
           nativeBuildInputs = with pkgs; [
