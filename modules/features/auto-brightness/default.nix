@@ -3,22 +3,17 @@
   perSystem =
     { pkgs, lib, ... }:
     {
-      packages.auto-brightness = pkgs.buildNpmPackage {
-        pname = "auto-brightness";
-        version = "0.0.0";
-        src = ./.;
-        npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
-        npmConfigHook = pkgs.importNpmLock.npmConfigHook;
-        # npm's typescript would fetch its compiler for all 20 platforms
-        nativeBuildInputs = [ pkgs.typescript ];
-        # zx runs commands through bash
-        makeWrapperArgs = [
-          "--prefix"
-          "PATH"
-          ":"
-          (lib.makeBinPath [ pkgs.bashNonInteractive ])
-        ];
-        meta.mainProgram = "auto-brightness";
+      packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        auto-brightness = pkgs.writeShellApplication {
+          name = "auto-brightness";
+          # noctalia comes from the unit's path, as it varies per host
+          inheritPath = true;
+          runtimeInputs = [
+            pkgs.heliocron
+            pkgs.jq
+          ];
+          text = builtins.readFile ./auto-brightness.sh;
+        };
       };
     };
 
