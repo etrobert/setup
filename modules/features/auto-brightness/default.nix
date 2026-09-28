@@ -10,9 +10,9 @@
         npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
         npmConfigHook = pkgs.importNpmLock.npmConfigHook;
         # From nixpkgs: npm's typescript and esbuild would fetch a binary for every platform
-        nativeBuildInputs = [
-          pkgs.typescript
-          pkgs.esbuild
+        nativeBuildInputs = with pkgs; [
+          typescript
+          esbuild
         ];
         # zx runs commands through bash
         makeWrapperArgs = [
