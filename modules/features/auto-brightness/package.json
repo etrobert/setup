@@ -1,6 +1,5 @@
 {
   "name": "auto-brightness",
-  "private": true,
   "dependencies": {
     "suncalc": "^1.9.0"
   }
