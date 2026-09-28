@@ -1,28 +1,9 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, lib, ... }:
+    { self', ... }:
     {
-      packages.auto-brightness = pkgs.buildNpmPackage {
-        pname = "auto-brightness";
-        version = "0.0.0";
-        src = ./.;
-        npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
-        npmConfigHook = pkgs.importNpmLock.npmConfigHook;
-        # From nixpkgs: npm's typescript and esbuild would fetch a binary for every platform
-        nativeBuildInputs = with pkgs; [
-          typescript
-          esbuild
-        ];
-        # zx runs commands through bash
-        makeWrapperArgs = [
-          "--prefix"
-          "PATH"
-          ":"
-          (lib.makeBinPath [ pkgs.bashNonInteractive ])
-        ];
-        meta.mainProgram = "auto-brightness";
-      };
+      packages.auto-brightness = self'.legacyPackages.writers.writeTsBin "auto-brightness" ./auto-brightness.ts;
     };
 
   flake.nixosModules.auto-brightness =
