@@ -92,21 +92,12 @@ Prefer flake-native Nix over legacy invocations. Examples:
 - `nix shell nixpkgs#foo` over `nix-shell -p foo`
 - `nix build .#pkg` over `nix-build`
 
-Avoid `with import <nixpkgs> {}` and `<nixpkgs>` channel lookups in commands —
-use `nixpkgs#` flake refs and `--apply` to transform results.
-
 Avoid overlays. Expose packages and modules as flake outputs with flake-parts,
 and reference them through `self.` (e.g. `self.nixosModules.foo`) or `self'.`
 (e.g. `self'.packages.foo`).
 
 When embedding another language inside a plain Nix string, add a language hint
-comment so that treesitter understands it. Example:
-
-```nix
-linuxPrimitives = /* bash */ ''
-  notify() { notify-send "$1" "$2"; }
-'';
-```
+comment so that treesitter understands it.
 
 ## Code Style
 
