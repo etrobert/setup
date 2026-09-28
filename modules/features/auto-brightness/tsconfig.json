@@ -2,6 +2,6 @@
   "compilerOptions": {
     "types": ["node"],
     "module": "nodenext",
-    "outDir": "dist"
+    "noEmit": true
   }
 }

@@ -1,13 +1,6 @@
 {
   "name": "auto-brightness",
-  "version": "0.0.0",
   "type": "module",
-  "bin": {
-    "auto-brightness": "dist/auto-brightness.js"
-  },
-  "scripts": {
-    "build": "tsc"
-  },
   "dependencies": {
     "suncalc": "^1.9.0",
     "zx": "^8.8.5"
