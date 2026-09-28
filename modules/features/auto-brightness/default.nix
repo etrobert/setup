@@ -1,24 +1,22 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, lib, ... }:
     {
-      packages.auto-brightness = pkgs.buildNpmPackage {
-        pname = "auto-brightness";
-        version = "0.0.0";
-        src = ./.;
-        npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
-        npmConfigHook = pkgs.importNpmLock.npmConfigHook;
-        # npm's typescript would fetch its compiler for all 20 platforms
-        nativeBuildInputs = [ pkgs.typescript ];
-        # zx runs commands through bash
-        makeWrapperArgs = [
-          "--prefix"
-          "PATH"
-          ":"
-          (lib.makeBinPath [ pkgs.bashNonInteractive ])
-        ];
-        meta.mainProgram = "auto-brightness";
+      pkgs,
+      lib,
+      self',
+      ...
+    }:
+    {
+      packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        auto-brightness = self'.legacyPackages.writers.writeNuBin "auto-brightness" {
+          makeWrapperArgs = [
+            "--prefix"
+            "PATH"
+            ":"
+            (lib.makeBinPath [ pkgs.heliocron ])
+          ];
+        } (builtins.readFile ./auto-brightness.nu);
       };
     };
 
