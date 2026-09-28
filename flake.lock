@@ -58,6 +58,32 @@
         "type": "github"
       }
     },
+    "bun2nix": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": "systems",
+        "treefmt-nix": "treefmt-nix"
+      },
+      "locked": {
+        "lastModified": 1790000994,
+        "narHash": "sha256-8HmRrSjDKZNl9KC0fms3QMtDJlO/OssK4cZw7VrllcA=",
+        "owner": "Mic92",
+        "repo": "bun2nix",
+        "rev": "0456acb1b7394fc14c414b056aa889df5124943a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "ref": "lockfile-v2-v3",
+        "repo": "bun2nix",
+        "type": "github"
+      }
+    },
     "countdown": {
       "inputs": {
         "nixpkgs": [
@@ -536,6 +562,7 @@
       "inputs": {
         "agenix": "agenix",
         "aichat": "aichat",
+        "bun2nix": "bun2nix",
         "countdown": "countdown",
         "creatures": "creatures",
         "disko": "disko",
@@ -558,6 +585,42 @@
         "rift-radar": "rift-radar",
         "tsnsrv": "tsnsrv",
         "zen-browser": "zen-browser"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1776166891,
+        "narHash": "sha256-bI8yrEGjrohR5hkQox7UrxDH7XqrYMwI8SL/LrJ1+S8=",
+        "owner": "nix-systems",
+        "repo": "triplet",
+        "rev": "6de7bc09397911ce03636afbcf6118745ab2cda0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "triplet",
+        "type": "github"
+      }
+    },
+    "treefmt-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "bun2nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784369104,
+        "narHash": "sha256-47cxbcZODibHv3rELFQ9vZly0vUNkND/atn/U7HLeb0=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "df3c0640565d04a0261253cdd89fce78ec50168a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
       }
     },
     "tsnsrv": {

@@ -1,11 +1,20 @@
 { self, ... }:
 {
   perSystem =
-    { self', ... }:
+    { inputs', ... }:
+    let
+      bun2nix = inputs'.bun2nix.packages.default;
+    in
     {
-      packages.auto-brightness = self'.legacyPackages.writers.writeBunBin "auto-brightness" (
-        builtins.readFile ./auto-brightness.ts
-      );
+      packages.auto-brightness = bun2nix.mkDerivation {
+        pname = "auto-brightness";
+        version = "0.0.0";
+        src = ./.;
+        module = "auto-brightness.ts";
+        bunDeps = bun2nix.fetchBunDeps { bunNix = ./_bun.nix; };
+        # Bytecode compiles to CommonJS, which has no top-level await
+        bunCompileToBytecode = false;
+      };
     };
 
   flake.nixosModules.auto-brightness =
@@ -23,17 +32,17 @@
       options.autoBrightness = {
         day = lib.mkOption {
           type = lib.types.ints.between 0 100;
-          description = "Screen brightness percentage until 16:00.";
+          description = "Screen brightness percentage with the sun above 6°.";
         };
         night = lib.mkOption {
           type = lib.types.ints.between 0 100;
-          description = "Screen brightness percentage from 23:00 to 05:00.";
+          description = "Screen brightness percentage with the sun below -6°.";
         };
       };
 
       config.systemd.user = {
         services.auto-brightness = {
-          description = "Set screen brightness for the time of day";
+          description = "Set screen brightness for the height of the sun";
           path = [ config.programs.noctalia.package ];
           serviceConfig = {
             Type = "oneshot";

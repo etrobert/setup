@@ -107,6 +107,12 @@
     };
 
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    # Fork for bun.lock v2, which nixpkgs' bun writes: nix-community/bun2nix#110
+    bun2nix = {
+      url = "github:Mic92/bun2nix/lockfile-v2-v3";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
   };
 
   outputs =
