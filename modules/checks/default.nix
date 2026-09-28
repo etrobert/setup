@@ -6,7 +6,7 @@
       '';
 
       deadnix = pkgs.runCommand "deadnix-check" { nativeBuildInputs = [ pkgs.deadnix ]; } ''
-        deadnix --fail ${self} && touch $out
+        deadnix --fail ${self} --exclude ${self}/modules/features/auto-brightness/_bun.nix && touch $out
       '';
 
       yamllint = pkgs.runCommand "yamllint-check" { nativeBuildInputs = [ pkgs.yamllint ]; } ''
