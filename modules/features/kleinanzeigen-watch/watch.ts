@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { appendFile, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
+import { decodeHTML } from "entities";
 import { join } from "node:path";
 import { $ } from "zx/core";
 import * as z from "zod";
@@ -62,13 +63,6 @@ const ResponseSchema = z.object({
     }),
   }),
 });
-
-const unescape = (text: string) =>
-  text
-    .replaceAll("&#x2F;", "/")
-    .replaceAll("&quot;", '"')
-    .replaceAll("&#39;", "'")
-    .replaceAll("&amp;", "&");
 
 const radians = (degrees: number) => (degrees * Math.PI) / 180;
 
@@ -161,7 +155,7 @@ for (const watch of config.watches) {
     return [
       {
         id: ad.id,
-        title: unescape(ad.title.value),
+        title: decodeHTML(ad.title.value),
         price,
         km: Math.round(nearest.km * 10) / 10,
         origin: nearest.name,

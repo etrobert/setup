@@ -2,6 +2,7 @@
   "name": "write-ts-bin",
   "type": "module",
   "dependencies": {
+    "entities": "^8.1.0",
     "suncalc": "^1.9.0",
     "zod": "^4.6.5",
     "zx": "^8.8.5"
