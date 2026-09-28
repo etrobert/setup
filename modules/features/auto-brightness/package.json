@@ -6,7 +6,7 @@
     "auto-brightness": "dist/auto-brightness.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && esbuild auto-brightness.ts --bundle --platform=node --format=esm --outfile=dist/auto-brightness.js --banner:js='import { createRequire as __createRequire } from \"node:module\"; const require = __createRequire(import.meta.url);'"
   },
   "dependencies": {
     "suncalc": "^1.9.0",
