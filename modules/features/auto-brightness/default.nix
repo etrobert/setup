@@ -3,9 +3,9 @@
   perSystem =
     { self', ... }:
     {
-      packages.auto-brightness = self'.legacyPackages.writers.writeBunBin "auto-brightness" (
-        builtins.readFile ./auto-brightness.ts
-      );
+      packages.auto-brightness = self'.legacyPackages.writers.writeBunBin "auto-brightness" {
+        npmRoot = ./.;
+      } (builtins.readFile ./auto-brightness.ts);
     };
 
   flake.nixosModules.auto-brightness =
@@ -23,17 +23,17 @@
       options.autoBrightness = {
         day = lib.mkOption {
           type = lib.types.ints.between 0 100;
-          description = "Screen brightness percentage until 16:00.";
+          description = "Screen brightness percentage with the sun above 6°.";
         };
         night = lib.mkOption {
           type = lib.types.ints.between 0 100;
-          description = "Screen brightness percentage from 23:00 to 05:00.";
+          description = "Screen brightness percentage with the sun below -6°.";
         };
       };
 
       config.systemd.user = {
         services.auto-brightness = {
-          description = "Set screen brightness for the time of day";
+          description = "Set screen brightness for the height of the sun";
           path = [ config.programs.noctalia.package ];
           serviceConfig = {
             Type = "oneshot";
