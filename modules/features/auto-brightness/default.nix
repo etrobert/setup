@@ -3,7 +3,7 @@
   perSystem =
     { self', ... }:
     {
-      packages.auto-brightness = self'.legacyPackages.writers.writeTsBin "auto-brightness" (
+      packages.auto-brightness = self'.legacyPackages.writers.writeTsBin "auto-brightness" { } (
         builtins.readFile ./auto-brightness.ts
       );
     };
