@@ -32,7 +32,7 @@
       wrappers.noctalia.idleLock = false;
 
       autoBrightness = {
-        day = 100;
+        day = 90;
         night = 0;
       };
 
