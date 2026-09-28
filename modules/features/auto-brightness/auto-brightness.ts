@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import SunCalc from "suncalc";
 import { $ } from "zx/core";
 

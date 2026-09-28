@@ -1,0 +1,13 @@
+{
+  "name": "write-ts-bin",
+  "type": "module",
+  "dependencies": {
+    "suncalc": "^1.9.0",
+    "zx": "^8.8.5"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.0.0",
+    "@types/suncalc": "^1.9.2"
+  }
+}
