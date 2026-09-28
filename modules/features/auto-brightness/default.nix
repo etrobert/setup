@@ -10,12 +10,15 @@
         npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
         npmConfigHook = pkgs.importNpmLock.npmConfigHook;
         # npm's typescript and esbuild would fetch their binaries for every
-        # platform. All npm packages are devDependencies: the bundle inlines
-        # them, so the output carries no node_modules.
+        # platform
         nativeBuildInputs = [
           pkgs.typescript
           pkgs.esbuild
         ];
+        # The bundle inlines the runtime dependencies
+        postInstall = ''
+          rm -r $out/lib/node_modules/auto-brightness/node_modules
+        '';
         # zx runs commands through bash
         makeWrapperArgs = [
           "--prefix"
