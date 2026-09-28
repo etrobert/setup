@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "strict": true,
+    "types": ["node"],
+    "outDir": "dist"
+  }
+}

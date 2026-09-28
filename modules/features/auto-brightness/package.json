@@ -6,7 +6,7 @@
     "auto-brightness": "dist/auto-brightness.js"
   },
   "scripts": {
-    "build": "tsc --outDir dist --module nodenext --strict --types node auto-brightness.ts"
+    "build": "tsc"
   },
   "dependencies": {
     "suncalc": "^1.9.0"
