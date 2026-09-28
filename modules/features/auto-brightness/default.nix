@@ -1,25 +1,11 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
-      packages.auto-brightness = pkgs.buildNpmPackage {
-        pname = "auto-brightness";
-        version = "0.0.0";
-        src = ./.;
-        npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
-        npmConfigHook = pkgs.importNpmLock.npmConfigHook;
-        # npm's typescript would fetch its compiler for all 20 platforms
-        nativeBuildInputs = [ pkgs.typescript ];
-        # zx runs commands through bash
-        makeWrapperArgs = [
-          "--prefix"
-          "PATH"
-          ":"
-          (lib.makeBinPath [ pkgs.bashNonInteractive ])
-        ];
-        meta.mainProgram = "auto-brightness";
-      };
+      packages.auto-brightness = pkgs.writers.writePython3Bin "auto-brightness" {
+        libraries = [ pkgs.python3Packages.astral ];
+      } (builtins.readFile ./auto-brightness.py);
     };
 
   flake.nixosModules.auto-brightness =
