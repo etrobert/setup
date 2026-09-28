@@ -235,7 +235,7 @@ if [ $# -ge 1 ]; then
 
     # shellcheck disable=SC2016 # $FZF_PREVIEW_COLUMNS expands in fzf's preview shell
     selection=$(printf '%s\n' "$worktrees" |
-      fzf --preview 'DFT_COLOR=always DFT_WIDTH=$FZF_PREVIEW_COLUMNS \
+      fzf --with-nth 3.. --preview 'DFT_COLOR=always DFT_WIDTH=$FZF_PREVIEW_COLUMNS \
           git -C {1} dlog --color=always origin/HEAD.. 2>/dev/null |
           grep . || git -C {1} log --oneline --color=always --max-count 15' \
         --preview-window 'right:60%')
