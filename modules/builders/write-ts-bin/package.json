@@ -3,6 +3,7 @@
   "type": "module",
   "dependencies": {
     "suncalc": "^1.9.0",
+    "zod": "^4.6.5",
     "zx": "^8.8.5"
   },
   "devDependencies": {
