@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import SunCalc from "suncalc";
+import * as z from "zod/mini";
 import { $ } from "zx/core";
 
-const [day, night] = process.argv.slice(2).map(Number);
-if (!Number.isInteger(day) || !Number.isInteger(night))
-  throw new Error("usage: auto-brightness <day-percent> <night-percent>");
+const Percent = z.coerce.number().check(z.int(), z.minimum(0), z.maximum(100));
+const [day, night] = z.tuple([Percent, Percent]).parse(process.argv.slice(2));
 
 // Berlin, as in darkman.nix
 const { altitude } = SunCalc.getPosition(new Date(), 52.5, 13.4);

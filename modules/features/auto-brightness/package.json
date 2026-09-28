@@ -6,15 +6,14 @@
     "auto-brightness": "dist/auto-brightness.js"
   },
   "scripts": {
-    "build": "tsc"
-  },
-  "dependencies": {
-    "suncalc": "^1.9.0",
-    "zx": "^8.8.5"
+    "build": "tsc && esbuild auto-brightness.ts --bundle --platform=node --format=esm --outfile=dist/auto-brightness.js \"--banner:js=import { createRequire as topLevelCreateRequire } from 'node:module'; const require = topLevelCreateRequire(import.meta.url);\""
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^24.0.0",
-    "@types/suncalc": "^1.9.2"
+    "@types/suncalc": "^1.9.2",
+    "suncalc": "^1.9.0",
+    "zod": "^4.6.5",
+    "zx": "^8.8.5"
   }
 }

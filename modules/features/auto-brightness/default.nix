@@ -9,8 +9,13 @@
         src = ./.;
         npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
         npmConfigHook = pkgs.importNpmLock.npmConfigHook;
-        # npm's typescript would fetch its compiler for all 20 platforms
-        nativeBuildInputs = [ pkgs.typescript ];
+        # npm's typescript and esbuild would fetch their binaries for every
+        # platform. All npm packages are devDependencies: the bundle inlines
+        # them, so the output carries no node_modules.
+        nativeBuildInputs = [
+          pkgs.typescript
+          pkgs.esbuild
+        ];
         # zx runs commands through bash
         makeWrapperArgs = [
           "--prefix"
