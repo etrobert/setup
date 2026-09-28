@@ -1,11 +1,18 @@
 { self, ... }:
 {
   perSystem =
-    { self', ... }:
+    { pkgs, ... }:
     {
-      packages.auto-brightness = self'.legacyPackages.writers.writeNodeBin "auto-brightness" {
-        npmRoot = ./.;
-      } (builtins.readFile ./auto-brightness.ts);
+      packages.auto-brightness = pkgs.buildNpmPackage {
+        pname = "auto-brightness";
+        version = "0.0.0";
+        src = ./.;
+        npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
+        npmConfigHook = pkgs.importNpmLock.npmConfigHook;
+        # npm's typescript would fetch its compiler for all 20 platforms
+        nativeBuildInputs = [ pkgs.typescript ];
+        meta.mainProgram = "auto-brightness";
+      };
     };
 
   flake.nixosModules.auto-brightness =
