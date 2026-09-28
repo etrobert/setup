@@ -3,39 +3,26 @@
   perSystem =
     { pkgs, lib, ... }:
     {
-      packages.auto-brightness =
-        let
-          nodeModules = pkgs.importNpmLock.buildNodeModules {
-            npmRoot = ./.;
-            inherit (pkgs) nodejs;
-          };
-        in
-        pkgs.runCommand "auto-brightness"
-          {
-            # From nixpkgs: npm's typescript and esbuild would fetch a binary for every platform
-            nativeBuildInputs = [
-              pkgs.typescript
-              pkgs.esbuild
-              pkgs.makeBinaryWrapper
-            ];
-            meta.mainProgram = "auto-brightness";
-          }
-          /* bash */ ''
-            cp ${./auto-brightness.ts} auto-brightness.ts
-            cp ${./tsconfig.json} tsconfig.json
-            cp ${./package.json} package.json
-            ln --symbolic ${nodeModules}/node_modules node_modules
-            tsc
-            # Bundled CommonJS, like zx, calls require, which an ES module lacks
-            # --preserve-symlinks: the bundle's path comments would otherwise pin node_modules at runtime
-            esbuild auto-brightness.ts --bundle --platform=node --format=esm --preserve-symlinks \
-              --banner:js='import { createRequire as __createRequire } from "node:module"; const require = __createRequire(import.meta.url);' \
-              --outfile=$out/lib/auto-brightness.mjs
-            # zx runs commands through bash
-            makeWrapper ${lib.getExe pkgs.nodejs} $out/bin/auto-brightness \
-              --add-flags $out/lib/auto-brightness.mjs \
-              --prefix PATH : ${lib.makeBinPath [ pkgs.bashNonInteractive ]}
-          '';
+      packages.auto-brightness = pkgs.buildNpmPackage {
+        pname = "auto-brightness";
+        version = "0.0.0";
+        src = ./.;
+        npmDeps = pkgs.importNpmLock { npmRoot = ./.; };
+        npmConfigHook = pkgs.importNpmLock.npmConfigHook;
+        # From nixpkgs: npm's typescript and esbuild would fetch a binary for every platform
+        nativeBuildInputs = [
+          pkgs.typescript
+          pkgs.esbuild
+        ];
+        # zx runs commands through bash
+        makeWrapperArgs = [
+          "--prefix"
+          "PATH"
+          ":"
+          (lib.makeBinPath [ pkgs.bashNonInteractive ])
+        ];
+        meta.mainProgram = "auto-brightness";
+      };
     };
 
   flake.nixosModules.auto-brightness =
