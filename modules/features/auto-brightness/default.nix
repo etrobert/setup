@@ -6,7 +6,8 @@
       packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         auto-brightness = pkgs.writeShellApplication {
           name = "auto-brightness";
-          # Keeps PATH, unlike our other scripts: noctalia comes from the unit's path, as it varies per host
+          # noctalia comes from the unit's path, as it varies per host
+          inheritPath = true;
           runtimeInputs = [
             pkgs.heliocron
             pkgs.jq
