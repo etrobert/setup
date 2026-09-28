@@ -1,7 +1,7 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       packages.auto-brightness = pkgs.buildNpmPackage {
         pname = "auto-brightness";
@@ -11,6 +11,13 @@
         npmConfigHook = pkgs.importNpmLock.npmConfigHook;
         # npm's typescript would fetch its compiler for all 20 platforms
         nativeBuildInputs = [ pkgs.typescript ];
+        # zx runs commands through bash
+        makeWrapperArgs = [
+          "--prefix"
+          "PATH"
+          ":"
+          (lib.makeBinPath [ pkgs.bashNonInteractive ])
+        ];
         meta.mainProgram = "auto-brightness";
       };
     };

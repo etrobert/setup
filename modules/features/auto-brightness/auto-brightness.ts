@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { execFileSync } from "node:child_process";
 import SunCalc from "suncalc";
+import { $ } from "zx/core";
 
 const [day, night] = process.argv.slice(2).map(Number);
 if (!Number.isInteger(day) || !Number.isInteger(night))
@@ -13,15 +13,5 @@ const elevation = (altitude * 180) / Math.PI;
 // Day above 6°, night below -6° (end of civil twilight)
 const fade = Math.min(Math.max((6 - elevation) / 12, 0), 1);
 
-execFileSync(
-  "noctalia",
-  [
-    "msg",
-    "brightness-set",
-    "all",
-    `${Math.round(day - (day - night) * fade)}%`,
-  ],
-  {
-    stdio: "inherit",
-  },
-);
+const brightness = Math.round(day - (day - night) * fade);
+await $`noctalia msg brightness-set all ${brightness}%`;
