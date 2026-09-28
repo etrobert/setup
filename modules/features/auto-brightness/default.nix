@@ -3,7 +3,9 @@
   perSystem =
     { self', ... }:
     {
-      packages.auto-brightness = self'.legacyPackages.writers.writeTsBin "auto-brightness" ./auto-brightness.ts;
+      packages.auto-brightness = self'.legacyPackages.writers.writeTsBin "auto-brightness" (
+        builtins.readFile ./auto-brightness.ts
+      );
     };
 
   flake.nixosModules.auto-brightness =

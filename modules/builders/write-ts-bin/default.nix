@@ -16,7 +16,7 @@ _: {
             esbuild
           ];
           buildPhase = /* bash */ ''
-            cp ${script} ${name}.ts
+            cp ${pkgs.writeText "${name}.ts" script} ${name}.ts
             tsc
             # zx's ES module entry wraps its CommonJS build, which calls require
             esbuild ${name}.ts --bundle --platform=node --format=esm \
