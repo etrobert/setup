@@ -24,3 +24,9 @@ jobs/
 tasks/
 projects/*/?*-?*-?*-?*-?*/
 chrome/chrome-native-host
+# Unsent feedback reports drafted by Claude
+feedback/
+# claude.ai account skills, re-downloaded every session
+skills/synced/
+# MCP server protocol-version cache
+state/
