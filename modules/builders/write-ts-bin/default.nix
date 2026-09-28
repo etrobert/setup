@@ -3,7 +3,11 @@ _: {
     { pkgs, lib, ... }:
     {
       writers.writeTsBin =
-        name: script:
+        name:
+        {
+          runtimeInputs ? [ ],
+        }:
+        script:
         pkgs.buildNpmPackage {
           inherit name;
           # package.json lists the dependencies of every script
@@ -28,7 +32,7 @@ _: {
             # zx runs commands through bash
             makeWrapper ${lib.getExe pkgs.nodejs} $out/bin/${name} \
               --add-flags $out/lib/${name}.mjs \
-              --prefix PATH : ${lib.makeBinPath [ pkgs.bashNonInteractive ]}
+              --prefix PATH : ${lib.makeBinPath ([ pkgs.bashNonInteractive ] ++ runtimeInputs)}
           '';
           meta.mainProgram = name;
         };
