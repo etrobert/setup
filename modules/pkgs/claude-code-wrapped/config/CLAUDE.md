@@ -158,38 +158,27 @@ test, build, or manual verification step.
 
 ## Git Workflow
 
-Any change I ask for in a repository ends in a pull request — commit, push and
-open it without being asked.
-
-When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
-output), include a screenshot in the PR description.
-
-Each commit should be functional — don't commit broken or speculative states.
-
-Always rebase on origin/main before presenting a PR for review — both on initial
-`gh pr create` and after any follow-up changes before telling the user it's
-ready. Rebase rather than merge origin/main into the branch.
-
-After creating or pushing to a PR, watch its CI to completion **in the
-background** (`gh pr checks --watch`) and fix any failure before telling the
-user it's ready.
-
-Don't force-push — make new commits instead. Amending and rebasing are the
-exceptions; push those with `--force-with-lease`.
-
-Always resolve merge conflicts before reporting the task as done.
-
-To review, use Conventional Comments.
-
-To follow up on a review, reply to every comment: if applying a suggestion
-without anything to add, say so explicitly.
-
-Preferred merge strategy is squash merge (`--squash`).
-
-Keep PRs small and atomic — one logical change per PR.
-
-For complex features that naturally split into layers, use stacked PRs: each PR
-builds on the previous one.
+- Any change I ask for in a repository ends in a pull request — commit, push and
+  open it without being asked.
+- When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
+  output), include a screenshot in the PR description.
+- Each commit should be functional — don't commit broken or speculative states.
+- Always rebase on origin/main before presenting a PR for review — both on
+  initial `gh pr create` and after any follow-up changes before telling the user
+  it's ready. Rebase rather than merge origin/main into the branch.
+- After creating or pushing to a PR, watch its CI to completion **in the
+  background** (`gh pr checks --watch`) and fix any failure before telling the
+  user it's ready.
+- Don't force-push — make new commits instead. Amending and rebasing are the
+  exceptions; push those with `--force-with-lease`.
+- Always resolve merge conflicts before reporting the task as done.
+- To review, use Conventional Comments.
+- To follow up on a review, reply to every comment: if applying a suggestion
+  without anything to add, say so explicitly.
+- Preferred merge strategy is squash merge (`--squash`).
+- Keep PRs small and atomic — one logical change per PR.
+- For complex features that naturally split into layers, use stacked PRs: each
+  PR builds on the previous one.
 
 ## CLAUDE.md Maintenance
 
