@@ -1,7 +1,7 @@
 # 200 lines: https://code.claude.com/docs/en/memory
 # 500 lines: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
 # Non-blank lines: deleting blank lines doesn't shrink the content
-# 3/4 of those limits: our Markdown is ~75% non-blank lines
+# 80% of those limits: our Markdown is at most 80% non-blank lines
 { self, ... }:
 {
   perSystem =
@@ -18,9 +18,9 @@
             fi
           done
         }
-        check CLAUDE.md 150
-        check AGENTS.md 150
-        check SKILL.md 375
+        check CLAUDE.md 160
+        check AGENTS.md 160
+        check SKILL.md 400
         [ "$status" -eq 0 ] && touch $out
       '';
     };
