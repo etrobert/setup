@@ -45,44 +45,36 @@ the default.
 
 ## Communication & Working Style
 
-When you use an acronym for the first time, spell it out.
-
-Align on what to build before building. A question — "would it be possible to do
-it this way?" — is a question, not a request to build: answer and offer options.
-
-Before asking a question, check if the answer is obtainable by reading files,
-running a command, or SSHing into a machine. Only ask when a reasonable
-investigation wouldn't yield the answer.
-
-Don't be afraid to make multiple different implementations of the same feature
-to compare them.
-
-Always spell out links. Don't use
-[the repo](https://www.github.com/etrobert/setup) but use
-<https://www.github.com/etrobert/setup>. I am often working over ssh and
-clicking the links open on the wrong machine.
+- When you use an acronym for the first time, spell it out.
+- Align on what to build before building. A question — "would it be possible to
+  do it this way?" — is a question, not a request to build: answer and offer
+  options.
+- Before asking a question, check if the answer is obtainable by reading files,
+  running a command, or SSHing into a machine. Only ask when a reasonable
+  investigation wouldn't yield the answer.
+- Don't be afraid to make multiple different implementations of the same feature
+  to compare them.
+- Always spell out links. Don't use
+  [the repo](https://www.github.com/etrobert/setup) but use
+  <https://www.github.com/etrobert/setup>. I am often working over ssh and
+  clicking the links open on the wrong machine.
 
 ## Research Approach
 
-When investigating how something works, consult both official documentation and
-source/implementation.
+- When investigating how something works, consult both official documentation
+  and source/implementation.
+- Cite the source for factual claims — name and, where useful, quote or link the
+  command, `--help` output, web search result, documentation page (with URL), or
+  file the information came from, rather than stating it unsourced.
+- To understand how a tool or library works, you're encouraged to clone its repo
+  and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
+  (create it if needed).
+- Before proposing anything, survey what others actually do.
 
-Cite the source for factual claims — name and, where useful, quote or link the
-command, `--help` output, web search result, documentation page (with URL), or
-file the information came from, rather than stating it unsourced.
-
-To understand how a tool or library works, you're encouraged to clone its repo
-and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
-(create it if needed).
-
-Before proposing anything, survey what others actually do.
-
-## Running Packages
+## Nix Style
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
 rather than skipping the step.
-
-## Nix Style
 
 Prefer flake-native Nix over legacy invocations. Examples:
 
@@ -91,6 +83,13 @@ Prefer flake-native Nix over legacy invocations. Examples:
   `nix eval --impure --expr 'with import <nixpkgs> {}; ...'`
 - `nix shell nixpkgs#foo` over `nix-shell -p foo`
 - `nix build .#pkg` over `nix-build`
+
+Avoid overlays. Expose packages and modules as flake outputs with flake-parts,
+and reference them through `self.` (e.g. `self.nixosModules.foo`) or `self'.`
+(e.g. `self'.packages.foo`).
+
+When embedding another language inside a plain Nix string, add a language hint
+comment so that treesitter understands it.
 
 ## Code Style
 
@@ -104,6 +103,12 @@ Prefer failing loudly. A panic or hard error surfaces a broken assumption when
 it breaks; a fallback defers it into a wrong answer later. Never convert an
 existing `expect`/`panic!`, or any other deliberate hard failure, into a default
 value.
+
+In Tailwind, prefer the predefined scale (`text-lg`, `rounded-md`, `p-2.5`) over
+arbitrary values (`text-[1.1rem]`, `rounded-[0.4rem]`), snapping to the nearest
+step rather than preserving an exact number. Reserve `[…]` for values with no
+scale equivalent — custom properties (`rotate-[var(--rot)]`), grid templates,
+property lists.
 
 ## File Edits
 
@@ -151,49 +156,44 @@ hover (an option's description, a docstring) — cut it. Most often that is one
 narrating work you just did. It earns its place only by carrying what the code
 cannot: why this value, which upstream bug.
 
-## Testing
-
-Before committing, verify the change: typecheck, lint, and run the relevant
-test, build, or manual verification step.
-
 ## Git Workflow
 
-Any change I ask for in a repository ends in a pull request — commit, push and
-open it without being asked.
-
-When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
-output), include a screenshot in the PR description.
-
-Each commit should be functional — don't commit broken or speculative states.
-
-Always rebase on origin/main before presenting a PR for review — both on initial
-`gh pr create` and after any follow-up changes before telling the user it's
-ready. Rebase rather than merge origin/main into the branch.
-
-After creating or pushing to a PR, watch its CI to completion **in the
-background** (`gh pr checks --watch`) and fix any failure before telling the
-user it's ready.
-
-Don't force-push — make new commits instead. Amending and rebasing are the
-exceptions; push those with `--force-with-lease`.
-
-Always resolve merge conflicts before reporting the task as done.
-
-To review, use Conventional Comments.
-
-To follow up on a review, reply to every comment: if applying a suggestion
-without anything to add, say so explicitly.
-
-Preferred merge strategy is squash merge (`--squash`).
-
-Keep PRs small and atomic — one logical change per PR.
-
-For complex features that naturally split into layers, use stacked PRs: each PR
-builds on the previous one.
+- Any change I ask for in a repository ends in a pull request — commit, push and
+  open it without being asked.
+- When a PR makes a user-visible change (UI, status-bar/terminal styling, CLI
+  output), include a screenshot in the PR description.
+- Each commit should be functional — don't commit broken or speculative states.
+- Before committing, verify the change: typecheck, lint, and run the relevant
+  test, build, or manual verification step.
+- Always rebase on origin/main before presenting a PR for review — both on
+  initial `gh pr create` and after any follow-up changes before telling the user
+  it's ready. Rebase rather than merge origin/main into the branch.
+- After creating or pushing to a PR, watch its CI to completion **in the
+  background** (`gh pr checks --watch`) and fix any failure before telling the
+  user it's ready.
+- Don't force-push — make new commits instead. Amending and rebasing are the
+  exceptions; push those with `--force-with-lease`.
+- Always resolve merge conflicts before reporting the task as done.
+- To review, use Conventional Comments.
+- To follow up on a review, reply to every comment: if applying a suggestion
+  without anything to add, say so explicitly.
+- Preferred merge strategy is squash merge (`--squash`).
+- Keep PRs small and atomic — one logical change per PR.
+- For complex features that naturally split into layers, use stacked PRs: each
+  PR builds on the previous one.
 
 ## CLAUDE.md Maintenance
 
+- User `CLAUDE.md`: only document conventions, decisions, and preferences
+  specific to **me** and how **I** work.
+- Project `CLAUDE.md`: only document conventions, decisions, and preferences
+  specific to **this project**.
+- Never document general knowledge that Claude already knows from training
+  (language semantics, standard tool behavior, common patterns) or information
+  relating to how other projects work (e.g. neovim conventions or details on how
+  to use).
+- If removing a note wouldn't risk a future mistake specific to this project,
+  don't write it.
 - At the end of every session, reflect and proactively propose enhancements to
-  the user `CLAUDE.md` and project `CLAUDE.md` following the Maintenance
-  guidelines above.
+  the user `CLAUDE.md` and project `CLAUDE.md` following the guidelines above.
 - Never save to auto memory. To remember something, PR it into a `CLAUDE.md`.
