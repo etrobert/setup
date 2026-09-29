@@ -1,18 +1,19 @@
-_: {
+{ self, ... }:
+{
   perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
-      packages.nix-dead-packages = pkgs.writeShellApplication {
-        name = "nix-dead-packages";
+      packages.nix-dead-packages = self.lib.wrapPackage pkgs {
+        package = pkgs.writers.writePython3Bin "nix-dead-packages" {
+          # black wraps at 88 columns, flake8 complains past 79.
+          flakeIgnore = [ "E501" ];
+        } (builtins.readFile ./nix-dead-packages.py);
         runtimeInputs = with pkgs; [
-          coreutils
-          gawk
           git
-          jq
           nix
         ];
-        inheritPath = false;
-        text = builtins.readFile ./nix-dead-packages.sh;
+        # A writers.* script declares no platforms of its own.
+        platforms = lib.platforms.all;
       };
     };
 }
