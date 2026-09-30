@@ -40,6 +40,21 @@
         interface = "end0";
       };
 
+      services.tailscale = {
+        useRoutingFeatures = "server";
+        extraSetFlags = [ "--advertise-exit-node" ];
+        # `tailscale up` resets prefs it is not given
+        extraUpFlags = [ "--advertise-exit-node" ];
+      };
+
+      # --netfilter-mode=nodivert leaves tailscaled's own masquerade chain unhooked
+      networking.nat = {
+        enable = true;
+        enableIPv6 = true;
+        internalInterfaces = [ "tailscale0" ];
+        externalInterface = "end0";
+      };
+
       time.timeZone = "Europe/Berlin";
 
       system.stateVersion = "25.11";
