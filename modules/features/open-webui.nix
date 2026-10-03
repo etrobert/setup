@@ -25,6 +25,9 @@ _: {
           # module would otherwise point them at its own localhost port.
           WEBUI_URL = "http://chat";
 
+          # No login: the tailnet is the only access control.
+          WEBUI_AUTH = "False";
+
           SCARF_NO_ANALYTICS = "True";
           DO_NOT_TRACK = "True";
           ANONYMIZED_TELEMETRY = "False";
@@ -38,8 +41,7 @@ _: {
         # websockets >= 16.1 decodes header values as ISO-8859-1, and uvicorn's
         # sansio websocket path then re-encodes them as ASCII. The whois headers
         # carry the tailnet display name ("Étienne Robert"), which trips it.
-        # Open WebUI authenticates its own users and ignores these headers
-        # anyway.
+        # Open WebUI ignores these headers anyway.
         #
         # Passed via extraArgs because the tsnsrv NixOS module declares a
         # `suppressWhois` option but never renders it into the command line.
