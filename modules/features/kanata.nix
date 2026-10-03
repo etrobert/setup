@@ -1,4 +1,4 @@
-# Caps Lock as Control.
+# Caps Lock as Control, and Escape as tap-Escape / hold-CapsLock.
 _: {
   flake.nixosModules.kanata = _: {
     services.kanata = {
@@ -7,10 +7,12 @@ _: {
         config = /* scheme */ ''
           (defsrc
             caps
+            esc
           )
 
           (deflayer base
             lctl
+            (tap-hold 200 200 esc caps)
           )
         '';
         extraDefCfg = "process-unmapped-keys yes";
