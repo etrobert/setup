@@ -160,10 +160,10 @@ _: {
             ProtectHome = true;
             # SQLite spills statement journals to /tmp, read-only under strict.
             PrivateTmp = true;
+            # One mount for music/ and torrents/: a hardlink across two bind mounts fails with EXDEV.
             ReadWritePaths = [
               config.services.lidarr.dataDir
-              "/tank/media/music"
-              "/tank/media/torrents"
+              "/tank/media"
             ];
             InaccessiblePaths = [ "/run/agenix.d" ];
           };
