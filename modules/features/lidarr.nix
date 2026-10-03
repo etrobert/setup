@@ -21,7 +21,7 @@ _: {
           };
         };
 
-        tsnsrv.services.albums.toURL = "http://127.0.0.1:${toString config.services.lidarr.settings.server.port}";
+        tsnsrv.services.lidarr.toURL = "http://127.0.0.1:${toString config.services.lidarr.settings.server.port}";
       };
 
       systemd.services.lidarr = {
