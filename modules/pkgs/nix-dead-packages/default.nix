@@ -6,10 +6,12 @@ _: {
         name = "nix-dead-packages";
         runtimeInputs = with pkgs; [
           coreutils
+          findutils
           gawk
           git
           jq
           nix
+          nix-eval-jobs
         ];
         inheritPath = false;
         text = builtins.readFile ./nix-dead-packages.sh;
