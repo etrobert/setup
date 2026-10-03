@@ -29,10 +29,10 @@ Monitor `None` means one immediate search and no retry: if c411 has nothing
 today, search again by hand later or mark the album and artist monitored.
 
 Lidarr grabs from c411, hands the torrent to transmission on charon,
-`torrent-pull` copies it to `/tank/media/torrents` every 15 minutes, Lidarr
-hardlinks it into `torrents/Artist/Album/NN Title.ext`, and Navidrome's watcher
-picks it up. Indexer, download client, naming and root folder are declared by
-the `lidarr-setup` oneshot (`modules/features/lidarr.nix` in `etrobert/setup`);
+`torrent-pull` copies it to `/tank/media/torrents`, Lidarr hardlinks it into
+`torrents/Artist/Album/NN Title.ext`, and Navidrome's watcher picks it up.
+Indexer, download client, naming and root folder are declared by the
+`lidarr-setup` oneshot (`modules/features/lidarr.nix` in `etrobert/setup`);
 nothing is configured in Lidarr's UI.
 
 ## Bandcamp and yt-dlp: beets
