@@ -10,7 +10,7 @@ _: {
       port = config.services.lidarr.settings.server.port;
 
       # What Lidarr keeps in its database (indexer, download client, path mapping,
-      # root folder, naming) is declared here and pushed over its API on every start.
+      # root folder, naming, notification) is declared here and pushed over its API on every start.
       lidarr-setup = pkgs.writeShellApplication {
         name = "lidarr-setup";
 
@@ -120,6 +120,22 @@ _: {
             defaultNewItemMonitorOption: "none",
             defaultTags: []
           }')"
+
+          # onUpgrade: without it an import that replaces existing files is silent.
+          # The tags field: omitted, Lidarr leaves it null and the sender crashes on it.
+          provider notification "$(jq --null-input '{
+            name: "ntfy",
+            implementation: "Ntfy",
+            configContract: "NtfySettings",
+            onReleaseImport: true,
+            onUpgrade: true,
+            tags: [],
+            fields: [
+              { name: "serverUrl", value: "http://127.0.0.1:2586" },
+              { name: "topics", value: ["home"] },
+              { name: "tags", value: [] }
+            ]
+          }')"
         '';
       };
     in
@@ -170,7 +186,7 @@ _: {
         };
 
         lidarr-setup = {
-          description = "Declare Lidarr's indexer, download client and library";
+          description = "Declare Lidarr's indexer, download client, library and notification";
           after = [ "lidarr.service" ];
           wantedBy = [ "lidarr.service" ];
 
