@@ -179,7 +179,8 @@ test, build, or manual verification step.
 - Always rebase on origin/main before presenting a PR for review — both on
   initial `gh pr create` and after any follow-up changes before telling the user
   it's ready. Rebase rather than merge origin/main into the branch.
-- After creating or pushing to a PR, monitor the CI.
+- After creating or pushing to a PR, monitor the CI in a background command so
+  the turn is not blocked.
 - Don't force push — make new commits instead. Amending and rebasing are the
   exceptions; push those with `--force-with-lease`.
 - Always resolve merge conflicts before reporting the task as done.
