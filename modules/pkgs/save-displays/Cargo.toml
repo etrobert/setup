@@ -1,0 +1,8 @@
+[package]
+name = "save-displays"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kdl = { version = "6", features = ["v1"] }
+niri-ipc = { path = "niri/niri-ipc" }
