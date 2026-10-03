@@ -106,6 +106,7 @@
             check-bt-profile
             ghostty-wrapped
             open-url
+            save-displays
           ];
 
           externalPackages = with pkgs; [
