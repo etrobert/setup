@@ -84,9 +84,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # base.sha, not main: the PR can merge before this job runs.
       - uses: actions/checkout@v7
         with:
-          ref: main
+          ref: ${{ github.event.pull_request.base.sha }}
           path: main-baseline
 
       - name: Diff tower closures
