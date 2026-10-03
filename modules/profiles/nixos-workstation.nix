@@ -21,7 +21,6 @@
         self.nixosModules.darkman
         self.nixosModules.auto-brightness
         self.nixosModules.float-on-title
-        self.nixosModules.mpd
         self.nixosModules.copilot-api
         self.nixosModules.ntfy-desktop
         self.nixosModules.file-manager
@@ -58,8 +57,8 @@
           packages = [ "com.bambulab.BambuStudio" ];
         };
 
-        # Media keys run bare `playerctl`, which otherwise picks mpd (first
-        # alphabetically) even when stopped; playerctld orders by activity.
+        # Media keys run bare `playerctl`, which otherwise picks the first player
+        # alphabetically even when stopped; playerctld orders by activity.
         playerctld.enable = true;
 
         # Required for Spotify Connect to discover LAN devices (e.g. Sonos) via mDNS
@@ -102,7 +101,6 @@
           customPackages = with self.packages.${system}; [
             audio-output-switcher
             birthdays
-            creme
             lock-suspend
             linear
             check-bt-profile
