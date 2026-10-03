@@ -11,6 +11,10 @@ in
         services.torrent-pull = {
           description = "Pull finished torrents from charon";
 
+          # Persistent=true fires the missed run at boot, before DNS resolves.
+          after = [ "network-online.target" ];
+          wants = [ "network-online.target" ];
+
           path = with pkgs; [
             openssh
             rsync
@@ -38,7 +42,12 @@ in
         timers.torrent-pull = {
           description = "Schedule the torrent pull";
           wantedBy = [ "timers.target" ];
-          timerConfig.OnCalendar = "*:0/15";
+
+          timerConfig = {
+            # Lidarr polls its queue every minute; an idle pull costs 0.25 s.
+            OnCalendar = "minutely";
+            Persistent = true;
+          };
         };
       };
     };
