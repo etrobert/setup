@@ -17,9 +17,10 @@ in
           ];
 
           # --chmod: jellyfin must read the result
+          # --delay-updates: jellyfin scans the landing zone; a half-copied file stays under .~tmp~
           # ControlMaster: no writable home here
           script = /* bash */ ''
-            rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
+            rsync --archive --partial --delay-updates --exclude='*.part' --chmod=Do+rx \
               --rsh 'ssh -o ControlMaster=no' \
               charon:/var/lib/transmission/Downloads/ ${landing}/
           '';
