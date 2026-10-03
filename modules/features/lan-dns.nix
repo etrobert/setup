@@ -20,6 +20,8 @@
             bind-dynamic = true;
             no-resolv = true;
             server = [
+              # no-resolv hides Tailscale's resolver, so tailnet names need MagicDNS explicitly.
+              "/tailcab4c0.ts.net/100.100.100.100"
               "1.1.1.1"
               "9.9.9.9"
             ];
