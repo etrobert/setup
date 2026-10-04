@@ -75,6 +75,10 @@
       url = "github:etrobert/dispatch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    taskgraph = {
+      url = "github:etrobert/taskgraph";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nutricalc = {
       url = "github:Palomia/nutricalc";
       inputs.nixpkgs.follows = "nixpkgs";
