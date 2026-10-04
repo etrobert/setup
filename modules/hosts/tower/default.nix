@@ -49,6 +49,7 @@ in
       self.nixosModules.node-exporter
       self.nixosModules.smartctl-exporter
       self.nixosModules.dispatch
+      self.nixosModules.taskgraph
       self.nixosModules.miniflux
       self.nixosModules.torrent-pull
       self.nixosModules.lidarr

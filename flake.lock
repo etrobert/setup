@@ -556,8 +556,29 @@
         "pronto": "pronto",
         "rack": "rack",
         "rift-radar": "rift-radar",
+        "taskgraph": "taskgraph",
         "tsnsrv": "tsnsrv",
         "zen-browser": "zen-browser"
+      }
+    },
+    "taskgraph": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791121246,
+        "narHash": "sha256-4uhEYQj6dib1bicskgANR2YNBjhNn81Tr1HARfBmTgc=",
+        "owner": "etrobert",
+        "repo": "taskgraph",
+        "rev": "c03581f2edecea01759743ce54b7cbd190b6a07b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "etrobert",
+        "repo": "taskgraph",
+        "type": "github"
       }
     },
     "tsnsrv": {
