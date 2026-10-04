@@ -28,7 +28,7 @@ curl --silent --request POST --header 'content-type: application/json' \
   "$api/updateTaskDetails"
 ```
 
-`graph` returns `tasks` (with `status`, `description` and `assignee`),
+`graph` returns `tasks` (with `status`, `description`, `url` and `assignee`),
 `projects` and `dependencies`. A dependency `{source, target}` means `source`
 must be completed before `target`. Statuses are `pending`, `in progress`,
 `in review` and `completed`.
@@ -43,4 +43,5 @@ must be completed before `target`. Statuses are `pending`, `in progress`,
    starting.
 4. Set it to `in progress`, do the work, then set it to `completed`, or to
    `in review` when a person has to approve the result (an open pull request).
-   Put links to results at the end of the task's `description`.
+   Set the result's link (http or https only), such as the pull request, as the
+   task's `url` in the same `updateTaskDetails` call.
