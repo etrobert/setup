@@ -1,7 +1,7 @@
 # Declare what Radarr keeps in its database: download client, path mapping,
-# indexer, root folder, notification. Runs after radarr.service.
+# indexer, root folder, quality sizes, notification. Runs after radarr.service.
 
-def api [method: string, path: string, body?: record] {
+def api [method: string, path: string, body?: any] {
     let url = $"($env.RADARR_URL)/api/v3/($path)"
     let headers = { X-Api-Key: $env.RADARR_KEY }
     match $method {
@@ -89,6 +89,9 @@ def main [url: string, c411_key: path] {
 
     mkdir /tank/media/movies
     ensure rootfolder path { path: /tank/media/movies }
+
+    # Upstream caps qualities up to WEBRip-1080p at 100 MB per minute; no cap wanted.
+    api put qualitydefinition/update (api get qualitydefinition | upsert maxSize null | upsert preferredSize null) | ignore
 
     # The tags field: omitted, Radarr leaves it null and the sender crashes on it.
     provider notification {
