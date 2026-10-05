@@ -17,7 +17,7 @@ _: {
         </LibraryOptions>
       '';
 
-      # The files Jellyfin's own "Add library" writes; its next library scan registers a new one.
+      # Jellyfin registers a new library only at its next library scan.
       writeLibrary =
         name:
         { type, path }:
