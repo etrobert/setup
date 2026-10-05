@@ -2,7 +2,7 @@
 # indexer, root folder, quality sizes and profile, notification. Runs after
 # sonarr.service.
 
-def api [method: string, path: string, body?: any] {
+def api [method: string, path: string, body?: record] {
     let url = $"($env.SONARR_URL)/api/v3/($path)"
     let headers = { X-Api-Key: $env.SONARR_KEY }
     match $method {
@@ -93,9 +93,6 @@ def main [url: string, c411_key: path, recyclarr_config: path] {
 
     mkdir /tank/media/tv
     ensure rootfolder path { path: /tank/media/tv }
-
-    # Upstream caps qualities up to Bluray-1080p at 155 MB per minute; no cap wanted.
-    api put qualitydefinition/update (api get qualitydefinition | upsert maxSize null | upsert preferredSize null) | ignore
 
     ^recyclarr sync --config $recyclarr_config
 

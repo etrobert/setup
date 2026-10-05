@@ -1,9 +1,12 @@
 ---
-# No quality_definition: TRaSH's sizes cap releases, and no cap is wanted.
 sonarr:
   series:
     base_url: !env_var SONARR_URL
     api_key: !env_var SONARR_KEY
+
+    # Minimums reject releases too small for their quality; no maximum.
+    quality_definition:
+      type: series
 
     quality_profiles:
       # [French MULTi.VO] UHD Bluray + WEB (2160p): original audio, no VF-only.
