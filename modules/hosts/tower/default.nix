@@ -53,6 +53,7 @@ in
       self.nixosModules.miniflux
       self.nixosModules.torrent-pull
       self.nixosModules.lidarr
+      self.nixosModules.radarr
       self.nixosModules.jellyfin
       self.nixosModules.monitor-gpu-wake
     ];
