@@ -5,7 +5,8 @@
 Personal dotfiles and system configuration repository using Nix flakes for:
 
 - aaron: MacBook Pro M3 Pro 18GB RAM (macOS w/ nix-darwin)
-- tower: AMD Ryzen 9700X Desktop — home server and workstation (NixOS)
+- tower: AMD Ryzen 9700X Desktop, Radeon RX 9070 XT 16GB VRAM, 64GB DDR5-6400
+  RAM — home server and workstation (NixOS)
 - leod: Lenovo ThinkPad X1 Carbon 7th Gen (NixOS/Windows)
 - pi: Raspberry Pi 4 Model B (Rev 1.1) (NixOS)
 - charon: OVH VPS-1 in Strasbourg — download hub (NixOS)
