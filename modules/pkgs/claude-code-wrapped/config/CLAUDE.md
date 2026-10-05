@@ -206,5 +206,7 @@ test, build, or manual verification step.
   don't write it.
 - At the end of every session, reflect and proactively propose enhancements to
   the user `CLAUDE.md` and project `CLAUDE.md` following the Maintenance
-  guidelines above.
+  guidelines above. Look for my preferences, workflows, and decisions — not for
+  how a tool or system behaves, even when learning it took a long debugging
+  session.
 - Never save to auto memory. To remember something, PR it into a `CLAUDE.md`.
