@@ -27,6 +27,7 @@
         self.nixosModules.virtualbox
         self.nixosModules.syncthing
         self.nixosModules.atuin-login
+        self.nixosModules.cursor
       ];
 
       documentation.doc.enable = false;
@@ -111,7 +112,6 @@
           externalPackages = with pkgs; [
             linuxPackages.cpupower
             bazaar
-            bibata-cursors
             chromium
             ddcutil
             dmidecode
@@ -164,23 +164,6 @@
             "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
             "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
             "khncfooichmfjbepaaaebmommgaepoid" # Unhook
-          ];
-        };
-
-        # GTK apps (pavucontrol, nautilus, …) pick their cursor
-        # by GSettings theme *name* and search XCURSOR_PATH for it — they
-        # ignore niri's private cursor config. Point the name at Bibata and
-        # put the package on the system profile (whose share/icons is on the
-        # global XCURSOR_PATH) so every GTK app matches the compositor cursor.
-        dconf = {
-          enable = true;
-          profiles.user.databases = [
-            {
-              settings."org/gnome/desktop/interface" = {
-                cursor-theme = "Bibata-Modern-Classic";
-                cursor-size = lib.gvariant.mkInt32 30;
-              };
-            }
           ];
         };
 
