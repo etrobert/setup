@@ -34,11 +34,7 @@
           description = "Connect Seerr to Jellyfin, Radarr and Sonarr, and Jellyfin's plugins to Seerr";
           after = [
             "seerr.service"
-            "jellyfin.service"
-            "radarr-setup.service"
-            "sonarr-setup.service"
-          ];
-          wants = [
+            "jellyfin-api-key.service"
             "radarr-setup.service"
             "sonarr-setup.service"
           ];

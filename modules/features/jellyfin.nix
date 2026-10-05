@@ -22,42 +22,32 @@ _: {
       plugins = [
         {
           name = "Jellyfin Enhanced";
-          guid = "f69e946a-4b3c-4e9a-8f0a-8d7c1b2c4d9b";
           version = "12.11.0.0";
-          targetAbi = "12.0.0.0";
           url = "https://github.com/n00bcodr/Jellyfin-Enhanced/releases/download/12.11.0.0/Jellyfin.Plugin.JellyfinEnhanced_12.0.0.zip";
           hash = "sha256-9s0EscClhWTOAOVnOzzSLNagxWVi9BF2chXEgqtiz7Q=";
         }
         {
           name = "Home Screen Sections";
-          guid = "b8298e01-2697-407a-b44d-aa8dc795e850";
           version = "3.0.2.0";
-          targetAbi = "12.1.0.0";
           url = "https://github.com/IAmParadox27/jellyfin-plugin-home-sections/releases/download/3.0.2.0/Release-12.1.0.zip";
           hash = "sha256-juoZ+0KcyylmXGwrjmHylF9eDX9xhviLjRIrPEjUMT0=";
         }
         # File Transformation and Plugin Pages: required by Home Screen Sections.
         {
           name = "File Transformation";
-          guid = "5e87cc92-571a-4d8d-8d98-d2d4147f9f90";
           version = "3.0.1.0";
-          targetAbi = "12.1.0.0";
           url = "https://github.com/IAmParadox27/jellyfin-plugin-file-transformation/releases/download/3.0.1.0/Release-12.1.0.zip";
           hash = "sha256-sYZMJERlI3vAKdYErT0foZoE+zbTJ2iB+5JPJ3ZogUo=";
         }
         {
           name = "Plugin Pages";
-          guid = "5b6550fa-a014-4f4c-8a2c-59a43680ac6d";
           version = "3.0.1.0";
-          targetAbi = "12.1.0.0";
           url = "https://github.com/IAmParadox27/jellyfin-plugin-pages/releases/download/3.0.1.0/Release-12.1.0.zip";
           hash = "sha256-YLivNVavLVm+XqY03DX2CdRibMsCoL2kzVSJccPj8X4=";
         }
         {
           name = "Intro Skipper";
-          guid = "c83d86bb-a1e0-4c35-a113-e2101cf4ee6b";
           version = "12.0.4.0";
-          targetAbi = "12.0.0.0";
           url = "https://github.com/intro-skipper/intro-skipper/releases/download/12.0/v12.0.4.0/intro-skipper-v12.0.4.0.zip";
           hash = "sha256-sPEZXGB3s+YI1E9+qJ3EWdKFu2gdqK7LfNjV4QjMlnA=";
         }
@@ -86,13 +76,10 @@ _: {
         '';
 
       # A copy, not a link: Jellyfin writes the plugin's status into meta.json.
-      # The release zips carry no meta.json; without one Jellyfin invents a plugin id.
       writePlugin =
         {
           name,
-          guid,
           version,
-          targetAbi,
           url,
           hash,
         }:
@@ -102,21 +89,10 @@ _: {
             inherit url hash;
             stripRoot = false;
           };
-          meta = builtins.toFile "meta.json" (
-            builtins.toJSON {
-              inherit
-                name
-                guid
-                version
-                targetAbi
-                ;
-            }
-          );
         in
         /* bash */ ''
           rm --recursive --force '${dir}'
           cp --recursive --no-preserve=mode '${files}' '${dir}'
-          cp --no-preserve=mode '${meta}' '${dir}/meta.json'
         '';
     in
     {
@@ -131,28 +107,44 @@ _: {
 
       age.secrets.jellyfin-api-key.file = ../../secrets/jellyfin-api-key.age;
 
-      systemd.services.jellyfin = {
-        # Libraries live under /tank/media; a scan before the mount marks them missing.
-        unitConfig.RequiresMountsFor = [ "/tank/media" ];
+      systemd.services = {
+        jellyfin = {
+          # Libraries live under /tank/media; a scan before the mount marks them missing.
+          unitConfig.RequiresMountsFor = [ "/tank/media" ];
 
-        serviceConfig.LoadCredential = [ "api-key:${config.age.secrets.jellyfin-api-key.path}" ];
+          # preStart, not tmpfiles: Jellyfin caches options.xml, so a change must restart it.
+          preStart = lib.concatLines (
+            lib.mapAttrsToList writeLibrary libraries
+            ++ [ "mkdir --parents '${config.services.jellyfin.dataDir}/plugins'" ]
+            ++ map writePlugin plugins
+          );
+        };
 
-        path = [ pkgs.sqlite ];
-
-        # preStart, not tmpfiles: Jellyfin caches options.xml, so a change must restart it.
-        # The API key goes straight into the database: Jellyfin's API mints one only for an admin login.
-        preStart = lib.concatLines (
-          lib.mapAttrsToList writeLibrary libraries
-          ++ map writePlugin plugins
-          ++ [
-            /* bash */ ''
-              sqlite3 '${config.services.jellyfin.dataDir}/data/jellyfin.db' \
-                "DELETE FROM ApiKeys WHERE Name = 'NixOS';
-                 INSERT INTO ApiKeys (DateCreated, DateLastActivity, Name, AccessToken)
-                 VALUES (datetime('now'), datetime('now'), 'NixOS', '$(cat "$CREDENTIALS_DIRECTORY/api-key")');"
-            ''
-          ]
-        );
+        # Jellyfin's API mints a key only for an admin login, so the key goes straight into its database.
+        jellyfin-api-key = {
+          after = [ "jellyfin.service" ];
+          partOf = [ "jellyfin.service" ];
+          wantedBy = [ "jellyfin.service" ];
+          path = [ pkgs.sqlite ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+            User = config.services.jellyfin.user;
+            LoadCredential = [ "api-key:${config.age.secrets.jellyfin-api-key.path}" ];
+            TimeoutStartSec = "5min";
+          };
+          # Jellyfin creates its database on first start, and reads keys from it on every request.
+          script = /* bash */ ''
+            db='${config.services.jellyfin.dataDir}/data/jellyfin.db'
+            until sqlite3 -readonly "$db" 'SELECT 1 FROM ApiKeys' > /dev/null 2>&1; do
+              sleep 1
+            done
+            sqlite3 -cmd '.timeout 10000' "$db" \
+              "DELETE FROM ApiKeys WHERE Name = 'NixOS';
+               INSERT INTO ApiKeys (DateCreated, DateLastActivity, Name, AccessToken)
+               VALUES (datetime('now'), datetime('now'), 'NixOS', '$(cat "$CREDENTIALS_DIRECTORY/api-key")');"
+          '';
+        };
       };
     };
 }
