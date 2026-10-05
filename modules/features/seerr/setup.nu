@@ -1,7 +1,3 @@
-# Declare what Seerr and Jellyfin's Seerr-facing plugins keep in their
-# settings: Seerr's Jellyfin login, libraries, Radarr, Sonarr and users, then
-# Jellyfin Enhanced and Home Screen Sections pointing at Seerr.
-
 const admin = "seerr"
 # Seerr's Permission enum: REQUEST | AUTO_APPROVE, and ADMIN.
 const request_auto_approve = 160
@@ -59,6 +55,7 @@ def arr [url: string, name: string] {
         hostname: $address.host
         port: ($address.port | into int)
         apiKey: $key
+        # Seerr's API schema requires it, though http is the default.
         useSsl: false
         activeProfileId: $profile.id
         activeProfileName: $profile.name
@@ -84,8 +81,7 @@ def main [seerr_url: string, jellyfin_url: string, radarr_url: string, sonarr_ur
     wait-for jellyfin { jellyfin get System/Info | get Id }
     wait-for seerr { http get $"($seerr_url)/api/v1/status" | get version }
 
-    # Seerr's first login must be a Jellyfin admin with a password. The API key
-    # is already admin over Jellyfin, so reusing it as that password exposes nothing more.
+    # Seerr's first login needs a Jellyfin admin password; the key is already admin, so reusing it exposes nothing.
     if (jellyfin get Users | where Name == $admin | is-empty) {
         let user = jellyfin post Users/New { Name: $admin, Password: $env.JELLYFIN_KEY }
         jellyfin post $"Users/($user.Id)/Policy" ($user.Policy | merge { IsAdministrator: true, IsHidden: true }) | ignore
