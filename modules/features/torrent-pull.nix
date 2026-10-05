@@ -1,5 +1,5 @@
-# Copies charon's finished torrents into tank. charon removes them itself
-# once seeded enough (see transmission.nix), so this only ever copies.
+# Mirrors charon's finished torrents into tank. charon removes them once
+# seeded enough (see transmission.nix); the *arrs' hardlinks keep imported files.
 let
   landing = "/tank/media/torrents";
 in
@@ -21,10 +21,10 @@ in
           ];
 
           # --chmod: jellyfin must read the result
-          # --delay-updates: jellyfin scans the landing zone; a half-copied file stays under .~tmp~
+          # --delay-updates: the *arrs import from the landing zone; a half-copied file stays under .~tmp~
           # ControlMaster: no writable home here
           script = /* bash */ ''
-            rsync --archive --partial --delay-updates --exclude='*.part' --chmod=Do+rx \
+            rsync --archive --partial --delay-updates --delete --exclude='*.part' --chmod=Do+rx \
               --rsh 'ssh -o ControlMaster=no' \
               charon:/var/lib/transmission/Downloads/ ${landing}/
           '';
