@@ -7,6 +7,10 @@ _: {
           type = "movies";
           path = "/tank/media/movies";
         };
+        Shows = {
+          type = "tvshows";
+          path = "/tank/media/tv";
+        };
       };
 
       # Unset options keep Jellyfin's defaults, which fetch metadata and posters from TMDb.

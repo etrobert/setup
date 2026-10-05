@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.nixosModules.radarr =
+  flake.nixosModules.sonarr =
     {
       config,
       lib,
@@ -8,10 +8,10 @@
       ...
     }:
     let
-      port = config.services.radarr.settings.server.port;
+      port = config.services.sonarr.settings.server.port;
 
-      radarr-setup =
-        self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "radarr-setup"
+      sonarr-setup =
+        self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "sonarr-setup"
           {
             makeWrapperArgs = [
               "--prefix"
@@ -24,7 +24,7 @@
     in
     {
       services = {
-        radarr = {
+        sonarr = {
           enable = true;
 
           # soft:users owns the library and the landing zone; imports write into both.
@@ -32,21 +32,21 @@
           group = "users";
 
           settings = {
-            # Radarr defaults to *; only tsnsrv on loopback should reach it.
+            # Sonarr defaults to *; only tsnsrv on loopback should reach it.
             server.bindaddress = "127.0.0.1";
 
             # No login: the tailnet is the only access control.
             # Not the default None: the UI then locks itself behind a setup modal that refuses None.
-            # Capitalised: Radarr parses the value as a C# enum, case-sensitively.
+            # Capitalised: Sonarr parses the value as a C# enum, case-sensitively.
             auth.method = "External";
           };
         };
 
-        tsnsrv.services.radarr.toURL = "http://127.0.0.1:${toString port}";
+        tsnsrv.services.sonarr.toURL = "http://127.0.0.1:${toString port}";
       };
 
       systemd.services = {
-        radarr = {
+        sonarr = {
           # The library watcher is created once at start and never retried; before the mount it dies.
           unitConfig.RequiresMountsFor = [ "/tank/media" ];
 
@@ -56,25 +56,22 @@
             ProtectHome = true;
             # SQLite spills statement journals to /tmp, read-only under strict.
             PrivateTmp = true;
-            # One mount for movies/ and torrents/: a hardlink across two bind mounts fails with EXDEV.
-            ReadWritePaths = [
-              config.services.radarr.dataDir
-              "/tank/media"
-            ];
+            # One mount for tv/ and torrents/: a hardlink across two bind mounts fails with EXDEV.
+            ReadWritePaths = [ "/tank/media" ];
             InaccessiblePaths = [ "/run/agenix.d" ];
           };
         };
 
-        radarr-setup = {
-          description = "Declare Radarr's indexer, download client, library, quality profile and notification";
-          after = [ "radarr.service" ];
-          wantedBy = [ "radarr.service" ];
+        sonarr-setup = {
+          description = "Declare Sonarr's indexer, download client, library, quality profile and notification";
+          after = [ "sonarr.service" ];
+          wantedBy = [ "sonarr.service" ];
 
           serviceConfig = {
             Type = "oneshot";
             # Stays active so switch-to-configuration reruns it when setup.nu changes.
             RemainAfterExit = true;
-            ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path} ${./recyclarr.yml}";
+            ExecStart = "${lib.getExe sonarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path} ${./recyclarr.yml}";
             # soft owns the c411 key.
             User = "soft";
             # Recyclarr's record of what it created.
