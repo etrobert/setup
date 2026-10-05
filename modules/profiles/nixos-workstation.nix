@@ -112,6 +112,11 @@
             linuxPackages.cpupower
             bazaar
             bibata-cursors
+            # X11 apps that can't read the dconf cursor-theme (sandboxed Chromium, Unity) fall back to "default"
+            (writeTextDir "share/icons/default/index.theme" /* ini */ ''
+              [Icon Theme]
+              Inherits=Bibata-Modern-Classic
+            '')
             chromium
             ddcutil
             dmidecode
@@ -146,6 +151,9 @@
           x-scheme-handler/unknown=zen.desktop
           application/pdf=zen.desktop
         '';
+
+        # Chromium on X11 ignores the dconf cursor-size and otherwise guesses it from DPI
+        sessionVariables.XCURSOR_SIZE = "30";
       };
 
       xdg.portal.xdgOpenUsePortal = true;
