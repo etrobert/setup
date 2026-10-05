@@ -44,6 +44,7 @@ in
   "lafraise-runner-token.age".publicKeys = [ tower ];
   "hass-token.age".publicKeys = allWorkstations;
   "c411-api-key.age".publicKeys = [ tower ];
+  "jellyfin-api-key.age".publicKeys = [ tower ];
   "atuin-key.age".publicKeys = allMachines;
   "atuin-password.age".publicKeys = allMachines;
   "google-health-oauth-client.age".publicKeys = allWorkstations;

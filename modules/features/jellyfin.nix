@@ -129,12 +129,30 @@ _: {
         '';
       };
 
+      age.secrets.jellyfin-api-key.file = ../../secrets/jellyfin-api-key.age;
+
       systemd.services.jellyfin = {
         # Libraries live under /tank/media; a scan before the mount marks them missing.
         unitConfig.RequiresMountsFor = [ "/tank/media" ];
 
+        serviceConfig.LoadCredential = [ "api-key:${config.age.secrets.jellyfin-api-key.path}" ];
+
+        path = [ pkgs.sqlite ];
+
         # preStart, not tmpfiles: Jellyfin caches options.xml, so a change must restart it.
-        preStart = lib.concatLines (lib.mapAttrsToList writeLibrary libraries ++ map writePlugin plugins);
+        # The API key goes straight into the database: Jellyfin's API mints one only for an admin login.
+        preStart = lib.concatLines (
+          lib.mapAttrsToList writeLibrary libraries
+          ++ map writePlugin plugins
+          ++ [
+            /* bash */ ''
+              sqlite3 '${config.services.jellyfin.dataDir}/data/jellyfin.db' \
+                "DELETE FROM ApiKeys WHERE Name = 'NixOS';
+                 INSERT INTO ApiKeys (DateCreated, DateLastActivity, Name, AccessToken)
+                 VALUES (datetime('now'), datetime('now'), 'NixOS', '$(cat "$CREDENTIALS_DIRECTORY/api-key")');"
+            ''
+          ]
+        );
       };
     };
 }
