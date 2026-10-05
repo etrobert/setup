@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, inputs, ... }:
 {
   flake.nixosModules.radarr =
     {
@@ -11,8 +11,35 @@
       port = config.services.radarr.settings.server.port;
 
       radarr-setup =
-        self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "radarr-setup" { }
+        self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "radarr-setup"
+          {
+            makeWrapperArgs = [
+              "--prefix"
+              "PATH"
+              ":"
+              (lib.makeBinPath [ pkgs.recyclarr ])
+            ];
+          }
           (builtins.readFile ./setup.nu);
+
+      # Local providers replace the default GitHub clones, so a sync runs offline and moves with flake.lock.
+      recyclarr-settings = (pkgs.formats.yaml { }).generate "settings.yml" {
+        resource_providers = [
+          {
+            name = "trash-guides";
+            type = "trash-guides";
+            path = "${inputs.trash-guides}";
+            replace_default = true;
+          }
+          # recyclarr.yml uses no config templates or includes.
+          {
+            name = "config-templates";
+            type = "config-templates";
+            path = "${pkgs.emptyDirectory}";
+            replace_default = true;
+          }
+        ];
+      };
     in
     {
       services = {
@@ -58,7 +85,7 @@
         };
 
         radarr-setup = {
-          description = "Declare Radarr's indexer, download client, library and notification";
+          description = "Declare Radarr's indexer, download client, library, quality profile and notification";
           after = [ "radarr.service" ];
           wantedBy = [ "radarr.service" ];
 
@@ -66,9 +93,13 @@
             Type = "oneshot";
             # Stays active so switch-to-configuration reruns it when setup.nu changes.
             RemainAfterExit = true;
-            ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path}";
+            ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path} ${./recyclarr.yml}";
             # soft owns the c411 key.
             User = "soft";
+            # Recyclarr's record of what it created.
+            StateDirectory = "recyclarr";
+            Environment = "RECYCLARR_CONFIG_DIR=%S/recyclarr";
+            BindReadOnlyPaths = [ "${recyclarr-settings}:%S/recyclarr/settings.yml" ];
             # Oneshots have no start timeout by default; the wait loops would hang silently.
             TimeoutStartSec = "5min";
           };

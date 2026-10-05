@@ -557,6 +557,7 @@
         "rack": "rack",
         "rift-radar": "rift-radar",
         "taskgraph": "taskgraph",
+        "trash-guides": "trash-guides",
         "tsnsrv": "tsnsrv",
         "zen-browser": "zen-browser"
       }
@@ -578,6 +579,22 @@
       "original": {
         "owner": "etrobert",
         "repo": "taskgraph",
+        "type": "github"
+      }
+    },
+    "trash-guides": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790561678,
+        "narHash": "sha256-GebRvQu7ft73Y6AdIkeO51mt5wiHy4WPQzKbVpaHe5s=",
+        "owner": "TRaSH-Guides",
+        "repo": "Guides",
+        "rev": "e7c97a676743d7430fc1c5808701c48252a2ac63",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TRaSH-Guides",
+        "repo": "Guides",
         "type": "github"
       }
     },
