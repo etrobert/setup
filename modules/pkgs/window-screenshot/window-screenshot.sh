@@ -1,6 +1,3 @@
-id=$(niri msg --json pick-window | jq --raw-output '.id // empty')
-[[ -n $id ]] || exit 0
-
 raw=$(mktemp --suffix=.png)
 out="$HOME/Pictures/Screenshots/Screenshot from $(date '+%Y-%m-%d %H-%M-%S').png"
 
@@ -11,7 +8,7 @@ trap 'kill $events_pid; rm --force "$raw"' EXIT
 # The first event means the subscription is live
 read -r -u "$events" _
 
-niri msg action screenshot-window --id "$id" --path "$raw"
+niri msg action screenshot-window --path "$raw"
 # shellcheck disable=SC2016 # $path is a jq variable
 timeout 5 jq --null-input --exit-status --arg path "$raw" \
   'first(inputs | select(.ScreenshotCaptured.path == $path))' <&"$events" >/dev/null
