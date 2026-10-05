@@ -55,6 +55,7 @@ in
       self.nixosModules.download-pull
       self.nixosModules.lidarr
       self.nixosModules.radarr
+      self.nixosModules.sonarr
       self.nixosModules.jellyfin
       self.nixosModules.monitor-gpu-wake
     ];
