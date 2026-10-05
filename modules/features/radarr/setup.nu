@@ -67,10 +67,6 @@ def main [url: string, c411_key: path, recyclarr_config: path] {
         localPath: /tank/media/torrents/
     }
 
-    # Transmission creates the category folder on charon at the first grab; the
-    # health check wants its pulled copy to exist before that.
-    mkdir /tank/media/torrents/radarr
-
     # c411 files films under 2030, animation under 2060, documentaries under 2070.
     provider indexer {
         name: c411
