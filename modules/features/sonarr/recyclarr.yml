@@ -11,7 +11,7 @@ sonarr:
         name: Original audio
         reset_unmatched_scores:
           enabled: true
-        # The movies order: the guide disallows remux and merges Blu-ray with WEB.
+        # Radarr's order: the guide drops remux and merges Blu-ray with WEB.
         qualities:
           - name: Bluray-2160p Remux
           - name: Bluray-1080p Remux
