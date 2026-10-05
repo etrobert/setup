@@ -713,10 +713,10 @@ binds {
 
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
-    Alt+Print hotkey-overlay-title="Screenshot Window: window-screenshot" { spawn "window-screenshot"; }
+    Alt+Print { spawn "window-screenshot"; }
     Mod+P { screenshot; }
     Mod+Ctrl+P hotkey-overlay-title="Copy Text from Screen Region: ocr-region" { spawn "ocr-region"; }
-    Mod+Alt+P hotkey-overlay-title="Screenshot Window: window-screenshot" { spawn "window-screenshot"; }
+    Mod+Alt+P { spawn "window-screenshot"; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
