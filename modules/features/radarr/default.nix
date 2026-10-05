@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, inputs, ... }:
 {
   flake.nixosModules.radarr =
     {
@@ -21,6 +21,25 @@
             ];
           }
           (builtins.readFile ./setup.nu);
+
+      # Local providers replace the default GitHub clones, so a sync runs offline and moves with flake.lock.
+      recyclarr-settings = (pkgs.formats.yaml { }).generate "settings.yml" {
+        resource_providers = [
+          {
+            name = "trash-guides";
+            type = "trash-guides";
+            path = "${inputs.trash-guides}";
+            replace_default = true;
+          }
+          # recyclarr.yml uses no config templates or includes.
+          {
+            name = "config-templates";
+            type = "config-templates";
+            path = "${pkgs.emptyDirectory}";
+            replace_default = true;
+          }
+        ];
+      };
     in
     {
       services = {
@@ -77,9 +96,10 @@
             ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path} ${./recyclarr.yml}";
             # soft owns the c411 key.
             User = "soft";
-            # Recyclarr's clone of the TRaSH guides and its record of what it created.
+            # Recyclarr's record of what it created.
             StateDirectory = "recyclarr";
             Environment = "RECYCLARR_CONFIG_DIR=%S/recyclarr";
+            BindReadOnlyPaths = [ "${recyclarr-settings}:%S/recyclarr/settings.yml" ];
             # Oneshots have no start timeout by default; the wait loops would hang silently.
             TimeoutStartSec = "5min";
           };
