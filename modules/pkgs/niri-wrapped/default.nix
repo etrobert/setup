@@ -17,6 +17,7 @@
                 self'.packages.noctalia-wrapped
                 self'.packages.ocr-region
                 self'.packages.scale-floating-window
+                self'.packages.window-screenshot
                 pkgs.nirius
                 pkgs.xwayland-satellite
               ];
