@@ -11,7 +11,15 @@
       port = config.services.radarr.settings.server.port;
 
       radarr-setup =
-        self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "radarr-setup" { }
+        self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "radarr-setup"
+          {
+            makeWrapperArgs = [
+              "--prefix"
+              "PATH"
+              ":"
+              (lib.makeBinPath [ pkgs.recyclarr ])
+            ];
+          }
           (builtins.readFile ./setup.nu);
     in
     {
@@ -58,7 +66,7 @@
         };
 
         radarr-setup = {
-          description = "Declare Radarr's indexer, download client, library and notification";
+          description = "Declare Radarr's indexer, download client, library, quality profile and notification";
           after = [ "radarr.service" ];
           wantedBy = [ "radarr.service" ];
 
@@ -66,9 +74,12 @@
             Type = "oneshot";
             # Stays active so switch-to-configuration reruns it when setup.nu changes.
             RemainAfterExit = true;
-            ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path}";
+            ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path} ${./recyclarr.yml}";
             # soft owns the c411 key.
             User = "soft";
+            # Recyclarr's clone of the TRaSH guides and its record of what it created.
+            StateDirectory = "recyclarr";
+            Environment = "RECYCLARR_CONFIG_DIR=%S/recyclarr";
             # Oneshots have no start timeout by default; the wait loops would hang silently.
             TimeoutStartSec = "5min";
           };

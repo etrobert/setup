@@ -1,5 +1,6 @@
 # Declare what Radarr keeps in its database: download client, path mapping,
-# indexer, root folder, notification. Runs after radarr.service.
+# indexer, root folder, quality sizes and profile, notification. Runs after
+# radarr.service.
 
 def api [method: string, path: string, body?: record] {
     let url = $"($env.RADARR_URL)/api/v3/($path)"
@@ -8,6 +9,7 @@ def api [method: string, path: string, body?: record] {
         get => (http get --headers $headers $url)
         post => (http post --headers $headers --content-type application/json $url $body)
         put => (http put --headers $headers --content-type application/json $url $body)
+        delete => (http delete --headers $headers $url)
     }
 }
 
@@ -39,7 +41,7 @@ def wait-for [what: string, probe: closure] {
     error make --unspanned { msg: $"timed out waiting for ($what)" }
 }
 
-def main [url: string, c411_key: path] {
+def main [url: string, c411_key: path, recyclarr_config: path] {
     $env.RADARR_URL = $url
     $env.RADARR_KEY = wait-for "radarr" { http get $"($url)/initialize.json" | get apiKey }
 
@@ -84,11 +86,21 @@ def main [url: string, c411_key: path] {
             { name: apiPath, value: /api/torznab }
             { name: apiKey, value: (open --raw $c411_key | str trim) }
             { name: categories, value: [2030 2060 2070] }
+            # MULTi on c411 means original (-2) plus French (2) audio, as TRaSH's French guide assumes.
+            { name: multiLanguages, value: [-2 2] }
         ]
     }
 
     mkdir /tank/media/movies
     ensure rootfolder path { path: /tank/media/movies }
+
+    # Reads RADARR_URL and RADARR_KEY from the environment.
+    ^recyclarr sync --config $recyclarr_config
+
+    # The only profile left is the one every movie gets, from the UI or Seerr.
+    for profile in (api get qualityprofile | where name != "Original audio") {
+        api delete $"qualityprofile/($profile.id)"
+    }
 
     # The tags field: omitted, Radarr leaves it null and the sender crashes on it.
     provider notification {
