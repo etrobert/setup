@@ -20,11 +20,10 @@ in
             rsync
           ];
 
-          # --chmod: jellyfin must read the result
           # --delay-updates: the *arrs import from the landing zone; a half-copied file stays under .~tmp~
           # ControlMaster: no writable home here
           script = /* bash */ ''
-            rsync --archive --partial --delay-updates --delete --exclude='*.part' --chmod=Do+rx \
+            rsync --archive --partial --delay-updates --delete --exclude='*.part' \
               --rsh 'ssh -o ControlMaster=no' \
               charon:/var/lib/transmission/Downloads/ ${landing}/
           '';
