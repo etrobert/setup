@@ -56,6 +56,7 @@ in
       self.nixosModules.radarr
       self.nixosModules.sonarr
       self.nixosModules.jellyfin
+      self.nixosModules.seerr
       self.nixosModules.monitor-gpu-wake
     ];
   };
