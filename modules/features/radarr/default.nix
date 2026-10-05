@@ -64,6 +64,8 @@
 
           serviceConfig = {
             Type = "oneshot";
+            # Stays active so switch-to-configuration reruns it when setup.nu changes.
+            RemainAfterExit = true;
             ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path}";
             # soft owns the c411 key.
             User = "soft";
