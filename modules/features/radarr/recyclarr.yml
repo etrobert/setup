@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://schemas.recyclarr.dev/v8/config-schema.json
+---
 # No quality_definition: TRaSH's sizes cap releases, and no cap is wanted.
 radarr:
   movies:
@@ -6,12 +6,12 @@ radarr:
     api_key: !env_var RADARR_KEY
 
     quality_profiles:
-      # MULTi.VO: original audio required, MULTi (original + French) preferred, French-only rejected.
-      - trash_id: 1fef28c8c919f31cd86283b1baf527d4 # [French MULTi.VO] UHD Remux (2160p)
+      # [French MULTi.VO] UHD Remux (2160p): original audio, no French-only.
+      - trash_id: 1fef28c8c919f31cd86283b1baf527d4
         name: Original audio
         reset_unmatched_scores:
           enabled: true
-        # Adds 1080p to the guide's 2160p-only list, ordered remux, Blu-ray, WEB.
+        # Adds 1080p to the guide's 2160p-only list.
         qualities:
           - name: Remux-2160p
           - name: Remux-1080p
@@ -25,15 +25,17 @@ radarr:
     custom_formats:
       # The guide's UHD profile only ranks 2160p Blu-ray encoders.
       - trash_ids:
-          - ed27ebfef2f323e964fb1f61391bcb35 # HD Bluray Tier 01
-          - c20c8647f2746a1f4c4262b0fbbeeeae # HD Bluray Tier 02
-          - 5608c71bcebba0a5e666223bae8c9227 # HD Bluray Tier 03
-          - 5322da05b19d857acc1e75be3edf47b3 # FR HD Bluray Tier 01
-          - 57f34251344be2e283fc30e00e458be6 # FR HD Bluray Tier 02
+          # HD Bluray Tier 01, 02, 03
+          - ed27ebfef2f323e964fb1f61391bcb35
+          - c20c8647f2746a1f4c4262b0fbbeeeae
+          - 5608c71bcebba0a5e666223bae8c9227
+          # FR HD Bluray Tier 01, 02
+          - 5322da05b19d857acc1e75be3edf47b3
+          - 57f34251344be2e283fc30e00e458be6
         assign_scores_to:
           - name: Original audio
 
     custom_format_groups:
       add:
-        # Browsers cannot play Dolby Vision; without an HDR10 layer Jellyfin has nothing to fall back to.
-        - trash_id: 7fc2751eef7e6bdc70b74136e5e35c76 # [HDR Formats] DV (w/o HDR fallback)
+        # [HDR Formats] DV (w/o HDR fallback): browsers can't play Dolby Vision.
+        - trash_id: 7fc2751eef7e6bdc70b74136e5e35c76
