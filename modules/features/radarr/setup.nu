@@ -94,7 +94,6 @@ def main [url: string, c411_key: path, recyclarr_config: path] {
     mkdir /tank/media/movies
     ensure rootfolder path { path: /tank/media/movies }
 
-    # Reads RADARR_URL and RADARR_KEY from the environment.
     ^recyclarr sync --config $recyclarr_config
 
     # The only profile left is the one every movie gets, from the UI or Seerr.
