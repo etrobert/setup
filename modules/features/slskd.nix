@@ -20,7 +20,6 @@
               cache.retention = 60;
             };
 
-            # c411's rule, borrowed: 72 h, then tower has long copied it.
             retention.files.complete = 72 * 60;
 
             web = {
