@@ -17,21 +17,31 @@
         loader.generic-extlinux-compatible.enable = true;
       };
 
-      networking.hostName = "pi";
+      networking = {
+        hostName = "pi";
 
-      networking.networkmanager = {
-        enable = true;
-        ensureProfiles.profiles."end0-static" = {
-          connection = {
-            id = "end0-static";
-            type = "ethernet";
-            interface-name = "end0";
+        networkmanager = {
+          enable = true;
+          ensureProfiles.profiles."end0-static" = {
+            connection = {
+              id = "end0-static";
+              type = "ethernet";
+              interface-name = "end0";
+            };
+            ipv4 = {
+              method = "manual";
+              address1 = "192.168.0.18/24,192.168.0.1";
+              dns = "1.1.1.1;9.9.9.9;";
+            };
           };
-          ipv4 = {
-            method = "manual";
-            address1 = "192.168.0.18/24,192.168.0.1";
-            dns = "1.1.1.1;9.9.9.9;";
-          };
+        };
+
+        # --netfilter-mode=nodivert never calls tailscale's own masquerade chain
+        nat = {
+          enable = true;
+          enableIPv6 = true;
+          internalInterfaces = [ "tailscale0" ];
+          externalInterface = "end0";
         };
       };
 
@@ -43,14 +53,6 @@
       services.tailscale = {
         extraSetFlags = [ "--advertise-exit-node" ];
         extraUpFlags = [ "--advertise-exit-node" ];
-      };
-
-      # --netfilter-mode=nodivert never calls tailscale's own masquerade chain
-      networking.nat = {
-        enable = true;
-        enableIPv6 = true;
-        internalInterfaces = [ "tailscale0" ];
-        externalInterface = "end0";
       };
 
       time.timeZone = "Europe/Berlin";
