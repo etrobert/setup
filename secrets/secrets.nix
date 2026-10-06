@@ -48,6 +48,7 @@ in
   "atuin-password.age".publicKeys = allMachines;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
   "riot-api-key.age".publicKeys = [ charon ];
+  "slskd-env.age".publicKeys = [ charon ];
   "harmonia-signing-key.age".publicKeys = [ tower ];
   "dispatch-claude-token.age".publicKeys = [ tower ];
   "dispatch-github-token.age".publicKeys = [ tower ];
