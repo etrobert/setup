@@ -14,6 +14,7 @@
       self.nixosModules.auto-upgrade
       self.nixosModules.tailnet-services
       self.nixosModules.transmission
+      self.nixosModules.slskd
       self.nixosModules.node-exporter
       self.nixosModules.metrics
       self.nixosModules.caddy
