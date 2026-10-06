@@ -16,7 +16,6 @@ _: {
           "uid=soft"
           "x-systemd.automount"
           "x-systemd.idle-timeout=60"
-          "x-gvfs-show"
         ];
       };
     };
