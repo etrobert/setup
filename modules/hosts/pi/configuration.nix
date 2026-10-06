@@ -40,6 +40,19 @@
         interface = "end0";
       };
 
+      services.tailscale = {
+        extraSetFlags = [ "--advertise-exit-node" ];
+        extraUpFlags = [ "--advertise-exit-node" ];
+      };
+
+      # --netfilter-mode=nodivert never calls tailscale's own masquerade chain
+      networking.nat = {
+        enable = true;
+        enableIPv6 = true;
+        internalInterfaces = [ "tailscale0" ];
+        externalInterface = "end0";
+      };
+
       time.timeZone = "Europe/Berlin";
 
       system.stateVersion = "25.11";
