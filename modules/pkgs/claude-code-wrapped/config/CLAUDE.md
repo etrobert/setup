@@ -9,8 +9,8 @@ at `~/sync/doc`.
 
 On the Claude Max x20 plan.
 
-Works in English and speaks French often. Lives in Berlin but does not speak
-German. Does not have a driver's license.
+Fluent in French and English. Lives in Berlin but does not speak German. Does
+not have a driver's license.
 
 Uses Home Assistant and prefers local integrations where available. Comfortable
 with kit assembly and DIY hardware.
