@@ -169,6 +169,8 @@ cannot: why this value, which upstream bug.
 Before committing, verify the change: typecheck, lint, and run the relevant
 test, build, or manual verification step.
 
+When working on a web UI, try the change yourself using Claude in Chrome.
+
 ## Git Workflow
 
 - Any change I ask for in a repository ends in a pull request — commit, push and
