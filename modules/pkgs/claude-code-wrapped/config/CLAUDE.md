@@ -62,6 +62,9 @@ Always spell out links. Don't use
 <https://www.github.com/etrobert/setup>. I am often working over ssh and
 clicking the links open on the wrong machine.
 
+Whenever I need to make a bank transfer, generate an EPC QR code (GiroCode) for
+it with `qrencode`, so I can scan it into my banking app.
+
 ## Research Approach
 
 When investigating how something works, consult both official documentation and
