@@ -39,7 +39,7 @@ def wait-for [what: string, probe: closure] {
     error make --unspanned { msg: $"timed out waiting for ($what)" }
 }
 
-def main [url: string, c411_key: path] {
+def main [url: string, c411_key: path, source_tag: path] {
     $env.LIDARR_URL = $url
     $env.LIDARR_KEY = wait-for "lidarr" { http get $"($url)/initialize.json" | get apiKey }
     let lossless = wait-for "quality profiles" { api get qualityprofile | where name == Lossless | get -o 0.id }
@@ -166,4 +166,17 @@ def main [url: string, c411_key: path] {
         writeAudioTags: newFiles
         scrubAudioTags: true
     }) | ignore
+
+    # The scrub runs in Lidarr's tag write during the import, before this hook adds SOURCE.
+    provider notification {
+        name: source-tag
+        implementation: CustomScript
+        configContract: CustomScriptSettings
+        onReleaseImport: true
+        onUpgrade: true
+        tags: []
+        fields: [
+            { name: path, value: $source_tag }
+        ]
+    }
 }
