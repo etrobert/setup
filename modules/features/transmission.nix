@@ -47,8 +47,7 @@ in
       services.transmission = {
         enable = true;
 
-        # A VPS has no NAT: incoming peers land directly, so the port is
-        # public on purpose. The RPC/web UI stays on loopback, behind tsnsrv.
+        # The peer port is public on purpose; the RPC/web UI stays on loopback, behind tsnsrv.
         openPeerPorts = true;
 
         settings = {
@@ -62,8 +61,7 @@ in
       services.tsnsrv.services.torrents.toURL =
         "http://127.0.0.1:${toString config.services.transmission.settings.rpc-port}";
 
-      # /var/lib/transmission is 750: the group is how tower's pull reads
-      # Downloads/.
+      # /var/lib/transmission is 750: the group is how download-pull reads Downloads/.
       users.users.soft.extraGroups = [ config.services.transmission.group ];
 
       systemd.services.transmission-reaper = {

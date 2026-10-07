@@ -8,7 +8,6 @@
         slskd = {
           enable = true;
           environmentFile = config.age.secrets.slskd-env.path;
-          # A VPS has no NAT: peers connect to the listen port directly.
           openFirewall = true;
 
           settings = {
