@@ -20,11 +20,6 @@ in
           imports = [ v ];
         }
       );
-      description = ''
-        nix-darwin modules.
-
-        You may use this for reusable pieces of configuration, service modules, etc.
-      '';
     };
   };
 }

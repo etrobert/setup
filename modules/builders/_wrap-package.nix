@@ -58,15 +58,6 @@
 #                                         #   for a package that declares none,
 #                                         #   such as a writers.* script
 #   }
-#
-# The surface grows one conversion at a time: each new wrapped package adds only
-# the option it needs (niri → runtimeInputs/filesToPatch; ntfy →
-# setDefaults; zsh → env/binaryWrapper/inheritArgv0; …).
-#
-# filesToPatch: for each listed file, resolve the symlink to its target, copy
-# the file (replacing the symlink with a writable copy) and substituteInPlace it
-# to point at $out.  Assertive: a missing file or an absent package path is a
-# build error, so a stale entry never goes unnoticed.
 {
   lib,
   symlinkJoin,

@@ -92,8 +92,7 @@
       flake = false;
     };
     # Tracks the latest Claude Code release ahead of nixpkgs' packaging cadence
-    # (hourly bot, official Anthropic binaries). `nix flake update` keeps it
-    # current. Built against our own nixpkgs via the follows below.
+    # (hourly bot, official Anthropic binaries).
     nix-claude-code = {
       url = "github:ryoppippi/nix-claude-code";
       inputs.nixpkgs.follows = "nixpkgs";

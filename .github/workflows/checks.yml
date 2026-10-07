@@ -14,7 +14,6 @@ concurrency:
 
 jobs:
   format:
-    name: format
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -25,7 +24,6 @@ jobs:
         run: nix fmt . -- --ci
 
   eval:
-    name: eval
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -36,7 +34,6 @@ jobs:
         run: nix flake check --all-systems --no-build --accept-flake-config
 
   dead-packages:
-    name: dead-packages
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -47,7 +44,6 @@ jobs:
         run: nix run --accept-flake-config .#nix-dead-packages
 
   lint:
-    name: lint
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -61,7 +57,6 @@ jobs:
   # requires every job above, so new checks are covered without touching
   # branch protection.
   all-checks:
-    name: all-checks
     needs: [format, eval, dead-packages, lint]
     if: always()
     runs-on: ubuntu-latest
