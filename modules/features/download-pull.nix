@@ -2,15 +2,8 @@
 # removes them itself once shared long enough (transmission.nix, slskd.nix).
 {
   flake.nixosModules.download-pull =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
+    { lib, pkgs, ... }:
     let
-      inherit (config.services.downloadPull) host;
-
       pull =
         {
           name,
@@ -20,7 +13,7 @@
         }:
         {
           services."${name}-pull" = {
-            description = "Pull ${name} downloads from ${host}";
+            description = "Pull ${name} downloads";
 
             # Persistent=true fires the missed run at boot, before DNS resolves.
             after = [ "network-online.target" ];
@@ -37,7 +30,7 @@
             script = /* bash */ ''
               rsync --archive --partial --delay-updates --chmod=Do+rx ${extraFlags} \
                 --rsh 'ssh -o ControlMaster=no' \
-                ${host}:${from}/ ${to}/
+                charon:${from}/ ${to}/
             '';
 
             serviceConfig = {
@@ -64,12 +57,7 @@
         };
     in
     {
-      options.services.downloadPull.host = lib.mkOption {
-        type = lib.types.str;
-        description = "SSH host running transmission and slskd.";
-      };
-
-      config.systemd = lib.mkMerge [
+      systemd = lib.mkMerge [
         # No --delete: jellyfin plays some torrents straight from the landing zone.
         (pull {
           name = "torrent";

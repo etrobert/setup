@@ -27,22 +27,18 @@
 
       time.timeZone = "Europe/Berlin";
 
-      services = {
-        claude-warmup.enable = true;
-
-        downloadPull.host = "charon";
-
-        sunshine = {
-          enable = false;
-          openFirewall = true;
-        };
-      };
+      services.claude-warmup.enable = true;
 
       wrappers.noctalia.idleLock = false;
 
       autoBrightness = {
         day = 90;
         night = 0;
+      };
+
+      services.sunshine = {
+        enable = false;
+        openFirewall = true;
       };
 
       networking.networkmanager = {
