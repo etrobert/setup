@@ -12,7 +12,7 @@ _: {
           "systemd ${pkgs.systemd.version} exceeds the version the switch tank guard was audited against — see the comment in modules/pkgs/switch/default.nix";
         pkgs.writeShellApplication {
           name = "switch";
-          # nh resolves sudo and env from PATH to store paths before elevating
+          # nh resolves sudo from PATH; sudo then looks up the bare `env` it is handed
           runtimeInputs = [
             self'.packages.setuid-sudo
           ]
