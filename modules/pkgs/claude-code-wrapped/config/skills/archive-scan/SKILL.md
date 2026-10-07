@@ -15,6 +15,8 @@ PDF over for filing. Notes produces good, legible scans but the PDFs are
 **no searchable text layer**. This skill triages, OCRs, compresses, and files
 them.
 
+New scans land in `tower:/tank/media/scans/`.
+
 ## 1. Identify the document
 
 The scans are image-only, so `pdftotext` returns nothing. Render a page and read
@@ -42,9 +44,8 @@ Use judgment about **record value**, and explain the reasoning to Étienne:
 - **Discard** (recommend, don't auto-delete) low-value items with no obligation
   or consequence — e.g. voluntary survey/study invitations, marketing.
 
-Never delete the original from `~/Downloads`/Notes without explicit
-confirmation. When archiving, **copy** the file in (leave the original in
-place).
+Once the scan is filed and verified (step 3), or Étienne agrees to discard it,
+delete it from the landing zone.
 
 ## 3. OCR + compress, then file
 
