@@ -9,6 +9,7 @@
     }:
     let
       port = config.services.lidarr.settings.server.port;
+      packages = self.packages.${pkgs.stdenv.hostPlatform.system};
 
       lidarr-setup =
         self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "lidarr-setup" { }
@@ -18,6 +19,7 @@
       services = {
         lidarr = {
           enable = true;
+          package = packages.lidarr-develop;
 
           # soft:users owns the library and the landing zone; imports write into both.
           user = "soft";
@@ -44,6 +46,12 @@
 
           # The library watcher is created once at start and never retried; before the mount it dies.
           unitConfig.RequiresMountsFor = [ "/tank/media" ];
+
+          # Where System > Plugins would install it; copied, not linked: Tubifarry writes settings.resx beside itself.
+          preStart = ''
+            mkdir --parents ${config.services.lidarr.dataDir}/plugins/TypNull/Tubifarry
+            cp --recursive --no-preserve=mode ${packages.tubifarry}/. ${config.services.lidarr.dataDir}/plugins/TypNull/Tubifarry
+          '';
 
           # No login on the tailnet, so a UI click must not reach the rest of what soft owns.
           serviceConfig = {
