@@ -14,8 +14,23 @@
       lidarr-setup =
         self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "lidarr-setup" { }
           (builtins.readFile ./setup.nu);
+
+      lidarr-source-tag = pkgs.writers.writePython3Bin "lidarr-source-tag" {
+        libraries = [ pkgs.python3Packages.mutagen ];
+      } (builtins.readFile ./source-tag.py);
+
+      lidarr-source-backfill = pkgs.writeShellApplication {
+        name = "lidarr-source-backfill";
+        inheritPath = false;
+        text = ''
+          exec ${lib.getExe lidarr-source-tag} backfill http://127.0.0.1:${toString port}
+        '';
+      };
     in
     {
+      # Run as soft after a manual Retag in Lidarr, which scrubs SOURCE.
+      environment.systemPackages = [ lidarr-source-backfill ];
+
       services = {
         lidarr = {
           enable = true;
@@ -75,7 +90,7 @@
 
           serviceConfig = {
             Type = "oneshot";
-            ExecStart = "${lib.getExe lidarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path}";
+            ExecStart = "${lib.getExe lidarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path} ${lib.getExe lidarr-source-tag}";
             # soft owns the c411 key.
             User = "soft";
             # Oneshots have no start timeout by default; the wait loops would hang silently.
