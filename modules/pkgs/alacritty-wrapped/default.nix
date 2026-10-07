@@ -11,13 +11,8 @@ _: {
             [window]
             padding.x = 10
             padding.y = 10
-            dimensions.columns = 0
-            dimensions.lines = 0
 
             decorations = "Buttonless"
-
-            opacity = 1
-            blur = true
 
             option_as_alt = "Both"
 

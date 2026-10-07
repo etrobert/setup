@@ -6,12 +6,6 @@ set editing-mode vi
 
 $if mode=vi
 
-# Shows (ins) or (cmd) before the prompt
-# set show-mode-in-prompt
-
-# Update vim mode display in prompt faster
-# set keyseq-timeout 100
-
 set keymap vi-command
 "\C-P": history-search-backward
 "\C-N": history-search-forward

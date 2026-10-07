@@ -22,7 +22,6 @@ _: {
           pkief.material-icon-theme
           vscodevim.vim
           aaron-bond.better-comments
-          # github.copilot-chat
           usernamehw.errorlens
           ms-vsliveshare.vsliveshare
 
@@ -35,7 +34,6 @@ _: {
           # Other Languages
           davidanson.vscode-markdownlint
           rust-lang.rust-analyzer
-          # yinfei.luahelper
         ];
       };
     };

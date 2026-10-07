@@ -52,7 +52,6 @@ alias g="git"
 alias t="tmux"
 alias v="nvim"
 
-# tree="tree -CF --dirsfirst"
 alias tree="eza --tree --icons --group-directories-first --git-ignore"
 alias ltree="tree --icons=always --color=always | less --raw-control-chars"
 
