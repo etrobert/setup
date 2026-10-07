@@ -1,9 +1,16 @@
-# Copies charon's downloads into tank. charon removes them itself once shared
-# long enough (transmission.nix, slskd.nix).
+# Copies the download host's finished downloads into /tank/media. That host
+# removes them itself once shared long enough (transmission.nix, slskd.nix).
 {
-  flake.nixosModules.charon-pull =
-    { lib, pkgs, ... }:
+  flake.nixosModules.download-pull =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
+      inherit (config.services.downloadPull) host;
+
       pull =
         {
           name,
@@ -13,7 +20,7 @@
         }:
         {
           services."${name}-pull" = {
-            description = "Pull ${name} downloads from charon";
+            description = "Pull ${name} downloads from ${host}";
 
             # Persistent=true fires the missed run at boot, before DNS resolves.
             after = [ "network-online.target" ];
@@ -30,12 +37,12 @@
             script = /* bash */ ''
               rsync --archive --partial --delay-updates --chmod=Do+rx ${extraFlags} \
                 --rsh 'ssh -o ControlMaster=no' \
-                charon:${from}/ ${to}/
+                ${host}:${from}/ ${to}/
             '';
 
             serviceConfig = {
               Type = "oneshot";
-              # soft: the key charon accepts, and the owner of the landing zone.
+              # soft: the key the download host accepts, and the owner of the landing zone.
               User = "soft";
               Environment = "HOME=/home/soft";
               ProtectSystem = "strict";
@@ -57,7 +64,12 @@
         };
     in
     {
-      systemd = lib.mkMerge [
+      options.services.downloadPull.host = lib.mkOption {
+        type = lib.types.str;
+        description = "SSH host running transmission and slskd.";
+      };
+
+      config.systemd = lib.mkMerge [
         # No --delete: jellyfin plays some torrents straight from the landing zone.
         (pull {
           name = "torrent";
@@ -65,7 +77,7 @@
           to = "/tank/media/torrents";
           extraFlags = "--exclude='*.part'";
         })
-        # A mirror: beets copies albums out, so the landing zone ends when charon's share does.
+        # A mirror: imports copy albums out, so the landing zone ends when the share does.
         (pull {
           name = "soulseek";
           from = "/var/lib/slskd/downloads";

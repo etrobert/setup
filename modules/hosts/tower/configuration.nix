@@ -29,6 +29,8 @@
 
       services.claude-warmup.enable = true;
 
+      services.downloadPull.host = "charon";
+
       wrappers.noctalia.idleLock = false;
 
       autoBrightness = {

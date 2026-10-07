@@ -51,7 +51,7 @@ in
       self.nixosModules.dispatch
       self.nixosModules.taskgraph
       self.nixosModules.miniflux
-      self.nixosModules.charon-pull
+      self.nixosModules.download-pull
       self.nixosModules.lidarr
       self.nixosModules.radarr
       self.nixosModules.jellyfin

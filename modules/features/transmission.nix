@@ -1,6 +1,6 @@
 # c411's seeding rule: 72 h or ratio 1.0 per torrent
 # (https://c411.org/wiki/ratio-seedtime). The reaper removes torrents that
-# met it, files included; tower has copied them long before (charon-pull.nix).
+# met it, files included; download-pull.nix has copied them long before.
 let
   seedSeconds = 72 * 3600;
   # A torrent can hit ratio 1.0 minutes after finishing, before the next pull.
