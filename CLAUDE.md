@@ -57,10 +57,10 @@ callers reach them as `self'.legacyPackages.<name>`, host modules as
 `self.legacyPackages.${system}.<name>`.
 
 **Custom packages** (`modules/pkgs/`): wrapped tool configurations (zsh-wrapped,
-tmux-wrapped, noctalia-wrapped, etc.) and custom scripts (gen-commit-msg,
-tmux-sessionizer, pm, audio-output-switcher, etc.). Each is a directory whose
-`default.nix` is picked up by the `importTree ./modules` in `flake.nix`, so
-adding a package means adding a directory.
+tmux-wrapped, etc.) and custom scripts (gen-commit-msg, tmux-sessionizer, pm,
+audio-output-switcher, etc.). Each is a directory whose `default.nix` is picked
+up by the `importTree ./modules` in `flake.nix`, so adding a package means
+adding a directory.
 
 `importTree` imports every `.nix` it finds as a flake module, so a package's own
 `evalModules` or `callPackage` files must be hidden from it: a path component
@@ -112,13 +112,13 @@ per host becomes a feature under `modules/features/`, alongside `darkman`:
   services or config like `darkman`. Everything else stays a plain
   `perSystem.packages.<name>` under `modules/pkgs/`; most do.
 - Host-facing knobs are options the feature declares:
-  `wrappers.git.genCommitMsg`, `wrappers.niri.liveConfig`. A knob read by more
+  `wrappers.git.genCommitMsg`, `wrappers.noctalia.idleLock`. A knob read by more
   than one feature becomes a declaration at the `modules/` root instead —
   `gpu.hasAv1Decode` serves firefox and zen.
-- A feature imported from a profile shared with darwin (`base.nix`) defines its
-  module in a `let` and exports it as both `nixosModules` and `darwinModules`;
-  flake-parts stamps a class on each, so one value cannot serve both. `git` is
-  the only such case.
+- A feature whose one module serves both NixOS and darwin hosts defines it in a
+  `let` and exports it as both `nixosModules` and `darwinModules`; flake-parts
+  stamps a class on each, so one value cannot serve both. `git` is the only such
+  case.
 
 Moving a package into a feature reorders `environment.systemPackages`, so the
 host toplevel hash changes while nothing rebuilds. Check that with a closure
@@ -141,10 +141,12 @@ are port-forwarded to tower (`.10`).
 **LAN DHCP + DNS:** served by `pi` via `dnsmasq`
 (`modules/features/lan-dns.nix`, listening on `end0`, static `.18`).
 
-**Static LAN addresses:** `pi end0` `.18` (MAC `DC:A6:32:13:51:14`), `tower`
-`.10` (motherboard NIC, MAC `34:5a:60:e1:da:11`, static via NetworkManager in
-`modules/hosts/tower/configuration.nix` — not a pi DHCP reservation). Tower's NM
-profile uses pi (`.18`) for DNS so split-horizon resolution works on tower too.
+**Static LAN addresses:** `pi end0` `.18`, `tower` `.10` and `.11` (motherboard
+NIC, MAC `34:5a:60:e1:da:11`, static via NetworkManager in
+`modules/hosts/tower/configuration.nix` — not a pi DHCP reservation). The
+port-forwards target `.10`; split-horizon DNS points LAN clients at `.11`.
+Tower's NM profile uses pi (`.18`) for DNS so split-horizon resolution works on
+tower too.
 
 **Testing the public/external path:** LAN clients resolve these names to tower
 directly (split-horizon) and bypass the port-forward, so they can't exercise the
@@ -155,9 +157,8 @@ traverse the real path. Useful for end-to-end latency/throughput measurements.
 
 **Vodafone Station API** (for future automation): model CGA6444VF, PHP-based
 REST at `/api/v1/`. All calls require `X-Requested-With: XMLHttpRequest`. Login
-is a two-step PBKDF2 flow — see session transcript for details.
-`api/v1/session/ menu` is the authenticated entry point; `api/v1/login_conf` is
-unauthenticated.
+is a two-step PBKDF2 flow. `api/v1/session/ menu` is the authenticated entry
+point; `api/v1/login_conf` is unauthenticated.
 
 ## Notifications (ntfy)
 
