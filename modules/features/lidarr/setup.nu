@@ -78,6 +78,28 @@ def main [url: string, c411_key: path] {
     # health check wants its pulled copy to exist before that.
     mkdir /tank/media/torrents/lidarr
 
+    # slskd has no login (the tailnet is the access control), but Tubifarry refuses an empty API key.
+    # removeCompletedDownloads: slskd keeps sharing a download until its own retention deletes it.
+    provider downloadclient {
+        name: soulseek
+        implementation: SlskdClient
+        configContract: SlskdProviderSettings
+        enable: true
+        priority: 1
+        removeCompletedDownloads: false
+        tags: []
+        fields: [
+            { name: baseUrl, value: "http://soulseek" }
+            { name: apiKey, value: unused }
+        ]
+    }
+
+    ensure remotepathmapping host {
+        host: soulseek
+        remotePath: /var/lib/slskd/downloads/
+        localPath: /tank/media/soulseek/
+    }
+
     provider indexer {
         name: c411
         implementation: Torznab
@@ -92,6 +114,22 @@ def main [url: string, c411_key: path] {
             { name: apiPath, value: /api/torznab }
             { name: apiKey, value: (open --raw $c411_key | str trim) }
             { name: categories, value: [3010] }
+        ]
+    }
+
+    # Ahead of c411 (lower is preferred): no seeding rule to honour, wider catalogue.
+    provider indexer {
+        name: soulseek
+        implementation: SlskdIndexer
+        configContract: SlskdSettings
+        enableRss: false
+        enableAutomaticSearch: true
+        enableInteractiveSearch: true
+        priority: 10
+        tags: []
+        fields: [
+            { name: baseUrl, value: "http://soulseek" }
+            { name: apiKey, value: unused }
         ]
     }
 
