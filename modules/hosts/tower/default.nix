@@ -51,6 +51,7 @@ in
       self.nixosModules.dispatch
       self.nixosModules.taskgraph
       self.nixosModules.miniflux
+      self.nixosModules.newsletter
       self.nixosModules.download-pull
       self.nixosModules.lidarr
       self.nixosModules.radarr
