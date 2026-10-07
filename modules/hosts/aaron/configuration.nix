@@ -103,7 +103,6 @@ _: {
             '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>252</integer><key>KeyboardLayout Name</key><string>ABC</string></dict>'
         '';
 
-        # macOS-specific settings
         defaults = {
           dock = {
             autohide = true;
@@ -163,10 +162,6 @@ _: {
         };
       };
 
-      # Disable Homebrew's InfluxDB analytics -- the only part of the old `brew
-      # shellenv` block worth keeping in Nix. nix-homebrew already provides `brew`
-      # on PATH, brew self-derives HOMEBREW_PREFIX/CELLAR/REPOSITORY, and there are
-      # no CLI formulae needing /opt/homebrew/bin on PATH. See issue #229.
       environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
       homebrew = {
@@ -216,7 +211,6 @@ _: {
 
       services.tailscale.enable = true;
 
-      # Enable Touch ID for sudo
       security.pam.services.sudo_local.touchIdAuth = true;
 
       home-manager = {
@@ -225,20 +219,7 @@ _: {
         users.soft =
           { config, ... }:
           {
-            home = {
-              username = "soft";
-              homeDirectory = "/Users/${config.home.username}";
-
-              # This value determines the Home Manager release that your
-              # configuration is compatible with. This helps avoid breakage
-              # when a new Home Manager release introduces backwards
-              # incompatible changes.
-              #
-              # You can update Home Manager without changing this value. See
-              # the Home Manager release notes for a list of state version
-              # changes in each release.
-              stateVersion = "25.11";
-            };
+            home.stateVersion = "25.11";
 
             services.syncthing = {
               enable = true;
