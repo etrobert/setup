@@ -66,7 +66,6 @@
         avahi = {
           enable = true;
           nssmdns4 = true;
-          openFirewall = true;
         };
 
         # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
@@ -83,9 +82,7 @@
       };
 
       hardware = {
-        # Enable bluetooth
         bluetooth.enable = true;
-        bluetooth.powerOnBoot = true;
 
         # Grants the seat user an ACL on /dev/i2c-*, which noctalia's ddcutil
         # brightness backend needs to reach external monitors over DDC/CI.
@@ -96,7 +93,6 @@
 
       systemd.user.tmpfiles.rules = [ "d %h/.local/share/contacts 0700 - - -" ];
 
-      # NixOS workstation packages
       environment.systemPackages =
         let
           customPackages = with self.packages.${system}; [
