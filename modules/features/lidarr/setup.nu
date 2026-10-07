@@ -159,4 +159,11 @@ def main [url: string, c411_key: path] {
             { name: tags, value: [] }
         ]
     }
+
+    # Off by default: imports kept the uploader's tags, so one album split into three in Navidrome.
+    # newFiles, not sync: sync rewrites tags on every metadata refresh.
+    api put config/metadataprovider (api get config/metadataprovider | merge {
+        writeAudioTags: newFiles
+        scrubAudioTags: true
+    }) | ignore
 }
