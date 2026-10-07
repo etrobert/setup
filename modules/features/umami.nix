@@ -5,7 +5,6 @@ _: {
       services = {
         umami = {
           enable = true;
-          createPostgresqlDatabase = true;
           settings = {
             APP_SECRET_FILE = config.age.secrets.umami-app-secret.path;
             DISABLE_TELEMETRY = true;

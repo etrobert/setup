@@ -63,7 +63,7 @@ _: {
           };
         in
         {
-          description = "Provision the soft Samba user from the smb-password secret";
+          description = "Provision the soft Samba user from the smb-credentials secret";
           before = [ "samba-smbd.service" ];
           requiredBy = [ "samba-smbd.service" ];
 

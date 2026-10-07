@@ -39,8 +39,6 @@
       # user service) so it fires unattended regardless of login state, without
       # needing `loginctl enable-linger` — the warmup needs no user session.
       user = "soft";
-      # Cheapest model: the 5h session is shared across models, so Haiku anchors
-      # the same window for the least cost against the weekly cap.
       model = "claude-haiku-4-5-20251001";
       # Fixed anchors so resets land at predictable hours. Stops at 18:00 (whose
       # session runs to 23:00) — no late-night warmup, since coding past then
@@ -53,9 +51,6 @@
       config = lib.mkIf config.services.claude-warmup.enable {
         systemd.services.claude-warmup = {
           description = "Anchor a fresh Claude 5-hour usage session";
-          # git is referenced by the wrapped claude for repo context; a neutral
-          # working dir keeps it from scanning a large checkout.
-          path = [ pkgs.git ];
           serviceConfig = {
             Type = "oneshot";
             User = user;
@@ -64,7 +59,6 @@
             # Network may be flaky / token refresh may blip; one retry is enough.
             Restart = "on-failure";
             RestartSec = 30;
-            # oneshot units can't Restart= without this.
             RestartMode = "direct";
           };
         };

@@ -114,10 +114,7 @@
         };
       };
 
-      boot = {
-        supportedFilesystems = [ "zfs" ];
-        zfs.forceImportRoot = false;
-      };
+      boot.zfs.forceImportRoot = false;
 
       # head --bytes 8 /etc/machine-id on tower
       networking.hostId = "6b83a633";

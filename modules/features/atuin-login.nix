@@ -42,8 +42,6 @@ _: {
         serviceConfig = {
           Type = "oneshot";
           User = "soft";
-          # atuin resolves its key and meta store relative to $HOME.
-          Environment = "HOME=/home/soft";
 
           # --password on argv rather than stdin: omitting it makes atuin read
           # /dev/tty via rpassword and panic under systemd.
