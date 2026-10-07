@@ -41,8 +41,7 @@ A feature imports another feature only when it does not work without it.
 Bundling things that merely go together belongs in `profiles/`.
 
 A feature never names a machine — not in its file or module name, its unit
-names, or its comments — since it can move to another host. A machine it depends
-on, such as a host to pull from, is an option the host sets.
+names, or its comments — since it can move to another host.
 
 **Declarations** stay at the `modules/` root — files that define vocabulary
 rather than provide a capability, so importing one adds nothing to a host by
