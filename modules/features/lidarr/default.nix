@@ -76,9 +76,17 @@
             "tailscaled-autoconnect.service"
           ];
           wantedBy = [ "lidarr.service" ];
+          # Longer than 5 attempts at TimeoutStartSec, so the burst always caps the retries.
+          startLimitBurst = 5;
+          startLimitIntervalSec = 1800;
 
           serviceConfig = {
             Type = "oneshot";
+            # Tailscale runs before it has fetched its peers, so MagicDNS names fail for a few seconds.
+            Restart = "on-failure";
+            RestartSec = "5s";
+            # direct: the ntfy OnFailure= alert fires only once the retries run out.
+            RestartMode = "direct";
             ExecStart = "${lib.getExe lidarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path}";
             # soft owns the c411 key.
             User = "soft";
