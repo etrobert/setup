@@ -12,7 +12,6 @@
         let
           makeGit = lib.makeOverridable (
             {
-              userConfig ? ./gitconfig-user,
               # gen-commit-msg pulls neovim-wrapped in, a ~3.7 GiB closure the pi
               # must not carry, so hosts that want `git sci` opt in. Off by
               # default: every in-repo consumer of `git-wrapped` inherits it.
@@ -49,7 +48,7 @@
                 package = pkgs.git;
                 env = {
                   GIT_CONFIG_SYSTEM = "${systemConfig}";
-                  GIT_CONFIG_GLOBAL = "${userConfig}";
+                  GIT_CONFIG_GLOBAL = "${./gitconfig-user}";
                 };
                 runtimeInputs = deps;
                 # Must stay: git resolves core.editor (nvim) and the `sci`/`find` aliases'

@@ -35,10 +35,7 @@
         };
       };
 
-      services.lanDns = {
-        enable = true;
-        interface = "end0";
-      };
+      services.lanDns.enable = true;
 
       time.timeZone = "Europe/Berlin";
 

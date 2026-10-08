@@ -29,7 +29,6 @@ _: {
       services = {
         # Immich reaches Postgres over /run/postgresql, so the TCP listener earns
         # nothing and only collides with the lafraise dev database on 5432.
-        # Disabling because port is used by LaFraise
         postgresql.settings.listen_addresses = lib.mkForce "";
 
         immich = {

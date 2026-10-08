@@ -60,14 +60,10 @@ _: {
 
       systemd.user.services.pimsync = {
         description = "pimsync calendar and contacts synchronization";
-        partOf = [ "network-online.target" ];
         after = [ "run-agenix.d.mount" ];
         wantedBy = [ "default.target" ];
         unitConfig.ConditionUser = "!@system";
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${lib.getExe pimsync} -v info daemon";
-        };
+        serviceConfig.ExecStart = "${lib.getExe pimsync} -v info daemon";
       };
     };
 }

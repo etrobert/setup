@@ -3,20 +3,13 @@
   flake.nixosModules.lan-dns =
     { config, lib, ... }:
     {
-      options.services.lanDns = {
-        enable = lib.mkEnableOption "LAN DHCP and split-horizon DNS via dnsmasq";
-        interface = lib.mkOption {
-          type = lib.types.str;
-          default = "end0";
-          description = "LAN interface to listen on";
-        };
-      };
+      options.services.lanDns.enable = lib.mkEnableOption "LAN DHCP and split-horizon DNS via dnsmasq";
 
       config = lib.mkIf config.services.lanDns.enable {
         services.dnsmasq = {
           enable = true;
           settings = {
-            interface = config.services.lanDns.interface;
+            interface = "end0";
             bind-dynamic = true;
             no-resolv = true;
             server = [
@@ -36,7 +29,7 @@
           };
         };
 
-        networking.firewall.interfaces.${config.services.lanDns.interface} = {
+        networking.firewall.interfaces.end0 = {
           allowedTCPPorts = [ 53 ];
           allowedUDPPorts = [
             53

@@ -234,7 +234,6 @@ in
                 };
               }
             ];
-            mode = "single";
           }
         ];
         # Notification targets. `all_devices` fans a notification out to the
