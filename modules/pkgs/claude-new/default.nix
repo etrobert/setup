@@ -8,12 +8,15 @@ _: {
           "--prefix"
           "PATH"
           ":"
-          (lib.makeBinPath [
-            self'.packages.git-wrapped
-            self'.packages.git-worktree-add
-            self'.packages.neovim-wrapped
-            self'.packages.tmux-wrapped
-          ])
+          (lib.makeBinPath (
+            with self'.packages;
+            [
+              git-wrapped
+              git-worktree-add
+              neovim-wrapped
+              tmux-wrapped
+            ]
+          ))
         ];
       } (builtins.readFile ./claude-new.nu);
     };
