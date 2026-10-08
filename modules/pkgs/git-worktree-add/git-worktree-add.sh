@@ -29,15 +29,10 @@ else
   git worktree add "$WORKTREE_PATH" -b "$BRANCH"
 fi
 
-for file in .env .tmux.conf; do
+for file in .env .tmux.conf CLAUDE.local.md .claude/settings.local.json; do
   if [ -f "$file" ]; then
-    cp "$file" "$WORKTREE_PATH"
+    cp --parents "$file" "$WORKTREE_PATH"
   fi
 done
-
-if [ -f ".claude/settings.local.json" ]; then
-  mkdir --parents "$WORKTREE_PATH/.claude"
-  cp ".claude/settings.local.json" "$WORKTREE_PATH/.claude/"
-fi
 
 tmux-sessionizer "$NAME"
