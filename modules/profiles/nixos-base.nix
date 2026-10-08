@@ -28,6 +28,7 @@ _: {
         gpu
         kanata
         ntfy-failure-alerts
+        tmux
       ];
 
       system.activationScripts.nixos-symlink.text = /* bash */ ''

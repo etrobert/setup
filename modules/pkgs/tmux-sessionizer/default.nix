@@ -19,7 +19,7 @@ _: {
               pkgs.gh
               pkgs.gnused
               inputs'.pronto.packages.default
-              self'.packages.tmux-wrapped
+              pkgs.tmux
               self'.packages.git-wrapped
               self'.packages.fzf-wrapped
               pkgs.eza

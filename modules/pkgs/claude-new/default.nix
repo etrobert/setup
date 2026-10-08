@@ -1,6 +1,11 @@
 _: {
   perSystem =
-    { lib, self', ... }:
+    {
+      pkgs,
+      lib,
+      self',
+      ...
+    }:
     {
       packages.claude-new = self'.legacyPackages.writers.writeNuBin "claude-new" {
         # Prefix, not replace: the tmux session git-worktree-add creates inherits it.
@@ -14,7 +19,7 @@ _: {
               git-wrapped
               git-worktree-add
               neovim-wrapped
-              tmux-wrapped
+              pkgs.tmux
             ]
           ))
         ];
