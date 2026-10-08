@@ -4,7 +4,6 @@ _: {
       tmuxModule =
         { pkgs, ... }:
         {
-          # Plain tmux reads /etc/tmux.conf, so prefix r can reload a deployed config.
           # Loading it into a throwaway server fails the build on an invalid line.
           environment.etc."tmux.conf".source =
             pkgs.runCommand "tmux.conf" { nativeBuildInputs = [ pkgs.tmux ]; }
