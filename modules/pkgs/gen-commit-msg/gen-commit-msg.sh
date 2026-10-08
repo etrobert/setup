@@ -10,7 +10,7 @@ case "${1:-}" in
   ;;
 esac
 
-MODEL="${COMMIT_MSG_MODEL:-gpt-4.1}"
+MODEL="${COMMIT_MSG_MODEL:-gpt-6-luna}"
 
 OPENAI_API_KEY="$(< /run/agenix/openai-api-key)"
 
@@ -46,7 +46,8 @@ $DIFF"
 
 REQUEST_BODY=$(jq --null-input --arg user_prompt "$USER_PROMPT" --arg system_prompt "$SYSTEM_PROMPT" --arg model "$MODEL" '{
   "model": $model,
-  "max_tokens": 128,
+  "max_completion_tokens": 128,
+  "reasoning_effort": "none",
   "messages": [
     {
       "role": "system",
