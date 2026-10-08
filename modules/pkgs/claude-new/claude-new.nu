@@ -1,7 +1,7 @@
 # Start Claude in a new worktree of the current repository, named after the prompt.
 
 def name-task [task: string]: nothing -> string {
-    let branches = ^git for-each-ref "--format=%(refname:short)" refs/heads
+    let branches = git for-each-ref "--format=%(refname:short)" refs/heads
     let key = open --raw /run/agenix/openai-api-key | str trim
 
     let response = http post https://api.openai.com/v1/chat/completions --content-type application/json --headers {Authorization: $"Bearer ($key)"} {
@@ -29,18 +29,18 @@ def main [] {
     let draft = $draft_dir | path join draft.md
     mkdir $draft_dir
 
-    ^nvim $draft
+    nvim $draft
 
     if not ($draft | path exists) or (open --raw $draft | str trim | is-empty) {
         return
     }
 
-    let root = ^git rev-parse --path-format=absolute --git-common-dir | str trim | path dirname
-    let default = ^git symbolic-ref --short refs/remotes/origin/HEAD | str trim
+    let root = git rev-parse --path-format=absolute --git-common-dir | str trim | path dirname
+    let default = git symbolic-ref --short refs/remotes/origin/HEAD | str trim
 
     # The fetch is faster than naming, so running it alongside costs nothing.
     let results = [
-        { ^git fetch --quiet origin ($default | str replace "origin/" "") }
+        { git fetch --quiet origin ($default | str replace "origin/" "") }
         { name-task (open --raw $draft) }
     ] | par-each --keep-order {|step| do $step }
     let name = $results.1
@@ -50,9 +50,9 @@ def main [] {
         error make --unspanned {msg: $"Unusable name from the model: ($name)"}
     }
 
-    ^git-worktree-add --detached $name $default
+    git-worktree-add --detached $name $default
 
-    let session = ^tmux list-sessions -F "#{session_name}" -f $"#{==:#{session_path},($root)/($name)}" | str trim
+    let session = tmux list-sessions -F "#{session_name}" -f $"#{==:#{session_path},($root)/($name)}" | str trim
     # An empty target would type into whichever pane tmux picks instead.
     if ($session | is-empty) {
         error make --unspanned {msg: $"No tmux session at ($root)/($name)"}
@@ -63,7 +63,7 @@ def main [] {
     cp $draft $prompt
 
     # The trailing colon makes = an exact session match in a pane target.
-    ^tmux send-keys -t $"=($session):" $"claude --name ($name) \"$\(cat ($prompt))\"" Enter
+    tmux send-keys -t $"=($session):" $"claude --name ($name) \"$\(cat ($prompt))\"" Enter
 
     rm $draft
 }
