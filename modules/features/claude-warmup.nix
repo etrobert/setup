@@ -64,7 +64,7 @@
             # Network may be flaky / token refresh may blip; one retry is enough.
             Restart = "on-failure";
             RestartSec = 30;
-            # oneshot units can't Restart= without this.
+            # direct: the ntfy OnFailure= alert fires only once the retries run out.
             RestartMode = "direct";
           };
         };
