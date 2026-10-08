@@ -33,12 +33,14 @@ def name-task [task: string]: nothing -> string {
     $response.choices.0.message.content
 }
 
-def main [] {
+# Kept across runs, so a failed launch reopens the same prompt.
+def draft-path []: nothing -> string {
+    $env.HOME | path join .local state claude-new draft.md
+}
 
-    # Kept across runs, so a failed launch reopens the same prompt.
-    let draft_dir = $env.HOME | path join .local state claude-new
-    let draft = $draft_dir | path join draft.md
-    mkdir $draft_dir
+def main [] {
+    let draft = draft-path
+    mkdir ($draft | path dirname)
 
     nvim $draft
 
@@ -46,13 +48,34 @@ def main [] {
         return
     }
 
+    # The shell reads the prompt once it has started, so it must outlive this run.
+    let prompt = mktemp --tmpdir claude-new.XXXXXX
+    # Frees the draft for the next prompt while this one launches.
+    mv --force $draft $prompt
+
+    # run-shell shows stdout only, in the current pane, once the launch ends.
+    tmux run-shell -b -c $env.PWD $"claude-new launch ($prompt) 2>&1"
+}
+
+def "main launch" [prompt: path] {
+    try {
+        launch $prompt
+    } catch {|err|
+        open --raw $prompt | save --append (draft-path)
+        $err.raw
+    }
+    # Returning try's empty output would print a blank line and open the run-shell view.
+    null
+}
+
+def launch [prompt: path] {
     let root = git rev-parse --path-format=absolute --git-common-dir | path dirname
     let default = git symbolic-ref --short refs/remotes/origin/HEAD
 
     # The fetch is faster than naming, so running it alongside costs nothing.
     let results = [
         { git fetch --quiet origin }
-        { name-task (open --raw $draft) }
+        { name-task (open --raw $prompt) }
     ] | par-each --keep-order {|step| do $step }
     let name = $results.1
 
@@ -61,7 +84,11 @@ def main [] {
         error make --unspanned {msg: $"Unusable name from the model: ($name)"}
     }
 
-    git-worktree-add --detached $name $default
+    # Its progress output would open the run-shell view even on success.
+    let added = git-worktree-add --detached $name $default | complete
+    if $added.exit_code != 0 {
+        error make --unspanned {msg: $"git-worktree-add failed:\n($added.stdout)($added.stderr)"}
+    }
 
     let at_worktree = $"#{==:#{session_path},($root)/($name)}"
     let session = tmux list-sessions -F "#{session_name}" -f $at_worktree
@@ -70,12 +97,6 @@ def main [] {
         error make --unspanned {msg: $"No tmux session at ($root)/($name)"}
     }
 
-    # The shell reads the prompt once it has started, so it must outlive this run.
-    let prompt = mktemp --tmpdir claude-new.XXXXXX
-    cp $draft $prompt
-
     # The trailing colon makes = an exact session match in a pane target.
     tmux send-keys -t $"=($session):" $"claude --name ($name) \"$\(cat ($prompt))\"" Enter
-
-    rm $draft
 }
