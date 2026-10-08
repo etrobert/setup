@@ -23,14 +23,7 @@
 
       # nufmt's line_length doesn't cap every line yet: https://github.com/nushell/nufmt/issues/241
       nu-line-length = pkgs.runCommand "nu-line-length-check" { } ''
-        cd ${self}
-        long=$(find . -name '*.nu' -exec awk 'length > 100 { print FILENAME ":" FNR }' {} +)
-        if [ -n "$long" ]; then
-          echo "Nushell lines over 100 columns:"
-          echo "$long"
-          exit 1
-        fi
-        touch $out
+        ! grep --recursive --line-number --include='*.nu' '.\{101\}' ${self} && touch $out
       '';
     };
   };
