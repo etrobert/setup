@@ -1,23 +1,25 @@
 _: {
   perSystem =
-    { pkgs, self', ... }:
     {
-      packages.claude-new = pkgs.writeShellApplication {
-        name = "claude-new";
-        # Hands its PATH to the tmux session git-worktree-add creates.
-        inheritPath = true;
-
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.curl
-          pkgs.jq
-          self'.packages.git-wrapped
-          self'.packages.git-worktree-add
-          self'.packages.neovim-wrapped
-          self'.packages.tmux-wrapped
+      pkgs,
+      lib,
+      self',
+      ...
+    }:
+    {
+      packages.claude-new = self'.legacyPackages.writers.writeNuBin "claude-new" {
+        # Prefix, not replace: the tmux session git-worktree-add creates inherits it.
+        makeWrapperArgs = [
+          "--prefix"
+          "PATH"
+          ":"
+          (lib.makeBinPath [
+            self'.packages.git-wrapped
+            self'.packages.git-worktree-add
+            self'.packages.neovim-wrapped
+            self'.packages.tmux-wrapped
+          ])
         ];
-
-        text = builtins.readFile ./claude-new.sh;
-      };
+      } (builtins.readFile ./claude-new.nu);
     };
 }
