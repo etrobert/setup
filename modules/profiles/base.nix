@@ -82,6 +82,8 @@ _: {
               ControlPersist 3600
               ControlPath ~/.ssh/ctrl-%r@%h:%p
               AddKeysToAgent yes
+              # NixOS clients don't send it by default, so macOS sshd falls back to the C locale
+              SendEnv LANG LC_*
           '';
 
           ssh.knownHosts = {
