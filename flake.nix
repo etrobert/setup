@@ -159,7 +159,13 @@
             ];
           };
 
-          formatter = pkgs.nixfmt-tree;
+          formatter = pkgs.nixfmt-tree.override {
+            runtimeInputs = [ pkgs.nufmt ];
+            settings.formatter.nufmt = {
+              command = "nufmt";
+              includes = [ "*.nu" ];
+            };
+          };
         };
     };
 }

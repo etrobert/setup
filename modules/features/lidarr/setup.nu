@@ -3,7 +3,7 @@
 
 def api [method: string, path: string, body?: record] {
     let url = $"($env.LIDARR_URL)/api/v1/($path)"
-    let headers = { X-Api-Key: $env.LIDARR_KEY }
+    let headers = {X-Api-Key: $env.LIDARR_KEY}
     match $method {
         get => (http get --headers $headers $url)
         post => (http post --headers $headers --content-type application/json $url $body)
@@ -36,13 +36,17 @@ def wait-for [what: string, probe: closure] {
         if $value != null { return $value }
         sleep 1sec
     }
-    error make --unspanned { msg: $"timed out waiting for ($what)" }
+    error make --unspanned {msg: $"timed out waiting for ($what)"}
 }
 
 def main [url: string, c411_key: path] {
     $env.LIDARR_URL = $url
-    $env.LIDARR_KEY = wait-for "lidarr" { http get $"($url)/initialize.json" | get apiKey }
-    let lossless = wait-for "quality profiles" { api get qualityprofile | where name == Lossless | get -o 0.id }
+    $env.LIDARR_KEY = wait-for "lidarr" {
+        http get $"($url)/initialize.json" | get apiKey
+    }
+    let lossless = wait-for "quality profiles" {
+        api get qualityprofile | where name == Lossless | get -o 0.id
+    }
     let standard = api get metadataprofile | where name == Standard | get 0.id
 
     # Off, Lidarr drops imports flat into the artist folder under their original names.
@@ -63,16 +67,16 @@ def main [url: string, c411_key: path] {
         removeCompletedDownloads: false
         tags: []
         fields: [
-            { name: host, value: torrents }
-            { name: port, value: 80 }
+            {name: host, value: torrents}
+            {name: port, value: 80}
         ]
     }
 
-    ensure remotepathmapping host {
-        host: torrents
-        remotePath: /var/lib/transmission/Downloads/
-        localPath: /tank/media/torrents/
-    }
+    (ensure
+        remotepathmapping
+        host
+        {host: torrents, remotePath: /var/lib/transmission/Downloads/, localPath: /tank/media/torrents/}
+    )
 
     # Transmission creates the category folder on charon at the first grab; the
     # health check wants its pulled copy to exist before that.
@@ -89,16 +93,16 @@ def main [url: string, c411_key: path] {
         removeCompletedDownloads: false
         tags: []
         fields: [
-            { name: baseUrl, value: "http://soulseek" }
-            { name: apiKey, value: unused }
+            {name: baseUrl, value: "http://soulseek"}
+            {name: apiKey, value: unused}
         ]
     }
 
-    ensure remotepathmapping host {
-        host: soulseek
-        remotePath: /var/lib/slskd/downloads/
-        localPath: /tank/media/soulseek/
-    }
+    (ensure
+        remotepathmapping
+        host
+        {host: soulseek, remotePath: /var/lib/slskd/downloads/, localPath: /tank/media/soulseek/}
+    )
 
     provider indexer {
         name: c411
@@ -110,10 +114,16 @@ def main [url: string, c411_key: path] {
         priority: 25
         tags: []
         fields: [
-            { name: baseUrl, value: "https://c411.org" }
-            { name: apiPath, value: /api/torznab }
-            { name: apiKey, value: (open --raw $c411_key | str trim) }
-            { name: categories, value: [3010] }
+            {name: baseUrl, value: "https://c411.org"}
+            {name: apiPath, value: /api/torznab}
+            {
+                name: apiKey
+                value: (open --raw $c411_key | str trim)
+            }
+            {
+                name: categories
+                value: [3010]
+            }
         ]
     }
 
@@ -128,8 +138,8 @@ def main [url: string, c411_key: path] {
         priority: 10
         tags: []
         fields: [
-            { name: baseUrl, value: "http://soulseek" }
-            { name: apiKey, value: unused }
+            {name: baseUrl, value: "http://soulseek"}
+            {name: apiKey, value: unused}
         ]
     }
 
@@ -154,9 +164,15 @@ def main [url: string, c411_key: path] {
         onUpgrade: true
         tags: []
         fields: [
-            { name: serverUrl, value: "http://127.0.0.1:2586" }
-            { name: topics, value: [home] }
-            { name: tags, value: [] }
+            {name: serverUrl, value: "http://127.0.0.1:2586"}
+            {
+                name: topics
+                value: [home]
+            }
+            {
+                name: tags
+                value: []
+            }
         ]
     }
 
