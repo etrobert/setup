@@ -13,6 +13,7 @@ _arguments -s \
   '(- *)'{-h,--help}'[show help]' \
   '(-e --existing)'{-e,--existing}'[show only existing tmux sessions]' \
   '(-w --worktrees)'{-w,--worktrees}'[show git worktrees of the current repository]' \
+  '--detached[create the session without switching to it]' \
   ':project:->project'
 
 case $state in

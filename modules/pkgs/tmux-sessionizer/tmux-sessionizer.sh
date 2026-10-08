@@ -161,6 +161,12 @@ list_sessions() {
   done
 }
 
+detached=false
+if [ "${1:-}" = --detached ]; then
+  detached=true
+  shift
+fi
+
 if [ $# -ge 1 ]; then
   case "$1" in
   -h | --help)
@@ -172,7 +178,8 @@ if [ $# -ge 1 ]; then
     echo "  -n, --next-waiting CLIENT  Switch CLIENT to the next agent blocked or finished"
     echo "  -e, --existing    Show only existing tmux sessions"
     echo "  -w, --worktrees   Show git worktrees of the current repository"
-    echo "  -h, --help        Show this help message"
+    echo "  --detached        Create the session without switching to it"
+    echo "  -h, --help       Show this help message"
     echo ""
     echo "If no PROJECT_NAME is provided, shows a fuzzy finder over the"
     echo "projects in ~/work/, plus doc."
@@ -277,7 +284,9 @@ if ! tmux has-session -t="$session" 2>/dev/null; then
   tmux new-session -d -s "$session" -c "$project_path" -e "TMUX_SESSION_PATH=$project_path"
 fi
 
-if [ -v TMUX ]; then
+if [ "$detached" = true ]; then
+  exit 0
+elif [ -v TMUX ]; then
   tmux switch-client -t "$session"
 else
   tmux attach-session -t "$session"
