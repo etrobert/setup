@@ -15,4 +15,5 @@ case $file in
 *.toml) taplo fmt "$file" ;;
 *.py) isort "$file" && black "$file" ;;
 *.nix) nixfmt "$file" ;;
+*.nu) nufmt "$file" ;;
 esac

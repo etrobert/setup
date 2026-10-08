@@ -2,6 +2,7 @@
   black,
   isort,
   nixfmt,
+  nufmt,
   prettier,
   rustfmt,
   shfmt,
@@ -15,6 +16,7 @@ writeShellApplication {
     black
     isort
     nixfmt
+    nufmt
     prettier
     rustfmt
     shfmt
