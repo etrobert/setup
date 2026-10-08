@@ -29,7 +29,7 @@ else
   git worktree add "$WORKTREE_PATH" -b "$BRANCH"
 fi
 
-for file in .env .tmux.conf; do
+for file in .env .tmux.conf CLAUDE.local.md; do
   if [ -f "$file" ]; then
     cp "$file" "$WORKTREE_PATH"
   fi
