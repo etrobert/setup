@@ -18,6 +18,9 @@
             # Persistent=true fires the missed run at boot; charon resolves only once tailscale runs.
             after = [ "tailscaled-autoconnect.service" ];
 
+            # Longer than 5 attempts at ConnectTimeout, so a dead link always exhausts the retries.
+            startLimitIntervalSec = 300;
+
             path = with pkgs; [
               openssh
               rsync
@@ -26,14 +29,20 @@
             # --chmod: jellyfin must read the result
             # --delay-updates: the landing zone is scanned; a half-copied file stays under .~tmp~
             # ControlMaster: no writable home here
+            # ConnectTimeout: a failed attempt must end quickly to count towards the start limit
             script = /* bash */ ''
               rsync --archive --partial --delay-updates --chmod=Do+rx ${extraFlags} \
-                --rsh 'ssh -o ControlMaster=no' \
+                --rsh 'ssh -o ControlMaster=no -o ConnectTimeout=10' \
                 charon:${from}/ ${to}/
             '';
 
             serviceConfig = {
               Type = "oneshot";
+              # Tailscale runs before it has fetched its peers, so charon fails to resolve for a few seconds.
+              Restart = "on-failure";
+              RestartSec = "5s";
+              # direct: the ntfy OnFailure= alert fires only once the retries run out.
+              RestartMode = "direct";
               # soft: the key the download host accepts, and the owner of the landing zone.
               User = "soft";
               Environment = "HOME=/home/soft";

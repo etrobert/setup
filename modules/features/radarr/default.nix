@@ -65,9 +65,16 @@
             "tailscaled-autoconnect.service"
           ];
           wantedBy = [ "radarr.service" ];
+          # Longer than 5 attempts at TimeoutStartSec, so the burst always caps the retries.
+          startLimitIntervalSec = 1800;
 
           serviceConfig = {
             Type = "oneshot";
+            # Tailscale runs before it has fetched its peers, so MagicDNS names fail for a few seconds.
+            Restart = "on-failure";
+            RestartSec = "5s";
+            # direct: the ntfy OnFailure= alert fires only once the retries run out.
+            RestartMode = "direct";
             # Stays active so switch-to-configuration reruns it when setup.nu changes.
             RemainAfterExit = true;
             ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path}";
