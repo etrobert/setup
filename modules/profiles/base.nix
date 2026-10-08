@@ -50,6 +50,7 @@ _: {
             htop
             jq
             magic-wormhole
+            nushell
             ripgrep
             wget
             zoxide
