@@ -61,6 +61,9 @@ break lines with a newline if needed.
 Use markdown formatting.
 ]]
 
+	-- stdout chunks can end mid-line; the tail waits for the next chunk
+	local partial = ""
+
 	local job = vim.system({
 		"curl",
 		"https://api.openai.com/v1/chat/completions",
@@ -85,7 +88,8 @@ Use markdown formatting.
 			if not data then
 				return
 			end
-			local lines = vim.split(data, "\n")
+			local lines = vim.split(partial .. data, "\n")
+			partial = table.remove(lines)
 			for _, line in ipairs(lines) do
 				if line == "" then
 					goto continue
@@ -96,7 +100,9 @@ Use markdown formatting.
 				end
 				local status, decoded_data = pcall(vim.json.decode, line)
 				if not status then
-					vim.notify("Error decoding JSON: " .. decoded_data, vim.log.levels.ERROR)
+					vim.schedule(function()
+						vim.notify("Error decoding JSON: " .. decoded_data, vim.log.levels.ERROR)
+					end)
 					goto continue
 				end
 				local content = decoded_data.choices[1].delta.content
