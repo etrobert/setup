@@ -1,5 +1,5 @@
-# Claude keys a worktree's trust on the main checkout, which a bare repo lacks,
-# so every new worktree asks again. Stand the bare repo in for the main checkout.
+# Workaround for https://github.com/anthropics/claude-code/issues/100612
+# Trusting the bare repo stands in for trusting the main checkout it lacks.
 
 [ "$(git config --get core.bare)" = true ] || exit 0
 
