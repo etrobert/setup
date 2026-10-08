@@ -15,9 +15,8 @@
           services."${name}-pull" = {
             description = "Pull ${name} downloads";
 
-            # Persistent=true fires the missed run at boot, before DNS resolves.
-            after = [ "network-online.target" ];
-            wants = [ "network-online.target" ];
+            # Persistent=true fires the missed run at boot; charon resolves only once tailscale runs.
+            after = [ "tailscaled-autoconnect.service" ];
 
             path = with pkgs; [
               openssh

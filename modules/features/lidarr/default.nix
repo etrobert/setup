@@ -70,7 +70,11 @@
 
         lidarr-setup = {
           description = "Declare Lidarr's indexer, download client, library and notification";
-          after = [ "lidarr.service" ];
+          # Testing the download client needs DNS, which is MagicDNS.
+          after = [
+            "lidarr.service"
+            "tailscaled-autoconnect.service"
+          ];
           wantedBy = [ "lidarr.service" ];
 
           serviceConfig = {
