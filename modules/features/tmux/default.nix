@@ -1,6 +1,4 @@
 _: {
-  # Defined once and exported to both classes, as git does: nixos-base and
-  # aaron each import it.
   flake =
     let
       tmuxModule =
