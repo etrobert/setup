@@ -1,11 +1,6 @@
 _: {
   perSystem =
-    {
-      pkgs,
-      lib,
-      self',
-      ...
-    }:
+    { lib, self', ... }:
     {
       packages.claude-new = self'.legacyPackages.writers.writeNuBin "claude-new" {
         # Prefix, not replace: the tmux session git-worktree-add creates inherits it.
