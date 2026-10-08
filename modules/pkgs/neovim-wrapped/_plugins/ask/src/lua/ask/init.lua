@@ -71,7 +71,9 @@ Use markdown formatting.
 		"Content-Type: application/json",
 		"-d",
 		vim.fn.json_encode({
-			model = "gpt-4.1",
+			model = "gpt-5.5",
+			-- medium (the default) delays the first token by 9-29s
+			reasoning_effort = "low",
 			messages = {
 				{ role = "system", content = system_message },
 				{ role = "user", content = prompt },
