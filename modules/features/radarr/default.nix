@@ -59,7 +59,11 @@
 
         radarr-setup = {
           description = "Declare Radarr's indexer, download client, library and notification";
-          after = [ "radarr.service" ];
+          # Testing the indexer needs DNS, which is MagicDNS.
+          after = [
+            "radarr.service"
+            "tailscaled-autoconnect.service"
+          ];
           wantedBy = [ "radarr.service" ];
 
           serviceConfig = {
