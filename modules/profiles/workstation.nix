@@ -36,6 +36,7 @@ _: {
               gen-commit-msg
               git-find-commit
               agents
+              claude-new
               hass-cli-wrapped
               pm
               pdfshrink
