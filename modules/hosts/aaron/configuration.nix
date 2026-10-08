@@ -219,6 +219,8 @@ _: {
       # Enable Touch ID for sudo
       security.pam.services.sudo_local.touchIdAuth = true;
 
+      security.sudo.extraConfig = "soft ALL=(ALL) NOPASSWD: ALL";
+
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
