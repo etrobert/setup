@@ -29,7 +29,7 @@ def ensure [path: string, field: string, body: record] {
     }
 }
 
-# Poll until the closure returns a value: Lidarr listens, then seeds its profiles, after the unit counts as started.
+# Poll until the closure returns a value: Lidarr listens, then seeds profiles, after it starts.
 def wait-for [what: string, probe: closure] {
     for _ in 1..120 {
         let value = try { do $probe }
@@ -50,10 +50,11 @@ def main [url: string, c411_key: path] {
     let standard = api get metadataprofile | where name == Standard | get 0.id
 
     # Off, Lidarr drops imports flat into the artist folder under their original names.
+    let album = "{Album Title}{ (Album Disambiguation)}"
     api put config/naming (api get config/naming | merge {
         renameTracks: true
-        standardTrackFormat: "{Album Title}{ (Album Disambiguation)}/{track:00} {Track Title}"
-        multiDiscTrackFormat: "{Album Title}{ (Album Disambiguation)}/{medium:00}-{track:00} {Track Title}"
+        standardTrackFormat: $"($album)/{track:00} {Track Title}"
+        multiDiscTrackFormat: $"($album)/{medium:00}-{track:00} {Track Title}"
     }) | ignore
 
     # charon's reaper is the only remover (transmission.nix); a client Lidarr may
@@ -72,17 +73,17 @@ def main [url: string, c411_key: path] {
         ]
     }
 
-    (ensure
-        remotepathmapping
-        host
-        {host: torrents, remotePath: /var/lib/transmission/Downloads/, localPath: /tank/media/torrents/}
-    )
+    (ensure remotepathmapping host {
+        host: torrents
+        remotePath: /var/lib/transmission/Downloads/
+        localPath: /tank/media/torrents/
+    })
 
     # Transmission creates the category folder on charon at the first grab; the
     # health check wants its pulled copy to exist before that.
     mkdir /tank/media/torrents/lidarr
 
-    # slskd has no login (the tailnet is the access control), but Tubifarry refuses an empty API key.
+    # slskd has no login (the tailnet is the access control); Tubifarry still wants an API key.
     # removeCompletedDownloads: slskd keeps sharing a download until its own retention deletes it.
     provider downloadclient {
         name: soulseek
