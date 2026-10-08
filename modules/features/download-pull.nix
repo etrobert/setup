@@ -19,7 +19,6 @@
             after = [ "tailscaled-autoconnect.service" ];
 
             # Longer than 5 attempts at ConnectTimeout, so a dead link always exhausts the retries.
-            startLimitBurst = 5;
             startLimitIntervalSec = 300;
 
             path = with pkgs; [
@@ -30,7 +29,7 @@
             # --chmod: jellyfin must read the result
             # --delay-updates: the landing zone is scanned; a half-copied file stays under .~tmp~
             # ControlMaster: no writable home here
-            # ConnectTimeout: a failed attempt must end quickly to count towards startLimitBurst
+            # ConnectTimeout: a failed attempt must end quickly to count towards the start limit
             script = /* bash */ ''
               rsync --archive --partial --delay-updates --chmod=Do+rx ${extraFlags} \
                 --rsh 'ssh -o ControlMaster=no -o ConnectTimeout=10' \

@@ -77,7 +77,6 @@
           ];
           wantedBy = [ "lidarr.service" ];
           # Longer than 5 attempts at TimeoutStartSec, so the burst always caps the retries.
-          startLimitBurst = 5;
           startLimitIntervalSec = 1800;
 
           serviceConfig = {
