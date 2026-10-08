@@ -61,11 +61,11 @@ def main [url: string, c411_key: path] {
         ]
     }
 
-    (ensure
-        remotepathmapping
-        host
-        {host: torrents, remotePath: /var/lib/transmission/Downloads/, localPath: /tank/media/torrents/}
-    )
+    (ensure remotepathmapping host {
+        host: torrents
+        remotePath: /var/lib/transmission/Downloads/
+        localPath: /tank/media/torrents/
+    })
 
     # Transmission creates the category folder on charon at the first grab; the
     # health check wants its pulled copy to exist before that.

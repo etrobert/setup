@@ -20,7 +20,10 @@ def search [category: string, terms: list<string>] {
     | each {|item|
         let f = $item.content
         {
-          seeds: ($f | where tag == attr | where attributes.name == seeders | get 0.attributes.value | into int),
+          seeds: (
+            $f | where tag == attr | where attributes.name == seeders
+            | get 0.attributes.value | into int
+          ),
           size: ($f | where tag == size | get 0.content.0.content | into filesize),
           published: ($f | where tag == pubDate | get 0.content.0.content | into datetime),
           title: ($f | where tag == title | get 0.content.0.content),

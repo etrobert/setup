@@ -20,6 +20,11 @@
       actionlint = pkgs.runCommand "actionlint-check" { nativeBuildInputs = [ pkgs.actionlint ]; } ''
         actionlint ${self}/.github/workflows/*.yml && touch $out
       '';
+
+      # nufmt's line_length doesn't cap every line yet: https://github.com/nushell/nufmt/issues/241
+      nu-line-length = pkgs.runCommand "nu-line-length-check" { } ''
+        ! grep --recursive --line-number --include='*.nu' '.\{101\}' ${self} && touch $out
+      '';
     };
   };
 }
