@@ -74,10 +74,6 @@ def main [url: string, c411_key: path] {
         localPath: /tank/media/torrents/
     }
 
-    # Transmission creates the category folder on charon at the first grab; the
-    # health check wants its pulled copy to exist before that.
-    mkdir /tank/media/torrents/lidarr
-
     provider indexer {
         name: c411
         implementation: Torznab
