@@ -57,10 +57,10 @@ callers reach them as `self'.legacyPackages.<name>`, host modules as
 `self.legacyPackages.${system}.<name>`.
 
 **Custom packages** (`modules/pkgs/`): wrapped tool configurations (zsh-wrapped,
-tmux-wrapped, noctalia-wrapped, etc.) and custom scripts (gen-commit-msg,
-tmux-sessionizer, pm, audio-output-switcher, etc.). Each is a directory whose
-`default.nix` is picked up by the `importTree ./modules` in `flake.nix`, so
-adding a package means adding a directory.
+noctalia-wrapped, etc.) and custom scripts (gen-commit-msg, tmux-sessionizer,
+pm, audio-output-switcher, etc.). Each is a directory whose `default.nix` is
+picked up by the `importTree ./modules` in `flake.nix`, so adding a package
+means adding a directory.
 
 `importTree` imports every `.nix` it finds as a flake module, so a package's own
 `evalModules` or `callPackage` files must be hidden from it: a path component

@@ -35,6 +35,7 @@ in
       self.darwinModules.workstation
       self.darwinModules.base
       self.darwinModules.git
+      self.darwinModules.tmux
       self.darwinModules.unfree
       self.darwinModules.nix-index
       self.darwinModules.ntfy-desktop

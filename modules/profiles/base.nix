@@ -36,7 +36,6 @@ _: {
             git-worktree-add
             ntfy-wrapped
             send-file
-            tmux-wrapped
             tmux-sessionizer
             switch
           ])
