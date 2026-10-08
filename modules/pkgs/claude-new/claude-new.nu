@@ -43,12 +43,12 @@ def main [] {
         return
     }
 
-    let root = git rev-parse --path-format=absolute --git-common-dir | str trim | path dirname
-    let default = git symbolic-ref --short refs/remotes/origin/HEAD | str trim
+    let root = git rev-parse --path-format=absolute --git-common-dir | path dirname
+    let default = git symbolic-ref --short refs/remotes/origin/HEAD
 
     # The fetch is faster than naming, so running it alongside costs nothing.
     let results = [
-        { git fetch --quiet origin ($default | str replace "origin/" "") }
+        { git fetch --quiet origin }
         { name-task (open --raw $draft) }
     ] | par-each --keep-order {|step| do $step }
     let name = $results.1
@@ -61,7 +61,7 @@ def main [] {
     git-worktree-add --detached $name $default
 
     let at_worktree = $"#{==:#{session_path},($root)/($name)}"
-    let session = tmux list-sessions -F "#{session_name}" -f $at_worktree | str trim
+    let session = tmux list-sessions -F "#{session_name}" -f $at_worktree
     # An empty target would type into whichever pane tmux picks instead.
     if ($session | is-empty) {
         error make --unspanned {msg: $"No tmux session at ($root)/($name)"}
