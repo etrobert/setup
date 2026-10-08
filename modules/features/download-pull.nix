@@ -18,8 +18,10 @@
             # Persistent=true fires the missed run at boot; charon resolves only once tailscale runs.
             after = [ "tailscaled-autoconnect.service" ];
 
-            # Longer than 5 attempts at ConnectTimeout, so a dead link always exhausts the retries.
-            startLimitIntervalSec = 300;
+            # Every start counts: the minutely timer puts 2 in the window, a boot or switch 1 more.
+            startLimitBurst = 4;
+            # Longer than 4 attempts at ConnectTimeout, so a dead link always exhausts the retries.
+            startLimitIntervalSec = 90;
 
             path = with pkgs; [
               openssh
