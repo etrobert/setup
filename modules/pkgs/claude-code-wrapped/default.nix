@@ -27,6 +27,7 @@ _: {
             ntfy-sh = self'.packages.ntfy-wrapped;
           };
           sessionHostScript = pkgs.callPackage ./_scripts/claude-session-host.nix { };
+          trustWorktreeScript = pkgs.callPackage ./_scripts/claude-trust-worktree.nix { };
 
           runtimeInputs = [
             statuslineScript
@@ -72,6 +73,7 @@ _: {
             # credentials, project data) into CLAUDE_CONFIG_DIR, so it can't be read-only.
             # An ambient value wins, so CI can point at its own checkout of this config.
             ''export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-$HOME/work/setup/main/modules/pkgs/claude-code-wrapped/config}"''
+            (pkgs.lib.getExe trustWorktreeScript)
           ];
           inherit runtimeInputs;
         };
