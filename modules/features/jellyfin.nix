@@ -113,10 +113,8 @@ _: {
           unitConfig.RequiresMountsFor = [ "/tank/media" ];
 
           # preStart, not tmpfiles: Jellyfin caches options.xml, so a change must restart it.
-          # The wipe drops any library that is no longer declared.
           preStart = lib.concatLines (
-            [ "rm --recursive --force '${config.services.jellyfin.dataDir}/root/default'" ]
-            ++ lib.mapAttrsToList writeLibrary libraries
+            lib.mapAttrsToList writeLibrary libraries
             ++ [ "mkdir --parents '${config.services.jellyfin.dataDir}/plugins'" ]
             ++ map writePlugin plugins
           );
