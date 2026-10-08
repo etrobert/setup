@@ -1,0 +1,260 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C3=89tienne=20Robert?= <etiennerobert33@gmail.com>
+Date: Sat, 22 Aug 2026 17:48:39 +0200
+Subject: [PATCH 1/2] fix(lsp): drop inline completion candidates contradicted
+ by input
+
+Problem:
+
+`Completor:show()` computes the longest common prefix between the buffer
+text at the item's range and the candidate's first line, then discards
+that result with `math.max(skip, cursor_col - col + 1)`. A candidate is
+therefore still rendered after the text typed since the request has
+contradicted it, trimmed to the cursor so that the screen disagrees with
+the buffer. With copilot-language-server, buffer `f` and candidate
+`func add(a int, b int) int {` render as `fxnc add(a int, b int) int {`
+once `x` is typed, and accepting there applies a candidate the user can
+see is wrong.
+
+Solution:
+
+Use the longest common prefix for what it already encodes. An item may
+replace the text its own range covers, so the candidate is allowed to
+differ from the buffer there; only text typed past the end of that range
+can contradict it. Where the common prefix stops inside that typed text,
+the candidate is out of date, so drop it rather than trim the
+contradiction away. Items with an empty or absent range fall under the
+same rule, since for them every character up to the cursor was typed
+after the request.
+
+Input that still matches is untouched: it keeps being handled in place by
+the existing prefix trim, with no removal and re-add, so no additional
+redraw is introduced. The request that follows is the same debounced one
+as before, so nothing is displayed for the same interval during which the
+contradicted candidate used to be displayed.
+
+Cycling keeps working across a dropped candidate by tracking the selected
+index on the completor rather than only on the item it produced.
+
+Fixes #36529
+---
+ runtime/lua/vim/lsp/inline_completion.lua     |  26 +++-
+ .../plugin/lsp/inline_completion_spec.lua     | 137 ++++++++++++++++++
+ 2 files changed, 159 insertions(+), 4 deletions(-)
+
+diff --git a/runtime/lua/vim/lsp/inline_completion.lua b/runtime/lua/vim/lsp/inline_completion.lua
+index d016f67..c379d4d 100644
+--- a/runtime/lua/vim/lsp/inline_completion.lua
++++ b/runtime/lua/vim/lsp/inline_completion.lua
+@@ -63,6 +63,7 @@ local namespace = api.nvim_create_namespace('nvim.lsp.inline_completion')
+ ---@field active table<integer, vim.lsp.inline_completion.Completor?>
+ ---@field timer? uv.uv_timer_t Timer for debouncing automatic requests
+ ---@field current? vim.lsp.inline_completion.Item Currently selected item
++---@field _index? integer Index of the last selected item, kept across invalidation
+ ---@field client_state table<integer, vim.lsp.inline_completion.ClientState>
+ local Completor = {
+   name = 'inline_completion',
+@@ -168,6 +169,7 @@ end
+ ---@param show_index? boolean
+ function Completor:select(index, show_index)
+   self.current = nil
++  self._index = index
+   local client_id, item = self:get_item(index)
+   if not client_id or not item then
+     self:hide()
+@@ -240,6 +242,23 @@ function Completor:show(hint)
+     local cursor_row, cursor_col =
+       vim.pos.cursor(self.bufnr, api.nvim_win_get_cursor(winid)):to_extmark()
+     if row == cursor_row then
++      -- An item may replace the text its own range covers, not just insert before
++      -- it, so the candidate is allowed to differ from the buffer there. Only text
++      -- typed past that range can contradict it, and once it does the candidate is
++      -- out of date: drop it instead of trimming the contradiction away.
++      local typed_col = cursor_col
++      if current.range then
++        local _, _, end_row, end_col = current.range:to_extmark()
++        if end_row == row then
++          typed_col = end_col
++        end
++      end
++      -- Column at which the buffer stops matching the candidate.
++      local diverged = col + skip - 1
++      if diverged >= typed_col and diverged < cursor_col then
++        self.current = nil
++        return
++      end
+       skip = math.max(skip, cursor_col - col + 1)
+     end
+   end
+@@ -417,13 +436,12 @@ function M.select(opts)
+   local count = opts.count or vim.v.count1
+   local wrap = opts.wrap ~= false
+ 
+-  local current = completor.current
+-  if not current then
++  local n = completor:count_items()
++  if n == 0 then
+     return
+   end
+ 
+-  local n = completor:count_items()
+-  local index = current._index + count
++  local index = completor._index + count
+   if wrap then
+     index = (index - 1) % n + 1
+   else
+diff --git a/test/functional/plugin/lsp/inline_completion_spec.lua b/test/functional/plugin/lsp/inline_completion_spec.lua
+index 529f0b4..cc95a3e 100644
+--- a/test/functional/plugin/lsp/inline_completion_spec.lua
++++ b/test/functional/plugin/lsp/inline_completion_spec.lua
+@@ -84,6 +84,11 @@ describe('vim.lsp.inline_completion', function()
+         },
+         handlers = {
+           ['textDocument/inlineCompletion'] = function(_, _, callback)
++            if _G.items then
++              callback(nil, { items = _G.items })
++              return
++            end
++
+             if _G.empty then
+               callback(nil, {
+                 items = {
+@@ -282,6 +287,138 @@ describe('vim.lsp.inline_completion', function()
+     end)
+   end)
+ 
++  describe('stale candidates', function()
++    --- An item on the same line as the cursor, so that typing can contradict it.
++    --- @param items table[]
++    local function serve(items)
++      exec_lua(function()
++        _G.items = items
++      end)
++    end
++
++    it('drops a candidate contradicted by text typed past its range', function()
++      serve({
++        {
++          insertText = 'foobar',
++          range = {
++            start = { line = 1, character = 0 },
++            ['end'] = { line = 1, character = 1 },
++          },
++        },
++      })
++      feed('if')
++      screen:expect([[
++        function fibonacci()                                 |
++        f{1:^oobar}                                               |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++      feed('x')
++      screen:expect([[
++        function fibonacci()                                 |
++        fx^                                                   |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++    end)
++
++    it('keeps a candidate that matching input still agrees with', function()
++      serve({
++        {
++          insertText = 'foobar',
++          range = {
++            start = { line = 1, character = 0 },
++            ['end'] = { line = 1, character = 1 },
++          },
++        },
++      })
++      feed('if')
++      screen:expect([[
++        function fibonacci()                                 |
++        f{1:^oobar}                                               |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++      feed('o')
++      screen:expect([[
++        function fibonacci()                                 |
++        fo{1:^obar}                                               |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++    end)
++
++    it('keeps a candidate that replaces text inside its own range', function()
++      serve({
++        {
++          insertText = 'oo)',
++          range = {
++            start = { line = 1, character = 1 },
++            ['end'] = { line = 1, character = 2 },
++          },
++        },
++      })
++      feed('if)<Left>')
++      screen:expect([[
++        function fibonacci()                                 |
++        f{1:^oo)}                                                 |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++      feed('x')
++      screen:expect([[
++        function fibonacci()                                 |
++        fx{1:^o)}                                                 |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++    end)
++
++    it('still cycles past a candidate it dropped', function()
++      serve({
++        {
++          insertText = 'foobar',
++          range = {
++            start = { line = 1, character = 0 },
++            ['end'] = { line = 1, character = 1 },
++          },
++        },
++        {
++          insertText = 'fbaz',
++          range = {
++            start = { line = 1, character = 0 },
++            ['end'] = { line = 1, character = 1 },
++          },
++        },
++      })
++      feed('ifo')
++      screen:expect([[
++        function fibonacci()                                 |
++        fo{1:^obar}                                               |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++      exec_lua(function()
++        vim.lsp.inline_completion.select()
++      end)
++      screen:expect([[
++        function fibonacci()                                 |
++        fo^                                                   |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++      exec_lua(function()
++        vim.lsp.inline_completion.select()
++      end)
++      screen:expect([[
++        function fibonacci()                                 |
++        fo{1:^obar}{2: (1/2)}                                         |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++    end)
++  end)
++
+   describe('select()', function()
+     it('selects the next candidate', function()
+       feed('i')
