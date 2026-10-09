@@ -20,7 +20,7 @@ _: {
             # mark emitted before it is wiped.
             _prompt_mark=$'\e]133;A\a'
             PS1="%{$_prompt_mark%}"'$(${pronto} $? --zsh)'
-            RPROMPT='$(${pronto} $? --rprompt --zsh)'
+            RPROMPT='$(${pronto} $? --rprompt --zsh ''${_cmd_ms:+--cmd-duration=$_cmd_ms})'
 
             source ${./alias.sh}
             if [[ $options[zle] = on ]]; then
