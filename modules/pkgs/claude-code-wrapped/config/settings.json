@@ -50,6 +50,10 @@
           {
             "type": "command",
             "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @agent-status '•' || true"
+          },
+          {
+            "type": "command",
+            "command": "curl --silent --show-error --max-time 1 --data '' http://localhost:8880/stop || [ $? = 7 ]"
           }
         ]
       }
@@ -71,6 +75,11 @@
           {
             "type": "command",
             "command": "[ -n \"$TMUX_PANE\" ] && tmux set-option -w -t \"$TMUX_PANE\" @agent-status '✓' || true"
+          },
+          {
+            "type": "command",
+            "command": "claude-speak",
+            "async": true
           }
         ]
       }

@@ -28,12 +28,14 @@ _: {
           };
           sessionHostScript = pkgs.callPackage ./_scripts/claude-session-host.nix { };
           trustWorktreeScript = pkgs.callPackage ./_scripts/claude-trust-worktree.nix { };
+          speakScript = pkgs.callPackage ./_scripts/claude-speak.nix { };
 
           runtimeInputs = [
             statuslineScript
             formatFileScript
             rateLimitNotifyScript
             sessionHostScript
+            speakScript
             self'.packages.hass-cli-wrapped
             self'.packages.git-wrapped
           ]
