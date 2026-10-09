@@ -31,7 +31,7 @@ precmd() {
 
   local _elapsed=$((EPOCHREALTIME * 1000 - _cmd_start * 1000))
   # Remove the decimal part to get the elapsed time in milliseconds as an integer
-  export LAST_CMD_TIME=${_elapsed%%.*}
+  _cmd_ms=${_elapsed%%.*}
   unset _cmd_start
 }
 
