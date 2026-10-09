@@ -35,6 +35,7 @@ _: {
             fzf-wrapped
             git-worktree-add
             ntfy-wrapped
+            nushell-wrapped
             send-file
             tmux-sessionizer
             switch
@@ -50,7 +51,6 @@ _: {
             htop
             jq
             magic-wormhole
-            nushell
             ripgrep
             wget
             zoxide
