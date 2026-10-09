@@ -40,7 +40,8 @@ else
 fi
 
 for file in .env .tmux.conf CLAUDE.local.md .claude/settings.local.json; do
-  if [ -f "$file" ]; then
+  # A tracked file is already checked out; copying would spread local edits.
+  if [ -f "$file" ] && [ -z "$(git ls-files "$file")" ]; then
     cp --parents "$file" "$WORKTREE_PATH"
   fi
 done
