@@ -65,6 +65,13 @@ clicking the links open on the wrong machine.
 Whenever I need to make a bank transfer, generate an EPC QR code (GiroCode) for
 it with `qrencode`, so I can scan it into my banking app.
 
+## Spoken Summary
+
+End every reply with a summary that is read aloud, on its own last line:
+`<!-- TTS: ... -->`. Write one or two short plain English sentences meant to be
+heard: what happened, and anything I need to do. No markdown, code, paths or
+URLs.
+
 ## Research Approach
 
 When investigating how something works, consult both official documentation and
