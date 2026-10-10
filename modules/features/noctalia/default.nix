@@ -35,7 +35,6 @@ let
 
       # The directory of each id that config.toml enables from that source.
       official-plugins = pluginSource "noctalia-official-plugins" [ "bitwarden" ];
-      community-plugins = pluginSource "noctalia-community-plugins" [ "nix-monitor" ];
 
       wallpaper = ./saint-levant.jpg;
 
@@ -44,7 +43,6 @@ let
         substitute ${./config.toml} $out/noctalia/config.toml \
           --replace-fail '@plugins@' '${plugins}' \
           --replace-fail '@official-plugins@' '${official-plugins}' \
-          --replace-fail '@community-plugins@' '${community-plugins}' \
           --replace-fail '@wallpaper@' '${wallpaper}' \
           --replace-fail '@vram-widget@' '${lib.optionalString vramWidget ''"vram",''}' \
           --replace-fail '@idle-lock@' '${lib.optionalString idleLock ''

@@ -8,9 +8,9 @@ source = "community"
 [plugins]
 enabled = [
   "etrobert/birthdays",
+  "etrobert/deploy-status",
   "etrobert/weekday",
   "noctalia/bitwarden",
-  "avivbintangaringga/nix-monitor",
 ]
 
 [[plugins.source]]
@@ -22,11 +22,6 @@ location = "@plugins@"
 kind = "path"
 name = "official"
 location = "@official-plugins@"
-
-[[plugins.source]]
-kind = "path"
-name = "community"
-location = "@community-plugins@"
 
 [location]
 address = "Berlin"
@@ -87,7 +82,7 @@ end = [
   "brightness",
   "battery",
   "power_profile",
-  "avivbintangaringga/nix-monitor:nix-monitor",
+  "etrobert/deploy-status:bar",
   "control-center",
   "workspaces",
   "session",
@@ -196,20 +191,6 @@ format = "{:%d %m %y}"
 
 [widget.brightness]
 show_label = false
-
-# The status text overflows the narrow vertical bar; the glyph alone
-# carries the state, like the other bar widgets with show_label = false.
-[widget."avivbintangaringga/nix-monitor:nix-monitor"]
-show_text = false
-
-# Neutral instead of the default bright green (#57ff57) when up to date;
-# only the update-available state keeps an alert color.
-up_to_date_color = "on_surface"
-
-# Float the panel out of the transparent bar surface (see [shell.panel]).
-# Panels read entry-level keys like <entry>_placement from plugin_settings.
-[plugin_settings."avivbintangaringga/nix-monitor"]
-panel_placement = "floating"
 
 # Unitless "9.4" fits the narrow vertical bar.
 [widget.ram]

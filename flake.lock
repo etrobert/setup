@@ -408,22 +408,6 @@
         "type": "github"
       }
     },
-    "noctalia-community-plugins": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1791661184,
-        "narHash": "sha256-xRSaNE9MQio40BKqYBhMKaY1H/4ajJTfNEEZb+P1XbE=",
-        "owner": "noctalia-dev",
-        "repo": "community-plugins",
-        "rev": "32e9000ce4985fd08a92d89c0d62a931c48fea84",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "community-plugins",
-        "type": "github"
-      }
-    },
     "noctalia-official-plugins": {
       "flake": false,
       "locked": {
@@ -549,7 +533,6 @@
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_2",
-        "noctalia-community-plugins": "noctalia-community-plugins",
         "noctalia-official-plugins": "noctalia-official-plugins",
         "node-exporter-dashboard": "node-exporter-dashboard",
         "nutricalc": "nutricalc",
