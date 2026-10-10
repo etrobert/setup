@@ -25,7 +25,7 @@
           deploy_url=https://github.com/etrobert/setup.git
 
           # The gate is part of the running system, so this is the running revision.
-          running=${lib.escapeShellArg (toString config.system.configurationRevision)}
+          running=${config.system.configurationRevision}
 
           case "$1" in
             check)
@@ -68,7 +68,7 @@
       };
     in
     {
-      system.configurationRevision = self.rev or self.dirtyRev or null;
+      system.configurationRevision = self.rev or self.dirtyRev;
 
       system.autoUpgrade = {
         enable = true;
