@@ -112,10 +112,11 @@ cursor {
     position x=1280 y=0
 }
 
-// tower's monitor hangs off the RX 9070 XT but boot_vga is the iGPU, so niri's
-// udev default renders 4K on 2 CUs. Absent on leod, which falls back to default.
+// tower's iGPU, so clients leave the RX 9070 XT idle to runtime-suspend with monitors off.
+// Pinned because boot_vga, niri's default, has been either GPU depending on the boot.
+// Absent on leod, which falls back to default.
 debug {
-    render-drm-device "/dev/dri/by-path/pci-0000:03:00.0-render"
+    render-drm-device "/dev/dri/by-path/pci-0000:12:00.0-render"
 }
 
 // Settings that influence how windows are positioned and sized.
