@@ -65,11 +65,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789816585,
-        "narHash": "sha256-rvK+CV8ZCLFjZt8f/cDxJ5iwjMmtmb0lQ6MfmPjPPKo=",
+        "lastModified": 1791649651,
+        "narHash": "sha256-Q6Qv5+tBkzjZjOD2dqVoQzDLRgiiHQ0B5VKRPeEoY9A=",
         "owner": "etrobert",
         "repo": "countdown",
-        "rev": "b8c7a98197011095ea13a695211e3b4a1be7e65d",
+        "rev": "f4862a86790ea7287f7e03a63c29c3f050d3d21d",
         "type": "github"
       },
       "original": {
@@ -459,11 +459,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789813255,
-        "narHash": "sha256-n9Itr3IokGTTYXlQPnwcxN91W5ApWY11cHBzOSYquRs=",
+        "lastModified": 1791650231,
+        "narHash": "sha256-4FJKCE/5JQRhdzjZ+tcaC9w7HYykLM+oxA6AQIaHrwU=",
         "owner": "Palomia",
         "repo": "nutricalc",
-        "rev": "8ade226b99679933a7c6a0092c41fe68337048e3",
+        "rev": "b77e9c3ff9ac1dbb69d0ffbae3cfe9180f2d2ed1",
         "type": "github"
       },
       "original": {
