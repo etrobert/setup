@@ -24,6 +24,7 @@ _: {
     in
     {
       imports = with self.nixosModules; [
+        auto-upgrade
         git
         gpu
         kanata
