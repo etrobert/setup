@@ -92,6 +92,9 @@ _: {
           # an LSSharedFileList archive, not a plist key. Idempotent by name.
           sudo -u soft ${pkgs.mysides}/bin/mysides add "sync" "file:///Users/soft/sync/"
 
+          # power.sleep cannot target AC only: https://github.com/nix-darwin/nix-darwin/issues/1421
+          /usr/bin/pmset -c sleep 0
+
           # Set wallpaper
           launchctl asuser "$(id -u soft)" /usr/bin/osascript -e \
             'tell application "Finder" to set desktop picture to POSIX file "${wallpaper}"'
