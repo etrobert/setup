@@ -20,6 +20,8 @@
             bind-dynamic = true;
             no-resolv = true;
             server = [
+              # This host resolves through dnsmasq too, so tailnet names need MagicDNS.
+              "/tailcab4c0.ts.net/100.100.100.100"
               "1.1.1.1"
               "9.9.9.9"
             ];
