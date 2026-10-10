@@ -5,6 +5,10 @@
     {
       packages =
         let
+          niri = pkgs.niri.overrideAttrs (old: {
+            patches = (old.patches or [ ]) ++ [ ./no-fallback-frames-without-outputs.patch ];
+          });
+
           makeNiriWrapped =
             {
               dev ? false,
@@ -23,7 +27,7 @@
               ];
             in
             self'.legacyPackages.wrapPackage {
-              package = pkgs.niri;
+              package = niri;
               env.NIRI_CONFIG = "${configFile}";
               prefix.XCURSOR_PATH = "${pkgs.bibata-cursors}/share/icons";
 
@@ -32,9 +36,9 @@
               # niri.service points at the unwrapped binary; patch it to use the wrapper.
               filesToPatch = [ "$out/share/systemd/user/niri.service" ];
               # Fail the build on an invalid config rather than at compositor start-up.
-              checks = [ "${pkgs.niri}/bin/niri validate --config ${./config.kdl}" ];
+              checks = [ "${niri}/bin/niri validate --config ${./config.kdl}" ];
               # Required for niri to register as a session with the display manager.
-              passthru.providedSessions = pkgs.niri.passthru.providedSessions;
+              passthru.providedSessions = niri.passthru.providedSessions;
             };
         in
         self.lib.onlySupported {

@@ -1,0 +1,28 @@
+From e6f785356dcf71b0eb1f39614f291e7afae38e99 Mon Sep 17 00:00:00 2001
+From: Etienne Robert <etiennerobert33@gmail.com>
+Date: Sat, 10 Oct 2026 16:22:41 +0200
+Subject: [PATCH] Skip fallback frame callbacks when there are no outputs
+
+---
+ src/niri.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/niri.rs b/src/niri.rs
+index ec40e01c..4e3f7e6f 100644
+--- a/src/niri.rs
++++ b/src/niri.rs
+@@ -5105,6 +5105,11 @@ impl Niri {
+     pub fn send_frame_callbacks_on_fallback_timer(&mut self) {
+         let _span = tracy_client::span!("Niri::send_frame_callbacks_on_fallback_timer");
+ 
++        // Nothing is visible, and redrawing clients would only keep the GPU awake.
++        if self.output_state.is_empty() {
++            return;
++        }
++
+         // Make up a bogus output; we don't care about it here anyway, just the throttling timer.
+         let output = Output::new(
+             String::new(),
+-- 
+2.55.0
+
