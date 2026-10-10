@@ -21,6 +21,8 @@ _: {
         # it must inherit the caller's PATH rather than having it cleared or replaced.
         inheritPath = true;
         flags = [ "--config-file=${./config}" ];
+        # GTK's default 15 s GPU cache GC lands after autosuspend and re-wakes a runtime-suspended dGPU
+        setDefaults = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux { GSK_CACHE_TIMEOUT = "1"; };
 
         # Both files launch Ghostty on D-Bus activation and point at the unwrapped
         # binary; patch them so an activated instance is the wrapper. The macOS
