@@ -1,0 +1,14 @@
+id = "etrobert/deploy-status"
+name = "Deploy Status"
+version = "1.0.0"
+plugin_api = 24
+author = "etrobert"
+license = "MIT"
+dependencies = ["nixos-version", "git", "sudo"]
+tags = ["nixos", "system"]
+icon = "git-commit"
+description = "Whether this host runs setup's deploy branch; click to pause or resume auto-upgrade."
+
+[[widget]]
+id = "bar"
+entry = "bar.luau"
