@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.postgresql-read-access = {
+  flake.nixosModules.postgresql-read-access = _: {
     services.postgresql.ensureUsers = [ { name = "soft"; } ];
     # ensureClauses cannot grant role membership
     systemd.services.postgresql-setup.postStart = ''
