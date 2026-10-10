@@ -22,7 +22,7 @@ _: {
           inheritPath = false;
           text = ''
             usage() {
-              echo "Usage: doc-add-image <url>" >&2
+              echo "Usage: add-asset <url>" >&2
               exit 1
             }
 
@@ -31,7 +31,6 @@ _: {
             url="$1"
             dest_dir="$HOME/sync/doc/assets"
 
-            # Derive filename from URL, stripping query strings
             filename=$(basename "$url" | cut -d'?' -f1)
             [[ -n "$filename" ]] || {
               echo "Could not derive filename from URL" >&2
@@ -43,14 +42,7 @@ _: {
             echo "Downloading $url -> $dest"
             curl -fsSL "$url" -o "$dest"
 
-            # Copy path to clipboard (Wayland or macOS)
-            if command -v wl-copy &>/dev/null; then
-              printf '%s' "$dest" | wl-copy
-            elif command -v pbcopy &>/dev/null; then
-              printf '%s' "$dest" | pbcopy
-            else
-              echo "Warning: no clipboard tool found (wl-copy or pbcopy)" >&2
-            fi
+            printf '%s' "$dest" | ${if pkgs.stdenv.hostPlatform.isDarwin then "pbcopy" else "wl-copy"}
 
             echo "Copied to clipboard: $dest"
           '';

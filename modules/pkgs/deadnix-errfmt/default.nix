@@ -11,7 +11,7 @@ _: {
         inheritPath = false;
         text = ''
           deadnix --output-format json "$@" | \
-            jq -r '.file as $f | .results[] | $f + ">" + (.line|tostring) + ":" + (.column|tostring) + ":W:0:" + .message'
+            jq --raw-output '.file as $f | .results[] | $f + ">" + (.line|tostring) + ":" + (.column|tostring) + ":W:0:" + .message'
         '';
       };
     };
