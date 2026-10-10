@@ -32,6 +32,9 @@
 
       documentation.doc.enable = false;
 
+      # Never reboot under the user; the upgrade sends an ntfy notice instead.
+      system.autoUpgrade.allowReboot = false;
+
       # Absorbs the cold tail when zram fills. The tiering rests on two nixpkgs
       # defaults meeting: zram's priority 5 over the kernel-assigned negative
       # one a swapDevice gets when priority is unset.

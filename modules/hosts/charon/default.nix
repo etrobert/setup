@@ -11,7 +11,6 @@
       self.nixosModules.charon-configuration
       self.nixosModules.nixos-base
       self.nixosModules.base
-      self.nixosModules.auto-upgrade
       self.nixosModules.tailnet-services
       self.nixosModules.transmission
       self.nixosModules.slskd

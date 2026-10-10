@@ -38,6 +38,40 @@
           echo "running $running, deploy is $rev; upgrading"
         '';
       };
+
+      kernelNotice = pkgs.writeShellApplication {
+        name = "kernel-notice";
+
+        runtimeInputs = [
+          pkgs.coreutils
+          self.packages.${pkgs.stdenv.hostPlatform.system}.ntfy-wrapped
+        ];
+
+        inheritPath = false;
+
+        text = ''
+          before=/var/lib/nixos-upgrade/kernel-before
+
+          kernel() {
+            readlink /run/current-system/{initrd,kernel,kernel-modules}
+          }
+
+          case "$1" in
+            before)
+              kernel > "$before"
+              ;;
+            after)
+              if [ "$(kernel)" != "$(cat "$before")" ]; then
+                ntfy publish ${lib.escapeShellArg "${config.networking.hostName}: new kernel, reboot when convenient"}
+              fi
+              ;;
+            *)
+              echo "usage: kernel-notice {before|after}" >&2
+              exit 2
+              ;;
+          esac
+        '';
+      };
     in
     {
       system.configurationRevision = self.rev or self.dirtyRev;
@@ -68,7 +102,14 @@
           # A failed switch whose ntfy alert also failed stays pinned in memory,
           # so systemd-run refuses the next run of nixos-rebuild's fixed-name
           # transient unit: "already loaded or has a fragment file".
-          ExecStartPre = "-${pkgs.systemd}/bin/systemctl reset-failed nixos-rebuild-switch-to-configuration.service";
+          ExecStartPre = [
+            "-${pkgs.systemd}/bin/systemctl reset-failed nixos-rebuild-switch-to-configuration.service"
+          ]
+          ++ lib.optional (!config.system.autoUpgrade.allowReboot) "${lib.getExe kernelNotice} before";
+
+          ExecStartPost = lib.mkIf (
+            !config.system.autoUpgrade.allowReboot
+          ) "${lib.getExe kernelNotice} after";
         };
       };
     };

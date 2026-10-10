@@ -15,7 +15,6 @@
       self.nixosModules.node-exporter
       self.nixosModules.syncthing
       self.nixosModules.atuin-login
-      self.nixosModules.auto-upgrade
       inputs.agenix.nixosModules.default
     ];
   };
