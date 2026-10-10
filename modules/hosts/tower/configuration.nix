@@ -1,6 +1,3 @@
-# Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { self, ... }:
 {
   flake.nixosModules.tower-configuration =
@@ -34,11 +31,6 @@
       autoBrightness = {
         day = 90;
         night = 0;
-      };
-
-      services.sunshine = {
-        enable = false;
-        openFirewall = true;
       };
 
       networking.networkmanager = {
