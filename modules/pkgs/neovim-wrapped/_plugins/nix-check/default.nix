@@ -10,7 +10,7 @@ let
     text = /* bash */ ''
       # :make parses stdout only, so exit codes are noise; without this errexit
       # would skip deadnix whenever statix reported anything.
-      statix check -o errfmt "$@" || true
+      statix check --format errfmt "$@" || true
       deadnix-errfmt "$@"
     '';
   };

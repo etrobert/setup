@@ -17,7 +17,6 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 
 vim.opt.swapfile = false
-vim.opt.backup = false
 -- "auto" may rename on write, which breaks inotify file watchers (node --watch)
 vim.opt.backupcopy = "yes"
 vim.opt.undodir = os.getenv("HOME") .. "/.nvim/undodir"
@@ -51,27 +50,11 @@ vim.opt.cursorline = true
 -- Decrease update time
 vim.o.updatetime = 250
 
--- Highlight when yanking or putting text
-vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
-	desc = "Highlight when yanking or putting text",
-	group = vim.api.nvim_create_augroup("hl-op", { clear = true }),
-	callback = function()
-		vim.hl.hl_op({ higroup = "Visual", timeout = 300 })
-	end,
-})
-
 -- vim.opt.list = true
 -- vim.opt.listchars = { tab = "» ", extends = "›", precedes = "‹", nbsp = "·", trail = "·" }
 
-vim.lsp.inline_completion.enable()
-
 -- don't give the intro message when starting Vim, see :intro
 vim.opt.shortmess:append("I")
-
-vim.lsp.document_color.enable(true, nil, { style = "virtual" })
-vim.lsp.linked_editing_range.enable(true)
-vim.lsp.codelens.enable(true)
-vim.lsp.inlay_hint.enable(true)
 
 vim.o.winborder = "rounded"
 
