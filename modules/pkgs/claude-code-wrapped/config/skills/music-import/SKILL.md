@@ -9,9 +9,8 @@ description:
 # Music import
 
 `/tank/media/music/<origin>/…` — `bandcamp`, `torrents`, `yt-dlp` — is what
-Navidrome serves; `playlists/` and the beets catalogue (`.beets/`) sit beside
-them. `beet` (`beets-wrapped` in `etrobert/setup`) is on tower only, so run it
-there.
+Navidrome serves; the beets catalogue (`.beets/`) sits beside them. `beet`
+(`beets-wrapped` in `etrobert/setup`) is on tower only, so run it there.
 
 Every import sets its origin, which picks the top-level directory:
 
