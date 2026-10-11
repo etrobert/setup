@@ -110,6 +110,8 @@ def main [url: string, c411_key: path] {
         configContract: NtfySettings
         onDownload: true
         onUpgrade: true
+        # A stuck import waits for a person and stays unnoticed without it.
+        onManualInteractionRequired: true
         tags: []
         fields: [
             {name: serverUrl, value: "http://127.0.0.1:2586"}
