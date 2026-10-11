@@ -99,11 +99,11 @@ def main [url: string, c411_key: path] {
         ]
     }
 
-    (ensure
-        remotepathmapping
-        host
-        {host: soulseek, remotePath: /srv/downloads/slskd/downloads/, localPath: /tank/media/soulseek/}
-    )
+    (ensure remotepathmapping host {
+        host: soulseek
+        remotePath: /srv/downloads/slskd/downloads/
+        localPath: /tank/media/soulseek/
+    })
 
     provider indexer {
         name: c411

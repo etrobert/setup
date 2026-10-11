@@ -68,25 +68,29 @@ in
 
       users.users.soft.extraGroups = [ config.services.transmission.group ];
 
-      # Without the mount, downloads would fill the root filesystem.
-      systemd.services.transmission-setup.unitConfig.RequiresMountsFor = [ "/srv/downloads" ];
-      systemd.services.transmission.unitConfig.RequiresMountsFor = [ "/srv/downloads" ];
+      systemd = {
+        services = {
+          # Without the mount, downloads would fill the root filesystem.
+          transmission-setup.unitConfig.RequiresMountsFor = [ "/srv/downloads" ];
+          transmission.unitConfig.RequiresMountsFor = [ "/srv/downloads" ];
 
-      systemd.services.transmission-reaper = {
-        description = "Remove torrents that met the seeding rule";
-        after = [ "transmission.service" ];
+          transmission-reaper = {
+            description = "Remove torrents that met the seeding rule";
+            after = [ "transmission.service" ];
 
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = lib.getExe transmission-reaper;
-          DynamicUser = true;
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = lib.getExe transmission-reaper;
+              DynamicUser = true;
+            };
+          };
         };
-      };
 
-      systemd.timers.transmission-reaper = {
-        description = "Schedule the transmission reaper";
-        wantedBy = [ "timers.target" ];
-        timerConfig.OnCalendar = "hourly";
+        timers.transmission-reaper = {
+          description = "Schedule the transmission reaper";
+          wantedBy = [ "timers.target" ];
+          timerConfig.OnCalendar = "hourly";
+        };
       };
     };
 }
