@@ -49,7 +49,32 @@ _: {
     in
     {
       services = {
-        jellyfin.enable = true;
+        jellyfin = {
+          enable = true;
+
+          hardwareAcceleration = {
+            enable = true;
+            type = "vaapi";
+            # The RX 9070 XT by PCI path: renderD numbers can swap with the iGPU's.
+            device = "/dev/dri/by-path/pci-0000:03:00.0-render";
+          };
+
+          # Tone mapping, on by default, runs libplacebo through Vulkan: no ROCm OpenCL needed.
+          transcoding = {
+            enableHardwareEncoding = true;
+            hardwareEncodingCodecs.hevc = true;
+            # The card's VLD profiles in vainfo.
+            hardwareDecodingCodecs = {
+              h264 = true;
+              hevc = true;
+              hevc10bit = true;
+              vp9 = true;
+              av1 = true;
+            };
+          };
+
+          forceEncodingConfig = true;
+        };
 
         # Jellyfin's own login is the gate; 8096 itself is opened nowhere.
         caddy.virtualHosts."watch.etiennerobert.com".extraConfig = /* caddy */ ''
