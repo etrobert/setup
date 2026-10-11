@@ -9,8 +9,8 @@ radarr:
       type: movie
 
     quality_profiles:
-      # [French MULTi.VO] UHD Remux (2160p): original audio, no French-only.
-      - trash_id: 1fef28c8c919f31cd86283b1baf527d4
+      # [French VOSTFR] UHD Remux: original audio first, MULTi as fallback.
+      - trash_id: 9b32fc61d8ec83ed131f50f1db80505a
         name: Original audio
         reset_unmatched_scores:
           enabled: true
@@ -32,9 +32,6 @@ radarr:
           - ed27ebfef2f323e964fb1f61391bcb35
           - c20c8647f2746a1f4c4262b0fbbeeeae
           - 5608c71bcebba0a5e666223bae8c9227
-          # FR HD Bluray Tier 01, 02
-          - 5322da05b19d857acc1e75be3edf47b3
-          - 57f34251344be2e283fc30e00e458be6
         assign_scores_to:
           - name: Original audio
 
