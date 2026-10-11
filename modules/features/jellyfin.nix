@@ -1,6 +1,11 @@
 _: {
   flake.nixosModules.jellyfin =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       libraries = {
         Movies = {
@@ -46,6 +51,43 @@ _: {
           printf '%s' '${path}' > '${dir}/${baseNameOf path}.mblink'
           cp --no-preserve=mode '${options}' '${dir}/options.xml'
         '';
+
+      # Only these keys: Jellyfin writes the rest of encoding.xml itself.
+      encoding = {
+        HardwareAccelerationType = "vaapi";
+        # The RX 9070 XT by PCI path: renderD numbers can swap with the iGPU's.
+        VaapiDevice = "/dev/dri/by-path/pci-0000:03:00.0-render";
+        EnableDecodingColorDepth10Hevc = "true";
+        EnableDecodingColorDepth10Vp9 = "true";
+        EnableHardwareEncoding = "true";
+        AllowHevcEncoding = "true";
+        # On AMD it runs libplacebo through Vulkan; the OpenCL path would need ROCm.
+        EnableTonemapping = "true";
+      };
+
+      # The card's VLD profiles in vainfo; it has no VC-1 or MPEG-2 decoder.
+      decodingCodecs = [
+        "h264"
+        "hevc"
+        "vp9"
+        "av1"
+      ];
+
+      setEncoding =
+        let
+          setKey =
+            name: value: "-d '/EncodingOptions/${name}' -s /EncodingOptions -t elem -n ${name} -v '${value}'";
+          addCodec = codec: "-s /EncodingOptions/HardwareDecodingCodecs -t elem -n string -v ${codec}";
+        in
+        /* bash */ ''
+          file='${config.services.jellyfin.configDir}/encoding.xml'
+          [ -e "$file" ] || printf '%s\n' '<?xml version="1.0" encoding="utf-8"?>' '<EncodingOptions />' > "$file"
+          ${lib.getExe pkgs.xmlstarlet} ed --inplace \
+            ${lib.concatStringsSep " " (lib.mapAttrsToList setKey encoding)} \
+            -d /EncodingOptions/HardwareDecodingCodecs -s /EncodingOptions -t elem -n HardwareDecodingCodecs \
+            ${lib.concatMapStringsSep " " addCodec decodingCodecs} \
+            "$file"
+        '';
     in
     {
       services = {
@@ -62,7 +104,13 @@ _: {
         unitConfig.RequiresMountsFor = [ "/tank/media" ];
 
         # preStart, not tmpfiles: Jellyfin caches options.xml, so a change must restart it.
-        preStart = lib.concatLines ([ removeUndeclared ] ++ lib.mapAttrsToList writeLibrary libraries);
+        preStart = lib.concatLines (
+          [
+            removeUndeclared
+            setEncoding
+          ]
+          ++ lib.mapAttrsToList writeLibrary libraries
+        );
       };
     };
 }
