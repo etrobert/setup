@@ -103,5 +103,6 @@
   "editorMode": "vim",
   "verbose": false,
   "agentPushNotifEnabled": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "outputStyle": "Concise"
 }
