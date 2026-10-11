@@ -35,5 +35,15 @@
 
       # The module makes shares read-only, and the share is the downloads directory.
       systemd.services.slskd.serviceConfig.ReadOnlyPaths = lib.mkForce [ ];
+
+      # slskd < 0.26.1 prunes by access time, which share rescans keep fresh: https://github.com/slskd/slskd/commit/71401118
+      fileSystems."/".options = [ "noatime" ];
+
+      assertions = [
+        {
+          assertion = lib.versionOlder config.services.slskd.package.version "0.26.1";
+          message = "slskd ${config.services.slskd.package.version} prunes by write time: drop noatime from modules/features/slskd.nix";
+        }
+      ];
     };
 }
