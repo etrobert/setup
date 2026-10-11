@@ -163,6 +163,9 @@ def main [url: string, c411_key: path] {
         configContract: NtfySettings
         onReleaseImport: true
         onUpgrade: true
+        # The Soulseek landing zone mirrors charon: a stuck import is lost once slskd prunes it.
+        onImportFailure: true
+        onDownloadFailure: true
         tags: []
         fields: [
             {name: serverUrl, value: "http://127.0.0.1:2586"}
