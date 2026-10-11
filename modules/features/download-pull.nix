@@ -68,12 +68,13 @@
     in
     {
       systemd = lib.mkMerge [
-        # No --delete: jellyfin plays some torrents straight from the landing zone.
+        # A mirror: imports hardlink into the library, so the landing zone ends when seeding does.
+        # protect: the category folders exist for the health checks before charon creates them.
         (pull {
           name = "torrent";
           from = "/srv/downloads/transmission";
           to = "/tank/media/torrents";
-          extraFlags = "--exclude='*.part'";
+          extraFlags = "--delete --exclude='*.part' --filter='protect /*/'";
         })
         # A mirror: imports copy albums out, so the landing zone ends when the share does.
         (pull {
