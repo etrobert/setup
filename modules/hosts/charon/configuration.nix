@@ -2,7 +2,13 @@
 
 {
   flake.nixosModules.charon-configuration =
-    { pkgs, modulesPath, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      modulesPath,
+      ...
+    }:
     {
       environment.systemPackages = [ pkgs.ghostty.terminfo ];
 
@@ -33,6 +39,24 @@
           };
         };
       };
+
+      disko.devices.disk.downloads = {
+        device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_e392dcc5-e3b3-4887-aeee-bfe892c1c1aa";
+        content = {
+          type = "filesystem";
+          format = "ext4";
+          mountpoint = "/srv/downloads";
+          # slskd < 0.26.1 prunes by access time, which share rescans keep fresh: https://github.com/slskd/slskd/commit/71401118
+          mountOptions = [ "noatime" ];
+        };
+      };
+
+      assertions = [
+        {
+          assertion = lib.versionOlder config.services.slskd.package.version "0.26.1";
+          message = "slskd ${config.services.slskd.package.version} prunes by write time: drop noatime from modules/hosts/charon/configuration.nix";
+        }
+      ];
 
       networking.hostName = "charon";
 

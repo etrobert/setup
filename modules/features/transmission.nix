@@ -50,8 +50,13 @@ in
         # The peer port is public on purpose; the RPC/web UI stays on loopback, behind tsnsrv.
         openPeerPorts = true;
 
+        # Created by the module only when set; 750: the group is how download-pull reads it.
+        downloadDirPermissions = "750";
+
         settings = {
           rpc-host-whitelist = "torrents";
+
+          download-dir = "/srv/downloads/transmission";
 
           # separate bind mount makes completion a copy instead of a rename
           incomplete-dir-enabled = false;
@@ -61,24 +66,31 @@ in
       services.tsnsrv.services.torrents.toURL =
         "http://127.0.0.1:${toString config.services.transmission.settings.rpc-port}";
 
-      # /var/lib/transmission is 750: the group is how download-pull reads Downloads/.
       users.users.soft.extraGroups = [ config.services.transmission.group ];
 
-      systemd.services.transmission-reaper = {
-        description = "Remove torrents that met the seeding rule";
-        after = [ "transmission.service" ];
+      systemd = {
+        services = {
+          # Without the mount, downloads would fill the root filesystem.
+          transmission-setup.unitConfig.RequiresMountsFor = [ "/srv/downloads" ];
+          transmission.unitConfig.RequiresMountsFor = [ "/srv/downloads" ];
 
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = lib.getExe transmission-reaper;
-          DynamicUser = true;
+          transmission-reaper = {
+            description = "Remove torrents that met the seeding rule";
+            after = [ "transmission.service" ];
+
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStart = lib.getExe transmission-reaper;
+              DynamicUser = true;
+            };
+          };
         };
-      };
 
-      systemd.timers.transmission-reaper = {
-        description = "Schedule the transmission reaper";
-        wantedBy = [ "timers.target" ];
-        timerConfig.OnCalendar = "hourly";
+        timers.transmission-reaper = {
+          description = "Schedule the transmission reaper";
+          wantedBy = [ "timers.target" ];
+          timerConfig.OnCalendar = "hourly";
+        };
       };
     };
 }
