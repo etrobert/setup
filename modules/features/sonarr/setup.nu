@@ -4,7 +4,7 @@
 
 def api [method: string, path: string, body?: record] {
     let url = $"($env.SONARR_URL)/api/v3/($path)"
-    let headers = { X-Api-Key: $env.SONARR_KEY }
+    let headers = {X-Api-Key: $env.SONARR_KEY}
     match $method {
         get => (http get --headers $headers $url)
         post => (http post --headers $headers --content-type application/json $url $body)
@@ -38,12 +38,14 @@ def wait-for [what: string, probe: closure] {
         if $value != null { return $value }
         sleep 1sec
     }
-    error make --unspanned { msg: $"timed out waiting for ($what)" }
+    error make --unspanned {msg: $"timed out waiting for ($what)"}
 }
 
 def main [url: string, c411_key: path, recyclarr_config: path] {
     $env.SONARR_URL = $url
-    $env.SONARR_KEY = wait-for "sonarr" { http get $"($url)/initialize.json" | get apiKey }
+    $env.SONARR_KEY = wait-for "sonarr" {
+        http get $"($url)/initialize.json" | get apiKey
+    }
 
     # charon's reaper is the only remover (transmission.nix); a client Sonarr may
     # not remove from is also what makes it hardlink instead of move.
@@ -56,16 +58,16 @@ def main [url: string, c411_key: path, recyclarr_config: path] {
         removeCompletedDownloads: false
         tags: []
         fields: [
-            { name: host, value: torrents }
-            { name: port, value: 80 }
+            {name: host, value: torrents}
+            {name: port, value: 80}
         ]
     }
 
-    ensure remotepathmapping host {
+    (ensure remotepathmapping host {
         host: torrents
-        remotePath: /var/lib/transmission/Downloads/
+        remotePath: /srv/downloads/transmission/
         localPath: /tank/media/torrents/
-    }
+    })
 
     # Transmission creates the category folder on charon at the first grab; the
     # health check wants its pulled copy to exist before that.
@@ -82,17 +84,26 @@ def main [url: string, c411_key: path, recyclarr_config: path] {
         priority: 25
         tags: []
         fields: [
-            { name: baseUrl, value: "https://c411.org" }
-            { name: apiPath, value: /api/torznab }
-            { name: apiKey, value: (open --raw $c411_key | str trim) }
-            { name: categories, value: [5000 5070] }
-            # MULTi on c411 means original (-2) plus French (2) audio, as TRaSH's French guide assumes.
-            { name: multiLanguages, value: [-2 2] }
+            {name: baseUrl, value: "https://c411.org"}
+            {name: apiPath, value: /api/torznab}
+            {
+                name: apiKey
+                value: (open --raw $c411_key | str trim)
+            }
+            {
+                name: categories
+                value: [5000 5070]
+            }
+            # MULTi on c411 is original (-2) plus French (2) audio, as TRaSH's French guide assumes.
+            {
+                name: multiLanguages
+                value: [-2 2]
+            }
         ]
     }
 
     mkdir /tank/media/tv
-    ensure rootfolder path { path: /tank/media/tv }
+    ensure rootfolder path {path: /tank/media/tv}
 
     ^recyclarr sync --config $recyclarr_config
 
@@ -110,9 +121,15 @@ def main [url: string, c411_key: path, recyclarr_config: path] {
         onImportComplete: true
         tags: []
         fields: [
-            { name: serverUrl, value: "http://127.0.0.1:2586" }
-            { name: topics, value: [home] }
-            { name: tags, value: [] }
+            {name: serverUrl, value: "http://127.0.0.1:2586"}
+            {
+                name: topics
+                value: [home]
+            }
+            {
+                name: tags
+                value: []
+            }
         ]
     }
 }

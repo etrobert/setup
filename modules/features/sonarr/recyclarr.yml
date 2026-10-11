@@ -9,8 +9,8 @@ sonarr:
       type: series
 
     quality_profiles:
-      # [French MULTi.VO] UHD Bluray + WEB (2160p): original audio, no VF-only.
-      - trash_id: 6fa7364373e8f06206871d9c20a4fb3e
+      # [French VOSTFR] UHD Bluray + WEB: original audio first, MULTi fallback.
+      - trash_id: d6252dce6af535107ed4b03e68052ae8
         name: Original audio
         reset_unmatched_scores:
           enabled: true
@@ -31,8 +31,6 @@ sonarr:
           # Remux Tier 01, 02
           - 9965a052eb87b0d10313b1cea89eb451
           - 8a1d0c3d7497e741736761a1da866a2e
-          # FR Remux Tier 01
-          - b8e91cc8fb2bd96468fab74730c30d18
         assign_scores_to:
           - name: Original audio
 
