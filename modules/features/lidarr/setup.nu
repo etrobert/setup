@@ -183,4 +183,19 @@ def main [url: string, c411_key: path] {
         writeAudioTags: newFiles
         scrubAudioTags: true
     }) | ignore
+
+    # Embedded too: Navidrome's web UI reads lyrics only from tags.
+    # 3 = Prefer Line Synced, falling back to plain.
+    # Same level for .lrc: Tubifarry refetches any track without one.
+    provider metadata {
+        name: "Lyrics Enhancer"
+        implementation: LyricsEnhancer
+        configContract: LyricsEnhancerSettings
+        enable: true
+        fields: [
+            {name: lrcLibEnabled, value: true}
+            {name: lrcFileOptions, value: 3}
+            {name: lyricEmbeddingOption, value: 3}
+        ]
+    }
 }
