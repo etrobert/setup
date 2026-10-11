@@ -100,6 +100,13 @@
               mountOptions = [ "nofail" ];
             };
 
+            # Personal files no app manages: projects, scans, archives.
+            files = {
+              type = "zfs_fs";
+              mountpoint = "/tank/files";
+              mountOptions = [ "nofail" ];
+            };
+
             postgres = {
               type = "zfs_fs";
               mountpoint = "/var/lib/postgresql";
@@ -129,11 +136,13 @@
         # Requires /tank to stay root-owned (its dataset birth default):
         # tmpfiles' unsafe-path-transition guard refuses child rules under a
         # user-owned parent.
-        tmpfiles.settings.tank."/tank/media".z = {
-          user = "soft";
-          group = "users";
-          mode = "0755";
-        };
+        tmpfiles.settings.tank = lib.genAttrs [ "/tank/media" "/tank/files" ] (_: {
+          z = {
+            user = "soft";
+            group = "users";
+            mode = "0755";
+          };
+        });
 
         services = {
           # `zfs mount -a` races systemd's fstab units for the disko-managed
