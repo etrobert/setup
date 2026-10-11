@@ -17,12 +17,24 @@ _: {
         </LibraryOptions>
       '';
 
+      root = "${config.services.jellyfin.dataDir}/root/default";
+
+      # libraries is the whole list: one added in the UI goes at the next restart.
+      removeUndeclared = /* bash */ ''
+        for dir in '${root}'/*/; do
+          case "$(basename "$dir")" in
+            ${lib.concatMapStringsSep "|" lib.escapeShellArg (lib.attrNames libraries)}) ;;
+            *) rm --recursive -- "$dir" ;;
+          esac
+        done
+      '';
+
       # Jellyfin registers a new library only at its next library scan.
       writeLibrary =
         name:
         { type, path }:
         let
-          dir = "${config.services.jellyfin.dataDir}/root/default/${name}";
+          dir = "${root}/${name}";
         in
         /* bash */ ''
           mkdir --parents '${dir}'
@@ -46,7 +58,7 @@ _: {
         unitConfig.RequiresMountsFor = [ "/tank/media" ];
 
         # preStart, not tmpfiles: Jellyfin caches options.xml, so a change must restart it.
-        preStart = lib.concatLines (lib.mapAttrsToList writeLibrary libraries);
+        preStart = lib.concatLines ([ removeUndeclared ] ++ lib.mapAttrsToList writeLibrary libraries);
       };
     };
 }
