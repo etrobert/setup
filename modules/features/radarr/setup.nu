@@ -72,6 +72,7 @@ def main [url: string, c411_key: path] {
     mkdir /tank/media/torrents/radarr
 
     # c411 files films under 2030, animation under 2060, documentaries under 2070.
+    # A French tracker's MULTi is the French dub plus the original audio: -2 Original, 2 French.
     provider indexer {
         name: c411
         implementation: Torznab
@@ -91,6 +92,10 @@ def main [url: string, c411_key: path] {
             {
                 name: categories
                 value: [2030 2060 2070]
+            }
+            {
+                name: multiLanguages
+                value: [-2 2]
             }
         ]
     }
