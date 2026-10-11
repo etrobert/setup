@@ -59,7 +59,6 @@ _: {
             device = "/dev/dri/by-path/pci-0000:03:00.0-render";
           };
 
-          # Tone mapping, on by default, runs libplacebo through Vulkan: no ROCm OpenCL needed.
           transcoding = {
             enableHardwareEncoding = true;
             hardwareEncodingCodecs.hevc = true;
@@ -82,9 +81,15 @@ _: {
         '';
       };
 
+      # Jellyfin tone-maps HDR on AMD through OpenCL, which needs ROCm's runtime.
+      hardware.amdgpu.opencl.enable = true;
+
       systemd.services.jellyfin = {
         # Libraries live under /tank/media; a scan before the mount marks them missing.
         unitConfig.RequiresMountsFor = [ "/tank/media" ];
+
+        # ROCm's OpenCL opens /dev/kfd next to the render node the module allows.
+        serviceConfig.DeviceAllow = [ "/dev/kfd rw" ];
 
         # preStart, not tmpfiles: Jellyfin caches options.xml, so a change must restart it.
         preStart = lib.concatLines ([ removeUndeclared ] ++ lib.mapAttrsToList writeLibrary libraries);
