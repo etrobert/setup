@@ -183,4 +183,17 @@ def main [url: string, c411_key: path] {
         writeAudioTags: newFiles
         scrubAudioTags: true
     }) | ignore
+
+    # Embedded too: Navidrome's web UI reads lyrics only from tags.
+    # 2 = Only Line Synced, as the .lrc file default.
+    provider metadata {
+        name: "Lyrics Enhancer"
+        implementation: LyricsEnhancer
+        configContract: LyricsEnhancerSettings
+        enable: true
+        fields: [
+            {name: lrcLibEnabled, value: true}
+            {name: lyricEmbeddingOption, value: 2}
+        ]
+    }
 }
