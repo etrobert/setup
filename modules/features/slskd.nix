@@ -11,10 +11,15 @@
           openFirewall = true;
 
           settings = {
+            # Siblings on one filesystem: completion is a rename, not a copy.
+            directories = {
+              downloads = "/srv/downloads/slskd/downloads";
+              incomplete = "/srv/downloads/slskd/incomplete";
+            };
+
             # Share back what we fetched, the way transmission seeds.
             shares = {
-              # slskd's default downloads directory.
-              directories = [ "/var/lib/slskd/downloads" ];
+              directories = [ config.services.slskd.settings.directories.downloads ];
               # Without it the share never picks up new downloads.
               cache.retention = 60;
             };
@@ -33,17 +38,28 @@
         tsnsrv.services.soulseek.toURL = "http://127.0.0.1:${toString config.services.slskd.settings.web.port}";
       };
 
-      # The module makes shares read-only, and the share is the downloads directory.
-      systemd.services.slskd.serviceConfig.ReadOnlyPaths = lib.mkForce [ ];
+      systemd = {
+        services.slskd = {
+          # The module makes shares read-only, and the share is the downloads directory.
+          serviceConfig.ReadOnlyPaths = lib.mkForce [ ];
 
-      # slskd < 0.26.1 prunes by access time, which share rescans keep fresh: https://github.com/slskd/slskd/commit/71401118
-      fileSystems."/".options = [ "noatime" ];
+          # Without the mount, downloads would fill the root filesystem.
+          unitConfig.RequiresMountsFor = [ "/srv/downloads" ];
+        };
 
-      assertions = [
-        {
-          assertion = lib.versionOlder config.services.slskd.package.version "0.26.1";
-          message = "slskd ${config.services.slskd.package.version} prunes by write time: drop noatime from modules/features/slskd.nix";
-        }
-      ];
+        # ReadWritePaths= needs them to exist; the module only creates its StateDirectory.
+        tmpfiles.settings.slskd =
+          lib.genAttrs
+            [
+              "/srv/downloads/slskd"
+              config.services.slskd.settings.directories.downloads
+              config.services.slskd.settings.directories.incomplete
+            ]
+            (_: {
+              d = {
+                inherit (config.services.slskd) user group;
+              };
+            });
+      };
     };
 }

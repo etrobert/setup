@@ -71,14 +71,14 @@
         # No --delete: jellyfin plays some torrents straight from the landing zone.
         (pull {
           name = "torrent";
-          from = "/var/lib/transmission/Downloads";
+          from = "/srv/downloads/transmission";
           to = "/tank/media/torrents";
           extraFlags = "--exclude='*.part'";
         })
         # A mirror: imports copy albums out, so the landing zone ends when the share does.
         (pull {
           name = "soulseek";
-          from = "/var/lib/slskd/downloads";
+          from = "/srv/downloads/slskd/downloads";
           to = "/tank/media/soulseek";
           extraFlags = "--delete";
         })

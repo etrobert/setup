@@ -75,7 +75,7 @@ def main [url: string, c411_key: path] {
 
     (ensure remotepathmapping host {
         host: torrents
-        remotePath: /var/lib/transmission/Downloads/
+        remotePath: /srv/downloads/transmission/
         localPath: /tank/media/torrents/
     })
 
@@ -102,7 +102,7 @@ def main [url: string, c411_key: path] {
     (ensure
         remotepathmapping
         host
-        {host: soulseek, remotePath: /var/lib/slskd/downloads/, localPath: /tank/media/soulseek/}
+        {host: soulseek, remotePath: /srv/downloads/slskd/downloads/, localPath: /tank/media/soulseek/}
     )
 
     provider indexer {

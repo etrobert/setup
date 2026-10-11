@@ -63,7 +63,7 @@ def main [url: string, c411_key: path] {
 
     (ensure remotepathmapping host {
         host: torrents
-        remotePath: /var/lib/transmission/Downloads/
+        remotePath: /srv/downloads/transmission/
         localPath: /tank/media/torrents/
     })
 
