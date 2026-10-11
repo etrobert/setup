@@ -28,6 +28,7 @@
         self.nixosModules.syncthing
         self.nixosModules.atuin-login
         self.nixosModules.cursor
+        self.nixosModules.samsung-t7
       ];
 
       documentation.doc.enable = false;
