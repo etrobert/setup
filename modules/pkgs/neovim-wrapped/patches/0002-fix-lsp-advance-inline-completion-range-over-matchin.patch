@@ -1,0 +1,115 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?=C3=89tienne=20Robert?= <etiennerobert33@gmail.com>
+Date: Sat, 22 Aug 2026 17:48:39 +0200
+Subject: [PATCH 2/2] fix(lsp): advance inline completion range over matching
+ input
+
+Problem:
+
+`Completor:accept()` applies the item against the range the server
+answered with. Characters typed after the request but before accepting
+lie inside neither that range nor the replacement, so they survive the
+insertion. With copilot-language-server, typing `u` after `f` and
+accepting `func add(a int, b int) int {` within the 200 ms debounce
+yields `func add(a int, b int) int {u`.
+
+Solution:
+
+While the candidate still matches, grow the item's range over the
+characters typed since the request, so that `accept()` replaces them.
+`accept()` only honours the range for plain text, so snippet items are
+left alone. Whether the item overlays buffer text is now decided from its
+original range, so growing the range does not change how it is rendered.
+
+Ref #36529
+---
+ runtime/lua/vim/lsp/inline_completion.lua     | 13 +++++++-
+ .../plugin/lsp/inline_completion_spec.lua     | 30 +++++++++++++++++++
+ 2 files changed, 42 insertions(+), 1 deletion(-)
+
+diff --git a/runtime/lua/vim/lsp/inline_completion.lua b/runtime/lua/vim/lsp/inline_completion.lua
+index c379d4d..0829d98 100644
+--- a/runtime/lua/vim/lsp/inline_completion.lua
++++ b/runtime/lua/vim/lsp/inline_completion.lua
+@@ -64,6 +64,7 @@ local namespace = api.nvim_create_namespace('nvim.lsp.inline_completion')
+ ---@field timer? uv.uv_timer_t Timer for debouncing automatic requests
+ ---@field current? vim.lsp.inline_completion.Item Currently selected item
+ ---@field _index? integer Index of the last selected item, kept across invalidation
++---@field _overlay? boolean Whether `current` replaces buffer text, per its original range
+ ---@field client_state table<integer, vim.lsp.inline_completion.ClientState>
+ local Completor = {
+   name = 'inline_completion',
+@@ -186,6 +187,8 @@ function Completor:select(index, show_index)
+     _filter_text = item.filterText,
+     command = item.command,
+   }
++  -- Recorded here because `show()` may grow the range over typed characters.
++  self._overlay = range ~= nil and not range:is_empty()
+ 
+   local hint = show_index and (' (%d/%d)'):format(index, self:count_items()) or nil
+   self:show(hint)
+@@ -259,6 +262,14 @@ function Completor:show(hint)
+         self.current = nil
+         return
+       end
++      -- The candidate still matches, so absorb the characters typed since the
++      -- request into its range: accepting then replaces them instead of leaving
++      -- them stranded after the insertion. `accept()` only honours the range for
++      -- plain text, so snippets are left alone.
++      if current.range and typed_col < cursor_col and type(current.insert_text) == 'string' then
++        local start_row, start_col = current.range:to_extmark()
++        current.range = vim.range.extmark(self.bufnr, start_row, start_col, row, cursor_col)
++      end
+       skip = math.max(skip, cursor_col - col + 1)
+     end
+   end
+@@ -275,7 +286,7 @@ function Completor:show(hint)
+   api.nvim_buf_set_extmark(self.bufnr, namespace, row, col, {
+     virt_text = virt_text,
+     virt_lines = virt_lines,
+-    virt_text_pos = (current.range and not current.range:is_empty() and 'overlay') or 'inline',
++    virt_text_pos = self._overlay and 'overlay' or 'inline',
+     hl_mode = 'combine',
+   })
+ end
+diff --git a/test/functional/plugin/lsp/inline_completion_spec.lua b/test/functional/plugin/lsp/inline_completion_spec.lua
+index cc95a3e..41ad16b 100644
+--- a/test/functional/plugin/lsp/inline_completion_spec.lua
++++ b/test/functional/plugin/lsp/inline_completion_spec.lua
+@@ -417,6 +417,36 @@ describe('vim.lsp.inline_completion', function()
+         {3:-- INSERT --}                                         |
+       ]])
+     end)
++
++    it('does not strand input typed since the request when accepted', function()
++      serve({
++        {
++          insertText = 'foobar',
++          range = {
++            start = { line = 1, character = 0 },
++            ['end'] = { line = 1, character = 1 },
++          },
++        },
++      })
++      feed('ifo')
++      screen:expect([[
++        function fibonacci()                                 |
++        fo{1:^obar}                                               |
++        {1:~                                                    }|*11
++        {3:-- INSERT --}                                         |
++      ]])
++      exec_lua(function()
++        vim.lsp.inline_completion.get()
++      end)
++      n.poke_eventloop()
++      feed('<Esc>')
++      screen:expect([[
++        function fibonacci()                                 |
++        fooba^r                                               |
++        {1:~                                                    }|*11
++                                                             |
++      ]])
++    end)
+   end)
+ 
+   describe('select()', function()
