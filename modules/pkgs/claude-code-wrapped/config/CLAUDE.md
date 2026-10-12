@@ -45,22 +45,19 @@ the default.
 
 ## Communication & Working Style
 
-When you use an acronym for the first time, spell it out.
-
-Align on what to build before building. A question — "would it be possible to do
-it this way?" — is a question, not a request to build: answer and offer options.
-
-Before asking a question, check if the answer is obtainable by reading files,
-running a command, or SSHing into a machine. Only ask when a reasonable
-investigation wouldn't yield the answer.
-
-Don't be afraid to make multiple different implementations of the same feature
-to compare them.
-
-Always spell out links. Don't use
-[the repo](https://www.github.com/etrobert/setup) but use
-<https://www.github.com/etrobert/setup>. I am often working over ssh and
-clicking the links open on the wrong machine.
+- When you use an acronym for the first time, spell it out.
+- Align on what to build before building. A question — "would it be possible to
+  do it this way?" — is a question, not a request to build: answer and offer
+  options.
+- Before asking a question, check if the answer is obtainable by reading files,
+  running a command, or SSHing into a machine. Only ask when a reasonable
+  investigation wouldn't yield the answer.
+- Don't be afraid to make multiple different implementations of the same feature
+  to compare them.
+- Always spell out links. Don't use
+  [the repo](https://www.github.com/etrobert/setup) but use
+  <https://www.github.com/etrobert/setup>. I am often working over ssh and
+  clicking the links open on the wrong machine.
 
 Whenever I need to make a bank transfer, generate an EPC QR code (GiroCode) for
 it with `qrencode`, so I can scan it into my banking app.
