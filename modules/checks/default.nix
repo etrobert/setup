@@ -25,6 +25,13 @@
       nu-line-length = pkgs.runCommand "nu-line-length-check" { } ''
         ! grep --recursive --line-number --include='*.nu' '.\{101\}' ${self} && touch $out
       '';
+
+      # Fails once upstream lands 'completepopup', which borders the
+      # documentation float itself, retiring the completion plugin's shim.
+      neovim-completepopup = pkgs.runCommand "neovim-completepopup-check" { } ''
+        ${pkgs.neovim-unwrapped}/bin/nvim --headless \
+          -c 'if exists("+completepopup") | cquit | endif' -c quit && touch $out
+      '';
     };
   };
 }
