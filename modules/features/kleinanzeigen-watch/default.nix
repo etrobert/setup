@@ -3,7 +3,7 @@
 #
 # Listings come from the Android app's JSON API rather than the website: it is
 # unauthenticated, returns full descriptions and coordinates per ad, and needs
-# no HTML parsing. The Basic credentials in watch.sh are the app's own static
+# no HTML parsing. The Basic credentials in watch.ts are the app's own static
 # token (android:TaR60pEttY), not a personal one — see
 # https://gist.github.com/BastelPichi/43e441f166fcd6a4c76f875dcbb91d5c
 #
@@ -11,22 +11,11 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, self', ... }:
+    { self', ... }:
     {
-      packages.kleinanzeigen-watch = pkgs.writeShellApplication {
-        name = "kleinanzeigen-watch";
-
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.curl
-          pkgs.gnugrep
-          pkgs.jq
-          self'.packages.ntfy-wrapped
-        ];
-
-        inheritPath = false;
-        text = builtins.readFile ./watch.sh;
-      };
+      packages.kleinanzeigen-watch = self'.legacyPackages.writers.writeTsBin "kleinanzeigen-watch" {
+        runtimeInputs = [ self'.packages.ntfy-wrapped ];
+      } (builtins.readFile ./watch.ts);
     };
 
   flake.nixosModules.kleinanzeigen-watch =
