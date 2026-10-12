@@ -120,6 +120,7 @@
             ddcutil
             dmidecode
             freerdp # provides wlfreerdp
+            jellyfin-media-player
             kdePackages.okular
             mpv
             orca-slicer
