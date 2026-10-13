@@ -7,6 +7,7 @@ source = "community"
 # (which scans the data dir), so nothing outside the store is scanned.
 [plugins]
 enabled = [
+  "etrobert/auto-brightness",
   "etrobert/birthdays",
   "etrobert/deploy-status",
   "etrobert/weekday",
@@ -80,6 +81,7 @@ end = [
   "bluetooth",
   "volume",
   "brightness",
+  "etrobert/auto-brightness:bar",
   "battery",
   "power_profile",
   "etrobert/deploy-status:bar",
