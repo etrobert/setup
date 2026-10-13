@@ -78,13 +78,19 @@
           mountOptions = [ "nofail" ];
 
           options.ashift = "12";
-          rootFsOptions.atime = "off";
+          rootFsOptions = {
+            atime = "off";
+            # Otherwise `zfs mount -a` races systemd's fstab mounts; every
+            # dataset below repeats it.
+            mountpoint = "legacy";
+          };
 
           datasets = {
             media = {
               type = "zfs_fs";
               mountpoint = "/tank/media";
               mountOptions = [ "nofail" ];
+              options.mountpoint = "legacy";
               options.recordsize = "1M";
             };
 
@@ -92,12 +98,14 @@
               type = "zfs_fs";
               mountpoint = "/tank/photos";
               mountOptions = [ "nofail" ];
+              options.mountpoint = "legacy";
             };
 
             public = {
               type = "zfs_fs";
               mountpoint = "/tank/public";
               mountOptions = [ "nofail" ];
+              options.mountpoint = "legacy";
             };
 
             # Personal files no app manages: projects, scans, archives.
@@ -105,12 +113,14 @@
               type = "zfs_fs";
               mountpoint = "/tank/files";
               mountOptions = [ "nofail" ];
+              options.mountpoint = "legacy";
             };
 
             postgres = {
               type = "zfs_fs";
               mountpoint = "/var/lib/postgresql";
               mountOptions = [ "nofail" ];
+              options.mountpoint = "legacy";
 
               # Postgres writes 8 KiB pages, so a large record turns a
               # scattered page update into a copy-on-write rewrite of the whole
@@ -145,11 +155,6 @@
         });
 
         services = {
-          # `zfs mount -a` races systemd's fstab units for the disko-managed
-          # datasets, failing the mount unit and every service requiring it.
-          # Masked, not unwanted: zfs-share.service pulls it back in via Wants=.
-          zfs-mount.enable = false;
-
           # sanoid's ExecStartPre delegates permissions with `zfs allow`, a
           # sync task that cannot return until the open txg commits. A
           # write-heavy pool pushes txg sync past systemd's 90s default, so the
