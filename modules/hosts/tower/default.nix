@@ -31,7 +31,6 @@ in
       self.nixosModules.claude-warmup
       self.nixosModules.github-issue-watch
       self.nixosModules.kleinanzeigen-watch
-      self.nixosModules.kimsufi-watch
       self.nixosModules.docker
       self.nixosModules.gaming
       self.nixosModules.fn-keys-on-focus
