@@ -11,6 +11,7 @@ noctalia.setUpdateInterval(1000)
 
 local deploy = nil
 local deployCheckedAt = nil
+local upgradedAt = nil
 
 local function short(rev)
 	return rev and string.sub(rev, 1, 8) or "unknown"
@@ -22,6 +23,7 @@ local function render(running, upgrading)
 		{ "Running", short(running) },
 		{ "Deploy", short(deploy) },
 		{ "Auto-upgrade", upgrading and "upgrading" or paused and "paused" or "on" },
+		{ "Last upgrade", upgradedAt and noctalia.formatTime("%Y-%m-%d %H:%M", upgradedAt) or "unknown" },
 	}
 	barWidget.setTooltip(tooltip)
 
@@ -54,6 +56,10 @@ function update()
 	if not deployCheckedAt or os.time() - deployCheckedAt >= DEPLOY_EVERY then
 		fetchDeploy()
 	end
+	-- stat, not fileInfo: fileInfo follows the link to the store, where mtime is 1970.
+	noctalia.runAsync({ "stat", "--format=%Y", "/nix/var/nix/profiles/system" }, function(profile)
+		upgradedAt = profile.exitCode == 0 and tonumber(profile.stdout) or nil
+	end)
 	noctalia.runAsync({ "nixos-version", "--configuration-revision" }, function(version)
 		local running = version.exitCode == 0 and noctalia.string.trim(version.stdout) or nil
 		noctalia.runAsync(
