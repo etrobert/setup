@@ -137,7 +137,21 @@
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
 
-            overlays = [ inputs.neovim-nightly.overlays.default ];
+            overlays = [
+              (final: prev: {
+                typescript-language-server =
+                  prev.typescript-language-server.overrideAttrs
+                    (old: {
+                      pnpmDeps = prev.fetchPnpmDeps {
+                        inherit (old) pname version src;
+                        pnpm = prev.pnpm_12;
+                        fetcherVersion = 4;
+                        hash = "sha256-xR/EF60lVBsITKgH7wCM2wHM46PFQevD51KfCENSUH4=";
+                      };
+                    });
+              })
+              inputs.neovim-nightly.overlays.default
+            ];
 
             config.allowUnfreePredicate =
               pkg:
