@@ -17,7 +17,11 @@ def provider [path: string, body: record] {
     if ($existing | is-empty) {
         api post $path $body
     } else {
-        api put $"($path)/($existing.0.id)" ($body | insert id $existing.0.id)
+        (api
+            put
+            $"($path)/($existing.0.id)"
+            ($body | insert id $existing.0.id)
+        )
     } | ignore
 }
 
