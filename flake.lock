@@ -411,11 +411,11 @@
     "noctalia-official-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1791801475,
-        "narHash": "sha256-0LcRrw6iA30dva7ubY7y3aZpOkqfufGvCtWW1V33cnA=",
+        "lastModified": 1792068760,
+        "narHash": "sha256-kYgPQYiQ3A8NS6S7E2wp2spwFEoXO+URJ4FVtDGp31o=",
         "owner": "noctalia-dev",
         "repo": "official-plugins",
-        "rev": "9aec34181e46789b281263942092ac552f661d1a",
+        "rev": "734850fd1ee3badc2a18a515df31f36267852e46",
         "type": "github"
       },
       "original": {
