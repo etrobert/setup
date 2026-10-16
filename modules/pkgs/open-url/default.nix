@@ -35,7 +35,8 @@
               "text/html"
             ];
           }).overrideAttrs
-            { meta.platforms = lib.platforms.linux; };
+            # Zen ships for x86_64-linux only
+            { meta.platforms = [ "x86_64-linux" ]; };
       };
     };
 }

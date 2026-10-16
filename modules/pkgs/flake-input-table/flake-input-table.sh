@@ -17,8 +17,7 @@ jq --raw-output --slurpfile old "$old_lock" '
   | $before[$name].rev as $from
   | .value as $to
   | (if $to.type == "tarball" then
-       # No rev to show; the publish dates tell the releases apart.
-       "`\($before[$name].lastModified // 0 | strftime("%Y-%m-%d"))`"
+       "`\($before[$name].lastModified | strftime("%Y-%m-%d"))`"
        + " → `\($to.lastModified | strftime("%Y-%m-%d"))`"
      elif $to.type == "github" then
        "[`\($from[0:7])` → `\($to.rev[0:7])`]"
