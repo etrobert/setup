@@ -18,6 +18,7 @@
           )
         );
       version = iniValue "application.ini" "Version";
+      firefoxVersion = iniValue "platform.ini" "Milestone";
 
       # Mirrors nixpkgs' firefox-bin-unwrapped; wrapFirefox reads its passthru
       zen-browser-unwrapped = pkgs.stdenv.mkDerivation {
@@ -63,7 +64,7 @@
       makeZen =
         extraSettings:
         # wrapFirefox picks the FFmpeg ABI from browser.version, so it needs Firefox's, not Zen's
-        pkgs.wrapFirefox (zen-browser-unwrapped // { version = iniValue "platform.ini" "Milestone"; }) {
+        pkgs.wrapFirefox (zen-browser-unwrapped // { version = firefoxVersion; }) {
           inherit version;
           extraPrefs = browserConfig.renderDefaultPrefs (
             browserConfig.sharedSettings
