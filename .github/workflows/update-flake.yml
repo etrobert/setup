@@ -49,6 +49,15 @@ jobs:
           # create-pull-request does not commit it.
           old_lock="$RUNNER_TEMP/flake.lock.old"
           git show HEAD:flake.lock > "$old_lock"
+
+          # Flake inputs are literals, so pin Zen to where `latest` redirects
+          zen=https://github.com/zen-browser/desktop/releases
+          tarball=zen.linux-x86_64.tar.xz
+          zen_url=$(nix run nixpkgs#curl -- --silent --show-error --head \
+            --output /dev/null --write-out '%{redirect_url}' \
+            "$zen/latest/download/$tarball")
+          sed --in-place \
+            "s#$zen/download/[^/]*/$tarball#${zen_url:?no redirect}#" flake.nix
           nix flake update --accept-flake-config
 
           # The direct inputs whose content moved, read off the lock files.
@@ -70,7 +79,7 @@ jobs:
           if [ "$after" = "$before" ]; then
             echo "No host changed; dropping: ${inputs//,/, }"
             printf '## Dropped\n\n%s\n' "$table" >> "$GITHUB_STEP_SUMMARY"
-            git checkout -- flake.lock
+            git checkout -- flake.lock flake.nix
             exit 0
           fi
 

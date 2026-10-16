@@ -99,8 +99,5 @@
       environment.systemPackages = [
         (if config.gpu.hasAv1Decode then zen-browser-wrapped else zen-browser-wrapped-no-av1)
       ];
-
-      # The input URL moves each release, so GC and harmonia must keep the locked tarball
-      system.extraDependencies = [ inputs.zen-browser ];
     };
 }
