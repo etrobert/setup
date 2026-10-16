@@ -16,14 +16,12 @@ jq --raw-output --slurpfile old "$old_lock" '
   | .key as $name
   | $before[$name].rev as $from
   | .value as $to
-  | (if $to.type == "tarball" then
-       "`\($before[$name].lastModified | strftime("%Y-%m-%d"))`"
-       + " → `\($to.lastModified | strftime("%Y-%m-%d"))`"
-     elif $to.type == "github" then
+  | (if $to.type == "github" then
        "[`\($from[0:7])` → `\($to.rev[0:7])`]"
        + "(https://github.com/\($to.owner)/\($to.repo)"
        + "/compare/\($from)...\($to.rev))"
-     else "`\($from[0:7])` → `\($to.rev[0:7])`"
+     # file and tarball inputs have no rev; the content hash is all they carry
+     else "`\($before[$name].narHash[7:15])` → `\($to.narHash[7:15])`"
      end) as $change
   | "| \($name) | \($change) |"
 ' "$new_lock"
