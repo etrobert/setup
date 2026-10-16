@@ -53,7 +53,7 @@ jobs:
           # Flake inputs are literals, so pin Zen to where `latest` redirects
           zen=https://github.com/zen-browser/desktop/releases
           tarball=zen.linux-x86_64.tar.xz
-          zen_url=$(nix run nixpkgs#curl -- --silent --show-error --head \
+          zen_url=$(curl --silent --show-error --head \
             --output /dev/null --write-out '%{redirect_url}' \
             "$zen/latest/download/$tarball")
           sed --in-place \
