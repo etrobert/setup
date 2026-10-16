@@ -51,12 +51,13 @@ jobs:
           git show HEAD:flake.lock > "$old_lock"
           nix flake update --accept-flake-config
 
-          # The direct inputs whose locked rev moved, read off the lock files.
+          # The direct inputs whose content moved, read off the lock files.
+          # narHash, not rev: tarball inputs have no rev.
           inputs=$(jq --raw-output --slurpfile old "$old_lock" '
             . as $new | .nodes.root.inputs | to_entries[]
             | select(.value | type == "string")
-            | select($old[0].nodes[.value].locked.rev
-                     != $new.nodes[.value].locked.rev)
+            | select($old[0].nodes[.value].locked.narHash
+                     != $new.nodes[.value].locked.narHash)
             | .key' flake.lock | paste --serial --delimiters=,)
           if [ -z "$inputs" ]; then
             echo "Every input is up to date."

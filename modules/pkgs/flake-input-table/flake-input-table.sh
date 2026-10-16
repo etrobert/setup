@@ -12,11 +12,15 @@ jq --raw-output --slurpfile old "$old_lock" '
   ($old[0] | locked) as $before
   | locked
   | to_entries[]
-  | select($before[.key].rev != .value.rev)
+  | select($before[.key].narHash != .value.narHash)
   | .key as $name
   | $before[$name].rev as $from
   | .value as $to
-  | (if $to.type == "github" then
+  | (if $to.type == "tarball" then
+       # No rev to show; the publish dates tell the releases apart.
+       "`\($before[$name].lastModified // 0 | strftime("%Y-%m-%d"))`"
+       + " → `\($to.lastModified | strftime("%Y-%m-%d"))`"
+     elif $to.type == "github" then
        "[`\($from[0:7])` → `\($to.rev[0:7])`]"
        + "(https://github.com/\($to.owner)/\($to.repo)"
        + "/compare/\($from)...\($to.rev))"
