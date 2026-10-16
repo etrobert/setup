@@ -12,7 +12,7 @@ jq --raw-output --slurpfile old "$old_lock" '
   ($old[0] | locked) as $before
   | locked
   | to_entries[]
-  | select($before[.key].narHash != .value.narHash)
+  | select($before[.key].rev != .value.rev)
   | .key as $name
   | $before[$name].rev as $from
   | .value as $to
@@ -20,8 +20,7 @@ jq --raw-output --slurpfile old "$old_lock" '
        "[`\($from[0:7])` → `\($to.rev[0:7])`]"
        + "(https://github.com/\($to.owner)/\($to.repo)"
        + "/compare/\($from)...\($to.rev))"
-     # file and tarball inputs have no rev; the content hash is all they carry
-     else "`\($before[$name].narHash[7:15])` → `\($to.narHash[7:15])`"
+     else "`\($from[0:7])` → `\($to.rev[0:7])`"
      end) as $change
   | "| \($name) | \($change) |"
 ' "$new_lock"
