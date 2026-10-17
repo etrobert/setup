@@ -29,9 +29,10 @@ curl --silent --request POST --header 'content-type: application/json' \
 ```
 
 `graph` returns `tasks` (with `status`, `description`, `url` and `assignee`),
-`projects` and `dependencies`. A dependency `{source, target}` means `source`
-must be completed before `target`. Statuses are `pending`, `in progress`,
-`in review` and `completed`.
+`projects` and `dependencies`. A dependency `{id, source, target}` means
+`source` must be completed before `target`. `users` lists the organization's
+people and AIs. Statuses are `pending`, `in progress`, `in review` and
+`completed`.
 
 ## Working on tasks
 
@@ -41,7 +42,18 @@ must be completed before `target`. Statuses are `pending`, `in progress`,
    blocks them.
 3. If a task's name and description don't say what done looks like, ask before
    starting.
-4. Set it to `in progress`, do the work, then set it to `completed`, or to
-   `in review` when a person has to approve the result (an open pull request).
-   Set the result's link (http or https only), such as the pull request, as the
-   task's `url` in the same `updateTaskDetails` call.
+4. Set it to `in progress` and do the work. When done, set it to `completed`
+   with the result's link (http or https only), such as the pull request, as its
+   `url` in the same `updateTaskDetails` call.
+5. When the result needs a review, ask for one by creating a review task, and
+   say whom you picked in your reply:
+   - `createTaskFrom` with `from` the finished task and `newTaskType: "blocked"`
+     creates it with the dependency on that task.
+   - Name it `Review: <task name>`, give it the same `url`, and assign it to the
+     person who should review (from `users`), via `updateNode` and
+     `updateTaskDetails`.
+   - Move every other dependency leaving the finished task onto the review task
+     (`deleteEdges`, then `createEdge`), so the tasks waiting on the work wait
+     on its review.
+6. A review task assigned to you means reviewing its `url`. Set it to
+   `completed` once you approve.
