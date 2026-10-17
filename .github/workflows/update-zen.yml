@@ -3,8 +3,8 @@ name: Update Zen
 
 "on":
   schedule:
-    # UTC: 09:00 Berlin under CEST, an hour earlier under CET.
-    - cron: "0 7 * * *"
+    # UTC: hourly 09:00-23:00 Berlin under CEST, an hour earlier under CET.
+    - cron: "0 7-21 * * *"
   workflow_dispatch:
 
 jobs:
