@@ -87,6 +87,10 @@
       url = "github:noctalia-dev/official-plugins";
       flake = false;
     };
+    trash-guides = {
+      url = "github:TRaSH-Guides/Guides";
+      flake = false;
+    };
     # Tracks the latest Claude Code release ahead of nixpkgs' packaging cadence
     # (hourly bot, official Anthropic binaries). `nix flake update` keeps it
     # current. Built against our own nixpkgs via the follows below.
