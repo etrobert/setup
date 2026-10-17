@@ -15,10 +15,10 @@ _: {
             replace = true;
 
             # gh and curl for the flake-update pipeline workflows.
-            extraPackages = [
-              pkgs.jq
-              pkgs.gh
-              pkgs.curl
+            extraPackages = with pkgs; [
+              jq
+              gh
+              curl
             ];
           };
 
