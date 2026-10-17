@@ -1,0 +1,14 @@
+id = "etrobert/auto-brightness"
+name = "Auto Brightness"
+version = "1.0.0"
+plugin_api = 24
+author = "etrobert"
+license = "MIT"
+dependencies = ["systemctl"]
+tags = ["brightness", "system"]
+icon = "brightness-auto"
+description = "Click to pause or resume auto-brightness."
+
+[[widget]]
+id = "bar"
+entry = "bar.luau"
