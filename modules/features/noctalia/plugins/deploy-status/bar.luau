@@ -1,7 +1,6 @@
 --!nonstrict
--- Whether this host runs setup's deploy branch. Click to follow the upgrade
--- logs, right-click to pause or resume auto-upgrade
--- (modules/features/auto-upgrade.nix).
+-- Whether this host runs setup's deploy branch; click to follow upgrade logs,
+-- right-click to pause or resume auto-upgrade (modules/features/auto-upgrade.nix).
 
 local PAUSED = "/var/lib/nixos-upgrade/paused"
 local DEPLOY_URL = "https://github.com/etrobert/setup.git"
