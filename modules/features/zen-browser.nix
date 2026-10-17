@@ -13,7 +13,7 @@
       version = iniValue "${inputs.zen-browser}/application.ini" "Version";
       firefoxVersion = iniValue "${inputs.zen-browser}/platform.ini" "Milestone";
 
-      # Mirrors nixpkgs' firefox-bin-unwrapped; wrapFirefox reads its passthru
+      # Based on nixpkgs' firefox-bin-unwrapped; wrapFirefox reads its passthru
       zen-browser-unwrapped = pkgs.stdenv.mkDerivation {
         pname = "zen-browser-unwrapped";
         inherit version;
@@ -22,21 +22,12 @@
         nativeBuildInputs = with pkgs; [
           wrapGAppsHook3
           autoPatchelfHook
-          patchelfUnstable
+          patchelfUnstable # stable patchelf 0.15 lacks --no-clobber-old-sections
         ];
         buildInputs = with pkgs; [
           gtk3
-          adwaita-icon-theme
           alsa-lib
-          dbus-glib
-          libxtst
         ];
-        runtimeDependencies = with pkgs; [
-          curl
-          pciutils
-          libva.out
-        ];
-        appendRunpaths = [ "${pkgs.pipewire}/lib" ];
         # Firefox uses "relrhack" to manually process relocations from a fixed offset
         patchelfFlags = [ "--no-clobber-old-sections" ];
 
@@ -50,6 +41,7 @@
           applicationName = "Zen Browser";
           binaryName = "zen";
           withFFmpeg = true;
+          withPipewire = true;
           inherit (pkgs) gtk3;
         };
       };
