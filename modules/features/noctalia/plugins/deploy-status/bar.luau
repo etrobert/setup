@@ -1,6 +1,7 @@
 --!nonstrict
--- Whether this host runs setup's deploy branch, and a click to pause or
--- resume auto-upgrade (modules/features/auto-upgrade.nix).
+-- Whether this host runs setup's deploy branch. Click to follow the upgrade
+-- logs, right-click to pause or resume auto-upgrade
+-- (modules/features/auto-upgrade.nix).
 
 local PAUSED = "/var/lib/nixos-upgrade/paused"
 local DEPLOY_URL = "https://github.com/etrobert/setup.git"
@@ -74,6 +75,16 @@ function update()
 end
 
 function onClick()
+	-- nixos-rebuild runs the switch in its own transient unit, so follow both.
+	local ok = noctalia.runInTerminal(
+		"journalctl --follow --lines=200 --unit=nixos-upgrade.service --unit=nixos-rebuild-switch-to-configuration.service"
+	)
+	if not ok then
+		noctalia.notifyError("Auto-upgrade logs", "could not open a terminal")
+	end
+end
+
+function onRightClick()
 	local argv
 	if noctalia.fileExists(PAUSED) then
 		argv = { "sudo", "--non-interactive", "rm", PAUSED }
