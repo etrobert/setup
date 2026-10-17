@@ -12,7 +12,6 @@
         open-url =
           let
             niri = lib.getExe self'.packages.niri-wrapped;
-            zen = lib.getExe self'.packages.zen-browser-wrapped;
             niriVersion = lib.versions.majorMinor pkgs.niri.version;
           in
           assert lib.assertMsg (niriVersion == "26.04") ''
@@ -26,7 +25,8 @@
             # niri mints an activation token for what it spawns, so Zen gets
             # focus; a plain launch from another app only marks the window
             # urgent.
-            exec = "${niri} msg action spawn -- ${zen} %u";
+            # The host's installed Zen, so it gets that host's build variant.
+            exec = "${niri} msg action spawn -- /run/current-system/sw/bin/zen %u";
             desktopName = "Open URL";
             noDisplay = true;
             mimeTypes = [
