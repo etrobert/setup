@@ -1,0 +1,65 @@
+---
+name: Update Zen
+
+"on":
+  schedule:
+    # UTC: 09:00 Berlin under CEST, an hour earlier under CET.
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update the Zen pin
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # Zen is pinned in a JSON file, not a flake input: bump it to the
+      # release `latest` redirects to.
+      - name: Bump the Zen pin
+        id: bump
+        run: |
+          pin=modules/features/zen-browser.json
+          releases=https://github.com/zen-browser/desktop/releases
+          url=$(curl --silent --show-error --head --output /dev/null \
+            --write-out '%{redirect_url}' \
+            "$releases/latest/download/zen.linux-x86_64.tar.xz")
+          version=$(basename "$(dirname "${url:?no redirect}")")
+          old=$(jq --raw-output .version "$pin")
+          if [ "$version" = "$old" ]; then
+            echo "Zen $old is up to date."
+            exit 0
+          fi
+
+          prefetch=$(nix store prefetch-file --unpack --json "$url")
+          unpacked=$(jq --raw-output .storePath <<< "$prefetch")
+          firefox=$(sed --quiet 's/^Milestone=//p' "$unpacked/platform.ini")
+          jq --arg version "$version" --arg firefox "$firefox" \
+            --arg hash "$(jq --raw-output .hash <<< "$prefetch")" \
+            '.version = $version
+             | .firefoxVersion = $firefox
+             | .hash = $hash' \
+            "$pin" > "$RUNNER_TEMP/zen.json"
+          mv "$RUNNER_TEMP/zen.json" "$pin"
+          echo "title=chore: update zen-browser ($old → $version)" \
+            >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        id: create
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: ${{ steps.bump.outputs.title }}
+          title: ${{ steps.bump.outputs.title }}
+          branch: zen-update
+          delete-branch: true
+
+      - name: Enable auto-merge
+        if: steps.create.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          NUMBER: ${{ steps.create.outputs.pull-request-number }}
+        run: gh pr merge "$NUMBER" --auto --squash

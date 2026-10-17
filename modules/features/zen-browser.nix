@@ -10,7 +10,7 @@
     let
       inherit (self.lib) browserConfig;
 
-      # Bumped by the update-flake workflow
+      # Bumped by the update-zen workflow
       inherit (lib.importJSON ./zen-browser.json) version firefoxVersion hash;
 
       # Based on nixpkgs' firefox-bin-unwrapped

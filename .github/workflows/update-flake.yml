@@ -49,29 +49,6 @@ jobs:
           # create-pull-request does not commit it.
           old_lock="$RUNNER_TEMP/flake.lock.old"
           git show HEAD:flake.lock > "$old_lock"
-
-          # Zen is pinned in a JSON file, not the lock: bump it to the release
-          # `latest` redirects to.
-          zen_pin=modules/features/zen-browser.json
-          zen=https://github.com/zen-browser/desktop/releases
-          zen_url=$(curl --silent --show-error --head --output /dev/null \
-            --write-out '%{redirect_url}' \
-            "$zen/latest/download/zen.linux-x86_64.tar.xz")
-          zen_version=$(basename "$(dirname "${zen_url:?no redirect}")")
-          zen_old=$(jq --raw-output .version "$zen_pin")
-          if [ "$zen_version" != "$zen_old" ]; then
-            prefetch=$(nix store prefetch-file --unpack --json "$zen_url")
-            unpacked=$(jq --raw-output .storePath <<< "$prefetch")
-            firefox=$(sed --quiet 's/^Milestone=//p' "$unpacked/platform.ini")
-            jq --arg version "$zen_version" --arg firefox "$firefox" \
-              --arg hash "$(jq --raw-output .hash <<< "$prefetch")" \
-              '.version = $version
-               | .firefoxVersion = $firefox
-               | .hash = $hash' \
-              "$zen_pin" > "$RUNNER_TEMP/zen.json"
-            mv "$RUNNER_TEMP/zen.json" "$zen_pin"
-          fi
-
           nix flake update --accept-flake-config
 
           # The direct inputs whose locked rev moved, read off the lock files.
@@ -81,24 +58,18 @@ jobs:
             | select($old[0].nodes[.value].locked.rev
                      != $new.nodes[.value].locked.rev)
             | .key' flake.lock | paste --serial --delimiters=,)
-          if [ "$zen_version" != "$zen_old" ]; then
-            inputs="${inputs:+$inputs,}zen-browser"
-          fi
           if [ -z "$inputs" ]; then
             echo "Every input is up to date."
             exit 0
           fi
           table=$(nix run --accept-flake-config .#flake-input-table -- \
             "$old_lock" flake.lock)
-          if [ "$zen_version" != "$zen_old" ]; then
-            table+=$'\n'"| zen-browser | \`$zen_old\` → \`$zen_version\` |"
-          fi
 
           after=$(toplevels)
           if [ "$after" = "$before" ]; then
             echo "No host changed; dropping: ${inputs//,/, }"
             printf '## Dropped\n\n%s\n' "$table" >> "$GITHUB_STEP_SUMMARY"
-            git checkout -- flake.lock "$zen_pin"
+            git checkout -- flake.lock
             exit 0
           fi
 
