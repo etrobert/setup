@@ -168,6 +168,7 @@
             "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
             "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
             "khncfooichmfjbepaaaebmommgaepoid" # Unhook
+            "enamippconapkdmgfgjchkhakpfinmaj" # DeArrow
           ];
         };
 
