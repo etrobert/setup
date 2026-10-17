@@ -36,9 +36,7 @@ _: {
         ln --symbolic --force --no-dereference /home/soft/work/setup/main /etc/nixos
       '';
 
-      i18n.defaultLocale = "en_US.UTF-8";
-
-      console.useXkbConfig = true; # Apply XKB options to the TTY too
+      console.useXkbConfig = true;
 
       nix.settings = {
         trusted-users = [ "@wheel" ];
