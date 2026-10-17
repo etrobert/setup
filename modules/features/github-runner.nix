@@ -14,10 +14,11 @@ _: {
             tokenFile = config.age.secrets.github-runner-token.path;
             replace = true;
 
-            # gh for the flake-update pipeline workflows.
-            extraPackages = [
-              pkgs.jq
-              pkgs.gh
+            # gh and curl for the update-flake and update-zen workflows.
+            extraPackages = with pkgs; [
+              jq
+              gh
+              curl
             ];
           };
 
