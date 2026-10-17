@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   discover:
-    name: discover
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
@@ -63,7 +62,6 @@ jobs:
   # Both toplevels are cache hits: this run just built the PR's, and main's CI
   # built main's, on this same store.
   closure-diff:
-    name: closure-diff
     needs: build
     # head repo guard: a fork PR could otherwise name its branch flake-update
     # and run this job on the self-hosted runner.
@@ -156,8 +154,7 @@ jobs:
   # dynamically-discovered host build (the matrix job is failure if any leg
   # fails), so new hosts are covered without touching branch protection.
   all-builds:
-    name: all-builds
-    needs: [discover, build]
+    needs: build
     if: always()
     runs-on: ubuntu-latest
     permissions:
@@ -171,7 +168,6 @@ jobs:
         run: exit 1
 
   deploy:
-    name: deploy
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
