@@ -30,3 +30,5 @@ feedback/
 skills/synced/
 # MCP server protocol-version cache
 state/
+# /insights reports and per-session analysis
+usage-data/
