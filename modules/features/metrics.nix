@@ -1,14 +1,18 @@
 # Prometheus scrapes every host's exporters; Grafana reads it back.
 # Reached on the tailnet as `metrics/` through tsnsrv.
-{ inputs, ... }:
-{
+_: {
   flake.nixosModules.metrics =
     { config, pkgs, ... }:
     let
+      nodeExporterDashboard = pkgs.fetchurl {
+        url = "https://grafana.com/api/dashboards/1860/revisions/45/download";
+        hash = "sha256-GExrdAnzBtp1Ul13cvcZRbEM6iOtFrXXjEaY6g6lGYY=";
+      };
+
       # Grafana provisions from a directory, not a file.
       dashboards = pkgs.runCommand "grafana-dashboards" { } ''
         mkdir $out
-        cp ${inputs.node-exporter-dashboard} $out/node-exporter-full.json
+        cp ${nodeExporterDashboard} $out/node-exporter-full.json
       '';
     in
     {
