@@ -1,0 +1,57 @@
+---
+name: Update Node Exporter Dashboard
+
+"on":
+  schedule:
+    # Mondays, 09:00 Berlin under CEST, an hour earlier under CET.
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update the dashboard pin
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Bump the dashboard pin
+        id: bump
+        run: |
+          pin=modules/features/node-exporter-dashboard.json
+          api=https://grafana.com/api/dashboards/1860
+          revision=$(curl --silent --show-error --fail "$api" \
+            | jq --exit-status .revision)
+          old=$(jq --raw-output .revision "$pin")
+          if [ "$revision" -le "$old" ]; then
+            echo "Revision $old is up to date."
+            exit 0
+          fi
+
+          hash=$(nix store prefetch-file --json \
+            "$api/revisions/$revision/download" | jq --raw-output .hash)
+          jq --argjson revision "$revision" --arg hash "$hash" \
+            '.revision = $revision | .hash = $hash' \
+            "$pin" > "$RUNNER_TEMP/dashboard.json"
+          mv "$RUNNER_TEMP/dashboard.json" "$pin"
+          echo "title=chore: update node-exporter dashboard" \
+            "($old → $revision)" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        id: create
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: ${{ steps.bump.outputs.title }}
+          title: ${{ steps.bump.outputs.title }}
+          branch: node-exporter-dashboard-update
+          delete-branch: true
+
+      - name: Enable auto-merge
+        if: steps.create.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          NUMBER: ${{ steps.create.outputs.pull-request-number }}
+        run: gh pr merge "$NUMBER" --auto --squash
