@@ -13,7 +13,8 @@
       version = iniValue "${inputs.zen-browser}/application.ini" "Version";
       firefoxVersion = iniValue "${inputs.zen-browser}/platform.ini" "Milestone";
 
-      # Based on nixpkgs' firefox-bin-unwrapped; wrapFirefox reads its passthru
+      # Based on nixpkgs' firefox-bin-unwrapped
+      # wrapFirefox reads its passthru
       zen-browser-unwrapped = pkgs.stdenv.mkDerivation {
         pname = "zen-browser-unwrapped";
         inherit version;
