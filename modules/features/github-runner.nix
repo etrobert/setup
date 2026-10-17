@@ -14,7 +14,6 @@ _: {
             tokenFile = config.age.secrets.github-runner-token.path;
             replace = true;
 
-            # gh and curl for the update workflows and the closure-diff job.
             extraPackages = with pkgs; [
               jq
               gh
