@@ -52,8 +52,8 @@
     # tracks stable releases and still follows `nix flake update`.
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     zen-browser = {
-      url = "github:youwen5/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "https://github.com/zen-browser/desktop/releases/download/1.23.2b/zen.linux-x86_64.tar.xz";
+      flake = false;
     };
     creatures = {
       url = "github:etrobert/creatures";

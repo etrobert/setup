@@ -1,18 +1,57 @@
-{ self, ... }:
+{ self, inputs, ... }:
 {
   perSystem =
     {
       pkgs,
       lib,
-      inputs',
+      system,
       ...
     }:
     let
-      inherit (self.lib) browserConfig;
+      inherit (self.lib) browserConfig iniValue;
+
+      version = iniValue "${inputs.zen-browser}/application.ini" "Version";
+      firefoxVersion = iniValue "${inputs.zen-browser}/platform.ini" "Milestone";
+
+      # Based on nixpkgs' firefox-bin-unwrapped
+      # wrapFirefox reads its passthru
+      zen-browser-unwrapped = pkgs.stdenv.mkDerivation {
+        pname = "zen-browser-unwrapped";
+        inherit version;
+        src = inputs.zen-browser;
+
+        nativeBuildInputs = with pkgs; [
+          wrapGAppsHook3
+          autoPatchelfHook
+          patchelfUnstable # stable patchelf 0.15 lacks --no-clobber-old-sections
+        ];
+        buildInputs = with pkgs; [
+          gtk3
+          alsa-lib
+        ];
+        # Firefox uses "relrhack" to manually process relocations from a fixed offset
+        patchelfFlags = [ "--no-clobber-old-sections" ];
+
+        installPhase = ''
+          mkdir -p "$out/lib/zen" "$out/bin"
+          cp -r * "$out/lib/zen"
+          ln -s "$out/lib/zen/zen" "$out/bin/zen"
+        '';
+
+        passthru = {
+          applicationName = "Zen Browser";
+          binaryName = "zen";
+          withFFmpeg = true;
+          withPipewire = true;
+          inherit (pkgs) gtk3;
+        };
+      };
 
       makeZen =
         extraSettings:
-        pkgs.wrapFirefox inputs'.zen-browser.packages.zen-browser-unwrapped {
+        # wrapFirefox picks the FFmpeg ABI from browser.version, so it needs Firefox's, not Zen's
+        pkgs.wrapFirefox (zen-browser-unwrapped // { version = firefoxVersion; }) {
+          inherit version;
           extraPrefs = browserConfig.renderDefaultPrefs (
             browserConfig.sharedSettings
             // {
@@ -28,8 +67,7 @@
         };
     in
     {
-      # The zen-browser input has no darwin outputs, so this cannot be built there.
-      packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+      packages = lib.optionalAttrs (system == "x86_64-linux") {
         zen-browser-wrapped = makeZen { };
 
         # Hardware AV1 decode is broken on the i915 iGPU; software decode of the
