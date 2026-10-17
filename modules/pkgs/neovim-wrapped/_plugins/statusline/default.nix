@@ -15,5 +15,5 @@ let
   };
 in
 {
-  plugins = map (plugin: { inherit plugin; }) dependencies ++ [ { plugin = statusline; } ];
+  plugins = [ { plugin = statusline; } ];
 }

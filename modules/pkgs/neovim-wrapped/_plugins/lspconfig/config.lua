@@ -110,3 +110,9 @@ vim.lsp.enable({
 	"dockerls",
 	"copilot",
 })
+
+vim.lsp.inline_completion.enable()
+vim.lsp.document_color.enable(true, nil, { style = "virtual" })
+vim.lsp.linked_editing_range.enable(true)
+vim.lsp.codelens.enable(true)
+vim.lsp.inlay_hint.enable(true)
