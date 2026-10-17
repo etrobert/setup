@@ -56,11 +56,17 @@
           # git is referenced by the wrapped claude for repo context; a neutral
           # working dir keeps it from scanning a large checkout.
           path = [ pkgs.git ];
+          # The first try plus one retry.
+          startLimitBurst = 2;
+          # Longer than 2 attempts at TimeoutStartSec, so the burst always caps the retries.
+          startLimitIntervalSec = 600;
           serviceConfig = {
             Type = "oneshot";
             User = user;
             WorkingDirectory = "/home/${user}";
             ExecStart = "${claude} --print --model ${model} hi";
+            # Oneshots have no start timeout by default; a hung request would never count as a failure.
+            TimeoutStartSec = "2min";
             # Network may be flaky / token refresh may blip; one retry is enough.
             Restart = "on-failure";
             RestartSec = 30;
