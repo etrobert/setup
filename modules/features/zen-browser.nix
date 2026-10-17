@@ -8,17 +8,10 @@
       ...
     }:
     let
-      inherit (self.lib) browserConfig;
+      inherit (self.lib) browserConfig iniValue;
 
-      iniValue =
-        file: key:
-        lib.removePrefix "${key}=" (
-          lib.findFirst (lib.hasPrefix "${key}=") (throw "zen-browser: no ${key}= in ${file}") (
-            lib.splitString "\n" (builtins.readFile "${inputs.zen-browser}/${file}")
-          )
-        );
-      version = iniValue "application.ini" "Version";
-      firefoxVersion = iniValue "platform.ini" "Milestone";
+      version = iniValue "${inputs.zen-browser}/application.ini" "Version";
+      firefoxVersion = iniValue "${inputs.zen-browser}/platform.ini" "Milestone";
 
       # Mirrors nixpkgs' firefox-bin-unwrapped; wrapFirefox reads its passthru
       zen-browser-unwrapped = pkgs.stdenv.mkDerivation {
