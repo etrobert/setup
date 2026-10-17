@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   perSystem =
     {
@@ -8,17 +8,20 @@
       ...
     }:
     let
-      inherit (self.lib) browserConfig iniValue;
+      inherit (self.lib) browserConfig;
 
-      version = iniValue "${inputs.zen-browser}/application.ini" "Version";
-      firefoxVersion = iniValue "${inputs.zen-browser}/platform.ini" "Milestone";
+      # Bumped by the update-flake workflow
+      inherit (lib.importJSON ./zen-browser.json) version firefoxVersion hash;
 
       # Based on nixpkgs' firefox-bin-unwrapped
       # wrapFirefox reads its passthru
       zen-browser-unwrapped = pkgs.stdenv.mkDerivation {
         pname = "zen-browser-unwrapped";
         inherit version;
-        src = inputs.zen-browser;
+        src = pkgs.fetchzip {
+          url = "https://github.com/zen-browser/desktop/releases/download/${version}/zen.linux-x86_64.tar.xz";
+          inherit hash;
+        };
 
         nativeBuildInputs = with pkgs; [
           wrapGAppsHook3

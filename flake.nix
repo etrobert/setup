@@ -51,10 +51,6 @@
     # Upstream's default branch is its dev branch; the moving `latest` tag
     # tracks stable releases and still follows `nix flake update`.
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-    zen-browser = {
-      url = "https://github.com/zen-browser/desktop/releases/download/1.23.2b/zen.linux-x86_64.tar.xz";
-      flake = false;
-    };
     creatures = {
       url = "github:etrobert/creatures";
       inputs.nixpkgs.follows = "nixpkgs";
