@@ -74,13 +74,21 @@ function update()
 end
 
 function onClick()
-	-- nixos-rebuild runs the switch in its own transient unit, so follow both.
-	local ok = noctalia.runInTerminal(
-		"journalctl --follow --lines=200 --unit=nixos-upgrade.service --unit=nixos-rebuild-switch-to-configuration.service"
-	)
-	if not ok then
-		noctalia.notifyError("Auto-upgrade logs", "could not open a terminal")
+	local terminal = noctalia.getenv("TERMINAL")
+	if not terminal then
+		noctalia.notifyError("Auto-upgrade logs", "TERMINAL is not set")
+		return
 	end
+	-- nixos-rebuild runs the switch in its own transient unit, so follow both.
+	noctalia.runAsync({
+		terminal,
+		"-e",
+		"journalctl",
+		"--follow",
+		"--lines=200",
+		"--unit=nixos-upgrade.service",
+		"--unit=nixos-rebuild-switch-to-configuration.service",
+	})
 end
 
 function onRightClick()
