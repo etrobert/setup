@@ -29,6 +29,9 @@ All machines are connected via Tailscale. SSH into any of them by name
 (`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current
 machine.
 
+Run computationally expensive work (Nix builds, compiles) on tower, the fastest
+machine.
+
 ## Simplicity First
 
 - Always build simple. We can always add features later.
