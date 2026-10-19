@@ -6,9 +6,11 @@
 
 cd "$(git rev-parse --show-toplevel)"
 
-# Deliberately never installed: invoked with `nix run`. Listed rather than
-# silently skipped, and reported below if one ever becomes installed.
+# Deliberately on no host here: invoked with `nix run`, or used by another
+# flake. Listed rather than silently skipped, and reported below if one ever
+# becomes installed.
 allow=(
+  excalidraw        # etrobert/daddy, through nixosModules.draw
   flake-input-table # .github/workflows/update-flake.yml
   nix-dead-packages # .github/workflows/checks.yml
 )

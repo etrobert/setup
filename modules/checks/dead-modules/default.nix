@@ -36,7 +36,14 @@
         map (n: "nixosModules.${n}") (lib.attrNames self.nixosModules)
         ++ map (n: "darwinModules.${n}") (lib.attrNames self.darwinModules);
 
-      unused = lib.subtractLists (lib.unique (lib.concatLists (lib.attrValues found))) declared;
+      # Imported by another flake rather than a host here.
+      external = [
+        "nixosModules.draw" # etrobert/daddy
+      ];
+
+      unused = lib.subtractLists (
+        external ++ lib.unique (lib.concatLists (lib.attrValues found))
+      ) declared;
       # The stamp is a flake-parts convention. Were it to change, nothing would
       # match and every module would look unused, so a host that finds none is
       # a broken check rather than a finding.
