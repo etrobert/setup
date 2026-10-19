@@ -53,7 +53,7 @@ jobs:
 
       - name: Build ${{ matrix.host }}
         env:
-          # Roots main's latest closure per host so the nightly GC keeps it for harmonia
+          # Keeps main's latest closure per host from the nightly GC
           OUT_LINK: >-
             ${{ github.ref == 'refs/heads/main'
               && format('/var/lib/ci-roots/{0}', matrix.host) || 'result' }}
