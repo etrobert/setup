@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { homedir } from "node:os";
 import SunCalc from "suncalc";
 import { $ } from "zx/core";
 import * as z from "zod";
@@ -7,8 +9,15 @@ const [day, night] = z
   .tuple([PercentSchema, PercentSchema])
   .parse(process.argv.slice(2));
 
-// Berlin, as in darkman.nix
-const { altitude } = SunCalc.getPosition(new Date(), 52.5, 13.4);
+// darkman caches the last location geoclue reported
+const LocationSchema = z.object({ lat: z.number(), lng: z.number() });
+const { lat, lng } = LocationSchema.parse(
+  JSON.parse(
+    await readFile(`${homedir()}/.cache/darkman/location.json`, "utf8"),
+  ),
+);
+
+const { altitude } = SunCalc.getPosition(new Date(), lat, lng);
 const elevation = (altitude * 180) / Math.PI;
 
 // Day above 6°, night below -6° (end of civil twilight)
