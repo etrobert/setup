@@ -27,7 +27,7 @@ Git repos are bare cloned at `~/work/*` with `git-project-clone`.
 
 All machines are connected via Tailscale. SSH into any of them by name
 (`ssh tower`, `ssh leod`, `ssh pi`) as long as Tailscale is up on the current
-machine.
+machine. Run builds and compiles on tower, the fastest machine.
 
 ## Simplicity First
 
