@@ -52,12 +52,18 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Build ${{ matrix.host }}
+        env:
+          # Keeps main's latest closure per host from the nightly GC
+          OUT_LINK: >-
+            ${{ github.ref == 'refs/heads/main'
+              && format('/var/lib/ci-roots/{0}', matrix.host) || 'result' }}
         run: |
           attr="nixosConfigurations.${{ matrix.host }}"
           nix build ".#$attr.config.system.build.toplevel" \
             --accept-flake-config \
             --print-build-logs \
-            --option stalled-download-timeout 10
+            --option stalled-download-timeout 10 \
+            --out-link "$OUT_LINK"
 
   # Which programs actually changed version, as opposed to which inputs moved.
   # Both toplevels are cache hits: this run just built the PR's, and main's CI
