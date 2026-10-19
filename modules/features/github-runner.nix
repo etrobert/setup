@@ -19,6 +19,12 @@ _: {
               gh
               curl
             ];
+
+            # Each runner is its own DynamicUser, so the shared group grants write access
+            serviceOverrides = {
+              SupplementaryGroups = [ "ci-roots" ];
+              ReadWritePaths = [ "/var/lib/ci-roots" ];
+            };
           };
 
           # tower serves CI for several repos. Neither user accounts nor the
@@ -50,6 +56,10 @@ _: {
         };
 
       age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
+
+      # main's CI out-links its closures here, keeping them from the nightly GC
+      users.groups.ci-roots = { };
+      systemd.tmpfiles.rules = [ "d /var/lib/ci-roots 0775 root ci-roots -" ];
 
       # Run aarch64 builds (pi's CI job) via QEMU user emulation.
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
