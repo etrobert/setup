@@ -17,7 +17,6 @@
       self.nixosModules.node-exporter
       self.nixosModules.metrics
       self.nixosModules.caddy
-      self.nixosModules.draw
       self.nixosModules.countdown
       self.nixosModules.nutricalc
       self.nixosModules.creatures
