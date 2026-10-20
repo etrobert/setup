@@ -40,6 +40,25 @@
         interface = "end0";
       };
 
+      services.tailscale =
+        let
+          flags = [
+            "--advertise-exit-node"
+            "--advertise-routes=192.168.0.0/24"
+          ];
+        in
+        {
+          extraSetFlags = flags;
+          extraUpFlags = flags;
+        };
+
+      # --netfilter-mode=nodivert leaves tailscale's own MASQUERADE unhooked.
+      networking.nat = {
+        enable = true;
+        internalInterfaces = [ "tailscale0" ];
+        externalInterface = "end0";
+      };
+
       time.timeZone = "Europe/Berlin";
 
       system.stateVersion = "25.11";
