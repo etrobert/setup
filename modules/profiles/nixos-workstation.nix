@@ -24,7 +24,6 @@
         self.nixosModules.copilot-api
         self.nixosModules.ntfy-desktop
         self.nixosModules.file-manager
-        self.nixosModules.virtualbox
         self.nixosModules.syncthing
         self.nixosModules.atuin-login
         self.nixosModules.cursor
