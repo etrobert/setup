@@ -2,11 +2,11 @@ _: {
   flake.nixosModules.harmonia =
     { config, ... }:
     {
-      age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
+      sops.secrets.harmonia-signing-key.sopsFile = ../../secrets/tower.yaml;
 
       services.harmonia.cache = {
         enable = true;
-        signKeyPaths = [ config.age.secrets.harmonia-signing-key.path ];
+        signKeyPaths = [ config.sops.secrets.harmonia-signing-key.path ];
       };
 
       networking.firewall.allowedTCPPorts = [ 5000 ];

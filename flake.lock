@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "agenix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792369191,
-        "narHash": "sha256-Ptf4Drj8JYQDpNGEo9o+Tc7+hyjYxe+zrYO3J4jrYT4=",
-        "owner": "ryantm",
-        "repo": "agenix",
-        "rev": "847720f0e73a77ce6503b63fba6c357c742c28a7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ryantm",
-        "repo": "agenix",
-        "type": "github"
-      }
-    },
     "aichat": {
       "inputs": {
         "nixpkgs": [
@@ -506,7 +486,6 @@
     },
     "root": {
       "inputs": {
-        "agenix": "agenix",
         "aichat": "aichat",
         "countdown": "countdown",
         "creatures": "creatures",
@@ -526,8 +505,29 @@
         "pronto": "pronto",
         "rack": "rack",
         "rift-radar": "rift-radar",
+        "sops-nix": "sops-nix",
         "taskgraph": "taskgraph",
         "tsnsrv": "tsnsrv"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792056300,
+        "narHash": "sha256-YU1LjDe1o2Ymg5zEiCHbmMXLkDCtxHQRiVqZ3nC5GGk=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "44931708c62937c2b1bf7953902989fa5bb9ee1b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "type": "github"
       }
     },
     "taskgraph": {

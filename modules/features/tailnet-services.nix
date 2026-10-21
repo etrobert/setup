@@ -35,7 +35,7 @@
         # systemd reads the credential as root before dropping to the unit's
         # DynamicUser, so the secret needs no ownership of its own.
         defaults = {
-          authKeyPath = config.age.secrets.tailscale-authkey.path;
+          authKeyPath = config.sops.secrets.tailscale-authkey.path;
           listenAddr = ":80";
         };
       };

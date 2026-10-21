@@ -53,7 +53,10 @@
               config.services.radarr.dataDir
               "/tank/media"
             ];
-            InaccessiblePaths = [ "/run/agenix.d" ];
+            InaccessiblePaths = [
+              "/run/secrets.d"
+              "/run/secrets-for-users.d"
+            ];
           };
         };
 
@@ -77,7 +80,7 @@
             RestartMode = "direct";
             # Stays active so switch-to-configuration reruns it when setup.nu changes.
             RemainAfterExit = true;
-            ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.age.secrets.c411-api-key.path}";
+            ExecStart = "${lib.getExe radarr-setup} http://127.0.0.1:${toString port} ${config.sops.secrets.c411-api-key.path}";
             # soft owns the c411 key.
             User = "soft";
             # Oneshots have no start timeout by default; the wait loops would hang silently.

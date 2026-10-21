@@ -1,6 +1,6 @@
 # Search c411's Torznab API and hand a release to transmission on charon.
 def search [category: string, terms: list<string>] {
-    let key = open --raw /run/agenix/c411-api-key | str trim
+    let key = open --raw /run/secrets/c411-api-key | str trim
     let url = {
         scheme: https
         host: "c411.org"

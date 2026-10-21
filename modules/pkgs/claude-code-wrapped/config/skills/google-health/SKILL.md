@@ -16,12 +16,12 @@ package.
 
 ## Credentials
 
-- OAuth client `client_id`/`client_secret`: agenix secret decrypted to
-  `/run/agenix/google-health-oauth-client` (JSON). Available on all workstations
-  (requires a `nixos-rebuild switch` after the secret was added).
+- OAuth client `client_id`/`client_secret`: sops secret decrypted to
+  `/run/secrets/google-health-oauth-client` (JSON). Available on all
+  workstations (requires a `nixos-rebuild switch` after the secret was added).
 - **Refresh token**: machine-local, writable file
   `~/.local/share/google-health/refresh-token`. It rotates, so it can't live in
-  read-only agenix. It is per-machine — if absent on this host, run the
+  read-only sops secrets. It is per-machine — if absent on this host, run the
   re-consent flow below to mint one.
 
 ## Fetch data
@@ -29,7 +29,7 @@ package.
 Access tokens last ~1h; mint a fresh one from the refresh token each time:
 
 ```sh
-client=/run/agenix/google-health-oauth-client
+client=/run/secrets/google-health-oauth-client
 access=$(curl -s \
   --data-urlencode "client_id=$(jq -r '(.web // .installed).client_id' "$client")" \
   --data-urlencode "client_secret=$(jq -r '(.web // .installed).client_secret' "$client")" \
@@ -58,10 +58,10 @@ The OAuth app is in _Testing_ status with restricted scopes, so Google revokes
 the refresh token after **7 days**. To re-mint it, ask the user to authorize a
 fresh consent URL and paste back the `code`.
 
-1. Build the consent URL (uses the same client_id from the agenix secret):
+1. Build the consent URL (uses the same client_id from the sops secret):
 
    ```sh
-   client=/run/agenix/google-health-oauth-client
+   client=/run/secrets/google-health-oauth-client
    python3 - "$(jq -r '(.web // .installed).client_id' "$client")" <<'PY'
    import sys, urllib.parse
    scopes = " ".join(
@@ -83,7 +83,7 @@ fresh consent URL and paste back the `code`.
    `--data-urlencode` handles the `4/0A…` encoding):
 
    ```sh
-   client=/run/agenix/google-health-oauth-client
+   client=/run/secrets/google-health-oauth-client
    refresh=$(curl -s \
      --data-urlencode "code=PASTE_CODE_HERE" \
      --data-urlencode "client_id=$(jq -r '(.web // .installed).client_id' "$client")" \

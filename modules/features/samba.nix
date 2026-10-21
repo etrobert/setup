@@ -9,7 +9,7 @@ _: {
       ...
     }:
     {
-      age.secrets.smb-credentials.file = ../../secrets/smb-credentials.age;
+      sops.secrets.smb-password.sopsFile = ../../secrets/linux-workstations.yaml;
 
       # smbd listens on every interface; the firewall is what keeps the share
       # reachable over Tailscale only.
@@ -43,21 +43,16 @@ _: {
       systemd.services.samba-passdb =
         let
           # Samba's password database is imperative state; deriving it from the
-          # agenix secret keeps the only manual step at authoring the secret.
-          # The secret is a mount.cifs credentials file (username=/password=
-          # lines), shared with client machines that mount the share.
+          # sops secret keeps the only manual step at authoring the secret.
           smb-passdb = pkgs.writeShellApplication {
             name = "smb-passdb";
 
-            runtimeInputs = [
-              config.services.samba.package
-              pkgs.gnused
-            ];
+            runtimeInputs = [ config.services.samba.package ];
 
             inheritPath = false;
 
             text = /* bash */ ''
-              password="$(sed --quiet 's/^password=//p' ${config.age.secrets.smb-credentials.path})"
+              password="$(< ${config.sops.secrets.smb-password.path})"
               printf '%s\n%s\n' "$password" "$password" | smbpasswd -s -a soft
             '';
           };

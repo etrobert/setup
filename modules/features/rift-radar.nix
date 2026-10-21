@@ -8,9 +8,14 @@
       services.rift-radar = {
         enable = true;
         hostName = "rift.etiennerobert.com";
-        riotKey = config.age.secrets.riot-api-key;
+        # The upstream option still takes an agenix secret: `.path` to read, `.file` to restart on.
+        riotKey = {
+          inherit (config.sops.templates.riot-api-key) path;
+          file = config.sops.secrets.riot-api-key.sopsFile;
+        };
       };
 
-      age.secrets.riot-api-key.file = ../../secrets/riot-api-key.age;
+      sops.secrets.riot-api-key.sopsFile = ../../secrets/charon.yaml;
+      sops.templates.riot-api-key.content = "RIOT_API_KEY=${config.sops.placeholder.riot-api-key}\n";
     };
 }

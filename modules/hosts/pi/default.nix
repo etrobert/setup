@@ -15,7 +15,7 @@
       self.nixosModules.node-exporter
       self.nixosModules.syncthing
       self.nixosModules.atuin-login
-      inputs.agenix.nixosModules.default
+      inputs.sops-nix.nixosModules.sops
     ];
   };
 }

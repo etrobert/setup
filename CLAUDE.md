@@ -23,7 +23,7 @@ Program configs live colocated with their wrapper in `modules/pkgs/`. Each
 ### Nix Flake Structure
 
 **`flake.nix`** uses flake-parts. Key inputs: nixpkgs (unstable), nix-darwin,
-agenix (secrets).
+sops-nix (secrets).
 
 **Hosts** (`modules/hosts/`): one directory per machine. Each has `default.nix`
 (flake module), `configuration.nix` (host settings), and
@@ -70,9 +70,10 @@ starting with `_` excludes it, as in `neovim-wrapped/_plugins/` and
 Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.
 
-**Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey, API keys,
-Wi-Fi passwords, account passwords, etc.). See `secrets/secrets.nix` for the
-authoritative list.
+**Secrets** (`secrets/`): sops-encrypted YAML, one file per recipient set, each
+recipient a host's ed25519 SSH key converted to age. `.sops.yaml` maps files to
+recipients. Store raw values and render a consumer's format with
+`sops.templates`. Edit with the `sops-host` alias.
 
 ### Caches
 
@@ -195,5 +196,4 @@ Other people's Nix configs worth reading for examples. Clone into
   `flake-parts-wrapped-template`) are minimal worked examples.
 - [`Mic92/dotfiles`](https://github.com/Mic92/dotfiles) — same top-level shape
   as this repo (`darwinModules`/`nixosModules`/`machines`/`pkgs`/`checks`) at a
-  much larger scale, by a nix-community maintainer active on harmonia. Secrets
-  are sops, not agenix, so that part does not transfer.
+  much larger scale, by the sops-nix author, who is also active on harmonia.

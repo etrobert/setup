@@ -112,7 +112,7 @@ _: {
 
         tailscale = {
           enable = true;
-          authKeyFile = config.age.secrets.tailscale-authkey.path;
+          authKeyFile = config.sops.secrets.tailscale-authkey.path;
           extraSetFlags = tailscaleFlags;
 
           # `tailscale up` resets every non-default pref it does not mention, so
@@ -152,12 +152,13 @@ _: {
           "networkmanager"
           "wheel"
         ];
-        hashedPasswordFile = config.age.secrets.soft-password.path;
+        hashedPasswordFile = config.sops.secrets.soft-password.path;
         shell = lib.getExe zsh-wrapped;
       };
 
-      age.secrets.soft-password = {
-        file = ../../secrets/soft-password.age;
+      sops.secrets.soft-password = {
+        sopsFile = ../../secrets/linux.yaml;
+        neededForUsers = true;
       };
 
       programs.nh = {

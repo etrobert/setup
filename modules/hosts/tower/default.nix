@@ -6,21 +6,16 @@
 let
   inherit (inputs)
     nixpkgs
-    agenix
+    sops-nix
     ;
 in
 {
   flake.nixosConfigurations.tower = nixpkgs.lib.nixosSystem {
-    specialArgs = {
-      inherit
-        self
-        agenix
-        ;
-    };
+    specialArgs = { inherit self; };
     modules = [
       self.nixosModules.tower-configuration
       self.nixosModules.nix-index
-      agenix.nixosModules.default
+      sops-nix.nixosModules.sops
       self.nixosModules.nixos-workstation
       self.nixosModules.workstation
       self.nixosModules.nixos-base

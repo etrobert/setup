@@ -62,7 +62,7 @@ _: {
 
           settings = {
             # Encrypts credentials in Grafana's DB, of which we store none. Move
-            # this to agenix *before* adding any datasource that needs one:
+            # this to sops *before* adding any datasource that needs one:
             # rotating the key once the DB holds secrets has no supported path.
             security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
 

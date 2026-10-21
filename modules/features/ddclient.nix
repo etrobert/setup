@@ -10,7 +10,7 @@ in
         protocol = "namecheap";
         server = "dynamicdns.park-your-domain.com";
         username = zone;
-        passwordFile = config.age.secrets.ddclient-password-etiennerobert-com.path;
+        passwordFile = config.sops.secrets.ddclient-password-etiennerobert-com.path;
         # Every site Caddy serves; Namecheap wants the host without the zone.
         domains = map (lib.removeSuffix ".${zone}") (builtins.attrNames config.services.caddy.virtualHosts);
         interval = "5min";
@@ -29,6 +29,6 @@ in
         RestartSec = 2;
       };
 
-      age.secrets.ddclient-password-etiennerobert-com.file = ../../secrets/ddclient-password-etiennerobert-com.age;
+      sops.secrets.ddclient-password-etiennerobert-com.sopsFile = ../../secrets/public-servers.yaml;
     };
 }

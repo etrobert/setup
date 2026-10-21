@@ -17,7 +17,7 @@ _: {
         # assignment so `set -e` aborts on an unreadable secret — `export VAR=$(…)`
         # returns the export's status, masking the failure and baking in an empty token.
         run = [
-          ''HASS_TOKEN="''${HASS_TOKEN:-$(< /run/agenix/hass-token)}"''
+          ''HASS_TOKEN="''${HASS_TOKEN:-$(< /run/secrets/hass-token)}"''
           "export HASS_TOKEN"
         ];
       };

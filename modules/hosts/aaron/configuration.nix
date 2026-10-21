@@ -2,6 +2,7 @@ _: {
   flake.darwinModules.aaron-configuration =
     {
       self,
+      config,
       pkgs,
       lib,
       ...
@@ -61,7 +62,7 @@ _: {
               name = "tailscale-up";
               inheritPath = false;
               runtimeInputs = [ tailscale ];
-              text = "tailscale up --auth-key file:/run/agenix/tailscale-authkey";
+              text = "tailscale up --auth-key file:${config.sops.secrets.tailscale-authkey.path}";
             })
           ])
           ++ (with self.packages.${system}; [
