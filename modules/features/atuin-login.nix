@@ -21,13 +21,13 @@ _: {
       inherit (self.packages.${system}) atuin-wrapped;
     in
     {
-      age.secrets = {
+      sops.secrets = {
         atuin-key = {
-          file = ../../secrets/atuin-key.age;
+          sopsFile = ../../secrets/all-machines.yaml;
           owner = "soft";
         };
         atuin-password = {
-          file = ../../secrets/atuin-password.age;
+          sopsFile = ../../secrets/all-machines.yaml;
           owner = "soft";
         };
       };
@@ -50,8 +50,8 @@ _: {
           ExecStart = pkgs.writeShellScript "atuin-login" ''
             exec ${atuin-wrapped}/bin/atuin login \
               --username soft \
-              --password "$(cat ${config.age.secrets.atuin-password.path})" \
-              --key "$(cat ${config.age.secrets.atuin-key.path})"
+              --password "$(cat ${config.sops.secrets.atuin-password.path})" \
+              --key "$(cat ${config.sops.secrets.atuin-key.path})"
           '';
         };
       };
@@ -71,13 +71,13 @@ _: {
       inherit (self.packages.${system}) atuin-wrapped;
     in
     {
-      age.secrets = {
+      sops.secrets = {
         atuin-key = {
-          file = ../../secrets/atuin-key.age;
+          sopsFile = ../../secrets/all-machines.yaml;
           owner = "soft";
         };
         atuin-password = {
-          file = ../../secrets/atuin-password.age;
+          sopsFile = ../../secrets/all-machines.yaml;
           owner = "soft";
         };
       };
@@ -91,8 +91,8 @@ _: {
         script = ''
           exec atuin login \
             --username soft \
-            --password "$(cat ${config.age.secrets.atuin-password.path})" \
-            --key "$(cat ${config.age.secrets.atuin-key.path})"
+            --password "$(cat ${config.sops.secrets.atuin-password.path})" \
+            --key "$(cat ${config.sops.secrets.atuin-key.path})"
         '';
         serviceConfig.RunAtLoad = true;
       };

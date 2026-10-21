@@ -1,0 +1,22 @@
+# Host ed25519 SSH keys converted with ssh-to-age (/etc/ssh/ssh_host_ed25519_key.pub)
+keys:
+  - &tower age1tx97xzuqtsk265cem2jy2ytymhceu35g5yczhl3adzqtqvfxw9fqhta2m5
+  - &leod age1j290rxlqufnqxju378kchqx639kspfqvy2r39xupdnxhmhc3sqzs5jx52g
+  - &aaron age1kh7vzp0vv0e7njhh3etgcx6zdjt8mrel9pmsgte4dxv9lqvw3svsvqw6xz
+  - &pi age1zra7kunmuhdws6cp097uymjw66gk9222429efwpr2ej027ucdddss0ytd3
+  - &charon age1lw66lm789s4pekzmz0nv629vtmnaykax8tadt3acq7a4x03neyvqztzj66
+creation_rules:
+  - path_regex: ^secrets/all-machines\.yaml$
+    age: [*tower, *leod, *aaron, *pi, *charon]
+  - path_regex: ^secrets/linux\.yaml$
+    age: [*tower, *leod, *pi, *charon]
+  - path_regex: ^secrets/workstations\.yaml$
+    age: [*tower, *leod, *aaron]
+  - path_regex: ^secrets/linux-workstations\.yaml$
+    age: [*tower, *leod]
+  - path_regex: ^secrets/public-servers\.yaml$
+    age: [*tower, *charon]
+  - path_regex: ^secrets/tower\.yaml$
+    age: [*tower]
+  - path_regex: ^secrets/charon\.yaml$
+    age: [*charon]

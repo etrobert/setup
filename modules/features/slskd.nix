@@ -2,12 +2,17 @@
   flake.nixosModules.slskd =
     { config, lib, ... }:
     {
-      age.secrets.slskd-env.file = ../../secrets/slskd-env.age;
+      sops.secrets.slskd-username.sopsFile = ../../secrets/charon.yaml;
+      sops.secrets.slskd-password.sopsFile = ../../secrets/charon.yaml;
+      sops.templates.slskd-env.content = ''
+        SLSKD_SLSK_USERNAME=${config.sops.placeholder.slskd-username}
+        SLSKD_SLSK_PASSWORD=${config.sops.placeholder.slskd-password}
+      '';
 
       services = {
         slskd = {
           enable = true;
-          environmentFile = config.age.secrets.slskd-env.path;
+          environmentFile = config.sops.templates.slskd-env.path;
           openFirewall = true;
 
           settings = {

@@ -7,7 +7,7 @@ let
   inherit (inputs)
     nix-darwin
     home-manager
-    agenix
+    sops-nix
     nix-homebrew
     ;
 in
@@ -16,14 +16,13 @@ in
     specialArgs = {
       inherit
         self
-        agenix
         nix-darwin
         ;
     };
     modules = [
       self.darwinModules.aaron-configuration
       home-manager.darwinModules.home-manager
-      agenix.darwinModules.default
+      sops-nix.darwinModules.sops
       nix-homebrew.darwinModules.nix-homebrew
       {
         nix-homebrew = {

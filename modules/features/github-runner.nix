@@ -11,7 +11,7 @@ _: {
         let
           common = {
             enable = true;
-            tokenFile = config.age.secrets.github-runner-token.path;
+            tokenFile = config.sops.secrets.github-runner-token.path;
             replace = true;
 
             extraPackages = with pkgs; [
@@ -55,7 +55,7 @@ _: {
           count = 1;
         };
 
-      age.secrets.github-runner-token.file = ../../secrets/github-runner-token.age;
+      sops.secrets.github-runner-token.sopsFile = ../../secrets/workstations.yaml;
 
       # main's CI out-links its closures here, keeping them from the nightly GC
       users.groups.ci-roots = { };
@@ -71,16 +71,16 @@ _: {
       services.github-runners.aaron = {
         enable = true;
         url = "https://github.com/etrobert/setup";
-        tokenFile = config.age.secrets.github-runner-token.path;
+        tokenFile = config.sops.secrets.github-runner-token.path;
         replace = true;
       };
 
       power.sleep.computer = "never";
 
       # The runner daemon runs entirely as _github-runner and reads the
-      # token itself, so agenix must chown it off the default root:0400.
-      age.secrets.github-runner-token = {
-        file = ../../secrets/github-runner-token.age;
+      # token itself, so sops-nix must chown it off the default root:0400.
+      sops.secrets.github-runner-token = {
+        sopsFile = ../../secrets/workstations.yaml;
         owner = "_github-runner";
       };
     };

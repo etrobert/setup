@@ -66,7 +66,7 @@ _: {
         # nixpkgs `mkDefault "nano"`. See issue #227.
         environment.variables.EDITOR = "nvim";
 
-        age.secrets.tailscale-authkey.file = ../../secrets/tailscale-authkey.age;
+        sops.secrets.tailscale-authkey.sopsFile = ../../secrets/all-machines.yaml;
 
         programs = {
           ssh.extraConfig = ''

@@ -25,7 +25,7 @@
       self.nixosModules.atuin-server
       self.nixosModules.atuin-login
       self.nixosModules.ddclient
-      inputs.agenix.nixosModules.default
+      inputs.sops-nix.nixosModules.sops
     ];
   };
 }

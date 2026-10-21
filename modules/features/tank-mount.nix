@@ -5,14 +5,19 @@ _: {
   flake.nixosModules.tank-mount =
     { config, ... }:
     {
-      age.secrets.smb-credentials.file = ../../secrets/smb-credentials.age;
+      sops.secrets.smb-password.sopsFile = ../../secrets/linux-workstations.yaml;
+
+      sops.templates.smb-credentials.content = ''
+        username=soft
+        password=${config.sops.placeholder.smb-password}
+      '';
 
       fileSystems."/mnt/tank" = {
         device = "//tower/tank";
         fsType = "cifs";
 
         options = [
-          "credentials=${config.age.secrets.smb-credentials.path}"
+          "credentials=${config.sops.templates.smb-credentials.path}"
           "uid=soft"
           "x-systemd.automount"
           "x-systemd.idle-timeout=60"

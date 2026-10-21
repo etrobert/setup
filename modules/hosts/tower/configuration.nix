@@ -15,8 +15,8 @@
         c411
       ];
 
-      age.secrets.c411-api-key = {
-        file = ../../../secrets/c411-api-key.age;
+      sops.secrets.c411-api-key = {
+        sopsFile = ../../../secrets/tower.yaml;
         owner = "soft";
       };
 

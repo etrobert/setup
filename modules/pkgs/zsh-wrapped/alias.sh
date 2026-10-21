@@ -64,7 +64,8 @@ alias server="python3 -m http.server 8000"
 
 alias fhistory="history | sed -E 's/^ +[0-9]+ +//' | fzf --tac --no-sort"
 
-alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
+# sops-nix's view of the host key: the ed25519 SSH key converted to an age identity.
+alias sops-host='sudo SOPS_AGE_KEY_CMD="ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key" sops'
 
 alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
 

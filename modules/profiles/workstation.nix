@@ -3,7 +3,7 @@ _: {
     nixosModules.workstation =
       {
         self,
-        agenix,
+        config,
         pkgs,
         ...
       }:
@@ -24,8 +24,6 @@ _: {
         environment.systemPackages =
           let
             inherit (pkgs.stdenv.hostPlatform) system;
-
-            inputPackages = [ agenix.packages.${system}.default ];
 
             customPackages = with self.packages.${system}; [
               aichat-wrapped
@@ -79,44 +77,47 @@ _: {
               shellcheck
               signal-desktop
               slack
+              sops
               sox # Voice for claude
               spotify
+              ssh-to-age
               telegram-desktop
               timg
               unzip
               yt-dlp
             ];
           in
-          inputPackages ++ customPackages ++ externalPackages;
+          customPackages ++ externalPackages;
 
         # 30 github: inputs against an anonymous 60/hour-per-IP limit, shared by
         # every machine behind the same WAN address, is one `nix flake update`
         # away from exhaustion. `!include` is the tolerant form: nix skips it
-        # when agenix has not decrypted yet, rather than failing to start.
+        # when sops-nix has not rendered it yet, rather than failing to start.
         nix.extraOptions = ''
-          !include /run/agenix/nix-access-tokens
+          !include ${config.sops.templates.nix-access-tokens.path}
         '';
 
-        age.secrets = {
+        # Flake inputs are fetched client-side, so `soft` must read it, and
+        # nix.conf itself is world-readable.
+        sops.templates.nix-access-tokens = {
+          content = "access-tokens = github.com=${config.sops.placeholder.nix-github-token}\n";
+          owner = "soft";
+        };
+
+        sops.secrets = {
           openai-api-key = {
-            file = ../../secrets/openai-api-key.age;
+            sopsFile = ../../secrets/workstations.yaml;
             owner = "soft";
           };
           gemini-api-key = {
-            file = ../../secrets/gemini-api-key.age;
+            sopsFile = ../../secrets/workstations.yaml;
             owner = "soft";
           };
-          # A nix.conf fragment rather than a bare token: flake inputs are
-          # fetched client-side, so `soft` must read it, and nix.conf itself is
-          # world-readable.
-          nix-access-tokens = {
-            file = ../../secrets/nix-access-tokens.age;
-            owner = "soft";
-          };
+          nix-github-token.sopsFile = ../../secrets/workstations.yaml;
           # Home Assistant long-lived access token, used by Claude Code to
           # query sensor data and call services over the LAN (http://tower:8123).
           hass-token = {
-            file = ../../secrets/hass-token.age;
+            sopsFile = ../../secrets/workstations.yaml;
             owner = "soft";
           };
           # Google Health API OAuth client credentials (the client secret JSON
@@ -124,7 +125,7 @@ _: {
           # / health data. See the `google-health` skill (claude-code-wrapped
           # config) for the access recipe.
           google-health-oauth-client = {
-            file = ../../secrets/google-health-oauth-client.age;
+            sopsFile = ../../secrets/workstations.yaml;
             owner = "soft";
           };
         };

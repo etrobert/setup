@@ -13,7 +13,7 @@ _: {
               username etiennerobert33@gmail.com
               interval 30
               password {
-                cmd cat /run/agenix/apple-pimsync-password
+                cmd cat /run/secrets/apple-pimsync-password
               }
             }
 
@@ -51,9 +51,9 @@ _: {
       pimsync = self.packages.${pkgs.stdenv.hostPlatform.system}.pimsync-wrapped;
     in
     {
-      age.secrets.apple-pimsync-password = {
+      sops.secrets.apple-pimsync-password = {
         owner = "soft";
-        file = ../../secrets/apple-pimsync-password.age;
+        sopsFile = ../../secrets/linux-workstations.yaml;
       };
 
       environment.systemPackages = [ pimsync ];
@@ -61,7 +61,7 @@ _: {
       systemd.user.services.pimsync = {
         description = "pimsync calendar and contacts synchronization";
         partOf = [ "network-online.target" ];
-        after = [ "run-agenix.d.mount" ];
+        after = [ "run-secrets.d.mount" ];
         wantedBy = [ "default.target" ];
         unitConfig.ConditionUser = "!@system";
         serviceConfig = {

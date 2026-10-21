@@ -17,15 +17,17 @@
         enable = true;
         claudeBin = lib.getExe self.packages.${system}.claude-code-wrapped;
         gitPackage = self.packages.${system}.git-wrapped;
-        tokenFile = config.age.secrets.dispatch-claude-token.path;
-        githubTokenFile = config.age.secrets.dispatch-github-token.path;
+        tokenFile = config.sops.templates.dispatch-claude-token.path;
+        githubTokenFile = config.sops.templates.dispatch-github-token.path;
       };
 
-      # `CLAUDE_CODE_OAUTH_TOKEN=...` from `claude setup-token`; expires yearly.
-      age.secrets.dispatch-claude-token.file = ../../secrets/dispatch-claude-token.age;
+      # From `claude setup-token`; expires yearly.
+      sops.secrets.dispatch-claude-token.sopsFile = ../../secrets/tower.yaml;
+      sops.templates.dispatch-claude-token.content = "CLAUDE_CODE_OAUTH_TOKEN=${config.sops.placeholder.dispatch-claude-token}\n";
 
-      # `GH_TOKEN=...`, a fine-grained token over all repositories. Agents push
-      # branches and open pull requests with it.
-      age.secrets.dispatch-github-token.file = ../../secrets/dispatch-github-token.age;
+      # A fine-grained token over all repositories. Agents push branches and
+      # open pull requests with it.
+      sops.secrets.dispatch-github-token.sopsFile = ../../secrets/tower.yaml;
+      sops.templates.dispatch-github-token.content = "GH_TOKEN=${config.sops.placeholder.dispatch-github-token}\n";
     };
 }
