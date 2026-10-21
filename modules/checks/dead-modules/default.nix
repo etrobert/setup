@@ -41,8 +41,13 @@
         "nixosModules.draw" # etrobert/daddy
       ];
 
+      # Off while etrobert/daddy trials its own slskd.
+      parked = [
+        "nixosModules.slskd"
+      ];
+
       unused = lib.subtractLists (
-        external ++ lib.unique (lib.concatLists (lib.attrValues found))
+        external ++ parked ++ lib.unique (lib.concatLists (lib.attrValues found))
       ) declared;
       # The stamp is a flake-parts convention. Were it to change, nothing would
       # match and every module would look unused, so a host that finds none is
