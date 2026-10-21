@@ -45,6 +45,9 @@
 
       networking.hostName = "charon";
 
+      # 2 vCPUs and 3.7G RAM: one build at a time.
+      githubRunners.setupCount = 1;
+
       time.timeZone = "Europe/Berlin";
 
       system.stateVersion = "25.11";

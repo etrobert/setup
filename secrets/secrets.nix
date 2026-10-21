@@ -38,7 +38,7 @@ in
   ];
   "umami-app-secret.age".publicKeys = [ charon ];
   "nix-access-tokens.age".publicKeys = allWorkstations;
-  "github-runner-token.age".publicKeys = allWorkstations;
+  "github-runner-token.age".publicKeys = allWorkstations ++ [ charon ];
   # Fine-grained tokens carry one resource owner, so lafraise-pro/app cannot
   # share the one above. Unused since the runner moved off tower; kept in case.
   "lafraise-runner-token.age".publicKeys = [ tower ];
