@@ -1,6 +1,8 @@
 { self, ... }: {
-  perSystem = { pkgs, ... }: {
+  perSystem = { pkgs, config, ... }: {
     checks = {
+      formatting = config.formatter.check self;
+
       statix = pkgs.runCommand "statix-check" { nativeBuildInputs = [ pkgs.statix ]; } ''
         statix check ${self} && touch $out
       '';
