@@ -70,13 +70,6 @@
           mode = "raidz1";
           mountpoint = "/tank";
 
-          # Without nofail, systemd's fstab-generator makes a mount a Requires=
-          # of local-fs.target, whose OnFailure=emergency.target then drops the
-          # whole boot to a rescue shell when the pool is absent or faulted.
-          # Disko applies this to the pool root's own mount only, so every
-          # dataset below repeats it.
-          mountOptions = [ "nofail" ];
-
           options.ashift = "12";
           rootFsOptions.atime = "off";
 
@@ -84,34 +77,28 @@
             media = {
               type = "zfs_fs";
               mountpoint = "/tank/media";
-              mountOptions = [ "nofail" ];
               options.recordsize = "1M";
             };
 
             photos = {
               type = "zfs_fs";
               mountpoint = "/tank/photos";
-              mountOptions = [ "nofail" ];
             };
 
             public = {
               type = "zfs_fs";
               mountpoint = "/tank/public";
-              mountOptions = [ "nofail" ];
             };
 
             # Personal files no app manages: projects, scans, archives.
             files = {
               type = "zfs_fs";
               mountpoint = "/tank/files";
-              mountOptions = [ "nofail" ];
             };
 
             postgres = {
               type = "zfs_fs";
               mountpoint = "/var/lib/postgresql";
-              mountOptions = [ "nofail" ];
-
               # Postgres writes 8 KiB pages, so a large record turns a
               # scattered page update into a copy-on-write rewrite of the whole
               # record.
@@ -130,9 +117,8 @@
       networking.hostId = "6b83a633";
 
       systemd = {
-        # z (adjust-if-exists), not d: with nofail mounts, a boot without the
-        # pool must not create this path as a plain directory on the root
-        # filesystem.
+        # z (adjust-if-exists), not d: a boot without the pool must not create
+        # this path as a plain directory on the root filesystem.
         # Requires /tank to stay root-owned (its dataset birth default):
         # tmpfiles' unsafe-path-transition guard refuses child rules under a
         # user-owned parent.

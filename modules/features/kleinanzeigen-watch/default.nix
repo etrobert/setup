@@ -47,8 +47,8 @@
           };
         };
 
-        # z (adjust-if-exists), not d: /tank is a nofail mount, and a boot
-        # without the pool must not create this path on the root filesystem.
+        # z (adjust-if-exists), not d: a boot without the pool must not create
+        # this path on the root filesystem.
         # Create it once with `mkdir`; ownership is what this rule maintains.
         tmpfiles.settings.kleinanzeigen."/tank/kleinanzeigen".z = {
           user = "soft";
