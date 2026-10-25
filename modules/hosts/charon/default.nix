@@ -25,7 +25,6 @@
       self.nixosModules.atuin-server
       self.nixosModules.atuin-login
       self.nixosModules.ddclient
-      self.nixosModules.github-runner
       inputs.agenix.nixosModules.default
     ];
   };

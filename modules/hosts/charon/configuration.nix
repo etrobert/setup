@@ -45,8 +45,6 @@
 
       networking.hostName = "charon";
 
-      githubRunners.setupCount = 1;
-
       time.timeZone = "Europe/Berlin";
 
       system.stateVersion = "25.11";
