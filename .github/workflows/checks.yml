@@ -15,11 +15,13 @@ concurrency:
 jobs:
   eval:
     name: eval
-    runs-on: [self-hosted, Linux]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
+
+      - uses: cachix/install-nix-action@v31
 
       - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
