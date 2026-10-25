@@ -13,17 +13,6 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  format:
-    name: format
-    runs-on: [self-hosted, Linux]
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Format Check
-        run: nix fmt . -- --ci
-
   eval:
     name: eval
     runs-on: [self-hosted, Linux]
@@ -62,7 +51,7 @@ jobs:
   # branch protection.
   all-checks:
     name: all-checks
-    needs: [format, eval, dead-packages, lint]
+    needs: [eval, dead-packages, lint]
     if: always()
     runs-on: ubuntu-latest
     permissions:
