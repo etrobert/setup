@@ -55,11 +55,7 @@
       };
     in
     {
-      imports = [
-        inputs.disko.nixosModules.disko
-        # Without it, a missing pool or dataset fails local-fs.target into emergency mode.
-        self.nixosModules.no-emergency-mode
-      ];
+      imports = [ inputs.disko.nixosModules.disko ];
 
       disko.devices = {
         disk = {
