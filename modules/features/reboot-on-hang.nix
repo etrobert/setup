@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.reboot-on-hang = {
+  flake.nixosModules.reboot-on-hang = _: {
     # Kernel parameters rather than sysctls so they also cover stage 1.
     boot.kernelParams = [
       "panic=30"

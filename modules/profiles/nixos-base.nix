@@ -143,25 +143,27 @@ _: {
       # Otherwise a failed mount enters emergency mode, which stops sshd and the network.
       systemd.enableEmergencyMode = false;
 
-      users.mutableUsers = false;
+      users = {
+        mutableUsers = false;
 
-      users.users.soft = {
-        isNormalUser = true;
-        description = "Etienne";
+        users.soft = {
+          isNormalUser = true;
+          description = "Etienne";
 
-        # Without this, logging out kills every running tmux session.
-        linger = true;
+          # Without this, logging out kills every running tmux session.
+          linger = true;
 
-        extraGroups = [
-          "networkmanager"
-          "wheel"
-        ];
-        hashedPasswordFile = config.age.secrets.soft-password.path;
-        shell = lib.getExe zsh-wrapped;
+          extraGroups = [
+            "networkmanager"
+            "wheel"
+          ];
+          hashedPasswordFile = config.age.secrets.soft-password.path;
+          shell = lib.getExe zsh-wrapped;
+        };
+
+        # soft already has passwordless sudo; this unlocks console rescue shells
+        users.root.hashedPasswordFile = config.age.secrets.soft-password.path;
       };
-
-      # soft already has passwordless sudo; this unlocks console rescue shells
-      users.users.root.hashedPasswordFile = config.age.secrets.soft-password.path;
 
       age.secrets.soft-password = {
         file = ../../secrets/soft-password.age;
