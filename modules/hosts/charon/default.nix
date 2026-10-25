@@ -26,6 +26,7 @@
       self.nixosModules.atuin-login
       self.nixosModules.ddclient
       self.nixosModules.github-runner
+      self.nixosModules.no-emergency-mode
       inputs.agenix.nixosModules.default
     ];
   };

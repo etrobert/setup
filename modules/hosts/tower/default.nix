@@ -57,6 +57,7 @@ in
       self.nixosModules.jellyfin
       self.nixosModules.monitor-gpu-wake
       self.nixosModules.reboot-on-hang
+      self.nixosModules.no-emergency-mode
     ];
   };
 }

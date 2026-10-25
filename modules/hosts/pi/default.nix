@@ -15,6 +15,7 @@
       self.nixosModules.node-exporter
       self.nixosModules.syncthing
       self.nixosModules.atuin-login
+      self.nixosModules.no-emergency-mode
       inputs.agenix.nixosModules.default
     ];
   };
