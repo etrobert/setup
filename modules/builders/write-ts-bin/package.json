@@ -2,7 +2,7 @@
   "name": "write-ts-bin",
   "type": "module",
   "dependencies": {
-    "zod": "^4.6.5",
+    "zod": "^4.6.6",
     "zx": "^8.8.5"
   },
   "devDependencies": {
