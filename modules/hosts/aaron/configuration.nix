@@ -13,6 +13,9 @@ _: {
         lib.imap1 (i: app: ''alt - ${toString i} : open "${app.path}"'') dockApps
       );
 
+      # Homebrew's build keeps one path and signature, so the Accessibility grant survives rebuilds.
+      skhd = "/opt/homebrew/bin/skhd";
+
       wallpaper = ../../features/noctalia/saint-levant.jpg;
 
       inherit (pkgs.stdenv.hostPlatform) system;
@@ -171,6 +174,8 @@ _: {
 
       homebrew = {
         enable = true;
+        taps = [ "koekeishiya/formulae" ];
+        brews = [ "koekeishiya/formulae/skhd" ];
         casks = [
           "claude"
           "helium-browser"
@@ -195,23 +200,30 @@ _: {
         };
       };
 
-      services.skhd = {
-        enable = true;
-        skhdConfig = ''
-          # Launch applications
-          ${skhdAppBindings}
+      environment.etc."skhdrc".text = ''
+        # Launch applications
+        ${skhdAppBindings}
 
-          # Map alt + hjkl to arrow keys
-          alt - h : skhd -k "left"
-          alt - j : skhd -k "down"
-          alt - k : skhd -k "up"
-          alt - l : skhd -k "right"
+        # Map alt + hjkl to arrow keys
+        alt - h : ${skhd} -k "left"
+        alt - j : ${skhd} -k "down"
+        alt - k : ${skhd} -k "up"
+        alt - l : ${skhd} -k "right"
 
-          alt + shift - h : skhd -k "shift-left"
-          alt + shift - j : skhd -k "shift-down"
-          alt + shift - k : skhd -k "shift-up"
-          alt + shift - l : skhd -k "shift-right"
-        '';
+        alt + shift - h : ${skhd} -k "shift-left"
+        alt + shift - j : ${skhd} -k "shift-down"
+        alt + shift - k : ${skhd} -k "shift-up"
+        alt + shift - l : ${skhd} -k "shift-right"
+      '';
+
+      launchd.user.agents.skhd.serviceConfig = {
+        ProgramArguments = [
+          skhd
+          "-c"
+          "/etc/skhdrc"
+        ];
+        KeepAlive = true;
+        ProcessType = "Interactive";
       };
 
       services.tailscale.enable = true;
