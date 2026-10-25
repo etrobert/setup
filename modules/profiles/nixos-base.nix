@@ -140,6 +140,9 @@ _: {
 
       security.sudo.wheelNeedsPassword = false;
 
+      # Otherwise a failed mount enters emergency mode, which stops sshd and the network.
+      systemd.enableEmergencyMode = false;
+
       users.mutableUsers = false;
 
       users.users.soft = {
