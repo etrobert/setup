@@ -157,6 +157,9 @@ _: {
         shell = lib.getExe zsh-wrapped;
       };
 
+      # soft already has passwordless sudo; this unlocks console rescue shells
+      users.users.root.hashedPasswordFile = config.age.secrets.soft-password.path;
+
       age.secrets.soft-password = {
         file = ../../secrets/soft-password.age;
       };
