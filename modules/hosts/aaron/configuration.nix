@@ -47,7 +47,7 @@ _: {
             watch
             raycast
             defaultbrowser
-            ghostty-bin.terminfo
+            ghostty-bin
             linear
             moonlight-qt
             nh
@@ -68,7 +68,6 @@ _: {
             flush-dns
             resize-window
             finder
-            ghostty-wrapped
           ]);
       };
 
@@ -85,6 +84,9 @@ _: {
 
           # Suppress the login MOTD (replaces home-manager home.file.".hushlogin")
           touch /Users/soft/.hushlogin
+
+          sudo -u soft mkdir -p /Users/soft/.config/ghostty
+          sudo -u soft ln --symbolic --force ${../../pkgs/ghostty-wrapped/config} /Users/soft/.config/ghostty/config.ghostty
 
           ${pkgs.defaultbrowser}/bin/defaultbrowser zen
 
