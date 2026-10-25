@@ -20,8 +20,13 @@
         owner = "soft";
       };
 
-      boot.loader.systemd-boot.enable = true;
-      boot.loader.efi.canTouchEfiVariables = true;
+      boot = {
+        loader.systemd-boot.enable = true;
+        loader.efi.canTouchEfiVariables = true;
+
+        # Runtime resume can wedge the RX 9070 XT's SMU and hang the machine.
+        kernelParams = [ "amdgpu.runpm=0" ];
+      };
 
       networking.hostName = "tower";
 
