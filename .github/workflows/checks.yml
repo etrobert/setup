@@ -15,33 +15,39 @@ concurrency:
 jobs:
   eval:
     name: eval
-    runs-on: [self-hosted, Linux]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
+
+      - uses: cachix/install-nix-action@v31
 
       - name: Flake Check (all systems, eval only)
         run: nix flake check --all-systems --no-build --accept-flake-config
 
   dead-packages:
     name: dead-packages
-    runs-on: [self-hosted, Linux]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
+
+      - uses: cachix/install-nix-action@v31
 
       - name: Packages in no system derivation
         run: nix run --accept-flake-config .#nix-dead-packages
 
   lint:
     name: lint
-    runs-on: [self-hosted, Linux]
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
+
+      - uses: cachix/install-nix-action@v31
 
       - name: Build flake checks
         run: nix run nixpkgs#nix-fast-build -- --flake .#checks.x86_64-linux
