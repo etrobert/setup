@@ -23,17 +23,19 @@
       options.autoBrightness = {
         day = lib.mkOption {
           type = lib.types.ints.between 0 100;
-          description = "Screen brightness percentage with the sun above 6°.";
+          description = "Screen brightness percentage until 16:00.";
         };
         night = lib.mkOption {
           type = lib.types.ints.between 0 100;
-          description = "Screen brightness percentage with the sun below -6°.";
+          description = "Screen brightness percentage from 23:00 to 05:00.";
         };
       };
 
       config.systemd.user = {
         services.auto-brightness = {
-          description = "Set screen brightness for the height of the sun";
+          description = "Set screen brightness for the time of day";
+          # Toggled by the etrobert/auto-brightness noctalia widget.
+          unitConfig.ConditionPathExists = "!%S/auto-brightness-paused";
           path = [ config.programs.noctalia.package ];
           serviceConfig = {
             Type = "oneshot";
