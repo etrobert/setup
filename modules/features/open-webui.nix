@@ -3,18 +3,7 @@
 # tsnsrv is the sole way in.
 _: {
   flake.nixosModules.open-webui =
-    {
-      config,
-      lib,
-      pkgs,
-      ...
-    }:
-    let
-      # nixpkgs passes `--set FRONTEND_BUILD_DIR <path>` as one makeWrapperArgs
-      # element; with __structuredAttrs it reaches makeWrapper as a single
-      # argument and the build dies. Split it, as NixOS/nixpkgs#575801 does.
-      isJoinedSet = lib.hasPrefix "--set FRONTEND_BUILD_DIR ";
-    in
+    { config, ... }:
     {
       # nixpkgs marks Open WebUI non-free over its MIT -> modified-BSD-3
       # relicensing and the branding clause that came with it. Personal use is
@@ -23,15 +12,6 @@ _: {
 
       services.open-webui = {
         enable = true;
-
-        package =
-          assert lib.assertMsg (lib.any isJoinedSet pkgs.open-webui.makeWrapperArgs)
-            "nixpkgs open-webui no longer joins its --set makeWrapperArgs (NixOS/nixpkgs#575801): drop the package override in modules/features/open-webui.nix";
-          pkgs.open-webui.overridePythonAttrs (old: {
-            makeWrapperArgs = lib.concatMap (
-              arg: if isJoinedSet arg then lib.splitString " " arg else [ arg ]
-            ) old.makeWrapperArgs;
-          });
 
         # Not the module's default 8080: the lafraise dev backend binds it.
         port = 8090;

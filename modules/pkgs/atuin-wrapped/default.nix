@@ -1,6 +1,23 @@
-_: {
+{ inputs, ... }:
+{
   perSystem =
-    { pkgs, self', ... }:
+    {
+      pkgs,
+      lib,
+      self',
+      system,
+      ...
+    }:
+    let
+      # atuin 18.24.2 fails its tests on aarch64 (NixOS/nixpkgs#578686), so the cache lacks it
+      atuin =
+        assert lib.assertMsg (pkgs.atuin.version == "18.24.2")
+          "nixpkgs atuin is past 18.24.2: drop the nixpkgs-atuin pin in modules/pkgs/atuin-wrapped and flake.nix";
+        if system == "aarch64-linux" then
+          inputs.nixpkgs-atuin.legacyPackages.${system}.atuin
+        else
+          pkgs.atuin;
+    in
     {
       packages.atuin-wrapped =
         let
@@ -31,7 +48,7 @@ _: {
           ];
         in
         self'.legacyPackages.wrapPackage {
-          package = pkgs.atuin;
+          package = atuin;
           setDefaults.ATUIN_CONFIG_DIR = configDir;
         };
     };
