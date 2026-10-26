@@ -133,6 +133,7 @@ jobs:
             --url-query content_type=image/png \
             --url-query "repository_id=$GITHUB_REPOSITORY_ID" \
             https://uploads.github.com/user-attachments/assets \
+            | tee /dev/stderr \
             | jq --raw-output --exit-status .url)
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
