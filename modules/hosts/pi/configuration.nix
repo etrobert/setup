@@ -13,7 +13,6 @@
       # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
       boot = {
         loader.grub.enable = false;
-        # Enables the generation of /boot/extlinux/extlinux.conf
         loader.generic-extlinux-compatible.enable = true;
       };
 
@@ -33,11 +32,6 @@
             dns = "1.1.1.1;9.9.9.9;";
           };
         };
-      };
-
-      services.lanDns = {
-        enable = true;
-        interface = "end0";
       };
 
       time.timeZone = "Europe/Berlin";

@@ -3,16 +3,13 @@
   flake.nixosModules.lan-dns =
     { config, lib, ... }:
     {
-      options.services.lanDns = {
-        enable = lib.mkEnableOption "LAN DHCP and split-horizon DNS via dnsmasq";
-        interface = lib.mkOption {
-          type = lib.types.str;
-          default = "end0";
-          description = "LAN interface to listen on";
-        };
+      options.services.lanDns.interface = lib.mkOption {
+        type = lib.types.str;
+        default = "end0";
+        description = "LAN interface to listen on";
       };
 
-      config = lib.mkIf config.services.lanDns.enable {
+      config = {
         services.dnsmasq = {
           enable = true;
           settings = {
