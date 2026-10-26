@@ -13,6 +13,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Last nixpkgs with a cached aarch64 atuin; see modules/pkgs/atuin-wrapped
+    nixpkgs-atuin.url = "github:nixos/nixpkgs/7a6522c868711d06e3a520bbcdfafe9806f4337f";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/master";
