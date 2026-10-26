@@ -10,6 +10,8 @@ _: {
             # Deleted files linger forever otherwise. Not "always": an incremental
             # scan of an unmounted library would purge everything.
             Scanner.PurgeMissing = "full";
+            # With no plugins the folder is absent from the store and navidrome fails creating it.
+            Plugins.Enabled = false;
           };
         };
 
