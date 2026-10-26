@@ -34,7 +34,7 @@
       config.systemd.user = {
         services.auto-brightness = {
           description = "Set screen brightness for the time of day";
-          # Toggled by the etrobert/auto-brightness noctalia widget.
+          # Toggled by the etrobert/auto-brightness noctalia shortcut.
           unitConfig.ConditionPathExists = "!%S/auto-brightness-paused";
           path = [ config.programs.noctalia.package ];
           serviceConfig = {

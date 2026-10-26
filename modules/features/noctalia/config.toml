@@ -81,7 +81,6 @@ end = [
   "bluetooth",
   "volume",
   "brightness",
-  "etrobert/auto-brightness:bar",
   "battery",
   "power_profile",
   "etrobert/deploy-status:bar",
@@ -156,6 +155,26 @@ placement_height = 1728.0
 
 [lockscreen_widgets.widget.birthdays.settings]
 background = false
+
+# Declaring any shortcut replaces the default set. The Home tab shows at most
+# six, so power_profile, already a bar widget, makes room for auto-brightness.
+[[control_center.shortcuts]]
+type = "wifi"
+
+[[control_center.shortcuts]]
+type = "bluetooth"
+
+[[control_center.shortcuts]]
+type = "caffeine"
+
+[[control_center.shortcuts]]
+type = "nightlight"
+
+[[control_center.shortcuts]]
+type = "notification"
+
+[[control_center.shortcuts]]
+type = "etrobert/auto-brightness:shortcut"
 
 [wallpaper.default]
 path = "@wallpaper@"
