@@ -85,11 +85,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782171558,
-        "narHash": "sha256-/8A7E0gv43Qw6hKgeUPcsvv+IqRi/ohta3R5ejQvt8w=",
+        "lastModified": 1793012013,
+        "narHash": "sha256-pNWeK7qX8jQEFn+CDjLAH0m/AE5zkt0mhVD7IPHOzWg=",
         "owner": "etrobert",
         "repo": "creatures",
-        "rev": "dd8f1798130c429641dd56788e6f010fb20d22ca",
+        "rev": "6bd24c8cca343cb2f2a0713d0fd947fc14368487",
         "type": "github"
       },
       "original": {
