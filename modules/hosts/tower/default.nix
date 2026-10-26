@@ -51,7 +51,7 @@ in
           assertions = [
             {
               assertion = pkgs.python3Packages.posthog.meta.broken;
-              message = "python3Packages.posthog is no longer broken: re-enable open-webui in modules/hosts/tower/default.nix";
+              message = "python3Packages.posthog is no longer broken: re-enable open-webui in modules/hosts/tower/default.nix and drop its dead-modules exemption";
             }
           ];
         }

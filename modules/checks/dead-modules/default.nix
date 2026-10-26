@@ -36,9 +36,10 @@
         map (n: "nixosModules.${n}") (lib.attrNames self.nixosModules)
         ++ map (n: "darwinModules.${n}") (lib.attrNames self.darwinModules);
 
-      # Imported by another flake rather than a host here.
+      # Not imported by a host here, on purpose.
       external = [
         "nixosModules.draw" # etrobert/daddy
+        "nixosModules.open-webui" # off on tower until NixOS/nixpkgs#578265
       ];
 
       unused = lib.subtractLists (
