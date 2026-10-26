@@ -7,8 +7,8 @@ license = "MIT"
 dependencies = ["systemctl"]
 tags = ["brightness", "system"]
 icon = "brightness-auto"
-description = "Click to pause or resume auto-brightness."
+description = "Control-center tile to pause or resume auto-brightness."
 
-[[widget]]
-id = "bar"
-entry = "bar.luau"
+[[shortcut]]
+id = "shortcut"
+entry = "shortcut.luau"

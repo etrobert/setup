@@ -7,14 +7,11 @@ local PAUSED = noctalia.expandPath("~/.local/state/auto-brightness-paused")
 
 noctalia.setUpdateInterval(1000)
 
+shortcut.setLabel("Brightness")
+shortcut.setIcon("brightness-auto", "brightness-off")
+
 function update()
-	if noctalia.fileExists(PAUSED) then
-		barWidget.setGlyph("brightness-off")
-		barWidget.setTooltip("Auto-brightness paused")
-	else
-		barWidget.setGlyph("brightness-auto")
-		barWidget.setTooltip("Auto-brightness on")
-	end
+	shortcut.setActive(not noctalia.fileExists(PAUSED))
 end
 
 local function run(argv, andThen)
