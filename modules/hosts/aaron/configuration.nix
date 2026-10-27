@@ -27,12 +27,6 @@ _: {
 
       nix.settings.trusted-users = [ "@admin" ];
 
-      # Keys only, as nixos-base sets for the NixOS hosts.
-      services.openssh.extraConfig = ''
-        PasswordAuthentication no
-        KbdInteractiveAuthentication no
-      '';
-
       # Daily, like nix.gc.dates = "daily" on the NixOS hosts (the darwin
       # default is weekly).
       nix.gc = {
@@ -220,7 +214,15 @@ _: {
         '';
       };
 
-      services.tailscale.enable = true;
+      services = {
+        tailscale.enable = true;
+
+        # Keys only, as nixos-base sets for the NixOS hosts.
+        openssh.extraConfig = ''
+          PasswordAuthentication no
+          KbdInteractiveAuthentication no
+        '';
+      };
 
       # Enable Touch ID for sudo
       security.pam.services.sudo_local.touchIdAuth = true;
