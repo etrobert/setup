@@ -62,6 +62,11 @@ Always spell out links. Don't use
 <https://www.github.com/etrobert/setup>. I am often working over ssh and
 clicking the links open on the wrong machine.
 
+Never put a character directly after a URL — no `:`, `?`, `.`, `,` or `)`.
+Ghostty's Ctrl+Click includes it in the link. Follow the URL with a space or a
+line break, e.g. "CI is green on https://github.com/org/repo/pull/1 — 46 checks
+passed".
+
 Whenever I need to make a bank transfer, generate an EPC QR code (GiroCode) for
 it with `qrencode`, so I can scan it into my banking app.
 
