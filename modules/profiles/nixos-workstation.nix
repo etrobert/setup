@@ -72,16 +72,14 @@
           openFirewall = true;
         };
 
-        # tuigreet login prompt on vt1, then launch Niri. niri-session re-execs
-        # through a login shell and imports the environment into systemd/D-Bus
-        # itself; bash -l guarantees environment.sessionVariables are loaded.
+        # tuigreet login prompt on vt1, then launch Niri.
         greetd = {
           enable = true;
           # Stops boot log lines from drawing over the tuigreet UI: resets the
           # VT at greeter start, and wires greetd's stdio to tty1 so systemd
           # counts the console as owned and stops printing status to it.
           useTextGreeter = true;
-          settings.default_session.command = ''${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd "${pkgs.bash}/bin/bash -l -c niri-session"'';
+          settings.default_session.command = "${lib.getExe pkgs.tuigreet} --time --remember --asterisks --cmd niri-session";
         };
       };
 
