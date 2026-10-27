@@ -171,6 +171,9 @@
             enable = true;
             mailer = lib.getExe smartd-ntfy;
           };
+
+          # Short self-test daily at 02:00, long one Sundays at 04:00.
+          defaults.monitored = "-a -s (S/../.././02|L/../../7/04)";
         };
 
         sanoid = {
