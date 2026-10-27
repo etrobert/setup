@@ -13,8 +13,6 @@
       boot.kernelParams = [ "mem_sleep_default=deep" ];
 
       boot.loader = {
-        systemd-boot.configurationLimit = 1;
-
         systemd-boot.enable = true;
         efi.canTouchEfiVariables = true;
       };
@@ -43,6 +41,12 @@
         # leod is the only host that travels, so it geolocates its timezone
         # instead of pinning one. The module sets time.timeZone to null.
         automatic-timezoned.enable = true;
+
+        # The disk passphrase already authenticated the boot; tuigreet stays for logouts.
+        greetd.settings.initial_session = {
+          user = "soft";
+          command = "niri-session";
+        };
 
         # Keeps the device ID pinned in syncthing-settings.nix across reinstalls.
         syncthing = {
