@@ -81,9 +81,7 @@ Tower serves its store as a signed binary cache via harmonia
 
 ### Auto upgrade
 
-NixOS hosts switch to the `deploy` branch every minute
-(`modules/features/auto-upgrade.nix`); `touch /var/lib/nixos-upgrade/paused`
-pauses it.
+Hosts auto-upgrade to `deploy`; `touch /var/lib/nixos-upgrade/paused` pauses it.
 
 ### Development Environment
 
