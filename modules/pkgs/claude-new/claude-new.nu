@@ -102,4 +102,5 @@ def launch [prompt: path] {
 
     # The trailing colon makes = an exact session match in a pane target.
     tmux send-keys -t $"=($session):" $"claude --name ($name) \"$\(cat ($prompt))\"" Enter
+    tmux display-message $"claude-new: started ($name)"
 }
