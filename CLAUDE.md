@@ -79,6 +79,12 @@ authoritative list.
 Tower serves its store as a signed binary cache via harmonia
 (`http://tower:5000`, `modules/features/harmonia.nix`).
 
+### Auto upgrade
+
+NixOS hosts switch to the `deploy` branch every minute
+(`modules/features/auto-upgrade.nix`); `touch /var/lib/nixos-upgrade/paused`
+pauses it.
+
 ### Development Environment
 
 - Window Manager (NixOS): Niri with the Noctalia shell
