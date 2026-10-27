@@ -6,7 +6,7 @@
 
 {
   flake.nixosModules.leod-configuration =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
       imports = [ self.nixosModules.leod-hardware ];
 
@@ -32,11 +32,24 @@
         night = 30;
       };
 
-      services.fprintd.enable = true;
+      age.secrets = {
+        syncthing-cert.file = ../../../secrets/syncthing-leod-cert.age;
+        syncthing-key.file = ../../../secrets/syncthing-leod-key.age;
+      };
 
-      # leod is the only host that travels, so it geolocates its timezone
-      # instead of pinning one. The module sets time.timeZone to null.
-      services.automatic-timezoned.enable = true;
+      services = {
+        fprintd.enable = true;
+
+        # leod is the only host that travels, so it geolocates its timezone
+        # instead of pinning one. The module sets time.timeZone to null.
+        automatic-timezoned.enable = true;
+
+        # Keeps the device ID pinned in syncthing-settings.nix across reinstalls.
+        syncthing = {
+          cert = config.age.secrets.syncthing-cert.path;
+          key = config.age.secrets.syncthing-key.path;
+        };
+      };
 
       # The Synaptics Prometheus (06cb:00bd) does not survive suspend: it comes
       # back reporting an unsupported firmware version, stranding whatever

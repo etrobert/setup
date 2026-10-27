@@ -52,6 +52,8 @@ in
   "harmonia-signing-key.age".publicKeys = [ tower ];
   "dispatch-claude-token.age".publicKeys = [ tower ];
   "dispatch-github-token.age".publicKeys = [ tower ];
+  "syncthing-leod-cert.age".publicKeys = [ leod ];
+  "syncthing-leod-key.age".publicKeys = [ leod ];
   "smb-credentials.age".publicKeys = [
     tower
     leod
