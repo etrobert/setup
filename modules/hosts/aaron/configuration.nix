@@ -27,6 +27,12 @@ _: {
 
       nix.settings.trusted-users = [ "@admin" ];
 
+      # Keys only, as nixos-base sets for the NixOS hosts.
+      services.openssh.extraConfig = ''
+        PasswordAuthentication no
+        KbdInteractiveAuthentication no
+      '';
+
       # Daily, like nix.gc.dates = "daily" on the NixOS hosts (the darwin
       # default is weekly).
       nix.gc = {
