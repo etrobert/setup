@@ -42,8 +42,19 @@
       };
 
       services.sunshine = {
-        enable = false;
+        enable = true;
         openFirewall = true;
+        # Default portal capture waits on a share dialog on tower's own screen
+        settings.capture = "wlr";
+      };
+
+      # Keep the Dell driven while it is off, so Sunshine has an output to stream
+      hardware.display = {
+        edid.linuxhw.U3223QE = [ "42AED6315310" ];
+        outputs."DP-2" = {
+          edid = "U3223QE.bin";
+          mode = "e";
+        };
       };
 
       networking.networkmanager = {
