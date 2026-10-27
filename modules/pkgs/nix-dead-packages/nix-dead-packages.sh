@@ -13,6 +13,7 @@ allow=(
   excalidraw        # etrobert/daddy, through nixosModules.draw
   flake-input-table # .github/workflows/update-flake.yml
   nix-dead-packages # .github/workflows/checks.yml
+  reinstall-host    # nix run when reinstalling a machine
 )
 
 scratch=$(mktemp --directory)
