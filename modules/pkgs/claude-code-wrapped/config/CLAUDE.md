@@ -58,9 +58,7 @@ Don't be afraid to make multiple different implementations of the same feature
 to compare them.
 
 Always spell out links, never `[the repo](https://github.com/etrobert/setup)`: I
-work over ssh, where clicking a link opens it on the wrong machine. Follow every
-URL with a space or a line break, never `:`, `?`, `.`, `,` or `)`: Ghostty's
-Ctrl+Click includes that character in the link.
+work over ssh, where clicking a link opens it on the wrong machine.
 
 Whenever I need to make a bank transfer, generate an EPC QR code (GiroCode) for
 it with `qrencode`, so I can scan it into my banking app.

@@ -28,10 +28,19 @@ _: {
           };
           sessionHostScript = pkgs.callPackage ./_scripts/claude-session-host.nix { };
           trustWorktreeScript = pkgs.callPackage ./_scripts/claude-trust-worktree.nix { };
+          urlSpaceScript = self'.legacyPackages.writers.writeNuBin "claude-url-space" {
+            makeWrapperArgs = [
+              "--prefix"
+              "PATH"
+              ":"
+              (pkgs.lib.makeBinPath [ pkgs.coreutils ])
+            ];
+          } (builtins.readFile ./_scripts/claude-url-space.nu);
 
           runtimeInputs = [
             statuslineScript
             formatFileScript
+            urlSpaceScript
             rateLimitNotifyScript
             sessionHostScript
             self'.packages.hass-cli-wrapped
