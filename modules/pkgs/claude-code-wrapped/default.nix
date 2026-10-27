@@ -28,10 +28,12 @@ _: {
           };
           sessionHostScript = pkgs.callPackage ./_scripts/claude-session-host.nix { };
           trustWorktreeScript = pkgs.callPackage ./_scripts/claude-trust-worktree.nix { };
+          urlSpaceScript = pkgs.callPackage ./_scripts/claude-url-space.nix { };
 
           runtimeInputs = [
             statuslineScript
             formatFileScript
+            urlSpaceScript
             rateLimitNotifyScript
             sessionHostScript
             self'.packages.hass-cli-wrapped

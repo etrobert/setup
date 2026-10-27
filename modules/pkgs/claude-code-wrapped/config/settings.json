@@ -75,6 +75,16 @@
         ]
       }
     ],
+    "MessageDisplay": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-url-space"
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [
