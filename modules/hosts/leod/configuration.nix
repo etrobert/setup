@@ -45,7 +45,7 @@
         # The disk passphrase already authenticated the boot; tuigreet stays for logouts.
         greetd.settings.initial_session = {
           user = "soft";
-          command = "${pkgs.bash}/bin/bash -l -c niri-session";
+          command = "niri-session";
         };
 
         # Keeps the device ID pinned in syncthing-settings.nix across reinstalls.
