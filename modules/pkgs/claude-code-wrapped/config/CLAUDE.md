@@ -184,9 +184,8 @@ When working on a web UI, try the change yourself using Claude in Chrome.
 - Always rebase on origin/main before presenting a PR for review — both on
   initial `gh pr create` and after any follow-up changes before telling the user
   it's ready. Rebase rather than merge origin/main into the branch.
-- After creating or pushing to a PR, watch it in separate background commands so
-  the turn is not blocked: its CI until it finishes, and its state until it is
-  merged or closed.
+- After creating or pushing to a PR, watch its CI and whether it gets merged or
+  closed, each in its own background command so the turn is not blocked.
 - Don't force push — make new commits instead. Amending and rebasing are the
   exceptions; push those with `--force-with-lease`.
 - Always resolve merge conflicts before reporting the task as done.
