@@ -44,7 +44,7 @@
       services.sunshine = {
         enable = true;
         openFirewall = true;
-        # Default portal capture pops a share dialog on every start
+        # Default portal capture waits on a share dialog on tower's own screen
         settings.capture = "wlr";
       };
 
