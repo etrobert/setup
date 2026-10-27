@@ -9,8 +9,16 @@ _: {
       writers.writeNuBin =
         name: args:
         pkgs.writers.writeNuBin name (
-          args
+          removeAttrs args [ "runtimeInputs" ]
           // {
+            makeWrapperArgs =
+              lib.optionals (args ? runtimeInputs) [
+                "--prefix"
+                "PATH"
+                ":"
+                (lib.makeBinPath args.runtimeInputs)
+              ]
+              ++ args.makeWrapperArgs or [ ];
             check = pkgs.writeShellScript "nu-check" ''
               set -e
               ${lib.getExe pkgs.nushell} --no-config-file --commands "nu-check --debug '$1'"
