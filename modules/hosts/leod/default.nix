@@ -14,7 +14,6 @@ in
     specialArgs = { inherit self agenix; };
     modules = [
       self.nixosModules.leod-configuration
-      self.nixosModules.docker
       self.nixosModules.tank-mount
       self.nixosModules.nix-index
       self.nixosModules.ankama-launcher
