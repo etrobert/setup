@@ -41,11 +41,44 @@
         tpm-pin.file = ../../../secrets/leod-tpm-pin.age;
       };
 
+      preservation = {
+        enable = true;
+        preserveAt."/persist" = {
+          files = [
+            {
+              file = "/etc/machine-id";
+              inInitrd = true;
+            }
+          ];
+          directories = [
+            {
+              directory = "/var/lib/nixos";
+              inInitrd = true;
+            }
+            "/var/lib/tailscale"
+            "/var/lib/bluetooth"
+            "/var/lib/fprint"
+            "/var/lib/systemd/timers"
+            "/var/lib/systemd/backlight"
+            "/var/log"
+            "/var/lib/flatpak"
+          ];
+        };
+      };
+
       # Not linked into ~/.ssh: agenix would create the directory as root.
       programs.ssh.extraConfig = "IdentityFile ${config.age.secrets.ssh-key.path}";
 
       services = {
         fprintd.enable = true;
+
+        # agenix reads its identity from here before bind mounts exist (https://github.com/ryantm/agenix/issues/219).
+        openssh.hostKeys = [
+          {
+            path = "/persist/etc/ssh/ssh_host_ed25519_key";
+            type = "ed25519";
+          }
+        ];
 
         # leod is the only host that travels, so it geolocates its timezone
         # instead of pinning one. The module sets time.timeZone to null.
@@ -65,6 +98,9 @@
       };
 
       systemd = {
+        # Fails on a bind-mounted /etc/machine-id (preservation docs/src/examples.md).
+        suppressedSystemUnits = [ "systemd-machine-id-commit.service" ];
+
         # Syncthing installs cert/key as root, which would create a missing ~/.config root-owned.
         tmpfiles.settings.home-config."/home/soft/.config".d = {
           user = "soft";
