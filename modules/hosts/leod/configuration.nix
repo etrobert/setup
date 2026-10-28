@@ -33,7 +33,14 @@
       age.secrets = {
         syncthing-cert.file = ../../../secrets/syncthing-leod-cert.age;
         syncthing-key.file = ../../../secrets/syncthing-leod-key.age;
+        ssh-key = {
+          file = ../../../secrets/ssh-soft-leod.age;
+          owner = "soft";
+        };
       };
+
+      # Not linked into ~/.ssh: agenix would create the directory as root.
+      programs.ssh.extraConfig = "IdentityFile ${config.age.secrets.ssh-key.path}";
 
       services = {
         fprintd.enable = true;
