@@ -165,6 +165,7 @@
             "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
             "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
             "khncfooichmfjbepaaaebmommgaepoid" # Unhook
+            "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
           ];
         };
 
