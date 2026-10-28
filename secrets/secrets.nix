@@ -55,6 +55,8 @@ in
   "syncthing-leod-cert.age".publicKeys = [ leod ];
   "syncthing-leod-key.age".publicKeys = [ leod ];
   "ssh-soft-leod.age".publicKeys = [ leod ];
+  "leod-disk-passphrase.age".publicKeys = [ leod ];
+  "leod-tpm-pin.age".publicKeys = [ leod ];
   "smb-credentials.age".publicKeys = [
     tower
     leod
