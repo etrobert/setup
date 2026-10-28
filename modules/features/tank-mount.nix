@@ -16,6 +16,8 @@ _: {
           "uid=soft"
           "x-systemd.automount"
           "x-systemd.idle-timeout=60"
+          # tower is reached over Tailscale; unmount before it stops, or shutdown waits on the timeout.
+          "x-systemd.after=tailscaled.service"
         ];
       };
     };
