@@ -54,6 +54,7 @@ in
   "dispatch-github-token.age".publicKeys = [ tower ];
   "syncthing-leod-cert.age".publicKeys = [ leod ];
   "syncthing-leod-key.age".publicKeys = [ leod ];
+  "ssh-soft-leod.age".publicKeys = [ leod ];
   "smb-credentials.age".publicKeys = [
     tower
     leod
