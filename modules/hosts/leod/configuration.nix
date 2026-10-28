@@ -62,6 +62,13 @@
         };
       };
 
+      # Syncthing installs cert/key as root, which would create a missing ~/.config root-owned.
+      systemd.tmpfiles.settings.home-config."/home/soft/.config".d = {
+        user = "soft";
+        group = "users";
+        mode = "0755";
+      };
+
       # The Synaptics Prometheus (06cb:00bd) does not survive suspend: it comes
       # back reporting an unsupported firmware version, stranding whatever
       # verify the lock screen had in flight. fprintd cannot cancel that one,
