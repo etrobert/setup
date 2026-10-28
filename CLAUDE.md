@@ -181,7 +181,8 @@ implement it.
 Other people's configs worth reading for examples. Clone into
 `~/.cache/explore/` when consulting them.
 
-- <https://github.com/surma/nixenv> — the closest architectural twin:
+- <https://github.com/etrobert/surma-nixenv> — private mirror of surma's
+  `nixenv`, taken down upstream; the closest architectural twin:
   `modules/features/` one file per capability plus `profiles/` per platform,
   spanning Darwin, NixOS, Home Manager and Android. Also packages `claude-code`
   and a Home Assistant CLI. Desktop layer is Hyprland, so it is no guide for the
