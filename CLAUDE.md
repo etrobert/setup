@@ -181,26 +181,25 @@ implement it.
 Other people's configs worth reading for examples. Clone into
 `~/.cache/explore/` when consulting them.
 
-- [`surma/nixenv`](https://github.com/surma/nixenv) — the closest architectural
-  twin: `modules/features/` one file per capability plus `profiles/` per
-  platform, spanning Darwin, NixOS, Home Manager and Android. Also packages
-  `claude-code` and a Home Assistant CLI. Desktop layer is Hyprland, so it is no
-  guide for the Niri side.
-- [`Goxore/nixconf`](https://github.com/Goxore/nixconf) — flake-parts config
-  whose `wrappedPrograms/` tree is the direct analogue of `*-wrapped`, including
+- <https://github.com/surma/nixenv> — the closest architectural twin:
+  `modules/features/` one file per capability plus `profiles/` per platform,
+  spanning Darwin, NixOS, Home Manager and Android. Also packages `claude-code`
+  and a Home Assistant CLI. Desktop layer is Hyprland, so it is no guide for the
+  Niri side.
+- <https://github.com/Goxore/nixconf> — flake-parts config whose
+  `wrappedPrograms/` tree is the direct analogue of `*-wrapped`, including
   wrappers for niri, noctalia and neovim. Each wrapper is a module
   (`flake.wrappers.<name>` importing `wlib.modules.default`) built on
-  [`BirdeeHub/nix-wrapper-modules`](https://github.com/BirdeeHub/nix-wrapper-modules)
-  — a different approach from this repo's hand-rolled `writeShellApplication`
-  wrappers, and worth comparing against.
-  [`vimjoyer/nixconf`](https://github.com/vimjoyer/nixconf) is the same config
-  under the author's YouTube-channel name but lags a few months behind — read
+  <https://github.com/BirdeeHub/nix-wrapper-modules> — a different approach from
+  this repo's hand-rolled `writeShellApplication` wrappers, and worth comparing
+  against. <https://github.com/vimjoyer/nixconf> is the same config under the
+  author's YouTube-channel name but lags a few months behind — read
   `Goxore/nixconf`. His per-topic demo repos (e.g. `modularize-video`,
   `flake-parts-wrapped-template`) are minimal worked examples.
-- [`Mic92/dotfiles`](https://github.com/Mic92/dotfiles) — same top-level shape
-  as this repo (`darwinModules`/`nixosModules`/`machines`/`pkgs`/`checks`) at a
-  much larger scale, by a nix-community maintainer active on harmonia. Secrets
-  are sops, not agenix, so that part does not transfer.
+- <https://github.com/Mic92/dotfiles> — same top-level shape as this repo
+  (`darwinModules`/`nixosModules`/`machines`/`pkgs`/`checks`) at a much larger
+  scale, by a nix-community maintainer active on harmonia. Secrets are sops, not
+  agenix, so that part does not transfer.
 - <https://github.com/paalwilliams/dotfiles> — Paal Williams' non-Nix dotfiles:
   fish, nvim, tmux, alacritty, karabiner and a `claude` directory.
 - Victor Schubert — no public dotfiles; his projects are on
