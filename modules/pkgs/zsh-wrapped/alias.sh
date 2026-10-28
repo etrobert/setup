@@ -25,7 +25,7 @@ alias sl='ls'
 alias SL='ls'
 
 # Using GNU ls from coreutils on both Linux and Darwin
-alias ls='ls --classify --human-readable --color'
+alias ls='ls --classify=auto --human-readable --color=auto'
 
 alias gti='git'
 alias gi='git'
