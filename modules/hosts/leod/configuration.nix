@@ -37,6 +37,8 @@
           file = ../../../secrets/ssh-soft-leod.age;
           owner = "soft";
         };
+        disk-passphrase.file = ../../../secrets/leod-disk-passphrase.age;
+        tpm-pin.file = ../../../secrets/leod-tpm-pin.age;
       };
 
       # Not linked into ~/.ssh: agenix would create the directory as root.
@@ -49,7 +51,7 @@
         # instead of pinning one. The module sets time.timeZone to null.
         automatic-timezoned.enable = true;
 
-        # The disk passphrase already authenticated the boot; tuigreet stays for logouts.
+        # The disk unlock already authenticated the boot; tuigreet stays for logouts.
         greetd.settings.initial_session = {
           user = "soft";
           command = "niri-session";
@@ -62,11 +64,35 @@
         };
       };
 
-      # Syncthing installs cert/key as root, which would create a missing ~/.config root-owned.
-      systemd.tmpfiles.settings.home-config."/home/soft/.config".d = {
-        user = "soft";
-        group = "users";
-        mode = "0755";
+      systemd = {
+        # Syncthing installs cert/key as root, which would create a missing ~/.config root-owned.
+        tmpfiles.settings.home-config."/home/soft/.config".d = {
+          user = "soft";
+          group = "users";
+          mode = "0755";
+        };
+
+        # If the TPM stops unlocking after a firmware change: systemd-cryptenroll --wipe-slot=tpm2, reboot.
+        services.tpm2-enroll = {
+          wantedBy = [ "multi-user.target" ];
+          path = [
+            pkgs.cryptsetup
+            config.systemd.package
+          ];
+          serviceConfig.Type = "oneshot";
+          script =
+            let
+              device = config.boot.initrd.luks.devices.root.device;
+            in
+            ''
+              if cryptsetup luksDump ${device} | grep --quiet systemd-tpm2; then
+                exit 0
+              fi
+              NEWPIN=$(cat ${config.age.secrets.tpm-pin.path}) systemd-cryptenroll \
+                --unlock-key-file=${config.age.secrets.disk-passphrase.path} \
+                --tpm2-device=auto --tpm2-pcrs=7 --tpm2-with-pin=yes ${device}
+            '';
+        };
       };
 
       # The Synaptics Prometheus (06cb:00bd) does not survive suspend: it comes

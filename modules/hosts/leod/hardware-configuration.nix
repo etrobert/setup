@@ -53,7 +53,11 @@
                 name = "root";
                 # Read only while formatting; nixos-anywhere uploads it there.
                 passwordFile = "/tmp/disk.key";
-                settings.allowDiscards = true;
+                settings = {
+                  allowDiscards = true;
+                  # Enrolled by the tpm2-enroll service in configuration.nix.
+                  crypttabExtraOpts = [ "tpm2-device=auto" ];
+                };
                 content = {
                   type = "filesystem";
                   format = "ext4";
