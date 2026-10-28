@@ -59,9 +59,13 @@
                   crypttabExtraOpts = [ "tpm2-device=auto" ];
                 };
                 content = {
-                  type = "filesystem";
-                  format = "ext4";
-                  mountpoint = "/";
+                  type = "btrfs";
+                  subvolumes = {
+                    "/nix".mountpoint = "/nix";
+                    "/persist".mountpoint = "/persist";
+                    "/home".mountpoint = "/home";
+                    "/swap".mountpoint = "/swap";
+                  };
                 };
               };
             };
@@ -69,7 +73,23 @@
         };
       };
 
-      swapDevices = [ ];
+      disko.devices.nodev."/" = {
+        fsType = "tmpfs";
+        mountOptions = [
+          "size=2G"
+          "mode=755"
+        ];
+      };
+
+      fileSystems."/persist".neededForBoot = true;
+
+      # The workstation profile's /swapfile would land on the tmpfs root.
+      swapDevices = lib.mkForce [
+        {
+          device = "/swap/swapfile";
+          size = 32 * 1024;
+        }
+      ];
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

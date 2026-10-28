@@ -36,6 +36,7 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    preservation.url = "github:nix-community/preservation";
     tsnsrv = {
       url = "github:boinkor-net/tsnsrv";
       inputs.nixpkgs.follows = "nixpkgs";

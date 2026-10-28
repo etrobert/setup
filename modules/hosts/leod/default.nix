@@ -7,6 +7,7 @@ let
   inherit (inputs)
     nixpkgs
     agenix
+    preservation
     ;
 in
 {
@@ -18,6 +19,7 @@ in
       self.nixosModules.nix-index
       self.nixosModules.ankama-launcher
       agenix.nixosModules.default
+      preservation.nixosModules.default
       self.nixosModules.nixos-workstation
       self.nixosModules.workstation
       self.nixosModules.nixos-base
