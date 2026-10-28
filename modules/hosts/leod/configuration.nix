@@ -55,18 +55,9 @@
               directory = "/var/lib/nixos";
               inInitrd = true;
             }
-            {
-              directory = "/var/lib/tailscale";
-              mode = "0700";
-            }
-            {
-              directory = "/var/lib/bluetooth";
-              mode = "0700";
-            }
-            {
-              directory = "/var/lib/fprint";
-              mode = "0700";
-            }
+            "/var/lib/tailscale"
+            "/var/lib/bluetooth"
+            "/var/lib/fprint"
             "/var/lib/systemd/timers"
             "/var/lib/systemd/backlight"
             "/var/log"
