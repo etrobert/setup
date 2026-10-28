@@ -178,7 +178,7 @@ implement it.
 
 ## Reference configurations
 
-Other people's Nix configs worth reading for examples. Clone into
+Other people's configs worth reading for examples. Clone into
 `~/.cache/explore/` when consulting them.
 
 - [`surma/nixenv`](https://github.com/surma/nixenv) — the closest architectural
@@ -201,3 +201,8 @@ Other people's Nix configs worth reading for examples. Clone into
   as this repo (`darwinModules`/`nixosModules`/`machines`/`pkgs`/`checks`) at a
   much larger scale, by a nix-community maintainer active on harmonia. Secrets
   are sops, not agenix, so that part does not transfer.
+- [`paalwilliams/dotfiles`](https://github.com/paalwilliams/dotfiles) — Paal
+  Williams' non-Nix dotfiles: fish, nvim, tmux, alacritty, karabiner and a
+  `claude` directory.
+- Victor Schubert — no public dotfiles; his projects are on
+  [`~schube`](https://git.sr.ht/~schube) and his writing on <https://schu.be>.
