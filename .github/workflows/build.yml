@@ -102,11 +102,9 @@ jobs:
             --out-link "$RUNNER_TEMP/tower-pr"
           nix build "./main-baseline#$attr" --accept-flake-config \
             --out-link "$RUNNER_TEMP/tower-main"
-          # --force-correctness: other jobs write this store concurrently,
-          # which can make dix's SQLite immutable-mode fast path inaccurate.
-          nix run nixpkgs#dix -- --force-correctness "$RUNNER_TEMP/tower-main" \
+          nix run nixpkgs#dix -- diff "$RUNNER_TEMP/tower-main" \
             "$RUNNER_TEMP/tower-pr" > "$RUNNER_TEMP/diff.txt"
-          nix run nixpkgs#dix -- --force-correctness --color always \
+          nix run nixpkgs#dix -- --color always diff \
             "$RUNNER_TEMP/tower-main" "$RUNNER_TEMP/tower-pr" \
             > "$RUNNER_TEMP/diff-ansi.txt"
 
