@@ -198,8 +198,7 @@ Other people's configs worth reading for examples. Clone into
   `flake-parts-wrapped-template`) are minimal worked examples.
 - <https://github.com/Mic92/dotfiles> — same top-level shape as this repo
   (`darwinModules`/`nixosModules`/`machines`/`pkgs`/`checks`) at a much larger
-  scale, by a nix-community maintainer active on harmonia. Secrets are sops, not
-  agenix, so that part does not transfer.
+  scale, by a nix-community maintainer active on harmonia. Secrets are sops.
 - <https://github.com/paalwilliams/dotfiles> — Paal Williams' non-Nix dotfiles:
   fish, nvim, tmux, alacritty, karabiner and a `claude` directory.
 - Victor Schubert — no public dotfiles; his projects are on
