@@ -157,6 +157,14 @@
 
       hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
+      environment.systemPackages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.charge-limit ];
+
+      # Cap charging on a fresh install; f never overwrites, so charge-limit's toggle persists.
+      systemd.tmpfiles.settings.upower."/var/lib/upower/charging-threshold-status".f = {
+        argument = "1";
+        mode = "0640";
+      };
+
       # This value determines the NixOS release from which the default
       # settings for stateful data, like file locations and database versions
       # on your system were taken. It‘s perfectly fine and recommended to leave
