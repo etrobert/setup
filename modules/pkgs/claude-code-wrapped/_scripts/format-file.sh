@@ -4,6 +4,8 @@ if [ ! -f "$file" ]; then
 fi
 
 case $file in
+# Third-party clones keep their own style
+"$HOME"/.cache/explore/*) ;;
 *.lua) stylua "$file" ;;
 *.js | *.jsx | *.ts | *.tsx | *.json | *.jsonc | *.html | *.md | *.css | *.yaml | *.yml)
   prettier --write "$file"
