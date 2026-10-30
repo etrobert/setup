@@ -185,8 +185,7 @@ Other people's configs worth reading for examples. Clone into
   `nixenv`, taken down upstream; the closest architectural twin:
   `modules/features/` one file per capability plus `profiles/` per platform,
   spanning Darwin, NixOS, Home Manager and Android. Also packages `claude-code`
-  and a Home Assistant CLI. Desktop layer is Hyprland, so it is no guide for the
-  Niri side.
+  and a Home Assistant CLI. Hyprland desktop, so no guide for the Niri side.
 - <https://github.com/Goxore/nixconf> — flake-parts config whose
   `wrappedPrograms/` tree is the direct analogue of `*-wrapped`, including
   wrappers for niri, noctalia and neovim. Each wrapper is a module
