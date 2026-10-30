@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o nounset
-set -o pipefail
-
 if [ $# -eq 0 ]; then
   echo "Usage: scale-floating-window [up|down]"
   exit 1
