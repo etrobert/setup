@@ -10,7 +10,7 @@ description:
 
 Derive the repo's conventions from the repo itself:
 
-- Read their `README.md` and `CONTRIBUTING.md`
+- Read their `README.md` and `CONTRIBUTING.md` in full, never through `head`
 - Derive their commit style from their previous commits
 - Read their PR template
 - Derive PR description style from previously merged PRs
