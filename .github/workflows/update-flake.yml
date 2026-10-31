@@ -9,7 +9,7 @@ name: Update Flake Inputs
   # allow manual trigger
   workflow_dispatch:
 
-# Runs queued while tower is off collapse to the newest, as all push flake-update.
+# Runs queued while tower is off all push flake-update; keep only the newest.
 concurrency: update-flake
 
 jobs:
