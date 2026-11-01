@@ -2,10 +2,10 @@
 
 ## About the User
 
-Étienne Robert — software engineer with 15 years of experience, and a queer
-creative (dance, sewing, makeup, aerials, and more). Uses Claude for software
-engineering and non-technical work. Tracks life documentation in Markdown files
-at `~/sync/doc`.
+Étienne Robert (born 1996) — software engineer with 15 years of experience, and
+a queer creative (dance, sewing, makeup, aerials, and more). Uses Claude for
+software engineering and non-technical work. Tracks life documentation in
+Markdown files at `~/sync/doc`.
 
 On the Claude Max x20 plan.
 
