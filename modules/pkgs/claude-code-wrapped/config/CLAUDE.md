@@ -35,6 +35,8 @@ machine. Run builds and compiles on tower, the fastest machine.
 - Prefer the simplest solution that solves the problem, the MVP.
 - Being able to read and understand a code at a glance is important to me.
   - Prefer a plain solution over a clever one.
+- Optimise for the best design for the problem, not for the least change or for
+  consistency with existing code. Breaking things is fine.
 
 As the final pass before presenting any work — code, config, docs, plans, PRs —
 go element by element (parameter, option, line, section, step) and attempt to
@@ -138,23 +140,6 @@ references are dead text that add noise without value.
 - Code comments should not be longer than one line per topic
 - Two topics should be split into two lines
 
-```bash
-# Good
-
-# --chmod: jellyfin must read the result
-# ControlMaster: no writable home here
-rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
-  --rsh 'ssh -o ControlMaster=no' \
-  charon:/var/lib/transmission/Downloads/ ${landing}/
-
-# Bad
-
-# chmod because jellyfin must read the result Control Master no writable home here
-rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
-  --rsh 'ssh -o ControlMaster=no' \
-  charon:/var/lib/transmission/Downloads/ ${landing}/
-```
-
 Longer comments don't belong in the code. They belong in the commit or PR, as
 does narrative context (root-cause chains, incident history). Neighbouring
 files' comment density is not a justification.
@@ -164,6 +149,9 @@ name, the expression below, the message it carries, the helper it calls, the LSP
 hover (an option's description, a docstring) — cut it. Most often that is one
 narrating work you just did. It earns its place only by carrying what the code
 cannot: why this value, which upstream bug.
+
+Keep comments free of where things live (which host, which consumers), so moving
+a service doesn't mean editing comments.
 
 ## Testing
 
