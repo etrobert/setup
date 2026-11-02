@@ -14,7 +14,6 @@
       self.nixosModules.tailnet-services
       self.nixosModules.transmission
       self.nixosModules.node-exporter
-      self.nixosModules.metrics
       self.nixosModules.caddy
       self.nixosModules.countdown
       self.nixosModules.nutricalc
