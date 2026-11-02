@@ -14,14 +14,7 @@
       self.nixosModules.tailnet-services
       self.nixosModules.transmission
       self.nixosModules.node-exporter
-      self.nixosModules.caddy
-      self.nixosModules.countdown
-      self.nixosModules.nutricalc
-      self.nixosModules.creatures
-      self.nixosModules.rift-radar
-      self.nixosModules.umami
       self.nixosModules.atuin-login
-      self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
     ];
   };
