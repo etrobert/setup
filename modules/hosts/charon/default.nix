@@ -21,7 +21,6 @@
       self.nixosModules.creatures
       self.nixosModules.rift-radar
       self.nixosModules.umami
-      self.nixosModules.atuin-server
       self.nixosModules.atuin-login
       self.nixosModules.ddclient
       inputs.agenix.nixosModules.default
