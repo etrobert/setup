@@ -24,14 +24,12 @@ jobs:
         env:
           PACKAGE: ${{ matrix.package }}
         run: |
-          version() {
-            nix eval --raw ".#$PACKAGE.version"
-          }
-          old=$(version)
-          nix run nixpkgs#nix-update -- --flake "$PACKAGE"
-          new=$(version)
-          if [ "$new" != "$old" ]; then
-            echo "title=chore: update $PACKAGE ($old → $new)" >> "$GITHUB_OUTPUT"
+          # Written only when the package changed
+          message="$RUNNER_TEMP/message"
+          nix run nixpkgs#nix-update -- --flake "$PACKAGE" \
+            --write-commit-message "$message"
+          if [ -f "$message" ]; then
+            echo "title=chore: $(head --lines=1 "$message")" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Create pull request
