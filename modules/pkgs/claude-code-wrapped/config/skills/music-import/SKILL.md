@@ -15,8 +15,8 @@ Navidrome serves; the beets catalogue (`.beets/`) sits beside them. `beet`
 Every import sets its origin, which picks the top-level directory:
 
 ```sh
-beet import --set source=torrents /tank/media/torrents/<dir>
+beet import --set source=torrents /mnt/downloads/<dir>
 ```
 
-Torrents land in `/tank/media/torrents/`. Beets copies them in; the landing copy
-stays until the torrent is removed from transmission on daddy.
+Finished torrents appear under `/mnt/downloads/`, a read-only mount of
+transmission's download directory. Beets copies them in.

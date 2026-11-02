@@ -49,7 +49,7 @@ def main [url: string, c411_key: path] {
         http get $"($url)/initialize.json" | get apiKey
     }
 
-    # A client Radarr may not remove from is what makes it hardlink instead of move.
+    # A client Radarr may not remove from makes it copy, so the torrent keeps seeding.
     provider downloadclient {
         name: torrents
         implementation: Transmission
@@ -67,12 +67,8 @@ def main [url: string, c411_key: path] {
     (ensure remotepathmapping host {
         host: 127.0.0.1
         remotePath: /storage/downloads/
-        localPath: /tank/media/torrents/
+        localPath: /mnt/downloads/
     })
-
-    # Transmission creates the category folder on the download host at the first
-    # grab; the health check wants its pulled copy to exist before that.
-    mkdir /tank/media/torrents/radarr
 
     # c411 files films under 2030, animation under 2060, documentaries under 2070.
     # A French tracker's MULTi is the French dub plus the original audio: -2 Original, 2 French.
