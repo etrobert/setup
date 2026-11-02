@@ -14,6 +14,7 @@
       self.nixosModules.tailnet-services
       self.nixosModules.transmission
       self.nixosModules.node-exporter
+      self.nixosModules.disk-space-alert
       self.nixosModules.metrics
       self.nixosModules.caddy
       self.nixosModules.countdown
