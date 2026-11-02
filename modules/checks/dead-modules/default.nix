@@ -38,7 +38,12 @@
 
       # Not imported by a host here, on purpose.
       external = [
+        "nixosModules.countdown" # etrobert/daddy
+        "nixosModules.creatures" # etrobert/daddy
         "nixosModules.draw" # etrobert/daddy
+        "nixosModules.nutricalc" # etrobert/daddy
+        "nixosModules.rift-radar" # etrobert/daddy
+        "nixosModules.umami" # etrobert/daddy
         "nixosModules.open-webui" # off on tower until NixOS/nixpkgs#578265
       ];
 
