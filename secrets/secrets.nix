@@ -5,6 +5,7 @@ let
   aaron = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
   pi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
   charon = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKjmj/dwNIYcHnshGmTzVXIBqHCWeOXmgmNbEuLWWsK/";
+  daddy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINMqSwM9N7jU+9RaloJkr44KwfYD8trGd4bHBQFTxKWg";
 
   allLinux = [
     tower
@@ -36,7 +37,10 @@ in
     tower
     charon
   ];
-  "umami-app-secret.age".publicKeys = [ charon ];
+  "umami-app-secret.age".publicKeys = [
+    charon
+    daddy
+  ];
   "nix-access-tokens.age".publicKeys = allWorkstations;
   "github-runner-token.age".publicKeys = allWorkstations ++ [ charon ];
   # Fine-grained tokens carry one resource owner, so lafraise-pro/app cannot
@@ -47,7 +51,10 @@ in
   "atuin-key.age".publicKeys = allMachines;
   "atuin-password.age".publicKeys = allMachines;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
-  "riot-api-key.age".publicKeys = [ charon ];
+  "riot-api-key.age".publicKeys = [
+    charon
+    daddy
+  ];
   "slskd-env.age".publicKeys = [ charon ];
   "harmonia-signing-key.age".publicKeys = [ tower ];
   "dispatch-claude-token.age".publicKeys = [ tower ];
