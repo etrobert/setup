@@ -64,7 +64,8 @@ in
       self.nixosModules.miniflux
       self.nixosModules.atuin-server
       self.nixosModules.postgresql-read-access
-      self.nixosModules.download-pull
+      self.nixosModules.downloads-mount
+      self.nixosModules.transmission-tunnel
       self.nixosModules.lidarr
       self.nixosModules.radarr
       self.nixosModules.jellyfin

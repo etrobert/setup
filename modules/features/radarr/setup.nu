@@ -49,8 +49,7 @@ def main [url: string, c411_key: path] {
         http get $"($url)/initialize.json" | get apiKey
     }
 
-    # charon's reaper is the only remover (transmission.nix); a client Radarr may
-    # not remove from is also what makes it hardlink instead of move.
+    # A client Radarr may not remove from makes it copy, so the torrent keeps seeding.
     provider downloadclient {
         name: torrents
         implementation: Transmission
@@ -60,20 +59,16 @@ def main [url: string, c411_key: path] {
         removeCompletedDownloads: false
         tags: []
         fields: [
-            {name: host, value: torrents}
-            {name: port, value: 80}
+            {name: host, value: 127.0.0.1}
+            {name: port, value: 9091}
         ]
     }
 
     (ensure remotepathmapping host {
-        host: torrents
-        remotePath: /srv/downloads/transmission/
-        localPath: /tank/media/torrents/
+        host: 127.0.0.1
+        remotePath: /storage/downloads/
+        localPath: /mnt/downloads/
     })
-
-    # Transmission creates the category folder on charon at the first grab; the
-    # health check wants its pulled copy to exist before that.
-    mkdir /tank/media/torrents/radarr
 
     # c411 files films under 2030, animation under 2060, documentaries under 2070.
     # A French tracker's MULTi is the French dub plus the original audio: -2 Original, 2 French.
