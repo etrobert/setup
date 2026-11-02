@@ -37,10 +37,7 @@ in
     tower
     charon
   ];
-  "umami-app-secret.age".publicKeys = [
-    charon
-    daddy
-  ];
+  "umami-app-secret.age".publicKeys = [ daddy ];
   "nix-access-tokens.age".publicKeys = allWorkstations;
   "github-runner-token.age".publicKeys = allWorkstations ++ [ charon ];
   # Fine-grained tokens carry one resource owner, so lafraise-pro/app cannot
@@ -51,10 +48,7 @@ in
   "atuin-key.age".publicKeys = allMachines;
   "atuin-password.age".publicKeys = allMachines;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
-  "riot-api-key.age".publicKeys = [
-    charon
-    daddy
-  ];
+  "riot-api-key.age".publicKeys = [ daddy ];
   "slskd-env.age".publicKeys = [ charon ];
   "harmonia-signing-key.age".publicKeys = [ tower ];
   "dispatch-claude-token.age".publicKeys = [ tower ];
