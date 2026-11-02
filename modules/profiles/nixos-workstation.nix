@@ -107,6 +107,7 @@
             linear
             check-bt-profile
             ghostty-wrapped
+            helium
             open-url
           ];
 
