@@ -50,7 +50,6 @@ def main [url: string, c411_key: path] {
     }
 
     # A client Radarr may not remove from is what makes it hardlink instead of move.
-    # 127.0.0.1:9091 is transmission-tunnel.nix.
     provider downloadclient {
         name: torrents
         implementation: Transmission

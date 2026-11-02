@@ -1,4 +1,4 @@
-# Search c411's Torznab API and hand a release to transmission through transmission-tunnel.
+# Search c411's Torznab API and hand a release to transmission.
 def search [category: string, terms: list<string>] {
     let key = open --raw /run/agenix/c411-api-key | str trim
     let url = {
