@@ -1,0 +1,48 @@
+---
+name: Update Helium
+
+"on":
+  schedule:
+    # UTC: hourly 09:00-23:00 Berlin under CEST, an hour earlier under CET.
+    - cron: "0 7-21 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update the Helium pin
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Bump the Helium pin
+        id: bump
+        run: |
+          # Written only when the package changed
+          message="$RUNNER_TEMP/message"
+          nix run nixpkgs#nix-update -- --flake helium \
+            --write-commit-message "$message"
+          if [ -f "$message" ]; then
+            echo "title=chore: $(head --lines=1 "$message")" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request
+        id: create
+        if: steps.bump.outputs.title != ''
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: ${{ steps.bump.outputs.title }}
+          title: ${{ steps.bump.outputs.title }}
+          body-path: ${{ runner.temp }}/message
+          branch: helium-update
+          delete-branch: true
+
+      - name: Enable auto-merge
+        if: steps.create.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          NUMBER: ${{ steps.create.outputs.pull-request-number }}
+        run: gh pr merge "$NUMBER" --auto --squash
