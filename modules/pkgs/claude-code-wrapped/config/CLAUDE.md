@@ -164,9 +164,7 @@ Before writing one, check: if a reader could recover it from the code — the
 name, the expression below, the message it carries, the helper it calls, the LSP
 hover (an option's description, a docstring) — cut it. Most often that is one
 narrating work you just did. It earns its place only by carrying what the code
-cannot: why this value, which upstream bug.
-
-Comments never say where things live (host, consumers): moves need no edits.
+cannot: why this value, which upstream bug — never which host or consumer.
 
 ## Testing
 
