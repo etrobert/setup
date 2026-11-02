@@ -170,7 +170,7 @@ cannot: why this value, which upstream bug.
 Before committing, verify the change: typecheck, lint, and run the relevant
 test, build, or manual verification step.
 
-When working on a web UI, try the change yourself using Claude in Chrome.
+Use UI changes in Claude in Chrome before committing; if blocked, say so first.
 
 ## Git Workflow
 
