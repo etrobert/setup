@@ -1,4 +1,4 @@
-# Radarr, Lidarr and c411 reach the download host's transmission at localhost:9091.
+# Radarr and c411 reach the download host's transmission at localhost:9091.
 {
   flake.nixosModules.transmission-tunnel =
     { pkgs, ... }:

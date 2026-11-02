@@ -48,7 +48,7 @@
         wantedBy = [ "timers.target" ];
 
         timerConfig = {
-          # Radarr and Lidarr poll their queues every minute; an idle pull costs 0.25 s.
+          # Radarr polls its queue every minute; an idle pull costs 0.25 s.
           OnCalendar = "minutely";
           Persistent = true;
         };
