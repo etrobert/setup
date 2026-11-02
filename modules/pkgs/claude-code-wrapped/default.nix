@@ -60,6 +60,8 @@ _: {
             CLAUDE_CODE_NO_FLICKER = "1";
             # Env rather than settings.json: covers dispatch's own CLAUDE_CONFIG_DIR.
             CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1";
+            # The Bash tool otherwise runs the login shell, zsh, which breaks the bash Claude writes.
+            CLAUDE_CODE_SHELL = "${pkgs.bash}/bin/bash";
           }
           // extraEnv;
           inheritPath = true;
