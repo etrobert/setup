@@ -58,6 +58,7 @@ in
       self.nixosModules.tailnet-services
       self.nixosModules.node-exporter
       self.nixosModules.smartctl-exporter
+      self.nixosModules.metrics
       self.nixosModules.dispatch
       self.nixosModules.taskgraph
       self.nixosModules.miniflux

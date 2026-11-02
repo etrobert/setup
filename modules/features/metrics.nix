@@ -32,7 +32,6 @@ _: {
                   # Every host importing node-exporter, on its default port.
                   targets = map (host: "${host}:9100") [
                     "tower"
-                    "charon"
                     "pi"
                   ];
                 }
@@ -77,7 +76,6 @@ _: {
             auth.disable_login_form = true;
 
             server = {
-              # 3000 is creatures, 3001 is umami.
               http_port = 3002;
 
               # Without this Grafana redirects to its own listen address.
