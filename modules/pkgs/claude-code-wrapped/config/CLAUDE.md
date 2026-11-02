@@ -140,20 +140,6 @@ references are dead text that add noise without value.
 - Code comments should not be longer than one line per topic
 - Two topics should be split into two lines
 
-```bash
-# Good
-
-# --chmod: jellyfin must read the result
-# ControlMaster: no writable home here
-rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
-  --rsh 'ssh -o ControlMaster=no' \
-  charon:/var/lib/transmission/Downloads/ ${landing}/
-
-# Bad
-
-# chmod because jellyfin must read the result Control Master no writable home here
-```
-
 Longer comments don't belong in the code. They belong in the commit or PR, as
 does narrative context (root-cause chains, incident history). Neighbouring
 files' comment density is not a justification.
