@@ -275,7 +275,6 @@ in
         };
 
         homeassistant = {
-          # The whole tailnet includes charon until a tailnet policy keeps it out (#1631).
           auth_providers = [
             {
               type = "trusted_networks";
