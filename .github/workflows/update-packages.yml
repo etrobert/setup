@@ -1,0 +1,53 @@
+name: Update Packages
+
+"on":
+  schedule:
+    # UTC: hourly 09:00-23:00 Berlin under CEST, an hour earlier under CET.
+    - cron: "0 7-21 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update ${{ matrix.package }}
+    runs-on: [self-hosted, Linux]
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        package: [helium]
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Bump the package
+        id: bump
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: |
+          version() {
+            nix eval --raw ".#$PACKAGE.version"
+          }
+          old=$(version)
+          nix run nixpkgs#nix-update -- --flake "$PACKAGE"
+          new=$(version)
+          if [ "$new" != "$old" ]; then
+            echo "title=chore: update $PACKAGE ($old → $new)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create pull request
+        id: create
+        if: steps.bump.outputs.title != ''
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: ${{ steps.bump.outputs.title }}
+          title: ${{ steps.bump.outputs.title }}
+          branch: update-${{ matrix.package }}
+          delete-branch: true
+
+      - name: Enable auto-merge
+        if: steps.create.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+          NUMBER: ${{ steps.create.outputs.pull-request-number }}
+        run: gh pr merge "$NUMBER" --auto --squash
