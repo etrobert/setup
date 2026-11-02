@@ -1,7 +1,7 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, lib, ... }:
+    { pkgs, ... }:
     {
       packages = self.lib.onlySupported {
         helium =
