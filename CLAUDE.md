@@ -11,7 +11,6 @@ Personal dotfiles and system configuration repository using Nix flakes for:
   - RAM: 64GB DDR5-6400
 - leod: Lenovo ThinkPad X1 Carbon 7th Gen (NixOS, impermanent)
 - pi: Raspberry Pi 4 Model B (Rev 1.1) (NixOS)
-- charon: OVH VPS-1 in Strasbourg — download hub (NixOS)
 
 ## Architecture
 

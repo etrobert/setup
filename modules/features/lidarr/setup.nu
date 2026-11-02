@@ -61,8 +61,7 @@ def main [url: string, c411_key: path] {
         multiDiscTrackFormat: $"($album)/{medium:00}-{track:00} {Track Title}"
     }) | ignore
 
-    # charon's reaper is the only remover (transmission.nix); a client Lidarr may
-    # not remove from is also what makes it hardlink instead of move.
+    # A client Lidarr may not remove from is what makes it hardlink instead of move.
     provider downloadclient {
         name: torrents
         implementation: Transmission
@@ -83,8 +82,8 @@ def main [url: string, c411_key: path] {
         localPath: /tank/media/torrents/
     })
 
-    # Transmission creates the category folder on charon at the first grab; the
-    # health check wants its pulled copy to exist before that.
+    # Transmission creates the category folder on the download host at the first
+    # grab; the health check wants its pulled copy to exist before that.
     mkdir /tank/media/torrents/lidarr
 
     # slskd has no login (the tailnet is the access control); Tubifarry still wants an API key.
@@ -167,7 +166,6 @@ def main [url: string, c411_key: path] {
         configContract: NtfySettings
         onReleaseImport: true
         onUpgrade: true
-        # The Soulseek landing zone mirrors charon: a stuck import is lost once slskd prunes it.
         onImportFailure: true
         onDownloadFailure: true
         tags: []
