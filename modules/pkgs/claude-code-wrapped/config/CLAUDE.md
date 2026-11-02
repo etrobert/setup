@@ -35,6 +35,8 @@ machine. Run builds and compiles on tower, the fastest machine.
 - Prefer the simplest solution that solves the problem, the MVP.
 - Being able to read and understand a code at a glance is important to me.
   - Prefer a plain solution over a clever one.
+- Optimise for the best design for the problem, not for the least change or for
+  consistency with existing code. Breaking things is fine.
 
 As the final pass before presenting any work — code, config, docs, plans, PRs —
 go element by element (parameter, option, line, section, step) and attempt to
@@ -165,6 +167,9 @@ hover (an option's description, a docstring) — cut it. Most often that is one
 narrating work you just did. It earns its place only by carrying what the code
 cannot: why this value, which upstream bug.
 
+Keep comments free of where things live (which host, which consumers), so moving
+a service doesn't mean editing comments.
+
 ## Testing
 
 Before committing, verify the change: typecheck, lint, and run the relevant
@@ -191,6 +196,8 @@ Use UI changes in Claude in Chrome before committing; if blocked, say so first.
 - To follow up on a review, reply to every comment: if applying a suggestion
   without anything to add, say so explicitly.
 - Preferred merge strategy is squash merge.
+- My approval of one PR doesn't cover others, especially in shared repos like
+  etrobert/daddy.
 - Keep PRs small and atomic — one logical change per PR.
 - For complex features that naturally split into layers, use stacked PRs: each
   PR builds on the previous one.
