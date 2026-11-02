@@ -1,5 +1,5 @@
 ---
-name: Update Packages
+name: Update Helium
 
 "on":
   schedule:
@@ -9,25 +9,20 @@ name: Update Packages
 
 jobs:
   update:
-    name: Update ${{ matrix.package }}
+    name: Update the Helium pin
     runs-on: [self-hosted, Linux]
     permissions:
       contents: read
-    strategy:
-      matrix:
-        package: [helium]
 
     steps:
       - uses: actions/checkout@v7
 
-      - name: Bump the package
+      - name: Bump the Helium pin
         id: bump
-        env:
-          PACKAGE: ${{ matrix.package }}
         run: |
           # Written only when the package changed
           message="$RUNNER_TEMP/message"
-          nix run nixpkgs#nix-update -- --flake "$PACKAGE" \
+          nix run nixpkgs#nix-update -- --flake helium \
             --write-commit-message "$message"
           if [ -f "$message" ]; then
             echo "title=chore: $(head --lines=1 "$message")" >> "$GITHUB_OUTPUT"
@@ -41,7 +36,7 @@ jobs:
           token: ${{ secrets.PAT }}
           commit-message: ${{ steps.bump.outputs.title }}
           title: ${{ steps.bump.outputs.title }}
-          branch: update-${{ matrix.package }}
+          branch: helium-update
           delete-branch: true
 
       - name: Enable auto-merge
