@@ -18,6 +18,5 @@ Every import sets its origin, which picks the top-level directory:
 beet import --set source=torrents /tank/media/torrents/<dir>
 ```
 
-Torrents land in `/tank/media/torrents/`, Soulseek downloads in
-`/tank/media/soulseek/`. Beets copies them in; the landing copy stays until
-charon has finished sharing it.
+Torrents land in `/tank/media/torrents/`. Beets copies them in; the landing copy
+stays until the torrent is removed from transmission on daddy.

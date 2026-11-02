@@ -1,4 +1,4 @@
-# Search c411's Torznab API and hand a release to transmission on charon.
+# Search c411's Torznab API and hand a release to transmission through transmission-tunnel.
 def search [category: string, terms: list<string>] {
     let key = open --raw /run/agenix/c411-api-key | str trim
     let url = {
@@ -47,7 +47,7 @@ def search [category: string, terms: list<string>] {
     | update title {|r| $r.title | str substring ..$room}
     | input list --fuzzy --index
 
-    if $n != null { transmission-remote torrents:80 --add ($results | get $n | get link) }
+    if $n != null { transmission-remote 127.0.0.1:9091 --add ($results | get $n | get link) }
 }
 
 def "main music" [...terms: string] { search 3010 $terms }
