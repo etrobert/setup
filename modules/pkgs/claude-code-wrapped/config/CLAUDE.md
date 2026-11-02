@@ -35,7 +35,8 @@ machine. Run builds and compiles on tower, the fastest machine.
 - Prefer the simplest solution that solves the problem, the MVP.
 - Being able to read and understand a code at a glance is important to me.
   - Prefer a plain solution over a clever one.
-- Optimise for the best design, not the least change; breaking things is fine.
+- Optimise for the best design for the problem, not for the least change or for
+  consistency with existing code. Breaking things is fine.
 
 As the final pass before presenting any work — code, config, docs, plans, PRs —
 go element by element (parameter, option, line, section, step) and attempt to
@@ -151,9 +152,6 @@ rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
 # Bad
 
 # chmod because jellyfin must read the result Control Master no writable home here
-rsync --archive --partial --exclude='*.part' --chmod=Do+rx \
-  --rsh 'ssh -o ControlMaster=no' \
-  charon:/var/lib/transmission/Downloads/ ${landing}/
 ```
 
 Longer comments don't belong in the code. They belong in the commit or PR, as
@@ -164,7 +162,10 @@ Before writing one, check: if a reader could recover it from the code — the
 name, the expression below, the message it carries, the helper it calls, the LSP
 hover (an option's description, a docstring) — cut it. Most often that is one
 narrating work you just did. It earns its place only by carrying what the code
-cannot: why this value, which upstream bug — never which host or consumer.
+cannot: why this value, which upstream bug.
+
+Keep comments free of where things live (which host, which consumers), so moving
+a service doesn't mean editing comments.
 
 ## Testing
 
@@ -192,7 +193,6 @@ Use UI changes in Claude in Chrome before committing; if blocked, say so first.
 - To follow up on a review, reply to every comment: if applying a suggestion
   without anything to add, say so explicitly.
 - Preferred merge strategy is squash merge.
-- Approving one PR never covers another, especially in etrobert/daddy.
 - Keep PRs small and atomic — one logical change per PR.
 - For complex features that naturally split into layers, use stacked PRs: each
   PR builds on the previous one.
