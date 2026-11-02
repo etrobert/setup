@@ -9,13 +9,13 @@
       allowedUnfreePackages = [ "ankama-launcher" ];
 
       environment.systemPackages = [
-        # 3.15.5 crashes trying to self-update to 3.15.9: NixOS/nixpkgs#579240
+        # 3.15.5 crashes trying to self-update to 3.15.10: NixOS/nixpkgs#579240
         (
-          assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version "3.15.9")
+          assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version "3.15.10")
             "nixpkgs ankama-launcher ${pkgs.ankama-launcher.version} includes NixOS/nixpkgs#579240: use it again";
           pkgs.callPackage (builtins.fetchurl {
-            url = "https://raw.githubusercontent.com/NixOS/nixpkgs/f9321ae1f554229584d218eab51005c11e93176f/pkgs/by-name/an/ankama-launcher/package.nix";
-            sha256 = "sha256-GbuXbpbyCVZsahbH+J8XwNd9pCukJVILV0b63xJNtnk=";
+            url = "https://raw.githubusercontent.com/NixOS/nixpkgs/1850e4b7e90304b9f09c3dcfddb5b2b24a99d40c/pkgs/by-name/an/ankama-launcher/package.nix";
+            sha256 = "sha256-fvWIAuBz7WSLMFRwJ8U7oS+V2nb1ubRAHivQoTG/Blc=";
           }) { }
         )
       ];
