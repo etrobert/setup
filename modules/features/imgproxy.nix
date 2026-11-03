@@ -1,9 +1,12 @@
 _: {
   flake.nixosModules.imgproxy =
     { pkgs, ... }:
+    let
+      port = 8889;
+    in
     {
       services.caddy.virtualHosts."images.etiennerobert.com".extraConfig = /* caddy */ ''
-        reverse_proxy localhost:8889
+        reverse_proxy localhost:${toString port}
       '';
 
       systemd.services.imgproxy = {
@@ -16,7 +19,7 @@ _: {
           DynamicUser = true;
           Environment = [
             "IMGPROXY_JPEG_PROGRESSIVE=true"
-            "IMGPROXY_BIND=localhost:8889"
+            "IMGPROXY_BIND=localhost:${toString port}"
             "IMGPROXY_LOCAL_FILESYSTEM_ROOT=/tank/public"
             "IMGPROXY_USE_ETAG=true"
             "IMGPROXY_ALLOWED_SOURCES=local://"
