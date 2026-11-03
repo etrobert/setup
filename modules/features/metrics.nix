@@ -19,6 +19,8 @@
       exporters = host: self.nixosConfigurations.${host}.config.services.prometheus.exporters;
     in
     {
+      ports.grafana = "auto";
+
       services = {
         prometheus = {
           enable = true;
@@ -79,7 +81,7 @@
             auth.disable_login_form = true;
 
             server = {
-              http_port = 3002;
+              http_port = config.ports.grafana;
 
               # Without this Grafana redirects to its own listen address.
               root_url = "http://metrics/";

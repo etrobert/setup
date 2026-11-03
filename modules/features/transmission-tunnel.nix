@@ -1,9 +1,12 @@
 {
   flake.nixosModules.transmission-tunnel =
-    { pkgs, ... }:
+    { config, pkgs, ... }:
     {
+      # Fixed: c411 reaches it by number.
+      ports.transmission = 9091;
+
       systemd.services.transmission-tunnel = {
-        description = "Forward localhost:9091 to the download host's transmission";
+        description = "Forward a local port to the download host's transmission";
         wantedBy = [ "multi-user.target" ];
         wants = [ "network-online.target" ];
         after = [ "network-online.target" ];
@@ -14,7 +17,8 @@
           # ServerAliveInterval: a dead link must end ssh so systemd reconnects
           ExecStart = ''
             ${pkgs.openssh}/bin/ssh -N -o ControlPath=none -o ExitOnForwardFailure=yes \
-              -o ServerAliveInterval=30 -L 127.0.0.1:9091:127.0.0.1:9091 soft@51.91.29.38
+              -o ServerAliveInterval=30 \
+              -L 127.0.0.1:${toString config.ports.transmission}:127.0.0.1:9091 soft@51.91.29.38
           '';
           Restart = "always";
           RestartSec = "10s";

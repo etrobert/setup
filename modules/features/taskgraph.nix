@@ -5,11 +5,12 @@
     {
       imports = [ inputs.taskgraph.nixosModules.default ];
 
+      ports.taskgraph = "auto";
+
       services = {
         taskgraph = {
           enable = true;
-          # 3000 to 3003 are already taken on tower.
-          port = 3004;
+          port = config.ports.taskgraph;
         };
 
         caddy.virtualHosts."graph.etiennerobert.com".extraConfig = /* caddy */ ''

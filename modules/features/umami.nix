@@ -2,6 +2,8 @@ _: {
   flake.nixosModules.umami =
     { config, ... }:
     {
+      ports.umami = "auto";
+
       services = {
         umami = {
           enable = true;
@@ -9,8 +11,7 @@ _: {
           settings = {
             APP_SECRET_FILE = config.age.secrets.umami-app-secret.path;
             DISABLE_TELEMETRY = true;
-            # creatures-server holds 3000
-            PORT = 3001;
+            PORT = config.ports.umami;
           };
         };
 

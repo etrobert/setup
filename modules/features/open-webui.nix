@@ -10,11 +10,12 @@ _: {
       # unaffected by that clause.
       allowedUnfreePackages = [ "open-webui" ];
 
+      ports.open-webui = "auto";
+
       services.open-webui = {
         enable = true;
 
-        # Not the module's default 8080: the lafraise dev backend binds it.
-        port = 8090;
+        port = config.ports.open-webui;
 
         # Defining `environment` at all replaces the module's default, so the
         # telemetry opt-outs have to be repeated here.

@@ -7,40 +7,47 @@
 #
 # No Home Assistant wiring here — this is just the transport. Test with:
 #   ntfy publish "hello"
-_:
+{ self, ... }:
 let
   host = "tower";
-  port = 2586;
   topic = "home";
-  url = "http://${host}:${toString port}";
+  url = self.nixosConfigurations.${host}.config.services.ntfy-sh.settings.base-url;
 in
 {
   flake = {
-    nixosModules.ntfy = _: {
-      services.ntfy-sh = {
-        enable = true;
-        settings = {
-          base-url = url;
-          listen-http = ":${toString port}";
+    nixosModules.ntfy =
+      { config, ... }:
+      let
+        port = config.ports.ntfy;
+      in
+      {
+        # Fixed: the phone subscribes to the base URL, port included.
+        ports.ntfy = 2586;
 
-          # iOS forbids the long-lived background connection ntfy uses on
-          # Android, so the only way to wake the iOS app is Apple's push service
-          # (APNs) — which only ntfy.sh's infrastructure can reach. Forward a
-          # content-free poll request to ntfy.sh so it relays an APNs wake to the
-          # phone, which then fetches the real message from us over Tailscale.
-          # The upstream sees only a SHA-256 of the topic URL and the message ID
-          # (body is a generic "New message") — never our titles, bodies, or
-          # attachments. Free tier (~250 msg/day) is ample for personal use.
-          upstream-base-url = "https://ntfy.sh";
+        services.ntfy-sh = {
+          enable = true;
+          settings = {
+            base-url = "http://${host}:${toString port}";
+            listen-http = ":${toString port}";
+
+            # iOS forbids the long-lived background connection ntfy uses on
+            # Android, so the only way to wake the iOS app is Apple's push service
+            # (APNs) — which only ntfy.sh's infrastructure can reach. Forward a
+            # content-free poll request to ntfy.sh so it relays an APNs wake to the
+            # phone, which then fetches the real message from us over Tailscale.
+            # The upstream sees only a SHA-256 of the topic URL and the message ID
+            # (body is a generic "New message") — never our titles, bodies, or
+            # attachments. Free tier (~250 msg/day) is ample for personal use.
+            upstream-base-url = "https://ntfy.sh";
+          };
         };
+
+        # Expose ntfy to the tailnet only. Within the tailnet topics are open
+        # (no auth), which is acceptable for personal use.
+        networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ port ];
+
+        services.tsnsrv.services.ntfy.toURL = "http://127.0.0.1:${toString port}";
       };
-
-      # Expose ntfy to the tailnet only. Within the tailnet topics are open
-      # (no auth), which is acceptable for personal use.
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ port ];
-
-      services.tsnsrv.services.ntfy.toURL = "http://127.0.0.1:${toString port}";
-    };
 
     nixosModules.ntfy-desktop =
       {

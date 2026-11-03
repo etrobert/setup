@@ -82,6 +82,7 @@
               "http://127.0.0.1:${toString port}"
               config.age.secrets.c411-api-key.path
               "http://127.0.0.1${config.services.ntfy-sh.settings.listen-http}"
+              (toString config.ports.transmission)
             ];
             # soft owns the c411 key.
             User = "soft";
