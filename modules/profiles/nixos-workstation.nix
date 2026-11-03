@@ -109,6 +109,7 @@
             ghostty-wrapped
             helium
             open-url
+            save-displays
           ];
 
           externalPackages = with pkgs; [
