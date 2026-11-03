@@ -13,8 +13,6 @@ _: {
           cfg =
             (lib.evalModules {
               specialArgs = { inherit self' pkgs with-git-wrapped; };
-              # Every directory under plugins/ is one, except those listed as
-              # disabled; adding a plugin means adding a directory.
               modules =
                 let
                   disabled = [
