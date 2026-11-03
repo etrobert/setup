@@ -36,8 +36,8 @@ _: {
     {
       environment.systemPackages = [ claude-code-wrapped-copilot ];
 
-      # Local proxy exposing GitHub Copilot as an Anthropic-compatible API on
-      # :4141, so claude-code-wrapped-copilot can route to Copilot's Claude
+      # Local proxy exposing GitHub Copilot as an Anthropic-compatible API on its
+      # default :4141, so claude-code-wrapped-copilot can route to Copilot's Claude
       # models using the GitHub Copilot subscription.
       #
       # Requires a one-time `copilot-api auth` per machine to populate the token
@@ -48,7 +48,7 @@ _: {
         wantedBy = [ "default.target" ];
         unitConfig.ConditionUser = "!@system";
         serviceConfig = {
-          ExecStart = "${lib.getExe copilot-api} start --port 4141";
+          ExecStart = "${lib.getExe copilot-api} start";
           Restart = "on-failure";
           RestartSec = "30s";
           # npx fetches the package from npm on first start; make TLS CAs resolve

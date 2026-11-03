@@ -1,4 +1,5 @@
-_: {
+{ self, ... }:
+{
   perSystem =
     { pkgs, self', ... }:
     {
@@ -10,7 +11,7 @@ _: {
         # macOS scoped DNS / Tailscale MagicDNS, so `tower` fails to resolve on aaron
         # (ClientConnectorDNSError). An IP sidesteps name resolution on every OS.
         # --set-default so an existing HASS_SERVER still wins.
-        setDefaults.HASS_SERVER = "http://100.103.91.42:8123";
+        setDefaults.HASS_SERVER = "http://100.103.91.42:${toString self.nixosConfigurations.tower.config.services.home-assistant.config.http.server_port}";
         # Read the long-lived token at runtime, unless HASS_TOKEN is already set.
         # `$(<file)` builtin so the read doesn't need `cat` on the caller's PATH
         # (`run` snippets execute before the wrapper's own PATH line), and a bare

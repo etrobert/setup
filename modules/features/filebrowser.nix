@@ -1,6 +1,6 @@
 _: {
   flake.nixosModules.filebrowser =
-    { lib, ... }:
+    { config, lib, ... }:
     {
       services = {
         filebrowser = {
@@ -14,7 +14,7 @@ _: {
         };
 
         caddy.virtualHosts."adele.etiennerobert.com".extraConfig = /* caddy */ ''
-          reverse_proxy localhost:8081
+          reverse_proxy localhost:${toString config.services.filebrowser.settings.port}
         '';
       };
 

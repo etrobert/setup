@@ -1,6 +1,7 @@
 # Prometheus scrapes every host's exporters; Grafana reads it back.
 # Reached on the tailnet as `metrics/` through tsnsrv.
-_: {
+{ self, ... }:
+{
   flake.nixosModules.metrics =
     { config, pkgs, ... }:
     let
@@ -29,18 +30,30 @@ _: {
               job_name = "node";
               static_configs = [
                 {
-                  # Every host importing node-exporter, on its default port.
-                  targets = map (host: "${host}:9100") [
-                    "tower"
-                    "pi"
-                  ];
+                  # Every host importing node-exporter.
+                  targets =
+                    map
+                      (
+                        host:
+                        "${host}:${
+                          toString self.nixosConfigurations.${host}.config.services.prometheus.exporters.node.port
+                        }"
+                      )
+                      [
+                        "tower"
+                        "pi"
+                      ];
                 }
               ];
             }
             {
               job_name = "smartctl";
               static_configs = [
-                { targets = [ "tower:9633" ]; }
+                {
+                  targets = [
+                    "tower:${toString self.nixosConfigurations.tower.config.services.prometheus.exporters.smartctl.port}"
+                  ];
+                }
               ];
             }
 

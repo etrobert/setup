@@ -43,7 +43,7 @@ def wait-for [what: string, probe: closure] {
     error make --unspanned {msg: $"timed out waiting for ($what)"}
 }
 
-def main [url: string, c411_key: path] {
+def main [url: string, c411_key: path, ntfy_url: string] {
     $env.RADARR_URL = $url
     $env.RADARR_KEY = wait-for "radarr" {
         http get $"($url)/initialize.json" | get apiKey
@@ -113,7 +113,7 @@ def main [url: string, c411_key: path] {
         onManualInteractionRequired: true
         tags: []
         fields: [
-            {name: serverUrl, value: "http://127.0.0.1:2586"}
+            {name: serverUrl, value: $ntfy_url}
             {
                 name: topics
                 value: [home]

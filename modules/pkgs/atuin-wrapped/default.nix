@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   perSystem =
     {
@@ -21,7 +21,7 @@
           configFile = (pkgs.formats.toml { }).generate "atuin-config.toml" {
             # Self-hosted (modules/features/atuin-server.nix), so sync_protocol = Auto
             # picks the legacy protocol rather than Hub. Plaintext inside WireGuard.
-            sync_address = "http://tower:8888";
+            sync_address = "http://tower:${toString self.nixosConfigurations.tower.config.services.atuin.port}";
             sync_frequency = "0";
 
             ui.columns = [
