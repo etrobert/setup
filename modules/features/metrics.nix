@@ -15,6 +15,8 @@
         mkdir $out
         cp ${nodeExporterDashboard} $out/node-exporter-full.json
       '';
+
+      exporters = host: self.nixosConfigurations.${host}.config.services.prometheus.exporters;
     in
     {
       services = {
@@ -31,29 +33,17 @@
               static_configs = [
                 {
                   # Every host importing node-exporter.
-                  targets =
-                    map
-                      (
-                        host:
-                        "${host}:${
-                          toString self.nixosConfigurations.${host}.config.services.prometheus.exporters.node.port
-                        }"
-                      )
-                      [
-                        "tower"
-                        "pi"
-                      ];
+                  targets = map (host: "${host}:${toString (exporters host).node.port}") [
+                    "tower"
+                    "pi"
+                  ];
                 }
               ];
             }
             {
               job_name = "smartctl";
               static_configs = [
-                {
-                  targets = [
-                    "tower:${toString self.nixosConfigurations.tower.config.services.prometheus.exporters.smartctl.port}"
-                  ];
-                }
+                { targets = [ "tower:${toString (exporters "tower").smartctl.port}" ]; }
               ];
             }
 
