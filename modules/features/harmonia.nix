@@ -4,8 +4,7 @@ _: {
     {
       age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
 
-      # Fixed: other hosts only learn a new port when they rebuild.
-      ports.harmonia = 5000;
+      ports.harmonia = "auto";
 
       services.harmonia.cache = {
         enable = true;
