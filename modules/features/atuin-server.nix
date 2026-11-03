@@ -4,8 +4,7 @@ _: {
     {
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.services.atuin.port ];
 
-      # Fixed: other hosts only learn a new port when they rebuild.
-      ports.atuin = 8888;
+      ports.atuin = "auto";
 
       services.atuin = {
         enable = true;
