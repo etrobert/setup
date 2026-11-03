@@ -5,9 +5,6 @@ _: {
       port = config.services.home-assistant.config.http.server_port;
     in
     {
-      # Fixed: clients outside this config reach it by number.
-      ports.home-assistant = 8123;
-
       hardware.bluetooth.enable = true;
 
       networking.firewall.allowedTCPPorts = [ port ];
@@ -274,7 +271,8 @@ _: {
           # tsnsrv sets X-Forwarded-For unconditionally, which Home Assistant
           # rejects with a 400 until the proxy is trusted.
           http = {
-            server_port = config.ports.home-assistant;
+            # The default, spelled out so other hosts' clients can read it.
+            server_port = 8123;
             use_x_forwarded_for = true;
             trusted_proxies = [ "127.0.0.1" ];
           };

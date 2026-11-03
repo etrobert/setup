@@ -10,7 +10,6 @@ _: {
     let
       inherit (pkgs.stdenv.hostPlatform) system;
       inherit (self.packages.${system}) zsh-wrapped;
-      harmoniaPort = self.nixosConfigurations.tower.config.ports.harmonia;
 
       tailscaleFlags = [
         # Let the local user drive tailscale without sudo (e.g. `tailscale file get`).
@@ -30,7 +29,6 @@ _: {
         gpu
         kanata
         ntfy-failure-alerts
-        ports
         tmux
       ];
 
@@ -47,7 +45,7 @@ _: {
 
         # Tower also substitutes from its own cache here: the self-queries are
         # cheap localhost 404s, not worth a special case.
-        substituters = [ "http://tower:${toString harmoniaPort}" ];
+        substituters = [ "http://tower:5000" ];
         trusted-public-keys = [ "tower-harmonia-1:l7mK+LLGUfKUXpHY1IA4edwlNEmjKKsJ0oOi8CWuno8=" ];
       };
 

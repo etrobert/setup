@@ -1,7 +1,8 @@
 # Web chat frontend for the local ollama instance (features/ollama.nix), joined
 # to the tailnet as `chat/` through tsnsrv. It listens on localhost only —
 # tsnsrv is the sole way in.
-_: {
+{ self, ... }:
+{
   flake.nixosModules.open-webui =
     { config, ... }:
     {
@@ -10,12 +11,10 @@ _: {
       # unaffected by that clause.
       allowedUnfreePackages = [ "open-webui" ];
 
-      ports.open-webui = "auto";
-
       services.open-webui = {
         enable = true;
 
-        port = config.ports.open-webui;
+        port = self.lib.portFor "open-webui";
 
         # Defining `environment` at all replaces the module's default, so the
         # telemetry opt-outs have to be repeated here.

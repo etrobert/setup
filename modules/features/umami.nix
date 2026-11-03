@@ -1,9 +1,8 @@
-_: {
+{ self, ... }:
+{
   flake.nixosModules.umami =
     { config, ... }:
     {
-      ports.umami = "auto";
-
       services = {
         umami = {
           enable = true;
@@ -11,7 +10,7 @@ _: {
           settings = {
             APP_SECRET_FILE = config.age.secrets.umami-app-secret.path;
             DISABLE_TELEMETRY = true;
-            PORT = config.ports.umami;
+            PORT = self.lib.portFor "umami";
           };
         };
 

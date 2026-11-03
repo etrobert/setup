@@ -1,16 +1,14 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake.nixosModules.taskgraph =
     { config, ... }:
     {
       imports = [ inputs.taskgraph.nixosModules.default ];
 
-      ports.taskgraph = "auto";
-
       services = {
         taskgraph = {
           enable = true;
-          port = config.ports.taskgraph;
+          port = self.lib.portFor "taskgraph";
         };
 
         caddy.virtualHosts."graph.etiennerobert.com".extraConfig = /* caddy */ ''

@@ -1,22 +1,21 @@
-_: {
+{ self, ... }:
+{
   flake.nixosModules.filebrowser =
     { config, lib, ... }:
     {
-      ports.filebrowser = "auto";
-
       services = {
         filebrowser = {
           enable = true;
           settings = {
             root = "/tank/public/adele";
-            port = config.ports.filebrowser;
+            port = self.lib.portFor "filebrowser";
             username = "adele";
             password = "$2a$10$IJiPBcbqVvJnAilE8Gs.uulWMWfq18tOEvlcYqaz8RvWjWP3sgBUK";
           };
         };
 
         caddy.virtualHosts."adele.etiennerobert.com".extraConfig = /* caddy */ ''
-          reverse_proxy localhost:${toString config.ports.filebrowser}
+          reverse_proxy localhost:${toString config.services.filebrowser.settings.port}
         '';
       };
 

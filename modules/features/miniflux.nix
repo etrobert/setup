@@ -7,18 +7,17 @@
 # loopback-only, so the only thing that could forge the header is a process on
 # tower itself. The Fever and Google Reader endpoints keep their own credentials,
 # set per user under Settings > Integrations.
-_: {
+{ self, ... }:
+{
   flake.nixosModules.miniflux =
     { config, ... }:
     {
-      ports.miniflux = "auto";
-
       services.miniflux = {
         enable = true;
 
         config = {
           # Loopback only, for tsnsrv.
-          LISTEN_ADDR = "127.0.0.1:${toString config.ports.miniflux}";
+          LISTEN_ADDR = "127.0.0.1:${toString (self.lib.portFor "miniflux")}";
 
           # Absolute links (feed icons, the Fever and Google Reader endpoints
           # handed to phone apps) are built from this, not the request host.
