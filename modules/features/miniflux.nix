@@ -11,13 +11,14 @@ _: {
   flake.nixosModules.miniflux =
     { config, ... }:
     {
+      ports.miniflux = "auto";
+
       services.miniflux = {
         enable = true;
 
         config = {
-          # Loopback only, for tsnsrv. 8080, the upstream default, is taken by
-          # the lafraise dev backend.
-          LISTEN_ADDR = "127.0.0.1:8085";
+          # Loopback only, for tsnsrv.
+          LISTEN_ADDR = "127.0.0.1:${toString config.ports.miniflux}";
 
           # Absolute links (feed icons, the Fever and Google Reader endpoints
           # handed to phone apps) are built from this, not the request host.
