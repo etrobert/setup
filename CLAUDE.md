@@ -77,7 +77,7 @@ authoritative list.
 ### Caches
 
 Tower serves its store as a signed binary cache via harmonia
-(`http://tower:5000`, `modules/features/harmonia.nix`).
+(`modules/features/harmonia.nix`).
 
 ### Auto upgrade
 
