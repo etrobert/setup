@@ -19,8 +19,7 @@ _: {
         apply =
           requests:
           let
-            isAuto = _: port: port == "auto";
-            auto = lib.attrNames (lib.filterAttrs isAuto requests);
+            auto = lib.attrNames (lib.filterAttrs (_: port: port == "auto") requests);
           in
           removeAttrs requests auto
           // lib.listToAttrs (lib.imap0 (i: name: lib.nameValuePair name (autoBase + i)) auto);
