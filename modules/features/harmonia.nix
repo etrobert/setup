@@ -4,7 +4,7 @@ _: {
     {
       age.secrets.harmonia-signing-key.file = ../../secrets/harmonia-signing-key.age;
 
-      ports.harmonia = "auto";
+      ports.harmonia = 5000;
 
       services.harmonia.cache = {
         enable = true;
