@@ -5,6 +5,7 @@ let
   aaron = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
   pi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
   daddy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINMqSwM9N7jU+9RaloJkr44KwfYD8trGd4bHBQFTxKWg";
+  peira = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM0Y4sAEC+MvUyDd36U+X31C3WHvptxR1pGkHyeG9N+L";
 
   allLinux = [
     tower
@@ -28,7 +29,7 @@ in
   "wifi-soft.age".publicKeys = allLinuxWorkstations;
   "wifi-iphone-de-zeus.age".publicKeys = allLinuxWorkstations;
   "wifi-vinni.age".publicKeys = allLinuxWorkstations;
-  "tailscale-authkey.age".publicKeys = allMachines;
+  "tailscale-authkey.age".publicKeys = allMachines ++ [ peira ];
   "apple-pimsync-password.age".publicKeys = allLinuxWorkstations;
   "soft-password.age".publicKeys = allLinux;
   "ddclient-password-etiennerobert-com.age".publicKeys = [ tower ];
