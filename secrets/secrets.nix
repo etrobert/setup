@@ -1,11 +1,12 @@
 let
-  # Machine host public keys (from /etc/ssh/ssh_host_ed25519_key.pub)
-  tower = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
-  leod = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBgObi3D4k+OGPizrmEnHVKRcl6tuMsrAyP54LL6SVRi";
-  aaron = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
-  pi = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
-  daddy = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINMqSwM9N7jU+9RaloJkr44KwfYD8trGd4bHBQFTxKWg";
-  peira = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM0Y4sAEC+MvUyDd36U+X31C3WHvptxR1pGkHyeG9N+L";
+  inherit (import ./host-keys.nix)
+    tower
+    leod
+    aaron
+    pi
+    daddy
+    peira
+    ;
 
   allLinux = [
     tower

@@ -86,30 +86,18 @@ _: {
               SendEnv LANG LC_*
           '';
 
-          ssh.knownHosts = {
-            pi = {
-              hostNames = [ "pi" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbTCtRJeFqky1PSKe45KI0aMhpKqgd32Z9Fy9S4Op89";
-            };
-            tower = {
-              hostNames = [ "tower" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHagaONxn4Ua5dkPfiGuavydHFfIEUVWMBrZHsucIILT";
-            };
-            aaron = {
-              hostNames = [ "aaron" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvejXYLtulpvy+h311SuQVlpQhaNBh7LO5zGbazd2bh";
-            };
-            peira = {
-              hostNames = [ "peira" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM0Y4sAEC+MvUyDd36U+X31C3WHvptxR1pGkHyeG9N+L";
-            };
-            daddy = {
-              hostNames = [ "51.91.29.38" ];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINMqSwM9N7jU+9RaloJkr44KwfYD8trGd4bHBQFTxKWg";
-            };
-            "github.com".publicKey =
-              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
-          };
+          ssh.knownHosts = lib.mkMerge [
+            (lib.mapAttrs (name: publicKey: {
+              inherit publicKey;
+              hostNames = [ name ];
+            }) (import ../../secrets/host-keys.nix))
+            {
+              # Reached by address, not by tailnet name.
+              daddy.hostNames = [ "51.91.29.38" ];
+              "github.com".publicKey =
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+            }
+          ];
 
           zsh = {
             enable = true;
