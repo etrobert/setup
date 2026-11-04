@@ -21,7 +21,10 @@ let
     leod
     aaron
   ];
-  allMachines = allLinux ++ [ aaron ];
+  allMachines = allLinux ++ [
+    aaron
+    peira
+  ];
 in
 {
   "openai-api-key.age".publicKeys = allWorkstations;
@@ -29,7 +32,7 @@ in
   "wifi-soft.age".publicKeys = allLinuxWorkstations;
   "wifi-iphone-de-zeus.age".publicKeys = allLinuxWorkstations;
   "wifi-vinni.age".publicKeys = allLinuxWorkstations;
-  "tailscale-authkey.age".publicKeys = allMachines ++ [ peira ];
+  "tailscale-authkey.age".publicKeys = allMachines;
   "apple-pimsync-password.age".publicKeys = allLinuxWorkstations;
   "soft-password.age".publicKeys = allLinux;
   "ddclient-password-etiennerobert-com.age".publicKeys = [ tower ];
