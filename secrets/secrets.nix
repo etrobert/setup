@@ -11,6 +11,7 @@ let
     tower
     leod
     pi
+    peira
   ];
   allLinuxWorkstations = [
     tower
@@ -21,10 +22,7 @@ let
     leod
     aaron
   ];
-  allMachines = allLinux ++ [
-    aaron
-    peira
-  ];
+  allMachines = allLinux ++ [ aaron ];
 in
 {
   "openai-api-key.age".publicKeys = allWorkstations;
