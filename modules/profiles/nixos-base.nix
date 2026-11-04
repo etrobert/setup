@@ -28,7 +28,6 @@ _: {
         auto-upgrade
         git
         gpu
-        kanata
         ntfy-failure-alerts
         ports
         tmux
