@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.peira-configuration = {
+  flake.nixosModules.peira-configuration = _: {
     boot.isNspawnContainer = true;
 
     networking.hostName = "peira";
