@@ -2,6 +2,7 @@ import { writeFile } from "node:fs/promises";
 import { createServer, type IncomingMessage } from "node:http";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
+import * as z from "zod";
 
 const { values } = parseArgs({
   options: {
@@ -14,6 +15,8 @@ if (values.port === undefined || values.dir === undefined) {
 }
 const port = Number(values.port);
 const dir = values.dir;
+
+const Capture = z.strictObject({ text: z.string() });
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -33,12 +36,16 @@ createServer(async (req, res) => {
     } else if (req.method !== "POST") {
       res.writeHead(405).end("method not allowed\n");
     } else {
-      const text = new URLSearchParams(await readBody(req))
-        .get("text")
-        ?.replaceAll("\r\n", "\n")
-        .trim();
+      let capture;
+      try {
+        capture = Capture.parse(JSON.parse(await readBody(req)));
+      } catch (err) {
+        res.writeHead(400).end(`invalid JSON body: ${err}\n`);
+        return;
+      }
+      const text = capture.text.replaceAll("\r\n", "\n").trim();
       if (!text) {
-        res.writeHead(400).end("missing form field: text\n");
+        res.writeHead(400).end("missing field: text\n");
         return;
       }
       const name = fileName(new Date());
