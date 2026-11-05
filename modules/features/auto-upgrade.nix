@@ -8,6 +8,8 @@
       ...
     }:
     let
+      notifyKernel = !config.system.autoUpgrade.allowReboot && !config.boot.isContainer;
+
       deployGate = pkgs.writeShellApplication {
         name = "deploy-gate";
 
@@ -86,7 +88,8 @@
           "--print-build-logs"
         ];
         dates = "*:0/1"; # every minute
-        allowReboot = lib.mkDefault true;
+        # A container runs the host's kernel, so its system has none to compare.
+        allowReboot = lib.mkDefault (!config.boot.isContainer);
       };
 
       systemd.services.nixos-upgrade = {
@@ -105,11 +108,9 @@
           ExecStartPre = [
             "-${pkgs.systemd}/bin/systemctl reset-failed nixos-rebuild-switch-to-configuration.service"
           ]
-          ++ lib.optional (!config.system.autoUpgrade.allowReboot) "${lib.getExe kernelNotice} before";
+          ++ lib.optional notifyKernel "${lib.getExe kernelNotice} before";
 
-          ExecStartPost = lib.mkIf (
-            !config.system.autoUpgrade.allowReboot
-          ) "${lib.getExe kernelNotice} after";
+          ExecStartPost = lib.mkIf notifyKernel "${lib.getExe kernelNotice} after";
         };
       };
     };
