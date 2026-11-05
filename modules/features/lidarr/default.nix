@@ -98,7 +98,7 @@
               "/run/secrets/slskd/api-key"
               "http://tower:${toString ntfyPort}"
             ];
-            # soft owns the c411 and slskd keys.
+            # soft owns the c411 key; users can read the slskd key.
             User = "soft";
             # Oneshots have no start timeout by default; the wait loops would hang silently.
             TimeoutStartSec = "5min";
