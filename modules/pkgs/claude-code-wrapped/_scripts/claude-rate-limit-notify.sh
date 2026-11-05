@@ -10,7 +10,6 @@ fi
 
 ntfy publish --quiet --title "Claude" "Usage limit hit — notifying you at ${reset_time}"
 
-# Calculate epoch of reset time
 reset_epoch=$(date --date="today $reset_time" +%s)
 now_epoch=$(date +%s)
 

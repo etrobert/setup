@@ -19,7 +19,7 @@ stream_filter='
 
 sink=$(
   pw-dump |
-    jq -r "$sink_filter" |
+    jq --raw-output "$sink_filter" |
     fzf --with-nth=2 --delimiter=$'\t' --prompt="Audio output: "
 )
 
@@ -30,7 +30,7 @@ sink_name=$(echo "$sink" | cut -f2)
 
 wpctl set-default "$sink_id"
 
-pw-dump | jq -r "$stream_filter" | while read -r stream_id; do
+pw-dump | jq --raw-output "$stream_filter" | while read -r stream_id; do
   pw-metadata "$stream_id" target.object "$sink_id"
 done
 

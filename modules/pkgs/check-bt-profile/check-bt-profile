@@ -7,7 +7,6 @@ set -o pipefail
 # Check Bluetooth audio profile for AirPods
 MAC="EC:46:54:52:36:F8"
 
-# Get active profile
 profile=$(pactl list cards | grep -A20 "bluez_card.${MAC//:/_}" | grep "Active Profile:" | awk '{print $3}')
 
 if [ -z "$profile" ]; then
