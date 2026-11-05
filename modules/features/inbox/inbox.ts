@@ -28,27 +28,16 @@ const readBody = async (req: IncomingMessage) => {
 
 createServer(async (req, res) => {
   try {
-    if (req.url !== "/") {
-      res.writeHead(404).end("not found\n");
-    } else if (req.method !== "POST") {
-      res.writeHead(405).end("method not allowed\n");
-    } else {
-      const text = (await readBody(req)).trim();
-      if (!text) {
-        res.writeHead(400).end("empty body\n");
-        return;
-      }
-      const name = fileName(new Date());
-      try {
-        // "wx" fails if the file already exists.
-        await writeFile(join(dir, name), `${text}\n`, { flag: "wx" });
-      } catch (err) {
-        if ((err as NodeJS.ErrnoException).code !== "EEXIST") throw err;
-        res.writeHead(409).end(`${name} already exists, try again\n`);
-        return;
-      }
-      res.writeHead(201).end();
+    const text = (await readBody(req)).trim();
+    if (!text) {
+      res.writeHead(400).end("empty body\n");
+      return;
     }
+    // "wx" fails if the file already exists.
+    await writeFile(join(dir, fileName(new Date())), `${text}\n`, {
+      flag: "wx",
+    });
+    res.end();
   } catch (err) {
     console.error(err);
     res.writeHead(500).end(`${err}\n`);
