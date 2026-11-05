@@ -19,7 +19,6 @@
       services = {
         lidarr = {
           enable = true;
-          package = packages.lidarr-develop;
 
           # soft:users owns the library and the landing zone; imports write into both.
           user = "soft";
