@@ -40,7 +40,7 @@ func main() {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		text := strings.TrimSpace(strings.ReplaceAll(string(body), "\r\n", "\n"))
+		text := strings.TrimSpace(string(body))
 		if text == "" {
 			http.Error(w, "empty body", http.StatusBadRequest)
 			return
