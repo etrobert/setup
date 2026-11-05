@@ -42,7 +42,10 @@ in
   # share the one above. Unused since the runner moved off tower; kept in case.
   "lafraise-runner-token.age".publicKeys = [ tower ];
   "hass-token.age".publicKeys = allWorkstations;
-  "c411-api-key.age".publicKeys = [ tower ];
+  "c411-api-key.age".publicKeys = [
+    tower
+    peira
+  ];
   "atuin-key.age".publicKeys = allMachines;
   "atuin-password.age".publicKeys = allMachines;
   "google-health-oauth-client.age".publicKeys = allWorkstations;
