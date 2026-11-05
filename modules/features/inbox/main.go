@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"flag"
 	"io/fs"
@@ -34,9 +35,18 @@ func main() {
 	}
 
 	http.HandleFunc("POST /{$}", func(w http.ResponseWriter, r *http.Request) {
-		text := strings.TrimSpace(strings.ReplaceAll(r.PostFormValue("text"), "\r\n", "\n"))
+		var capture struct {
+			Text string `json:"text"`
+		}
+		decoder := json.NewDecoder(r.Body)
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&capture); err != nil {
+			http.Error(w, "invalid JSON body: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+		text := strings.TrimSpace(strings.ReplaceAll(capture.Text, "\r\n", "\n"))
 		if text == "" {
-			http.Error(w, "missing form field: text", http.StatusBadRequest)
+			http.Error(w, "missing field: text", http.StatusBadRequest)
 			return
 		}
 		name := time.Now().Format("2006-01-02T15-04-05") + ".md"
