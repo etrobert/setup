@@ -52,10 +52,8 @@ When you use an acronym for the first time, spell it out.
 Align on what to build before building. A question — "would it be possible to do
 it this way?" — is a question, not a request to build: answer and offer options.
 
-Before asking a question, check if the answer is obtainable by reading files,
-running a command, SSHing into a machine, searching my email, calendar and
-Drive, or browsing the web. Only ask when a reasonable investigation wouldn't
-yield the answer. Investigating never needs my approval.
+When you need information, find it yourself first; only ask me when a reasonable
+investigation wouldn't yield it. Investigating never needs my approval.
 
 Don't be afraid to make multiple different implementations of the same feature
 to compare them.
