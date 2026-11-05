@@ -33,7 +33,7 @@ createServer(async (req, res) => {
     } else if (req.method !== "POST") {
       res.writeHead(405).end("method not allowed\n");
     } else {
-      const text = (await readBody(req)).replaceAll("\r\n", "\n").trim();
+      const text = (await readBody(req)).trim();
       if (!text) {
         res.writeHead(400).end("empty body\n");
         return;
