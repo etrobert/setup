@@ -1,5 +1,5 @@
 # Quick-capture inbox, reachable on the tailnet as `inbox/`.
-# Each capture is appended to a Markdown file in the Syncthing folder.
+# Each capture becomes its own Markdown file in the Syncthing folder.
 { self, ... }:
 {
   perSystem =
@@ -19,16 +19,19 @@
       user = "soft";
       inbox = self.packages.${pkgs.stdenv.hostPlatform.system}.inbox;
       port = toString config.ports.inbox;
+      dir = "/home/${user}/sync/doc/inbox";
     in
     {
       ports.inbox = "auto";
+
+      systemd.tmpfiles.rules = [ "d ${dir} 0755 ${user} users -" ];
 
       systemd.services.inbox = {
         description = "Quick-capture inbox";
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           User = user;
-          ExecStart = "${lib.getExe inbox} --port ${port} --file /home/${user}/sync/doc/inbox.md";
+          ExecStart = "${lib.getExe inbox} --port ${port} --dir ${dir}";
           Restart = "on-failure";
         };
       };

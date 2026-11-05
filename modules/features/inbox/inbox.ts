@@ -1,26 +1,24 @@
-import { appendFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 import { createServer, type IncomingMessage } from "node:http";
+import { join } from "node:path";
 import { parseArgs } from "node:util";
 
 const { values } = parseArgs({
   options: {
     port: { type: "string" },
-    file: { type: "string" },
+    dir: { type: "string" },
   },
 });
-if (values.port === undefined || values.file === undefined) {
-  throw new Error("--port and --file are required");
+if (values.port === undefined || values.dir === undefined) {
+  throw new Error("--port and --dir are required");
 }
 const port = Number(values.port);
-const file = values.file;
+const dir = values.dir;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-// One Markdown list item, continuation lines indented.
-const entry = (now: Date, text: string) => {
-  const stamp = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
-  return `- ${stamp} ${text.replaceAll("\r\n", "\n").replaceAll("\n", "\n  ")}\n`;
-};
+const fileName = (now: Date) =>
+  `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}.md`;
 
 const readBody = async (req: IncomingMessage) => {
   let body = "";
@@ -35,13 +33,24 @@ createServer(async (req, res) => {
     } else if (req.method !== "POST") {
       res.writeHead(405).end("method not allowed\n");
     } else {
-      const text = new URLSearchParams(await readBody(req)).get("text")?.trim();
+      const text = new URLSearchParams(await readBody(req))
+        .get("text")
+        ?.replaceAll("\r\n", "\n")
+        .trim();
       if (!text) {
         res.writeHead(400).end("missing form field: text\n");
         return;
       }
-      await appendFile(file, entry(new Date(), text));
-      res.writeHead(204).end();
+      const name = fileName(new Date());
+      try {
+        // "wx" fails if the file already exists.
+        await writeFile(join(dir, name), `${text}\n`, { flag: "wx" });
+      } catch (err) {
+        if ((err as NodeJS.ErrnoException).code !== "EEXIST") throw err;
+        res.writeHead(409).end(`${name} already exists, try again\n`);
+        return;
+      }
+      res.writeHead(201).end();
     }
   } catch (err) {
     console.error(err);
