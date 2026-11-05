@@ -1,5 +1,3 @@
-# Quick-capture inbox, reachable on the tailnet as `inbox/`.
-# Each capture becomes its own Markdown file in the Syncthing folder.
 { self, ... }:
 {
   perSystem =
@@ -34,7 +32,6 @@
       systemd.tmpfiles.rules = [ "d ${dir} 0755 ${user} users -" ];
 
       systemd.services.inbox = {
-        description = "Quick-capture inbox";
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           User = user;

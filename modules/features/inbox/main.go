@@ -1,10 +1,8 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"io"
-	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -13,7 +11,6 @@ import (
 	"time"
 )
 
-// create writes a new file and fails if one with that name already exists.
 func create(path, content string) error {
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_EXCL|os.O_WRONLY, 0o644)
 	if err != nil {
@@ -46,17 +43,10 @@ func main() {
 			return
 		}
 		name := time.Now().Format("2006-01-02T15-04-05") + ".md"
-		err = create(filepath.Join(*dir, name), text+"\n")
-		if errors.Is(err, fs.ErrExist) {
-			http.Error(w, name+" already exists, try again", http.StatusConflict)
-			return
-		}
-		if err != nil {
+		if err := create(filepath.Join(*dir, name), text+"\n"); err != nil {
 			log.Print(err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
 		}
-		w.WriteHeader(http.StatusCreated)
 	})
 
 	log.Fatal(http.ListenAndServe(*addr, nil))
