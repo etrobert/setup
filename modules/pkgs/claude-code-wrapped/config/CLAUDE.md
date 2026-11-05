@@ -53,8 +53,9 @@ Align on what to build before building. A question — "would it be possible to 
 it this way?" — is a question, not a request to build: answer and offer options.
 
 Before asking a question, check if the answer is obtainable by reading files,
-running a command, or SSHing into a machine. Only ask when a reasonable
-investigation wouldn't yield the answer.
+running a command, SSHing into a machine, searching my email, calendar and
+Drive, or browsing the web. Only ask when a reasonable investigation wouldn't
+yield the answer. Investigating never needs my approval.
 
 Don't be afraid to make multiple different implementations of the same feature
 to compare them.
