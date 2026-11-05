@@ -1,9 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"errors"
 	"flag"
+	"io"
 	"io/fs"
 	"log"
 	"net/http"
@@ -35,22 +35,18 @@ func main() {
 	}
 
 	http.HandleFunc("POST /{$}", func(w http.ResponseWriter, r *http.Request) {
-		var capture struct {
-			Text string `json:"text"`
-		}
-		decoder := json.NewDecoder(r.Body)
-		decoder.DisallowUnknownFields()
-		if err := decoder.Decode(&capture); err != nil {
-			http.Error(w, "invalid JSON body: "+err.Error(), http.StatusBadRequest)
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		text := strings.TrimSpace(strings.ReplaceAll(capture.Text, "\r\n", "\n"))
+		text := strings.TrimSpace(strings.ReplaceAll(string(body), "\r\n", "\n"))
 		if text == "" {
-			http.Error(w, "missing field: text", http.StatusBadRequest)
+			http.Error(w, "empty body", http.StatusBadRequest)
 			return
 		}
 		name := time.Now().Format("2006-01-02T15-04-05") + ".md"
-		err := create(filepath.Join(*dir, name), text+"\n")
+		err = create(filepath.Join(*dir, name), text+"\n")
 		if errors.Is(err, fs.ErrExist) {
 			http.Error(w, name+" already exists, try again", http.StatusConflict)
 			return
