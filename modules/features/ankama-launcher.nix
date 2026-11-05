@@ -9,14 +9,17 @@
       allowedUnfreePackages = [ "ankama-launcher" ];
 
       environment.systemPackages = [
-        # 3.15.5 crashes trying to self-update to 3.15.10: NixOS/nixpkgs#579240
+        # The launcher crashes trying to self-update once Ankama ships a newer release.
         (
-          assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version "3.15.10")
-            "nixpkgs ankama-launcher ${pkgs.ankama-launcher.version} includes NixOS/nixpkgs#579240: use it again";
-          pkgs.callPackage (builtins.fetchurl {
-            url = "https://raw.githubusercontent.com/NixOS/nixpkgs/1850e4b7e90304b9f09c3dcfddb5b2b24a99d40c/pkgs/by-name/an/ankama-launcher/package.nix";
-            sha256 = "sha256-fvWIAuBz7WSLMFRwJ8U7oS+V2nb1ubRAHivQoTG/Blc=";
-          }) { }
+          assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version "3.15.12")
+            "nixpkgs ankama-launcher is ${pkgs.ankama-launcher.version}: drop the override";
+          pkgs.ankama-launcher.overrideAttrs {
+            version = "3.15.12";
+            src = pkgs.fetchurl {
+              url = "https://web.archive.org/web/20261105153642id_/https://launcher.cdn.ankama.com/installers/production/Ankama%20Launcher-Setup-x86_64.AppImage";
+              hash = "sha256-8/3aYwp8RLUdVAQaj2gaOkC6wr52jUxT6Ht+pnezrsE=";
+            };
+          }
         )
       ];
     };
