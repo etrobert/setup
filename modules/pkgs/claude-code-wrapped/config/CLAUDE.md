@@ -80,6 +80,10 @@ and read the source — don't rely on docs alone. Clone into `~/.cache/explore/`
 
 Before proposing anything, survey what others actually do.
 
+For live facts on websites — prices, schedules, availability — browse the pages
+in Claude in Chrome rather than stopping at web search snippets or fetched HTML,
+which miss JavaScript-rendered content and toggles.
+
 ## Running Packages
 
 If a needed tool is not installed on the system, use `nix run nixpkgs#<package>`
