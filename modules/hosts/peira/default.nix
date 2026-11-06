@@ -11,6 +11,8 @@
       self.nixosModules.peira-configuration
       self.nixosModules.nixos-base
       self.nixosModules.base
+      self.nixosModules.tailnet-services
+      self.nixosModules.lidarr
       inputs.agenix.nixosModules.default
     ];
   };

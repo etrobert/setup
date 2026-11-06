@@ -10,6 +10,7 @@
     let
       port = config.services.lidarr.settings.server.port;
       packages = self.packages.${pkgs.stdenv.hostPlatform.system};
+      ntfyPort = self.nixosConfigurations.tower.config.ports.ntfy;
 
       lidarr-setup =
         self.legacyPackages.${pkgs.stdenv.hostPlatform.system}.writers.writeNuBin "lidarr-setup" { }
@@ -20,7 +21,7 @@
         lidarr = {
           enable = true;
 
-          # soft:users owns the library and the landing zone; imports write into both.
+          # soft:users owns the shared library.
           user = "soft";
           group = "users";
 
@@ -38,13 +39,15 @@
         tsnsrv.services.lidarr.toURL = "http://127.0.0.1:${toString port}";
       };
 
+      age.secrets.c411-api-key = {
+        file = ../../../secrets/c411-api-key.age;
+        owner = "soft";
+      };
+
       systemd.services = {
         lidarr = {
           # fpcalc fingerprints badly tagged files; the package does not ship it.
           path = [ pkgs.chromaprint ];
-
-          # The library watcher is created once at start and never retried; before the mount it dies.
-          unitConfig.RequiresMountsFor = [ "/tank/media" ];
 
           # Where System > Plugins would install it; copied, not linked: Tubifarry writes settings.resx beside itself.
           preStart = ''
@@ -58,18 +61,19 @@
             ProtectHome = true;
             # SQLite spills statement journals to /tmp, read-only under strict.
             PrivateTmp = true;
-            # One mount for music/ and torrents/: a hardlink across two bind mounts fails with EXDEV.
             ReadWritePaths = [
               config.services.lidarr.dataDir
-              "/tank/media"
+              "/storage/music"
             ];
             InaccessiblePaths = [ "/run/agenix.d" ];
+            # The library is shared: everyone in users must be able to update what Lidarr writes.
+            UMask = "0002";
           };
         };
 
         lidarr-setup = {
           description = "Declare Lidarr's indexer, download client, library and notification";
-          # Testing the download client needs DNS, which is MagicDNS.
+          # Testing the notification needs DNS, which is MagicDNS.
           after = [
             "lidarr.service"
             "tailscaled-autoconnect.service"
@@ -89,9 +93,12 @@
               (lib.getExe lidarr-setup)
               "http://127.0.0.1:${toString port}"
               config.age.secrets.c411-api-key.path
-              "http://127.0.0.1${config.services.ntfy-sh.settings.listen-http}"
+              "https://soulseek.etiennerobert.com"
+              # Bind-mounted from the container's host, which runs slskd.
+              "/run/secrets/slskd/api-key"
+              "http://tower:${toString ntfyPort}"
             ];
-            # soft owns the c411 key.
+            # soft owns the c411 key; users can read the slskd key.
             User = "soft";
             # Oneshots have no start timeout by default; the wait loops would hang silently.
             TimeoutStartSec = "5min";

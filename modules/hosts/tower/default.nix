@@ -36,7 +36,6 @@ in
       self.nixosModules.screen-watch
       self.nixosModules.github-runner
       self.nixosModules.harmonia
-      self.nixosModules.navidrome
       self.nixosModules.home-assistant
       self.nixosModules.tower-storage
       self.nixosModules.samba
@@ -66,7 +65,6 @@ in
       self.nixosModules.postgresql-read-access
       self.nixosModules.downloads-mount
       self.nixosModules.transmission-tunnel
-      self.nixosModules.lidarr
       self.nixosModules.radarr
       self.nixosModules.jellyfin
       self.nixosModules.monitor-gpu-wake
