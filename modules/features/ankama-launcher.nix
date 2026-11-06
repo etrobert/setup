@@ -1,26 +1,42 @@
 { self, ... }:
 {
   flake.nixosModules.ankama-launcher =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
+    let
+      # Run from a writable copy so it can self-update: a pinned store copy crashes once Ankama ships a newer release.
+      launcher = pkgs.writeShellApplication {
+        name = "ankama-launcher";
+        inheritPath = false;
+        runtimeInputs = [ pkgs.curl ];
+        text = ''
+          appimage="''${XDG_DATA_HOME:-$HOME/.local/share}/ankama-launcher/ankama-launcher.AppImage"
+          if [ ! -e "$appimage" ]; then
+            curl --fail --location --create-dirs --output "$appimage" \
+              'https://launcher.cdn.ankama.com/installers/production/Ankama%20Launcher-Setup-x86_64.AppImage'
+            chmod +x "$appimage"
+          fi
+          exec "$appimage" "$@"
+        '';
+      };
+    in
     {
       # Dofus 3 aborts on startup without it.
       imports = [ self.nixosModules.xwayland-client-list ];
 
-      allowedUnfreePackages = [ "ankama-launcher" ];
+      # The updater restarts the launcher by executing the AppImage directly.
+      programs.appimage = {
+        enable = true;
+        binfmt = true;
+      };
 
       environment.systemPackages = [
-        # The launcher crashes trying to self-update once Ankama ships a newer release.
-        (
-          assert lib.assertMsg (lib.versionOlder pkgs.ankama-launcher.version "3.15.12")
-            "nixpkgs ankama-launcher is ${pkgs.ankama-launcher.version}: drop the override";
-          pkgs.ankama-launcher.overrideAttrs {
-            version = "3.15.12";
-            src = pkgs.fetchurl {
-              url = "https://web.archive.org/web/20261105153642id_/https://launcher.cdn.ankama.com/installers/production/Ankama%20Launcher-Setup-x86_64.AppImage";
-              hash = "sha256-8/3aYwp8RLUdVAQaj2gaOkC6wr52jUxT6Ht+pnezrsE=";
-            };
-          }
-        )
+        launcher
+        (pkgs.makeDesktopItem {
+          name = "ankama-launcher";
+          desktopName = "Ankama Launcher";
+          exec = "ankama-launcher";
+          categories = [ "Game" ];
+        })
       ];
     };
 }
