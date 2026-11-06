@@ -34,7 +34,9 @@
         (pkgs.makeDesktopItem {
           name = "ankama-launcher";
           desktopName = "Ankama Launcher";
-          exec = "ankama-launcher";
+          exec = "ankama-launcher %U";
+          startupWMClass = "Ankama Launcher";
+          mimeTypes = [ "x-scheme-handler/zaap" ];
           categories = [ "Game" ];
         })
       ];
