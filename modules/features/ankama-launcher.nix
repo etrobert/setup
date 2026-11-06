@@ -7,13 +7,11 @@
       launcher = pkgs.writeShellApplication {
         name = "ankama-launcher";
         inheritPath = false;
-        runtimeInputs = [ pkgs.curl ];
+        runtimeInputs = [ pkgs.coreutils ];
         text = ''
           appimage="''${XDG_DATA_HOME:-$HOME/.local/share}/ankama-launcher/ankama-launcher.AppImage"
           if [ ! -e "$appimage" ]; then
-            curl --fail --location --create-dirs --output "$appimage" \
-              'https://launcher.cdn.ankama.com/installers/production/Ankama%20Launcher-Setup-x86_64.AppImage'
-            chmod +x "$appimage"
+            install -D --mode 755 ${pkgs.ankama-launcher.src} "$appimage"
           fi
           exec "$appimage" "$@"
         '';
