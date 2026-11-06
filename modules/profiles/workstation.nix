@@ -13,7 +13,6 @@ _: {
         wrappers.git.genCommitMsg = true;
 
         allowedUnfreePackages = [
-          "claude-code"
           "discord"
           "discord-unwrapped"
           "github-copilot-cli"
