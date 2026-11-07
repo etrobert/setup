@@ -4,7 +4,6 @@ _: {
       {
         self,
         agenix,
-        lib,
         pkgs,
         ...
       }:
@@ -27,21 +26,6 @@ _: {
             inherit (pkgs.stdenv.hostPlatform) system;
 
             inputPackages = [ agenix.packages.${system}.default ];
-
-            # nixpkgs ships a stale node_modules hash, fixed by NixOS/nixpkgs@c399e1b7fb.
-            opencode = pkgs.opencode.overrideAttrs (old: {
-              node_modules =
-                assert lib.assertMsg
-                  (old.node_modules.outputHash == "sha256-xfOVcw1+waLVNhFDwzOtzxrUSQEogvn88YomydOlhwc=")
-                  "nixpkgs fixed opencode's node_modules hash; drop the override in modules/profiles/workstation.nix";
-                old.node_modules.overrideAttrs {
-                  outputHash =
-                    if pkgs.stdenv.hostPlatform.isLinux then
-                      "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA="
-                    else
-                      "sha256-dIveiaiPFGSItwLyeMuPDxTE9gpvvnlTCB/+nG24qCc=";
-                };
-            });
 
             customPackages = with self.packages.${system}; [
               aichat-wrapped
@@ -89,6 +73,7 @@ _: {
               # community Electron wrapper around the web app.
               (if stdenv.hostPlatform.isDarwin then notion-app else notion-electron)
 
+              opencode
               pnpm
               python3
               shellcheck
@@ -102,7 +87,7 @@ _: {
               yt-dlp
             ];
           in
-          inputPackages ++ customPackages ++ externalPackages ++ [ opencode ];
+          inputPackages ++ customPackages ++ externalPackages;
 
         # 30 github: inputs against an anonymous 60/hour-per-IP limit, shared by
         # every machine behind the same WAN address, is one `nix flake update`
