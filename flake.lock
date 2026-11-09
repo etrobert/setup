@@ -27,16 +27,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1786571341,
-        "narHash": "sha256-bhPvxRugJB/iHfOAV5/zjiz8+x4jq6V2P8/SsvIEbX4=",
+        "lastModified": 1794263544,
+        "narHash": "sha256-mX2EmEbRzJyoisgWPUmsQFS3A7AMttqiRPRN/1oWpRI=",
         "owner": "etrobert",
         "repo": "aichat",
-        "rev": "3ffd3b6b8f4c2720067b36ffeefd78541b7fa83e",
+        "rev": "d145a710d3b0d9fede89ceacba3d3b7294cfc85b",
         "type": "github"
       },
       "original": {
         "owner": "etrobert",
-        "ref": "command-client",
         "repo": "aichat",
         "type": "github"
       }
