@@ -27,6 +27,9 @@ in
             sync_address = "http://tower:${toString port}";
             sync_frequency = "0";
 
+            # Unset counts as on: it binds `?` on an empty prompt, which swallows our `??` alias.
+            ai.enabled = false;
+
             ui.columns = [
               "exit"
               "duration"
