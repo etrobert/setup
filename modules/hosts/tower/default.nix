@@ -34,6 +34,7 @@ in
       self.nixosModules.gaming
       self.nixosModules.fn-keys-on-focus
       self.nixosModules.screen-watch
+      self.nixosModules.kokoro-speak
       self.nixosModules.github-runner
       self.nixosModules.harmonia
       self.nixosModules.navidrome
