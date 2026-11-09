@@ -185,17 +185,6 @@ Use UI changes in Claude in Chrome before committing; if blocked, say so first.
 
 ## CLAUDE.md Maintenance
 
-- User `CLAUDE.md` : Only document conventions, decisions, and preferences
-  specific to **me** and how **I** work.
-- Project `CLAUDE.md` :Only document conventions, decisions, and preferences
-  specific to **this project**.
-- Never document general knowledge that Claude already knows from training
-  (language semantics, standard tool behavior, common patterns) or informations
-  relating to how other projects work (eg. neovim conventions or details on how
-  to use).
-- If removing a note wouldn't risk a future mistake specific to this project,
-  don't write it.
-- At the end of every session, reflect and proactively propose enhancements to
-  the user `CLAUDE.md` and project `CLAUDE.md` following the Maintenance
-  guidelines above.
+- At the end of every session, reflect on enhancements to the user `CLAUDE.md`
+  and project `CLAUDE.md`.
 - Never save to auto memory. To remember something, PR it into a `CLAUDE.md`.
