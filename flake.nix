@@ -92,7 +92,7 @@
 
     # Our fork, adding the `command` client: backed by a local command.
     aichat = {
-      url = "github:etrobert/aichat/command-client";
+      url = "github:etrobert/aichat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
