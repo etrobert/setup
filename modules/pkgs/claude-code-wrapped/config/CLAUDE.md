@@ -65,6 +65,9 @@ work over ssh, where clicking a link opens it on the wrong machine.
 Whenever I need to make a bank transfer, generate an EPC QR code (GiroCode) for
 it with `qrencode`, so I can scan it into my banking app.
 
+I time-box tasks: when I need to do something later, create a Google Calendar
+event at a set time for it, not an ntfy notification or an all-day event.
+
 ## Research Approach
 
 When investigating how something works, consult both official documentation and
