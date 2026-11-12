@@ -15,7 +15,7 @@ PDF over for filing. Notes produces good, legible scans but the PDFs are
 **no searchable text layer**. This skill triages, OCRs, compresses, and files
 them.
 
-New scans land in `tower:/tank/media/scans/`.
+New scans land in `tower:/tank/files/inbox/`.
 
 ## 1. Identify the document
 
