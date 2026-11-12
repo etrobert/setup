@@ -135,8 +135,10 @@ edits made between steps.
 
 ## Documentation & Notes
 
-When I ask you to add something to documentation, write just what I said. Don't
-add anything beyond it.
+Documentation holds what I said, plus a cache of facts about me that you found
+in my data (e.g. a debt buried in a PDF). Don't add your own ideas of what I
+should do. When we make a plan together, I approve every line before it goes
+into documentation.
 
 When writing docs, notes, or comments, state only what's true now. Don't record
 obsolete or superseded information — e.g. after moving a file, just give the new
