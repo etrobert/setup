@@ -16,19 +16,19 @@ description:
 - Verify every point made, including that every price is current.
 - Include "Frankenstein" builds, e.g. a base product with parts bought
   separately.
-- If he is travelling, check whether buying in those countries gives significant
-  savings.
+- Check whether buying in other countries gives significant savings.
 
 ## The page
 
 - An HTML artifact, presented like a Wirecutter article.
 - Sections like Wirecutter's: Top pick, Runner-up, Upgrade pick, Best for….
-- A comparison table of the picks, the latest flagship of the category and the
-  products he owns, on every metric that matters to him.
+- A comparison table of the picks and the products he owns, on every metric that
+  matters to him.
 - The competition: make clear why each was dismissed in favour of the picks.
-- Start updating the page before all research results are in.
+- Start updating the page as research comes in, without waiting for all to be
+  there.
 
 ## Revisions
 
-- Highlight each change with a colored, non-squiggly underline.
+- Highlight each change with a colored, straight underline.
 - Use a different color for each edit round.
