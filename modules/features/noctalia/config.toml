@@ -74,6 +74,7 @@ end = [
   "cpu",
   "ram",
   @vram-widget@
+  "download",
   "media",
   "tray",
   "notifications",
@@ -221,6 +222,13 @@ label_show_units = false
 type = "sysmon"
 stat = "gpu_vram"
 glyph = "device-desktop"
+
+# Whole numbers like "3k" fit the narrow vertical bar.
+[widget.download]
+type = "sysmon"
+stat = "net_rx"
+network_speed_compact = true
+network_speed_decimal_places = 0
 
 [widget.battery]
 show_label = false
