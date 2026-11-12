@@ -11,8 +11,6 @@ description:
 
 ## Requirements to apply by default
 
-- When the product has a keyboard: US ANSI layout. ISO "US English" or "English
-  (EU)" layouts do not count; say so when a vendor only offers those.
 - Étienne is a VAT-registered freelancer in Germany: show every price gross and
   net (gross ÷ 1.19).
 - Prices are for buying in Germany unless he says he is travelling; then also
