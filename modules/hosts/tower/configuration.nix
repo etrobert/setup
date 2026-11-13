@@ -34,10 +34,6 @@
 
       services.claude-warmup.enable = true;
 
-      users.users.soft.openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIV/f9nD2cd4nktO6pe5LGtJ82aim1m2QqkN43q0PpoE Shortcuts on soft-phone"
-      ];
-
       wrappers.noctalia.idleLock = false;
 
       autoBrightness = {
