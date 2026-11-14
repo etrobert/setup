@@ -43,7 +43,13 @@ def wait-for [what: string, probe: closure] {
     error make --unspanned {msg: $"timed out waiting for ($what)"}
 }
 
-def main [url: string, c411_key: path, ntfy_url: string] {
+def main [
+    url: string
+    c411_key: path
+    slskd_url: string
+    slskd_key_file: path
+    ntfy_url: string
+] {
     $env.LIDARR_URL = $url
     $env.LIDARR_KEY = wait-for "lidarr" {
         http get $"($url)/initialize.json" | get apiKey
@@ -61,7 +67,10 @@ def main [url: string, c411_key: path, ntfy_url: string] {
         multiDiscTrackFormat: $"($album)/{medium:00}-{track:00} {Track Title}"
     }) | ignore
 
-    # A client Lidarr may not remove from is what makes it hardlink instead of move.
+    let slskd_key = open --raw $slskd_key_file | str trim
+
+    # A client Lidarr may not remove from makes it copy, so the torrent keeps seeding.
+    # The container's host address: transmission runs on the host.
     provider downloadclient {
         name: torrents
         implementation: Transmission
@@ -71,22 +80,11 @@ def main [url: string, c411_key: path, ntfy_url: string] {
         removeCompletedDownloads: false
         tags: []
         fields: [
-            {name: host, value: torrents}
-            {name: port, value: 80}
+            {name: host, value: 10.233.1.1}
+            {name: port, value: 9091}
         ]
     }
 
-    (ensure remotepathmapping host {
-        host: torrents
-        remotePath: /srv/downloads/transmission/
-        localPath: /tank/media/torrents/
-    })
-
-    # Transmission creates the category folder on the download host at the first
-    # grab; the health check wants its pulled copy to exist before that.
-    mkdir /tank/media/torrents/lidarr
-
-    # slskd has no login (the tailnet is the access control); Tubifarry still wants an API key.
     # removeCompletedDownloads: slskd keeps sharing a download until its own retention deletes it.
     provider downloadclient {
         name: soulseek
@@ -97,16 +95,10 @@ def main [url: string, c411_key: path, ntfy_url: string] {
         removeCompletedDownloads: false
         tags: []
         fields: [
-            {name: baseUrl, value: "http://soulseek"}
-            {name: apiKey, value: unused}
+            {name: baseUrl, value: $slskd_url}
+            {name: apiKey, value: $slskd_key}
         ]
     }
-
-    (ensure remotepathmapping host {
-        host: soulseek
-        remotePath: /srv/downloads/slskd/downloads/
-        localPath: /tank/media/soulseek/
-    })
 
     provider indexer {
         name: c411
@@ -142,15 +134,15 @@ def main [url: string, c411_key: path, ntfy_url: string] {
         priority: 10
         tags: []
         fields: [
-            {name: baseUrl, value: "http://soulseek"}
-            {name: apiKey, value: unused}
+            {name: baseUrl, value: $slskd_url}
+            {name: apiKey, value: $slskd_key}
         ]
     }
 
     # Saving scans the tree and adds every artist on it; monitored, they would all be hunted.
     ensure rootfolder path {
-        name: torrents
-        path: /tank/media/music/torrents
+        name: music
+        path: /storage/music
         defaultQualityProfileId: $lossless
         defaultMetadataProfileId: $standard
         defaultMonitorOption: none
