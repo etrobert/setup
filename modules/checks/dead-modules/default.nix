@@ -44,7 +44,6 @@
         "nixosModules.nutricalc" # etrobert/daddy
         "nixosModules.rift-radar" # etrobert/daddy
         "nixosModules.umami" # etrobert/daddy
-        "nixosModules.open-webui" # off on tower until NixOS/nixpkgs#578265
       ];
 
       unused = lib.subtractLists (

@@ -42,19 +42,7 @@ in
       self.nixosModules.samba
       self.nixosModules.immich
       self.nixosModules.ollama
-      # Off while python3Packages.posthog is broken by mcp 2 (NixOS/nixpkgs#578265)
-      # self.nixosModules.open-webui
-      (
-        { pkgs, ... }:
-        {
-          assertions = [
-            {
-              assertion = pkgs.python3Packages.posthog.meta.broken;
-              message = "python3Packages.posthog is no longer broken: re-enable open-webui in modules/hosts/tower/default.nix and drop its dead-modules exemption";
-            }
-          ];
-        }
-      )
+      self.nixosModules.open-webui
       self.nixosModules.tailnet-services
       self.nixosModules.node-exporter
       self.nixosModules.smartctl-exporter
