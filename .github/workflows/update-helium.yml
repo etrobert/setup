@@ -20,23 +20,34 @@ jobs:
       - name: Bump the Helium pin
         id: bump
         run: |
-          # Written only when the package changed
-          message="$RUNNER_TEMP/message"
-          nix run nixpkgs#nix-update -- --flake helium \
-            --write-commit-message "$message"
-          if [ -f "$message" ]; then
-            echo "title=chore: $(head --lines=1 "$message")" >> "$GITHUB_OUTPUT"
+          pin=modules/pkgs/helium/pin.json
+          releases=https://github.com/imputnet/helium-linux/releases
+          url=$(curl --silent --show-error --head --output /dev/null \
+            --write-out '%{redirect_url}' "$releases/latest")
+          version=$(basename "${url:?no redirect}")
+          old=$(jq --raw-output .version "$pin")
+          if [ "$version" = "$old" ]; then
+            echo "Helium $old is up to date."
+            exit 0
           fi
+
+          prefetch=$(nix store prefetch-file --json \
+            "$releases/download/$version/helium-$version-x86_64.AppImage")
+          jq --arg version "$version" \
+            --arg hash "$(jq --raw-output .hash <<< "$prefetch")" \
+            '.version = $version | .hash = $hash' \
+            "$pin" > "$RUNNER_TEMP/helium.json"
+          mv "$RUNNER_TEMP/helium.json" "$pin"
+          echo "title=chore: update helium ($old → $version)" \
+            >> "$GITHUB_OUTPUT"
 
       - name: Create pull request
         id: create
-        if: steps.bump.outputs.title != ''
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.PAT }}
           commit-message: ${{ steps.bump.outputs.title }}
           title: ${{ steps.bump.outputs.title }}
-          body-path: ${{ runner.temp }}/message
           branch: helium-update
           delete-branch: true
 
