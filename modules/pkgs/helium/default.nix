@@ -1,17 +1,19 @@
 { self, ... }:
 {
   perSystem =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     {
       packages = self.lib.onlySupported {
         helium =
           let
             pname = "helium";
-            version = "0.21.2.1";
+
+            # Bumped by the update-helium workflow
+            inherit (lib.importJSON ./pin.json) version hash;
 
             src = pkgs.fetchurl {
               url = "https://github.com/imputnet/helium-linux/releases/download/${version}/helium-${version}-x86_64.AppImage";
-              hash = "sha256-IdP+SyvmN+uT/eogjWsG1/6feO6MF9gP/57SM3AsBmo=";
+              inherit hash;
             };
 
             contents = pkgs.appimageTools.extract { inherit pname version src; };
