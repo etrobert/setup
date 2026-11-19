@@ -12,8 +12,7 @@ _: {
           "systemd ${pkgs.systemd.version} exceeds the version the switch tank guard was audited against — see the comment in modules/pkgs/switch/default.nix";
         pkgs.writeShellApplication {
           name = "switch";
-          # nh calls `sudo env nixos-rebuild ...`; all three must be in PATH so nh
-          # can resolve them to absolute store paths before invoking sudo
+          # nh resolves sudo, env and itself from PATH, then as root spawns systemd-run from it
           runtimeInputs = [
             self'.packages.setuid-sudo
           ]
@@ -22,7 +21,13 @@ _: {
             nh
             nix
           ])
-          ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux [ pkgs.util-linux ];
+          ++ pkgs.lib.optionals pkgs.stdenv.hostPlatform.isLinux (
+            with pkgs;
+            [
+              systemd
+              util-linux
+            ]
+          );
           inheritPath = false;
           text =
             if pkgs.stdenv.hostPlatform.isLinux then
