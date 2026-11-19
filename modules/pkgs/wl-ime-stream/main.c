@@ -170,6 +170,8 @@ int main(void)
 			zwp_input_method_v2_set_preedit_string(ime, tail, strlen(tail), strlen(tail));
 		}
 		zwp_input_method_v2_commit(ime, ime_serial);
+		// Otherwise the update waits in our buffer until the next line arrives.
+		wl_display_flush(display);
 	}
 
 	roundtrip(display);
