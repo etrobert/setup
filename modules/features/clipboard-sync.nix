@@ -25,8 +25,8 @@
           received=$XDG_RUNTIME_DIR/clipboard-sync-received
           cat >"$received"
 
-          # wl-copy stays in the background holding its output, which keeps the SSH session open.
-          wl-copy <"$received" >/dev/null 2>&1
+          # wl-copy stays in the background holding stderr, which keeps the SSH session open.
+          wl-copy <"$received" 2>/dev/null
         '';
       };
 
