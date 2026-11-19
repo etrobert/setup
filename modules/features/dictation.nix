@@ -15,16 +15,6 @@ _: {
 
       vocabulary = "Nix, NixOS, nixpkgs, flake, niri, Noctalia, Tailscale, tmux, Neovim, agenix, systemd, PipeWire, Kanata, Claude Code, GitHub, pull request, leod.";
 
-      inject =
-        {
-          type = /* bash */ ''wtype -- "$text"'';
-          paste = /* bash */ ''
-            wl-copy --primary -- "$text"
-            wtype -M shift -k Insert -m shift
-          '';
-        }
-        .type;
-
       dictation = pkgs.writeShellApplication {
         name = "dictation";
         inheritPath = false;
@@ -34,7 +24,6 @@ _: {
           gnused
           pipewire
           socat
-          wl-clipboard
           wtype
         ];
         text = /* bash */ ''
@@ -58,7 +47,7 @@ _: {
                     tr '\n' ' ' |
                     sed --regexp-extended 's/ +/ /g; s/^ | $//g'
                 )
-                ${inject}
+                wtype -- "$text"
                 ;;
             esac
           done < <(socat -u TCP:127.0.0.1:${toString config.ports.kanata} -)
