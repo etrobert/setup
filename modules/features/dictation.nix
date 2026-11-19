@@ -22,6 +22,7 @@
           pipewire
           socat
           sox
+          self.packages.${stdenv.hostPlatform.system}.dictation-lock
           self.packages.${stdenv.hostPlatform.system}.wl-ime-stream
         ];
         text = /* bash */ ''
@@ -53,7 +54,7 @@
               *dictate-start*)
                 pw-record --raw --rate 16000 --channels 1 --format s16 "$recording" &
                 recorder=$!
-                exec {typing}> >(wl-ime-stream)
+                exec {typing}> >(dictation-lock | wl-ime-stream)
                 typer=$!
                 preview >&"$typing" &
                 previewer=$!
