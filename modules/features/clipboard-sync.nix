@@ -20,7 +20,9 @@
         runtimeInputs = with pkgs; [
           coreutils
           diffutils
+          gnugrep
           openssh
+          wl-clipboard
         ];
         text = /* bash */ ''
           received=$XDG_RUNTIME_DIR/clipboard-sync-received
@@ -30,6 +32,12 @@
 
           # An emptied clipboard arrives as no data.
           [ -s "$new" ] || exit 0
+
+          # A browser's "copy image" offers the image beside a URL and HTML, and wl-paste picks the URL.
+          types=$(wl-paste --list-types)
+          if grep --quiet '^image/' <<<"$types" && ! grep --quiet '^text/plain' <<<"$types"; then
+            wl-paste --type image >"$new"
+          fi
 
           # Sending back what a peer sent lets two simultaneous copies swap forever.
           cmp --silent "$new" "$received" && exit 0
