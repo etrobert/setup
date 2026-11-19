@@ -145,8 +145,8 @@
           text/html=open-url.desktop
           x-scheme-handler/http=open-url.desktop
           x-scheme-handler/https=open-url.desktop
-          x-scheme-handler/about=zen.desktop
-          x-scheme-handler/unknown=zen.desktop
+          x-scheme-handler/about=chromium-browser.desktop
+          x-scheme-handler/unknown=chromium-browser.desktop
           application/pdf=zen.desktop
         '';
       };
