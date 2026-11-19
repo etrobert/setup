@@ -1,4 +1,4 @@
-# Hold the mic-mute key to dictate into the focused window.
+# Hold Super+D to dictate into the focused window.
 { self, ... }:
 {
   flake.nixosModules.dictation =
@@ -96,17 +96,14 @@
         services.kanata.keyboards.default.port = config.ports.kanata;
 
         kanata = {
-          keys.micmute = "@dictate";
-          # Mod passes the key through, for the compositor's mic-mute bind.
+          keys.d = "@dictate";
           extraConfig = /* scheme */ ''
-            (deflocalkeys-linux micmute 248)
-
             (defvirtualkeys dictate-stop (push-msg "dictate-stop"))
 
             (defalias dictate
               (fork
+                d
                 (multi (push-msg "dictate-start") (on-release tap-vkey dictate-stop))
-                micmute
                 (lmet rmet)))
           '';
         };
