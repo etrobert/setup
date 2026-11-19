@@ -29,7 +29,8 @@
 
           transcribe() {
             # Vorbis is a tenth of the size of WAV, which matters on a slow uplink.
-            sox --type raw --rate 16000 --encoding signed-integer --bits 16 --channels 1 "$recording" --type vorbis --compression 0 - |
+            sox --type raw --rate 16000 --encoding signed-integer --bits 16 \
+              --channels 1 "$recording" --type vorbis --compression 0 - |
               curl --silent --show-error --fail \
                 --form file=@- \
                 --form response_format=text \

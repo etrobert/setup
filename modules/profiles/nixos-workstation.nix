@@ -35,7 +35,11 @@
 
       documentation.doc.enable = false;
 
-      dictation.server = "http://tower:${toString self.nixosConfigurations.tower.config.ports.whisper-server}";
+      dictation.server =
+        let
+          inherit (self.nixosConfigurations.tower.config) ports;
+        in
+        "http://tower:${toString ports.whisper-server}";
 
       # Never reboot under the user; the upgrade sends an ntfy notice instead.
       system.autoUpgrade.allowReboot = false;
