@@ -1,5 +1,6 @@
 # Hold the mic-mute key to dictate into the focused window.
-_: {
+{ self, ... }:
+{
   flake.nixosModules.dictation =
     {
       config,
@@ -32,7 +33,7 @@ _: {
           pipewire
           socat
           sox
-          wtype
+          self.packages.${stdenv.hostPlatform.system}.wl-ime-type
         ];
         text = /* bash */ ''
           recording="$XDG_RUNTIME_DIR/dictation.raw"
@@ -72,8 +73,12 @@ _: {
                 kill -s INT "$recorder"
                 wait "$previewer" "$recorder" || true
                 text=$(transcribe)
+                # Nothing answers when the focused window has no text field.
+                if [ -n "$text" ] && ! timeout 0.5 wl-ime-type -- "$text"; then
+                  show text "No text field"
+                  sleep 2
+                fi
                 show hide
-                wtype -- "$text"
                 ;;
             esac
           done < <(socat -u TCP:127.0.0.1:${toString config.ports.kanata} -)
