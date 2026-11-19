@@ -20,6 +20,7 @@
         self.nixosModules.pimsync
         self.nixosModules.darkman
         self.nixosModules.auto-brightness
+        self.nixosModules.clipboard-sync
         self.nixosModules.float-on-title
         self.nixosModules.copilot-api
         self.nixosModules.ntfy-desktop

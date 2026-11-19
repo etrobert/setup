@@ -36,8 +36,6 @@
 
       wrappers.noctalia.idleLock = false;
 
-      clipboardSync.peer = "leod";
-
       autoBrightness = {
         day = 90;
         night = 0;

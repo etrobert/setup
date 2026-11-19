@@ -18,7 +18,6 @@ in
       self.nixosModules.tank-mount
       self.nixosModules.nix-index
       self.nixosModules.ankama-launcher
-      self.nixosModules.clipboard-sync
       agenix.nixosModules.default
       preservation.nixosModules.default
       self.nixosModules.nixos-workstation

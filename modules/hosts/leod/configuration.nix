@@ -19,8 +19,6 @@
 
       networking.hostName = "leod"; # Define your hostname.
 
-      clipboardSync.peer = "tower";
-
       # Intel UHD 620 (i915).
       gpu = {
         hasAv1Decode = false;

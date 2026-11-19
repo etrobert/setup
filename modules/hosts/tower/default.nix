@@ -34,7 +34,6 @@ in
       self.nixosModules.gaming
       self.nixosModules.fn-keys-on-focus
       self.nixosModules.screen-watch
-      self.nixosModules.clipboard-sync
       self.nixosModules.github-runner
       self.nixosModules.harmonia
       self.nixosModules.navidrome

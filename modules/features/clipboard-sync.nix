@@ -1,4 +1,5 @@
-_: {
+{ self, ... }:
+{
   flake.nixosModules.clipboard-sync =
     {
       config,
@@ -7,6 +8,12 @@ _: {
       ...
     }:
     let
+      peers = lib.attrNames (
+        lib.filterAttrs (
+          name: host: name != config.networking.hostName && host.config.systemd.user.services ? clipboard-sync
+        ) self.nixosConfigurations
+      );
+
       clipboard-receive = pkgs.writeShellApplication {
         name = "clipboard-receive";
         inheritPath = false;
@@ -40,30 +47,25 @@ _: {
           # An emptied clipboard arrives as no data.
           [ -s "$new" ] || exit 0
 
-          # Sending back what the peer sent lets two simultaneous copies swap forever.
+          # Sending back what a peer sent lets two simultaneous copies swap forever.
           cmp --silent "$new" "$received" && exit 0
           rm --force "$received"
 
-          # ConnectTimeout: a sleeping peer would otherwise stall every later copy.
-          ssh -o ConnectTimeout=2${config.clipboardSync.peer} clipboard-receive <"$new"
+          for peer in ${lib.escapeShellArgs peers}; do
+            # ConnectTimeout: a sleeping peer would otherwise stall every later copy.
+            ssh -o ConnectTimeout=2 "$peer" clipboard-receive <"$new" || true
+          done
         '';
       };
     in
     {
-      options.clipboardSync.peer = lib.mkOption {
-        type = lib.types.str;
-        description = "Host that shares its clipboard with this one.";
-      };
+      environment.systemPackages = [ clipboard-receive ];
 
-      config = {
-        environment.systemPackages = [ clipboard-receive ];
-
-        systemd.user.services.clipboard-sync = {
-          after = [ "graphical-session.target" ];
-          partOf = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          serviceConfig.ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --watch ${lib.getExe clipboard-send}";
-        };
+      systemd.user.services.clipboard-sync = {
+        after = [ "graphical-session.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        serviceConfig.ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --watch ${lib.getExe clipboard-send}";
       };
     };
 }
