@@ -434,6 +434,7 @@ window-rule {
     match app-id=r#"^chromium-browser$"# title=r#"^Meet - "#
     exclude title=r#" - Chromium$"#
     open-floating true
+    open-focused false
 }
 
 // Chromium's video Picture-in-Picture window sets an empty app-id, so it can
@@ -441,6 +442,7 @@ window-rule {
 window-rule {
     match title=r#"^Picture in picture$"#
     open-floating true
+    open-focused false
 }
 
 binds {
