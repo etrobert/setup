@@ -18,11 +18,11 @@
           coreutils
           curl
           gnused
-          noctalia
+          libnotify
           pipewire
           socat
           sox
-          self.packages.${stdenv.hostPlatform.system}.wl-ime-type
+          self.packages.${stdenv.hostPlatform.system}.wl-ime-stream
         ];
         text = /* bash */ ''
           recording="$XDG_RUNTIME_DIR/dictation.raw"
@@ -40,13 +40,11 @@
               sed --regexp-extended 's/ +/ /g; s/^ | $//g'
           }
 
-          show() {
-            noctalia msg plugin etrobert/dictation:control all "$@" > /dev/null
-          }
-
           preview() {
             while sleep 0.2; do
-              show text "$(transcribe)"
+              # Captured first, so a pass killed midway writes nothing.
+              text=$(transcribe)
+              echo "$text"
             done
           }
 
@@ -55,8 +53,9 @@
               *dictate-start*)
                 pw-record --raw --rate 16000 --channels 1 --format s16 "$recording" &
                 recorder=$!
-                show text ""
-                preview &
+                exec {typing}> >(wl-ime-stream)
+                typer=$!
+                preview >&"$typing" &
                 previewer=$!
                 ;;
               *dictate-stop*)
@@ -64,12 +63,9 @@
                 kill -s INT "$recorder"
                 wait "$previewer" "$recorder" || true
                 text=$(transcribe)
-                # Nothing answers when the focused window has no text field.
-                if [ -n "$text" ] && ! timeout 0.5 wl-ime-type -- "$text"; then
-                  show text "No text field"
-                  sleep 2
-                fi
-                show hide
+                echo "$text" >&"$typing"
+                exec {typing}>&-
+                wait "$typer" || notify-send Dictation "No text field"
                 ;;
             esac
           done < <(socat -u TCP:127.0.0.1:${toString config.ports.kanata} -)
