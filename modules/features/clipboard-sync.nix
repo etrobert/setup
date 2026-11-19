@@ -45,7 +45,7 @@ _: {
           rm --force "$received"
 
           # ConnectTimeout: a sleeping peer would otherwise stall every later copy.
-          ssh -o BatchMode=yes -o ConnectTimeout=2 ${config.clipboardSync.peer} clipboard-receive <"$new"
+          ssh -o ConnectTimeout=2${config.clipboardSync.peer} clipboard-receive <"$new"
         '';
       };
     in
@@ -62,7 +62,7 @@ _: {
           after = [ "graphical-session.target" ];
           partOf = [ "graphical-session.target" ];
           wantedBy = [ "graphical-session.target" ];
-          serviceConfig.ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${lib.getExe clipboard-send}";
+          serviceConfig.ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --watch ${lib.getExe clipboard-send}";
         };
       };
     };
