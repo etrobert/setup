@@ -9,17 +9,6 @@
       ...
     }:
     let
-      model = pkgs.fetchurl {
-        url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin";
-        hash = "sha256-H8cPd0046xaZk6w5Huo1fvR8iHV+9y7llDh5t+jivGk=";
-      };
-
-      # Without it Whisper transcribes silence as "Thank you."
-      voiceActivityModel = pkgs.fetchurl {
-        url = "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin";
-        hash = "sha256-KZQNmNQrkfvQXOSJ8+z3xy8KQvAn5IdZGaKPtMBOos8=";
-      };
-
       vocabulary = "Nix, NixOS, nixpkgs, flake, niri, Noctalia, Tailscale, tmux, Neovim, agenix, systemd, PipeWire, Kanata, Claude Code, GitHub, pull request, leod.";
 
       dictation = pkgs.writeShellApplication {
@@ -39,12 +28,14 @@
           recording="$XDG_RUNTIME_DIR/dictation.raw"
 
           transcribe() {
-            sox --type raw --rate 16000 --encoding signed-integer --bits 16 --channels 1 "$recording" --type wav - |
+            # Vorbis is a tenth of the size of WAV, which matters on a slow uplink.
+            sox --type raw --rate 16000 --encoding signed-integer --bits 16 \
+              --channels 1 "$recording" --type vorbis --compression 0 - |
               curl --silent --show-error --fail \
                 --form file=@- \
                 --form response_format=text \
                 --form-string ${lib.escapeShellArg "prompt=${vocabulary}"} \
-                http://127.0.0.1:${toString config.ports.whisper-server}/v1/audio/transcriptions |
+                ${config.dictation.server}/v1/audio/transcriptions |
               tr '\n' ' ' |
               sed --regexp-extended 's/ +/ /g; s/^ | $//g'
           }
@@ -86,66 +77,49 @@
       };
     in
     {
-      assertions = [
-        {
-          assertion = lib.versionOlder pkgs.niri.version "26.05";
-          message = "niri ${pkgs.niri.version} has press/release binds: replace the Kanata push-msg hotkey with one";
-        }
-      ];
-
-      ports = {
-        whisper-server = "auto";
-        kanata = "auto";
+      options.dictation.server = lib.mkOption {
+        type = lib.types.str;
+        description = "Base URL of the speech-to-text server.";
+        example = "http://127.0.0.1:8080";
       };
 
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.ports.whisper-server ];
+      config = {
+        assertions = [
+          {
+            assertion = lib.versionOlder pkgs.niri.version "26.05";
+            message = "niri ${pkgs.niri.version} has press/release binds: replace the Kanata push-msg hotkey with one";
+          }
+        ];
 
-      systemd.services.whisper-server = {
-        wantedBy = [ "multi-user.target" ];
-        environment.XDG_CACHE_HOME = "/var/cache/whisper-server";
-        serviceConfig = {
-          ExecStart = lib.concatStringsSep " " [
-            (lib.getExe' pkgs.whisper-cpp-vulkan "whisper-server")
-            "--model ${model}"
-            "--language auto"
-            "--vad"
-            "--vad-model ${voiceActivityModel}"
-            "--host 0.0.0.0"
-            "--port ${toString config.ports.whisper-server}"
-            "--inference-path /v1/audio/transcriptions"
-          ];
-          DynamicUser = true;
-          CacheDirectory = "whisper-server";
-          Restart = "on-failure";
+        ports.kanata = "auto";
+
+        services.kanata.keyboards.default.port = config.ports.kanata;
+
+        kanata = {
+          keys.micmute = "@dictate";
+          # Mod passes the key through, for the compositor's mic-mute bind.
+          extraConfig = /* scheme */ ''
+            (deflocalkeys-linux micmute 248)
+
+            (defvirtualkeys dictate-stop (push-msg "dictate-stop"))
+
+            (defalias dictate
+              (fork
+                (multi (push-msg "dictate-start") (on-release tap-vkey dictate-stop))
+                micmute
+                (lmet rmet)))
+          '';
         };
-      };
 
-      services.kanata.keyboards.default.port = config.ports.kanata;
-
-      kanata = {
-        keys.micmute = "@dictate";
-        # Mod passes the key through, for the compositor's mic-mute bind.
-        extraConfig = /* scheme */ ''
-          (deflocalkeys-linux micmute 248)
-
-          (defvirtualkeys dictate-stop (push-msg "dictate-stop"))
-
-          (defalias dictate
-            (fork
-              (multi (push-msg "dictate-start") (on-release tap-vkey dictate-stop))
-              micmute
-              (lmet rmet)))
-        '';
-      };
-
-      systemd.user.services.dictation = {
-        wantedBy = [ "graphical-session.target" ];
-        partOf = [ "graphical-session.target" ];
-        after = [ "graphical-session.target" ];
-        serviceConfig = {
-          ExecStart = lib.getExe dictation;
-          Restart = "always";
-          RestartSec = 1;
+        systemd.user.services.dictation = {
+          wantedBy = [ "graphical-session.target" ];
+          partOf = [ "graphical-session.target" ];
+          after = [ "graphical-session.target" ];
+          serviceConfig = {
+            ExecStart = lib.getExe dictation;
+            Restart = "always";
+            RestartSec = 1;
+          };
         };
       };
     };

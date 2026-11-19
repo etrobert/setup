@@ -42,7 +42,7 @@ in
       self.nixosModules.samba
       self.nixosModules.immich
       self.nixosModules.ollama
-      self.nixosModules.dictation
+      self.nixosModules.whisper-server
       self.nixosModules.open-webui
       self.nixosModules.tailnet-services
       self.nixosModules.node-exporter
