@@ -39,7 +39,7 @@ with_worktree() {
 # hence single quotes, and hence the waiver.
 # shellcheck disable=SC2016
 refresh_pr_cache() {
-  # Without a tmux server, list-sessions fails with "no server running".
+  # ast-grep-ignore: justify-silenced-errors # without a tmux server, list-sessions fails with "no server running"
   tmux list-sessions -F '#{session_path}' 2>/dev/null |
     xargs --max-lines=1 --max-procs=8 sh -c '
       # Compare what the row would say rather than the cache file: a rollup
@@ -109,7 +109,7 @@ pr_summary() {
 # drift apart. A directory that is not a repository is empty output and exit 0;
 # a crash is the same story as pr_summary, so say it in the row.
 git_summary() {
-  # The row reports a crash in pronto's place.
+  # ast-grep-ignore: justify-silenced-errors # the row reports a crash in pronto's place
   if ! state=$(pronto --git-summary "$1" 2>/dev/null); then
     printf '%spronto?%s' "$red" "$reset"
     return 0
@@ -140,12 +140,12 @@ list_sessions() {
   paths=()
   width=0
 
-  # Without a tmux server, list-sessions fails with "no server running".
   while IFS='|' read -r name marker path; do
     names+=("$name")
     markers+=("$marker")
     paths+=("$path")
     [ ${#name} -gt "$width" ] && width=${#name}
+    # ast-grep-ignore: justify-silenced-errors # without a tmux server, list-sessions fails with "no server running"
   done < <(tmux list-sessions -F '#{session_name}|#{p1:#{W:#{@agent-status}}}|#{session_path}' 2>/dev/null)
 
   for i in "${!names[@]}"; do
@@ -278,7 +278,7 @@ fi
 
 session=${project//./_}
 
-# A missing session is the expected case, and has-session reports it on stderr.
+# ast-grep-ignore: justify-silenced-errors # a missing session is the expected case, and has-session reports it on stderr
 if ! tmux has-session -t="$session" 2>/dev/null; then
   if [ ! -d "$project_path" ]; then
     echo "Error: $project_path does not exist" >&2
