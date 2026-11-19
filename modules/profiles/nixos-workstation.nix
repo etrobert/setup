@@ -26,6 +26,7 @@
         self.nixosModules.ntfy-desktop
         self.nixosModules.file-manager
         self.nixosModules.kanata
+        self.nixosModules.dictation
         self.nixosModules.syncthing
         self.nixosModules.atuin-login
         self.nixosModules.cursor
@@ -33,6 +34,8 @@
       ];
 
       documentation.doc.enable = false;
+
+      dictation.server = "http://tower:${toString self.nixosConfigurations.tower.config.ports.whisper-server}";
 
       # Never reboot under the user; the upgrade sends an ntfy notice instead.
       system.autoUpgrade.allowReboot = false;

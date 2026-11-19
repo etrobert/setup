@@ -4,13 +4,11 @@
 { self, ... }:
 {
   flake.nixosModules.tower-configuration =
-    { config, pkgs, ... }:
+    { pkgs, ... }:
     {
       imports = [
         self.nixosModules.tower-hardware
       ];
-
-      dictation.server = "http://127.0.0.1:${toString config.ports.whisper-server}";
 
       environment.systemPackages = with self.packages.${pkgs.stdenv.hostPlatform.system}; [
         beets-wrapped

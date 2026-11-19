@@ -10,8 +10,6 @@
     {
       imports = [ self.nixosModules.leod-hardware ];
 
-      dictation.server = "http://tower:${toString self.nixosConfigurations.tower.config.ports.whisper-server}";
-
       boot.kernelParams = [ "mem_sleep_default=deep" ];
 
       boot.loader = {

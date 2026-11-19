@@ -43,7 +43,6 @@ in
       self.nixosModules.immich
       self.nixosModules.ollama
       self.nixosModules.whisper-server
-      self.nixosModules.dictation
       self.nixosModules.open-webui
       self.nixosModules.tailnet-services
       self.nixosModules.node-exporter
