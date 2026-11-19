@@ -94,18 +94,17 @@ static void roundtrip(struct wl_display *display)
 	}
 }
 
-// Queues text as real input, sending all but its last chunk.
+// Sends text as real input. It goes in commits of its own: Ghostty flashes
+// when one commit carries both typed and provisional text.
 static void type(struct wl_display *display, struct zwp_input_method_v2 *ime, const char *text)
 {
 	while (*text != '\0') {
 		char *chunk = strndup(text, chunk_length(text));
 		zwp_input_method_v2_commit_string(ime, chunk);
+		zwp_input_method_v2_commit(ime, ime_serial);
 		free(chunk);
 		text += chunk_length(text);
-		if (*text != '\0') {
-			zwp_input_method_v2_commit(ime, ime_serial);
-			roundtrip(display);
-		}
+		roundtrip(display);
 	}
 }
 
@@ -182,13 +181,7 @@ int main(void)
 	}
 
 	type(display, ime, locked + typed);
-	if (locked[typed] != '\0' && *tentative != '\0') {
-		zwp_input_method_v2_commit(ime, ime_serial);
-		roundtrip(display);
-	}
 	type(display, ime, tentative);
-	zwp_input_method_v2_commit(ime, ime_serial);
-	roundtrip(display);
 
 	return 0;
 }
