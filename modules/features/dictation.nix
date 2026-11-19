@@ -28,6 +28,7 @@
           recording="$XDG_RUNTIME_DIR/dictation.raw"
 
           transcribe() {
+            [ -s "$recording" ] || return 0
             # Vorbis is a tenth of the size of WAV, which matters on a slow uplink.
             sox --type raw --rate 16000 --encoding signed-integer --bits 16 \
               --channels 1 "$recording" --type vorbis --compression 0 - |
@@ -53,6 +54,7 @@
           while read -r message; do
             case "$message" in
               *dictate-start*)
+                : > "$recording"
                 pw-record --raw --rate 16000 --channels 1 --format s16 "$recording" &
                 recorder=$!
                 show text ""
@@ -61,7 +63,8 @@
                 ;;
               *dictate-stop*)
                 kill "$previewer"
-                kill -s INT "$recorder"
+                # A background job ignores SIGINT until pw-record installs its handler.
+                kill "$recorder"
                 wait "$previewer" "$recorder" || true
                 text=$(transcribe)
                 # Nothing answers when the focused window has no text field.
