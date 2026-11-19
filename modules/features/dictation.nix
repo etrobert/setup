@@ -13,6 +13,12 @@ _: {
         hash = "sha256-H8cPd0046xaZk6w5Huo1fvR8iHV+9y7llDh5t+jivGk=";
       };
 
+      # Without it Whisper transcribes silence as "Thank you."
+      voiceActivityModel = pkgs.fetchurl {
+        url = "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin";
+        hash = "sha256-KZQNmNQrkfvQXOSJ8+z3xy8KQvAn5IdZGaKPtMBOos8=";
+      };
+
       vocabulary = "Nix, NixOS, nixpkgs, flake, niri, Noctalia, Tailscale, tmux, Neovim, agenix, systemd, PipeWire, Kanata, Claude Code, GitHub, pull request, leod.";
 
       dictation = pkgs.writeShellApplication {
@@ -22,31 +28,51 @@ _: {
           coreutils
           curl
           gnused
+          noctalia
           pipewire
           socat
+          sox
           wtype
         ];
         text = /* bash */ ''
-          recording="$XDG_RUNTIME_DIR/dictation.wav"
+          recording="$XDG_RUNTIME_DIR/dictation.raw"
+
+          transcribe() {
+            sox --type raw --rate 16000 --encoding signed-integer --bits 16 --channels 1 "$recording" --type wav - |
+              curl --silent --show-error --fail \
+                --form file=@- \
+                --form response_format=text \
+                --form-string ${lib.escapeShellArg "prompt=${vocabulary}"} \
+                http://127.0.0.1:${toString config.ports.whisper-server}/v1/audio/transcriptions |
+              tr '\n' ' ' |
+              sed --regexp-extended 's/ +/ /g; s/^ | $//g'
+          }
+
+          show() {
+            noctalia msg plugin etrobert/dictation:control all "$@" > /dev/null
+          }
+
+          preview() {
+            while sleep 0.2; do
+              show text "$(transcribe)"
+            done
+          }
 
           while read -r message; do
             case "$message" in
               *dictate-start*)
-                pw-record --rate 16000 --channels 1 --format s16 "$recording" &
+                pw-record --raw --rate 16000 --channels 1 --format s16 "$recording" &
                 recorder=$!
+                show text ""
+                preview &
+                previewer=$!
                 ;;
               *dictate-stop*)
+                kill "$previewer"
                 kill -s INT "$recorder"
-                wait "$recorder" || true
-                text=$(
-                  curl --silent --show-error --fail \
-                    --form "file=@$recording" \
-                    --form response_format=text \
-                    --form-string ${lib.escapeShellArg "prompt=${vocabulary}"} \
-                    http://127.0.0.1:${toString config.ports.whisper-server}/v1/audio/transcriptions |
-                    tr '\n' ' ' |
-                    sed --regexp-extended 's/ +/ /g; s/^ | $//g'
-                )
+                wait "$previewer" "$recorder" || true
+                text=$(transcribe)
+                show hide
                 wtype -- "$text"
                 ;;
             esac
@@ -77,6 +103,8 @@ _: {
             (lib.getExe' pkgs.whisper-cpp-vulkan "whisper-server")
             "--model ${model}"
             "--language auto"
+            "--vad"
+            "--vad-model ${voiceActivityModel}"
             "--host 0.0.0.0"
             "--port ${toString config.ports.whisper-server}"
             "--inference-path /v1/audio/transcriptions"
