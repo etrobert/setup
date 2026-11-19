@@ -10,8 +10,9 @@ import sys
 PUNCTUATION = ".,!?;:"
 # Consecutive passes that must agree on a word before it locks.
 AGREE = 4
-# Words that must follow a punctuated word before it locks.
-SETTLE = 3
+# Words at the end of a pass that never lock: the newest ones still change,
+# and a pass ends in a full stop that later becomes a comma or nothing.
+HOLD = 3
 
 
 def bare(words):
@@ -35,20 +36,12 @@ def rest(locked, words):
 
 def settled(tails):
     """How many leading words of the latest tail can lock."""
-    latest = tails[-1]
-    end = 0
+    agreed = 0
     for column in zip(*tails):
         if len(set(column)) != 1:
             break
-        end += 1
-    # The last word of a pass is the one most likely to change.
-    end = min(end, len(latest) - 1)
-    # A pass ends in a full stop that later becomes a comma or nothing.
-    for index in range(max(end, 0)):
-        followers = len(latest) - 1 - index
-        if latest[index][-1] in PUNCTUATION and followers < SETTLE:
-            return index
-    return max(end, 0)
+        agreed += 1
+    return max(0, min(agreed, len(tails[-1]) - HOLD))
 
 
 def main():
