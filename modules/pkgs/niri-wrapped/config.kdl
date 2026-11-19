@@ -342,13 +342,13 @@ window-rule {
     default-column-width {}
 }
 
-// Open the Firefox/Zen picture-in-picture player as floating by default, and
-// don't let it steal keyboard focus.
 window-rule {
-    // This app-id regular expression will work for both:
-    // - host Firefox (app-id is "firefox")
-    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"(firefox|zen)$"# title="^Picture-in-Picture$"
+    // Chromium's video Picture-in-Picture window sets an empty app-id.
+    match title=r#"^Picture in picture$"#
+    // Meet's pop-out is titled like its opener tab, minus " - Chromium".
+    match app-id=r#"^chromium-browser$"# title=r#"^Meet - "#
+    exclude title=r#" - Chromium$"#
     open-floating true
     open-focused false
 }
@@ -423,23 +423,6 @@ window-rule {
 // Float the pavucontrol volume control (verified app-id: org.pulseaudio.pavucontrol).
 window-rule {
     match app-id=r#"^org\.pulseaudio\.pavucontrol$"#
-    open-floating true
-}
-
-// Meet's pop-out is a Document Picture-in-Picture window: titled like its
-// opener tab but without the " - Chromium" suffix, and mapped with that title
-// already set, so open-floating works. The exclude spares a real browser
-// window showing a Meet tab.
-window-rule {
-    match app-id=r#"^chromium-browser$"# title=r#"^Meet - "#
-    exclude title=r#" - Chromium$"#
-    open-floating true
-}
-
-// Chromium's video Picture-in-Picture window sets an empty app-id, so it can
-// only be matched on title.
-window-rule {
-    match title=r#"^Picture in picture$"#
     open-floating true
 }
 
