@@ -13,9 +13,9 @@
       deployGate = pkgs.writeShellApplication {
         name = "deploy-gate";
 
-        runtimeInputs = [
-          pkgs.gitMinimal
-          pkgs.coreutils
+        runtimeInputs = with pkgs; [
+          gitMinimal
+          coreutils
         ];
 
         inheritPath = false;

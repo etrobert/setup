@@ -26,9 +26,9 @@ _: {
             hash = "sha256-otUEr4bGhOGYQmfELShqc8lXbRs0gA0ycbGHzyCW8tc=";
           };
 
-          nativeBuildInputs = [
-            pkgs.yarnConfigHook
-            pkgs.nodejs_22
+          nativeBuildInputs = with pkgs; [
+            yarnConfigHook
+            nodejs_22
           ];
 
           buildPhase = ''

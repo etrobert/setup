@@ -11,9 +11,9 @@ _: {
       # under the minimal systemd environment.
       packages.copilot-api = pkgs.writeShellApplication {
         name = "copilot-api";
-        runtimeInputs = [
-          pkgs.nodejs
-          pkgs.bash
+        runtimeInputs = with pkgs; [
+          nodejs
+          bash
         ];
         inheritPath = false;
         text = ''
