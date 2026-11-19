@@ -38,7 +38,8 @@
           # shellcheck disable=SC2043 # the peers are generated, and may be a single host
           for peer in ${lib.escapeShellArgs peers}; do
             # ConnectTimeout: a sleeping peer would otherwise stall every later copy.
-            # wl-copy stays in the background holding stderr, which keeps the SSH session open.
+            # || true: an unreachable peer must not keep the copy from the others.
+            # 2>/dev/null: wl-copy stays in the background holding stderr, which keeps the SSH session open.
             # shellcheck disable=SC2016 # $XDG_RUNTIME_DIR expands on the peer
             ssh -o ConnectTimeout=2 "$peer" 'tee "$XDG_RUNTIME_DIR/clipboard-sync-received" | wl-copy 2>/dev/null' <"$new" || true
           done
