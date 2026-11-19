@@ -14,22 +14,6 @@
         ) self.nixosConfigurations
       );
 
-      clipboard-receive = pkgs.writeShellApplication {
-        name = "clipboard-receive";
-        inheritPath = false;
-        runtimeInputs = with pkgs; [
-          coreutils
-          wl-clipboard
-        ];
-        text = /* bash */ ''
-          received=$XDG_RUNTIME_DIR/clipboard-sync-received
-          cat >"$received"
-
-          # wl-copy stays in the background holding stderr, which keeps the SSH session open.
-          wl-copy <"$received" 2>/dev/null
-        '';
-      };
-
       clipboard-send = pkgs.writeShellApplication {
         name = "clipboard-send";
         inheritPath = false;
@@ -54,14 +38,14 @@
           # shellcheck disable=SC2043 # the peers are generated, and may be a single host
           for peer in ${lib.escapeShellArgs peers}; do
             # ConnectTimeout: a sleeping peer would otherwise stall every later copy.
-            ssh -o ConnectTimeout=2 "$peer" clipboard-receive <"$new" || true
+            # wl-copy stays in the background holding stderr, which keeps the SSH session open.
+            # shellcheck disable=SC2016 # $XDG_RUNTIME_DIR expands on the peer
+            ssh -o ConnectTimeout=2 "$peer" 'tee "$XDG_RUNTIME_DIR/clipboard-sync-received" | wl-copy 2>/dev/null' <"$new" || true
           done
         '';
       };
     in
     {
-      environment.systemPackages = [ clipboard-receive ];
-
       systemd.user.services.clipboard-sync = {
         after = [ "graphical-session.target" ];
         partOf = [ "graphical-session.target" ];
