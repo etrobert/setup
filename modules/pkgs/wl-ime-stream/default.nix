@@ -21,6 +21,7 @@
             wayland-scanner
           ];
           buildInputs = [ pkgs.wayland ];
+          # The Makefile target for the binary alone; the default one also builds upstream's man page.
           buildFlags = [ "wl-ime-type" ];
           installPhase = "install -D wl-ime-type $out/bin/wl-ime-stream";
           meta = {
