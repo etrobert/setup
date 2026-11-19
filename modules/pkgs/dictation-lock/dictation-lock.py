@@ -4,9 +4,12 @@ Reads one transcript per pass and prints "locked<TAB>tentative" for each.
 Locked words are never taken back by a later pass.
 """
 
+import difflib
 import sys
 
 PUNCTUATION = ".,!?;:"
+# Consecutive passes that must agree on a word before it locks.
+AGREE = 4
 # Words that must follow a punctuated word before it locks.
 SETTLE = 3
 
@@ -15,33 +18,47 @@ def bare(words):
     return [word.strip(PUNCTUATION).lower() for word in words]
 
 
-def lock(locked, previous, words):
-    """Returns the locked words after the pass `words`."""
-    if bare(words[: len(locked)]) != bare(locked):
-        return locked
-    end = len(locked)
-    for before, now in list(zip(previous, words))[end:]:
-        if before != now:
+def rest(locked, words):
+    """The words of a pass that come after the locked ones.
+
+    A pass can reword what is already locked, so the locked words are
+    aligned with it rather than counted off.
+    """
+    matcher = difflib.SequenceMatcher(None, bare(locked), bare(words), False)
+    blocks = [block for block in matcher.get_matching_blocks() if block.size]
+    if not blocks:
+        return words[len(locked) :]
+    last = blocks[-1]
+    unmatched = len(locked) - (last.a + last.size)
+    return words[last.b + last.size + unmatched :]
+
+
+def settled(tails):
+    """How many leading words of the latest tail can lock."""
+    latest = tails[-1]
+    end = 0
+    for column in zip(*tails):
+        if len(set(column)) != 1:
             break
         end += 1
     # The last word of a pass is the one most likely to change.
-    end = min(end, len(words) - 1)
+    end = min(end, len(latest) - 1)
     # A pass ends in a full stop that later becomes a comma or nothing.
-    for index in range(len(locked), end):
-        followers = len(words) - 1 - index
-        if words[index][-1] in PUNCTUATION and followers < SETTLE:
-            end = index
-            break
-    return locked + words[len(locked) : end]
+    for index in range(max(end, 0)):
+        followers = len(latest) - 1 - index
+        if latest[index][-1] in PUNCTUATION and followers < SETTLE:
+            return index
+    return max(end, 0)
 
 
 def main():
-    locked, previous = [], []
+    locked, passes = [], []
     for line in sys.stdin:
-        words = line.split()
-        locked = lock(locked, previous, words)
-        previous = words
-        tentative = words[len(locked) :]
+        passes = passes[1 - AGREE :] + [line.split()]
+        if len(passes) == AGREE:
+            tails = [rest(locked, words) for words in passes]
+            locked += tails[-1][: settled(tails)]
+        tentative = rest(locked, passes[-1])
         # The space goes with the tentative words, so locked only ever grows.
         separator = " " if locked and tentative else ""
         print(
