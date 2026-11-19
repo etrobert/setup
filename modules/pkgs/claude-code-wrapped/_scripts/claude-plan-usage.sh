@@ -6,6 +6,7 @@ five_reset=$(echo "$input" | jq --raw-output '.rate_limits.five_hour.resets_at /
 week_pct=$(echo "$input" | jq --raw-output '.rate_limits.seven_day.used_percentage // empty')
 week_reset=$(echo "$input" | jq --raw-output '.rate_limits.seven_day.resets_at // empty')
 
+# Outside a git repository there is no branch, and the status line leaves it out.
 branch=$(git branch --show-current 2>/dev/null || true)
 
 green=$'\033[32m'
