@@ -118,13 +118,16 @@ int main(void)
 	struct zwp_input_method_v2 *ime = zwp_input_method_manager_v2_get_input_method(ime_manager, seat);
 	zwp_input_method_v2_add_listener(ime, &ime_listener, NULL);
 
-	char *text = NULL;
+	char *line = NULL, *text = NULL;
 	size_t capacity = 0;
 	ssize_t length;
-	while ((length = getline(&text, &capacity, stdin)) != -1) {
-		if (length > 0 && text[length - 1] == '\n') {
-			text[length - 1] = '\0';
+	while ((length = getline(&line, &capacity, stdin)) != -1) {
+		if (length > 0 && line[length - 1] == '\n') {
+			line[length - 1] = '\0';
 		}
+		// getline leaves its buffer undefined once input ends.
+		free(text);
+		text = strdup(line);
 		// Also picks up the focused field and the serial the next commit must carry.
 		roundtrip(display);
 		if (!ime_active) {
