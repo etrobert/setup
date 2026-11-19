@@ -11,7 +11,11 @@ _: {
       # and TCC then re-prompts for permissions on every rebuild.
       packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
         ghostty-wrapped = self'.legacyPackages.wrapPackage {
-          package = pkgs.ghostty;
+          # Without the patch the provisional text of an input method vanishes
+          # for a frame whenever text is committed next to it.
+          package = pkgs.ghostty.overrideAttrs (old: {
+            patches = (old.patches or [ ]) ++ [ ./keep-preedit-on-commit.patch ];
+          });
           # Ghostty is a terminal emulator that launches shells and user programs, so
           # it must inherit the caller's PATH rather than having it cleared or replaced.
           inheritPath = true;
