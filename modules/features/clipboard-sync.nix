@@ -51,7 +51,9 @@
           cmp --silent "$new" "$received" && exit 0
           rm --force "$received"
 
-          for peer in ${lib.escapeShellArgs peers}; do
+          # An array, because shellcheck rejects a loop over a single literal (SC2043).
+          peers=(${lib.escapeShellArgs peers})
+          for peer in "''${peers[@]}"; do
             # ConnectTimeout: a sleeping peer would otherwise stall every later copy.
             ssh -o ConnectTimeout=2 "$peer" clipboard-receive <"$new" || true
           done
