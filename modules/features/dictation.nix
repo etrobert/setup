@@ -8,9 +8,6 @@ _: {
       ...
     }:
     let
-      serverPort = config.ports.whisper-server;
-      kanataPort = config.ports.kanata;
-
       model = pkgs.fetchurl {
         url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin";
         hash = "sha256-H8cPd0046xaZk6w5Huo1fvR8iHV+9y7llDh5t+jivGk=";
@@ -31,14 +28,14 @@ _: {
       dictation = pkgs.writeShellApplication {
         name = "dictation";
         inheritPath = false;
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.curl
-          pkgs.gnused
-          pkgs.pipewire
-          pkgs.socat
-          pkgs.wl-clipboard
-          pkgs.wtype
+        runtimeInputs = with pkgs; [
+          coreutils
+          curl
+          gnused
+          pipewire
+          socat
+          wl-clipboard
+          wtype
         ];
         text = /* bash */ ''
           recording="$XDG_RUNTIME_DIR/dictation.wav"
@@ -57,16 +54,14 @@ _: {
                     --form "file=@$recording" \
                     --form response_format=text \
                     --form-string ${lib.escapeShellArg "prompt=${vocabulary}"} \
-                    http://127.0.0.1:${toString serverPort}/v1/audio/transcriptions |
+                    http://127.0.0.1:${toString config.ports.whisper-server}/v1/audio/transcriptions |
                     tr '\n' ' ' |
                     sed --regexp-extended 's/ +/ /g; s/^ | $//g'
                 )
-                if [ -n "$text" ]; then
-                  ${inject}
-                fi
+                ${inject}
                 ;;
             esac
-          done < <(socat -u TCP:127.0.0.1:${toString kanataPort} -)
+          done < <(socat -u TCP:127.0.0.1:${toString config.ports.kanata} -)
         '';
       };
     in
@@ -83,7 +78,7 @@ _: {
         kanata = "auto";
       };
 
-      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ serverPort ];
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.ports.whisper-server ];
 
       systemd.services.whisper-server = {
         wantedBy = [ "multi-user.target" ];
@@ -94,17 +89,16 @@ _: {
             "--model ${model}"
             "--language auto"
             "--host 0.0.0.0"
-            "--port ${toString serverPort}"
+            "--port ${toString config.ports.whisper-server}"
             "--inference-path /v1/audio/transcriptions"
           ];
           DynamicUser = true;
-          SupplementaryGroups = [ "render" ];
           CacheDirectory = "whisper-server";
           Restart = "on-failure";
         };
       };
 
-      services.kanata.keyboards.default.port = kanataPort;
+      services.kanata.keyboards.default.port = config.ports.kanata;
 
       kanata = {
         keys.micmute = "@dictate";
