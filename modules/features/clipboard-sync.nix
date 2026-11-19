@@ -17,9 +17,9 @@
       clipboard-receive = pkgs.writeShellApplication {
         name = "clipboard-receive";
         inheritPath = false;
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.wl-clipboard
+        runtimeInputs = with pkgs; [
+          coreutils
+          wl-clipboard
         ];
         text = /* bash */ ''
           received=$XDG_RUNTIME_DIR/clipboard-sync-received
@@ -33,10 +33,10 @@
       clipboard-send = pkgs.writeShellApplication {
         name = "clipboard-send";
         inheritPath = false;
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.diffutils
-          pkgs.openssh
+        runtimeInputs = with pkgs; [
+          coreutils
+          diffutils
+          openssh
         ];
         text = /* bash */ ''
           received=$XDG_RUNTIME_DIR/clipboard-sync-received
