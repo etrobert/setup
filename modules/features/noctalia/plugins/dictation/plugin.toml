@@ -1,0 +1,16 @@
+id = "etrobert/dictation"
+name = "Dictation"
+version = "1.0.0"
+plugin_api = 36
+
+[[service]]
+id = "control"
+entry = "control.luau"
+
+[[layer]]
+id = "transcript"
+entry = "transcript.luau"
+layer = "overlay"
+anchors = ["top"]
+margins = { top = 80 }
+click_through = true

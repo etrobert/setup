@@ -10,6 +10,7 @@ enabled = [
   "etrobert/auto-brightness",
   "etrobert/birthdays",
   "etrobert/deploy-status",
+  "etrobert/dictation",
   "etrobert/weekday",
   "noctalia/bitwarden",
 ]
