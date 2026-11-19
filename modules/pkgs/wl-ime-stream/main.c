@@ -1,5 +1,5 @@
-// Each line on stdin replaces the provisional text of the focused field;
-// end of input commits the last line as real text.
+// Each "locked<TAB>tentative" line on stdin types the new part of locked into the
+// focused field and shows tentative as provisional text; end of input types it too.
 // Derived from https://gitlab.freedesktop.org/emersion/wl-ime-type, see LICENSE.
 #define _POSIX_C_SOURCE 200809L
 #include <stdbool.h>
@@ -94,6 +94,21 @@ static void roundtrip(struct wl_display *display)
 	}
 }
 
+// Queues text as real input, sending all but its last chunk.
+static void type(struct wl_display *display, struct zwp_input_method_v2 *ime, const char *text)
+{
+	while (*text != '\0') {
+		char *chunk = strndup(text, chunk_length(text));
+		zwp_input_method_v2_commit_string(ime, chunk);
+		free(chunk);
+		text += chunk_length(text);
+		if (*text != '\0') {
+			zwp_input_method_v2_commit(ime, ime_serial);
+			roundtrip(display);
+		}
+	}
+}
+
 int main(void)
 {
 	struct wl_display *display = wl_display_connect(NULL);
@@ -118,23 +133,35 @@ int main(void)
 	struct zwp_input_method_v2 *ime = zwp_input_method_manager_v2_get_input_method(ime_manager, seat);
 	zwp_input_method_v2_add_listener(ime, &ime_listener, NULL);
 
-	char *line = NULL, *text = NULL;
-	size_t capacity = 0;
+	char *line = NULL, *locked = NULL;
+	const char *tentative = "";
+	size_t capacity = 0, typed = 0;
 	ssize_t length;
 	while ((length = getline(&line, &capacity, stdin)) != -1) {
 		if (length > 0 && line[length - 1] == '\n') {
 			line[length - 1] = '\0';
 		}
 		// getline leaves its buffer undefined once input ends.
-		free(text);
-		text = strdup(line);
+		free(locked);
+		locked = strdup(line);
+		char *tab = strchr(locked, '\t');
+		if (tab != NULL) {
+			*tab = '\0';
+			tentative = tab + 1;
+		}
+		if (tab == NULL || strlen(locked) < typed) {
+			fprintf(stderr, "Expected locked<TAB>tentative, with locked only growing\n");
+			return 1;
+		}
 		// Also picks up the focused field and the serial the next commit must carry.
 		roundtrip(display);
 		if (!ime_active) {
 			continue;
 		}
+		type(display, ime, locked + typed);
+		typed = strlen(locked);
 		// Terminals do not wrap provisional text, so only its end is worth sending.
-		const char *tail = text;
+		const char *tail = tentative;
 		while (strlen(tail) > CHUNK) {
 			tail += chunk_length(tail);
 		}
@@ -146,7 +173,7 @@ int main(void)
 	}
 
 	roundtrip(display);
-	if (text == NULL || *text == '\0') {
+	if (locked == NULL || (locked[typed] == '\0' && *tentative == '\0')) {
 		return 0;
 	}
 	if (!ime_active) {
@@ -154,13 +181,14 @@ int main(void)
 		return 1;
 	}
 
-	for (const char *rest = text; *rest != '\0'; rest += chunk_length(rest)) {
-		char *chunk = strndup(rest, chunk_length(rest));
-		zwp_input_method_v2_commit_string(ime, chunk);
+	type(display, ime, locked + typed);
+	if (locked[typed] != '\0' && *tentative != '\0') {
 		zwp_input_method_v2_commit(ime, ime_serial);
-		free(chunk);
 		roundtrip(display);
 	}
+	type(display, ime, tentative);
+	zwp_input_method_v2_commit(ime, ime_serial);
+	roundtrip(display);
 
 	return 0;
 }
