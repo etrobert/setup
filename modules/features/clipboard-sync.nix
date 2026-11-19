@@ -35,7 +35,7 @@
 
           # A browser's "copy image" offers the image beside a URL and HTML, and wl-paste picks the URL.
           types=$(wl-paste --list-types)
-          if grep --quiet '^image/' <<<"$types" && ! grep --quiet '^text/plain' <<<"$types"; then
+          if grep --quiet '^image/' <<<"$types"; then
             wl-paste --type image >"$new"
           fi
 
