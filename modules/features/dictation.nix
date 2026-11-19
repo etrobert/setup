@@ -2,13 +2,14 @@
 _: {
   flake.nixosModules.dictation =
     {
+      config,
       lib,
       pkgs,
       ...
     }:
     let
-      serverPort = 8178;
-      kanataPort = 5829;
+      serverPort = config.ports.whisper-server;
+      kanataPort = config.ports.kanata;
 
       model = pkgs.fetchurl {
         url = "https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin";
@@ -76,6 +77,11 @@ _: {
           message = "niri ${pkgs.niri.version} has press/release binds: replace the Kanata push-msg hotkey with one";
         }
       ];
+
+      ports = {
+        whisper-server = "auto";
+        kanata = "auto";
+      };
 
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ serverPort ];
 
