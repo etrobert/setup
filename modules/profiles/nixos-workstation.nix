@@ -128,6 +128,7 @@
             ddcutil
             dmidecode
             freerdp # provides wlfreerdp
+            geeqie
             kdePackages.okular
             mpv
             orca-slicer
