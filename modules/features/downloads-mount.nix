@@ -17,5 +17,14 @@ _: {
         "IdentityFile=/home/soft/.ssh/id_ed25519"
       ];
     };
+
+    # Five failed mounts in a row otherwise fail the automount until a manual reset.
+    systemd.units."mnt-downloads.mount" = {
+      overrideStrategy = "asDropin";
+      text = ''
+        [Unit]
+        StartLimitIntervalSec=0
+      '';
+    };
   };
 }
