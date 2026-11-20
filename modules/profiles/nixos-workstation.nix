@@ -18,6 +18,7 @@
         self.nixosModules.noctalia
         self.nixosModules.networkmanager
         self.nixosModules.pimsync
+        self.nixosModules.himalaya
         self.nixosModules.darkman
         self.nixosModules.auto-brightness
         self.nixosModules.clipboard-sync
