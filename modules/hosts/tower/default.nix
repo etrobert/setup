@@ -32,6 +32,7 @@ in
       self.nixosModules.github-issue-watch
       self.nixosModules.docker
       self.nixosModules.gaming
+      self.nixosModules.boot-windows
       self.nixosModules.fn-keys-on-focus
       self.nixosModules.screen-watch
       self.nixosModules.github-runner
