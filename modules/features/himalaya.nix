@@ -47,4 +47,17 @@ _: {
           flags = [ "-c ${configFile}" ];
         };
     };
+
+  flake.nixosModules.himalaya =
+    { self, pkgs, ... }:
+    {
+      age.secrets.gmail-app-password = {
+        file = ../../secrets/gmail-app-password.age;
+        owner = "soft";
+      };
+
+      environment.systemPackages = [
+        self.packages.${pkgs.stdenv.hostPlatform.system}.himalaya-wrapped
+      ];
+    };
 }
