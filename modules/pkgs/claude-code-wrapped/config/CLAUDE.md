@@ -59,7 +59,7 @@ investigation wouldn't yield the answer.
 Don't be afraid to make multiple different implementations of the same feature
 to compare them.
 
-Before starting a long task, give me an ETA (estimated time of arrival).
+Before starting a long task, tell me how long it will take.
 
 Always spell out links, never `[the repo](https://github.com/etrobert/setup)`: I
 work over ssh, where clicking a link opens it on the wrong machine.
