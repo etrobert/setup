@@ -1,0 +1,15 @@
+--- a/src/apprt/gtk/class/surface.zig
++++ b/src/apprt/gtk/class/surface.zig
+@@ -3398,12 +3398,6 @@
+         // We do this now because we want to still keep our input method
+         // state coherent.
+         if (priv.core_surface) |surface| {
+-            // End our preedit state. Well-behaved input methods do this for us
+-            // by triggering a preedit-end event but some do not (ibus 1.5.29).
+-            surface.preeditCallback(null) catch |err| {
+-                log.warn("error in preedit callback err={}", .{err});
+-            };
+-
+             // Send the text to the core surface, associated with no key (an
+             // invalid key, which should produce no PTY encoding).
+             _ = surface.keyCallback(.{
