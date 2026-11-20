@@ -46,6 +46,7 @@ _: {
               add-asset
               ils
               jqp-wrapped
+              himalaya-wrapped
             ];
 
             externalPackages = with pkgs; [
@@ -115,6 +116,10 @@ _: {
           };
           # Home Assistant long-lived access token, used by Claude Code to
           # query sensor data and call services over the LAN (http://tower:8123).
+          gmail-app-password = {
+            file = ../../secrets/gmail-app-password.age;
+            owner = "soft";
+          };
           hass-token = {
             file = ../../secrets/hass-token.age;
             owner = "soft";
