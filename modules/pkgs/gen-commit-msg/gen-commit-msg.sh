@@ -14,7 +14,7 @@ MODEL="${COMMIT_MSG_MODEL:-gpt-6-luna}"
 
 OPENAI_API_KEY="$(< /run/agenix/openai-api-key)"
 
-if ! DIFF=$(git diff --cached -- ':!/package-lock.json' ':!/pnpm-lock.yaml' ':!/yarn.lock' 2>/dev/null); then
+if ! DIFF=$(git diff --cached -- ':!/package-lock.json' ':!/pnpm-lock.yaml' ':!/yarn.lock'); then
   echo "Error: Unable to get staged changes."
   exit 1
 fi

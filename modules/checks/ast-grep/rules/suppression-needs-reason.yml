@@ -1,0 +1,11 @@
+---
+id: suppression-needs-reason
+language: bash
+severity: error
+message: >-
+  Say why: `# ast-grep-ignore: <rule> # <reason>`.
+rule:
+  kind: comment
+  regex: "ast-grep-ignore"
+  not:
+    regex: 'ast-grep-ignore:[^#]*#\s*\S'
