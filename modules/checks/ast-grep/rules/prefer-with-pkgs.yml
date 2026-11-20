@@ -1,0 +1,39 @@
+---
+id: prefer-with-pkgs
+language: nix
+severity: error
+message: Write `with pkgs; [ a b ]`, not `[ pkgs.a pkgs.b ]`.
+note: |
+  Flagged: a list of two or more elements, all `pkgs.` attributes, that is a
+  binding's whole value. Elsewhere `with` needs parentheses, as an operand of
+  `++` or a function argument, so the fix would not parse.
+  `ast-grep scan --update-all` applies the fix. A name bound by an enclosing
+  `let` or function argument wins over `with`, so check that no element
+  collides with one.
+rule:
+  kind: list_expression
+  pattern: $LIST
+  inside:
+    kind: binding
+  has:
+    kind: select_expression
+    regex: '^pkgs\.[A-Za-z0-9_.-]+$'
+    follows:
+      kind: select_expression
+      regex: '^pkgs\.[A-Za-z0-9_.-]+$'
+      stopBy: end
+  not:
+    has:
+      not:
+        any:
+          - kind: select_expression
+            regex: '^pkgs\.[A-Za-z0-9_.-]+$'
+          - kind: comment
+          - regex: '^[\[\]]$'
+transform:
+  BARE:
+    replace:
+      source: $LIST
+      replace: '\bpkgs\.'
+      by: ""
+fix: with pkgs; $BARE
