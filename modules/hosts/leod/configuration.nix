@@ -64,6 +64,7 @@
             "/var/lib/flatpak"
             {
               directory = "/etc/NetworkManager/system-connections";
+              # Hides SSIDs from other users, as NixOS's NetworkManager does.
               mode = "0700";
             }
           ];
