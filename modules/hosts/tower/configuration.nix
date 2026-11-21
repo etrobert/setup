@@ -22,6 +22,8 @@
 
       boot = {
         loader.systemd-boot.enable = true;
+        # The UEFI shell's name for the Windows ESP; `map -c` in the shell lists them.
+        loader.systemd-boot.windows."11".efiDeviceHandle = "FS1";
         loader.efi.canTouchEfiVariables = true;
 
         # Runtime resume can wedge the RX 9070 XT's SMU and hang the machine.
