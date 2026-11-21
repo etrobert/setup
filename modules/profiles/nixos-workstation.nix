@@ -178,6 +178,7 @@
             "ddkjiahejlhfcafbddmgiahcphecmpfh" # uBlock Origin Lite
             "khncfooichmfjbepaaaebmommgaepoid" # Unhook
             "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
+            "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
           ];
         };
 
