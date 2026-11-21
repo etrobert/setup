@@ -43,6 +43,8 @@
 
           preview() {
             while sleep 0.2; do
+              # The server rejects a recording with no audio yet.
+              [ -s "$recording" ] || continue
               # Captured first, so a pass killed midway writes nothing.
               text=$(transcribe)
               echo "$text"
