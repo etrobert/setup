@@ -62,6 +62,10 @@
             "/var/lib/systemd/backlight"
             "/var/log"
             "/var/lib/flatpak"
+            {
+              directory = "/etc/NetworkManager/system-connections";
+              mode = "0700";
+            }
           ];
         };
       };
