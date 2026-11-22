@@ -12,6 +12,7 @@
           name = "scale-floating-window";
           meta.platforms = lib.platforms.linux;
           runtimeInputs = with pkgs; [
+            coreutils
             jq
             niri
             gawk
