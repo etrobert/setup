@@ -14,7 +14,10 @@
             assert lib.assertMsg (lib.versionOlder pkgs.niri.version "26.05")
               "nixpkgs niri ${pkgs.niri.version} should include niri-wm/niri#4675: drop no-fallback-frames-without-outputs.patch";
             pkgs.niri.overrideAttrs (old: {
-              patches = (old.patches or [ ]) ++ [ ./no-fallback-frames-without-outputs.patch ];
+              patches = (old.patches or [ ]) ++ [
+                ./no-fallback-frames-without-outputs.patch
+                ./keep-aspect-ratio.patch
+              ];
             });
 
           makeNiriWrapped =

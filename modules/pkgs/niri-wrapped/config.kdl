@@ -353,6 +353,13 @@ window-rule {
     open-focused false
 }
 
+// Resizing video picture-in-picture by mouse keeps the video's shape.
+window-rule {
+    match app-id=r#"(firefox|zen)$"# title="^Picture-in-Picture$"
+    match title=r#"^Picture in picture$"#
+    keep-aspect-ratio true
+}
+
 // Keep the Bitwarden vault out of screen shares and recordings.
 window-rule {
     match app-id=r#"^(com\.bitwarden\.desktop|bitwarden)$"#

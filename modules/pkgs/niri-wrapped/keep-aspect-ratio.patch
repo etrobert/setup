@@ -1,0 +1,196 @@
+From b8e102279b7155197407dd97d6a2585455010a2e Mon Sep 17 00:00:00 2001
+From: Etienne Robert <etiennerobert33@gmail.com>
+Date: Sun, 22 Nov 2026 21:16:54 +0100
+Subject: [PATCH] Add keep-aspect-ratio window rule for floating windows
+
+---
+ niri-config/src/lib.rs         |  1 +
+ niri-config/src/window_rule.rs |  2 ++
+ src/layout/floating.rs         | 43 ++++++++++++++++++++++++++
+ src/layout/tests.rs            | 55 ++++++++++++++++++++++++++++++++++
+ src/window/mod.rs              |  6 ++++
+ 5 files changed, 107 insertions(+)
+
+diff --git a/niri-config/src/lib.rs b/niri-config/src/lib.rs
+index 329b7669..99096212 100644
+--- a/niri-config/src/lib.rs
++++ b/niri-config/src/lib.rs
+@@ -1853,6 +1853,7 @@ mod tests {
+                     opacity: None,
+                     geometry_corner_radius: None,
+                     clip_to_geometry: None,
++                    keep_aspect_ratio: None,
+                     baba_is_float: None,
+                     block_out_from: None,
+                     variable_refresh_rate: None,
+diff --git a/niri-config/src/window_rule.rs b/niri-config/src/window_rule.rs
+index f2bc2ad1..cec41591 100644
+--- a/niri-config/src/window_rule.rs
++++ b/niri-config/src/window_rule.rs
+@@ -62,6 +62,8 @@ pub struct WindowRule {
+     #[knuffel(child, unwrap(argument))]
+     pub clip_to_geometry: Option<bool>,
+     #[knuffel(child, unwrap(argument))]
++    pub keep_aspect_ratio: Option<bool>,
++    #[knuffel(child, unwrap(argument))]
+     pub baba_is_float: Option<bool>,
+     #[knuffel(child, unwrap(argument))]
+     pub block_out_from: Option<BlockOutFrom>,
+diff --git a/src/layout/floating.rs b/src/layout/floating.rs
+index d102f40d..f170dea6 100644
+--- a/src/layout/floating.rs
++++ b/src/layout/floating.rs
+@@ -1124,6 +1124,49 @@ impl<W: LayoutElement> FloatingSpace<W> {
+         let original_window_size = resize.original_window_size;
+         let edges = resize.data.edges;
+ 
++        let idx = self.idx_of(window).unwrap();
++        let keep_aspect_ratio = self.tiles[idx].window().rules().keep_aspect_ratio == Some(true);
++        if keep_aspect_ratio && original_window_size.w > 0. && original_window_size.h > 0. {
++            let mut scale_x = None;
++            if edges.intersects(ResizeEdge::LEFT_RIGHT) {
++                let dx = if edges.contains(ResizeEdge::LEFT) {
++                    -delta.x
++                } else {
++                    delta.x
++                };
++                scale_x = Some((original_window_size.w + dx) / original_window_size.w);
++            }
++
++            let mut scale_y = None;
++            if edges.intersects(ResizeEdge::TOP_BOTTOM) {
++                let dy = if edges.contains(ResizeEdge::TOP) {
++                    -delta.y
++                } else {
++                    delta.y
++                };
++                scale_y = Some((original_window_size.h + dy) / original_window_size.h);
++            }
++
++            // On a corner, follow whichever axis the pointer moved further along.
++            let scale = match (scale_x, scale_y) {
++                (Some(x), Some(y)) => {
++                    if (x - 1.).abs() >= (y - 1.).abs() {
++                        x
++                    } else {
++                        y
++                    }
++                }
++                (Some(s), None) | (None, Some(s)) => s,
++                (None, None) => return true,
++            };
++
++            let window_width = (original_window_size.w * scale).round() as i32;
++            let window_height = (original_window_size.h * scale).round() as i32;
++            self.set_window_width(Some(window), SizeChange::SetFixed(window_width), false);
++            self.set_window_height(Some(window), SizeChange::SetFixed(window_height), false);
++            return true;
++        }
++
+         if edges.intersects(ResizeEdge::LEFT_RIGHT) {
+             let mut dx = delta.x;
+             if edges.contains(ResizeEdge::LEFT) {
+diff --git a/src/layout/tests.rs b/src/layout/tests.rs
+index 31265dd9..b536b428 100644
+--- a/src/layout/tests.rs
++++ b/src/layout/tests.rs
+@@ -348,10 +348,12 @@ prop_compose! {
+     fn arbitrary_rules()(
+         focus_ring in arbitrary_focus_ring(),
+         border in arbitrary_border(),
++        keep_aspect_ratio in prop::option::of(any::<bool>()),
+     ) -> ResolvedWindowRules {
+         ResolvedWindowRules {
+             focus_ring,
+             border,
++            keep_aspect_ratio,
+             ..ResolvedWindowRules::default()
+         }
+     }
+@@ -3085,6 +3087,59 @@ fn interactive_resize_to_negative() {
+     check_ops(ops);
+ }
+ 
++fn interactive_resize_keeping_aspect_ratio(
++    edges: ResizeEdge,
++    dx: f64,
++    dy: f64,
++) -> Size<i32, Logical> {
++    let ops = [
++        Op::AddOutput(1),
++        Op::AddWindow {
++            params: TestWindowParams {
++                is_floating: true,
++                bbox: Rectangle::from_size(Size::from((160, 90))),
++                rules: Some(ResolvedWindowRules {
++                    keep_aspect_ratio: Some(true),
++                    ..ResolvedWindowRules::default()
++                }),
++                ..TestWindowParams::new(1)
++            },
++        },
++        Op::InteractiveResizeBegin { window: 1, edges },
++        Op::InteractiveResizeUpdate { window: 1, dx, dy },
++    ];
++
++    let layout = check_ops(ops);
++    let (_, win) = layout.windows().next().unwrap();
++    win.requested_size().unwrap()
++}
++
++#[test]
++fn interactive_resize_keeps_aspect_ratio() {
++    let size = |w, h| Size::from((w, h));
++    assert_eq!(
++        interactive_resize_keeping_aspect_ratio(ResizeEdge::RIGHT, 80., 0.),
++        size(240, 135)
++    );
++    assert_eq!(
++        interactive_resize_keeping_aspect_ratio(ResizeEdge::LEFT, 80., 0.),
++        size(80, 45)
++    );
++    assert_eq!(
++        interactive_resize_keeping_aspect_ratio(ResizeEdge::TOP, 0., -90.),
++        size(320, 180)
++    );
++    // On a corner, the axis that moved further wins.
++    assert_eq!(
++        interactive_resize_keeping_aspect_ratio(ResizeEdge::BOTTOM_RIGHT, 10., 90.),
++        size(320, 180)
++    );
++    assert_eq!(
++        interactive_resize_keeping_aspect_ratio(ResizeEdge::BOTTOM_RIGHT, 160., 9.),
++        size(320, 180)
++    );
++}
++
+ #[test]
+ fn windows_on_other_workspaces_remain_activated() {
+     let ops = [
+diff --git a/src/window/mod.rs b/src/window/mod.rs
+index 14527cd2..c3e1e1dd 100644
+--- a/src/window/mod.rs
++++ b/src/window/mod.rs
+@@ -105,6 +105,9 @@ pub struct ResolvedWindowRules {
+     /// Whether to clip this window to its geometry, including the corner radius.
+     pub clip_to_geometry: Option<bool>,
+ 
++    /// Whether interactive resizing of this floating window keeps its aspect ratio.
++    pub keep_aspect_ratio: Option<bool>,
++
+     /// Whether to bob this window up and down.
+     pub baba_is_float: Option<bool>,
+ 
+@@ -287,6 +290,9 @@ impl ResolvedWindowRules {
+                 if let Some(x) = rule.clip_to_geometry {
+                     resolved.clip_to_geometry = Some(x);
+                 }
++                if let Some(x) = rule.keep_aspect_ratio {
++                    resolved.keep_aspect_ratio = Some(x);
++                }
+                 if let Some(x) = rule.baba_is_float {
+                     resolved.baba_is_float = Some(x);
+                 }
+-- 
+2.56.0
+
