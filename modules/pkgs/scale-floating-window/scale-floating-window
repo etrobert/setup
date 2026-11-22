@@ -15,17 +15,27 @@ case "$1" in
   *)    echo "Unknown direction: $1. Use 'up' or 'down'"; exit 1 ;;
 esac
 
-window=$(niri msg -j focused-window)
+window=$(niri msg --json focused-window)
 
-if ! echo "$window" | jq -e '.is_floating' > /dev/null 2>&1; then
+if ! echo "$window" | jq --exit-status '.is_floating' > /dev/null 2>&1; then
   exit 0
 fi
 
+id=$(echo "$window" | jq '.id')
 width=$(echo "$window" | jq '.layout.window_size[0]')
 height=$(echo "$window" | jq '.layout.window_size[1]')
 
-new_width=$(awk "BEGIN{printf \"%d\", $width * $factor}")
-new_height=$(awk "BEGIN{printf \"%d\", $height * $factor}")
+# Keep the app's initial ratio: recomputing it from rounded sizes drifts.
+state_dir="$XDG_RUNTIME_DIR/scale-floating-window"
+ratio_file="$state_dir/$id"
+if [ ! -f "$ratio_file" ]; then
+  mkdir --parents "$state_dir"
+  echo "$width $height" > "$ratio_file"
+fi
+read -r ratio_width ratio_height < "$ratio_file"
+
+new_width=$(awk "BEGIN{printf \"%d\", $width * $factor + 0.5}")
+new_height=$(awk "BEGIN{printf \"%d\", $new_width * $ratio_height / $ratio_width + 0.5}")
 
 niri msg action set-window-width "$new_width"
 niri msg action set-window-height "$new_height"
