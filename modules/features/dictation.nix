@@ -29,9 +29,10 @@
           recording="$XDG_RUNTIME_DIR/dictation.raw"
 
           transcribe() {
-            # Vorbis is a tenth of the size of WAV, which matters on a slow uplink.
-            sox --type raw --rate 16000 --encoding signed-integer --bits 16 \
-              --channels 1 "$recording" --type vorbis --compression 0 - |
+            tail --bytes=+$(($1 + 1)) "$recording" |
+              # Vorbis is a tenth of the size of WAV, which matters on a slow uplink.
+              sox --type raw --rate 16000 --encoding signed-integer --bits 16 \
+                --channels 1 - --type vorbis --compression 0 - |
               curl --silent --show-error --fail \
                 --form file=@- \
                 --form response_format=text \
@@ -41,14 +42,35 @@
               sed --regexp-extended 's/ +/ /g; s/^ | $//g'
           }
 
+          # Each pause ends a segment, so a pass only transcribes what was said since.
+          pass() {
+            size=$(stat --format=%s "$recording")
+            # The server rejects a recording with no audio.
+            ((size > start)) || return 0
+            text=$(transcribe "$start")
+            echo "$committed $text"
+            if [ "$text" = "$previous" ]; then ((++same)); else same=1; fi
+            previous=$text
+            # dictation-lock's PAUSE, so the segment ends as dictation-lock locks it.
+            if ((same == 6)); then
+              committed+=" $text"
+              # Whole 16-bit samples.
+              start=$((size - size % 2))
+              previous=""
+              same=0
+            fi
+          }
+
           preview() {
-            while sleep 0.2; do
-              # The server rejects a recording with no audio yet.
-              [ -s "$recording" ] || continue
-              # Captured first, so a pass killed midway writes nothing.
-              text=$(transcribe)
-              echo "$text"
+            stopping=false
+            trap stopping=true TERM
+            committed="" start=0 previous="" same=0
+            until "$stopping"; do
+              sleep 0.2
+              pass
             done
+            # The recorder has stopped, so this pass hears everything.
+            pass
           }
 
           latched=false
@@ -77,11 +99,10 @@
                   # On SIGINT notify-send closes the notification.
                   kill -s INT "$indicator"
                 fi
-                kill "$previewer"
                 kill -s INT "$recorder"
-                wait "$previewer" "$recorder" || true
-                text=$(transcribe)
-                echo "$text" >&"$typing"
+                wait "$recorder" || true
+                kill "$previewer"
+                wait "$previewer"
                 exec {typing}>&-
                 wait "$typer" || notify-send Dictation "No text field"
                 ;;

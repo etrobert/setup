@@ -13,6 +13,8 @@ AGREE = 4
 # Words at the end of a pass that never lock: the newest ones still change,
 # and a pass ends in a full stop that later becomes a comma or nothing.
 HOLD = 3
+# Consecutive identical passes that mark a pause, which locks every word.
+PAUSE = 6
 
 
 def bare(words):
@@ -47,9 +49,11 @@ def settled(tails):
 def main():
     locked, passes = [], []
     for line in sys.stdin:
-        passes = passes[1 - AGREE :] + [line.split()]
-        if len(passes) == AGREE:
-            tails = [rest(locked, words) for words in passes]
+        passes = passes[1 - PAUSE :] + [line.split()]
+        if len(passes) == PAUSE and all(w == passes[-1] for w in passes):
+            locked += rest(locked, passes[-1])
+        elif len(passes) >= AGREE:
+            tails = [rest(locked, words) for words in passes[-AGREE:]]
             locked += tails[-1][: settled(tails)]
         tentative = rest(locked, passes[-1])
         # The space goes with the tentative words, so locked only ever grows.

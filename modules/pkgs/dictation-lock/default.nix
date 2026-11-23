@@ -14,7 +14,10 @@ _: {
 
       # passes.txt is what Whisper returned for each pass of a real recording.
       checks.dictation-lock = pkgs.runCommand "dictation-lock-check" { } ''
-        ${lib.getExe config.packages.dictation-lock} < ${./passes.txt} | diff - ${./locked.txt} && touch $out
+        lock=${lib.getExe config.packages.dictation-lock}
+        $lock < ${./passes.txt} | diff - ${./locked.txt}
+        printf 'Ask not.\n%.0s' {1..6} | $lock | tail --lines=1 | diff - <(printf 'Ask not.\t\n')
+        touch $out
       '';
     };
 }
