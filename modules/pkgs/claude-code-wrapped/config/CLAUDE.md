@@ -118,6 +118,9 @@ it breaks; a fallback defers it into a wrong answer later. Never convert an
 existing `expect`/`panic!`, or any other deliberate hard failure, into a default
 value.
 
+Never add `|| true` or a redirect to `/dev/null` by reflex, in code or in the
+commands you run. Each one needs a stated justification.
+
 In Tailwind, prefer the predefined scale (`text-lg`, `rounded-md`, `p-2.5`) over
 arbitrary values (`text-[1.1rem]`, `rounded-[0.4rem]`), snapping to the nearest
 step rather than preserving an exact number. Reserve `[…]` for values with no

@@ -13,6 +13,6 @@ niri msg --json event-stream |
     # Float each window only once, so manually tiling it again (Mod+V) sticks.
     [[ -n ${floated[$id]:-} ]] && continue
     floated[$id]=1
-    # The window may be gone by now; don't let errexit kill the watcher.
+    # ast-grep-ignore: justify-silenced-errors # the window may be gone by now; don't let errexit kill the watcher
     niri msg action move-window-to-floating --id "$id" || true
   done

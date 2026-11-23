@@ -1,0 +1,24 @@
+---
+id: justify-silenced-errors
+language: bash
+severity: error
+message: >-
+  This hides an error. Remove it, or put `# ast-grep-ignore:
+  justify-silenced-errors # <reason>` on the line above.
+note: |
+  Flagged: `|| true`, and stderr sent to /dev/null (`2>/dev/null`,
+  `&>/dev/null`, `>/dev/null 2>&1`). Discarding stdout alone is not flagged:
+  it drops output, not an error.
+  Like the other bash rules this only reads `.sh` files, not scripts written
+  inline in a Nix string.
+rule:
+  any:
+    - kind: file_redirect
+      regex: '^(2|&)>>?\s*/dev/null$'
+    - kind: file_redirect
+      regex: "^2>&1$"
+      follows:
+        kind: file_redirect
+        regex: "/dev/null$"
+    - kind: list
+      regex: '\|\|\s*true$'
