@@ -3,9 +3,9 @@ let
   telescope-extras = pkgs.vimUtils.buildVimPlugin {
     name = "telescope-extras";
     src = ./telescope-extras;
-    dependencies = [
-      pkgs.vimPlugins.telescope-nvim
-      pkgs.vimPlugins.plenary-nvim
+    dependencies = with pkgs; [
+      vimPlugins.telescope-nvim
+      vimPlugins.plenary-nvim
     ];
   };
 in

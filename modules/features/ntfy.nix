@@ -64,11 +64,11 @@ in
         ntfyNotify = pkgs.writeShellApplication {
           name = "ntfy-notify";
 
-          runtimeInputs = [
-            pkgs.curl
-            pkgs.jq
-            pkgs.libnotify
-            pkgs.xdg-utils
+          runtimeInputs = with pkgs; [
+            curl
+            jq
+            libnotify
+            xdg-utils
           ];
 
           # Deliberately not false: xdg-open resolves the browser through

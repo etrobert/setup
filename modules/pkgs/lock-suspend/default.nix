@@ -11,9 +11,9 @@
         lock-suspend = pkgs.writeShellApplication {
           name = "lock-suspend";
           meta.platforms = lib.platforms.linux;
-          runtimeInputs = [
-            pkgs.coreutils # sleep
-            pkgs.systemd
+          runtimeInputs = with pkgs; [
+            coreutils # sleep
+            systemd
           ];
           inheritPath = false;
           text = ''
