@@ -97,7 +97,8 @@
                 if "$latched"; then
                   latched=false
                   # On SIGINT notify-send closes the notification.
-                  kill -s INT "$indicator"
+                  # It has already exited if the notification was dismissed.
+                  kill -s INT "$indicator" || true
                 fi
                 kill -s INT "$recorder"
                 wait "$recorder" || true
