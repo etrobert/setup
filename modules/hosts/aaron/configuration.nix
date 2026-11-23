@@ -4,6 +4,7 @@ _: {
       self,
       pkgs,
       lib,
+      options,
       ...
     }:
     let
@@ -229,7 +230,11 @@ _: {
       # Enable Touch ID for sudo
       security.pam.services.sudo_local.touchIdAuth = true;
 
-      security.sudo.extraConfig = "soft ALL=(ALL) NOPASSWD: ALL";
+      security.sudo.extraConfig =
+        assert lib.assertMsg (
+          !options.security.sudo ? adminNeedsPassword
+        ) "use security.sudo.adminNeedsPassword = false";
+        "soft ALL=(ALL) NOPASSWD: ALL";
 
       home-manager = {
         useGlobalPkgs = true;
