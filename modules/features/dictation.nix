@@ -1,4 +1,4 @@
-# Hold Super+D to dictate into the focused window.
+# Hold Super+D to dictate into the focused window, or tap it to toggle.
 { self, ... }:
 {
   flake.nixosModules.dictation =
@@ -51,9 +51,13 @@
             done
           }
 
+          latched=false
+
           while read -r message; do
             case "$message" in
               *dictate-start*)
+                "$latched" && continue
+                pressed=''${EPOCHREALTIME/./}
                 pw-record --raw --rate 16000 --channels 1 --format s16 "$recording" &
                 recorder=$!
                 exec {typing}> >(dictation-lock | wl-ime-stream)
@@ -62,6 +66,17 @@
                 previewer=$!
                 ;;
               *dictate-stop*)
+                if ! "$latched" && ((''${EPOCHREALTIME/./} - pressed < 300000)); then
+                  latched=true
+                  notify-send --wait --expire-time 0 Dictation Listening &
+                  indicator=$!
+                  continue
+                fi
+                if "$latched"; then
+                  latched=false
+                  # On SIGINT notify-send closes the notification.
+                  kill -s INT "$indicator"
+                fi
                 kill "$previewer"
                 kill -s INT "$recorder"
                 wait "$previewer" "$recorder" || true
