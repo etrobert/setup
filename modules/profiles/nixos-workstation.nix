@@ -180,6 +180,11 @@
             "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
             "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
           ];
+
+          extraOpts = {
+            PasswordManagerEnabled = false;
+            BlockThirdPartyCookies = true;
+          };
         };
 
         niri = {
