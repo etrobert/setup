@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notes Inbox</title>
+    <style>
+      :root {
+        --bg: #fafaf7;
+        --fg: #1c1c1a;
+        --muted: #6b6b66;
+        --card: #fff;
+        --line: #e3e2dc;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #161615;
+          --fg: #ecebe6;
+          --muted: #9a9993;
+          --card: #20201e;
+          --line: #34332f;
+        }
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          16px/1.5 system-ui,
+          sans-serif;
+      }
+      main {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 24px 16px;
+      }
+      .progress {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+        margin: 12px 0 20px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 4px;
+      }
+      .date {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 12px;
+      }
+      .body {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        max-height: 50vh;
+        overflow: auto;
+      }
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      button {
+        font: inherit;
+        font-weight: 600;
+        padding: 18px 12px;
+        border: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+      }
+      .task {
+        background: #2f6fde;
+      }
+      .calendar {
+        background: #7a4fd6;
+      }
+      .reference {
+        background: #1f8a5b;
+      }
+      .done {
+        background: #6b6b66;
+      }
+      .delete {
+        background: #c8452f;
+      }
+      .other {
+        background: #b07a12;
+      }
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+        font: inherit;
+        padding: 10px;
+        margin-bottom: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--card);
+        color: var(--fg);
+      }
+      .log {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="progress" id="progress"></div>
+      <div class="card">
+        <h1 id="name"></h1>
+        <div class="date" id="date"></div>
+        <div class="body" id="body"></div>
+        <div id="attachments"></div>
+      </div>
+      <textarea
+        id="text"
+        rows="2"
+        placeholder="Optional instructions"
+      ></textarea>
+      <div class="actions">
+        <button class="task" data-action="task">Task</button>
+        <button class="calendar" data-action="calendar">Calendar</button>
+        <button class="reference" data-action="reference">File in doc</button>
+        <button class="done" data-action="done">Done, nothing to do</button>
+        <button class="delete" data-action="delete">Delete</button>
+        <button class="other" data-action="other">Other (see text)</button>
+      </div>
+      <div class="log" id="log"></div>
+    </main>
+    <script>
+      let notes = [];
+      let index = 0;
+      const $ = (id) => document.getElementById(id);
+
+      function show() {
+        if (index >= notes.length) {
+          $("progress").textContent = `All ${notes.length} notes processed`;
+          document.querySelector(".card").hidden = true;
+          return;
+        }
+        const note = notes[index];
+        $("progress").textContent = `${index + 1} / ${notes.length}`;
+        $("name").textContent = note.name;
+        $("date").textContent = new Date(note.modified).toLocaleString();
+        $("body").textContent = note.body;
+        $("attachments").replaceChildren(
+          ...note.links.map((url) =>
+            Object.assign(document.createElement("a"), {
+              href: url,
+              target: "_blank",
+              textContent: url,
+              style: "display: block; overflow-wrap: anywhere; margin-top: 8px",
+            }),
+          ),
+          ...note.media.map((file) =>
+            Object.assign(document.createElement("img"), {
+              src: `/media/${file}`,
+              style:
+                "display: block; max-width: 100%; margin-top: 12px; border-radius: 8px",
+            }),
+          ),
+        );
+        $("text").value = "";
+      }
+
+      document.querySelectorAll("button").forEach((button) => {
+        button.onclick = async () => {
+          if (index >= notes.length) return;
+          const note = notes[index];
+          const action = button.dataset.action;
+          await fetch("/decide", {
+            method: "POST",
+            body: JSON.stringify({
+              id: note.id,
+              name: note.name,
+              body: note.body,
+              links: note.links,
+              media: note.media,
+              action,
+              text: $("text").value,
+            }),
+          });
+          $("log").prepend(
+            Object.assign(document.createElement("div"), {
+              textContent: `${action}: ${note.name}`,
+            }),
+          );
+          index++;
+          show();
+        };
+      });
+
+      fetch("/notes.json")
+        .then((r) => r.json())
+        .then((data) => {
+          notes = data.sort((a, b) => b.modified.localeCompare(a.modified));
+          show();
+        });
+    </script>
+  </body>
+</html>
