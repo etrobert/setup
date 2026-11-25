@@ -58,7 +58,6 @@ in
       self.nixosModules.lidarr
       self.nixosModules.radarr
       self.nixosModules.jellyfin
-      self.nixosModules.monitor-gpu-wake
       self.nixosModules.reboot-on-hang
     ];
   };
