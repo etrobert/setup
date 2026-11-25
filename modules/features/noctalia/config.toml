@@ -193,10 +193,11 @@ enable_ddcutil = true
 [nightlight]
 enabled = true
 
-# Firefox and Zen request timeout=0 for notifications like Google Calendar
-# reminders. allow_permanent = false expires them on the default timeout
-# instead. match is case-insensitive against app name, desktop entry or
-# category.
+# Browsers request timeout=0 for Google Calendar reminders, which would never expire.
+[notification.filter.chromium]
+match = "chromium"
+allow_permanent = false
+
 [notification.filter.firefox]
 match = "firefox"
 allow_permanent = false
