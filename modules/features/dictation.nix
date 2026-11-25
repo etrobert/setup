@@ -9,7 +9,7 @@
       ...
     }:
     let
-      vocabulary = "Nix, NixOS, nixpkgs, flake, niri, Noctalia, Tailscale, tmux, Neovim, agenix, systemd, PipeWire, Kanata, Claude Code, GitHub, pull request, leod.";
+      vocabulary = "Tanzfabrik, Amílcar, Nix, NixOS, nixpkgs, flake, niri, Noctalia, Tailscale, tmux, Neovim, agenix, systemd, PipeWire, Kanata, Claude Code, GitHub, pull request, leod.";
 
       dictation = pkgs.writeShellApplication {
         name = "dictation";
