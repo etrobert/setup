@@ -5,6 +5,7 @@ _: {
       config,
       lib,
       pkgs,
+      utils,
       ...
     }:
     let
@@ -18,18 +19,25 @@ _: {
         url = "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin";
         hash = "sha256-KZQNmNQrkfvQXOSJ8+z3xy8KQvAn5IdZGaKPtMBOos8=";
       };
+
+      # The RX 9070 XT, not the integrated GPU
+      gpu = "${utils.escapeSystemdPath "/dev/dri/by-path/pci-0000:03:00.0-render"}.device";
     in
     {
       ports.whisper-server = "auto";
 
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.ports.whisper-server ];
 
-      # Until udev has opened up a render node, whisper-server can't use it and silently falls back to the CPU.
+      # Gives render nodes a device unit, active once udev has opened up their permissions.
       services.udev.extraRules = ''
-        SUBSYSTEM=="drm", KERNEL=="renderD*", TAG+="systemd", ENV{SYSTEMD_WANTS}+="whisper-server.service"
+        SUBSYSTEM=="drm", KERNEL=="renderD*", TAG+="systemd"
       '';
 
       systemd.services.whisper-server = {
+        wantedBy = [ "multi-user.target" ];
+        # Started before the GPU is usable, whisper-server silently falls back to the CPU.
+        requires = [ gpu ];
+        after = [ gpu ];
         environment.XDG_CACHE_HOME = "/var/cache/whisper-server";
         serviceConfig = {
           ExecStart = lib.concatStringsSep " " [
