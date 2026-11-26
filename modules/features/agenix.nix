@@ -10,7 +10,8 @@
           environment.systemPackages = [
             (pkgs.writeShellApplication {
               name = "agenix";
-              inheritPath = false;
+              # agenix -e runs $EDITOR, which lives on the caller's PATH.
+              inheritPath = true;
               runtimeInputs = [
                 inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
                 pkgs.coreutils
