@@ -17,6 +17,7 @@
         self.nixosModules.zen-browser
         self.nixosModules.noctalia
         self.nixosModules.networkmanager
+        self.nixosModules.agenix
         self.nixosModules.pimsync
         self.nixosModules.himalaya
         self.nixosModules.darkman
