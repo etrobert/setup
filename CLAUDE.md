@@ -71,7 +71,7 @@ Shell scripts are packaged with `writeShellApplication` with
 `inheritPath = false` and explicit `runtimeInputs`.
 
 **Secrets** (`secrets/`): agenix-encrypted secrets (Tailscale authkey, API keys,
-Wi-Fi passwords, account passwords, etc.). See `secrets/secrets.nix` for the
+Wi-Fi passwords, account passwords, etc.). See `agenix-rules.nix` for the
 authoritative list.
 
 ### Caches
