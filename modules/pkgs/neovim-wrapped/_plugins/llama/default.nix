@@ -7,7 +7,10 @@ in
     {
       plugin = pkgs.vimPlugins.llama-vim;
       config = /* lua */ ''
-        vim.g.llama_config = { endpoint_fim = "http://tower:${toString ports.llama-cpp}/infill" }
+        vim.g.llama_config = {
+          endpoint_fim = "http://tower:${toString ports.llama-cpp}/infill",
+          show_info = 0,
+        }
       '';
     }
   ];
