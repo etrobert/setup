@@ -64,8 +64,6 @@ alias server="python3 -m http.server 8000"
 
 alias fhistory="history | sed -E 's/^ +[0-9]+ +//' | fzf --tac --no-sort"
 
-alias agenix-rekey="sudo agenix --rekey -i /etc/ssh/ssh_host_ed25519_key"
-
 alias music-dl="yt-dlp --embed-thumbnail --extract-audio" # --embed-metadata
 
 # noglob: the request is unquoted, so a `*` or `?` must not be expanded by the shell.

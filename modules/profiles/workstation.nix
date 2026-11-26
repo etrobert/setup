@@ -3,7 +3,6 @@ _: {
     nixosModules.workstation =
       {
         self,
-        agenix,
         pkgs,
         ...
       }:
@@ -24,8 +23,6 @@ _: {
         environment.systemPackages =
           let
             inherit (pkgs.stdenv.hostPlatform) system;
-
-            inputPackages = [ agenix.packages.${system}.default ];
 
             customPackages = with self.packages.${system}; [
               aichat-wrapped
@@ -87,7 +84,7 @@ _: {
               yt-dlp
             ];
           in
-          inputPackages ++ customPackages ++ externalPackages;
+          customPackages ++ externalPackages;
 
         # 30 github: inputs against an anonymous 60/hour-per-IP limit, shared by
         # every machine behind the same WAN address, is one `nix flake update`

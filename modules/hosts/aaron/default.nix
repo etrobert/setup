@@ -24,6 +24,7 @@ in
       self.darwinModules.aaron-configuration
       home-manager.darwinModules.home-manager
       agenix.darwinModules.default
+      self.darwinModules.agenix
       nix-homebrew.darwinModules.nix-homebrew
       {
         nix-homebrew = {
