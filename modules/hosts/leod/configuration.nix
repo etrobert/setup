@@ -87,14 +87,6 @@
       services = {
         fprintd.enable = true;
 
-        # Only the preserved key: sshd would regenerate the default RSA and ML-DSA keys every boot.
-        openssh.hostKeys = [
-          {
-            path = "/etc/ssh/ssh_host_ed25519_key";
-            type = "ed25519";
-          }
-        ];
-
         # leod is the only host that travels, so it geolocates its timezone
         # instead of pinning one. The module sets time.timeZone to null.
         automatic-timezoned.enable = true;

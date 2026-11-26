@@ -127,6 +127,14 @@ _: {
         # openFirewall defaults true, which opens 22 on every interface.
         openFirewall = false;
 
+        # Only the key ssh_known_hosts pins; the default adds RSA and ML-DSA keys.
+        hostKeys = [
+          {
+            path = "/etc/ssh/ssh_host_ed25519_key";
+            type = "ed25519";
+          }
+        ];
+
         # Keys only. Both default to true; the second is PAM's password prompt
         # through keyboard-interactive.
         settings = {
