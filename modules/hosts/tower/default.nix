@@ -41,10 +41,8 @@ in
       self.nixosModules.tower-storage
       self.nixosModules.samba
       self.nixosModules.immich
-      self.nixosModules.ollama
       self.nixosModules.llama-cpp
       self.nixosModules.whisper-server
-      self.nixosModules.open-webui
       self.nixosModules.tailnet-services
       self.nixosModules.node-exporter
       self.nixosModules.smartctl-exporter
