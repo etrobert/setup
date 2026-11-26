@@ -9,7 +9,6 @@
       extraPackages = with pkgs; [
         ast-grep
         bash-language-server
-        copilot-language-server
         go
         gopls
         lua-language-server

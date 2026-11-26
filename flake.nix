@@ -138,7 +138,6 @@
               pkg:
               builtins.elem (lib.getName pkg) [
                 "claude-code"
-                "copilot-language-server"
                 "vscode"
                 "vscode-extension-ms-vsliveshare-vsliveshare"
               ];
