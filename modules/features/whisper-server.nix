@@ -28,6 +28,20 @@ _: {
         wantedBy = [ "multi-user.target" ];
         environment.XDG_CACHE_HOME = "/var/cache/whisper-server";
         serviceConfig = {
+          # Started before the GPU is ready, whisper-server silently falls back to the CPU.
+          ExecStartPre = lib.getExe (
+            pkgs.writeShellApplication {
+              name = "whisper-server-wait-for-gpu";
+              inheritPath = false;
+              runtimeInputs = with pkgs; [
+                gnugrep
+                vulkan-tools
+              ];
+              text = ''
+                vulkaninfo --summary | grep --quiet 'deviceType *= PHYSICAL_DEVICE_TYPE_.*_GPU$'
+              '';
+            }
+          );
           ExecStart = lib.concatStringsSep " " [
             (lib.getExe' pkgs.whisper-cpp-vulkan "whisper-server")
             "--model ${model}"
@@ -41,6 +55,8 @@ _: {
           DynamicUser = true;
           CacheDirectory = "whisper-server";
           Restart = "on-failure";
+          # Stays under the default start limit of 5 in 10 seconds, so it retries until the GPU shows up.
+          RestartSec = 5;
         };
       };
     };
