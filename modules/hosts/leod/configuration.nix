@@ -138,16 +138,12 @@
         };
       };
 
-      # The Synaptics Prometheus (06cb:00bd) does not survive suspend: it comes
-      # back reporting an unsupported firmware version, stranding whatever
-      # verify the lock screen had in flight. fprintd cannot cancel that one,
-      # and its SIGTERM handler cannot break the loop it waits in, so it
-      # refuses every later Claim until something kills it. Re-probing on
-      # resume USB-resets the reader and drops the stale claim; the timeout
-      # keeps a wedged instance from holding up shutdown for the default 90s.
-      systemd.services.fprintd.serviceConfig.TimeoutStopSec = 5;
+      # An fprintd that lives through suspend wedges the Synaptics reader (06cb:00bd).
+      # Stopping it before sleep, not restarting it on resume, keeps it from racing the lock screen's Claim.
+      powerManagement.powerDownCommands = "${pkgs.systemd}/bin/systemctl stop fprintd.service";
 
-      powerManagement.resumeCommands = "${pkgs.systemd}/bin/systemctl try-restart fprintd.service";
+      # fprintd's SIGTERM handler cannot break a running verify, so this bounds the stop above.
+      systemd.services.fprintd.serviceConfig.TimeoutStopSec = 5;
 
       # pam_fprintd is serial: it holds the prompt for its full timeout — 30s
       # by default — before the typed password is even considered.
