@@ -5,6 +5,7 @@ _: {
       config,
       lib,
       pkgs,
+      utils,
       ...
     }:
     let
@@ -18,30 +19,25 @@ _: {
         url = "https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin";
         hash = "sha256-KZQNmNQrkfvQXOSJ8+z3xy8KQvAn5IdZGaKPtMBOos8=";
       };
+
+      # The RX 9070 XT, not the integrated GPU
+      gpu = "${utils.escapeSystemdPath "/dev/dri/by-path/pci-0000:03:00.0-render"}.device";
     in
     {
       ports.whisper-server = "auto";
 
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.ports.whisper-server ];
 
+      # Gives render nodes a device unit, active once udev has opened up their permissions.
+      services.udev.extraRules = ''SUBSYSTEM=="drm", KERNEL=="renderD*", TAG+="systemd"'';
+
       systemd.services.whisper-server = {
         wantedBy = [ "multi-user.target" ];
+        # Started before the GPU is usable, whisper-server silently falls back to the CPU.
+        requires = [ gpu ];
+        after = [ gpu ];
         environment.XDG_CACHE_HOME = "/var/cache/whisper-server";
         serviceConfig = {
-          # Started before the GPU is ready, whisper-server silently falls back to the CPU.
-          ExecStartPre = lib.getExe (
-            pkgs.writeShellApplication {
-              name = "whisper-server-wait-for-gpu";
-              inheritPath = false;
-              runtimeInputs = with pkgs; [
-                gnugrep
-                vulkan-tools
-              ];
-              text = ''
-                vulkaninfo --summary | grep --quiet 'deviceType *= PHYSICAL_DEVICE_TYPE_.*_GPU$'
-              '';
-            }
-          );
           ExecStart = lib.concatStringsSep " " [
             (lib.getExe' pkgs.whisper-cpp-vulkan "whisper-server")
             "--model ${model}"
@@ -55,8 +51,6 @@ _: {
           DynamicUser = true;
           CacheDirectory = "whisper-server";
           Restart = "on-failure";
-          # Stays under the default start limit of 5 in 10 seconds, so it retries until the GPU shows up.
-          RestartSec = 5;
         };
       };
     };
