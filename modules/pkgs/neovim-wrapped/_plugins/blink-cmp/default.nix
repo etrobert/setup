@@ -6,7 +6,7 @@
       config = /* lua */ ''
         require("blink.cmp").setup({
         	keymap = {
-        		-- <Tab> belongs to inline completion, see plugins/remap
+        		-- <Tab> accepts llama.vim's suggestion
         		["<Tab>"] = false,
         		["<C-k>"] = false, -- i_CTRL-K, digraphs
         		["<C-l>"] = { "snippet_forward" },

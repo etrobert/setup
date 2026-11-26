@@ -63,8 +63,6 @@ vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
 -- vim.opt.list = true
 -- vim.opt.listchars = { tab = "» ", extends = "›", precedes = "‹", nbsp = "·", trail = "·" }
 
-vim.lsp.inline_completion.enable()
-
 -- don't give the intro message when starting Vim, see :intro
 vim.opt.shortmess:append("I")
 

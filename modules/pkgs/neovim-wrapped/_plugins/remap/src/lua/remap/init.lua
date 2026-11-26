@@ -60,17 +60,6 @@ vim.keymap.set("n", "grq", function()
 	vim.cmd("copen")
 end, { desc = "Diagnostics to quickfix list" })
 
--- See :help vim.lsp.inline_completion.get()
-vim.keymap.set("i", "<Tab>", function()
-	if not vim.lsp.inline_completion.get() then
-		return "<Tab>"
-	end
-end, {
-	expr = true,
-	replace_keycodes = true,
-	desc = "Get the current inline completion",
-})
-
 function CopyFileLine()
 	local file_line = vim.fn.expand("%") .. ":" .. vim.fn.line(".")
 
