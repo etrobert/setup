@@ -30,6 +30,9 @@
         night = 30;
       };
 
+      # agenix decrypts before preservation links /etc/ssh (https://github.com/ryantm/agenix/issues/219).
+      age.identityPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+
       age.secrets = {
         syncthing-cert.file = ../../../secrets/syncthing-leod-cert.age;
         syncthing-key.file = ../../../secrets/syncthing-leod-key.age;
@@ -48,6 +51,11 @@
             {
               file = "/etc/machine-id";
               inInitrd = true;
+            }
+            {
+              file = "/etc/ssh/ssh_host_ed25519_key";
+              # A bind mount would reset the key to mode 0644, which sshd rejects.
+              how = "symlink";
             }
           ];
           directories = [
@@ -79,10 +87,10 @@
       services = {
         fprintd.enable = true;
 
-        # agenix reads its identity from here before bind mounts exist (https://github.com/ryantm/agenix/issues/219).
+        # Only the preserved key: sshd would regenerate the default RSA and ML-DSA keys every boot.
         openssh.hostKeys = [
           {
-            path = "/persist/etc/ssh/ssh_host_ed25519_key";
+            path = "/etc/ssh/ssh_host_ed25519_key";
             type = "ed25519";
           }
         ];
