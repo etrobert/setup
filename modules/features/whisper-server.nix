@@ -29,9 +29,7 @@ _: {
       networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ config.ports.whisper-server ];
 
       # Gives render nodes a device unit, active once udev has opened up their permissions.
-      services.udev.extraRules = ''
-        SUBSYSTEM=="drm", KERNEL=="renderD*", TAG+="systemd"
-      '';
+      services.udev.extraRules = ''SUBSYSTEM=="drm", KERNEL=="renderD*", TAG+="systemd"'';
 
       systemd.services.whisper-server = {
         wantedBy = [ "multi-user.target" ];
