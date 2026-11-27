@@ -28,9 +28,7 @@ in
 {
   "secrets/openai-api-key.age".publicKeys = allWorkstations;
   "secrets/gemini-api-key.age".publicKeys = allWorkstations;
-  "secrets/wifi-soft.age".publicKeys = allLinuxWorkstations;
-  "secrets/wifi-iphone-de-zeus.age".publicKeys = allLinuxWorkstations;
-  "secrets/wifi-vinni.age".publicKeys = allLinuxWorkstations;
+  "secrets/wifi.age".publicKeys = allLinuxWorkstations;
   "secrets/tailscale-authkey.age".publicKeys = allMachines;
   "secrets/apple-pimsync-password.age".publicKeys = allLinuxWorkstations;
   "secrets/soft-password.age".publicKeys = allLinux;
